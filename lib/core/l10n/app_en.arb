@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "Mobil Arıcılık",
+  "@appTitle": {
+    "description": "App name. The brand name stays Turkish in every language."
+  }
+}
