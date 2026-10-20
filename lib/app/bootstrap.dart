@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,14 @@ void bootstrap(Flavor flavor) {
       'Giriş dosyası "${flavor.name}", --flavor "$appFlavor" ile uyuşmuyor.',
     );
   }
+
+  // Inter, SIL OFL 1.1 ile dağıtılıyor; lisans sayfasında görünsün.
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString(
+      'assets/fonts/inter/LICENSE.txt',
+    );
+    yield LicenseEntryWithLineBreaks(const ['Inter'], license);
+  });
 
   runApp(const ProviderScope(child: App()));
 }
