@@ -49,6 +49,13 @@
 - Derin link hazırlığı: `app/deep_link.dart` içindeki `deepLinkLocation`, `mobilaricilik://x/y?q` adresini `/x/y?q` yapıyor (host ilk yol parçası). Bu çevrim router'ın üst düzey `redirect`'inde çalışıyor. Eşleşmeyen konumlar `onException` ile Bugün'e düşüyor. Şema AndroidManifest'e (VIEW/BROWSABLE intent-filter) ve Info.plist'e (`CFBundleURLTypes`) kaydedildi. Flutter iki platformda da tam URI'yi iletiyor.
 - 26 yeni test: derin link çevrimi, sekmeler ve yığın korunması, Okut'a dokunma ve basılı tutma, menünün alttaki sekme yığınını kapatmaması, ekran okuyucu eylemleri, dokunma hedefleri (eldiven dahil), 360dp ekranda 1.5x yazı ve eldivenle taşma olmaması, platformdan gelen ve soğuk açılış derin linkleri, ayarlardaki üç seçim.
 
+### 2026-10-21 — Supabase şema v1: işletmeler, üyelikler, RLS
+
+- `supabase/` klasörü Supabase CLI ile kuruldu (`supabase init`, varsayılan `config.toml`, Postgres 17). İlk migration `20261021200110_organizations_memberships.sql`. İki tablo var: `organizations` (ad, `country_code`, `currency`, `tr_registration_no`, `tr_aks_no`) ve `memberships` (`org_id`, `user_id`, `role` enum: owner/partner/worker/viewer). İkisinde de standart alanlar var: istemcide üretilen `id`, `created_at`, `updated_at`, `created_by`, `deleted_at`, `server_seq`. Bir kullanıcının bir işletmede yalnız tek etkin üyeliği olabilir.
+- Global `private.sync_seq` ve genel `private.set_server_seq()` trigger'ı her insert ve update'te `server_seq`'i yeniden yazıyor; istemcinin gönderdiği değer yok sayılıyor. `private` şeması API'ye açık değil. `is_member(org_id)` ve `has_role(org_id, roles[])` burada duruyor, güvenlik tanımlı. Çıkarılmış (`deleted_at` dolu) üyelik bu kontrollerde sayılmıyor.
+- RLS iki tabloda da açık. Üyeler işletmeyi ve üyeliklerini görüyor. Kullanıcı kendi çıkarıldığı üyeliği de görüyor, cihazı çıkarıldığını böyle öğrenecek. İşletmeyi yalnız owner güncelliyor; partner, worker ve viewer yalnız okuyor. Giriş yapmış her kullanıcı `created_by` kendisi olacak şekilde işletme oluşturabiliyor; `add_owner_membership` trigger'ı onu owner yapıyor. Üye ekleme ve değiştirmeyi yalnız o işletmenin owner'ı yapıyor. Hiçbir tabloda silme politikası yok, silme `deleted_at` ile yapılıyor.
+- `supabase/tests/database/` altında 27 pgTAP testi var: üye olmayan ve anon göremez; worker ve partner işletmeyi güncelleyemez, owner günceller; başkası adına işletme oluşturulamaz; oluşturan owner olur; worker üye ekleyemez ve rolünü yükseltemez; owner başka işletmeye üye ekleyemez; çıkarılan üye erişimini kaybeder. Bunlara ek olarak `server_seq` davranışı ve public şemasında RLS'siz tablo olmadığı test ediliyor. Çalıştırma: `supabase start` sonra `supabase test db`.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.
@@ -57,6 +64,7 @@
 - teknik.md'de `staging` flavor'ı da geçiyor; bu adımda yalnızca `dev` ve `prod` kuruldu.
 - Renklerde teknik.md önerisinden iki sapma var: açık tema primary `#B86E00` → `#995A00` ve status-warning `#E65100` → `#B33F00`. Öneri renkler 4.5:1 kontrastı sağlamıyordu; teknik.md tablosu henüz güncellenmedi.
 - freezed factory'lerinde sınıf adı yazılmaz, `const factory({...}) = _X;` biçimi kullanılır (`unnecessary_type_name_in_constructor`). `factory new(...)` derlenmez.
+- Yerel Supabase için Docker yerine Colima kullanılıyor (`colima start --cpu 4 --memory 6 --vm-type vz --mount-type virtiofs`). Supabase komutları `DOCKER_HOST=unix://$HOME/.colima/default/docker.sock` ile çalışıyor. `~/.docker/config.json` içinde eski Docker Desktop'tan kalan `"credsStore": "desktop"` satırı imaj çekmeyi bozuyor. Bu satır silinmeli ya da `DOCKER_CONFIG` temiz bir klasöre yönlendirilmeli.
 
 ## Bilinen sorunlar
 
@@ -66,4 +74,6 @@
 - Hızlı kayıt menüsü yalnızca Okut basılı tutulunca açılıyor. teknik.md'de eldiven modunda uzun basma gerektiren eylem olmaması isteniyor, §8'de ayrıca "yukarı kaydır" seçeneği geçiyor. Eldivenle menüye ulaşma yolu henüz yok.
 - dev ve prod aynı `mobilaricilik://` şemasını kullanıyor; ikisi aynı cihazda kuruluysa Android hangi uygulamayla açılacağını soruyor. Derin linklerin henüz hedefi yok; `/scan` gibi kabuk dışı bir rotaya linkle gelinirse altında sekme olmadığı için geri tuşu uygulamadan çıkar.
 - Tarih biçimleri `intl` yerel verisi istiyor. Bu veriyi Material yerelleştirmesi yüklüyor; widget ağacı dışında (bildirim, workmanager) `AppFormat` kullanılmadan önce `initializeDateFormatting` çağrılmalı.
+- İstemci yeni işletmeyi `RETURNING` ile ya da upsert ile ekleyemez. Owner üyeliği satır eklendikten sonra trigger'la yazıldığı için seçme politikası satırı reddediyor; bu durum denendi. `sync_push` adımında işletme ekleme düz insert olmalı ya da ayrı ele alınmalı. Trigger'ın eklediği owner üyeliğinin id'si sunucuda üretiliyor ve UUIDv4. Postgres 17'de `uuidv7()` yok.
+- Son owner kendi rolünü düşürebiliyor ya da kendini çıkarabiliyor; işletme owner'sız kalabilir. `auth.users` satırı silinirse üyelikler kalıcı olarak siliniyor ve bu silme diğer cihazlara senkronla ulaşmıyor. Hesap silme adımında ele alınacak.
 - Kendi bileşenlerimiz kenarlık ve köşe tokenlarını doğrudan kullanıyor. Material'ın kendi bileşen temaları (girdi, AppBar, ListTile) ise hâlâ varsayılan. teknik.md'deki gece modu ve golden testlerde 2 yazı boyutu (§11) henüz yok.
