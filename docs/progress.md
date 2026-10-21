@@ -33,6 +33,14 @@
 - Galeri ve boş durum metinleri zaten ARB'deydi. Kovan karosunun ekran okuyucu metnindeki `', '` ayırıcısı da `listSeparator` anahtarına taşındı. Kodda kalan `'101'` gibi örnek kovan numaraları metin değil, veri.
 - Testler: dil çözümü (desteklenmeyen dil, boş liste, ikinci tercih), provider, `App`'te seçilen dilin cihaz dilinin önüne geçmesi, TR/EN biçim çıktıları, birimlerde bilinen noktalar ve gidiş-dönüş.
 
+### 2026-10-21 — Bölge profili (RegionConfig)
+
+- `core/region/region_config.dart` içindeki saf `resolveRegionConfig(countryCode, latitude:)` freezed `RegionConfig` üretiyor. İçinde ülke kodu, profil (`TR` → `RegionProfile.tr`, diğer her kod → `other`), `RegionFeatures` (aks, subsidies, regulations, trDrugList, trFlora, trMigrationDocs; TR'de hepsi açık, diğerlerinde kapalı), ISO 4217 para birimi, `DefaultUnits` ve `Hemisphere` var. Kod `tr` gibi gelse de büyük harfe çevriliyor. Kod iki harf değilse ya da enlem -90..90 dışındaysa `ArgumentError` atılıyor.
+- Para birimi `country_currencies.dart` tablosundan geliyor: Antarktika dışındaki 248 ISO 3166-1 ülkesi ve Kosova. Tabloda olmayan kodda USD. Tablo macOS'un CLDR verisiyle karşılaştırıldı. İki bilinçli fark var: Lesotho `LSL` (CLDR `ZAR`) ve Venezuela `VES` (CLDR `VED`). Bulgaristan 2026'dan beri `EUR`.
+- Varsayılan birimler: ABD ve bağlı bölgeleri, Palau, Mikronezya, Marshall Adaları ve Liberya'da lb/°F/galon; Bahamalar, Belize ve Cayman'da yalnız sıcaklık °F; geri kalanı metrik. Yarımküre enlemden çıkıyor (0° Kuzey), enlem yoksa Kuzey. TR profili enlemden bağımsız olarak hep Kuzey.
+- Seçim `regionSelectionProvider` (keepAlive) içinde tutuluyor: `RegionSettings` varsayılanı `TR`, enlem null. `setCountry` ve `setLatitude` ile değişiyor; geçersiz girişte seçim olduğu gibi kalıyor. Ekranlar yalnızca `regionConfigProvider`'ı dinleyecek. Yapılandırma aynı kalırsa (ör. aynı yarımkürede enlem değişirse) dinleyenler uyarılmıyor. Seçici arayüz ayarlar adımında gelecek.
+- 46 yeni test: kod biçimi, yarımküre sınırları (ekvator, -0, kutuplar, NaN), iki profilin tam yapılandırması, para birimi ve birim istisnaları, provider akışı ve gereksiz bildirim olmaması. Bağımlı provider bir sonraki `pump`'ta yeniden kurulduğu için dinleyici testleri `container.pump()` bekliyor.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.
@@ -46,6 +54,6 @@
 
 - iOS proje şu an Swift Package Manager kullanıyor. İleride CocoaPods gerektiren bir eklenti gelirse `ios/Podfile` içindeki `project 'Runner', {...}` eşlemesine `Debug-dev`/`Debug-prod` → `:debug`, diğerleri → `:release` eklenmeli.
 - Drift'in cihazda DB açması için `drift_flutter` (veya `sqlite3_flutter_libs`) henüz eklenmedi; DB adımında eklenecek.
-- Görünüm ve dil seçimi yalnızca bellekte; uygulama yeniden açılınca varsayılana döner. Kalıcı kayıt ayarlar adımında eklenecek.
+- Görünüm, dil ve bölge seçimi yalnızca bellekte; uygulama yeniden açılınca varsayılana döner. Kalıcı kayıt ayarlar adımında eklenecek.
 - Tarih biçimleri `intl` yerel verisi istiyor. Bu veriyi Material yerelleştirmesi yüklüyor; widget ağacı dışında (bildirim, workmanager) `AppFormat` kullanılmadan önce `initializeDateFormatting` çağrılmalı.
 - Kendi bileşenlerimiz kenarlık ve köşe tokenlarını doğrudan kullanıyor. Material'ın kendi bileşen temaları (girdi, AppBar, ListTile) ise hâlâ varsayılan. teknik.md'deki gece modu ve golden testlerde 2 yazı boyutu (§11) henüz yok.

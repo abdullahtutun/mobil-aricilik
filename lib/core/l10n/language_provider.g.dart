@@ -46,7 +46,7 @@ final class LanguageProvider extends $NotifierProvider<Language, AppLanguage> {
   }
 }
 
-String _$languageHash() => r'd62c49882c10e61a4e4f10cccb13d949ab1155af';
+String _$languageHash() => r'20143fdf342dcad93111ab3035cf71e8b89c4ee5';
 
 /// Arayüz dili seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında
 /// gelecek.
