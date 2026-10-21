@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'Mobil Arıcılık'**
   String get appTitle;
 
+  /// Joins the parts of a screen reader label, e.g. on a hive tile.
+  ///
+  /// In en, this message translates to:
+  /// **', '**
+  String get listSeparator;
+
   /// Screen reader label and tooltip of the stepper's + button.
   ///
   /// In en, this message translates to:

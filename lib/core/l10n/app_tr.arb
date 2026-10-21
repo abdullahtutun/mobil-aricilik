@@ -1,6 +1,7 @@
 {
   "@@locale": "tr",
   "appTitle": "Mobil Arıcılık",
+  "listSeparator": ", ",
 
   "stepperIncrease": "Artır",
   "stepperDecrease": "Azalt",

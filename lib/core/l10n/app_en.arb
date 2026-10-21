@@ -4,6 +4,10 @@
   "@appTitle": {
     "description": "App name. The brand name stays Turkish in every language."
   },
+  "listSeparator": ", ",
+  "@listSeparator": {
+    "description": "Joins the parts of a screen reader label, e.g. on a hive tile."
+  },
 
   "stepperIncrease": "Increase",
   "@stepperIncrease": {

@@ -25,6 +25,14 @@
 - Galeri her bileşeni açık, koyu, güneş ve eldiven panellerinde alt alta gösteriyor; örnekler `GalleryComponent` enum'unda. Galeri metinleri ve bileşenlerin ekran okuyucu metinleri ARB'de (TR + EN).
 - Golden testler galerideki bölümlerin aynısını çiziyor (`test/core/design_system/components/goldens/`, 7 görüntü). Aynı klasördeki `flutter_test_config.dart` Inter ve Material Icons'ı yüklüyor. Goldenlar macOS'ta üretildi; Linux CI'da piksel farkı çıkabilir. Bunlara ek olarak seçim, sayaç sınırları, karo semantiği ve dev/prod rota kapısı için davranış testleri var.
 
+### 2026-10-21 — Dil seçimi, biçimleme ve birimler
+
+- Dil seçimi `languageProvider` (keepAlive) içinde tutuluyor. `AppLanguage` değerleri `system`, `turkish` ve `english`; `App` seçimi `locale` olarak kullanıyor. Cihaz dili `resolveAppLocale` ile çözülüyor: cihazın dil listesinde desteklenen ilk dil seçiliyor, ülke kodu dikkate alınmıyor; desteklenen dil yoksa İngilizce açılıyor. Ayarlar ekranındaki seçici ayarlar adımında gelecek.
+- `core/utils/app_format.dart` içindeki `AppFormat` tarih (`21 Eki 2026` / `Oct 21, 2026`), kısa tarih, saat, sayı, yüzde ve para (ISO 4217 koduyla, ör. `₺1.234,50`) biçimliyor. Widget içinde `AppFormat.of(context)` uygulamanın dilini kullanıyor.
+- `core/utils/units.dart` içinde `MassUnit` (kg/lb), `TemperatureUnit` (°C/°F) ve `VolumeUnit` (L/ABD galonu) var; çeviri `convert(value, to:)` ile yapılıyor. Çarpanlar tanımdaki tam değerler (1 lb = 0,45359237 kg, 1 gal = 3,785411784 L).
+- Galeri ve boş durum metinleri zaten ARB'deydi. Kovan karosunun ekran okuyucu metnindeki `', '` ayırıcısı da `listSeparator` anahtarına taşındı. Kodda kalan `'101'` gibi örnek kovan numaraları metin değil, veri.
+- Testler: dil çözümü (desteklenmeyen dil, boş liste, ikinci tercih), provider, `App`'te seçilen dilin cihaz dilinin önüne geçmesi, TR/EN biçim çıktıları, birimlerde bilinen noktalar ve gidiş-dönüş.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.
@@ -38,5 +46,6 @@
 
 - iOS proje şu an Swift Package Manager kullanıyor. İleride CocoaPods gerektiren bir eklenti gelirse `ios/Podfile` içindeki `project 'Runner', {...}` eşlemesine `Debug-dev`/`Debug-prod` → `:debug`, diğerleri → `:release` eklenmeli.
 - Drift'in cihazda DB açması için `drift_flutter` (veya `sqlite3_flutter_libs`) henüz eklenmedi; DB adımında eklenecek.
-- Görünüm seçimi yalnızca bellekte; uygulama yeniden açılınca varsayılana döner. Kalıcı kayıt ayarlar adımında eklenecek.
+- Görünüm ve dil seçimi yalnızca bellekte; uygulama yeniden açılınca varsayılana döner. Kalıcı kayıt ayarlar adımında eklenecek.
+- Tarih biçimleri `intl` yerel verisi istiyor. Bu veriyi Material yerelleştirmesi yüklüyor; widget ağacı dışında (bildirim, workmanager) `AppFormat` kullanılmadan önce `initializeDateFormatting` çağrılmalı.
 - Kendi bileşenlerimiz kenarlık ve köşe tokenlarını doğrudan kullanıyor. Material'ın kendi bileşen temaları (girdi, AppBar, ListTile) ise hâlâ varsayılan. teknik.md'deki gece modu ve golden testlerde 2 yazı boyutu (§11) henüz yok.

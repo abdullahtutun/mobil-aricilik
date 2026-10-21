@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_aricilik/app/app.dart';
 import 'package:mobil_aricilik/core/design_system/design_system.dart';
+import 'package:mobil_aricilik/core/l10n/app_language.dart';
+import 'package:mobil_aricilik/core/l10n/language_provider.dart';
 import 'package:mobil_aricilik/features/today/presentation/today_screen.dart';
 
 void main() {
@@ -22,6 +24,47 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Mobil Arıcılık'), findsOneWidget);
+    });
+
+    testWidgets('desteklenmeyen cihaz dilinde İngilizce açılır', (
+      tester,
+    ) async {
+      tester.platformDispatcher.localesTestValue = const [Locale('de', 'DE')];
+      addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+
+      await tester.pumpWidget(const ProviderScope(child: App()));
+      await tester.pumpAndSettle();
+
+      expect(
+        Localizations.localeOf(tester.element(find.byType(TodayScreen))),
+        const Locale('en'),
+      );
+    });
+
+    testWidgets('seçilen dil cihaz dilinin önüne geçer', (tester) async {
+      tester.platformDispatcher.localesTestValue = const [Locale('en', 'US')];
+      addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+
+      final container = ProviderContainer.test();
+      await tester.pumpWidget(
+        UncontrolledProviderScope(container: container, child: const App()),
+      );
+      await tester.pumpAndSettle();
+
+      Locale locale() =>
+          Localizations.localeOf(tester.element(find.byType(TodayScreen)));
+
+      expect(locale(), const Locale('en'));
+
+      container.read(languageProvider.notifier).language = AppLanguage.turkish;
+      await tester.pumpAndSettle();
+
+      expect(locale(), const Locale('tr'));
+
+      container.read(languageProvider.notifier).language = AppLanguage.system;
+      await tester.pumpAndSettle();
+
+      expect(locale(), const Locale('en'));
     });
 
     testWidgets('görünüm seçimi değişince tema da değişir', (tester) async {

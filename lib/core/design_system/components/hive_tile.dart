@@ -47,7 +47,7 @@ class HiveTile extends StatelessWidget {
       if (queenColor case final queenColor?)
         l10n.hiveTileQueenColor(queenColor.name),
       ?alertLabel,
-    ].join(', ');
+    ].join(l10n.listSeparator);
   }
 
   @override

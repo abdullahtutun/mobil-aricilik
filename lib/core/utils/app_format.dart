@@ -1,0 +1,54 @@
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+
+/// Yerele göre tarih, saat, sayı ve para biçimleri. Ekranlar `intl`
+/// biçimlerini kendisi kurmaz, bunu kullanır; biçim kararları tek yerde kalır.
+///
+/// Tarih biçimleri `intl`'in yerel verisine ihtiyaç duyar. Uygulamada bu
+/// veriyi Material yerelleştirmesi yükler. Widget ağacı dışında (ör. arka
+/// plan işi) önce `initializeDateFormatting` çağrılmalı.
+class AppFormat {
+  const new(this.locale);
+
+  /// Uygulamanın o anki dilinde biçimler.
+  factory of(BuildContext context) =>
+      AppFormat(Localizations.localeOf(context).toString());
+
+  /// `intl` yerel adı: `tr`, `en`.
+  final String locale;
+
+  /// Ay adıyla tarih; gün/ay sırası karışmaz. `21 Eki 2026`, `Oct 21, 2026`
+  String date(DateTime value) => DateFormat.yMMMd(locale).format(value);
+
+  /// Sayısal tarih. `21.10.2026`, `10/21/2026`
+  String shortDate(DateTime value) => DateFormat.yMd(locale).format(value);
+
+  /// Yerelin saat düzeni. `14:05`, `2:05 PM`
+  String time(DateTime value) => DateFormat.jm(locale).format(value);
+
+  /// [date] ve [time] birlikte. `21 Eki 2026 14:05`
+  String dateTime(DateTime value) =>
+      DateFormat.yMMMd(locale).add_jm().format(value);
+
+  /// Basamak ayraçlı sayı. En çok [maxFractionDigits] ondalık yazılır,
+  /// sondaki sıfırlar atılır. `1.234,5`, `1,234.5`
+  String number(num value, {int maxFractionDigits = 2}) {
+    final format = NumberFormat.decimalPattern(locale)
+      ..maximumFractionDigits = maxFractionDigits;
+    return format.format(value);
+  }
+
+  /// 0–1 arası oranı yüzde olarak yazar. `%76`, `76%`
+  String percent(double ratio) =>
+      NumberFormat.percentPattern(locale).format(ratio);
+
+  /// Para tutarı; simge ve ondalık hane sayısı para biriminden gelir.
+  /// [currencyCode] ISO 4217 kodudur (TRY, USD, EUR). `₺1.234,50`, `₺1,234.50`
+  String currency(num amount, {required String currencyCode}) {
+    final format = NumberFormat.simpleCurrency(
+      locale: locale,
+      name: currencyCode,
+    );
+    return format.format(amount);
+  }
+}

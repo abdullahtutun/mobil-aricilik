@@ -13,6 +13,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appTitle => 'Mobil Arıcılık';
 
   @override
+  String get listSeparator => ', ';
+
+  @override
   String get stepperIncrease => 'Artır';
 
   @override
