@@ -17,6 +17,14 @@
 - Görünüm `AppearanceSettings` (freezed) ile tutuluyor: renk modu (`system`/`light`/`dark`/`sun`) ve ondan bağımsız eldiven modu. Seçim `appearanceProvider` (keepAlive) içinde. `AppTheme` bu ayardan M3 `ThemeData` üretir ve `App`'e bağlıdır. Güneş modu cihaz koyu olsa da beyaz kalır ve gölge çizmez. Eldiven modunda `visualDensity` +2 olur, Material bileşenleri de 8dp büyür.
 - Token testleri kontrastı ölçüyor: standart temada metin en az 4.5:1, durum renkleri ve kenarlık en az 3:1; güneş modunda her çift en az 7:1. Bunun yanında ölçek değerleri, lerp/copyWith, tüm mod birleşimleri, provider ve mod değişince `App` temasının değişmesi de test ediliyor.
 
+### 2026-10-21 — Ortak bileşenler ve bileşen galerisi
+
+- `core/design_system/components/` altında yedi bileşen var: `BigButton` (birincil/ikincil), `ChoiceChipGroup` (tek/çok seçim; seçili chip'te onay ikonu var, tek seçimde seçili chip'e tekrar dokunmak seçimi kaldırır), `BigStepper` (sınırda ilgili buton pasifleşir, ekran okuyucu onu ayarlanabilir değer olarak okur), `StatusBadge` (`AppStatus` ile renk + ikon + kelime), `HiveTile`, `EmptyState` (petek altıgeniyle) ve `SectionCard`. Hepsi yalnızca token kullanıyor. Material butonlarında tema yoğunluğu kapalı; yoksa eldiven büyümesi iki kez eklenirdi.
+- Eksik tokenlar eklendi: `AppSizes` (ikon, güç noktası, ana arı noktası, illüstrasyon) ve `AppColors` içinde beş ana arı işaret rengi (`QueenMarkColor`). `HiveTile` bir renk enum'u alıyor; yıldan renge kuralı ana arı adımında yazılacak.
+- Flavor artık `flavorProvider` ile taşınıyor: `bootstrap` override ediyor, varsayılanı prod. Dev flavor'da Bugün ekranındaki geliştirici ikonu `/dev` (Geliştirici menüsü), oradan `/dev/components` (Bileşen galerisi) açılıyor. Prod'da bu rotalar hiç kaydedilmiyor.
+- Galeri her bileşeni açık, koyu, güneş ve eldiven panellerinde alt alta gösteriyor; örnekler `GalleryComponent` enum'unda. Galeri metinleri ve bileşenlerin ekran okuyucu metinleri ARB'de (TR + EN).
+- Golden testler galerideki bölümlerin aynısını çiziyor (`test/core/design_system/components/goldens/`, 7 görüntü). Aynı klasördeki `flutter_test_config.dart` Inter ve Material Icons'ı yüklüyor. Goldenlar macOS'ta üretildi; Linux CI'da piksel farkı çıkabilir. Bunlara ek olarak seçim, sayaç sınırları, karo semantiği ve dev/prod rota kapısı için davranış testleri var.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.
@@ -31,4 +39,4 @@
 - iOS proje şu an Swift Package Manager kullanıyor. İleride CocoaPods gerektiren bir eklenti gelirse `ios/Podfile` içindeki `project 'Runner', {...}` eşlemesine `Debug-dev`/`Debug-prod` → `:debug`, diğerleri → `:release` eklenmeli.
 - Drift'in cihazda DB açması için `drift_flutter` (veya `sqlite3_flutter_libs`) henüz eklenmedi; DB adımında eklenecek.
 - Görünüm seçimi yalnızca bellekte; uygulama yeniden açılınca varsayılana döner. Kalıcı kayıt ayarlar adımında eklenecek.
-- Kenarlık ve köşe tokenları henüz bileşen temalarına (buton, kart, girdi) uygulanmadı; bileşen adımında yapılacak. teknik.md'deki gece modu da bu adımda yok.
+- Kendi bileşenlerimiz kenarlık ve köşe tokenlarını doğrudan kullanıyor. Material'ın kendi bileşen temaları (girdi, AppBar, ListTile) ise hâlâ varsayılan. teknik.md'deki gece modu ve golden testlerde 2 yazı boyutu (§11) henüz yok.

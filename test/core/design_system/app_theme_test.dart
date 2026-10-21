@@ -25,6 +25,7 @@ void main() {
             expect(theme.extension<AppRadii>(), isNotNull);
             expect(theme.extension<AppTouchTargets>(), isNotNull);
             expect(theme.extension<AppStrokes>(), isNotNull);
+            expect(theme.extension<AppSizes>(), isNotNull);
           }
         }
       }

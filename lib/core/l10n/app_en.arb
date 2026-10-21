@@ -3,5 +3,87 @@
   "appTitle": "Mobil Arıcılık",
   "@appTitle": {
     "description": "App name. The brand name stays Turkish in every language."
-  }
+  },
+
+  "stepperIncrease": "Increase",
+  "@stepperIncrease": {
+    "description": "Screen reader label and tooltip of the stepper's + button."
+  },
+  "stepperDecrease": "Decrease",
+  "@stepperDecrease": {
+    "description": "Screen reader label and tooltip of the stepper's − button."
+  },
+  "hiveTileLabel": "Hive {number}",
+  "@hiveTileLabel": {
+    "description": "Screen reader label of a hive tile.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "hiveTileStrength": "Strength {strength} of 5",
+  "@hiveTileStrength": {
+    "description": "Screen reader text for the 1–5 strength dots of a hive tile.",
+    "placeholders": {
+      "strength": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "hiveTileQueenColor": "Queen color {color, select, white{white} yellow{yellow} red{red} green{green} blue{blue} other{unknown}}",
+  "@hiveTileQueenColor": {
+    "description": "Screen reader text for the queen marking color dot of a hive tile.",
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+
+  "devMenuTitle": "Developer menu",
+  "@devMenuTitle": {
+    "description": "Developer menu, only in the dev flavor."
+  },
+  "componentGalleryTitle": "Component gallery",
+  "@componentGalleryTitle": {
+    "description": "Dev-only screen showing design system components."
+  },
+  "componentGalleryDescription": "Design system components in four themes",
+  "galleryThemeLight": "Light",
+  "galleryThemeDark": "Dark",
+  "galleryThemeSun": "Sun",
+  "galleryThemeGlove": "Glove",
+  "galleryBigButton": "Big button",
+  "galleryChoiceChipGroup": "Choice chips",
+  "galleryBigStepper": "Big stepper",
+  "galleryStatusBadge": "Status badge",
+  "galleryHiveTile": "Hive tile",
+  "galleryEmptyState": "Empty state",
+  "gallerySectionCard": "Section card",
+  "gallerySampleStartInspection": "Start inspection",
+  "gallerySampleAddPhoto": "Add photo",
+  "gallerySampleSave": "Save",
+  "gallerySampleQueen": "Queen",
+  "gallerySampleQueenSeen": "Seen",
+  "gallerySampleEggs": "Eggs present",
+  "gallerySampleNone": "None",
+  "gallerySampleActions": "Actions taken",
+  "gallerySampleSuperAdded": "Super added",
+  "gallerySampleFrameAdded": "Frame added",
+  "gallerySampleFed": "Fed",
+  "gallerySampleBeeFrames": "Frames with bees",
+  "gallerySampleBroodFrames": "Brood frames",
+  "gallerySampleStrong": "Strong",
+  "gallerySampleWeak": "Weak",
+  "gallerySampleQueenless": "Queenless",
+  "gallerySampleTask": "Task",
+  "gallerySampleNoApiaries": "No apiaries yet",
+  "gallerySampleNoApiariesMessage": "An apiary groups your hives by where they stand; add your first one to begin.",
+  "gallerySampleAddApiary": "Add your first apiary",
+  "gallerySampleLastInspection": "Last inspection",
+  "gallerySampleLastInspectionBody": "3 days ago · 7 frames with bees · queen seen",
+  "gallerySampleUntitledCard": "A card can also go without a title; the content starts right away."
 }

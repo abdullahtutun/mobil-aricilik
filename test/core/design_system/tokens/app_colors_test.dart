@@ -138,6 +138,17 @@ void main() {
       });
     });
 
+    test('her palette beş ana arı işaret rengi ayrı ve tokenından', () {
+      for (final colors in [AppColors.light, AppColors.dark, AppColors.sun]) {
+        final marks = {
+          for (final mark in QueenMarkColor.values) colors.queenMark(mark),
+        };
+        expect(marks, hasLength(QueenMarkColor.values.length));
+        expect(colors.queenMark(QueenMarkColor.white), colors.queenWhite);
+        expect(colors.queenMark(QueenMarkColor.blue), colors.queenBlue);
+      }
+    });
+
     test('lerp uçlarda kaynak paletleri verir', () {
       final start = AppColors.light.lerp(AppColors.dark, 0);
       final end = AppColors.light.lerp(AppColors.dark, 1);

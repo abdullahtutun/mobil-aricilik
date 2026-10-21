@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobil_aricilik/core/design_system/appearance_settings.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_colors.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_radii.dart';
+import 'package:mobil_aricilik/core/design_system/tokens/app_sizes.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_spacing.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_strokes.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_touch_targets.dart';
@@ -56,6 +57,7 @@ abstract final class AppTheme {
     required AppStrokes strokes,
     AppSpacing spacing = AppSpacing.standard,
     AppRadii radii = AppRadii.standard,
+    AppSizes sizes = AppSizes.standard,
   }) {
     final colorScheme = ColorScheme(
       brightness: brightness,
@@ -97,7 +99,15 @@ abstract final class AppTheme {
       shadowColor: colors.shadow,
       materialTapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity(horizontal: density, vertical: density),
-      extensions: [colors, typography, spacing, radii, touchTargets, strokes],
+      extensions: [
+        colors,
+        typography,
+        spacing,
+        radii,
+        touchTargets,
+        strokes,
+        sizes,
+      ],
     );
   }
 }

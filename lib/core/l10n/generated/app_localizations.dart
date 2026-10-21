@@ -103,6 +103,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mobil Arıcılık'**
   String get appTitle;
+
+  /// Screen reader label and tooltip of the stepper's + button.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get stepperIncrease;
+
+  /// Screen reader label and tooltip of the stepper's − button.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get stepperDecrease;
+
+  /// Screen reader label of a hive tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number}'**
+  String hiveTileLabel(String number);
+
+  /// Screen reader text for the 1–5 strength dots of a hive tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength {strength} of 5'**
+  String hiveTileStrength(int strength);
+
+  /// Screen reader text for the queen marking color dot of a hive tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen color {color, select, white{white} yellow{yellow} red{red} green{green} blue{blue} other{unknown}}'**
+  String hiveTileQueenColor(String color);
+
+  /// Developer menu, only in the dev flavor.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer menu'**
+  String get devMenuTitle;
+
+  /// Dev-only screen showing design system components.
+  ///
+  /// In en, this message translates to:
+  /// **'Component gallery'**
+  String get componentGalleryTitle;
+
+  /// No description provided for @componentGalleryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Design system components in four themes'**
+  String get componentGalleryDescription;
+
+  /// No description provided for @galleryThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get galleryThemeLight;
+
+  /// No description provided for @galleryThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get galleryThemeDark;
+
+  /// No description provided for @galleryThemeSun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get galleryThemeSun;
+
+  /// No description provided for @galleryThemeGlove.
+  ///
+  /// In en, this message translates to:
+  /// **'Glove'**
+  String get galleryThemeGlove;
+
+  /// No description provided for @galleryBigButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Big button'**
+  String get galleryBigButton;
+
+  /// No description provided for @galleryChoiceChipGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Choice chips'**
+  String get galleryChoiceChipGroup;
+
+  /// No description provided for @galleryBigStepper.
+  ///
+  /// In en, this message translates to:
+  /// **'Big stepper'**
+  String get galleryBigStepper;
+
+  /// No description provided for @galleryStatusBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Status badge'**
+  String get galleryStatusBadge;
+
+  /// No description provided for @galleryHiveTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive tile'**
+  String get galleryHiveTile;
+
+  /// No description provided for @galleryEmptyState.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty state'**
+  String get galleryEmptyState;
+
+  /// No description provided for @gallerySectionCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Section card'**
+  String get gallerySectionCard;
+
+  /// No description provided for @gallerySampleStartInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Start inspection'**
+  String get gallerySampleStartInspection;
+
+  /// No description provided for @gallerySampleAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get gallerySampleAddPhoto;
+
+  /// No description provided for @gallerySampleSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get gallerySampleSave;
+
+  /// No description provided for @gallerySampleQueen.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen'**
+  String get gallerySampleQueen;
+
+  /// No description provided for @gallerySampleQueenSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Seen'**
+  String get gallerySampleQueenSeen;
+
+  /// No description provided for @gallerySampleEggs.
+  ///
+  /// In en, this message translates to:
+  /// **'Eggs present'**
+  String get gallerySampleEggs;
+
+  /// No description provided for @gallerySampleNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get gallerySampleNone;
+
+  /// No description provided for @gallerySampleActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions taken'**
+  String get gallerySampleActions;
+
+  /// No description provided for @gallerySampleSuperAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Super added'**
+  String get gallerySampleSuperAdded;
+
+  /// No description provided for @gallerySampleFrameAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame added'**
+  String get gallerySampleFrameAdded;
+
+  /// No description provided for @gallerySampleFed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fed'**
+  String get gallerySampleFed;
+
+  /// No description provided for @gallerySampleBeeFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Frames with bees'**
+  String get gallerySampleBeeFrames;
+
+  /// No description provided for @gallerySampleBroodFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Brood frames'**
+  String get gallerySampleBroodFrames;
+
+  /// No description provided for @gallerySampleStrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong'**
+  String get gallerySampleStrong;
+
+  /// No description provided for @gallerySampleWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get gallerySampleWeak;
+
+  /// No description provided for @gallerySampleQueenless.
+  ///
+  /// In en, this message translates to:
+  /// **'Queenless'**
+  String get gallerySampleQueenless;
+
+  /// No description provided for @gallerySampleTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get gallerySampleTask;
+
+  /// No description provided for @gallerySampleNoApiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'No apiaries yet'**
+  String get gallerySampleNoApiaries;
+
+  /// No description provided for @gallerySampleNoApiariesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An apiary groups your hives by where they stand; add your first one to begin.'**
+  String get gallerySampleNoApiariesMessage;
+
+  /// No description provided for @gallerySampleAddApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first apiary'**
+  String get gallerySampleAddApiary;
+
+  /// No description provided for @gallerySampleLastInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Last inspection'**
+  String get gallerySampleLastInspection;
+
+  /// No description provided for @gallerySampleLastInspectionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'3 days ago · 7 frames with bees · queen seen'**
+  String get gallerySampleLastInspectionBody;
+
+  /// No description provided for @gallerySampleUntitledCard.
+  ///
+  /// In en, this message translates to:
+  /// **'A card can also go without a title; the content starts right away.'**
+  String get gallerySampleUntitledCard;
 }
 
 class _AppLocalizationsDelegate

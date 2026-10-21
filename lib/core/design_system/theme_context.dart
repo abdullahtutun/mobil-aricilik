@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_colors.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_radii.dart';
+import 'package:mobil_aricilik/core/design_system/tokens/app_sizes.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_spacing.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_strokes.dart';
 import 'package:mobil_aricilik/core/design_system/tokens/app_touch_targets.dart';
@@ -14,6 +15,7 @@ extension AppThemeTokens on BuildContext {
   AppRadii get radii => _token<AppRadii>();
   AppTouchTargets get touchTargets => _token<AppTouchTargets>();
   AppStrokes get strokes => _token<AppStrokes>();
+  AppSizes get sizes => _token<AppSizes>();
 
   T _token<T extends ThemeExtension<T>>() {
     final token = Theme.of(this).extension<T>();

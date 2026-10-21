@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Ana arı işaret rengi: uluslararası beş renk. Yıldan renge kural
+/// ana arı alanında; burada yalnızca görünüm var.
+enum QueenMarkColor { white, yellow, red, green, blue }
+
 /// Renk tokenları (teknik.md §7).
 ///
 /// Durum renkleri tek başına anlam taşımaz; her zaman ikon ve kelimeyle
@@ -24,6 +28,11 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.statusCritical,
     required this.statusInfo,
     required this.onStatus,
+    required this.queenWhite,
+    required this.queenYellow,
+    required this.queenRed,
+    required this.queenGreen,
+    required this.queenBlue,
   });
 
   /// Standart açık tema. Primary ve warning, teknik.md önerisinden bir ton
@@ -45,6 +54,11 @@ class AppColors extends ThemeExtension<AppColors> {
     statusCritical: Color(0xFFC62828),
     statusInfo: Color(0xFF1565C0),
     onStatus: Color(0xFFFFFFFF),
+    queenWhite: Color(0xFFFFFFFF),
+    queenYellow: Color(0xFFFDD835),
+    queenRed: Color(0xFFE53935),
+    queenGreen: Color(0xFF43A047),
+    queenBlue: Color(0xFF1E88E5),
   );
 
   /// Standart koyu tema.
@@ -65,6 +79,11 @@ class AppColors extends ThemeExtension<AppColors> {
     statusCritical: Color(0xFFEF9A9A),
     statusInfo: Color(0xFF90CAF9),
     onStatus: Color(0xFF17140F),
+    queenWhite: Color(0xFFFFFFFF),
+    queenYellow: Color(0xFFFDD835),
+    queenRed: Color(0xFFE53935),
+    queenGreen: Color(0xFF43A047),
+    queenBlue: Color(0xFF1E88E5),
   );
 
   /// Güneş modu: saf beyaz zemin, siyah metin, her çift 7:1 üzeri, gölge yok.
@@ -85,6 +104,11 @@ class AppColors extends ThemeExtension<AppColors> {
     statusCritical: Color(0xFF8E1616),
     statusInfo: Color(0xFF0D47A1),
     onStatus: Color(0xFFFFFFFF),
+    queenWhite: Color(0xFFFFFFFF),
+    queenYellow: Color(0xFFFDD835),
+    queenRed: Color(0xFFE53935),
+    queenGreen: Color(0xFF43A047),
+    queenBlue: Color(0xFF1E88E5),
   );
 
   final Color primary;
@@ -114,6 +138,24 @@ class AppColors extends ThemeExtension<AppColors> {
   /// Dolgu olarak kullanılan durum renklerinin üstündeki yazı/ikon.
   final Color onStatus;
 
+  /// Ana arı işaret renkleri. Boya renkleri olduğundan her palette aynı;
+  /// beyaz zeminde de seçilsin diye her zaman [outline] halkasıyla çizilir.
+  final Color queenWhite;
+  final Color queenYellow;
+  final Color queenRed;
+  final Color queenGreen;
+  final Color queenBlue;
+
+  Color queenMark(QueenMarkColor mark) {
+    return switch (mark) {
+      QueenMarkColor.white => queenWhite,
+      QueenMarkColor.yellow => queenYellow,
+      QueenMarkColor.red => queenRed,
+      QueenMarkColor.green => queenGreen,
+      QueenMarkColor.blue => queenBlue,
+    };
+  }
+
   @override
   AppColors copyWith({
     Color? primary,
@@ -132,6 +174,11 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? statusCritical,
     Color? statusInfo,
     Color? onStatus,
+    Color? queenWhite,
+    Color? queenYellow,
+    Color? queenRed,
+    Color? queenGreen,
+    Color? queenBlue,
   }) {
     return AppColors(
       primary: primary ?? this.primary,
@@ -150,6 +197,11 @@ class AppColors extends ThemeExtension<AppColors> {
       statusCritical: statusCritical ?? this.statusCritical,
       statusInfo: statusInfo ?? this.statusInfo,
       onStatus: onStatus ?? this.onStatus,
+      queenWhite: queenWhite ?? this.queenWhite,
+      queenYellow: queenYellow ?? this.queenYellow,
+      queenRed: queenRed ?? this.queenRed,
+      queenGreen: queenGreen ?? this.queenGreen,
+      queenBlue: queenBlue ?? this.queenBlue,
     );
   }
 
@@ -177,6 +229,11 @@ class AppColors extends ThemeExtension<AppColors> {
       statusCritical: Color.lerp(statusCritical, other.statusCritical, t)!,
       statusInfo: Color.lerp(statusInfo, other.statusInfo, t)!,
       onStatus: Color.lerp(onStatus, other.onStatus, t)!,
+      queenWhite: Color.lerp(queenWhite, other.queenWhite, t)!,
+      queenYellow: Color.lerp(queenYellow, other.queenYellow, t)!,
+      queenRed: Color.lerp(queenRed, other.queenRed, t)!,
+      queenGreen: Color.lerp(queenGreen, other.queenGreen, t)!,
+      queenBlue: Color.lerp(queenBlue, other.queenBlue, t)!,
     );
   }
 }
