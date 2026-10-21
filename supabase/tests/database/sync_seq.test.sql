@@ -1,7 +1,7 @@
 -- server_seq: her insert/update'te global sync_seq'ten yeni değer alır.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(4);
+select plan(5);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'owner@test.local');
@@ -46,6 +46,21 @@ select cmp_ok(
 select ok(
   not has_sequence_privilege('authenticated', 'private.sync_seq', 'usage'),
   'istemci sync_seq''e doğrudan erişemez'
+);
+
+select is_empty(
+  $$select c.relname
+    from pg_class c
+    join pg_attribute a on a.attrelid = c.oid and a.attname = 'server_seq'
+    where c.relnamespace = 'public'::regnamespace
+      and c.relkind in ('r', 'p')
+      and not exists (
+        select 1 from pg_trigger t
+        where t.tgrelid = c.oid
+          and t.tgfoid = 'private.set_server_seq'::regproc
+          and not t.tgisinternal
+      )$$,
+  'server_seq kolonu olan her tabloda set_server_seq trigger''ı var'
 );
 
 select * from finish();
