@@ -41,6 +41,14 @@
 - Seçim `regionSelectionProvider` (keepAlive) içinde tutuluyor: `RegionSettings` varsayılanı `TR`, enlem null. `setCountry` ve `setLatitude` ile değişiyor; geçersiz girişte seçim olduğu gibi kalıyor. Ekranlar yalnızca `regionConfigProvider`'ı dinleyecek. Yapılandırma aynı kalırsa (ör. aynı yarımkürede enlem değişirse) dinleyenler uyarılmıyor. Seçici arayüz ayarlar adımında gelecek.
 - 46 yeni test: kod biçimi, yarımküre sınırları (ekvator, -0, kutuplar, NaN), iki profilin tam yapılandırması, para birimi ve birim istisnaları, provider akışı ve gereksiz bildirim olmaması. Bağımlı provider bir sonraki `pump`'ta yeniden kurulduğu için dinleyici testleri `container.pump()` bekliyor.
 
+### 2026-10-21 — Sekmeli kabuk, Okut butonu ve ayarlar
+
+- Router `StatefulShellRoute.indexedStack` ile dört dala ayrıldı: Bugün (`/`), Arılıklar (`/apiaries`), Görevler (`/tasks`), Daha fazla (`/more`). Her sekme kendi yığınını koruyor; açık sekmeye yeniden dokunmak başa dönüyor. Sekme ekranları şimdilik `EmptyState` gösteriyor. Dev menüsü yine Bugün'ün üst çubuğunda.
+- `app/shell/` altında token tabanlı `AppNavigationBar` var: iki yanda ikişer sekme, ortada büyük Okut butonu (`fieldLarge`). Seçili sekme renk, dolu ikon ve kalın etiketle gösteriliyor. Butona dokunmak kabuğun üstünde açılan `/scan` yer tutucusunu açıyor. Basılı tutmak kök navigator'da hızlı kayıt menüsünü açıyor: muayene, besleme, ilaçlama, hasat, not, gider. Seçim şimdilik "yakında" bildirimi gösteriyor. Butonda tooltip yok, çünkü uzun basmayla çakışır. Ekran okuyucu basılı tutma ipucunu okuyor.
+- Daha fazla → Ayarlar (`/more/settings`) ekranında dil (Sistem/Türkçe/English) ve tema (Sistem/Açık/Koyu/Güneş) chip'leri var. Ülke seçimi geçici: `/more/settings/country` para birimi tablosundaki 249 kodu "DE · EUR" biçiminde adsız listeliyor. Seçimler mevcut provider'lara yazılıyor; seçili chip'e yeniden dokunmak seçimi kaldırmıyor.
+- Derin link hazırlığı: `app/deep_link.dart` içindeki `deepLinkLocation`, `mobilaricilik://x/y?q` adresini `/x/y?q` yapıyor (host ilk yol parçası). Bu çevrim router'ın üst düzey `redirect`'inde çalışıyor. Eşleşmeyen konumlar `onException` ile Bugün'e düşüyor. Şema AndroidManifest'e (VIEW/BROWSABLE intent-filter) ve Info.plist'e (`CFBundleURLTypes`) kaydedildi. Flutter iki platformda da tam URI'yi iletiyor.
+- 26 yeni test: derin link çevrimi, sekmeler ve yığın korunması, Okut'a dokunma ve basılı tutma, menünün alttaki sekme yığınını kapatmaması, ekran okuyucu eylemleri, dokunma hedefleri (eldiven dahil), 360dp ekranda 1.5x yazı ve eldivenle taşma olmaması, platformdan gelen ve soğuk açılış derin linkleri, ayarlardaki üç seçim.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.
@@ -54,6 +62,8 @@
 
 - iOS proje şu an Swift Package Manager kullanıyor. İleride CocoaPods gerektiren bir eklenti gelirse `ios/Podfile` içindeki `project 'Runner', {...}` eşlemesine `Debug-dev`/`Debug-prod` → `:debug`, diğerleri → `:release` eklenmeli.
 - Drift'in cihazda DB açması için `drift_flutter` (veya `sqlite3_flutter_libs`) henüz eklenmedi; DB adımında eklenecek.
-- Görünüm, dil ve bölge seçimi yalnızca bellekte; uygulama yeniden açılınca varsayılana döner. Kalıcı kayıt ayarlar adımında eklenecek.
+- Görünüm, dil ve bölge seçimi yalnızca bellekte; uygulama yeniden açılınca varsayılana döner. Ayarlar ekranı geldi ama kalıcı kayıt ayrı bir adımda eklenecek (DB ya da shared_preferences kararıyla).
+- Hızlı kayıt menüsü yalnızca Okut basılı tutulunca açılıyor. teknik.md'de eldiven modunda uzun basma gerektiren eylem olmaması isteniyor, §8'de ayrıca "yukarı kaydır" seçeneği geçiyor. Eldivenle menüye ulaşma yolu henüz yok.
+- dev ve prod aynı `mobilaricilik://` şemasını kullanıyor; ikisi aynı cihazda kuruluysa Android hangi uygulamayla açılacağını soruyor. Derin linklerin henüz hedefi yok; `/scan` gibi kabuk dışı bir rotaya linkle gelinirse altında sekme olmadığı için geri tuşu uygulamadan çıkar.
 - Tarih biçimleri `intl` yerel verisi istiyor. Bu veriyi Material yerelleştirmesi yüklüyor; widget ağacı dışında (bildirim, workmanager) `AppFormat` kullanılmadan önce `initializeDateFormatting` çağrılmalı.
 - Kendi bileşenlerimiz kenarlık ve köşe tokenlarını doğrudan kullanıyor. Material'ın kendi bileşen temaları (girdi, AppBar, ListTile) ise hâlâ varsayılan. teknik.md'deki gece modu ve golden testlerde 2 yazı boyutu (§11) henüz yok.

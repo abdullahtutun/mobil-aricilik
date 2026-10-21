@@ -45,6 +45,125 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get tabToday => 'Bugün';
+
+  @override
+  String get tabApiaries => 'Arılıklar';
+
+  @override
+  String get tabTasks => 'Görevler';
+
+  @override
+  String get tabMore => 'Daha fazla';
+
+  @override
+  String get todayEmptyTitle => 'Bugün için bir şey yok';
+
+  @override
+  String get todayEmptyMessage =>
+      'Bugünkü görevler, dikkat isteyen kovanlar ve hava durumu burada toplanacak.';
+
+  @override
+  String get apiariesEmptyTitle => 'Henüz arılık yok';
+
+  @override
+  String get apiariesEmptyMessage =>
+      'Arılık, kovanlarını bulundukları yere göre toplar; arılık ekleme yakında gelecek.';
+
+  @override
+  String get tasksEmptyTitle => 'Henüz görev yok';
+
+  @override
+  String get tasksEmptyMessage =>
+      'Hatırlatıcıların ve yapılacakların tarih sırasıyla burada listelenecek.';
+
+  @override
+  String get moreEmptyTitle => 'Diğer modüller yolda';
+
+  @override
+  String get moreEmptyMessage =>
+      'Ana arılar, hasat, stok, finans, belgeler ve bilgi bankası burada olacak.';
+
+  @override
+  String get scanTitle => 'Okut';
+
+  @override
+  String get scanLongPressHint => 'hızlı kayıt menüsünü aç';
+
+  @override
+  String get scanPlaceholderTitle => 'Kovanı okut';
+
+  @override
+  String get scanPlaceholderMessage =>
+      'Kovandaki QR kodu ya da NFC etiketini okutunca kovan kartı açılacak; okutma yakında gelecek.';
+
+  @override
+  String get quickRecordTitle => 'Hızlı kayıt';
+
+  @override
+  String get quickRecordInspection => 'Muayene';
+
+  @override
+  String get quickRecordFeeding => 'Besleme';
+
+  @override
+  String get quickRecordTreatment => 'İlaçlama';
+
+  @override
+  String get quickRecordHarvest => 'Hasat';
+
+  @override
+  String get quickRecordNote => 'Not';
+
+  @override
+  String get quickRecordExpense => 'Gider';
+
+  @override
+  String get quickRecordComingSoon => 'Bu kayıt türü yakında gelecek.';
+
+  @override
+  String get settingsTitle => 'Ayarlar';
+
+  @override
+  String get settingsSystemDefault => 'Sistem';
+
+  @override
+  String get settingsLanguage => 'Dil';
+
+  @override
+  String get languageTurkish => 'Türkçe';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get settingsCountry => 'Ülke';
+
+  @override
+  String get settingsCountryTemporaryNote =>
+      'Şimdilik buradan seçiliyor; ileride işletme kaydından gelecek.';
+
+  @override
+  String settingsCountryOption(String countryCode, String currencyCode) {
+    return '$countryCode · $currencyCode';
+  }
+
+  @override
+  String get settingsCountryPickerTitle => 'Ülke seç';
+
+  @override
+  String get settingsColorMode => 'Tema';
+
+  @override
+  String get settingsColorModeLight => 'Açık';
+
+  @override
+  String get settingsColorModeDark => 'Koyu';
+
+  @override
+  String get settingsColorModeSun => 'Güneş';
+
+  @override
   String get devMenuTitle => 'Geliştirici menüsü';
 
   @override

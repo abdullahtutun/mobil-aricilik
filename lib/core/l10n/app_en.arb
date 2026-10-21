@@ -47,6 +47,95 @@
     }
   },
 
+  "tabToday": "Today",
+  "@tabToday": {
+    "description": "Bottom navigation tab: daily dashboard."
+  },
+  "tabApiaries": "Apiaries",
+  "@tabApiaries": {
+    "description": "Bottom navigation tab: apiaries and their hives."
+  },
+  "tabTasks": "Tasks",
+  "@tabTasks": {
+    "description": "Bottom navigation tab: reminders and to-dos."
+  },
+  "tabMore": "More",
+  "@tabMore": {
+    "description": "Bottom navigation tab: less frequently used modules and settings."
+  },
+  "todayEmptyTitle": "Nothing for today",
+  "todayEmptyMessage": "Today's tasks, hives that need attention and the weather will gather here.",
+  "apiariesEmptyTitle": "No apiaries yet",
+  "apiariesEmptyMessage": "An apiary groups your hives by where they stand; adding apiaries is coming soon.",
+  "tasksEmptyTitle": "No tasks yet",
+  "tasksEmptyMessage": "Your reminders and to-dos will be listed here by date.",
+  "moreEmptyTitle": "More modules on the way",
+  "moreEmptyMessage": "Queens, harvest, stock, finance, documents and the knowledge base will live here.",
+
+  "scanTitle": "Scan",
+  "@scanTitle": {
+    "description": "Label of the big center button in the bottom navigation and title of the scan screen it opens."
+  },
+  "scanLongPressHint": "open the quick record menu",
+  "@scanLongPressHint": {
+    "description": "Screen reader hint for long pressing the center Scan button; read after 'double tap and hold to'."
+  },
+  "scanPlaceholderTitle": "Scan a hive",
+  "scanPlaceholderMessage": "Scanning the QR code or NFC tag on a hive will open its hive card; scanning is coming soon.",
+  "quickRecordTitle": "Quick record",
+  "@quickRecordTitle": {
+    "description": "Menu opened by long pressing the center Scan button."
+  },
+  "quickRecordInspection": "Inspection",
+  "quickRecordFeeding": "Feeding",
+  "quickRecordTreatment": "Treatment",
+  "@quickRecordTreatment": {
+    "description": "Record of a medicine or varroa treatment."
+  },
+  "quickRecordHarvest": "Harvest",
+  "quickRecordNote": "Note",
+  "quickRecordExpense": "Expense",
+  "quickRecordComingSoon": "This record type is coming soon.",
+
+  "settingsTitle": "Settings",
+  "settingsSystemDefault": "System",
+  "@settingsSystemDefault": {
+    "description": "Choice that follows the device setting, for both language and theme."
+  },
+  "settingsLanguage": "Language",
+  "languageTurkish": "Türkçe",
+  "@languageTurkish": {
+    "description": "Name of the Turkish language, always written in Turkish."
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Name of the English language, always written in English."
+  },
+  "settingsCountry": "Country",
+  "settingsCountryTemporaryNote": "Chosen here for now; it will later come from your business profile.",
+  "settingsCountryOption": "{countryCode} · {currencyCode}",
+  "@settingsCountryOption": {
+    "description": "A country in the temporary country picker: ISO 3166 country code and ISO 4217 currency code.",
+    "placeholders": {
+      "countryCode": {
+        "type": "String",
+        "example": "TR"
+      },
+      "currencyCode": {
+        "type": "String",
+        "example": "TRY"
+      }
+    }
+  },
+  "settingsCountryPickerTitle": "Choose country",
+  "settingsColorMode": "Theme",
+  "settingsColorModeLight": "Light",
+  "settingsColorModeDark": "Dark",
+  "settingsColorModeSun": "Sun",
+  "@settingsColorModeSun": {
+    "description": "High contrast theme for bright sunlight."
+  },
+
   "devMenuTitle": "Developer menu",
   "@devMenuTitle": {
     "description": "Developer menu, only in the dev flavor."

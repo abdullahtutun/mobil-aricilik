@@ -9,21 +9,34 @@ import 'package:mobil_aricilik/features/today/presentation/today_screen.dart';
 
 void main() {
   group('App', () {
-    testWidgets('açılışta uygulama adını gösterir', (tester) async {
+    testWidgets('açılışta Bugün sekmesi açılır', (tester) async {
       await tester.pumpWidget(const ProviderScope(child: App()));
       await tester.pumpAndSettle();
 
-      expect(find.text('Mobil Arıcılık'), findsOneWidget);
+      expect(find.byType(TodayScreen), findsOneWidget);
+      expect(find.text('Nothing for today'), findsOneWidget);
     });
 
-    testWidgets('Türkçe yerelde de uygulama adını gösterir', (tester) async {
+    testWidgets('Türkçe yerelde sekmeler Türkçe', (tester) async {
       tester.platformDispatcher.localesTestValue = const [Locale('tr')];
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
       await tester.pumpWidget(const ProviderScope(child: App()));
       await tester.pumpAndSettle();
 
-      expect(find.text('Mobil Arıcılık'), findsOneWidget);
+      for (final label in ['Arılıklar', 'Okut', 'Görevler', 'Daha fazla']) {
+        expect(find.text(label), findsOneWidget);
+      }
+      // Bugün hem sekme etiketi hem ekran başlığı.
+      expect(find.text('Bugün'), findsNWidgets(2));
+    });
+
+    testWidgets('pencere başlığı uygulama adı', (tester) async {
+      await tester.pumpWidget(const ProviderScope(child: App()));
+      await tester.pumpAndSettle();
+
+      final title = tester.widget<Title>(find.byType(Title));
+      expect(title.title, 'Mobil Arıcılık');
     });
 
     testWidgets('desteklenmeyen cihaz dilinde İngilizce açılır', (

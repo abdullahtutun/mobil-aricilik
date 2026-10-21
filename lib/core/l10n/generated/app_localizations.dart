@@ -140,6 +140,228 @@ abstract class AppLocalizations {
   /// **'Queen color {color, select, white{white} yellow{yellow} red{red} green{green} blue{blue} other{unknown}}'**
   String hiveTileQueenColor(String color);
 
+  /// Bottom navigation tab: daily dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get tabToday;
+
+  /// Bottom navigation tab: apiaries and their hives.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiaries'**
+  String get tabApiaries;
+
+  /// Bottom navigation tab: reminders and to-dos.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get tabTasks;
+
+  /// Bottom navigation tab: less frequently used modules and settings.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get tabMore;
+
+  /// No description provided for @todayEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing for today'**
+  String get todayEmptyTitle;
+
+  /// No description provided for @todayEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s tasks, hives that need attention and the weather will gather here.'**
+  String get todayEmptyMessage;
+
+  /// No description provided for @apiariesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No apiaries yet'**
+  String get apiariesEmptyTitle;
+
+  /// No description provided for @apiariesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An apiary groups your hives by where they stand; adding apiaries is coming soon.'**
+  String get apiariesEmptyMessage;
+
+  /// No description provided for @tasksEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks yet'**
+  String get tasksEmptyTitle;
+
+  /// No description provided for @tasksEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reminders and to-dos will be listed here by date.'**
+  String get tasksEmptyMessage;
+
+  /// No description provided for @moreEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'More modules on the way'**
+  String get moreEmptyTitle;
+
+  /// No description provided for @moreEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Queens, harvest, stock, finance, documents and the knowledge base will live here.'**
+  String get moreEmptyMessage;
+
+  /// Label of the big center button in the bottom navigation and title of the scan screen it opens.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scanTitle;
+
+  /// Screen reader hint for long pressing the center Scan button; read after 'double tap and hold to'.
+  ///
+  /// In en, this message translates to:
+  /// **'open the quick record menu'**
+  String get scanLongPressHint;
+
+  /// No description provided for @scanPlaceholderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a hive'**
+  String get scanPlaceholderTitle;
+
+  /// No description provided for @scanPlaceholderMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning the QR code or NFC tag on a hive will open its hive card; scanning is coming soon.'**
+  String get scanPlaceholderMessage;
+
+  /// Menu opened by long pressing the center Scan button.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick record'**
+  String get quickRecordTitle;
+
+  /// No description provided for @quickRecordInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get quickRecordInspection;
+
+  /// No description provided for @quickRecordFeeding.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding'**
+  String get quickRecordFeeding;
+
+  /// Record of a medicine or varroa treatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment'**
+  String get quickRecordTreatment;
+
+  /// No description provided for @quickRecordHarvest.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest'**
+  String get quickRecordHarvest;
+
+  /// No description provided for @quickRecordNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get quickRecordNote;
+
+  /// No description provided for @quickRecordExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get quickRecordExpense;
+
+  /// No description provided for @quickRecordComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'This record type is coming soon.'**
+  String get quickRecordComingSoon;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// Choice that follows the device setting, for both language and theme.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsSystemDefault;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// Name of the Turkish language, always written in Turkish.
+  ///
+  /// In en, this message translates to:
+  /// **'Türkçe'**
+  String get languageTurkish;
+
+  /// Name of the English language, always written in English.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @settingsCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get settingsCountry;
+
+  /// No description provided for @settingsCountryTemporaryNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Chosen here for now; it will later come from your business profile.'**
+  String get settingsCountryTemporaryNote;
+
+  /// A country in the temporary country picker: ISO 3166 country code and ISO 4217 currency code.
+  ///
+  /// In en, this message translates to:
+  /// **'{countryCode} · {currencyCode}'**
+  String settingsCountryOption(String countryCode, String currencyCode);
+
+  /// No description provided for @settingsCountryPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose country'**
+  String get settingsCountryPickerTitle;
+
+  /// No description provided for @settingsColorMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsColorMode;
+
+  /// No description provided for @settingsColorModeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsColorModeLight;
+
+  /// No description provided for @settingsColorModeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsColorModeDark;
+
+  /// High contrast theme for bright sunlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get settingsColorModeSun;
+
   /// Developer menu, only in the dev flavor.
   ///
   /// In en, this message translates to:

@@ -45,6 +45,125 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tabToday => 'Today';
+
+  @override
+  String get tabApiaries => 'Apiaries';
+
+  @override
+  String get tabTasks => 'Tasks';
+
+  @override
+  String get tabMore => 'More';
+
+  @override
+  String get todayEmptyTitle => 'Nothing for today';
+
+  @override
+  String get todayEmptyMessage =>
+      'Today\'s tasks, hives that need attention and the weather will gather here.';
+
+  @override
+  String get apiariesEmptyTitle => 'No apiaries yet';
+
+  @override
+  String get apiariesEmptyMessage =>
+      'An apiary groups your hives by where they stand; adding apiaries is coming soon.';
+
+  @override
+  String get tasksEmptyTitle => 'No tasks yet';
+
+  @override
+  String get tasksEmptyMessage =>
+      'Your reminders and to-dos will be listed here by date.';
+
+  @override
+  String get moreEmptyTitle => 'More modules on the way';
+
+  @override
+  String get moreEmptyMessage =>
+      'Queens, harvest, stock, finance, documents and the knowledge base will live here.';
+
+  @override
+  String get scanTitle => 'Scan';
+
+  @override
+  String get scanLongPressHint => 'open the quick record menu';
+
+  @override
+  String get scanPlaceholderTitle => 'Scan a hive';
+
+  @override
+  String get scanPlaceholderMessage =>
+      'Scanning the QR code or NFC tag on a hive will open its hive card; scanning is coming soon.';
+
+  @override
+  String get quickRecordTitle => 'Quick record';
+
+  @override
+  String get quickRecordInspection => 'Inspection';
+
+  @override
+  String get quickRecordFeeding => 'Feeding';
+
+  @override
+  String get quickRecordTreatment => 'Treatment';
+
+  @override
+  String get quickRecordHarvest => 'Harvest';
+
+  @override
+  String get quickRecordNote => 'Note';
+
+  @override
+  String get quickRecordExpense => 'Expense';
+
+  @override
+  String get quickRecordComingSoon => 'This record type is coming soon.';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsSystemDefault => 'System';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get languageTurkish => 'Türkçe';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get settingsCountry => 'Country';
+
+  @override
+  String get settingsCountryTemporaryNote =>
+      'Chosen here for now; it will later come from your business profile.';
+
+  @override
+  String settingsCountryOption(String countryCode, String currencyCode) {
+    return '$countryCode · $currencyCode';
+  }
+
+  @override
+  String get settingsCountryPickerTitle => 'Choose country';
+
+  @override
+  String get settingsColorMode => 'Theme';
+
+  @override
+  String get settingsColorModeLight => 'Light';
+
+  @override
+  String get settingsColorModeDark => 'Dark';
+
+  @override
+  String get settingsColorModeSun => 'Sun';
+
+  @override
   String get devMenuTitle => 'Developer menu';
 
   @override
