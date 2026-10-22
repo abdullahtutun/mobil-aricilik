@@ -16,11 +16,13 @@ insert into public.organizations (id, name, country_code, currency, created_by) 
   ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Başka İşletme', 'TR', 'TRY',
    '99999999-9999-9999-9999-999999999999');
 
-insert into public.memberships (id, org_id, user_id, role)
-values (
-  'c0000000-0000-0000-0000-000000000001', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
-  '11111111-1111-1111-1111-111111111111', 'worker'
-);
+insert into public.memberships (id, org_id, user_id, role) values
+  ('c0000000-0000-0000-0000-000000000002', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+   '11111111-1111-1111-1111-111111111111', 'owner'),
+  ('c0000000-0000-0000-0000-000000000009', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+   '99999999-9999-9999-9999-999999999999', 'owner'),
+  ('c0000000-0000-0000-0000-000000000001', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+   '11111111-1111-1111-1111-111111111111', 'worker');
 
 -- Önek a1/e1 arılık, a2/e2 ana, a3 kovan, a4 geçmiş.
 insert into public.apiaries (id, org_id, name, location) values

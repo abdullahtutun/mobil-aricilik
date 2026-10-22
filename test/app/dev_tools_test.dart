@@ -16,7 +16,10 @@ void main() {
       tester,
     ) async {
       final container = ProviderContainer.test(
-        overrides: [flavorProvider.overrideWithValue(Flavor.prod), signedIn()],
+        overrides: [
+          flavorProvider.overrideWithValue(Flavor.prod),
+          ...signedIn(),
+        ],
       );
       await tester.pumpWidget(
         UncontrolledProviderScope(container: container, child: const App()),
@@ -35,7 +38,10 @@ void main() {
     testWidgets("dev'de Bugün'den bileşen galerisine ulaşılır", (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [flavorProvider.overrideWithValue(Flavor.dev), signedIn()],
+          overrides: [
+            flavorProvider.overrideWithValue(Flavor.dev),
+            ...signedIn(),
+          ],
           child: const App(),
         ),
       );

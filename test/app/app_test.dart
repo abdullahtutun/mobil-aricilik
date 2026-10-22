@@ -13,7 +13,7 @@ void main() {
   group('App', () {
     testWidgets('açılışta Bugün sekmesi açılır', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(overrides: [signedIn()], child: const App()),
+        ProviderScope(overrides: signedIn(), child: const App()),
       );
       await tester.pumpAndSettle();
 
@@ -26,7 +26,7 @@ void main() {
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
       await tester.pumpWidget(
-        ProviderScope(overrides: [signedIn()], child: const App()),
+        ProviderScope(overrides: signedIn(), child: const App()),
       );
       await tester.pumpAndSettle();
 
@@ -39,7 +39,7 @@ void main() {
 
     testWidgets('pencere başlığı uygulama adı', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(overrides: [signedIn()], child: const App()),
+        ProviderScope(overrides: signedIn(), child: const App()),
       );
       await tester.pumpAndSettle();
 
@@ -54,7 +54,7 @@ void main() {
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
       await tester.pumpWidget(
-        ProviderScope(overrides: [signedIn()], child: const App()),
+        ProviderScope(overrides: signedIn(), child: const App()),
       );
       await tester.pumpAndSettle();
 
@@ -68,7 +68,7 @@ void main() {
       tester.platformDispatcher.localesTestValue = const [Locale('en', 'US')];
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
-      final container = ProviderContainer.test(overrides: [signedIn()]);
+      final container = ProviderContainer.test(overrides: signedIn());
       await tester.pumpWidget(
         UncontrolledProviderScope(container: container, child: const App()),
       );
@@ -91,7 +91,7 @@ void main() {
     });
 
     testWidgets('görünüm seçimi değişince tema da değişir', (tester) async {
-      final container = ProviderContainer.test(overrides: [signedIn()]);
+      final container = ProviderContainer.test(overrides: signedIn());
       await tester.pumpWidget(
         UncontrolledProviderScope(container: container, child: const App()),
       );

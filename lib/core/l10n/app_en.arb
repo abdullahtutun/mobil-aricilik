@@ -150,23 +150,6 @@
   "@languageEnglish": {
     "description": "Name of the English language, always written in English."
   },
-  "settingsCountry": "Country",
-  "settingsCountryTemporaryNote": "Chosen here for now; it will later come from your business profile.",
-  "settingsCountryOption": "{countryCode} · {currencyCode}",
-  "@settingsCountryOption": {
-    "description": "A country in the temporary country picker: ISO 3166 country code and ISO 4217 currency code.",
-    "placeholders": {
-      "countryCode": {
-        "type": "String",
-        "example": "TR"
-      },
-      "currencyCode": {
-        "type": "String",
-        "example": "TRY"
-      }
-    }
-  },
-  "settingsCountryPickerTitle": "Choose country",
   "settingsColorMode": "Theme",
   "settingsColorModeLight": "Light",
   "settingsColorModeDark": "Dark",
@@ -188,6 +171,54 @@
   "settingsSignOutConfirmTitle": "Sign out?",
   "settingsSignOutConfirmMessage": "To sign back in you'll need a new code sent to your email, which needs internet.",
   "actionCancel": "Cancel",
+  "actionRetry": "Try again",
+
+  "onboardingStepCounter": "Step {current} of {total}",
+  "@onboardingStepCounter": {
+    "description": "Progress in the first-run setup shown after sign-in.",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "onboardingContinue": "Continue",
+  "onboardingFinish": "Set up business",
+  "onboardingFinishing": "Setting up…",
+  "onboardingLanguageTitle": "Which language should we use?",
+  "onboardingLanguageMessage": "You can change it later in Settings.",
+  "onboardingCountryTitle": "Where is your business?",
+  "onboardingCountryMessage": "Your country sets the currency, units and region-specific modules.",
+  "onboardingCountrySearch": "Search countries",
+  "onboardingCountrySuggested": "Suggested for your device",
+  "@onboardingCountrySuggested": {
+    "description": "Heading above the country guessed from the device's language and region settings."
+  },
+  "onboardingCountryAll": "All countries",
+  "onboardingCountryNoMatch": "No country matches your search.",
+  "onboardingNameTitle": "What's your business called?",
+  "onboardingNameMessage": "This name appears on your records and reports.",
+  "onboardingNameLabel": "Business name",
+  "onboardingNameHint": "e.g. Golden Comb Apiaries",
+  "onboardingHiveCountTitle": "How many hives do you have?",
+  "onboardingHiveCountMessage": "A rough number is enough; we'll suggest how to track them. You'll add the hives themselves later.",
+  "hiveCountRangeNone": "None yet",
+  "hiveCountRangeUpTo10": "1–10",
+  "hiveCountRangeUpTo50": "11–50",
+  "hiveCountRangeUpTo200": "51–200",
+  "hiveCountRangeOver200": "More than 200",
+  "onboardingLoading": "Loading your business",
+  "@onboardingLoading": {
+    "description": "Screen reader label of the spinner shown while the business is fetched after sign-in."
+  },
+  "onboardingLoadErrorTitle": "Couldn't load your business",
+  "onboardingErrorNetwork": "Couldn't connect. Check your internet and try again.",
+  "onboardingErrorUnknown": "Something went wrong. Please try again.",
 
   "devMenuTitle": "Developer menu",
   "@devMenuTitle": {

@@ -11,16 +11,23 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
 import '../../../helpers/fake_auth_service.dart';
+import '../../../helpers/fake_organization_service.dart';
 
+/// Varsayılan olarak kullanıcının sunucuda işletmesi var.
 Future<ProviderContainer> _pumpApp(
   WidgetTester tester,
-  FakeAuthService auth,
-) async {
+  FakeAuthService auth, {
+  FakeOrganizationService? organizations,
+}) async {
   final container = ProviderContainer.test(
-    overrides: [authServiceProvider.overrideWithValue(auth)],
+    overrides: [
+      authServiceProvider.overrideWithValue(auth),
+      ...organizationOverrides(service: organizations),
+    ],
   );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
@@ -215,6 +222,25 @@ void main() {
       // Giriş ekranları kapanınca akışın durumu ve sayacı da atılır.
       expect(container.exists(signInControllerProvider), isFalse);
     });
+
+    testWidgets(
+      "işletmesi olmayan kullanıcı girişten sonra onboarding'e geçer",
+      (tester) async {
+        await _pumpApp(
+          tester,
+          FakeAuthService(),
+          organizations: FakeOrganizationService(),
+        );
+        await _requestCode(tester, 'ari@example.com');
+
+        await tester.enterText(_field(SignInCodeScreen), '482913');
+        await tester.pumpAndSettle();
+
+        expect(find.byType(OnboardingScreen), findsOneWidget);
+        expect(find.byType(TodayScreen), findsNothing);
+        expect(find.byType(AppNavigationBar), findsNothing);
+      },
+    );
 
     testWidgets('yapıştırılan metindeki kod ayıklanır', (tester) async {
       final auth = FakeAuthService();

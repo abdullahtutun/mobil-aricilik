@@ -1,0 +1,55 @@
+import 'dart:ui' show Locale;
+
+import 'package:mobil_arici/core/region/country_currencies.dart';
+
+/// Cihazın dil listesinden ülke önerisi: sırayla ilk bilinen ülke kodu
+/// (`tr_TR` → `TR`). Hiçbir dilde ülke yoksa null; kullanıcı listeden seçer.
+String? suggestCountryCode(Iterable<Locale> deviceLocales) {
+  for (final locale in deviceLocales) {
+    final code = locale.countryCode?.toUpperCase();
+    if (code != null && countryCurrencyCodes.containsKey(code)) return code;
+  }
+  return null;
+}
+
+/// Ülke aramasında eşleşme. Ad; büyük-küçük harf, Türkçe harfler ve aksan
+/// gözetilmeden aranır ("turkiye" → Türkiye, "cote" → Côte d’Ivoire). İki
+/// harfli ISO kodu da tam eşleşir. Boş arama her ülkeyle eşleşir.
+bool matchesCountryQuery({
+  required String code,
+  required String name,
+  required String query,
+}) {
+  final folded = foldForSearch(query.trim());
+  if (folded.isEmpty) return true;
+  return foldForSearch(name).contains(folded) || code.toLowerCase() == folded;
+}
+
+/// Arama için sadeleştirir: küçük harf, `ı`/`İ` → `i`, aksanlı harf → düz
+/// harf, tipografik kesme → `'`.
+String foldForSearch(String text) {
+  final buffer = StringBuffer();
+  for (final rune in text.runes) {
+    final char = String.fromCharCode(rune);
+    // `İ`.toLowerCase() iki karakter (i + nokta) üretir; önce eşlenmeli.
+    final lower = _folds[char] ?? char.toLowerCase();
+    buffer.write(_folds[lower] ?? lower);
+  }
+  return buffer.toString();
+}
+
+const _folds = {
+  'İ': 'i',
+  'ı': 'i',
+  'ç': 'c',
+  'ğ': 'g',
+  'ö': 'o',
+  'ş': 's',
+  'ü': 'u',
+  'å': 'a',
+  'ã': 'a',
+  'é': 'e',
+  'í': 'i',
+  'ô': 'o',
+  '’': "'",
+};

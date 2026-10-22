@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # JSON, Supabase satırlarıyla aynı biçimde: kolonlar snake_case.
+          field_rename: snake

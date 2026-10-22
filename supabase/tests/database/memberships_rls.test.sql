@@ -17,11 +17,13 @@ insert into public.organizations (id, name, country_code, currency, created_by) 
   ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Başka İşletme', 'TR', 'TRY',
    '99999999-9999-9999-9999-999999999999');
 
-insert into public.memberships (id, org_id, user_id, role)
-values (
-  'c0000000-0000-0000-0000-000000000003', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-  '33333333-3333-3333-3333-333333333333', 'worker'
-);
+insert into public.memberships (id, org_id, user_id, role) values
+  ('c0000000-0000-0000-0000-000000000001', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+   '11111111-1111-1111-1111-111111111111', 'owner'),
+  ('c0000000-0000-0000-0000-000000000003', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+   '33333333-3333-3333-3333-333333333333', 'worker'),
+  ('c0000000-0000-0000-0000-000000000009', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+   '99999999-9999-9999-9999-999999999999', 'owner');
 
 set local role authenticated;
 

@@ -199,21 +199,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
-  String get settingsCountry => 'Ülke';
-
-  @override
-  String get settingsCountryTemporaryNote =>
-      'Şimdilik buradan seçiliyor; ileride işletme kaydından gelecek.';
-
-  @override
-  String settingsCountryOption(String countryCode, String currencyCode) {
-    return '$countryCode · $currencyCode';
-  }
-
-  @override
-  String get settingsCountryPickerTitle => 'Ülke seç';
-
-  @override
   String get settingsColorMode => 'Tema';
 
   @override
@@ -245,6 +230,97 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get actionCancel => 'Vazgeç';
+
+  @override
+  String get actionRetry => 'Yeniden dene';
+
+  @override
+  String onboardingStepCounter(int current, int total) {
+    return 'Adım $current/$total';
+  }
+
+  @override
+  String get onboardingContinue => 'Devam';
+
+  @override
+  String get onboardingFinish => 'İşletmeyi kur';
+
+  @override
+  String get onboardingFinishing => 'Kuruluyor…';
+
+  @override
+  String get onboardingLanguageTitle => 'Hangi dili kullanalım?';
+
+  @override
+  String get onboardingLanguageMessage =>
+      'Dili sonra Ayarlar\'dan değiştirebilirsin.';
+
+  @override
+  String get onboardingCountryTitle => 'İşletmen hangi ülkede?';
+
+  @override
+  String get onboardingCountryMessage =>
+      'Ülke; para birimini, ölçü birimlerini ve bölgeye özel modülleri belirler.';
+
+  @override
+  String get onboardingCountrySearch => 'Ülke ara';
+
+  @override
+  String get onboardingCountrySuggested => 'Cihazına göre önerilen';
+
+  @override
+  String get onboardingCountryAll => 'Tüm ülkeler';
+
+  @override
+  String get onboardingCountryNoMatch => 'Aramana uyan ülke yok.';
+
+  @override
+  String get onboardingNameTitle => 'İşletmenin adı ne?';
+
+  @override
+  String get onboardingNameMessage =>
+      'Kayıtlarında ve raporlarında bu ad görünür.';
+
+  @override
+  String get onboardingNameLabel => 'İşletme adı';
+
+  @override
+  String get onboardingNameHint => 'Örn. Petek Arıcılık';
+
+  @override
+  String get onboardingHiveCountTitle => 'Kaç kovanın var?';
+
+  @override
+  String get onboardingHiveCountMessage =>
+      'Yaklaşık sayı yeter; takibi buna göre önereceğiz. Kovanları sonra eklersin.';
+
+  @override
+  String get hiveCountRangeNone => 'Henüz yok';
+
+  @override
+  String get hiveCountRangeUpTo10 => '1–10';
+
+  @override
+  String get hiveCountRangeUpTo50 => '11–50';
+
+  @override
+  String get hiveCountRangeUpTo200 => '51–200';
+
+  @override
+  String get hiveCountRangeOver200 => '200\'den fazla';
+
+  @override
+  String get onboardingLoading => 'İşletme bilgisi yükleniyor';
+
+  @override
+  String get onboardingLoadErrorTitle => 'İşletme bilgisi alınamadı';
+
+  @override
+  String get onboardingErrorNetwork =>
+      'Bağlantı kurulamadı. İnternetini kontrol edip yeniden dene.';
+
+  @override
+  String get onboardingErrorUnknown => 'Bir sorun çıktı. Yeniden dene.';
 
   @override
   String get devMenuTitle => 'Geliştirici menüsü';

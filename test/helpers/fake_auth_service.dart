@@ -6,6 +6,8 @@ import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 
+import 'fake_organization_service.dart';
+
 const testUser = AppUser(id: 'test-user', email: 'ari@example.com');
 
 /// Ağsız auth servisi: çağrıları kaydeder, istenen hatayı atar.
@@ -59,6 +61,10 @@ class FakeAuthService implements AuthService {
   }
 }
 
-/// `App`'i giriş yapılmış bir kullanıcıyla açar.
-Override signedIn() =>
-    authServiceProvider.overrideWithValue(FakeAuthService(user: testUser));
+/// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar.
+List<Override> signedIn({FakeAuthService? auth}) => [
+  authServiceProvider.overrideWithValue(
+    auth ?? FakeAuthService(user: testUser),
+  ),
+  ...organizationOverrides(),
+];

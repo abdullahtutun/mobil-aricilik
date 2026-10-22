@@ -199,21 +199,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
-  String get settingsCountry => 'Country';
-
-  @override
-  String get settingsCountryTemporaryNote =>
-      'Chosen here for now; it will later come from your business profile.';
-
-  @override
-  String settingsCountryOption(String countryCode, String currencyCode) {
-    return '$countryCode · $currencyCode';
-  }
-
-  @override
-  String get settingsCountryPickerTitle => 'Choose country';
-
-  @override
   String get settingsColorMode => 'Theme';
 
   @override
@@ -245,6 +230,98 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionCancel => 'Cancel';
+
+  @override
+  String get actionRetry => 'Try again';
+
+  @override
+  String onboardingStepCounter(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get onboardingContinue => 'Continue';
+
+  @override
+  String get onboardingFinish => 'Set up business';
+
+  @override
+  String get onboardingFinishing => 'Setting up…';
+
+  @override
+  String get onboardingLanguageTitle => 'Which language should we use?';
+
+  @override
+  String get onboardingLanguageMessage =>
+      'You can change it later in Settings.';
+
+  @override
+  String get onboardingCountryTitle => 'Where is your business?';
+
+  @override
+  String get onboardingCountryMessage =>
+      'Your country sets the currency, units and region-specific modules.';
+
+  @override
+  String get onboardingCountrySearch => 'Search countries';
+
+  @override
+  String get onboardingCountrySuggested => 'Suggested for your device';
+
+  @override
+  String get onboardingCountryAll => 'All countries';
+
+  @override
+  String get onboardingCountryNoMatch => 'No country matches your search.';
+
+  @override
+  String get onboardingNameTitle => 'What\'s your business called?';
+
+  @override
+  String get onboardingNameMessage =>
+      'This name appears on your records and reports.';
+
+  @override
+  String get onboardingNameLabel => 'Business name';
+
+  @override
+  String get onboardingNameHint => 'e.g. Golden Comb Apiaries';
+
+  @override
+  String get onboardingHiveCountTitle => 'How many hives do you have?';
+
+  @override
+  String get onboardingHiveCountMessage =>
+      'A rough number is enough; we\'ll suggest how to track them. You\'ll add the hives themselves later.';
+
+  @override
+  String get hiveCountRangeNone => 'None yet';
+
+  @override
+  String get hiveCountRangeUpTo10 => '1–10';
+
+  @override
+  String get hiveCountRangeUpTo50 => '11–50';
+
+  @override
+  String get hiveCountRangeUpTo200 => '51–200';
+
+  @override
+  String get hiveCountRangeOver200 => 'More than 200';
+
+  @override
+  String get onboardingLoading => 'Loading your business';
+
+  @override
+  String get onboardingLoadErrorTitle => 'Couldn\'t load your business';
+
+  @override
+  String get onboardingErrorNetwork =>
+      'Couldn\'t connect. Check your internet and try again.';
+
+  @override
+  String get onboardingErrorUnknown =>
+      'Something went wrong. Please try again.';
 
   @override
   String get devMenuTitle => 'Developer menu';

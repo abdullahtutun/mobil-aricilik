@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobil_arici/app/auth_redirect.dart';
 import 'package:mobil_arici/app/deep_link.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/session_redirect.dart';
 import 'package:mobil_arici/app/shell/app_shell.dart';
 import 'package:mobil_arici/app/shell/more_screen.dart';
 import 'package:mobil_arici/app/shell/scan_screen.dart';
@@ -13,7 +13,8 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
-import 'package:mobil_arici/features/settings/presentation/country_picker_screen.dart';
+import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
@@ -26,20 +27,25 @@ part 'router.g.dart';
 GoRouter router(Ref ref) {
   final isDev = ref.watch(flavorProvider) == Flavor.dev;
 
-  // Router yeniden kurulmasın (sekme yığınları kaybolur); oturum değişince
-  // yalnız yönlendirme yeniden değerlendirilir.
-  final signedIn = ValueNotifier(ref.read(currentUserProvider) != null);
+  // Router yeniden kurulmasın (sekme yığınları kaybolur); oturum ya da
+  // işletme değişince yalnız yönlendirme yeniden değerlendirilir.
+  SessionStage stage() => sessionStageOf(
+    signedIn: ref.read(currentUserProvider) != null,
+    hasOrganization: ref.read(currentOrganizationProvider).value != null,
+  );
+  final session = ValueNotifier(stage());
   ref
-    ..listen(currentUserProvider, (_, user) => signedIn.value = user != null)
-    ..onDispose(signedIn.dispose);
+    ..listen(currentUserProvider, (_, _) => session.value = stage())
+    ..listen(currentOrganizationProvider, (_, _) => session.value = stage())
+    ..onDispose(session.dispose);
 
   final router = GoRouter(
-    refreshListenable: signedIn,
+    refreshListenable: session,
     // Önce `mobilarici://x/y` → `/x/y` (uygulama içi konumlara dokunmaz);
     // router yeni konumla yeniden çağırınca oturum kapısı uygulanır.
     redirect: (context, state) =>
         deepLinkLocation(state.uri) ??
-        authRedirect(signedIn: signedIn.value, path: state.uri.path),
+        sessionRedirect(stage: session.value, location: state.uri),
     // Eşleşmeyen konum (henüz hedefi olmayan derin linkler dahil) hata
     // sayfası yerine Bugün'e düşer.
     onException: (context, state, router) => router.go(AppRoutes.today),
@@ -97,13 +103,6 @@ GoRouter router(Ref ref) {
                   GoRoute(
                     path: 'settings',
                     builder: (context, state) => const SettingsScreen(),
-                    routes: [
-                      GoRoute(
-                        path: 'country',
-                        builder: (context, state) =>
-                            const CountryPickerScreen(),
-                      ),
-                    ],
                   ),
                 ],
               ),
@@ -132,6 +131,11 @@ GoRouter router(Ref ref) {
             builder: (context, state) => const SignInCodeScreen(),
           ),
         ],
+      ),
+      // Kabuğun dışında: işletme kurulana kadar sekmeler yok.
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => const OnboardingScreen(),
       ),
     ],
   );

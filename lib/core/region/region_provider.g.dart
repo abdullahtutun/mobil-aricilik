@@ -8,21 +8,18 @@ part of 'region_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Ülke ve enlem seçimi. Şimdilik bellekte; kalıcı kayıt ve seçici arayüz
-/// ayarlar adımında gelecek. Ekranlar bunu değil [regionConfigProvider]'ı
-/// dinler.
+/// Enlem seçimi. Şimdilik bellekte; ileride arılığın konumundan gelecek.
+/// Ekranlar bunu değil [regionConfigProvider]'ı dinler.
 
 @ProviderFor(RegionSelection)
 final regionSelectionProvider = RegionSelectionProvider._();
 
-/// Ülke ve enlem seçimi. Şimdilik bellekte; kalıcı kayıt ve seçici arayüz
-/// ayarlar adımında gelecek. Ekranlar bunu değil [regionConfigProvider]'ı
-/// dinler.
+/// Enlem seçimi. Şimdilik bellekte; ileride arılığın konumundan gelecek.
+/// Ekranlar bunu değil [regionConfigProvider]'ı dinler.
 final class RegionSelectionProvider
     extends $NotifierProvider<RegionSelection, RegionSettings> {
-  /// Ülke ve enlem seçimi. Şimdilik bellekte; kalıcı kayıt ve seçici arayüz
-  /// ayarlar adımında gelecek. Ekranlar bunu değil [regionConfigProvider]'ı
-  /// dinler.
+  /// Enlem seçimi. Şimdilik bellekte; ileride arılığın konumundan gelecek.
+  /// Ekranlar bunu değil [regionConfigProvider]'ı dinler.
   RegionSelectionProvider._()
     : super(
         from: null,
@@ -50,11 +47,10 @@ final class RegionSelectionProvider
   }
 }
 
-String _$regionSelectionHash() => r'ea7ec2bf8102e50c4e550fadac9c768b5f8e5cf4';
+String _$regionSelectionHash() => r'ea79e7fba1d9a72b3c6f79349ca72943210b6095';
 
-/// Ülke ve enlem seçimi. Şimdilik bellekte; kalıcı kayıt ve seçici arayüz
-/// ayarlar adımında gelecek. Ekranlar bunu değil [regionConfigProvider]'ı
-/// dinler.
+/// Enlem seçimi. Şimdilik bellekte; ileride arılığın konumundan gelecek.
+/// Ekranlar bunu değil [regionConfigProvider]'ı dinler.
 
 abstract class _$RegionSelection extends $Notifier<RegionSettings> {
   RegionSettings build();
@@ -74,19 +70,22 @@ abstract class _$RegionSelection extends $Notifier<RegionSettings> {
   }
 }
 
-/// Ekranların dinlediği bölge yapılandırması. Türkiye'ye özel modüller
+/// Ekranların dinlediği bölge yapılandırması. Ülke işletmeden gelir; işletme
+/// yokken [defaultCountryCode] kullanılır. Türkiye'ye özel modüller
 /// [RegionConfig.features] ile açılıp kapanır.
 
 @ProviderFor(regionConfig)
 final regionConfigProvider = RegionConfigProvider._();
 
-/// Ekranların dinlediği bölge yapılandırması. Türkiye'ye özel modüller
+/// Ekranların dinlediği bölge yapılandırması. Ülke işletmeden gelir; işletme
+/// yokken [defaultCountryCode] kullanılır. Türkiye'ye özel modüller
 /// [RegionConfig.features] ile açılıp kapanır.
 
 final class RegionConfigProvider
     extends $FunctionalProvider<RegionConfig, RegionConfig, RegionConfig>
     with $Provider<RegionConfig> {
-  /// Ekranların dinlediği bölge yapılandırması. Türkiye'ye özel modüller
+  /// Ekranların dinlediği bölge yapılandırması. Ülke işletmeden gelir; işletme
+  /// yokken [defaultCountryCode] kullanılır. Türkiye'ye özel modüller
   /// [RegionConfig.features] ile açılıp kapanır.
   RegionConfigProvider._()
     : super(
@@ -121,4 +120,4 @@ final class RegionConfigProvider
   }
 }
 
-String _$regionConfigHash() => r'3cc2543ed64e29d00b948336236703e3c04d208e';
+String _$regionConfigHash() => r'c3593eecbde51ba85084b1f7fd46d9e047221b73';

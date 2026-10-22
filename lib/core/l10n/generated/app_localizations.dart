@@ -422,30 +422,6 @@ abstract class AppLocalizations {
   /// **'English'**
   String get languageEnglish;
 
-  /// No description provided for @settingsCountry.
-  ///
-  /// In en, this message translates to:
-  /// **'Country'**
-  String get settingsCountry;
-
-  /// No description provided for @settingsCountryTemporaryNote.
-  ///
-  /// In en, this message translates to:
-  /// **'Chosen here for now; it will later come from your business profile.'**
-  String get settingsCountryTemporaryNote;
-
-  /// A country in the temporary country picker: ISO 3166 country code and ISO 4217 currency code.
-  ///
-  /// In en, this message translates to:
-  /// **'{countryCode} · {currencyCode}'**
-  String settingsCountryOption(String countryCode, String currencyCode);
-
-  /// No description provided for @settingsCountryPickerTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose country'**
-  String get settingsCountryPickerTitle;
-
   /// No description provided for @settingsColorMode.
   ///
   /// In en, this message translates to:
@@ -505,6 +481,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get actionCancel;
+
+  /// No description provided for @actionRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get actionRetry;
+
+  /// Progress in the first-run setup shown after sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String onboardingStepCounter(int current, int total);
+
+  /// No description provided for @onboardingContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingContinue;
+
+  /// No description provided for @onboardingFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up business'**
+  String get onboardingFinish;
+
+  /// No description provided for @onboardingFinishing.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up…'**
+  String get onboardingFinishing;
+
+  /// No description provided for @onboardingLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which language should we use?'**
+  String get onboardingLanguageTitle;
+
+  /// No description provided for @onboardingLanguageMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change it later in Settings.'**
+  String get onboardingLanguageMessage;
+
+  /// No description provided for @onboardingCountryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where is your business?'**
+  String get onboardingCountryTitle;
+
+  /// No description provided for @onboardingCountryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your country sets the currency, units and region-specific modules.'**
+  String get onboardingCountryMessage;
+
+  /// No description provided for @onboardingCountrySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search countries'**
+  String get onboardingCountrySearch;
+
+  /// Heading above the country guessed from the device's language and region settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested for your device'**
+  String get onboardingCountrySuggested;
+
+  /// No description provided for @onboardingCountryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All countries'**
+  String get onboardingCountryAll;
+
+  /// No description provided for @onboardingCountryNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No country matches your search.'**
+  String get onboardingCountryNoMatch;
+
+  /// No description provided for @onboardingNameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your business called?'**
+  String get onboardingNameTitle;
+
+  /// No description provided for @onboardingNameMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This name appears on your records and reports.'**
+  String get onboardingNameMessage;
+
+  /// No description provided for @onboardingNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business name'**
+  String get onboardingNameLabel;
+
+  /// No description provided for @onboardingNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Golden Comb Apiaries'**
+  String get onboardingNameHint;
+
+  /// No description provided for @onboardingHiveCountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How many hives do you have?'**
+  String get onboardingHiveCountTitle;
+
+  /// No description provided for @onboardingHiveCountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A rough number is enough; we\'ll suggest how to track them. You\'ll add the hives themselves later.'**
+  String get onboardingHiveCountMessage;
+
+  /// No description provided for @hiveCountRangeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet'**
+  String get hiveCountRangeNone;
+
+  /// No description provided for @hiveCountRangeUpTo10.
+  ///
+  /// In en, this message translates to:
+  /// **'1–10'**
+  String get hiveCountRangeUpTo10;
+
+  /// No description provided for @hiveCountRangeUpTo50.
+  ///
+  /// In en, this message translates to:
+  /// **'11–50'**
+  String get hiveCountRangeUpTo50;
+
+  /// No description provided for @hiveCountRangeUpTo200.
+  ///
+  /// In en, this message translates to:
+  /// **'51–200'**
+  String get hiveCountRangeUpTo200;
+
+  /// No description provided for @hiveCountRangeOver200.
+  ///
+  /// In en, this message translates to:
+  /// **'More than 200'**
+  String get hiveCountRangeOver200;
+
+  /// Screen reader label of the spinner shown while the business is fetched after sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your business'**
+  String get onboardingLoading;
+
+  /// No description provided for @onboardingLoadErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your business'**
+  String get onboardingLoadErrorTitle;
+
+  /// No description provided for @onboardingErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t connect. Check your internet and try again.'**
+  String get onboardingErrorNetwork;
+
+  /// No description provided for @onboardingErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get onboardingErrorUnknown;
 
   /// Developer menu, only in the dev flavor.
   ///

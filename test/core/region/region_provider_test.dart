@@ -3,34 +3,43 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/region/region_settings.dart';
+import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+
+import '../../helpers/fake_auth_service.dart';
+import '../../helpers/fake_organization_service.dart';
+
+/// [countryCode] ülkesinde işletmesi olan kullanıcıyla container açar ve
+/// işletmenin yüklenmesini bekler.
+Future<ProviderContainer> _containerWith({
+  required String countryCode,
+  FakeAuthService? auth,
+}) async {
+  final container = ProviderContainer.test(
+    overrides: [
+      authServiceProvider.overrideWithValue(
+        auth ?? FakeAuthService(user: testUser),
+      ),
+      ...organizationOverrides(
+        service: FakeOrganizationService(
+          serverOrganization: testOrganization.copyWith(
+            countryCode: countryCode,
+          ),
+        ),
+      ),
+    ],
+  );
+  await container.read(currentOrganizationProvider.future);
+  return container;
+}
 
 void main() {
   group('regionSelectionProvider', () {
-    test('varsayılan: TR, enlem bilinmiyor', () {
+    test('varsayılan: enlem bilinmiyor', () {
       final container = ProviderContainer.test();
 
       expect(container.read(regionSelectionProvider), const RegionSettings());
-      expect(container.read(regionSelectionProvider).countryCode, 'TR');
       expect(container.read(regionSelectionProvider).latitude, isNull);
-    });
-
-    test('ülke kodu büyük harfle saklanır', () {
-      final container = ProviderContainer.test();
-      container.read(regionSelectionProvider.notifier).setCountry(' de ');
-
-      expect(container.read(regionSelectionProvider).countryCode, 'DE');
-    });
-
-    test('ülke değişince enlem korunur', () {
-      final container = ProviderContainer.test();
-      container.read(regionSelectionProvider.notifier)
-        ..setLatitude(-33.87)
-        ..setCountry('AU');
-
-      expect(
-        container.read(regionSelectionProvider),
-        const RegionSettings(countryCode: 'AU', latitude: -33.87),
-      );
     });
 
     test('enlem bilinmiyor yapılabilir', () {
@@ -40,15 +49,6 @@ void main() {
         ..setLatitude(null);
 
       expect(container.read(regionSelectionProvider).latitude, isNull);
-    });
-
-    test('geçersiz ülke kodu ArgumentError atar, seçim değişmez', () {
-      final container = ProviderContainer.test();
-      final notifier = container.read(regionSelectionProvider.notifier)
-        ..setCountry('US');
-
-      expect(() => notifier.setCountry('USA'), throwsArgumentError);
-      expect(container.read(regionSelectionProvider).countryCode, 'US');
     });
 
     test('geçersiz enlem ArgumentError atar, seçim değişmez', () {
@@ -63,16 +63,8 @@ void main() {
   });
 
   group('regionConfigProvider', () {
-    test('varsayılan: TR profili', () {
-      final container = ProviderContainer.test();
-
-      expect(container.read(regionConfigProvider), resolveRegionConfig('TR'));
-      expect(container.read(regionConfigProvider).profile, RegionProfile.tr);
-    });
-
-    test('ülke seçimini izler', () {
-      final container = ProviderContainer.test();
-      container.read(regionSelectionProvider.notifier).setCountry('US');
+    test('ülke işletmeden gelir', () async {
+      final container = await _containerWith(countryCode: 'US');
 
       final config = container.read(regionConfigProvider);
       expect(config, resolveRegionConfig('US'));
@@ -81,11 +73,48 @@ void main() {
       expect(config.currencyCode, 'USD');
     });
 
-    test('enlem seçimini izler', () {
-      final container = ProviderContainer.test();
-      container.read(regionSelectionProvider.notifier)
-        ..setCountry('NZ')
-        ..setLatitude(-41.29);
+    test('TR işletmesinde TR modülleri açık', () async {
+      final container = await _containerWith(countryCode: 'TR');
+
+      final config = container.read(regionConfigProvider);
+      expect(config.profile, RegionProfile.tr);
+      expect(config.features.aks, isTrue);
+      expect(config.currencyCode, 'TRY');
+    });
+
+    test('işletme yokken varsayılan ülke kullanılır', () async {
+      final container = ProviderContainer.test(
+        overrides: [
+          authServiceProvider.overrideWithValue(FakeAuthService()),
+          ...organizationOverrides(),
+        ],
+      );
+      await container.read(currentOrganizationProvider.future);
+
+      expect(
+        container.read(regionConfigProvider),
+        resolveRegionConfig(defaultCountryCode),
+      );
+    });
+
+    test('çıkış yapılınca varsayılan ülkeye dönülür', () async {
+      final auth = FakeAuthService(user: testUser);
+      final container = await _containerWith(countryCode: 'DE', auth: auth);
+      final configs = <RegionConfig>[];
+      container.listen(regionConfigProvider, (_, next) => configs.add(next));
+
+      // Oturum olayı akıştan bir sonraki turda gelir.
+      auth.emit(null);
+      await Future<void>.delayed(Duration.zero);
+      expect(await container.read(currentOrganizationProvider.future), isNull);
+      await container.pump();
+
+      expect(configs, [resolveRegionConfig(defaultCountryCode)]);
+    });
+
+    test('enlem seçimini izler', () async {
+      final container = await _containerWith(countryCode: 'NZ');
+      container.read(regionSelectionProvider.notifier).setLatitude(-41.29);
 
       expect(
         container.read(regionConfigProvider).hemisphere,
@@ -100,21 +129,8 @@ void main() {
       );
     });
 
-    test("TR'ye dönülünce TR modülleri yeniden açılır", () {
-      final container = ProviderContainer.test();
-      final notifier = container.read(regionSelectionProvider.notifier)
-        ..setCountry('GB');
-
-      expect(container.read(regionConfigProvider).features.aks, isFalse);
-
-      notifier.setCountry('TR');
-
-      expect(container.read(regionConfigProvider).features.aks, isTrue);
-      expect(container.read(regionConfigProvider).currencyCode, 'TRY');
-    });
-
     test('yapılandırma değişmezse dinleyenler uyarılmaz', () async {
-      final container = ProviderContainer.test();
+      final container = await _containerWith(countryCode: 'TR');
       final configs = <RegionConfig>[];
       container.listen(regionConfigProvider, (_, next) => configs.add(next));
       final notifier = container.read(regionSelectionProvider.notifier);
@@ -126,22 +142,15 @@ void main() {
         return container.pump();
       }
 
-      // Aynı ülke, farklı yazım.
-      await select(() => notifier.setCountry('tr'));
       // TR'de enlem yarımküreyi değiştirmez.
-      await select(() => notifier.setLatitude(39.93));
+      await select(() => notifier.setLatitude(-33.87));
+      // İşletmenin adı değişse de ülke aynı.
+      await select(
+        () => container.read(currentOrganizationProvider.notifier).state =
+            AsyncData(testOrganization.copyWith(name: 'Yeni ad')),
+      );
 
       expect(configs, isEmpty);
-
-      await select(() => notifier.setCountry('AU'));
-      await select(() => notifier.setLatitude(-33.87));
-      // Aynı yarımkürede başka bir arılık.
-      await select(() => notifier.setLatitude(-37.81));
-
-      expect(configs, [
-        resolveRegionConfig('AU', latitude: 39.93),
-        resolveRegionConfig('AU', latitude: -33.87),
-      ]);
     });
   });
 }

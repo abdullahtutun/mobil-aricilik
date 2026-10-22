@@ -20,7 +20,7 @@ import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 import '../../helpers/fake_auth_service.dart';
 
 Future<ProviderContainer> _pumpApp(WidgetTester tester) async {
-  final container = ProviderContainer.test(overrides: [signedIn()]);
+  final container = ProviderContainer.test(overrides: signedIn());
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
   );
@@ -255,9 +255,7 @@ void main() {
   });
 
   group('Derin link', () {
-    testWidgets('mobilarici:// linki aynı yollu ekranı açar', (
-      tester,
-    ) async {
+    testWidgets('mobilarici:// linki aynı yollu ekranı açar', (tester) async {
       await _pumpApp(tester);
 
       await _openDeepLink(tester, 'mobilarici://more/settings');

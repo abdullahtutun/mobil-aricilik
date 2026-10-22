@@ -7,7 +7,6 @@ abstract final class AppRoutes {
   static const more = '/more';
 
   static const settings = '/more/settings';
-  static const settingsCountry = '/more/settings/country';
 
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.
   static const scan = '/scan';
@@ -15,6 +14,9 @@ abstract final class AppRoutes {
   /// Giriş yapılmamışken açılabilen tek rotalar.
   static const signIn = '/sign-in';
   static const signInCode = '/sign-in/code';
+
+  /// İşletmesi olmayan kullanıcının açabildiği tek rota.
+  static const onboarding = '/onboarding';
 
   static const developerMenu = '/dev';
   static const componentGallery = '/dev/components';

@@ -17,6 +17,12 @@ create temp table seq_after_insert as
 select server_seq from public.organizations
 where id = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
 
+insert into public.memberships (id, org_id, user_id, role)
+values (
+  'c0000000-0000-0000-0000-000000000001', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+  '11111111-1111-1111-1111-111111111111', 'owner'
+);
+
 select cmp_ok(
   (select server_seq from seq_after_insert), '>', 0::bigint,
   'insert server_seq verir; istemcinin değeri yok sayılır'
@@ -27,7 +33,7 @@ select cmp_ok(
    where org_id = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),
   '>',
   (select server_seq from seq_after_insert),
-  'trigger''ın eklediği owner üyeliği aynı global sıradan sonraki değeri alır'
+  'başka tabloya sonra eklenen satır aynı global sıradan sonraki değeri alır'
 );
 
 update public.organizations

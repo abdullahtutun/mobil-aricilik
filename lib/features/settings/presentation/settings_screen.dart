@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
-import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 
-/// Dil, ülke ve tema seçimi; hesaptan çıkış. Seçimler şimdilik yalnızca
-/// bellekte.
+/// Dil ve tema seçimi; hesaptan çıkış. Seçimler şimdilik yalnızca bellekte.
+/// Ülke işletmeden gelir, burada seçilmez.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -19,7 +16,6 @@ class SettingsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final language = ref.watch(languageProvider);
-    final region = ref.watch(regionConfigProvider);
     final colorMode = ref.watch(appearanceProvider).colorMode;
     final user = ref.watch(currentUserProvider);
 
@@ -45,33 +41,6 @@ class SettingsScreen extends ConsumerWidget {
                 if (selected.isEmpty) return;
                 ref.read(languageProvider.notifier).language = selected.single;
               },
-            ),
-          ),
-          SizedBox(height: spacing.lg),
-          SectionCard(
-            title: l10n.settingsCountry,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  l10n.settingsCountryTemporaryNote,
-                  style: context.typography.bodySmall.copyWith(
-                    color: context.colors.textSecondary,
-                  ),
-                ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    l10n.settingsCountryOption(
-                      region.countryCode,
-                      region.currencyCode,
-                    ),
-                  ),
-                  trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () => context.go(AppRoutes.settingsCountry),
-                ),
-              ],
             ),
           ),
           SizedBox(height: spacing.lg),

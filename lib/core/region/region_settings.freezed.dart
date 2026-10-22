@@ -15,8 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RegionSettings {
 
-/// ISO 3166-1 alpha-2, büyük harf.
- String get countryCode;/// Yarımküre için enlem; bilinmiyorsa null ve Kuzey sayılır.
+/// Yarımküre için enlem; bilinmiyorsa null ve Kuzey sayılır.
  double? get latitude;
 /// Create a copy of RegionSettings
 /// with the given fields replaced by the non-null parameter values.
@@ -29,20 +28,20 @@ $RegionSettingsCopyWith<RegionSettings> get copyWith => _$RegionSettingsCopyWith
 @override
 bool operator ==(Object other) {
   final _this = this as RegionSettings;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegionSettings&&(identical(other.countryCode, _this.countryCode) || other.countryCode == _this.countryCode)&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegionSettings&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude));
 }
 
 
 @override
 int get hashCode {
   final _this = this as RegionSettings;
-  return Object.hash(runtimeType,_this.countryCode,_this.latitude);
+  return Object.hash(runtimeType,_this.latitude);
 }
 
 @override
 String toString() {
   final _this = this as RegionSettings;
-  return 'RegionSettings(countryCode: ${_this.countryCode}, latitude: ${_this.latitude})';
+  return 'RegionSettings(latitude: ${_this.latitude})';
 }
 
 
@@ -53,7 +52,7 @@ abstract mixin class $RegionSettingsCopyWith<$Res>  {
   factory $RegionSettingsCopyWith(RegionSettings value, $Res Function(RegionSettings) _then) = _$RegionSettingsCopyWithImpl;
 @useResult
 $Res call({
- String countryCode, double? latitude
+ double? latitude
 });
 
 
@@ -70,10 +69,9 @@ class _$RegionSettingsCopyWithImpl<$Res>
 
 /// Create a copy of RegionSettings
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? countryCode = null,Object? latitude = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? latitude = freezed,}) {
   return _then(RegionSettings(
-countryCode: null == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
-as String,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,
   ));
 }
@@ -159,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String countryCode,  double? latitude)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double? latitude)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RegionSettings() when $default != null:
-return $default(_that.countryCode,_that.latitude);case _:
+return $default(_that.latitude);case _:
   return orElse();
 
 }
@@ -180,10 +178,10 @@ return $default(_that.countryCode,_that.latitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String countryCode,  double? latitude)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double? latitude)  $default,) {final _that = this;
 switch (_that) {
 case _RegionSettings():
-return $default(_that.countryCode,_that.latitude);case _:
+return $default(_that.latitude);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +198,10 @@ return $default(_that.countryCode,_that.latitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String countryCode,  double? latitude)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double? latitude)?  $default,) {final _that = this;
 switch (_that) {
 case _RegionSettings() when $default != null:
-return $default(_that.countryCode,_that.latitude);case _:
+return $default(_that.latitude);case _:
   return null;
 
 }
@@ -215,11 +213,9 @@ return $default(_that.countryCode,_that.latitude);case _:
 
 
 class _RegionSettings implements RegionSettings {
-  const _RegionSettings({this.countryCode = defaultCountryCode, this.latitude});
+  const _RegionSettings({this.latitude});
   
 
-/// ISO 3166-1 alpha-2, büyük harf.
-@override@JsonKey() final  String countryCode;
 /// Yarımküre için enlem; bilinmiyorsa null ve Kuzey sayılır.
 @override final  double? latitude;
 
@@ -233,18 +229,18 @@ _$RegionSettingsCopyWith<_RegionSettings> get copyWith => __$RegionSettingsCopyW
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RegionSettings&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.latitude, latitude) || other.latitude == latitude));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RegionSettings&&(identical(other.latitude, latitude) || other.latitude == latitude));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,countryCode,latitude);
+    return Object.hash(runtimeType,latitude);
 }
 
 @override
 String toString() {
-    return 'RegionSettings(countryCode: $countryCode, latitude: $latitude)';
+    return 'RegionSettings(latitude: $latitude)';
 }
 
 
@@ -255,7 +251,7 @@ abstract mixin class _$RegionSettingsCopyWith<$Res> implements $RegionSettingsCo
   factory _$RegionSettingsCopyWith(_RegionSettings value, $Res Function(_RegionSettings) _then) = __$RegionSettingsCopyWithImpl;
 @override @useResult
 $Res call({
- String countryCode, double? latitude
+ double? latitude
 });
 
 
@@ -272,10 +268,9 @@ class __$RegionSettingsCopyWithImpl<$Res>
 
 /// Create a copy of RegionSettings
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? countryCode = null,Object? latitude = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? latitude = freezed,}) {
   return _then(_RegionSettings(
-countryCode: null == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
-as String,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,
   ));
 }
