@@ -97,6 +97,45 @@
   "quickRecordExpense": "Expense",
   "quickRecordComingSoon": "This record type is coming soon.",
 
+  "signInTitle": "Sign in",
+  "signInEmailMessage": "Enter your email and we'll send you a 6-digit code. No password needed.",
+  "signInEmailLabel": "Email",
+  "signInSendCode": "Send code",
+  "signInSending": "Sending…",
+  "signInCodeTitle": "Enter the code",
+  "signInCodeMessage": "We sent a 6-digit code to {email}.",
+  "@signInCodeMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "signInCodeFieldLabel": "6-digit code",
+  "@signInCodeFieldLabel": {
+    "description": "Screen reader label of the code input; the digit boxes are not read separately."
+  },
+  "signInVerify": "Sign in",
+  "signInVerifying": "Checking…",
+  "signInResend": "Resend code",
+  "signInResendIn": "Resend code ({seconds} s)",
+  "@signInResendIn": {
+    "description": "Disabled resend button with the seconds left until a new code can be requested.",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "signInCodeResent": "A new code is on its way.",
+  "authErrorNetwork": "Couldn't connect. Check your internet and try again.",
+  "authErrorInvalidEmail": "Enter a valid email address.",
+  "authErrorInvalidCode": "The code is wrong or has expired. Try again or request a new code.",
+  "authErrorTooManyRequests": "Too many attempts. Wait a little and try again.",
+  "authErrorUnknown": "Something went wrong. Please try again.",
+
   "settingsTitle": "Settings",
   "settingsSystemDefault": "System",
   "@settingsSystemDefault": {
@@ -135,6 +174,20 @@
   "@settingsColorModeSun": {
     "description": "High contrast theme for bright sunlight."
   },
+  "settingsAccount": "Account",
+  "settingsSignedInAs": "Signed in as {email}",
+  "@settingsSignedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "settingsSignOut": "Sign out",
+  "settingsSignOutConfirmTitle": "Sign out?",
+  "settingsSignOutConfirmMessage": "To sign back in you'll need a new code sent to your email, which needs internet.",
+  "actionCancel": "Cancel",
 
   "devMenuTitle": "Developer menu",
   "@devMenuTitle": {

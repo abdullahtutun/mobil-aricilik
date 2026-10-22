@@ -10,11 +10,25 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/country_currencies.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/country_picker_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 
-Future<ProviderContainer> _pumpSettings(WidgetTester tester) async {
-  final container = ProviderContainer.test();
+import '../../helpers/fake_auth_service.dart';
+
+Future<ProviderContainer> _pumpSettings(
+  WidgetTester tester, {
+  FakeAuthService? auth,
+}) async {
+  final container = ProviderContainer.test(
+    overrides: [
+      if (auth == null)
+        signedIn()
+      else
+        authServiceProvider.overrideWithValue(auth),
+    ],
+  );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
   );
@@ -49,7 +63,9 @@ Future<void> _tapInSettings(
 void main() {
   group('Ayarlar', () {
     testWidgets('Daha fazla sekmesinden açılır', (tester) async {
-      await tester.pumpWidget(const ProviderScope(child: App()));
+      await tester.pumpWidget(
+        ProviderScope(overrides: [signedIn()], child: const App()),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('More'));
@@ -156,6 +172,63 @@ void main() {
       );
       final delegate = list.childrenDelegate as SliverChildBuilderDelegate;
       expect(delegate.childCount, countryCurrencyCodes.length);
+    });
+  });
+
+  group('Hesap', () {
+    // Hesap bölümü listenin sonunda; kaydırılmadan kurulmaz.
+    Future<void> scrollToAccount(WidgetTester tester) =>
+        tester.scrollUntilVisible(
+          _inSettings(find.text('Sign out')),
+          200,
+          scrollable: _inSettings(find.byType(Scrollable)).first,
+        );
+
+    testWidgets('giriş yapılan e-posta görünür', (tester) async {
+      await _pumpSettings(tester);
+      await scrollToAccount(tester);
+
+      final email = _inSection(
+        'Account',
+        find.text('Signed in as ${testUser.email}'),
+      );
+      await tester.ensureVisible(email);
+      expect(email, findsOneWidget);
+    });
+
+    testWidgets('çıkış onaylanınca oturum kapanır, giriş ekranı açılır', (
+      tester,
+    ) async {
+      final auth = FakeAuthService(user: testUser);
+      await _pumpSettings(tester, auth: auth);
+      await scrollToAccount(tester);
+
+      await _tapInSettings(tester, 'Sign out', section: 'Account');
+      expect(find.text('Sign out?'), findsOneWidget);
+      await tester.tap(
+        find.descendant(
+          of: find.byType(AlertDialog),
+          matching: find.text('Sign out'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(auth.signOutCount, 1);
+      expect(find.byType(SignInEmailScreen), findsOneWidget);
+      expect(find.byType(SettingsScreen), findsNothing);
+    });
+
+    testWidgets('vazgeçilirse oturum açık kalır', (tester) async {
+      final auth = FakeAuthService(user: testUser);
+      await _pumpSettings(tester, auth: auth);
+      await scrollToAccount(tester);
+
+      await _tapInSettings(tester, 'Sign out', section: 'Account');
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      expect(auth.signOutCount, 0);
+      expect(find.byType(SettingsScreen), findsOneWidget);
     });
   });
 }

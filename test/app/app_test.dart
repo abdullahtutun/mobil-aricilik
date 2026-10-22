@@ -7,10 +7,14 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
+import '../helpers/fake_auth_service.dart';
+
 void main() {
   group('App', () {
     testWidgets('açılışta Bugün sekmesi açılır', (tester) async {
-      await tester.pumpWidget(const ProviderScope(child: App()));
+      await tester.pumpWidget(
+        ProviderScope(overrides: [signedIn()], child: const App()),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(TodayScreen), findsOneWidget);
@@ -21,7 +25,9 @@ void main() {
       tester.platformDispatcher.localesTestValue = const [Locale('tr')];
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
-      await tester.pumpWidget(const ProviderScope(child: App()));
+      await tester.pumpWidget(
+        ProviderScope(overrides: [signedIn()], child: const App()),
+      );
       await tester.pumpAndSettle();
 
       for (final label in ['Arılıklar', 'Okut', 'Görevler', 'Daha fazla']) {
@@ -32,7 +38,9 @@ void main() {
     });
 
     testWidgets('pencere başlığı uygulama adı', (tester) async {
-      await tester.pumpWidget(const ProviderScope(child: App()));
+      await tester.pumpWidget(
+        ProviderScope(overrides: [signedIn()], child: const App()),
+      );
       await tester.pumpAndSettle();
 
       final title = tester.widget<Title>(find.byType(Title));
@@ -45,7 +53,9 @@ void main() {
       tester.platformDispatcher.localesTestValue = const [Locale('de', 'DE')];
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
-      await tester.pumpWidget(const ProviderScope(child: App()));
+      await tester.pumpWidget(
+        ProviderScope(overrides: [signedIn()], child: const App()),
+      );
       await tester.pumpAndSettle();
 
       expect(
@@ -58,7 +68,7 @@ void main() {
       tester.platformDispatcher.localesTestValue = const [Locale('en', 'US')];
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
-      final container = ProviderContainer.test();
+      final container = ProviderContainer.test(overrides: [signedIn()]);
       await tester.pumpWidget(
         UncontrolledProviderScope(container: container, child: const App()),
       );
@@ -81,7 +91,7 @@ void main() {
     });
 
     testWidgets('görünüm seçimi değişince tema da değişir', (tester) async {
-      final container = ProviderContainer.test();
+      final container = ProviderContainer.test(overrides: [signedIn()]);
       await tester.pumpWidget(
         UncontrolledProviderScope(container: container, child: const App()),
       );

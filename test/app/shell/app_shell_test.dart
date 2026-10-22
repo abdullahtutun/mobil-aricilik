@@ -17,8 +17,10 @@ import 'package:mobil_arici/features/settings/presentation/settings_screen.dart'
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
+import '../../helpers/fake_auth_service.dart';
+
 Future<ProviderContainer> _pumpApp(WidgetTester tester) async {
-  final container = ProviderContainer.test();
+  final container = ProviderContainer.test(overrides: [signedIn()]);
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
   );

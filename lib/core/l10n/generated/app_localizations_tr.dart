@@ -122,6 +122,68 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quickRecordComingSoon => 'Bu kayıt türü yakında gelecek.';
 
   @override
+  String get signInTitle => 'Giriş yap';
+
+  @override
+  String get signInEmailMessage =>
+      'E-posta adresini yaz, sana 6 haneli bir kod gönderelim. Şifre yok.';
+
+  @override
+  String get signInEmailLabel => 'E-posta';
+
+  @override
+  String get signInSendCode => 'Kod gönder';
+
+  @override
+  String get signInSending => 'Gönderiliyor…';
+
+  @override
+  String get signInCodeTitle => 'Kodu gir';
+
+  @override
+  String signInCodeMessage(String email) {
+    return '$email adresine 6 haneli bir kod gönderdik.';
+  }
+
+  @override
+  String get signInCodeFieldLabel => '6 haneli kod';
+
+  @override
+  String get signInVerify => 'Giriş yap';
+
+  @override
+  String get signInVerifying => 'Kontrol ediliyor…';
+
+  @override
+  String get signInResend => 'Kodu tekrar gönder';
+
+  @override
+  String signInResendIn(int seconds) {
+    return 'Kodu tekrar gönder ($seconds sn)';
+  }
+
+  @override
+  String get signInCodeResent => 'Yeni kod yolda.';
+
+  @override
+  String get authErrorNetwork =>
+      'Bağlantı kurulamadı. İnternetini kontrol edip yeniden dene.';
+
+  @override
+  String get authErrorInvalidEmail => 'Geçerli bir e-posta adresi yaz.';
+
+  @override
+  String get authErrorInvalidCode =>
+      'Kod yanlış ya da süresi dolmuş. Yeniden dene ya da yeni kod iste.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Çok sık denendi. Biraz bekleyip yeniden dene.';
+
+  @override
+  String get authErrorUnknown => 'Bir sorun çıktı. Yeniden dene.';
+
+  @override
   String get settingsTitle => 'Ayarlar';
 
   @override
@@ -162,6 +224,27 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsColorModeSun => 'Güneş';
+
+  @override
+  String get settingsAccount => 'Hesap';
+
+  @override
+  String settingsSignedInAs(String email) {
+    return '$email ile giriş yapıldı';
+  }
+
+  @override
+  String get settingsSignOut => 'Çıkış yap';
+
+  @override
+  String get settingsSignOutConfirmTitle => 'Çıkış yapılsın mı?';
+
+  @override
+  String get settingsSignOutConfirmMessage =>
+      'Yeniden girmek için e-postana yeni bir kod gelmesi gerekir; bunun için internet lazım.';
+
+  @override
+  String get actionCancel => 'Vazgeç';
 
   @override
   String get devMenuTitle => 'Geliştirici menüsü';

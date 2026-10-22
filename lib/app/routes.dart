@@ -12,6 +12,10 @@ abstract final class AppRoutes {
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.
   static const scan = '/scan';
 
+  /// Giriş yapılmamışken açılabilen tek rotalar.
+  static const signIn = '/sign-in';
+  static const signInCode = '/sign-in/code';
+
   static const developerMenu = '/dev';
   static const componentGallery = '/dev/components';
 }

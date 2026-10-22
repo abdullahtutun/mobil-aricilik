@@ -122,6 +122,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quickRecordComingSoon => 'This record type is coming soon.';
 
   @override
+  String get signInTitle => 'Sign in';
+
+  @override
+  String get signInEmailMessage =>
+      'Enter your email and we\'ll send you a 6-digit code. No password needed.';
+
+  @override
+  String get signInEmailLabel => 'Email';
+
+  @override
+  String get signInSendCode => 'Send code';
+
+  @override
+  String get signInSending => 'Sending…';
+
+  @override
+  String get signInCodeTitle => 'Enter the code';
+
+  @override
+  String signInCodeMessage(String email) {
+    return 'We sent a 6-digit code to $email.';
+  }
+
+  @override
+  String get signInCodeFieldLabel => '6-digit code';
+
+  @override
+  String get signInVerify => 'Sign in';
+
+  @override
+  String get signInVerifying => 'Checking…';
+
+  @override
+  String get signInResend => 'Resend code';
+
+  @override
+  String signInResendIn(int seconds) {
+    return 'Resend code ($seconds s)';
+  }
+
+  @override
+  String get signInCodeResent => 'A new code is on its way.';
+
+  @override
+  String get authErrorNetwork =>
+      'Couldn\'t connect. Check your internet and try again.';
+
+  @override
+  String get authErrorInvalidEmail => 'Enter a valid email address.';
+
+  @override
+  String get authErrorInvalidCode =>
+      'The code is wrong or has expired. Try again or request a new code.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Too many attempts. Wait a little and try again.';
+
+  @override
+  String get authErrorUnknown => 'Something went wrong. Please try again.';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override
@@ -162,6 +224,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsColorModeSun => 'Sun';
+
+  @override
+  String get settingsAccount => 'Account';
+
+  @override
+  String settingsSignedInAs(String email) {
+    return 'Signed in as $email';
+  }
+
+  @override
+  String get settingsSignOut => 'Sign out';
+
+  @override
+  String get settingsSignOutConfirmTitle => 'Sign out?';
+
+  @override
+  String get settingsSignOutConfirmMessage =>
+      'To sign back in you\'ll need a new code sent to your email, which needs internet.';
+
+  @override
+  String get actionCancel => 'Cancel';
 
   @override
   String get devMenuTitle => 'Developer menu';

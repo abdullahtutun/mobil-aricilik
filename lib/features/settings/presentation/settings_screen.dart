@@ -7,8 +7,10 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 
-/// Dil, ülke ve tema seçimi. Seçimler şimdilik yalnızca bellekte.
+/// Dil, ülke ve tema seçimi; hesaptan çıkış. Seçimler şimdilik yalnızca
+/// bellekte.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -19,6 +21,7 @@ class SettingsScreen extends ConsumerWidget {
     final language = ref.watch(languageProvider);
     final region = ref.watch(regionConfigProvider);
     final colorMode = ref.watch(appearanceProvider).colorMode;
+    final user = ref.watch(currentUserProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),
@@ -91,9 +94,60 @@ class SettingsScreen extends ConsumerWidget {
               },
             ),
           ),
+          SizedBox(height: spacing.lg),
+          SectionCard(
+            title: l10n.settingsAccount,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (user?.email case final email?) ...[
+                  Text(
+                    l10n.settingsSignedInAs(email),
+                    style: context.typography.body,
+                  ),
+                  SizedBox(height: spacing.md),
+                ],
+                BigButton(
+                  variant: BigButtonVariant.secondary,
+                  label: l10n.settingsSignOut,
+                  icon: Icons.logout_rounded,
+                  onPressed: () => _confirmSignOut(context, ref),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  /// Onaylanırsa yerel oturum silinir; router giriş ekranına geçer.
+  static Future<void> _confirmSignOut(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.settingsSignOutConfirmTitle),
+        content: Text(l10n.settingsSignOutConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.actionCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.settingsSignOut),
+          ),
+        ],
+      ),
+    );
+    if (confirmed ?? false) {
+      await ref.read(currentUserProvider.notifier).signOut();
+    }
   }
 
   static String _languageLabel(AppLocalizations l10n, AppLanguage language) {

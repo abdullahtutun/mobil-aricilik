@@ -284,6 +284,114 @@ abstract class AppLocalizations {
   /// **'This record type is coming soon.'**
   String get quickRecordComingSoon;
 
+  /// No description provided for @signInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInTitle;
+
+  /// No description provided for @signInEmailMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email and we\'ll send you a 6-digit code. No password needed.'**
+  String get signInEmailMessage;
+
+  /// No description provided for @signInEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get signInEmailLabel;
+
+  /// No description provided for @signInSendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get signInSendCode;
+
+  /// No description provided for @signInSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending…'**
+  String get signInSending;
+
+  /// No description provided for @signInCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code'**
+  String get signInCodeTitle;
+
+  /// No description provided for @signInCodeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to {email}.'**
+  String signInCodeMessage(String email);
+
+  /// Screen reader label of the code input; the digit boxes are not read separately.
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit code'**
+  String get signInCodeFieldLabel;
+
+  /// No description provided for @signInVerify.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInVerify;
+
+  /// No description provided for @signInVerifying.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking…'**
+  String get signInVerifying;
+
+  /// No description provided for @signInResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get signInResend;
+
+  /// Disabled resend button with the seconds left until a new code can be requested.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code ({seconds} s)'**
+  String signInResendIn(int seconds);
+
+  /// No description provided for @signInCodeResent.
+  ///
+  /// In en, this message translates to:
+  /// **'A new code is on its way.'**
+  String get signInCodeResent;
+
+  /// No description provided for @authErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t connect. Check your internet and try again.'**
+  String get authErrorNetwork;
+
+  /// No description provided for @authErrorInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address.'**
+  String get authErrorInvalidEmail;
+
+  /// No description provided for @authErrorInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'The code is wrong or has expired. Try again or request a new code.'**
+  String get authErrorInvalidCode;
+
+  /// No description provided for @authErrorTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Wait a little and try again.'**
+  String get authErrorTooManyRequests;
+
+  /// No description provided for @authErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get authErrorUnknown;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
@@ -361,6 +469,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sun'**
   String get settingsColorModeSun;
+
+  /// No description provided for @settingsAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get settingsAccount;
+
+  /// No description provided for @settingsSignedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {email}'**
+  String settingsSignedInAs(String email);
+
+  /// No description provided for @settingsSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get settingsSignOut;
+
+  /// No description provided for @settingsSignOutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out?'**
+  String get settingsSignOutConfirmTitle;
+
+  /// No description provided for @settingsSignOutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'To sign back in you\'ll need a new code sent to your email, which needs internet.'**
+  String get settingsSignOutConfirmMessage;
+
+  /// No description provided for @actionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get actionCancel;
 
   /// Developer menu, only in the dev flavor.
   ///
