@@ -5,3 +5,8 @@ targets:
         options:
           # JSON, Supabase satırlarıyla aynı biçimde: kolonlar snake_case.
           field_rename: snake
+      drift_dev:
+        options:
+          # Zamanlar ISO-8601 metin (mikrosaniye, UTC'de "Z"); varsayılan
+          # tam sayı saniyeye yuvarlar, son yazan kazanır kararı bozulur.
+          store_date_time_values_as_text: true

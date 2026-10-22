@@ -1,0 +1,7290 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'app_database.dart';
+
+// ignore_for_file: type=lint
+class $OrganizationsTable extends Organizations
+    with TableInfo<$OrganizationsTable, OrganizationRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OrganizationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _countryCodeMeta = const VerificationMeta(
+    'countryCode',
+  );
+  @override
+  late final GeneratedColumn<String> countryCode = GeneratedColumn<String>(
+    'country_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _currencyMeta = const VerificationMeta(
+    'currency',
+  );
+  @override
+  late final GeneratedColumn<String> currency = GeneratedColumn<String>(
+    'currency',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _trRegistrationNoMeta = const VerificationMeta(
+    'trRegistrationNo',
+  );
+  @override
+  late final GeneratedColumn<String> trRegistrationNo = GeneratedColumn<String>(
+    'tr_registration_no',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _trAksNoMeta = const VerificationMeta(
+    'trAksNo',
+  );
+  @override
+  late final GeneratedColumn<String> trAksNo = GeneratedColumn<String>(
+    'tr_aks_no',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HiveCountRange?, String>
+  hiveCountRange =
+      GeneratedColumn<String>(
+        'hive_count_range',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<HiveCountRange?>(
+        $OrganizationsTable.$converterhiveCountRangen,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    name,
+    countryCode,
+    currency,
+    trRegistrationNo,
+    trAksNo,
+    hiveCountRange,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'organizations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<OrganizationRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('country_code')) {
+      context.handle(
+        _countryCodeMeta,
+        countryCode.isAcceptableOrUnknown(
+          data['country_code']!,
+          _countryCodeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_countryCodeMeta);
+    }
+    if (data.containsKey('currency')) {
+      context.handle(
+        _currencyMeta,
+        currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_currencyMeta);
+    }
+    if (data.containsKey('tr_registration_no')) {
+      context.handle(
+        _trRegistrationNoMeta,
+        trRegistrationNo.isAcceptableOrUnknown(
+          data['tr_registration_no']!,
+          _trRegistrationNoMeta,
+        ),
+      );
+    }
+    if (data.containsKey('tr_aks_no')) {
+      context.handle(
+        _trAksNoMeta,
+        trAksNo.isAcceptableOrUnknown(data['tr_aks_no']!, _trAksNoMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  OrganizationRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OrganizationRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      countryCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country_code'],
+      )!,
+      currency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency'],
+      )!,
+      trRegistrationNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tr_registration_no'],
+      ),
+      trAksNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tr_aks_no'],
+      ),
+      hiveCountRange: $OrganizationsTable.$converterhiveCountRangen.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}hive_count_range'],
+        ),
+      ),
+    );
+  }
+
+  @override
+  $OrganizationsTable createAlias(String alias) {
+    return $OrganizationsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<HiveCountRange, String> $converterhiveCountRange =
+      const ServerEnumConverter(HiveCountRange.values);
+  static TypeConverter<HiveCountRange?, String?> $converterhiveCountRangen =
+      NullAwareTypeConverter.wrap($converterhiveCountRange);
+}
+
+class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
+  /// İstemcide üretilen UUIDv7.
+  final String id;
+  final DateTime createdAt;
+
+  /// Son yazan kazanır; her yerel yazmada şimdiye çekilir.
+  final DateTime updatedAt;
+
+  /// Sunucu doldurur; yerelde oluşan kayıtta senkrona kadar boş.
+  final String? createdBy;
+
+  /// Yumuşak silme: dolu satır listelerde görünmez.
+  final DateTime? deletedAt;
+
+  /// Çekme imleci; sunucuya henüz ulaşmamış kayıtta boş.
+  final int? serverSeq;
+  final String name;
+
+  /// ISO 3166-1 alpha-2, büyük harf.
+  final String countryCode;
+
+  /// ISO 4217.
+  final String currency;
+
+  /// Yalnız TR profilinde: işletme tescil no ve AKS no.
+  final String? trRegistrationNo;
+  final String? trAksNo;
+  final HiveCountRange? hiveCountRange;
+  const OrganizationRow({
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
+    this.createdBy,
+    this.deletedAt,
+    this.serverSeq,
+    required this.name,
+    required this.countryCode,
+    required this.currency,
+    this.trRegistrationNo,
+    this.trAksNo,
+    this.hiveCountRange,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || createdBy != null) {
+      map['created_by'] = Variable<String>(createdBy);
+    }
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    map['name'] = Variable<String>(name);
+    map['country_code'] = Variable<String>(countryCode);
+    map['currency'] = Variable<String>(currency);
+    if (!nullToAbsent || trRegistrationNo != null) {
+      map['tr_registration_no'] = Variable<String>(trRegistrationNo);
+    }
+    if (!nullToAbsent || trAksNo != null) {
+      map['tr_aks_no'] = Variable<String>(trAksNo);
+    }
+    if (!nullToAbsent || hiveCountRange != null) {
+      map['hive_count_range'] = Variable<String>(
+        $OrganizationsTable.$converterhiveCountRangen.toSql(hiveCountRange),
+      );
+    }
+    return map;
+  }
+
+  OrganizationsCompanion toCompanion(bool nullToAbsent) {
+    return OrganizationsCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdBy: createdBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdBy),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      name: Value(name),
+      countryCode: Value(countryCode),
+      currency: Value(currency),
+      trRegistrationNo: trRegistrationNo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(trRegistrationNo),
+      trAksNo: trAksNo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(trAksNo),
+      hiveCountRange: hiveCountRange == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hiveCountRange),
+    );
+  }
+
+  factory OrganizationRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OrganizationRow(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdBy: serializer.fromJson<String?>(json['createdBy']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      name: serializer.fromJson<String>(json['name']),
+      countryCode: serializer.fromJson<String>(json['countryCode']),
+      currency: serializer.fromJson<String>(json['currency']),
+      trRegistrationNo: serializer.fromJson<String?>(json['trRegistrationNo']),
+      trAksNo: serializer.fromJson<String?>(json['trAksNo']),
+      hiveCountRange: serializer.fromJson<HiveCountRange?>(
+        json['hiveCountRange'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdBy': serializer.toJson<String?>(createdBy),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'name': serializer.toJson<String>(name),
+      'countryCode': serializer.toJson<String>(countryCode),
+      'currency': serializer.toJson<String>(currency),
+      'trRegistrationNo': serializer.toJson<String?>(trRegistrationNo),
+      'trAksNo': serializer.toJson<String?>(trAksNo),
+      'hiveCountRange': serializer.toJson<HiveCountRange?>(hiveCountRange),
+    };
+  }
+
+  OrganizationRow copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<String?> createdBy = const Value.absent(),
+    Value<DateTime?> deletedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    String? name,
+    String? countryCode,
+    String? currency,
+    Value<String?> trRegistrationNo = const Value.absent(),
+    Value<String?> trAksNo = const Value.absent(),
+    Value<HiveCountRange?> hiveCountRange = const Value.absent(),
+  }) => OrganizationRow(
+    id: id ?? this.id,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdBy: createdBy.present ? createdBy.value : this.createdBy,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    name: name ?? this.name,
+    countryCode: countryCode ?? this.countryCode,
+    currency: currency ?? this.currency,
+    trRegistrationNo: trRegistrationNo.present
+        ? trRegistrationNo.value
+        : this.trRegistrationNo,
+    trAksNo: trAksNo.present ? trAksNo.value : this.trAksNo,
+    hiveCountRange: hiveCountRange.present
+        ? hiveCountRange.value
+        : this.hiveCountRange,
+  );
+  OrganizationRow copyWithCompanion(OrganizationsCompanion data) {
+    return OrganizationRow(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      name: data.name.present ? data.name.value : this.name,
+      countryCode: data.countryCode.present
+          ? data.countryCode.value
+          : this.countryCode,
+      currency: data.currency.present ? data.currency.value : this.currency,
+      trRegistrationNo: data.trRegistrationNo.present
+          ? data.trRegistrationNo.value
+          : this.trRegistrationNo,
+      trAksNo: data.trAksNo.present ? data.trAksNo.value : this.trAksNo,
+      hiveCountRange: data.hiveCountRange.present
+          ? data.hiveCountRange.value
+          : this.hiveCountRange,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OrganizationRow(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('name: $name, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('currency: $currency, ')
+          ..write('trRegistrationNo: $trRegistrationNo, ')
+          ..write('trAksNo: $trAksNo, ')
+          ..write('hiveCountRange: $hiveCountRange')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    name,
+    countryCode,
+    currency,
+    trRegistrationNo,
+    trAksNo,
+    hiveCountRange,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OrganizationRow &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdBy == this.createdBy &&
+          other.deletedAt == this.deletedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.name == this.name &&
+          other.countryCode == this.countryCode &&
+          other.currency == this.currency &&
+          other.trRegistrationNo == this.trRegistrationNo &&
+          other.trAksNo == this.trAksNo &&
+          other.hiveCountRange == this.hiveCountRange);
+}
+
+class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> name;
+  final Value<String> countryCode;
+  final Value<String> currency;
+  final Value<String?> trRegistrationNo;
+  final Value<String?> trAksNo;
+  final Value<HiveCountRange?> hiveCountRange;
+  final Value<int> rowid;
+  const OrganizationsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.name = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.currency = const Value.absent(),
+    this.trRegistrationNo = const Value.absent(),
+    this.trAksNo = const Value.absent(),
+    this.hiveCountRange = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  OrganizationsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String name,
+    required String countryCode,
+    required String currency,
+    this.trRegistrationNo = const Value.absent(),
+    this.trAksNo = const Value.absent(),
+    this.hiveCountRange = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       name = Value(name),
+       countryCode = Value(countryCode),
+       currency = Value(currency);
+  static Insertable<OrganizationRow> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? name,
+    Expression<String>? countryCode,
+    Expression<String>? currency,
+    Expression<String>? trRegistrationNo,
+    Expression<String>? trAksNo,
+    Expression<String>? hiveCountRange,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (name != null) 'name': name,
+      if (countryCode != null) 'country_code': countryCode,
+      if (currency != null) 'currency': currency,
+      if (trRegistrationNo != null) 'tr_registration_no': trRegistrationNo,
+      if (trAksNo != null) 'tr_aks_no': trAksNo,
+      if (hiveCountRange != null) 'hive_count_range': hiveCountRange,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  OrganizationsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? name,
+    Value<String>? countryCode,
+    Value<String>? currency,
+    Value<String?>? trRegistrationNo,
+    Value<String?>? trAksNo,
+    Value<HiveCountRange?>? hiveCountRange,
+    Value<int>? rowid,
+  }) {
+    return OrganizationsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      name: name ?? this.name,
+      countryCode: countryCode ?? this.countryCode,
+      currency: currency ?? this.currency,
+      trRegistrationNo: trRegistrationNo ?? this.trRegistrationNo,
+      trAksNo: trAksNo ?? this.trAksNo,
+      hiveCountRange: hiveCountRange ?? this.hiveCountRange,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (countryCode.present) {
+      map['country_code'] = Variable<String>(countryCode.value);
+    }
+    if (currency.present) {
+      map['currency'] = Variable<String>(currency.value);
+    }
+    if (trRegistrationNo.present) {
+      map['tr_registration_no'] = Variable<String>(trRegistrationNo.value);
+    }
+    if (trAksNo.present) {
+      map['tr_aks_no'] = Variable<String>(trAksNo.value);
+    }
+    if (hiveCountRange.present) {
+      map['hive_count_range'] = Variable<String>(
+        $OrganizationsTable.$converterhiveCountRangen.toSql(
+          hiveCountRange.value,
+        ),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OrganizationsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('name: $name, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('currency: $currency, ')
+          ..write('trRegistrationNo: $trRegistrationNo, ')
+          ..write('trAksNo: $trAksNo, ')
+          ..write('hiveCountRange: $hiveCountRange, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MembershipsTable extends Memberships
+    with TableInfo<$MembershipsTable, MembershipRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MembershipsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<MembershipRole, String> role =
+      GeneratedColumn<String>(
+        'role',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<MembershipRole>($MembershipsTable.$converterrole);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    userId,
+    role,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'memberships';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MembershipRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MembershipRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MembershipRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      role: $MembershipsTable.$converterrole.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}role'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $MembershipsTable createAlias(String alias) {
+    return $MembershipsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<MembershipRole, String> $converterrole =
+      const ServerEnumConverter(MembershipRole.values);
+}
+
+class MembershipRow extends DataClass implements Insertable<MembershipRow> {
+  /// İstemcide üretilen UUIDv7.
+  final String id;
+  final DateTime createdAt;
+
+  /// Son yazan kazanır; her yerel yazmada şimdiye çekilir.
+  final DateTime updatedAt;
+
+  /// Sunucu doldurur; yerelde oluşan kayıtta senkrona kadar boş.
+  final String? createdBy;
+
+  /// Yumuşak silme: dolu satır listelerde görünmez.
+  final DateTime? deletedAt;
+
+  /// Çekme imleci; sunucuya henüz ulaşmamış kayıtta boş.
+  final int? serverSeq;
+  final String orgId;
+  final String userId;
+  final MembershipRole role;
+  const MembershipRow({
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
+    this.createdBy,
+    this.deletedAt,
+    this.serverSeq,
+    required this.orgId,
+    required this.userId,
+    required this.role,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || createdBy != null) {
+      map['created_by'] = Variable<String>(createdBy);
+    }
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    map['org_id'] = Variable<String>(orgId);
+    map['user_id'] = Variable<String>(userId);
+    {
+      map['role'] = Variable<String>(
+        $MembershipsTable.$converterrole.toSql(role),
+      );
+    }
+    return map;
+  }
+
+  MembershipsCompanion toCompanion(bool nullToAbsent) {
+    return MembershipsCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdBy: createdBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdBy),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      orgId: Value(orgId),
+      userId: Value(userId),
+      role: Value(role),
+    );
+  }
+
+  factory MembershipRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MembershipRow(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdBy: serializer.fromJson<String?>(json['createdBy']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      orgId: serializer.fromJson<String>(json['orgId']),
+      userId: serializer.fromJson<String>(json['userId']),
+      role: serializer.fromJson<MembershipRole>(json['role']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdBy': serializer.toJson<String?>(createdBy),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'orgId': serializer.toJson<String>(orgId),
+      'userId': serializer.toJson<String>(userId),
+      'role': serializer.toJson<MembershipRole>(role),
+    };
+  }
+
+  MembershipRow copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<String?> createdBy = const Value.absent(),
+    Value<DateTime?> deletedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    String? orgId,
+    String? userId,
+    MembershipRole? role,
+  }) => MembershipRow(
+    id: id ?? this.id,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdBy: createdBy.present ? createdBy.value : this.createdBy,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    orgId: orgId ?? this.orgId,
+    userId: userId ?? this.userId,
+    role: role ?? this.role,
+  );
+  MembershipRow copyWithCompanion(MembershipsCompanion data) {
+    return MembershipRow(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      orgId: data.orgId.present ? data.orgId.value : this.orgId,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      role: data.role.present ? data.role.value : this.role,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembershipRow(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('userId: $userId, ')
+          ..write('role: $role')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    userId,
+    role,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MembershipRow &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdBy == this.createdBy &&
+          other.deletedAt == this.deletedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.orgId == this.orgId &&
+          other.userId == this.userId &&
+          other.role == this.role);
+}
+
+class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> userId;
+  final Value<MembershipRole> role;
+  final Value<int> rowid;
+  const MembershipsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.role = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MembershipsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String userId,
+    required MembershipRole role,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       userId = Value(userId),
+       role = Value(role);
+  static Insertable<MembershipRow> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? userId,
+    Expression<String>? role,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (userId != null) 'user_id': userId,
+      if (role != null) 'role': role,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MembershipsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? userId,
+    Value<MembershipRole>? role,
+    Value<int>? rowid,
+  }) {
+    return MembershipsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      userId: userId ?? this.userId,
+      role: role ?? this.role,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(
+        $MembershipsTable.$converterrole.toSql(role.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembershipsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('userId: $userId, ')
+          ..write('role: $role, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ApiariesTable extends Apiaries with TableInfo<$ApiariesTable, Apiary> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ApiariesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _latitudeMeta = const VerificationMeta(
+    'latitude',
+  );
+  @override
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+    'latitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _longitudeMeta = const VerificationMeta(
+    'longitude',
+  );
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+    'longitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _altitudeMMeta = const VerificationMeta(
+    'altitudeM',
+  );
+  @override
+  late final GeneratedColumn<int> altitudeM = GeneratedColumn<int>(
+    'altitude_m',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _landownerNameMeta = const VerificationMeta(
+    'landownerName',
+  );
+  @override
+  late final GeneratedColumn<String> landownerName = GeneratedColumn<String>(
+    'landowner_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _landownerPhoneMeta = const VerificationMeta(
+    'landownerPhone',
+  );
+  @override
+  late final GeneratedColumn<String> landownerPhone = GeneratedColumn<String>(
+    'landowner_phone',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<LandTenure?, String> landTenure =
+      GeneratedColumn<String>(
+        'land_tenure',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<LandTenure?>($ApiariesTable.$converterlandTenuren);
+  static const VerificationMeta _waterSourceMeta = const VerificationMeta(
+    'waterSource',
+  );
+  @override
+  late final GeneratedColumn<String> waterSource = GeneratedColumn<String>(
+    'water_source',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _vehicleDistanceMMeta = const VerificationMeta(
+    'vehicleDistanceM',
+  );
+  @override
+  late final GeneratedColumn<int> vehicleDistanceM = GeneratedColumn<int>(
+    'vehicle_distance_m',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _roadNotesMeta = const VerificationMeta(
+    'roadNotes',
+  );
+  @override
+  late final GeneratedColumn<String> roadNotes = GeneratedColumn<String>(
+    'road_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    name,
+    latitude,
+    longitude,
+    altitudeM,
+    landownerName,
+    landownerPhone,
+    landTenure,
+    waterSource,
+    vehicleDistanceM,
+    roadNotes,
+    notes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'apiaries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Apiary> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(
+        _latitudeMeta,
+        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
+      );
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(
+        _longitudeMeta,
+        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
+      );
+    }
+    if (data.containsKey('altitude_m')) {
+      context.handle(
+        _altitudeMMeta,
+        altitudeM.isAcceptableOrUnknown(data['altitude_m']!, _altitudeMMeta),
+      );
+    }
+    if (data.containsKey('landowner_name')) {
+      context.handle(
+        _landownerNameMeta,
+        landownerName.isAcceptableOrUnknown(
+          data['landowner_name']!,
+          _landownerNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('landowner_phone')) {
+      context.handle(
+        _landownerPhoneMeta,
+        landownerPhone.isAcceptableOrUnknown(
+          data['landowner_phone']!,
+          _landownerPhoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('water_source')) {
+      context.handle(
+        _waterSourceMeta,
+        waterSource.isAcceptableOrUnknown(
+          data['water_source']!,
+          _waterSourceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('vehicle_distance_m')) {
+      context.handle(
+        _vehicleDistanceMMeta,
+        vehicleDistanceM.isAcceptableOrUnknown(
+          data['vehicle_distance_m']!,
+          _vehicleDistanceMMeta,
+        ),
+      );
+    }
+    if (data.containsKey('road_notes')) {
+      context.handle(
+        _roadNotesMeta,
+        roadNotes.isAcceptableOrUnknown(data['road_notes']!, _roadNotesMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Apiary map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Apiary(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      latitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}latitude'],
+      ),
+      longitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}longitude'],
+      ),
+      altitudeM: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}altitude_m'],
+      ),
+      landownerName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}landowner_name'],
+      ),
+      landownerPhone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}landowner_phone'],
+      ),
+      landTenure: $ApiariesTable.$converterlandTenuren.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}land_tenure'],
+        ),
+      ),
+      waterSource: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}water_source'],
+      ),
+      vehicleDistanceM: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}vehicle_distance_m'],
+      ),
+      roadNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}road_notes'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $ApiariesTable createAlias(String alias) {
+    return $ApiariesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<LandTenure, String> $converterlandTenure =
+      const ServerEnumConverter(LandTenure.values);
+  static TypeConverter<LandTenure?, String?> $converterlandTenuren =
+      NullAwareTypeConverter.wrap($converterlandTenure);
+}
+
+class ApiariesCompanion extends UpdateCompanion<Apiary> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> name;
+  final Value<double?> latitude;
+  final Value<double?> longitude;
+  final Value<int?> altitudeM;
+  final Value<String?> landownerName;
+  final Value<String?> landownerPhone;
+  final Value<LandTenure?> landTenure;
+  final Value<String?> waterSource;
+  final Value<int?> vehicleDistanceM;
+  final Value<String?> roadNotes;
+  final Value<String?> notes;
+  final Value<int> rowid;
+  const ApiariesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.altitudeM = const Value.absent(),
+    this.landownerName = const Value.absent(),
+    this.landownerPhone = const Value.absent(),
+    this.landTenure = const Value.absent(),
+    this.waterSource = const Value.absent(),
+    this.vehicleDistanceM = const Value.absent(),
+    this.roadNotes = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ApiariesCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String name,
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.altitudeM = const Value.absent(),
+    this.landownerName = const Value.absent(),
+    this.landownerPhone = const Value.absent(),
+    this.landTenure = const Value.absent(),
+    this.waterSource = const Value.absent(),
+    this.vehicleDistanceM = const Value.absent(),
+    this.roadNotes = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       name = Value(name);
+  static Insertable<Apiary> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? name,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<int>? altitudeM,
+    Expression<String>? landownerName,
+    Expression<String>? landownerPhone,
+    Expression<String>? landTenure,
+    Expression<String>? waterSource,
+    Expression<int>? vehicleDistanceM,
+    Expression<String>? roadNotes,
+    Expression<String>? notes,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (name != null) 'name': name,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (altitudeM != null) 'altitude_m': altitudeM,
+      if (landownerName != null) 'landowner_name': landownerName,
+      if (landownerPhone != null) 'landowner_phone': landownerPhone,
+      if (landTenure != null) 'land_tenure': landTenure,
+      if (waterSource != null) 'water_source': waterSource,
+      if (vehicleDistanceM != null) 'vehicle_distance_m': vehicleDistanceM,
+      if (roadNotes != null) 'road_notes': roadNotes,
+      if (notes != null) 'notes': notes,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ApiariesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? name,
+    Value<double?>? latitude,
+    Value<double?>? longitude,
+    Value<int?>? altitudeM,
+    Value<String?>? landownerName,
+    Value<String?>? landownerPhone,
+    Value<LandTenure?>? landTenure,
+    Value<String?>? waterSource,
+    Value<int?>? vehicleDistanceM,
+    Value<String?>? roadNotes,
+    Value<String?>? notes,
+    Value<int>? rowid,
+  }) {
+    return ApiariesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      name: name ?? this.name,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      altitudeM: altitudeM ?? this.altitudeM,
+      landownerName: landownerName ?? this.landownerName,
+      landownerPhone: landownerPhone ?? this.landownerPhone,
+      landTenure: landTenure ?? this.landTenure,
+      waterSource: waterSource ?? this.waterSource,
+      vehicleDistanceM: vehicleDistanceM ?? this.vehicleDistanceM,
+      roadNotes: roadNotes ?? this.roadNotes,
+      notes: notes ?? this.notes,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (altitudeM.present) {
+      map['altitude_m'] = Variable<int>(altitudeM.value);
+    }
+    if (landownerName.present) {
+      map['landowner_name'] = Variable<String>(landownerName.value);
+    }
+    if (landownerPhone.present) {
+      map['landowner_phone'] = Variable<String>(landownerPhone.value);
+    }
+    if (landTenure.present) {
+      map['land_tenure'] = Variable<String>(
+        $ApiariesTable.$converterlandTenuren.toSql(landTenure.value),
+      );
+    }
+    if (waterSource.present) {
+      map['water_source'] = Variable<String>(waterSource.value);
+    }
+    if (vehicleDistanceM.present) {
+      map['vehicle_distance_m'] = Variable<int>(vehicleDistanceM.value);
+    }
+    if (roadNotes.present) {
+      map['road_notes'] = Variable<String>(roadNotes.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ApiariesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('name: $name, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('altitudeM: $altitudeM, ')
+          ..write('landownerName: $landownerName, ')
+          ..write('landownerPhone: $landownerPhone, ')
+          ..write('landTenure: $landTenure, ')
+          ..write('waterSource: $waterSource, ')
+          ..write('vehicleDistanceM: $vehicleDistanceM, ')
+          ..write('roadNotes: $roadNotes, ')
+          ..write('notes: $notes, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$ApiaryInsertable implements Insertable<Apiary> {
+  Apiary _object;
+  _$ApiaryInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return ApiariesCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      name: Value(_object.name),
+      latitude: Value(_object.latitude),
+      longitude: Value(_object.longitude),
+      altitudeM: Value(_object.altitudeM),
+      landownerName: Value(_object.landownerName),
+      landownerPhone: Value(_object.landownerPhone),
+      landTenure: Value(_object.landTenure),
+      waterSource: Value(_object.waterSource),
+      vehicleDistanceM: Value(_object.vehicleDistanceM),
+      roadNotes: Value(_object.roadNotes),
+      notes: Value(_object.notes),
+    ).toColumns(false);
+  }
+}
+
+extension ApiaryToInsertable on Apiary {
+  _$ApiaryInsertable toInsertable() {
+    return _$ApiaryInsertable(this);
+  }
+}
+
+class $QueensTable extends Queens with TableInfo<$QueensTable, Queen> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $QueensTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _yearMeta = const VerificationMeta('year');
+  @override
+  late final GeneratedColumn<int> year = GeneratedColumn<int>(
+    'year',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<QueenMarkColor?, String>
+  markColor = GeneratedColumn<String>(
+    'mark_color',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<QueenMarkColor?>($QueensTable.$convertermarkColorn);
+  static const VerificationMeta _breedMeta = const VerificationMeta('breed');
+  @override
+  late final GeneratedColumn<String> breed = GeneratedColumn<String>(
+    'breed',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _breedLineMeta = const VerificationMeta(
+    'breedLine',
+  );
+  @override
+  late final GeneratedColumn<String> breedLine = GeneratedColumn<String>(
+    'breed_line',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<QueenSource?, String> source =
+      GeneratedColumn<String>(
+        'source',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<QueenSource?>($QueensTable.$convertersourcen);
+  @override
+  late final GeneratedColumnWithTypeConverter<QueenMatingStatus?, String>
+  matingStatus = GeneratedColumn<String>(
+    'mating_status',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<QueenMatingStatus?>($QueensTable.$convertermatingStatusn);
+  static const VerificationMeta _wingClippedMeta = const VerificationMeta(
+    'wingClipped',
+  );
+  @override
+  late final GeneratedColumn<bool> wingClipped = GeneratedColumn<bool>(
+    'wing_clipped',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("wing_clipped" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _motherQueenIdMeta = const VerificationMeta(
+    'motherQueenId',
+  );
+  @override
+  late final GeneratedColumn<String> motherQueenId = GeneratedColumn<String>(
+    'mother_queen_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    year,
+    markColor,
+    breed,
+    breedLine,
+    source,
+    matingStatus,
+    wingClipped,
+    motherQueenId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'queens';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Queen> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('year')) {
+      context.handle(
+        _yearMeta,
+        year.isAcceptableOrUnknown(data['year']!, _yearMeta),
+      );
+    }
+    if (data.containsKey('breed')) {
+      context.handle(
+        _breedMeta,
+        breed.isAcceptableOrUnknown(data['breed']!, _breedMeta),
+      );
+    }
+    if (data.containsKey('breed_line')) {
+      context.handle(
+        _breedLineMeta,
+        breedLine.isAcceptableOrUnknown(data['breed_line']!, _breedLineMeta),
+      );
+    }
+    if (data.containsKey('wing_clipped')) {
+      context.handle(
+        _wingClippedMeta,
+        wingClipped.isAcceptableOrUnknown(
+          data['wing_clipped']!,
+          _wingClippedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('mother_queen_id')) {
+      context.handle(
+        _motherQueenIdMeta,
+        motherQueenId.isAcceptableOrUnknown(
+          data['mother_queen_id']!,
+          _motherQueenIdMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Queen map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Queen(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      year: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}year'],
+      ),
+      markColor: $QueensTable.$convertermarkColorn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}mark_color'],
+        ),
+      ),
+      breed: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}breed'],
+      ),
+      breedLine: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}breed_line'],
+      ),
+      source: $QueensTable.$convertersourcen.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}source'],
+        ),
+      ),
+      matingStatus: $QueensTable.$convertermatingStatusn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}mating_status'],
+        ),
+      ),
+      wingClipped: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}wing_clipped'],
+      )!,
+      motherQueenId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}mother_queen_id'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $QueensTable createAlias(String alias) {
+    return $QueensTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<QueenMarkColor, String, String>
+  $convertermarkColor = const EnumNameConverter<QueenMarkColor>(
+    QueenMarkColor.values,
+  );
+  static JsonTypeConverter2<QueenMarkColor?, String?, String?>
+  $convertermarkColorn = JsonTypeConverter2.asNullable($convertermarkColor);
+  static TypeConverter<QueenSource, String> $convertersource =
+      const ServerEnumConverter(QueenSource.values);
+  static TypeConverter<QueenSource?, String?> $convertersourcen =
+      NullAwareTypeConverter.wrap($convertersource);
+  static TypeConverter<QueenMatingStatus, String> $convertermatingStatus =
+      const ServerEnumConverter(QueenMatingStatus.values);
+  static TypeConverter<QueenMatingStatus?, String?> $convertermatingStatusn =
+      NullAwareTypeConverter.wrap($convertermatingStatus);
+}
+
+class QueensCompanion extends UpdateCompanion<Queen> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<int?> year;
+  final Value<QueenMarkColor?> markColor;
+  final Value<String?> breed;
+  final Value<String?> breedLine;
+  final Value<QueenSource?> source;
+  final Value<QueenMatingStatus?> matingStatus;
+  final Value<bool> wingClipped;
+  final Value<String?> motherQueenId;
+  final Value<int> rowid;
+  const QueensCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.year = const Value.absent(),
+    this.markColor = const Value.absent(),
+    this.breed = const Value.absent(),
+    this.breedLine = const Value.absent(),
+    this.source = const Value.absent(),
+    this.matingStatus = const Value.absent(),
+    this.wingClipped = const Value.absent(),
+    this.motherQueenId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  QueensCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    this.year = const Value.absent(),
+    this.markColor = const Value.absent(),
+    this.breed = const Value.absent(),
+    this.breedLine = const Value.absent(),
+    this.source = const Value.absent(),
+    this.matingStatus = const Value.absent(),
+    this.wingClipped = const Value.absent(),
+    this.motherQueenId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId);
+  static Insertable<Queen> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<int>? year,
+    Expression<String>? markColor,
+    Expression<String>? breed,
+    Expression<String>? breedLine,
+    Expression<String>? source,
+    Expression<String>? matingStatus,
+    Expression<bool>? wingClipped,
+    Expression<String>? motherQueenId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (year != null) 'year': year,
+      if (markColor != null) 'mark_color': markColor,
+      if (breed != null) 'breed': breed,
+      if (breedLine != null) 'breed_line': breedLine,
+      if (source != null) 'source': source,
+      if (matingStatus != null) 'mating_status': matingStatus,
+      if (wingClipped != null) 'wing_clipped': wingClipped,
+      if (motherQueenId != null) 'mother_queen_id': motherQueenId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  QueensCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<int?>? year,
+    Value<QueenMarkColor?>? markColor,
+    Value<String?>? breed,
+    Value<String?>? breedLine,
+    Value<QueenSource?>? source,
+    Value<QueenMatingStatus?>? matingStatus,
+    Value<bool>? wingClipped,
+    Value<String?>? motherQueenId,
+    Value<int>? rowid,
+  }) {
+    return QueensCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      year: year ?? this.year,
+      markColor: markColor ?? this.markColor,
+      breed: breed ?? this.breed,
+      breedLine: breedLine ?? this.breedLine,
+      source: source ?? this.source,
+      matingStatus: matingStatus ?? this.matingStatus,
+      wingClipped: wingClipped ?? this.wingClipped,
+      motherQueenId: motherQueenId ?? this.motherQueenId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (year.present) {
+      map['year'] = Variable<int>(year.value);
+    }
+    if (markColor.present) {
+      map['mark_color'] = Variable<String>(
+        $QueensTable.$convertermarkColorn.toSql(markColor.value),
+      );
+    }
+    if (breed.present) {
+      map['breed'] = Variable<String>(breed.value);
+    }
+    if (breedLine.present) {
+      map['breed_line'] = Variable<String>(breedLine.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(
+        $QueensTable.$convertersourcen.toSql(source.value),
+      );
+    }
+    if (matingStatus.present) {
+      map['mating_status'] = Variable<String>(
+        $QueensTable.$convertermatingStatusn.toSql(matingStatus.value),
+      );
+    }
+    if (wingClipped.present) {
+      map['wing_clipped'] = Variable<bool>(wingClipped.value);
+    }
+    if (motherQueenId.present) {
+      map['mother_queen_id'] = Variable<String>(motherQueenId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QueensCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('year: $year, ')
+          ..write('markColor: $markColor, ')
+          ..write('breed: $breed, ')
+          ..write('breedLine: $breedLine, ')
+          ..write('source: $source, ')
+          ..write('matingStatus: $matingStatus, ')
+          ..write('wingClipped: $wingClipped, ')
+          ..write('motherQueenId: $motherQueenId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$QueenInsertable implements Insertable<Queen> {
+  Queen _object;
+  _$QueenInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return QueensCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      year: Value(_object.year),
+      markColor: Value(_object.markColor),
+      breed: Value(_object.breed),
+      breedLine: Value(_object.breedLine),
+      source: Value(_object.source),
+      matingStatus: Value(_object.matingStatus),
+      wingClipped: Value(_object.wingClipped),
+      motherQueenId: Value(_object.motherQueenId),
+    ).toColumns(false);
+  }
+}
+
+extension QueenToInsertable on Queen {
+  _$QueenInsertable toInsertable() {
+    return _$QueenInsertable(this);
+  }
+}
+
+class $HivesTable extends Hives with TableInfo<$HivesTable, Hive> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HivesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedColumn<String> number = GeneratedColumn<String>(
+    'number',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tagCodeMeta = const VerificationMeta(
+    'tagCode',
+  );
+  @override
+  late final GeneratedColumn<String> tagCode = GeneratedColumn<String>(
+    'tag_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HiveType, String> type =
+      GeneratedColumn<String>(
+        'type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HiveType>($HivesTable.$convertertype);
+  @override
+  late final GeneratedColumnWithTypeConverter<HiveStatus, String> status =
+      GeneratedColumn<String>(
+        'status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HiveStatus>($HivesTable.$converterstatus);
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _queenIdMeta = const VerificationMeta(
+    'queenId',
+  );
+  @override
+  late final GeneratedColumn<String> queenId = GeneratedColumn<String>(
+    'queen_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _boxCountMeta = const VerificationMeta(
+    'boxCount',
+  );
+  @override
+  late final GeneratedColumn<int> boxCount = GeneratedColumn<int>(
+    'box_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _frameCountMeta = const VerificationMeta(
+    'frameCount',
+  );
+  @override
+  late final GeneratedColumn<int> frameCount = GeneratedColumn<int>(
+    'frame_count',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HiveSource?, String> source =
+      GeneratedColumn<String>(
+        'source',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<HiveSource?>($HivesTable.$convertersourcen);
+  static const VerificationMeta _markingMeta = const VerificationMeta(
+    'marking',
+  );
+  @override
+  late final GeneratedColumn<String> marking = GeneratedColumn<String>(
+    'marking',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    number,
+    tagCode,
+    type,
+    status,
+    apiaryId,
+    queenId,
+    boxCount,
+    frameCount,
+    source,
+    marking,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'hives';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Hive> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('number')) {
+      context.handle(
+        _numberMeta,
+        number.isAcceptableOrUnknown(data['number']!, _numberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_numberMeta);
+    }
+    if (data.containsKey('tag_code')) {
+      context.handle(
+        _tagCodeMeta,
+        tagCode.isAcceptableOrUnknown(data['tag_code']!, _tagCodeMeta),
+      );
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('queen_id')) {
+      context.handle(
+        _queenIdMeta,
+        queenId.isAcceptableOrUnknown(data['queen_id']!, _queenIdMeta),
+      );
+    }
+    if (data.containsKey('box_count')) {
+      context.handle(
+        _boxCountMeta,
+        boxCount.isAcceptableOrUnknown(data['box_count']!, _boxCountMeta),
+      );
+    }
+    if (data.containsKey('frame_count')) {
+      context.handle(
+        _frameCountMeta,
+        frameCount.isAcceptableOrUnknown(data['frame_count']!, _frameCountMeta),
+      );
+    }
+    if (data.containsKey('marking')) {
+      context.handle(
+        _markingMeta,
+        marking.isAcceptableOrUnknown(data['marking']!, _markingMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Hive map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Hive(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}number'],
+      )!,
+      type: $HivesTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}type'],
+        )!,
+      ),
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      status: $HivesTable.$converterstatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}status'],
+        )!,
+      ),
+      tagCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tag_code'],
+      ),
+      queenId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}queen_id'],
+      ),
+      boxCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}box_count'],
+      )!,
+      frameCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}frame_count'],
+      ),
+      source: $HivesTable.$convertersourcen.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}source'],
+        ),
+      ),
+      marking: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}marking'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $HivesTable createAlias(String alias) {
+    return $HivesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<HiveType, String> $convertertype =
+      const ServerEnumConverter(HiveType.values);
+  static TypeConverter<HiveStatus, String> $converterstatus =
+      const ServerEnumConverter(HiveStatus.values);
+  static TypeConverter<HiveSource, String> $convertersource =
+      const ServerEnumConverter(HiveSource.values);
+  static TypeConverter<HiveSource?, String?> $convertersourcen =
+      NullAwareTypeConverter.wrap($convertersource);
+}
+
+class HivesCompanion extends UpdateCompanion<Hive> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> number;
+  final Value<String?> tagCode;
+  final Value<HiveType> type;
+  final Value<HiveStatus> status;
+  final Value<String> apiaryId;
+  final Value<String?> queenId;
+  final Value<int> boxCount;
+  final Value<int?> frameCount;
+  final Value<HiveSource?> source;
+  final Value<String?> marking;
+  final Value<int> rowid;
+  const HivesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.number = const Value.absent(),
+    this.tagCode = const Value.absent(),
+    this.type = const Value.absent(),
+    this.status = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.queenId = const Value.absent(),
+    this.boxCount = const Value.absent(),
+    this.frameCount = const Value.absent(),
+    this.source = const Value.absent(),
+    this.marking = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HivesCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String number,
+    this.tagCode = const Value.absent(),
+    required HiveType type,
+    required HiveStatus status,
+    required String apiaryId,
+    this.queenId = const Value.absent(),
+    this.boxCount = const Value.absent(),
+    this.frameCount = const Value.absent(),
+    this.source = const Value.absent(),
+    this.marking = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       number = Value(number),
+       type = Value(type),
+       status = Value(status),
+       apiaryId = Value(apiaryId);
+  static Insertable<Hive> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? number,
+    Expression<String>? tagCode,
+    Expression<String>? type,
+    Expression<String>? status,
+    Expression<String>? apiaryId,
+    Expression<String>? queenId,
+    Expression<int>? boxCount,
+    Expression<int>? frameCount,
+    Expression<String>? source,
+    Expression<String>? marking,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (number != null) 'number': number,
+      if (tagCode != null) 'tag_code': tagCode,
+      if (type != null) 'type': type,
+      if (status != null) 'status': status,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (queenId != null) 'queen_id': queenId,
+      if (boxCount != null) 'box_count': boxCount,
+      if (frameCount != null) 'frame_count': frameCount,
+      if (source != null) 'source': source,
+      if (marking != null) 'marking': marking,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HivesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? number,
+    Value<String?>? tagCode,
+    Value<HiveType>? type,
+    Value<HiveStatus>? status,
+    Value<String>? apiaryId,
+    Value<String?>? queenId,
+    Value<int>? boxCount,
+    Value<int?>? frameCount,
+    Value<HiveSource?>? source,
+    Value<String?>? marking,
+    Value<int>? rowid,
+  }) {
+    return HivesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      number: number ?? this.number,
+      tagCode: tagCode ?? this.tagCode,
+      type: type ?? this.type,
+      status: status ?? this.status,
+      apiaryId: apiaryId ?? this.apiaryId,
+      queenId: queenId ?? this.queenId,
+      boxCount: boxCount ?? this.boxCount,
+      frameCount: frameCount ?? this.frameCount,
+      source: source ?? this.source,
+      marking: marking ?? this.marking,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<String>(number.value);
+    }
+    if (tagCode.present) {
+      map['tag_code'] = Variable<String>(tagCode.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(
+        $HivesTable.$convertertype.toSql(type.value),
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(
+        $HivesTable.$converterstatus.toSql(status.value),
+      );
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (queenId.present) {
+      map['queen_id'] = Variable<String>(queenId.value);
+    }
+    if (boxCount.present) {
+      map['box_count'] = Variable<int>(boxCount.value);
+    }
+    if (frameCount.present) {
+      map['frame_count'] = Variable<int>(frameCount.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(
+        $HivesTable.$convertersourcen.toSql(source.value),
+      );
+    }
+    if (marking.present) {
+      map['marking'] = Variable<String>(marking.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HivesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('number: $number, ')
+          ..write('tagCode: $tagCode, ')
+          ..write('type: $type, ')
+          ..write('status: $status, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('queenId: $queenId, ')
+          ..write('boxCount: $boxCount, ')
+          ..write('frameCount: $frameCount, ')
+          ..write('source: $source, ')
+          ..write('marking: $marking, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$HiveInsertable implements Insertable<Hive> {
+  Hive _object;
+  _$HiveInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return HivesCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      number: Value(_object.number),
+      tagCode: Value(_object.tagCode),
+      type: Value(_object.type),
+      status: Value(_object.status),
+      apiaryId: Value(_object.apiaryId),
+      queenId: Value(_object.queenId),
+      boxCount: Value(_object.boxCount),
+      frameCount: Value(_object.frameCount),
+      source: Value(_object.source),
+      marking: Value(_object.marking),
+    ).toColumns(false);
+  }
+}
+
+extension HiveToInsertable on Hive {
+  _$HiveInsertable toInsertable() {
+    return _$HiveInsertable(this);
+  }
+}
+
+class $HiveLocationHistoryTable extends HiveLocationHistory
+    with TableInfo<$HiveLocationHistoryTable, HiveLocationEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HiveLocationHistoryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _movedAtMeta = const VerificationMeta(
+    'movedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> movedAt = GeneratedColumn<DateTime>(
+    'moved_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    hiveId,
+    apiaryId,
+    movedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'hive_location_history';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HiveLocationEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('moved_at')) {
+      context.handle(
+        _movedAtMeta,
+        movedAt.isAcceptableOrUnknown(data['moved_at']!, _movedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_movedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HiveLocationEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HiveLocationEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      movedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}moved_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $HiveLocationHistoryTable createAlias(String alias) {
+    return $HiveLocationHistoryTable(attachedDatabase, alias);
+  }
+}
+
+class HiveLocationHistoryCompanion extends UpdateCompanion<HiveLocationEntry> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> hiveId;
+  final Value<String> apiaryId;
+  final Value<DateTime> movedAt;
+  final Value<int> rowid;
+  const HiveLocationHistoryCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.movedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HiveLocationHistoryCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String hiveId,
+    required String apiaryId,
+    required DateTime movedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       hiveId = Value(hiveId),
+       apiaryId = Value(apiaryId),
+       movedAt = Value(movedAt);
+  static Insertable<HiveLocationEntry> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? hiveId,
+    Expression<String>? apiaryId,
+    Expression<DateTime>? movedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (movedAt != null) 'moved_at': movedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HiveLocationHistoryCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? hiveId,
+    Value<String>? apiaryId,
+    Value<DateTime>? movedAt,
+    Value<int>? rowid,
+  }) {
+    return HiveLocationHistoryCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      hiveId: hiveId ?? this.hiveId,
+      apiaryId: apiaryId ?? this.apiaryId,
+      movedAt: movedAt ?? this.movedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (movedAt.present) {
+      map['moved_at'] = Variable<DateTime>(movedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HiveLocationHistoryCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('movedAt: $movedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$HiveLocationEntryInsertable implements Insertable<HiveLocationEntry> {
+  HiveLocationEntry _object;
+  _$HiveLocationEntryInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return HiveLocationHistoryCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      hiveId: Value(_object.hiveId),
+      apiaryId: Value(_object.apiaryId),
+      movedAt: Value(_object.movedAt),
+    ).toColumns(false);
+  }
+}
+
+extension HiveLocationEntryToInsertable on HiveLocationEntry {
+  _$HiveLocationEntryInsertable toInsertable() {
+    return _$HiveLocationEntryInsertable(this);
+  }
+}
+
+class $OutboxTable extends Outbox with TableInfo<$OutboxTable, OutboxEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OutboxTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _recordTableMeta = const VerificationMeta(
+    'recordTable',
+  );
+  @override
+  late final GeneratedColumn<String> recordTable = GeneratedColumn<String>(
+    'record_table',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordIdMeta = const VerificationMeta(
+    'recordId',
+  );
+  @override
+  late final GeneratedColumn<String> recordId = GeneratedColumn<String>(
+    'record_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<OutboxOperation, String>
+  operation = GeneratedColumn<String>(
+    'operation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<OutboxOperation>($OutboxTable.$converteroperation);
+  @override
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  payload = GeneratedColumn<String>(
+    'payload',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<Map<String, Object?>>($OutboxTable.$converterpayload);
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
+  @override
+  late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
+    'last_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    recordTable,
+    recordId,
+    operation,
+    payload,
+    createdAt,
+    attempts,
+    lastError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'outbox';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<OutboxEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('record_table')) {
+      context.handle(
+        _recordTableMeta,
+        recordTable.isAcceptableOrUnknown(
+          data['record_table']!,
+          _recordTableMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordTableMeta);
+    }
+    if (data.containsKey('record_id')) {
+      context.handle(
+        _recordIdMeta,
+        recordId.isAcceptableOrUnknown(data['record_id']!, _recordIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    }
+    if (data.containsKey('last_error')) {
+      context.handle(
+        _lastErrorMeta,
+        lastError.isAcceptableOrUnknown(data['last_error']!, _lastErrorMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  OutboxEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OutboxEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      recordTable: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}record_table'],
+      )!,
+      recordId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}record_id'],
+      )!,
+      operation: $OutboxTable.$converteroperation.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}operation'],
+        )!,
+      ),
+      payload: $OutboxTable.$converterpayload.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}payload'],
+        )!,
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      lastError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_error'],
+      ),
+    );
+  }
+
+  @override
+  $OutboxTable createAlias(String alias) {
+    return $OutboxTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<OutboxOperation, String, String>
+  $converteroperation = const EnumNameConverter<OutboxOperation>(
+    OutboxOperation.values,
+  );
+  static TypeConverter<Map<String, Object?>, String> $converterpayload =
+      const JsonMapConverter();
+}
+
+class OutboxEntry extends DataClass implements Insertable<OutboxEntry> {
+  final int id;
+
+  /// Yazılan tablonun adı (sunucudakiyle aynı).
+  final String recordTable;
+  final String recordId;
+  final OutboxOperation operation;
+
+  /// Satırın yazma anındaki tam hâli, sunucunun kolon adlarıyla.
+  final Map<String, Object?> payload;
+  final DateTime createdAt;
+  final int attempts;
+  final String? lastError;
+  const OutboxEntry({
+    required this.id,
+    required this.recordTable,
+    required this.recordId,
+    required this.operation,
+    required this.payload,
+    required this.createdAt,
+    required this.attempts,
+    this.lastError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['record_table'] = Variable<String>(recordTable);
+    map['record_id'] = Variable<String>(recordId);
+    {
+      map['operation'] = Variable<String>(
+        $OutboxTable.$converteroperation.toSql(operation),
+      );
+    }
+    {
+      map['payload'] = Variable<String>(
+        $OutboxTable.$converterpayload.toSql(payload),
+      );
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['attempts'] = Variable<int>(attempts);
+    if (!nullToAbsent || lastError != null) {
+      map['last_error'] = Variable<String>(lastError);
+    }
+    return map;
+  }
+
+  OutboxCompanion toCompanion(bool nullToAbsent) {
+    return OutboxCompanion(
+      id: Value(id),
+      recordTable: Value(recordTable),
+      recordId: Value(recordId),
+      operation: Value(operation),
+      payload: Value(payload),
+      createdAt: Value(createdAt),
+      attempts: Value(attempts),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+    );
+  }
+
+  factory OutboxEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OutboxEntry(
+      id: serializer.fromJson<int>(json['id']),
+      recordTable: serializer.fromJson<String>(json['recordTable']),
+      recordId: serializer.fromJson<String>(json['recordId']),
+      operation: $OutboxTable.$converteroperation.fromJson(
+        serializer.fromJson<String>(json['operation']),
+      ),
+      payload: serializer.fromJson<Map<String, Object?>>(json['payload']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      lastError: serializer.fromJson<String?>(json['lastError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'recordTable': serializer.toJson<String>(recordTable),
+      'recordId': serializer.toJson<String>(recordId),
+      'operation': serializer.toJson<String>(
+        $OutboxTable.$converteroperation.toJson(operation),
+      ),
+      'payload': serializer.toJson<Map<String, Object?>>(payload),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'attempts': serializer.toJson<int>(attempts),
+      'lastError': serializer.toJson<String?>(lastError),
+    };
+  }
+
+  OutboxEntry copyWith({
+    int? id,
+    String? recordTable,
+    String? recordId,
+    OutboxOperation? operation,
+    Map<String, Object?>? payload,
+    DateTime? createdAt,
+    int? attempts,
+    Value<String?> lastError = const Value.absent(),
+  }) => OutboxEntry(
+    id: id ?? this.id,
+    recordTable: recordTable ?? this.recordTable,
+    recordId: recordId ?? this.recordId,
+    operation: operation ?? this.operation,
+    payload: payload ?? this.payload,
+    createdAt: createdAt ?? this.createdAt,
+    attempts: attempts ?? this.attempts,
+    lastError: lastError.present ? lastError.value : this.lastError,
+  );
+  OutboxEntry copyWithCompanion(OutboxCompanion data) {
+    return OutboxEntry(
+      id: data.id.present ? data.id.value : this.id,
+      recordTable: data.recordTable.present
+          ? data.recordTable.value
+          : this.recordTable,
+      recordId: data.recordId.present ? data.recordId.value : this.recordId,
+      operation: data.operation.present ? data.operation.value : this.operation,
+      payload: data.payload.present ? data.payload.value : this.payload,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      lastError: data.lastError.present ? data.lastError.value : this.lastError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OutboxEntry(')
+          ..write('id: $id, ')
+          ..write('recordTable: $recordTable, ')
+          ..write('recordId: $recordId, ')
+          ..write('operation: $operation, ')
+          ..write('payload: $payload, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('attempts: $attempts, ')
+          ..write('lastError: $lastError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    recordTable,
+    recordId,
+    operation,
+    payload,
+    createdAt,
+    attempts,
+    lastError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OutboxEntry &&
+          other.id == this.id &&
+          other.recordTable == this.recordTable &&
+          other.recordId == this.recordId &&
+          other.operation == this.operation &&
+          other.payload == this.payload &&
+          other.createdAt == this.createdAt &&
+          other.attempts == this.attempts &&
+          other.lastError == this.lastError);
+}
+
+class OutboxCompanion extends UpdateCompanion<OutboxEntry> {
+  final Value<int> id;
+  final Value<String> recordTable;
+  final Value<String> recordId;
+  final Value<OutboxOperation> operation;
+  final Value<Map<String, Object?>> payload;
+  final Value<DateTime> createdAt;
+  final Value<int> attempts;
+  final Value<String?> lastError;
+  const OutboxCompanion({
+    this.id = const Value.absent(),
+    this.recordTable = const Value.absent(),
+    this.recordId = const Value.absent(),
+    this.operation = const Value.absent(),
+    this.payload = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.lastError = const Value.absent(),
+  });
+  OutboxCompanion.insert({
+    this.id = const Value.absent(),
+    required String recordTable,
+    required String recordId,
+    required OutboxOperation operation,
+    required Map<String, Object?> payload,
+    required DateTime createdAt,
+    this.attempts = const Value.absent(),
+    this.lastError = const Value.absent(),
+  }) : recordTable = Value(recordTable),
+       recordId = Value(recordId),
+       operation = Value(operation),
+       payload = Value(payload),
+       createdAt = Value(createdAt);
+  static Insertable<OutboxEntry> custom({
+    Expression<int>? id,
+    Expression<String>? recordTable,
+    Expression<String>? recordId,
+    Expression<String>? operation,
+    Expression<String>? payload,
+    Expression<DateTime>? createdAt,
+    Expression<int>? attempts,
+    Expression<String>? lastError,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (recordTable != null) 'record_table': recordTable,
+      if (recordId != null) 'record_id': recordId,
+      if (operation != null) 'operation': operation,
+      if (payload != null) 'payload': payload,
+      if (createdAt != null) 'created_at': createdAt,
+      if (attempts != null) 'attempts': attempts,
+      if (lastError != null) 'last_error': lastError,
+    });
+  }
+
+  OutboxCompanion copyWith({
+    Value<int>? id,
+    Value<String>? recordTable,
+    Value<String>? recordId,
+    Value<OutboxOperation>? operation,
+    Value<Map<String, Object?>>? payload,
+    Value<DateTime>? createdAt,
+    Value<int>? attempts,
+    Value<String?>? lastError,
+  }) {
+    return OutboxCompanion(
+      id: id ?? this.id,
+      recordTable: recordTable ?? this.recordTable,
+      recordId: recordId ?? this.recordId,
+      operation: operation ?? this.operation,
+      payload: payload ?? this.payload,
+      createdAt: createdAt ?? this.createdAt,
+      attempts: attempts ?? this.attempts,
+      lastError: lastError ?? this.lastError,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (recordTable.present) {
+      map['record_table'] = Variable<String>(recordTable.value);
+    }
+    if (recordId.present) {
+      map['record_id'] = Variable<String>(recordId.value);
+    }
+    if (operation.present) {
+      map['operation'] = Variable<String>(
+        $OutboxTable.$converteroperation.toSql(operation.value),
+      );
+    }
+    if (payload.present) {
+      map['payload'] = Variable<String>(
+        $OutboxTable.$converterpayload.toSql(payload.value),
+      );
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
+    }
+    if (lastError.present) {
+      map['last_error'] = Variable<String>(lastError.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OutboxCompanion(')
+          ..write('id: $id, ')
+          ..write('recordTable: $recordTable, ')
+          ..write('recordId: $recordId, ')
+          ..write('operation: $operation, ')
+          ..write('payload: $payload, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('attempts: $attempts, ')
+          ..write('lastError: $lastError')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SyncStateTable extends SyncState
+    with TableInfo<$SyncStateTable, SyncCursor> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncStateTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _recordTableMeta = const VerificationMeta(
+    'recordTable',
+  );
+  @override
+  late final GeneratedColumn<String> recordTable = GeneratedColumn<String>(
+    'record_table',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastPulledSeqMeta = const VerificationMeta(
+    'lastPulledSeq',
+  );
+  @override
+  late final GeneratedColumn<int> lastPulledSeq = GeneratedColumn<int>(
+    'last_pulled_seq',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [recordTable, lastPulledSeq];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_state';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncCursor> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('record_table')) {
+      context.handle(
+        _recordTableMeta,
+        recordTable.isAcceptableOrUnknown(
+          data['record_table']!,
+          _recordTableMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordTableMeta);
+    }
+    if (data.containsKey('last_pulled_seq')) {
+      context.handle(
+        _lastPulledSeqMeta,
+        lastPulledSeq.isAcceptableOrUnknown(
+          data['last_pulled_seq']!,
+          _lastPulledSeqMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {recordTable};
+  @override
+  SyncCursor map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncCursor(
+      recordTable: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}record_table'],
+      )!,
+      lastPulledSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}last_pulled_seq'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncStateTable createAlias(String alias) {
+    return $SyncStateTable(attachedDatabase, alias);
+  }
+}
+
+class SyncCursor extends DataClass implements Insertable<SyncCursor> {
+  final String recordTable;
+  final int lastPulledSeq;
+  const SyncCursor({required this.recordTable, required this.lastPulledSeq});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['record_table'] = Variable<String>(recordTable);
+    map['last_pulled_seq'] = Variable<int>(lastPulledSeq);
+    return map;
+  }
+
+  SyncStateCompanion toCompanion(bool nullToAbsent) {
+    return SyncStateCompanion(
+      recordTable: Value(recordTable),
+      lastPulledSeq: Value(lastPulledSeq),
+    );
+  }
+
+  factory SyncCursor.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncCursor(
+      recordTable: serializer.fromJson<String>(json['recordTable']),
+      lastPulledSeq: serializer.fromJson<int>(json['lastPulledSeq']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'recordTable': serializer.toJson<String>(recordTable),
+      'lastPulledSeq': serializer.toJson<int>(lastPulledSeq),
+    };
+  }
+
+  SyncCursor copyWith({String? recordTable, int? lastPulledSeq}) => SyncCursor(
+    recordTable: recordTable ?? this.recordTable,
+    lastPulledSeq: lastPulledSeq ?? this.lastPulledSeq,
+  );
+  SyncCursor copyWithCompanion(SyncStateCompanion data) {
+    return SyncCursor(
+      recordTable: data.recordTable.present
+          ? data.recordTable.value
+          : this.recordTable,
+      lastPulledSeq: data.lastPulledSeq.present
+          ? data.lastPulledSeq.value
+          : this.lastPulledSeq,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncCursor(')
+          ..write('recordTable: $recordTable, ')
+          ..write('lastPulledSeq: $lastPulledSeq')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(recordTable, lastPulledSeq);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncCursor &&
+          other.recordTable == this.recordTable &&
+          other.lastPulledSeq == this.lastPulledSeq);
+}
+
+class SyncStateCompanion extends UpdateCompanion<SyncCursor> {
+  final Value<String> recordTable;
+  final Value<int> lastPulledSeq;
+  final Value<int> rowid;
+  const SyncStateCompanion({
+    this.recordTable = const Value.absent(),
+    this.lastPulledSeq = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncStateCompanion.insert({
+    required String recordTable,
+    this.lastPulledSeq = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : recordTable = Value(recordTable);
+  static Insertable<SyncCursor> custom({
+    Expression<String>? recordTable,
+    Expression<int>? lastPulledSeq,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (recordTable != null) 'record_table': recordTable,
+      if (lastPulledSeq != null) 'last_pulled_seq': lastPulledSeq,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncStateCompanion copyWith({
+    Value<String>? recordTable,
+    Value<int>? lastPulledSeq,
+    Value<int>? rowid,
+  }) {
+    return SyncStateCompanion(
+      recordTable: recordTable ?? this.recordTable,
+      lastPulledSeq: lastPulledSeq ?? this.lastPulledSeq,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (recordTable.present) {
+      map['record_table'] = Variable<String>(recordTable.value);
+    }
+    if (lastPulledSeq.present) {
+      map['last_pulled_seq'] = Variable<int>(lastPulledSeq.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncStateCompanion(')
+          ..write('recordTable: $recordTable, ')
+          ..write('lastPulledSeq: $lastPulledSeq, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+abstract class _$AppDatabase extends GeneratedDatabase {
+  _$AppDatabase(QueryExecutor e) : super(e);
+  $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $OrganizationsTable organizations = $OrganizationsTable(this);
+  late final $MembershipsTable memberships = $MembershipsTable(this);
+  late final $ApiariesTable apiaries = $ApiariesTable(this);
+  late final $QueensTable queens = $QueensTable(this);
+  late final $HivesTable hives = $HivesTable(this);
+  late final $HiveLocationHistoryTable hiveLocationHistory =
+      $HiveLocationHistoryTable(this);
+  late final $OutboxTable outbox = $OutboxTable(this);
+  late final $SyncStateTable syncState = $SyncStateTable(this);
+  late final Index membershipsOrgIdIdx = Index(
+    'memberships_org_id_idx',
+    'CREATE INDEX memberships_org_id_idx ON memberships (org_id)',
+  );
+  late final Index apiariesOrgIdIdx = Index(
+    'apiaries_org_id_idx',
+    'CREATE INDEX apiaries_org_id_idx ON apiaries (org_id)',
+  );
+  late final Index queensOrgIdIdx = Index(
+    'queens_org_id_idx',
+    'CREATE INDEX queens_org_id_idx ON queens (org_id)',
+  );
+  late final Index hivesOrgIdIdx = Index(
+    'hives_org_id_idx',
+    'CREATE INDEX hives_org_id_idx ON hives (org_id)',
+  );
+  late final Index hivesApiaryIdIdx = Index(
+    'hives_apiary_id_idx',
+    'CREATE INDEX hives_apiary_id_idx ON hives (apiary_id)',
+  );
+  late final Index hiveLocationHistoryOrgIdIdx = Index(
+    'hive_location_history_org_id_idx',
+    'CREATE INDEX hive_location_history_org_id_idx ON hive_location_history (org_id)',
+  );
+  late final Index hiveLocationHistoryHiveIdIdx = Index(
+    'hive_location_history_hive_id_idx',
+    'CREATE INDEX hive_location_history_hive_id_idx ON hive_location_history (hive_id)',
+  );
+  @override
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    organizations,
+    memberships,
+    apiaries,
+    queens,
+    hives,
+    hiveLocationHistory,
+    outbox,
+    syncState,
+    membershipsOrgIdIdx,
+    apiariesOrgIdIdx,
+    queensOrgIdIdx,
+    hivesOrgIdIdx,
+    hivesApiaryIdIdx,
+    hiveLocationHistoryOrgIdIdx,
+    hiveLocationHistoryHiveIdIdx,
+  ];
+  @override
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
+}
+
+typedef $$OrganizationsTableCreateCompanionBuilder =
+    OrganizationsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String name,
+      required String countryCode,
+      required String currency,
+      Value<String?> trRegistrationNo,
+      Value<String?> trAksNo,
+      Value<HiveCountRange?> hiveCountRange,
+      Value<int> rowid,
+    });
+typedef $$OrganizationsTableUpdateCompanionBuilder =
+    OrganizationsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> name,
+      Value<String> countryCode,
+      Value<String> currency,
+      Value<String?> trRegistrationNo,
+      Value<String?> trAksNo,
+      Value<HiveCountRange?> hiveCountRange,
+      Value<int> rowid,
+    });
+
+class $$OrganizationsTableFilterComposer
+    extends Composer<_$AppDatabase, $OrganizationsTable> {
+  $$OrganizationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get trRegistrationNo => $composableBuilder(
+    column: $table.trRegistrationNo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get trAksNo => $composableBuilder(
+    column: $table.trAksNo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HiveCountRange?, HiveCountRange, String>
+  get hiveCountRange => $composableBuilder(
+    column: $table.hiveCountRange,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$OrganizationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $OrganizationsTable> {
+  $$OrganizationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get trRegistrationNo => $composableBuilder(
+    column: $table.trRegistrationNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get trAksNo => $composableBuilder(
+    column: $table.trAksNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveCountRange => $composableBuilder(
+    column: $table.hiveCountRange,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$OrganizationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $OrganizationsTable> {
+  $$OrganizationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get currency =>
+      $composableBuilder(column: $table.currency, builder: (column) => column);
+
+  GeneratedColumn<String> get trRegistrationNo => $composableBuilder(
+    column: $table.trRegistrationNo,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get trAksNo =>
+      $composableBuilder(column: $table.trAksNo, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HiveCountRange?, String>
+  get hiveCountRange => $composableBuilder(
+    column: $table.hiveCountRange,
+    builder: (column) => column,
+  );
+}
+
+class $$OrganizationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $OrganizationsTable,
+          OrganizationRow,
+          $$OrganizationsTableFilterComposer,
+          $$OrganizationsTableOrderingComposer,
+          $$OrganizationsTableAnnotationComposer,
+          $$OrganizationsTableCreateCompanionBuilder,
+          $$OrganizationsTableUpdateCompanionBuilder,
+          (
+            OrganizationRow,
+            BaseReferences<_$AppDatabase, $OrganizationsTable, OrganizationRow>,
+          ),
+          OrganizationRow,
+          PrefetchHooks Function()
+        > {
+  $$OrganizationsTableTableManager(_$AppDatabase db, $OrganizationsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$OrganizationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$OrganizationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$OrganizationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> countryCode = const Value.absent(),
+                Value<String> currency = const Value.absent(),
+                Value<String?> trRegistrationNo = const Value.absent(),
+                Value<String?> trAksNo = const Value.absent(),
+                Value<HiveCountRange?> hiveCountRange = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => OrganizationsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                name: name,
+                countryCode: countryCode,
+                currency: currency,
+                trRegistrationNo: trRegistrationNo,
+                trAksNo: trAksNo,
+                hiveCountRange: hiveCountRange,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String name,
+                required String countryCode,
+                required String currency,
+                Value<String?> trRegistrationNo = const Value.absent(),
+                Value<String?> trAksNo = const Value.absent(),
+                Value<HiveCountRange?> hiveCountRange = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => OrganizationsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                name: name,
+                countryCode: countryCode,
+                currency: currency,
+                trRegistrationNo: trRegistrationNo,
+                trAksNo: trAksNo,
+                hiveCountRange: hiveCountRange,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$OrganizationsTable, OrganizationRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $OrganizationsTable,
+                    OrganizationRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$OrganizationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $OrganizationsTable,
+      OrganizationRow,
+      $$OrganizationsTableFilterComposer,
+      $$OrganizationsTableOrderingComposer,
+      $$OrganizationsTableAnnotationComposer,
+      $$OrganizationsTableCreateCompanionBuilder,
+      $$OrganizationsTableUpdateCompanionBuilder,
+      (
+        OrganizationRow,
+        BaseReferences<_$AppDatabase, $OrganizationsTable, OrganizationRow>,
+      ),
+      OrganizationRow,
+      PrefetchHooks Function()
+    >;
+typedef $$MembershipsTableCreateCompanionBuilder =
+    MembershipsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String userId,
+      required MembershipRole role,
+      Value<int> rowid,
+    });
+typedef $$MembershipsTableUpdateCompanionBuilder =
+    MembershipsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> userId,
+      Value<MembershipRole> role,
+      Value<int> rowid,
+    });
+
+class $$MembershipsTableFilterComposer
+    extends Composer<_$AppDatabase, $MembershipsTable> {
+  $$MembershipsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<MembershipRole, MembershipRole, String>
+  get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$MembershipsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MembershipsTable> {
+  $$MembershipsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MembershipsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MembershipsTable> {
+  $$MembershipsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<MembershipRole, String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+}
+
+class $$MembershipsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MembershipsTable,
+          MembershipRow,
+          $$MembershipsTableFilterComposer,
+          $$MembershipsTableOrderingComposer,
+          $$MembershipsTableAnnotationComposer,
+          $$MembershipsTableCreateCompanionBuilder,
+          $$MembershipsTableUpdateCompanionBuilder,
+          (
+            MembershipRow,
+            BaseReferences<_$AppDatabase, $MembershipsTable, MembershipRow>,
+          ),
+          MembershipRow,
+          PrefetchHooks Function()
+        > {
+  $$MembershipsTableTableManager(_$AppDatabase db, $MembershipsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MembershipsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MembershipsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MembershipsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<MembershipRole> role = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembershipsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                userId: userId,
+                role: role,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String userId,
+                required MembershipRole role,
+                Value<int> rowid = const Value.absent(),
+              }) => MembershipsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                userId: userId,
+                role: role,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MembershipsTable, MembershipRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $MembershipsTable,
+                    MembershipRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MembershipsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MembershipsTable,
+      MembershipRow,
+      $$MembershipsTableFilterComposer,
+      $$MembershipsTableOrderingComposer,
+      $$MembershipsTableAnnotationComposer,
+      $$MembershipsTableCreateCompanionBuilder,
+      $$MembershipsTableUpdateCompanionBuilder,
+      (
+        MembershipRow,
+        BaseReferences<_$AppDatabase, $MembershipsTable, MembershipRow>,
+      ),
+      MembershipRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ApiariesTableCreateCompanionBuilder = ApiariesCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String name,
+  Value<double?> latitude,
+  Value<double?> longitude,
+  Value<int?> altitudeM,
+  Value<String?> landownerName,
+  Value<String?> landownerPhone,
+  Value<LandTenure?> landTenure,
+  Value<String?> waterSource,
+  Value<int?> vehicleDistanceM,
+  Value<String?> roadNotes,
+  Value<String?> notes,
+  Value<int> rowid,
+});
+typedef $$ApiariesTableUpdateCompanionBuilder = ApiariesCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> name,
+  Value<double?> latitude,
+  Value<double?> longitude,
+  Value<int?> altitudeM,
+  Value<String?> landownerName,
+  Value<String?> landownerPhone,
+  Value<LandTenure?> landTenure,
+  Value<String?> waterSource,
+  Value<int?> vehicleDistanceM,
+  Value<String?> roadNotes,
+  Value<String?> notes,
+  Value<int> rowid,
+});
+
+class $$ApiariesTableFilterComposer
+    extends Composer<_$AppDatabase, $ApiariesTable> {
+  $$ApiariesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get altitudeM => $composableBuilder(
+    column: $table.altitudeM,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get landownerName => $composableBuilder(
+    column: $table.landownerName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get landownerPhone => $composableBuilder(
+    column: $table.landownerPhone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<LandTenure?, LandTenure, String>
+  get landTenure => $composableBuilder(
+    column: $table.landTenure,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get waterSource => $composableBuilder(
+    column: $table.waterSource,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get vehicleDistanceM => $composableBuilder(
+    column: $table.vehicleDistanceM,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get roadNotes => $composableBuilder(
+    column: $table.roadNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ApiariesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ApiariesTable> {
+  $$ApiariesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get altitudeM => $composableBuilder(
+    column: $table.altitudeM,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get landownerName => $composableBuilder(
+    column: $table.landownerName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get landownerPhone => $composableBuilder(
+    column: $table.landownerPhone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get landTenure => $composableBuilder(
+    column: $table.landTenure,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get waterSource => $composableBuilder(
+    column: $table.waterSource,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get vehicleDistanceM => $composableBuilder(
+    column: $table.vehicleDistanceM,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get roadNotes => $composableBuilder(
+    column: $table.roadNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ApiariesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ApiariesTable> {
+  $$ApiariesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<double> get latitude =>
+      $composableBuilder(column: $table.latitude, builder: (column) => column);
+
+  GeneratedColumn<double> get longitude =>
+      $composableBuilder(column: $table.longitude, builder: (column) => column);
+
+  GeneratedColumn<int> get altitudeM =>
+      $composableBuilder(column: $table.altitudeM, builder: (column) => column);
+
+  GeneratedColumn<String> get landownerName => $composableBuilder(
+    column: $table.landownerName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get landownerPhone => $composableBuilder(
+    column: $table.landownerPhone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<LandTenure?, String> get landTenure =>
+      $composableBuilder(
+        column: $table.landTenure,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get waterSource => $composableBuilder(
+    column: $table.waterSource,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get vehicleDistanceM => $composableBuilder(
+    column: $table.vehicleDistanceM,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get roadNotes =>
+      $composableBuilder(column: $table.roadNotes, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+}
+
+class $$ApiariesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ApiariesTable,
+          Apiary,
+          $$ApiariesTableFilterComposer,
+          $$ApiariesTableOrderingComposer,
+          $$ApiariesTableAnnotationComposer,
+          $$ApiariesTableCreateCompanionBuilder,
+          $$ApiariesTableUpdateCompanionBuilder,
+          (Apiary, BaseReferences<_$AppDatabase, $ApiariesTable, Apiary>),
+          Apiary,
+          PrefetchHooks Function()
+        > {
+  $$ApiariesTableTableManager(_$AppDatabase db, $ApiariesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ApiariesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ApiariesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ApiariesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<double?> latitude = const Value.absent(),
+                Value<double?> longitude = const Value.absent(),
+                Value<int?> altitudeM = const Value.absent(),
+                Value<String?> landownerName = const Value.absent(),
+                Value<String?> landownerPhone = const Value.absent(),
+                Value<LandTenure?> landTenure = const Value.absent(),
+                Value<String?> waterSource = const Value.absent(),
+                Value<int?> vehicleDistanceM = const Value.absent(),
+                Value<String?> roadNotes = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ApiariesCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                name: name,
+                latitude: latitude,
+                longitude: longitude,
+                altitudeM: altitudeM,
+                landownerName: landownerName,
+                landownerPhone: landownerPhone,
+                landTenure: landTenure,
+                waterSource: waterSource,
+                vehicleDistanceM: vehicleDistanceM,
+                roadNotes: roadNotes,
+                notes: notes,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String name,
+                Value<double?> latitude = const Value.absent(),
+                Value<double?> longitude = const Value.absent(),
+                Value<int?> altitudeM = const Value.absent(),
+                Value<String?> landownerName = const Value.absent(),
+                Value<String?> landownerPhone = const Value.absent(),
+                Value<LandTenure?> landTenure = const Value.absent(),
+                Value<String?> waterSource = const Value.absent(),
+                Value<int?> vehicleDistanceM = const Value.absent(),
+                Value<String?> roadNotes = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ApiariesCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                name: name,
+                latitude: latitude,
+                longitude: longitude,
+                altitudeM: altitudeM,
+                landownerName: landownerName,
+                landownerPhone: landownerPhone,
+                landTenure: landTenure,
+                waterSource: waterSource,
+                vehicleDistanceM: vehicleDistanceM,
+                roadNotes: roadNotes,
+                notes: notes,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ApiariesTable, Apiary>(table),
+                  BaseReferences<_$AppDatabase, $ApiariesTable, Apiary>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ApiariesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ApiariesTable,
+      Apiary,
+      $$ApiariesTableFilterComposer,
+      $$ApiariesTableOrderingComposer,
+      $$ApiariesTableAnnotationComposer,
+      $$ApiariesTableCreateCompanionBuilder,
+      $$ApiariesTableUpdateCompanionBuilder,
+      (Apiary, BaseReferences<_$AppDatabase, $ApiariesTable, Apiary>),
+      Apiary,
+      PrefetchHooks Function()
+    >;
+typedef $$QueensTableCreateCompanionBuilder = QueensCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  Value<int?> year,
+  Value<QueenMarkColor?> markColor,
+  Value<String?> breed,
+  Value<String?> breedLine,
+  Value<QueenSource?> source,
+  Value<QueenMatingStatus?> matingStatus,
+  Value<bool> wingClipped,
+  Value<String?> motherQueenId,
+  Value<int> rowid,
+});
+typedef $$QueensTableUpdateCompanionBuilder = QueensCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<int?> year,
+  Value<QueenMarkColor?> markColor,
+  Value<String?> breed,
+  Value<String?> breedLine,
+  Value<QueenSource?> source,
+  Value<QueenMatingStatus?> matingStatus,
+  Value<bool> wingClipped,
+  Value<String?> motherQueenId,
+  Value<int> rowid,
+});
+
+class $$QueensTableFilterComposer
+    extends Composer<_$AppDatabase, $QueensTable> {
+  $$QueensTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get year => $composableBuilder(
+    column: $table.year,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<QueenMarkColor?, QueenMarkColor, String>
+  get markColor => $composableBuilder(
+    column: $table.markColor,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get breed => $composableBuilder(
+    column: $table.breed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get breedLine => $composableBuilder(
+    column: $table.breedLine,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<QueenSource?, QueenSource, String>
+  get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<QueenMatingStatus?, QueenMatingStatus, String>
+  get matingStatus => $composableBuilder(
+    column: $table.matingStatus,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get wingClipped => $composableBuilder(
+    column: $table.wingClipped,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get motherQueenId => $composableBuilder(
+    column: $table.motherQueenId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$QueensTableOrderingComposer
+    extends Composer<_$AppDatabase, $QueensTable> {
+  $$QueensTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get year => $composableBuilder(
+    column: $table.year,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get markColor => $composableBuilder(
+    column: $table.markColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get breed => $composableBuilder(
+    column: $table.breed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get breedLine => $composableBuilder(
+    column: $table.breedLine,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get matingStatus => $composableBuilder(
+    column: $table.matingStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get wingClipped => $composableBuilder(
+    column: $table.wingClipped,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get motherQueenId => $composableBuilder(
+    column: $table.motherQueenId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$QueensTableAnnotationComposer
+    extends Composer<_$AppDatabase, $QueensTable> {
+  $$QueensTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<int> get year =>
+      $composableBuilder(column: $table.year, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<QueenMarkColor?, String> get markColor =>
+      $composableBuilder(column: $table.markColor, builder: (column) => column);
+
+  GeneratedColumn<String> get breed =>
+      $composableBuilder(column: $table.breed, builder: (column) => column);
+
+  GeneratedColumn<String> get breedLine =>
+      $composableBuilder(column: $table.breedLine, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<QueenSource?, String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<QueenMatingStatus?, String>
+  get matingStatus => $composableBuilder(
+    column: $table.matingStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get wingClipped => $composableBuilder(
+    column: $table.wingClipped,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get motherQueenId => $composableBuilder(
+    column: $table.motherQueenId,
+    builder: (column) => column,
+  );
+}
+
+class $$QueensTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $QueensTable,
+          Queen,
+          $$QueensTableFilterComposer,
+          $$QueensTableOrderingComposer,
+          $$QueensTableAnnotationComposer,
+          $$QueensTableCreateCompanionBuilder,
+          $$QueensTableUpdateCompanionBuilder,
+          (Queen, BaseReferences<_$AppDatabase, $QueensTable, Queen>),
+          Queen,
+          PrefetchHooks Function()
+        > {
+  $$QueensTableTableManager(_$AppDatabase db, $QueensTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$QueensTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$QueensTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$QueensTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<int?> year = const Value.absent(),
+                Value<QueenMarkColor?> markColor = const Value.absent(),
+                Value<String?> breed = const Value.absent(),
+                Value<String?> breedLine = const Value.absent(),
+                Value<QueenSource?> source = const Value.absent(),
+                Value<QueenMatingStatus?> matingStatus = const Value.absent(),
+                Value<bool> wingClipped = const Value.absent(),
+                Value<String?> motherQueenId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QueensCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                year: year,
+                markColor: markColor,
+                breed: breed,
+                breedLine: breedLine,
+                source: source,
+                matingStatus: matingStatus,
+                wingClipped: wingClipped,
+                motherQueenId: motherQueenId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                Value<int?> year = const Value.absent(),
+                Value<QueenMarkColor?> markColor = const Value.absent(),
+                Value<String?> breed = const Value.absent(),
+                Value<String?> breedLine = const Value.absent(),
+                Value<QueenSource?> source = const Value.absent(),
+                Value<QueenMatingStatus?> matingStatus = const Value.absent(),
+                Value<bool> wingClipped = const Value.absent(),
+                Value<String?> motherQueenId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QueensCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                year: year,
+                markColor: markColor,
+                breed: breed,
+                breedLine: breedLine,
+                source: source,
+                matingStatus: matingStatus,
+                wingClipped: wingClipped,
+                motherQueenId: motherQueenId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$QueensTable, Queen>(table),
+                  BaseReferences<_$AppDatabase, $QueensTable, Queen>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$QueensTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $QueensTable,
+      Queen,
+      $$QueensTableFilterComposer,
+      $$QueensTableOrderingComposer,
+      $$QueensTableAnnotationComposer,
+      $$QueensTableCreateCompanionBuilder,
+      $$QueensTableUpdateCompanionBuilder,
+      (Queen, BaseReferences<_$AppDatabase, $QueensTable, Queen>),
+      Queen,
+      PrefetchHooks Function()
+    >;
+typedef $$HivesTableCreateCompanionBuilder = HivesCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String number,
+  Value<String?> tagCode,
+  required HiveType type,
+  required HiveStatus status,
+  required String apiaryId,
+  Value<String?> queenId,
+  Value<int> boxCount,
+  Value<int?> frameCount,
+  Value<HiveSource?> source,
+  Value<String?> marking,
+  Value<int> rowid,
+});
+typedef $$HivesTableUpdateCompanionBuilder = HivesCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> number,
+  Value<String?> tagCode,
+  Value<HiveType> type,
+  Value<HiveStatus> status,
+  Value<String> apiaryId,
+  Value<String?> queenId,
+  Value<int> boxCount,
+  Value<int?> frameCount,
+  Value<HiveSource?> source,
+  Value<String?> marking,
+  Value<int> rowid,
+});
+
+class $$HivesTableFilterComposer extends Composer<_$AppDatabase, $HivesTable> {
+  $$HivesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tagCode => $composableBuilder(
+    column: $table.tagCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HiveType, HiveType, String> get type =>
+      $composableBuilder(
+        column: $table.type,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnWithTypeConverterFilters<HiveStatus, HiveStatus, String> get status =>
+      $composableBuilder(
+        column: $table.status,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get queenId => $composableBuilder(
+    column: $table.queenId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get boxCount => $composableBuilder(
+    column: $table.boxCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get frameCount => $composableBuilder(
+    column: $table.frameCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HiveSource?, HiveSource, String> get source =>
+      $composableBuilder(
+        column: $table.source,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get marking => $composableBuilder(
+    column: $table.marking,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$HivesTableOrderingComposer
+    extends Composer<_$AppDatabase, $HivesTable> {
+  $$HivesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tagCode => $composableBuilder(
+    column: $table.tagCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get queenId => $composableBuilder(
+    column: $table.queenId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get boxCount => $composableBuilder(
+    column: $table.boxCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get frameCount => $composableBuilder(
+    column: $table.frameCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get marking => $composableBuilder(
+    column: $table.marking,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HivesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HivesTable> {
+  $$HivesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get number =>
+      $composableBuilder(column: $table.number, builder: (column) => column);
+
+  GeneratedColumn<String> get tagCode =>
+      $composableBuilder(column: $table.tagCode, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HiveType, String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HiveStatus, String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<String> get queenId =>
+      $composableBuilder(column: $table.queenId, builder: (column) => column);
+
+  GeneratedColumn<int> get boxCount =>
+      $composableBuilder(column: $table.boxCount, builder: (column) => column);
+
+  GeneratedColumn<int> get frameCount => $composableBuilder(
+    column: $table.frameCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<HiveSource?, String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get marking =>
+      $composableBuilder(column: $table.marking, builder: (column) => column);
+}
+
+class $$HivesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HivesTable,
+          Hive,
+          $$HivesTableFilterComposer,
+          $$HivesTableOrderingComposer,
+          $$HivesTableAnnotationComposer,
+          $$HivesTableCreateCompanionBuilder,
+          $$HivesTableUpdateCompanionBuilder,
+          (Hive, BaseReferences<_$AppDatabase, $HivesTable, Hive>),
+          Hive,
+          PrefetchHooks Function()
+        > {
+  $$HivesTableTableManager(_$AppDatabase db, $HivesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HivesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HivesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HivesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> number = const Value.absent(),
+                Value<String?> tagCode = const Value.absent(),
+                Value<HiveType> type = const Value.absent(),
+                Value<HiveStatus> status = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<String?> queenId = const Value.absent(),
+                Value<int> boxCount = const Value.absent(),
+                Value<int?> frameCount = const Value.absent(),
+                Value<HiveSource?> source = const Value.absent(),
+                Value<String?> marking = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HivesCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                number: number,
+                tagCode: tagCode,
+                type: type,
+                status: status,
+                apiaryId: apiaryId,
+                queenId: queenId,
+                boxCount: boxCount,
+                frameCount: frameCount,
+                source: source,
+                marking: marking,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String number,
+                Value<String?> tagCode = const Value.absent(),
+                required HiveType type,
+                required HiveStatus status,
+                required String apiaryId,
+                Value<String?> queenId = const Value.absent(),
+                Value<int> boxCount = const Value.absent(),
+                Value<int?> frameCount = const Value.absent(),
+                Value<HiveSource?> source = const Value.absent(),
+                Value<String?> marking = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HivesCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                number: number,
+                tagCode: tagCode,
+                type: type,
+                status: status,
+                apiaryId: apiaryId,
+                queenId: queenId,
+                boxCount: boxCount,
+                frameCount: frameCount,
+                source: source,
+                marking: marking,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HivesTable, Hive>(table),
+                  BaseReferences<_$AppDatabase, $HivesTable, Hive>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HivesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HivesTable,
+      Hive,
+      $$HivesTableFilterComposer,
+      $$HivesTableOrderingComposer,
+      $$HivesTableAnnotationComposer,
+      $$HivesTableCreateCompanionBuilder,
+      $$HivesTableUpdateCompanionBuilder,
+      (Hive, BaseReferences<_$AppDatabase, $HivesTable, Hive>),
+      Hive,
+      PrefetchHooks Function()
+    >;
+typedef $$HiveLocationHistoryTableCreateCompanionBuilder =
+    HiveLocationHistoryCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String hiveId,
+      required String apiaryId,
+      required DateTime movedAt,
+      Value<int> rowid,
+    });
+typedef $$HiveLocationHistoryTableUpdateCompanionBuilder =
+    HiveLocationHistoryCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> hiveId,
+      Value<String> apiaryId,
+      Value<DateTime> movedAt,
+      Value<int> rowid,
+    });
+
+class $$HiveLocationHistoryTableFilterComposer
+    extends Composer<_$AppDatabase, $HiveLocationHistoryTable> {
+  $$HiveLocationHistoryTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get movedAt => $composableBuilder(
+    column: $table.movedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$HiveLocationHistoryTableOrderingComposer
+    extends Composer<_$AppDatabase, $HiveLocationHistoryTable> {
+  $$HiveLocationHistoryTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get movedAt => $composableBuilder(
+    column: $table.movedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HiveLocationHistoryTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HiveLocationHistoryTable> {
+  $$HiveLocationHistoryTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get movedAt =>
+      $composableBuilder(column: $table.movedAt, builder: (column) => column);
+}
+
+class $$HiveLocationHistoryTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HiveLocationHistoryTable,
+          HiveLocationEntry,
+          $$HiveLocationHistoryTableFilterComposer,
+          $$HiveLocationHistoryTableOrderingComposer,
+          $$HiveLocationHistoryTableAnnotationComposer,
+          $$HiveLocationHistoryTableCreateCompanionBuilder,
+          $$HiveLocationHistoryTableUpdateCompanionBuilder,
+          (
+            HiveLocationEntry,
+            BaseReferences<
+              _$AppDatabase,
+              $HiveLocationHistoryTable,
+              HiveLocationEntry
+            >,
+          ),
+          HiveLocationEntry,
+          PrefetchHooks Function()
+        > {
+  $$HiveLocationHistoryTableTableManager(
+    _$AppDatabase db,
+    $HiveLocationHistoryTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HiveLocationHistoryTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HiveLocationHistoryTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$HiveLocationHistoryTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<DateTime> movedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HiveLocationHistoryCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                movedAt: movedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String hiveId,
+                required String apiaryId,
+                required DateTime movedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => HiveLocationHistoryCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                movedAt: movedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HiveLocationHistoryTable, HiveLocationEntry>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $HiveLocationHistoryTable,
+                    HiveLocationEntry
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HiveLocationHistoryTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HiveLocationHistoryTable,
+      HiveLocationEntry,
+      $$HiveLocationHistoryTableFilterComposer,
+      $$HiveLocationHistoryTableOrderingComposer,
+      $$HiveLocationHistoryTableAnnotationComposer,
+      $$HiveLocationHistoryTableCreateCompanionBuilder,
+      $$HiveLocationHistoryTableUpdateCompanionBuilder,
+      (
+        HiveLocationEntry,
+        BaseReferences<
+          _$AppDatabase,
+          $HiveLocationHistoryTable,
+          HiveLocationEntry
+        >,
+      ),
+      HiveLocationEntry,
+      PrefetchHooks Function()
+    >;
+typedef $$OutboxTableCreateCompanionBuilder = OutboxCompanion Function({
+  Value<int> id,
+  required String recordTable,
+  required String recordId,
+  required OutboxOperation operation,
+  required Map<String, Object?> payload,
+  required DateTime createdAt,
+  Value<int> attempts,
+  Value<String?> lastError,
+});
+typedef $$OutboxTableUpdateCompanionBuilder = OutboxCompanion Function({
+  Value<int> id,
+  Value<String> recordTable,
+  Value<String> recordId,
+  Value<OutboxOperation> operation,
+  Value<Map<String, Object?>> payload,
+  Value<DateTime> createdAt,
+  Value<int> attempts,
+  Value<String?> lastError,
+});
+
+class $$OutboxTableFilterComposer
+    extends Composer<_$AppDatabase, $OutboxTable> {
+  $$OutboxTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recordTable => $composableBuilder(
+    column: $table.recordTable,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recordId => $composableBuilder(
+    column: $table.recordId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<OutboxOperation, OutboxOperation, String>
+  get operation => $composableBuilder(
+    column: $table.operation,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    Map<String, Object?>,
+    Map<String, Object>,
+    String
+  >
+  get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$OutboxTableOrderingComposer
+    extends Composer<_$AppDatabase, $OutboxTable> {
+  $$OutboxTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recordTable => $composableBuilder(
+    column: $table.recordTable,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recordId => $composableBuilder(
+    column: $table.recordId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get operation => $composableBuilder(
+    column: $table.operation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$OutboxTableAnnotationComposer
+    extends Composer<_$AppDatabase, $OutboxTable> {
+  $$OutboxTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get recordTable => $composableBuilder(
+    column: $table.recordTable,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recordId =>
+      $composableBuilder(column: $table.recordId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<OutboxOperation, String> get operation =>
+      $composableBuilder(column: $table.operation, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, Object?>, String> get payload =>
+      $composableBuilder(column: $table.payload, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
+
+  GeneratedColumn<String> get lastError =>
+      $composableBuilder(column: $table.lastError, builder: (column) => column);
+}
+
+class $$OutboxTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $OutboxTable,
+          OutboxEntry,
+          $$OutboxTableFilterComposer,
+          $$OutboxTableOrderingComposer,
+          $$OutboxTableAnnotationComposer,
+          $$OutboxTableCreateCompanionBuilder,
+          $$OutboxTableUpdateCompanionBuilder,
+          (
+            OutboxEntry,
+            BaseReferences<_$AppDatabase, $OutboxTable, OutboxEntry>,
+          ),
+          OutboxEntry,
+          PrefetchHooks Function()
+        > {
+  $$OutboxTableTableManager(_$AppDatabase db, $OutboxTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$OutboxTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$OutboxTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$OutboxTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> recordTable = const Value.absent(),
+                Value<String> recordId = const Value.absent(),
+                Value<OutboxOperation> operation = const Value.absent(),
+                Value<Map<String, Object?>> payload = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+              }) => OutboxCompanion(
+                id: id,
+                recordTable: recordTable,
+                recordId: recordId,
+                operation: operation,
+                payload: payload,
+                createdAt: createdAt,
+                attempts: attempts,
+                lastError: lastError,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String recordTable,
+                required String recordId,
+                required OutboxOperation operation,
+                required Map<String, Object?> payload,
+                required DateTime createdAt,
+                Value<int> attempts = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+              }) => OutboxCompanion.insert(
+                id: id,
+                recordTable: recordTable,
+                recordId: recordId,
+                operation: operation,
+                payload: payload,
+                createdAt: createdAt,
+                attempts: attempts,
+                lastError: lastError,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$OutboxTable, OutboxEntry>(table),
+                  BaseReferences<_$AppDatabase, $OutboxTable, OutboxEntry>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$OutboxTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $OutboxTable,
+      OutboxEntry,
+      $$OutboxTableFilterComposer,
+      $$OutboxTableOrderingComposer,
+      $$OutboxTableAnnotationComposer,
+      $$OutboxTableCreateCompanionBuilder,
+      $$OutboxTableUpdateCompanionBuilder,
+      (OutboxEntry, BaseReferences<_$AppDatabase, $OutboxTable, OutboxEntry>),
+      OutboxEntry,
+      PrefetchHooks Function()
+    >;
+typedef $$SyncStateTableCreateCompanionBuilder = SyncStateCompanion Function({
+  required String recordTable,
+  Value<int> lastPulledSeq,
+  Value<int> rowid,
+});
+typedef $$SyncStateTableUpdateCompanionBuilder = SyncStateCompanion Function({
+  Value<String> recordTable,
+  Value<int> lastPulledSeq,
+  Value<int> rowid,
+});
+
+class $$SyncStateTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncStateTable> {
+  $$SyncStateTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get recordTable => $composableBuilder(
+    column: $table.recordTable,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get lastPulledSeq => $composableBuilder(
+    column: $table.lastPulledSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncStateTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncStateTable> {
+  $$SyncStateTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get recordTable => $composableBuilder(
+    column: $table.recordTable,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get lastPulledSeq => $composableBuilder(
+    column: $table.lastPulledSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncStateTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncStateTable> {
+  $$SyncStateTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get recordTable => $composableBuilder(
+    column: $table.recordTable,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get lastPulledSeq => $composableBuilder(
+    column: $table.lastPulledSeq,
+    builder: (column) => column,
+  );
+}
+
+class $$SyncStateTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncStateTable,
+          SyncCursor,
+          $$SyncStateTableFilterComposer,
+          $$SyncStateTableOrderingComposer,
+          $$SyncStateTableAnnotationComposer,
+          $$SyncStateTableCreateCompanionBuilder,
+          $$SyncStateTableUpdateCompanionBuilder,
+          (
+            SyncCursor,
+            BaseReferences<_$AppDatabase, $SyncStateTable, SyncCursor>,
+          ),
+          SyncCursor,
+          PrefetchHooks Function()
+        > {
+  $$SyncStateTableTableManager(_$AppDatabase db, $SyncStateTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncStateTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncStateTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncStateTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> recordTable = const Value.absent(),
+                Value<int> lastPulledSeq = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncStateCompanion(
+                recordTable: recordTable,
+                lastPulledSeq: lastPulledSeq,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String recordTable,
+                Value<int> lastPulledSeq = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncStateCompanion.insert(
+                recordTable: recordTable,
+                lastPulledSeq: lastPulledSeq,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SyncStateTable, SyncCursor>(table),
+                  BaseReferences<_$AppDatabase, $SyncStateTable, SyncCursor>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncStateTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncStateTable,
+      SyncCursor,
+      $$SyncStateTableFilterComposer,
+      $$SyncStateTableOrderingComposer,
+      $$SyncStateTableAnnotationComposer,
+      $$SyncStateTableCreateCompanionBuilder,
+      $$SyncStateTableUpdateCompanionBuilder,
+      (SyncCursor, BaseReferences<_$AppDatabase, $SyncStateTable, SyncCursor>),
+      SyncCursor,
+      PrefetchHooks Function()
+    >;
+
+class $AppDatabaseManager {
+  final _$AppDatabase _db;
+  $AppDatabaseManager(this._db);
+  $$OrganizationsTableTableManager get organizations =>
+      $$OrganizationsTableTableManager(_db, _db.organizations);
+  $$MembershipsTableTableManager get memberships =>
+      $$MembershipsTableTableManager(_db, _db.memberships);
+  $$ApiariesTableTableManager get apiaries =>
+      $$ApiariesTableTableManager(_db, _db.apiaries);
+  $$QueensTableTableManager get queens =>
+      $$QueensTableTableManager(_db, _db.queens);
+  $$HivesTableTableManager get hives =>
+      $$HivesTableTableManager(_db, _db.hives);
+  $$HiveLocationHistoryTableTableManager get hiveLocationHistory =>
+      $$HiveLocationHistoryTableTableManager(_db, _db.hiveLocationHistory);
+  $$OutboxTableTableManager get outbox =>
+      $$OutboxTableTableManager(_db, _db.outbox);
+  $$SyncStateTableTableManager get syncState =>
+      $$SyncStateTableTableManager(_db, _db.syncState);
+}

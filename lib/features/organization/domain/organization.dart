@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/core/db/server_enum.dart';
 
 part 'organization.freezed.dart';
 part 'organization.g.dart';
@@ -6,7 +7,7 @@ part 'organization.g.dart';
 /// "Kaç kovanın var?" cevabı. Yalnız tercihtir, kovan oluşturmaz; takip
 /// önerisi (kovan bazlı ya da grup bazlı) buna göre yapılır.
 @JsonEnum(valueField: 'value')
-enum HiveCountRange {
+enum HiveCountRange implements ServerEnum {
   none('none'),
   upTo10('up_to_10'),
   upTo50('up_to_50'),
@@ -16,6 +17,7 @@ enum HiveCountRange {
   new(this.value);
 
   /// `public.hive_count_range` enum değeri.
+  @override
   final String value;
 }
 
