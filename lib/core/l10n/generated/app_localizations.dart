@@ -185,8 +185,212 @@ abstract class AppLocalizations {
   /// No description provided for @apiariesEmptyMessage.
   ///
   /// In en, this message translates to:
-  /// **'An apiary groups your hives by where they stand; adding apiaries is coming soon.'**
+  /// **'An apiary groups your hives by where they stand; add your first one to begin.'**
   String get apiariesEmptyMessage;
+
+  /// No description provided for @apiariesAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add apiary'**
+  String get apiariesAdd;
+
+  /// No description provided for @apiariesAddFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first apiary'**
+  String get apiariesAddFirst;
+
+  /// No description provided for @apiariesLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read your apiaries.'**
+  String get apiariesLoadError;
+
+  /// Active hives in an apiary, on the apiary list.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No hives} =1{1 hive} other{{count} hives}}'**
+  String apiaryHiveCount(int count);
+
+  /// Date of the last visit to an apiary, on the apiary list.
+  ///
+  /// In en, this message translates to:
+  /// **'Last visit {date}'**
+  String apiaryLastVisit(String date);
+
+  /// No description provided for @apiaryNoVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'No visits yet'**
+  String get apiaryNoVisit;
+
+  /// Second line of an apiary on the list: hive count and last visit.
+  ///
+  /// In en, this message translates to:
+  /// **'{hives} · {visit}'**
+  String apiaryListSubtitle(String hives, String visit);
+
+  /// Label under the big hive count at the top of an apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Active hives'**
+  String get apiaryActiveHives;
+
+  /// No description provided for @apiaryLastVisitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last visit'**
+  String get apiaryLastVisitLabel;
+
+  /// Value of 'Last visit' when the apiary was never visited.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet'**
+  String get apiaryVisitNone;
+
+  /// No description provided for @apiaryEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get apiaryEdit;
+
+  /// No description provided for @apiaryNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary not found'**
+  String get apiaryNotFoundTitle;
+
+  /// No description provided for @apiaryNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It may have been deleted or not reached this device yet.'**
+  String get apiaryNotFoundMessage;
+
+  /// No description provided for @apiaryFormNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New apiary'**
+  String get apiaryFormNewTitle;
+
+  /// No description provided for @apiaryFormEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit apiary'**
+  String get apiaryFormEditTitle;
+
+  /// No description provided for @apiaryFormName.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary name'**
+  String get apiaryFormName;
+
+  /// No description provided for @apiaryFormNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Hilltop'**
+  String get apiaryFormNameHint;
+
+  /// No description provided for @apiaryFormLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get apiaryFormLocation;
+
+  /// No description provided for @apiaryFormLocationNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No location yet. If you\'re at the apiary, take it from GPS; no internet needed.'**
+  String get apiaryFormLocationNone;
+
+  /// No description provided for @apiaryFormLocationTake.
+  ///
+  /// In en, this message translates to:
+  /// **'Take location from GPS'**
+  String get apiaryFormLocationTake;
+
+  /// No description provided for @apiaryFormLocationRetake.
+  ///
+  /// In en, this message translates to:
+  /// **'Take location again'**
+  String get apiaryFormLocationRetake;
+
+  /// No description provided for @apiaryFormLocationClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove location'**
+  String get apiaryFormLocationClear;
+
+  /// No description provided for @apiaryFormLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your location… It\'s quicker in the open.'**
+  String get apiaryFormLocating;
+
+  /// How precise the GPS location is, in meters.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy ±{meters} m'**
+  String apiaryFormLocationAccuracy(int meters);
+
+  /// No description provided for @apiaryFormLocationErrorServiceDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is turned off on this device. Turn it on and try again.'**
+  String get apiaryFormLocationErrorServiceDisabled;
+
+  /// No description provided for @apiaryFormLocationErrorPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission wasn\'t given. Allow it to take the location.'**
+  String get apiaryFormLocationErrorPermissionDenied;
+
+  /// No description provided for @apiaryFormLocationErrorPermissionDeniedForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is off. Allow location for this app in Settings.'**
+  String get apiaryFormLocationErrorPermissionDeniedForever;
+
+  /// No description provided for @apiaryFormLocationErrorTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t find your location. Try again in the open.'**
+  String get apiaryFormLocationErrorTimeout;
+
+  /// No description provided for @apiaryFormLocationErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get your location. Try again.'**
+  String get apiaryFormLocationErrorUnknown;
+
+  /// No description provided for @apiaryFormOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get apiaryFormOpenSettings;
+
+  /// No description provided for @apiaryFormLandownerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Landowner\'s name'**
+  String get apiaryFormLandownerName;
+
+  /// No description provided for @apiaryFormLandownerPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Landowner\'s phone'**
+  String get apiaryFormLandownerPhone;
+
+  /// No description provided for @apiaryFormNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get apiaryFormNotes;
+
+  /// No description provided for @apiaryFormSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get apiaryFormSave;
 
   /// No description provided for @tasksEmptyTitle.
   ///
@@ -625,6 +829,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More than 200'**
   String get hiveCountRangeOver200;
+
+  /// No description provided for @onboardingApiaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first apiary'**
+  String get onboardingApiaryTitle;
+
+  /// No description provided for @onboardingApiaryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An apiary is where your hives stand. Saving it needs no internet.'**
+  String get onboardingApiaryMessage;
+
+  /// No description provided for @onboardingApiarySave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save apiary'**
+  String get onboardingApiarySave;
+
+  /// No description provided for @onboardingApiarySkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get onboardingApiarySkip;
 
   /// Screen reader label of the spinner shown while the business is fetched after sign-in.
   ///

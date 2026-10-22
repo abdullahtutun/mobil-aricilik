@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/misc.dart';
+import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 
 import 'fake_organization_service.dart';
+import 'test_database.dart';
 
 const testUser = AppUser(id: 'test-user', email: 'ari@example.com');
 
@@ -61,10 +64,12 @@ class FakeAuthService implements AuthService {
   }
 }
 
-/// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar.
-List<Override> signedIn({FakeAuthService? auth}) => [
+/// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
+/// DB bellek içi; verilmezse boş açılır.
+List<Override> signedIn({FakeAuthService? auth, AppDatabase? db}) => [
   authServiceProvider.overrideWithValue(
     auth ?? FakeAuthService(user: testUser),
   ),
   ...organizationOverrides(),
+  appDatabaseProvider.overrideWithValue(db ?? openTestDatabase()),
 ];

@@ -14,7 +14,7 @@ import 'package:mobil_arici/features/organization/presentation/organization_prov
 
 /// Girişten sonra işletmesi olmayan kullanıcının ilk kurulumu. İşletme önce
 /// cihazdan, yoksa sunucudan aranır; bulunamazsa akış açılır. İşletme
-/// kurulunca ya da bulununca router Bugün'e geçer.
+/// kurulunca router ilk arılık adımına, bulununca Bugün'e geçer.
 class OnboardingScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -116,7 +116,7 @@ class _OnboardingFlow extends ConsumerWidget {
           title: Text(
             l10n.onboardingStepCounter(
               state.step.index + 1,
-              OnboardingStep.values.length,
+              onboardingStepCount,
             ),
           ),
           actions: const [_SignOutButton()],

@@ -9,17 +9,17 @@ part of 'onboarding_controller.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// Dil → ülke → işletme adı → kovan sayısı akışı. Ekran açık kaldığı sürece
-/// yaşar. İşletme kurulunca yönlendirmeyi router yapar.
+/// yaşar. İşletme kurulunca yönlendirmeyi (ilk arılık adımına) router yapar.
 
 @ProviderFor(OnboardingController)
 final onboardingControllerProvider = OnboardingControllerProvider._();
 
 /// Dil → ülke → işletme adı → kovan sayısı akışı. Ekran açık kaldığı sürece
-/// yaşar. İşletme kurulunca yönlendirmeyi router yapar.
+/// yaşar. İşletme kurulunca yönlendirmeyi (ilk arılık adımına) router yapar.
 final class OnboardingControllerProvider
     extends $NotifierProvider<OnboardingController, OnboardingState> {
   /// Dil → ülke → işletme adı → kovan sayısı akışı. Ekran açık kaldığı sürece
-  /// yaşar. İşletme kurulunca yönlendirmeyi router yapar.
+  /// yaşar. İşletme kurulunca yönlendirmeyi (ilk arılık adımına) router yapar.
   OnboardingControllerProvider._()
     : super(
         from: null,
@@ -48,10 +48,10 @@ final class OnboardingControllerProvider
 }
 
 String _$onboardingControllerHash() =>
-    r'56ab39bce7bfbc4ac0037f98a3cc05e450e45a08';
+    r'71156d28232c36820445f652e6a1dd042610d2e5';
 
 /// Dil → ülke → işletme adı → kovan sayısı akışı. Ekran açık kaldığı sürece
-/// yaşar. İşletme kurulunca yönlendirmeyi router yapar.
+/// yaşar. İşletme kurulunca yönlendirmeyi (ilk arılık adımına) router yapar.
 
 abstract class _$OnboardingController extends $Notifier<OnboardingState> {
   OnboardingState build();

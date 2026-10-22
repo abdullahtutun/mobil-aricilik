@@ -9,11 +9,15 @@ import 'package:mobil_arici/app/shell/more_screen.dart';
 import 'package:mobil_arici/app/shell/scan_screen.dart';
 import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
@@ -23,20 +27,24 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
 
+const _apiaryId = 'apiaryId';
+
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
   final isDev = ref.watch(flavorProvider) == Flavor.dev;
 
-  // Router yeniden kurulmasın (sekme yığınları kaybolur); oturum ya da
-  // işletme değişince yalnız yönlendirme yeniden değerlendirilir.
+  // Router yeniden kurulmasın (sekme yığınları kaybolur); oturum, işletme
+  // ya da kurulum değişince yalnız yönlendirme yeniden değerlendirilir.
   SessionStage stage() => sessionStageOf(
     signedIn: ref.read(currentUserProvider) != null,
     hasOrganization: ref.read(currentOrganizationProvider).value != null,
+    settingUp: ref.read(setupInProgressProvider),
   );
   final session = ValueNotifier(stage());
   ref
     ..listen(currentUserProvider, (_, _) => session.value = stage())
     ..listen(currentOrganizationProvider, (_, _) => session.value = stage())
+    ..listen(setupInProgressProvider, (_, _) => session.value = stage())
     ..onDispose(session.dispose);
 
   final router = GoRouter(
@@ -83,6 +91,27 @@ GoRouter router(Ref ref) {
               GoRoute(
                 path: AppRoutes.apiaries,
                 builder: (context, state) => const ApiariesScreen(),
+                routes: [
+                  // `:apiaryId`'den önce; "new" kimlik sanılmasın.
+                  GoRoute(
+                    path: 'new',
+                    builder: (context, state) => const ApiaryFormScreen(),
+                  ),
+                  GoRoute(
+                    path: ':$_apiaryId',
+                    builder: (context, state) => ApiaryDetailScreen(
+                      apiaryId: state.pathParameters[_apiaryId]!,
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'edit',
+                        builder: (context, state) => ApiaryFormScreen(
+                          apiaryId: state.pathParameters[_apiaryId],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
@@ -136,6 +165,10 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.onboardingApiary,
+        builder: (context, state) => const FirstApiaryScreen(),
       ),
     ],
   );

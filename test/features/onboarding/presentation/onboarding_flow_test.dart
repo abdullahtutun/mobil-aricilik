@@ -3,13 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
+import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/core/services/location_service_provider.dart';
+import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/widgets/country_step.dart';
 import 'package:mobil_arici/features/onboarding/presentation/widgets/hive_count_step.dart';
@@ -19,13 +24,17 @@ import 'package:mobil_arici/features/organization/domain/organization_failure.da
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
 import '../../../helpers/fake_auth_service.dart';
+import '../../../helpers/fake_location_service.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/test_database.dart';
 
 /// Giriş yapmış ama işletmesi olmayan kullanıcıyla uygulamayı açar.
 Future<ProviderContainer> _pumpApp(
   WidgetTester tester, {
   FakeOrganizationService? service,
   FakeAuthService? auth,
+  AppDatabase? db,
+  FakeLocationService? location,
 }) async {
   final container = ProviderContainer.test(
     overrides: [
@@ -33,6 +42,10 @@ Future<ProviderContainer> _pumpApp(
         auth ?? FakeAuthService(user: testUser),
       ),
       ...organizationOverrides(service: service ?? FakeOrganizationService()),
+      appDatabaseProvider.overrideWithValue(db ?? openTestDatabase()),
+      locationServiceProvider.overrideWithValue(
+        location ?? FakeLocationService(),
+      ),
     ],
   );
   await tester.pumpWidget(
@@ -67,6 +80,17 @@ ListTile _countryTile(WidgetTester tester, String name) => tester.widget(
 Finder _inCountryStep(Finder finder) =>
     find.descendant(of: find.byType(CountryStep), matching: finder);
 
+/// Dil, ülke (önerilen), ad ve kovan aralığı adımlarını geçip işletmeyi
+/// kurar.
+Future<void> _setUpBusiness(WidgetTester tester) async {
+  await _continue(tester);
+  await _continue(tester);
+  await tester.enterText(find.byType(TextField), 'Golden Comb');
+  await _continue(tester);
+  await _tap(tester, find.text('None yet'));
+  await _tap(tester, find.text('Set up business'));
+}
+
 void main() {
   group('Onboarding', () {
     testWidgets('işletmesi olmayan kullanıcı onboarding ile açılır', (
@@ -76,11 +100,11 @@ void main() {
 
       expect(find.byType(OnboardingScreen), findsOneWidget);
       expect(find.byType(AppNavigationBar), findsNothing);
-      expect(find.text('Step 1 of 4'), findsOneWidget);
+      expect(find.text('Step 1 of 5'), findsOneWidget);
       expect(find.text('Which language should we use?'), findsOneWidget);
     });
 
-    testWidgets('dört adım tamamlanınca işletme kurulur, Bugün açılır', (
+    testWidgets('dört adım tamamlanınca işletme kurulur, ilk arılık açılır', (
       tester,
     ) async {
       final service = FakeOrganizationService();
@@ -90,7 +114,7 @@ void main() {
       await _continue(tester);
 
       // Ülke: aranıp seçilir.
-      expect(find.text('Step 2 of 4'), findsOneWidget);
+      expect(find.text('Step 2 of 5'), findsOneWidget);
       await tester.enterText(_inCountryStep(find.byType(TextField)), 'germ');
       await tester.pumpAndSettle();
       await _tap(tester, find.text('Germany'));
@@ -98,7 +122,7 @@ void main() {
       await _continue(tester);
 
       // Ad: yazılmadan geçilmez.
-      expect(find.text('Step 3 of 4'), findsOneWidget);
+      expect(find.text('Step 3 of 5'), findsOneWidget);
       expect(_button(tester, 'Continue').onPressed, isNull);
       await tester.enterText(
         find.descendant(
@@ -111,7 +135,7 @@ void main() {
       await _continue(tester);
 
       // Kovan sayısı: seçilmeden kurulmaz.
-      expect(find.text('Step 4 of 4'), findsOneWidget);
+      expect(find.text('Step 4 of 5'), findsOneWidget);
       expect(_button(tester, 'Set up business').onPressed, isNull);
       await _tap(tester, find.text('11–50'));
       await _tap(tester, find.text('Set up business'));
@@ -128,8 +152,9 @@ void main() {
         ),
       );
       expect(created.id, matches(RegExp('^[0-9a-f-]{14}7')));
-      expect(find.byType(TodayScreen), findsOneWidget);
-      expect(find.byType(AppNavigationBar), findsOneWidget);
+      expect(find.byType(FirstApiaryScreen), findsOneWidget);
+      expect(find.text('Step 5 of 5'), findsOneWidget);
+      expect(find.byType(AppNavigationBar), findsNothing);
 
       final region = container.read(regionConfigProvider);
       expect(region.countryCode, 'DE');
@@ -143,7 +168,7 @@ void main() {
 
       expect(container.read(languageProvider), AppLanguage.turkish);
       expect(find.text('Hangi dili kullanalım?'), findsOneWidget);
-      expect(find.text('Adım 1/4'), findsOneWidget);
+      expect(find.text('Adım 1/5'), findsOneWidget);
 
       await _tap(tester, find.text('Devam'));
       expect(find.text('İşletmen hangi ülkede?'), findsOneWidget);
@@ -265,7 +290,7 @@ void main() {
 
       expect(service.created, hasLength(2));
       expect(service.created.last.id, service.created.first.id);
-      expect(find.byType(TodayScreen), findsOneWidget);
+      expect(find.byType(FirstApiaryScreen), findsOneWidget);
     });
 
     testWidgets('işletme alınamazsa akış açılmaz; yeniden denenir', (
@@ -277,13 +302,15 @@ void main() {
       await _pumpApp(tester, service: service);
 
       expect(find.text("Couldn't load your business"), findsOneWidget);
-      expect(find.text('Step 1 of 4'), findsNothing);
+      expect(find.text('Step 1 of 5'), findsNothing);
 
       service.fetchFailure = null;
       await _tap(tester, find.text('Try again'));
 
+      // İşletmesi zaten olan kullanıcıya ilk arılık sorulmaz.
       expect(service.fetchCount, 2);
       expect(find.byType(TodayScreen), findsOneWidget);
+      expect(find.byType(FirstApiaryScreen), findsNothing);
     });
 
     testWidgets('onboarding’den çıkış yapılabilir', (tester) async {
@@ -322,6 +349,110 @@ void main() {
 
       expect(tester.takeException(), isNull);
       expect(_button(tester, 'Set up business').onPressed, isNotNull);
+    });
+  });
+
+  group('İlk arılık', () {
+    testWidgets('kaydedilince arılık yerelde yazılır, Bugün açılır', (
+      tester,
+    ) async {
+      final db = openTestDatabase();
+      final service = FakeOrganizationService();
+      await _pumpApp(tester, service: service, db: db);
+      await _setUpBusiness(tester);
+
+      // Ad yazılmadan kaydedilmez.
+      expect(_button(tester, 'Save apiary').onPressed, isNull);
+      await tester.enterText(
+        find.widgetWithText(TextField, 'Apiary name'),
+        '  Yayla  ',
+      );
+      await tester.pump();
+      await _tap(tester, find.text('Take location from GPS'));
+      expect(find.text('40.12346, 29.65432'), findsOneWidget);
+      expect(find.text('Accuracy ±8 m'), findsOneWidget);
+      await tester.enterText(
+        find.widgetWithText(TextField, "Landowner's name"),
+        'Ahmet Yılmaz',
+      );
+      await tester.enterText(
+        find.widgetWithText(TextField, "Landowner's phone"),
+        '0555 111 22 33',
+      );
+      await tester.pump();
+      await _tap(tester, find.text('Save apiary'));
+
+      expect(find.byType(TodayScreen), findsOneWidget);
+      expect(find.byType(AppNavigationBar), findsOneWidget);
+      final orgId = service.created.single.id;
+      final apiaries = await tester.runAsync(
+        () => ApiaryRepository(db).watchAll(orgId).first,
+      );
+      final apiary = apiaries!.single;
+      expect(apiary.name, 'Yayla');
+      expect(apiary.latitude, testFix.latitude);
+      expect(apiary.longitude, testFix.longitude);
+      expect(apiary.landownerName, 'Ahmet Yılmaz');
+      expect(apiary.landownerPhone, '0555 111 22 33');
+      expect(apiary.notes, isNull);
+      expect(await readOutbox(db), hasLength(1));
+    });
+
+    testWidgets('atlanırsa arılık yazılmaz, Bugün açılır', (tester) async {
+      final db = openTestDatabase();
+      await _pumpApp(tester, db: db);
+      await _setUpBusiness(tester);
+      await tester.enterText(
+        find.widgetWithText(TextField, 'Apiary name'),
+        'Yayla',
+      );
+
+      await _tap(tester, find.text('Skip for now'));
+
+      expect(find.byType(TodayScreen), findsOneWidget);
+      expect(await db.select(db.apiaries).get(), isEmpty);
+      expect(await readOutbox(db), isEmpty);
+    });
+
+    testWidgets('geri tuşu işletme adımlarına dönmez', (tester) async {
+      await _pumpApp(tester);
+      await _setUpBusiness(tester);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FirstApiaryScreen), findsOneWidget);
+      expect(find.byType(HiveCountStep), findsNothing);
+      expect(find.byType(BackButton), findsNothing);
+    });
+
+    testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {
+      final container = await _pumpApp(tester);
+      await _setUpBusiness(tester);
+
+      tester.view
+        ..physicalSize = const Size(360, 640)
+        ..devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = 1.5;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
+      await tester.pumpAndSettle();
+
+      await tester.scrollUntilVisible(
+        find.text('Take location from GPS'),
+        200,
+        scrollable: find
+            .descendant(
+              of: find.byType(FirstApiaryScreen),
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
+      await _tap(tester, find.text('Take location from GPS'));
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('Take location again'), findsOneWidget);
     });
   });
 }

@@ -6,6 +6,10 @@ abstract final class AppRoutes {
   static const tasks = '/tasks';
   static const more = '/more';
 
+  static const apiaryNew = '/apiaries/new';
+  static String apiary(String id) => '/apiaries/$id';
+  static String apiaryEdit(String id) => '/apiaries/$id/edit';
+
   static const settings = '/more/settings';
 
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.
@@ -17,6 +21,10 @@ abstract final class AppRoutes {
 
   /// İşletmesi olmayan kullanıcının açabildiği tek rota.
   static const onboarding = '/onboarding';
+
+  /// İşletme kurulduktan sonraki son onboarding adımı. Onboarding'in alt
+  /// rotası değil: geri tuşu işletme adımlarına dönmesin.
+  static const onboardingApiary = '/onboarding/apiary';
 
   static const developerMenu = '/dev';
   static const componentGallery = '/dev/components';

@@ -66,7 +66,87 @@
   "todayEmptyTitle": "Nothing for today",
   "todayEmptyMessage": "Today's tasks, hives that need attention and the weather will gather here.",
   "apiariesEmptyTitle": "No apiaries yet",
-  "apiariesEmptyMessage": "An apiary groups your hives by where they stand; adding apiaries is coming soon.",
+  "apiariesEmptyMessage": "An apiary groups your hives by where they stand; add your first one to begin.",
+  "apiariesAdd": "Add apiary",
+  "apiariesAddFirst": "Add your first apiary",
+  "apiariesLoadError": "Couldn't read your apiaries.",
+  "apiaryHiveCount": "{count, plural, =0{No hives} =1{1 hive} other{{count} hives}}",
+  "@apiaryHiveCount": {
+    "description": "Active hives in an apiary, on the apiary list.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "apiaryLastVisit": "Last visit {date}",
+  "@apiaryLastVisit": {
+    "description": "Date of the last visit to an apiary, on the apiary list.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Oct 21, 2026"
+      }
+    }
+  },
+  "apiaryNoVisit": "No visits yet",
+  "apiaryListSubtitle": "{hives} · {visit}",
+  "@apiaryListSubtitle": {
+    "description": "Second line of an apiary on the list: hive count and last visit.",
+    "placeholders": {
+      "hives": {
+        "type": "String",
+        "example": "12 hives"
+      },
+      "visit": {
+        "type": "String",
+        "example": "No visits yet"
+      }
+    }
+  },
+  "apiaryActiveHives": "Active hives",
+  "@apiaryActiveHives": {
+    "description": "Label under the big hive count at the top of an apiary."
+  },
+  "apiaryLastVisitLabel": "Last visit",
+  "apiaryVisitNone": "None yet",
+  "@apiaryVisitNone": {
+    "description": "Value of 'Last visit' when the apiary was never visited."
+  },
+  "apiaryEdit": "Edit",
+  "apiaryNotFoundTitle": "Apiary not found",
+  "apiaryNotFoundMessage": "It may have been deleted or not reached this device yet.",
+  "apiaryFormNewTitle": "New apiary",
+  "apiaryFormEditTitle": "Edit apiary",
+  "apiaryFormName": "Apiary name",
+  "apiaryFormNameHint": "e.g. Hilltop",
+  "apiaryFormLocation": "Location",
+  "apiaryFormLocationNone": "No location yet. If you're at the apiary, take it from GPS; no internet needed.",
+  "apiaryFormLocationTake": "Take location from GPS",
+  "apiaryFormLocationRetake": "Take location again",
+  "apiaryFormLocationClear": "Remove location",
+  "apiaryFormLocating": "Getting your location… It's quicker in the open.",
+  "apiaryFormLocationAccuracy": "Accuracy ±{meters} m",
+  "@apiaryFormLocationAccuracy": {
+    "description": "How precise the GPS location is, in meters.",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "apiaryFormLocationErrorServiceDisabled": "Location is turned off on this device. Turn it on and try again.",
+  "apiaryFormLocationErrorPermissionDenied": "Location permission wasn't given. Allow it to take the location.",
+  "apiaryFormLocationErrorPermissionDeniedForever": "Location permission is off. Allow location for this app in Settings.",
+  "apiaryFormLocationErrorTimeout": "Couldn't find your location. Try again in the open.",
+  "apiaryFormLocationErrorUnknown": "Couldn't get your location. Try again.",
+  "apiaryFormOpenSettings": "Open settings",
+  "apiaryFormLandownerName": "Landowner's name",
+  "apiaryFormLandownerPhone": "Landowner's phone",
+  "apiaryFormNotes": "Notes",
+  "apiaryFormSave": "Save",
   "tasksEmptyTitle": "No tasks yet",
   "tasksEmptyMessage": "Your reminders and to-dos will be listed here by date.",
   "moreEmptyTitle": "More modules on the way",
@@ -212,6 +292,10 @@
   "hiveCountRangeUpTo50": "11–50",
   "hiveCountRangeUpTo200": "51–200",
   "hiveCountRangeOver200": "More than 200",
+  "onboardingApiaryTitle": "Add your first apiary",
+  "onboardingApiaryMessage": "An apiary is where your hives stand. Saving it needs no internet.",
+  "onboardingApiarySave": "Save apiary",
+  "onboardingApiarySkip": "Skip for now",
   "onboardingLoading": "Loading your business",
   "@onboardingLoading": {
     "description": "Screen reader label of the spinner shown while the business is fetched after sign-in."

@@ -76,6 +76,11 @@ void main() {
       expect(tr.number(12.6, maxFractionDigits: 0), '13');
     });
 
+    test('koordinat her dilde noktalı, beş haneli', () {
+      expect(tr.coordinates(40.1234567, 29.6543), '40.12346, 29.65430');
+      expect(en.coordinates(-33.86, 151.2093), '-33.86000, 151.20930');
+    });
+
     test('yüzde işareti yerele göre başta ya da sonda', () {
       expect(tr.percent(0.75), '%75');
       expect(en.percent(0.75), '75%');

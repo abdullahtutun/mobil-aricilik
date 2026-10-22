@@ -1,0 +1,2 @@
+/* Konum izni sorulurken gösterilir (Info.plist: NSLocationWhenInUseUsageDescription). */
+"NSLocationWhenInUseUsageDescription" = "Arılığının konumu yalnız sen istediğinde GPS'ten alınır. İnternet gerekmez.";

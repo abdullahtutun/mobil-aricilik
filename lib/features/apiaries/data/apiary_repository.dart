@@ -3,6 +3,8 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
+import 'package:mobil_arici/features/hives/domain/hive.dart';
 
 /// Arılıklar; durum kaydı, son yazan kazanır.
 class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
@@ -19,6 +21,45 @@ class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
     (t) => t.orgId.equals(orgId),
     orderBy: [(t) => OrderingTerm.asc(t.name)],
   );
+
+  /// İşletmenin arılıkları aktif kovan sayılarıyla, ada göre (SQLite
+  /// sırası). Kovan eklenince, taşınınca ya da durumu değişince de yayar.
+  Stream<List<ApiarySummary>> watchSummaries(String orgId) =>
+      _watchSummaries(db.apiaries.orgId.equals(orgId));
+
+  /// Arılık ve aktif kovan sayısı; yoksa ya da silinmişse null.
+  Stream<ApiarySummary?> watchSummary(String id) =>
+      _watchSummaries(db.apiaries.id.equals(id))
+          .map((summaries) => summaries.singleOrNull);
+
+  Stream<List<ApiarySummary>> _watchSummaries(Expression<bool> filter) {
+    final apiaries = db.apiaries;
+    final hives = db.hives;
+    final activeHiveCount = hives.id.count();
+    final query =
+        db.select(apiaries).join([
+            leftOuterJoin(
+              hives,
+              hives.apiaryId.equalsExp(apiaries.id) &
+                  hives.deletedAt.isNull() &
+                  hives.status.equalsValue(HiveStatus.active),
+              useColumns: false,
+            ),
+          ])
+          ..addColumns([activeHiveCount])
+          ..where(apiaries.deletedAt.isNull() & filter)
+          ..groupBy([apiaries.id])
+          ..orderBy([OrderingTerm.asc(apiaries.name)]);
+    return query.watch().map(
+      (rows) => [
+        for (final row in rows)
+          ApiarySummary(
+            apiary: row.readTable(apiaries),
+            activeHiveCount: row.read(activeHiveCount) ?? 0,
+          ),
+      ],
+    );
+  }
 
   /// [latitude] ve [longitude] birlikte verilir ya da ikisi de boş kalır.
   Future<Apiary> create({

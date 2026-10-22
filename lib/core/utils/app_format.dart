@@ -38,6 +38,12 @@ class AppFormat {
     return format.format(value);
   }
 
+  /// Ondalık derece enlem ve boylam, beş hane (~1 m). GPS uygulamaları ve
+  /// haritalar gibi her dilde nokta ile; virgül iki sayıyı ayırır.
+  /// `40.12346, 29.65432`
+  String coordinates(double latitude, double longitude) =>
+      '${latitude.toStringAsFixed(5)}, ${longitude.toStringAsFixed(5)}';
+
   /// 0–1 arası oranı yüzde olarak yazar. `%76`, `76%`
   String percent(double ratio) =>
       NumberFormat.percentPattern(locale).format(ratio);

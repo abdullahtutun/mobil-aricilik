@@ -68,7 +68,130 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get apiariesEmptyMessage =>
-      'Arılık, kovanlarını bulundukları yere göre toplar; arılık ekleme yakında gelecek.';
+      'Arılık, kovanlarını bulundukları yere göre toplar; ilkini ekleyerek başla.';
+
+  @override
+  String get apiariesAdd => 'Arılık ekle';
+
+  @override
+  String get apiariesAddFirst => 'İlk arılığını ekle';
+
+  @override
+  String get apiariesLoadError => 'Arılıklar okunamadı.';
+
+  @override
+  String apiaryHiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan',
+      zero: 'Kovan yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String apiaryLastVisit(String date) {
+    return 'Son ziyaret $date';
+  }
+
+  @override
+  String get apiaryNoVisit => 'Henüz ziyaret yok';
+
+  @override
+  String apiaryListSubtitle(String hives, String visit) {
+    return '$hives · $visit';
+  }
+
+  @override
+  String get apiaryActiveHives => 'Aktif kovan';
+
+  @override
+  String get apiaryLastVisitLabel => 'Son ziyaret';
+
+  @override
+  String get apiaryVisitNone => 'Henüz yok';
+
+  @override
+  String get apiaryEdit => 'Düzenle';
+
+  @override
+  String get apiaryNotFoundTitle => 'Arılık bulunamadı';
+
+  @override
+  String get apiaryNotFoundMessage =>
+      'Silinmiş ya da bu cihaza henüz gelmemiş olabilir.';
+
+  @override
+  String get apiaryFormNewTitle => 'Yeni arılık';
+
+  @override
+  String get apiaryFormEditTitle => 'Arılığı düzenle';
+
+  @override
+  String get apiaryFormName => 'Arılık adı';
+
+  @override
+  String get apiaryFormNameHint => 'Örn. Yayla';
+
+  @override
+  String get apiaryFormLocation => 'Konum';
+
+  @override
+  String get apiaryFormLocationNone =>
+      'Konum yok. Arılıktaysan GPS\'ten al; internet gerekmez.';
+
+  @override
+  String get apiaryFormLocationTake => 'Konumu GPS\'ten al';
+
+  @override
+  String get apiaryFormLocationRetake => 'Konumu yeniden al';
+
+  @override
+  String get apiaryFormLocationClear => 'Konumu kaldır';
+
+  @override
+  String get apiaryFormLocating =>
+      'Konum alınıyor… Açık alanda daha çabuk bulunur.';
+
+  @override
+  String apiaryFormLocationAccuracy(int meters) {
+    return 'Doğruluk ±$meters m';
+  }
+
+  @override
+  String get apiaryFormLocationErrorServiceDisabled =>
+      'Cihazın konum servisi kapalı. Açıp yeniden dene.';
+
+  @override
+  String get apiaryFormLocationErrorPermissionDenied =>
+      'Konum izni verilmedi. Konumu almak için izin ver.';
+
+  @override
+  String get apiaryFormLocationErrorPermissionDeniedForever =>
+      'Konum izni kapalı. Ayarlardan bu uygulamaya konum izni ver.';
+
+  @override
+  String get apiaryFormLocationErrorTimeout =>
+      'Konum bulunamadı. Açık alanda yeniden dene.';
+
+  @override
+  String get apiaryFormLocationErrorUnknown => 'Konum alınamadı. Yeniden dene.';
+
+  @override
+  String get apiaryFormOpenSettings => 'Ayarları aç';
+
+  @override
+  String get apiaryFormLandownerName => 'Arazi sahibinin adı';
+
+  @override
+  String get apiaryFormLandownerPhone => 'Arazi sahibinin telefonu';
+
+  @override
+  String get apiaryFormNotes => 'Notlar';
+
+  @override
+  String get apiaryFormSave => 'Kaydet';
 
   @override
   String get tasksEmptyTitle => 'Henüz görev yok';
@@ -308,6 +431,19 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get hiveCountRangeOver200 => '200\'den fazla';
+
+  @override
+  String get onboardingApiaryTitle => 'İlk arılığını ekle';
+
+  @override
+  String get onboardingApiaryMessage =>
+      'Arılık, kovanlarının durduğu yer. Kaydetmek için internet gerekmez.';
+
+  @override
+  String get onboardingApiarySave => 'Arılığı kaydet';
+
+  @override
+  String get onboardingApiarySkip => 'Şimdilik atla';
 
   @override
   String get onboardingLoading => 'İşletme bilgisi yükleniyor';

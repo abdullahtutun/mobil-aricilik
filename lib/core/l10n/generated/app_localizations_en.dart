@@ -68,7 +68,132 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get apiariesEmptyMessage =>
-      'An apiary groups your hives by where they stand; adding apiaries is coming soon.';
+      'An apiary groups your hives by where they stand; add your first one to begin.';
+
+  @override
+  String get apiariesAdd => 'Add apiary';
+
+  @override
+  String get apiariesAddFirst => 'Add your first apiary';
+
+  @override
+  String get apiariesLoadError => 'Couldn\'t read your apiaries.';
+
+  @override
+  String apiaryHiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives',
+      one: '1 hive',
+      zero: 'No hives',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String apiaryLastVisit(String date) {
+    return 'Last visit $date';
+  }
+
+  @override
+  String get apiaryNoVisit => 'No visits yet';
+
+  @override
+  String apiaryListSubtitle(String hives, String visit) {
+    return '$hives · $visit';
+  }
+
+  @override
+  String get apiaryActiveHives => 'Active hives';
+
+  @override
+  String get apiaryLastVisitLabel => 'Last visit';
+
+  @override
+  String get apiaryVisitNone => 'None yet';
+
+  @override
+  String get apiaryEdit => 'Edit';
+
+  @override
+  String get apiaryNotFoundTitle => 'Apiary not found';
+
+  @override
+  String get apiaryNotFoundMessage =>
+      'It may have been deleted or not reached this device yet.';
+
+  @override
+  String get apiaryFormNewTitle => 'New apiary';
+
+  @override
+  String get apiaryFormEditTitle => 'Edit apiary';
+
+  @override
+  String get apiaryFormName => 'Apiary name';
+
+  @override
+  String get apiaryFormNameHint => 'e.g. Hilltop';
+
+  @override
+  String get apiaryFormLocation => 'Location';
+
+  @override
+  String get apiaryFormLocationNone =>
+      'No location yet. If you\'re at the apiary, take it from GPS; no internet needed.';
+
+  @override
+  String get apiaryFormLocationTake => 'Take location from GPS';
+
+  @override
+  String get apiaryFormLocationRetake => 'Take location again';
+
+  @override
+  String get apiaryFormLocationClear => 'Remove location';
+
+  @override
+  String get apiaryFormLocating =>
+      'Getting your location… It\'s quicker in the open.';
+
+  @override
+  String apiaryFormLocationAccuracy(int meters) {
+    return 'Accuracy ±$meters m';
+  }
+
+  @override
+  String get apiaryFormLocationErrorServiceDisabled =>
+      'Location is turned off on this device. Turn it on and try again.';
+
+  @override
+  String get apiaryFormLocationErrorPermissionDenied =>
+      'Location permission wasn\'t given. Allow it to take the location.';
+
+  @override
+  String get apiaryFormLocationErrorPermissionDeniedForever =>
+      'Location permission is off. Allow location for this app in Settings.';
+
+  @override
+  String get apiaryFormLocationErrorTimeout =>
+      'Couldn\'t find your location. Try again in the open.';
+
+  @override
+  String get apiaryFormLocationErrorUnknown =>
+      'Couldn\'t get your location. Try again.';
+
+  @override
+  String get apiaryFormOpenSettings => 'Open settings';
+
+  @override
+  String get apiaryFormLandownerName => 'Landowner\'s name';
+
+  @override
+  String get apiaryFormLandownerPhone => 'Landowner\'s phone';
+
+  @override
+  String get apiaryFormNotes => 'Notes';
+
+  @override
+  String get apiaryFormSave => 'Save';
 
   @override
   String get tasksEmptyTitle => 'No tasks yet';
@@ -308,6 +433,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hiveCountRangeOver200 => 'More than 200';
+
+  @override
+  String get onboardingApiaryTitle => 'Add your first apiary';
+
+  @override
+  String get onboardingApiaryMessage =>
+      'An apiary is where your hives stand. Saving it needs no internet.';
+
+  @override
+  String get onboardingApiarySave => 'Save apiary';
+
+  @override
+  String get onboardingApiarySkip => 'Skip for now';
 
   @override
   String get onboardingLoading => 'Loading your business';

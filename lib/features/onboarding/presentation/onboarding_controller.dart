@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/onboarding/domain/onboarding_rules.dart';
+import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
@@ -11,8 +12,12 @@ part 'onboarding_controller.freezed.dart';
 part 'onboarding_controller.g.dart';
 
 /// Onboarding adımları, sırasıyla. Dil seçimi doğrudan uygulamanın diline
-/// yazılır; diğerleri işletme kurulurken gönderilir.
+/// yazılır; diğerleri işletme kurulurken gönderilir. İşletme kurulunca
+/// yerel bir adım daha gelir: ilk arılık (`FirstApiaryScreen`).
 enum OnboardingStep { language, country, name, hiveCount }
+
+/// Adım sayacındaki toplam: işletme adımları ve ilk arılık.
+int get onboardingStepCount => OnboardingStep.values.length + 1;
 
 @freezed
 abstract class OnboardingState with _$OnboardingState {
@@ -54,7 +59,7 @@ extension OnboardingProgress on OnboardingState {
 }
 
 /// Dil → ülke → işletme adı → kovan sayısı akışı. Ekran açık kaldığı sürece
-/// yaşar. İşletme kurulunca yönlendirmeyi router yapar.
+/// yaşar. İşletme kurulunca yönlendirmeyi (ilk arılık adımına) router yapar.
 @riverpod
 class OnboardingController extends _$OnboardingController {
   @override
@@ -97,11 +102,14 @@ class OnboardingController extends _$OnboardingController {
   }
 
   /// Son adımda işletmeyi kurar. Hata durumda gösterilir; aynı kimlikle
-  /// yeniden denenebilir.
+  /// yeniden denenebilir. Kurulunca router ilk arılık adımına geçer.
   Future<void> submit() async {
     final countryCode = state.countryCode;
     if (!state.isLastStep || !state.canContinue || countryCode == null) return;
     state = state.copyWith(busy: true, failure: null);
+    // İşletme gelmeden önce: router işletmeyi görünce Bugün'e değil ilk
+    // arılık adımına gitsin.
+    ref.read(setupInProgressProvider.notifier).start();
     try {
       await ref
           .read(currentOrganizationProvider.notifier)

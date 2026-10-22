@@ -24,6 +24,21 @@ void main() {
         SessionStage.ready,
       );
     });
+
+    test('kurulum yalnız işletme varken sürer', () {
+      expect(
+        sessionStageOf(signedIn: true, hasOrganization: true, settingUp: true),
+        SessionStage.settingUp,
+      );
+      expect(
+        sessionStageOf(signedIn: true, hasOrganization: false, settingUp: true),
+        SessionStage.needsOrganization,
+      );
+      expect(
+        sessionStageOf(signedIn: false, hasOrganization: true, settingUp: true),
+        SessionStage.signedOut,
+      );
+    });
   });
 
   group('sessionRedirect', () {
@@ -70,6 +85,53 @@ void main() {
       );
     });
 
+    test('işletme yoksa ilk arılık adımı onboarding başına döner', () {
+      expect(
+        _redirect(SessionStage.needsOrganization, AppRoutes.onboardingApiary),
+        AppRoutes.onboarding,
+      );
+      expect(
+        _redirect(
+          SessionStage.needsOrganization,
+          '/onboarding/apiary?from=%2Ftasks',
+        ),
+        '/onboarding?from=%2Ftasks',
+      );
+    });
+
+    test('işletme yeni kurulduysa ilk arılık adımı açılır, konum taşınır', () {
+      expect(
+        _redirect(SessionStage.settingUp, AppRoutes.onboarding),
+        AppRoutes.onboardingApiary,
+      );
+      expect(
+        _redirect(SessionStage.settingUp, '/onboarding?from=%2Ftasks'),
+        '/onboarding/apiary?from=%2Ftasks',
+      );
+      expect(
+        _redirect(SessionStage.settingUp, AppRoutes.onboardingApiary),
+        isNull,
+      );
+      expect(
+        _redirect(SessionStage.settingUp, '/onboarding/apiary?from=%2Ftasks'),
+        isNull,
+      );
+    });
+
+    test('kurulum sürerken gelen konum sonrasına saklanır', () {
+      expect(
+        _redirect(SessionStage.settingUp, '/hives/42'),
+        '/onboarding/apiary?from=%2Fhives%2F42',
+      );
+      for (final path in [AppRoutes.today, AppRoutes.signIn]) {
+        expect(
+          _redirect(SessionStage.settingUp, path),
+          AppRoutes.onboardingApiary,
+          reason: path,
+        );
+      }
+    });
+
     test('işletme yoksa onboarding açık kalır', () {
       expect(
         _redirect(SessionStage.needsOrganization, AppRoutes.onboarding),
@@ -86,6 +148,7 @@ void main() {
         AppRoutes.signIn,
         AppRoutes.signInCode,
         AppRoutes.onboarding,
+        AppRoutes.onboardingApiary,
       ]) {
         expect(
           _redirect(SessionStage.ready, path),
@@ -102,6 +165,10 @@ void main() {
           '/onboarding?from=%2Fhives%2F42%3Ftab%3Dnotes',
         ),
         '/hives/42?tab=notes',
+      );
+      expect(
+        _redirect(SessionStage.ready, '/onboarding/apiary?from=%2Ftasks'),
+        '/tasks',
       );
     });
 

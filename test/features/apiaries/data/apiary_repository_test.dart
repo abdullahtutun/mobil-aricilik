@@ -3,6 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
+import 'package:mobil_arici/features/hives/data/hive_repository.dart';
+import 'package:mobil_arici/features/hives/domain/hive.dart';
 
 import '../../../helpers/test_database.dart';
 
@@ -55,5 +58,79 @@ void main() {
       throwsA(isA<SqliteException>()),
     );
     expect(await readOutbox(db), isEmpty);
+  });
+
+  group('özetler', () {
+    late HiveRepository hives;
+
+    setUp(() => hives = HiveRepository(db, clock: TestClock().call));
+
+    Future<Hive> createHive(
+      String apiaryId, {
+      HiveStatus status = HiveStatus.active,
+    }) => hives.create(
+      orgId: 'org-1',
+      number: '101',
+      type: HiveType.langstroth,
+      apiaryId: apiaryId,
+      status: status,
+    );
+
+    test('yalnız aktif ve silinmemiş kovanlar sayılır', () async {
+      final yayla = await repository.create(orgId: 'org-1', name: 'Yayla');
+      final ova = await repository.create(orgId: 'org-1', name: 'Ova');
+      await createHive(yayla.id);
+      await createHive(yayla.id);
+      for (final status in HiveStatus.values.skip(1)) {
+        await createHive(yayla.id, status: status);
+      }
+      await hives.delete((await createHive(yayla.id)).id);
+
+      expect(await repository.watchSummaries('org-1').first, [
+        ApiarySummary(apiary: ova, activeHiveCount: 0),
+        ApiarySummary(apiary: yayla, activeHiveCount: 2),
+      ]);
+      expect(
+        await repository.watchSummary(yayla.id).first,
+        ApiarySummary(apiary: yayla, activeHiveCount: 2),
+      );
+    });
+
+    test('başka işletmenin ve silinmiş arılıklar listelenmez', () async {
+      final yayla = await repository.create(orgId: 'org-1', name: 'Yayla');
+      final ova = await repository.create(orgId: 'org-1', name: 'Ova');
+      await repository.create(orgId: 'org-2', name: 'Başkası');
+      await repository.delete(ova.id);
+
+      expect(
+        (await repository.watchSummaries('org-1').first).map((s) => s.apiary),
+        [yayla],
+      );
+      expect(await repository.watchSummary(ova.id).first, isNull);
+      expect(await repository.watchSummary('yok').first, isNull);
+    });
+
+    test(
+      'kovan eklenince, durumu değişince ve taşınınca yeniden yayar',
+      () async {
+        final yayla = await repository.create(orgId: 'org-1', name: 'Yayla');
+        final ova = await repository.create(orgId: 'org-1', name: 'Ova');
+        final counts = repository
+            .watchSummary(yayla.id)
+            .map((summary) => summary?.activeHiveCount);
+        final expectation = expectLater(counts, emitsInOrder([0, 1, 2, 1, 0]));
+
+        await pumpEventQueue();
+        final first = await createHive(yayla.id);
+        await pumpEventQueue();
+        final second = await createHive(yayla.id);
+        await pumpEventQueue();
+        await hives.update(first.copyWith(status: HiveStatus.dead));
+        await pumpEventQueue();
+        await hives.update(second.copyWith(apiaryId: ova.id));
+
+        await expectation;
+      },
+    );
   });
 }

@@ -1,0 +1,2 @@
+/* Konum izni sorulurken gösterilir (Info.plist: NSLocationWhenInUseUsageDescription). */
+"NSLocationWhenInUseUsageDescription" = "Your apiary's location is taken from GPS when you ask for it. No internet is needed.";
