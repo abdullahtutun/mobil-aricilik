@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/app/app.dart';
-import 'package:mobil_aricilik/app/router.dart';
-import 'package:mobil_aricilik/app/routes.dart';
-import 'package:mobil_aricilik/core/design_system/design_system.dart';
-import 'package:mobil_aricilik/core/l10n/app_language.dart';
-import 'package:mobil_aricilik/core/l10n/language_provider.dart';
-import 'package:mobil_aricilik/core/region/country_currencies.dart';
-import 'package:mobil_aricilik/core/region/region_config.dart';
-import 'package:mobil_aricilik/core/region/region_provider.dart';
-import 'package:mobil_aricilik/features/settings/presentation/country_picker_screen.dart';
-import 'package:mobil_aricilik/features/settings/presentation/settings_screen.dart';
+import 'package:mobil_arici/app/app.dart';
+import 'package:mobil_arici/app/router.dart';
+import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/core/design_system/design_system.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
+import 'package:mobil_arici/core/l10n/language_provider.dart';
+import 'package:mobil_arici/core/region/country_currencies.dart';
+import 'package:mobil_arici/core/region/region_config.dart';
+import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/features/settings/presentation/country_picker_screen.dart';
+import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 
 Future<ProviderContainer> _pumpSettings(WidgetTester tester) async {
   final container = ProviderContainer.test();

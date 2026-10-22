@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/utils/units.dart';
+import 'package:mobil_arici/core/utils/units.dart';
 
 const _precision = 1e-9;
 const _sample = 123.4;

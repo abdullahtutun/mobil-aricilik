@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mobil_aricilik/core/region/country_currencies.dart';
-import 'package:mobil_aricilik/core/utils/units.dart';
+import 'package:mobil_arici/core/region/country_currencies.dart';
+import 'package:mobil_arici/core/utils/units.dart';
 
 part 'region_config.freezed.dart';
 

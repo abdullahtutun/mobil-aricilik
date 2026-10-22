@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/l10n/app_language.dart';
-import 'package:mobil_aricilik/core/l10n/language_provider.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
+import 'package:mobil_arici/core/l10n/language_provider.dart';
 
 void main() {
   group('languageProvider', () {

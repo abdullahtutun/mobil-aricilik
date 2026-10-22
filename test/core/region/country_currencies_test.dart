@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/region/country_currencies.dart';
+import 'package:mobil_arici/core/region/country_currencies.dart';
 
 void main() {
   group('countryCurrencyCodes', () {

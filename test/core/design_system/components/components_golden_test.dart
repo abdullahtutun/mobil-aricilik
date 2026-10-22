@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/design_system/design_system.dart';
-import 'package:mobil_aricilik/core/design_system/gallery/component_gallery_screen.dart';
-import 'package:mobil_aricilik/core/design_system/gallery/component_samples.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/design_system/design_system.dart';
+import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
+import 'package:mobil_arici/core/design_system/gallery/component_samples.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Galerideki her bileşen bölümünü (dört tema alt alta) bir golden ile
 /// karşılaştırır. Güncellemek için:

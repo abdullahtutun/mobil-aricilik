@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobil_aricilik/app/router.dart';
-import 'package:mobil_aricilik/core/design_system/design_system.dart';
-import 'package:mobil_aricilik/core/l10n/app_language.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
-import 'package:mobil_aricilik/core/l10n/language_provider.dart';
+import 'package:mobil_arici/app/router.dart';
+import 'package:mobil_arici/core/design_system/design_system.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/l10n/language_provider.dart';
 
 class App extends ConsumerWidget {
   const new({super.key});

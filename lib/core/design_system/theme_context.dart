@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_colors.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_radii.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_sizes.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_spacing.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_strokes.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_touch_targets.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_typography.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_colors.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_radii.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_sizes.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_spacing.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_strokes.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_touch_targets.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_typography.dart';
 
 /// Tokenlara kısa erişim: `context.colors.primary`, `context.spacing.md`.
 extension AppThemeTokens on BuildContext {

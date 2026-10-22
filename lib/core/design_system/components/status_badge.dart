@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/components/app_status.dart';
-import 'package:mobil_aricilik/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/design_system/components/app_status.dart';
+import 'package:mobil_arici/core/design_system/theme_context.dart';
 
 /// Durum rozeti: renk + ikon + kelime, üçü birlikte.
 class StatusBadge extends StatelessWidget {

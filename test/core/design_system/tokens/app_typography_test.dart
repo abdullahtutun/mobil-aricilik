@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_typography.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_typography.dart';
 
 List<TextStyle> _styles(AppTypography t) => [
   t.numberLarge,

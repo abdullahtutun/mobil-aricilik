@@ -201,7 +201,7 @@ lib/
 
 | İhtiyaç | Çözüm | Saha detayı |
 | --- | --- | --- |
-| Kovan tanıma | QR (mobile\_scanner) + NFC (nfc\_manager) | QR içeriği: mobil`aricilik://h/<uuid>` — uygulama içinde açılır, internet gerektirmez. Etiket PDF'i cihazda üretilir (A4'e 24 etiket), UV'ye dayanıklı etiket önerisi. NFC tag kovan içine/kapak altına. |
+| Kovan tanıma | QR (mobile\_scanner) + NFC (nfc\_manager) | QR içeriği: `mobilarici://h/<uuid>` — uygulama içinde açılır, internet gerektirmez. Etiket PDF'i cihazda üretilir (A4'e 24 etiket), UV'ye dayanıklı etiket önerisi. NFC tag kovan içine/kapak altına. |
 | Toplu kovan ekleme | "20 kovan oluştur, 101'den başla" | Etiketler toplu basılır, sahada okutularak eşleştirilir |
 | Harita | flutter\_map + OpenFreeMap (ücretsiz, OSM verisi) | Ayarlar → "Bölgemin haritasını indir" (zoom aralığı sınırlı, boyut önceden gösterilir). Online görünüm OpenFreeMap'in herkese açık sunucusundan gelir. Offline bölge paketleri, OpenFreeMap'in yayımladığı MBTiles dünya dosyasından bölge bölge kesilip kendi depolamamızdan sunulur; böylece ücretsiz genel sunucuya toplu indirme yükü bindirilmez. |
 | Konum | geolocator | Sadece arılık kaydı ve "yakınımdaki arılık" için; sürekli takip yok (pil) |

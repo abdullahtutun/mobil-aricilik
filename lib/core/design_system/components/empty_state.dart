@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/components/big_button.dart';
-import 'package:mobil_aricilik/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/design_system/components/big_button.dart';
+import 'package:mobil_arici/core/design_system/theme_context.dart';
 
 /// Boş liste: ne işe yaradığını tek cümlede anlatır ve ilk eylemi sunar.
 class EmptyState extends StatelessWidget {

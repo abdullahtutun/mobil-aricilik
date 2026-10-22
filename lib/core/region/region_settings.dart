@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mobil_aricilik/core/region/region_config.dart';
+import 'package:mobil_arici/core/region/region_config.dart';
 
 part 'region_settings.freezed.dart';
 

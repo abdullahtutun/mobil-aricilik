@@ -1,4 +1,4 @@
-# mobil_aricilik
+# mobil_arici
 
 Mobil Arıcı - offline-first arıcılık uygulaması
 

@@ -1,5 +1,5 @@
-import 'package:mobil_aricilik/core/region/region_config.dart';
-import 'package:mobil_aricilik/core/region/region_settings.dart';
+import 'package:mobil_arici/core/region/region_config.dart';
+import 'package:mobil_arici/core/region/region_settings.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'region_provider.g.dart';

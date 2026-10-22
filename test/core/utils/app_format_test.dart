@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
-import 'package:mobil_aricilik/core/utils/app_format.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/utils/app_format.dart';
 
 void main() {
   final moment = DateTime(2026, 10, 21, 14, 5);

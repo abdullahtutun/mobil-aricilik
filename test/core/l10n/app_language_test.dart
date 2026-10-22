@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/l10n/app_language.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 void main() {
   group('resolveAppLocale', () {

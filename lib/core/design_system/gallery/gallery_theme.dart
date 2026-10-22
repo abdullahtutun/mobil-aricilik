@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/app_theme.dart';
-import 'package:mobil_aricilik/core/design_system/appearance_settings.dart';
-import 'package:mobil_aricilik/core/design_system/theme_context.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/design_system/app_theme.dart';
+import 'package:mobil_arici/core/design_system/appearance_settings.dart';
+import 'package:mobil_arici/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Galeride ve golden testlerde gösterilen dört görünüm.
 enum GalleryTheme {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobil_aricilik/app/routes.dart';
-import 'package:mobil_aricilik/app/shell/app_navigation_bar.dart';
-import 'package:mobil_aricilik/app/shell/app_tab.dart';
-import 'package:mobil_aricilik/app/shell/quick_record_sheet.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
+import 'package:mobil_arici/app/shell/app_tab.dart';
+import 'package:mobil_arici/app/shell/quick_record_sheet.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Sekmeli kabuk. Her sekme kendi gezinme yığınını korur.
 class AppShell extends StatelessWidget {

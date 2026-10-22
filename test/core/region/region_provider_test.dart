@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/region/region_config.dart';
-import 'package:mobil_aricilik/core/region/region_provider.dart';
-import 'package:mobil_aricilik/core/region/region_settings.dart';
+import 'package:mobil_arici/core/region/region_config.dart';
+import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/core/region/region_settings.dart';
 
 void main() {
   group('regionSelectionProvider', () {

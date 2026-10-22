@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/design_system/theme_context.dart';
 
 class ChoiceChipOption<T> {
   const new({required this.value, required this.label});

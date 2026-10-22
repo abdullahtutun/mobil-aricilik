@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Alt gezinmedeki sekmeler. Sıra, router'daki dal (branch) sırasıyla aynı;
 /// ortadaki Okut butonu sekme değildir.

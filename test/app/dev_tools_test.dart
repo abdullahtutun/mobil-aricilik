@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/app/app.dart';
-import 'package:mobil_aricilik/app/flavor.dart';
-import 'package:mobil_aricilik/app/router.dart';
-import 'package:mobil_aricilik/app/routes.dart';
-import 'package:mobil_aricilik/core/design_system/gallery/component_gallery_screen.dart';
-import 'package:mobil_aricilik/features/settings/presentation/developer_menu_screen.dart';
+import 'package:mobil_arici/app/app.dart';
+import 'package:mobil_arici/app/flavor.dart';
+import 'package:mobil_arici/app/router.dart';
+import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
+import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 
 void main() {
   group('Geliştirici menüsü', () {

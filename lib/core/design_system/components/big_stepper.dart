@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/theme_context.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Eldivenle kaydırmadan sayı girmek için büyük −/+ butonlu sayaç.
 ///

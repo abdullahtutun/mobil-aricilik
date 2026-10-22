@@ -1,4 +1,4 @@
-import 'package:mobil_aricilik/core/design_system/appearance_settings.dart';
+import 'package:mobil_arici/core/design_system/appearance_settings.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'appearance_provider.g.dart';

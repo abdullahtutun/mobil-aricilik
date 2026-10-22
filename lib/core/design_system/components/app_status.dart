@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_colors.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_colors.dart';
 
 /// Durum türü. Her durumun ayrı bir ikon şekli var; renk tek başına anlam
 /// taşımasın diye ikon ve kelimeyle birlikte gösterilir.

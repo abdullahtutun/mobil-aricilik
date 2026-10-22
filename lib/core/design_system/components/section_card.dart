@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/design_system/theme_context.dart';
 
 /// Ekranı bölümlere ayıran kart: isteğe bağlı başlık ve içerik.
 ///

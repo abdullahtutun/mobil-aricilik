@@ -1,17 +1,17 @@
 import 'package:go_router/go_router.dart';
-import 'package:mobil_aricilik/app/deep_link.dart';
-import 'package:mobil_aricilik/app/flavor.dart';
-import 'package:mobil_aricilik/app/routes.dart';
-import 'package:mobil_aricilik/app/shell/app_shell.dart';
-import 'package:mobil_aricilik/app/shell/more_screen.dart';
-import 'package:mobil_aricilik/app/shell/scan_screen.dart';
-import 'package:mobil_aricilik/core/design_system/gallery/component_gallery_screen.dart';
-import 'package:mobil_aricilik/features/apiaries/presentation/apiaries_screen.dart';
-import 'package:mobil_aricilik/features/settings/presentation/country_picker_screen.dart';
-import 'package:mobil_aricilik/features/settings/presentation/developer_menu_screen.dart';
-import 'package:mobil_aricilik/features/settings/presentation/settings_screen.dart';
-import 'package:mobil_aricilik/features/tasks/presentation/tasks_screen.dart';
-import 'package:mobil_aricilik/features/today/presentation/today_screen.dart';
+import 'package:mobil_arici/app/deep_link.dart';
+import 'package:mobil_arici/app/flavor.dart';
+import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/shell/app_shell.dart';
+import 'package:mobil_arici/app/shell/more_screen.dart';
+import 'package:mobil_arici/app/shell/scan_screen.dart';
+import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
+import 'package:mobil_arici/features/settings/presentation/country_picker_screen.dart';
+import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
+import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
+import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
+import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
@@ -20,7 +20,7 @@ part 'router.g.dart';
 GoRouter router(Ref ref) {
   final isDev = ref.watch(flavorProvider) == Flavor.dev;
   final router = GoRouter(
-    // `mobilaricilik://x/y` → `/x/y`; uygulama içi konumlara dokunmaz.
+    // `mobilarici://x/y` → `/x/y`; uygulama içi konumlara dokunmaz.
     redirect: (context, state) => deepLinkLocation(state.uri),
     // Eşleşmeyen konum (henüz hedefi olmayan derin linkler dahil) hata
     // sayfası yerine Bugün'e düşer.

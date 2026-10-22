@@ -1,4 +1,4 @@
-package com.abdullahtutun.mobilaricilik
+package com.abdullahtutun.mobilarici
 
 import io.flutter.embedding.android.FlutterActivity
 

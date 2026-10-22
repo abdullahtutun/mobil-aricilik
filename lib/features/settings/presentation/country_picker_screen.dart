@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
-import 'package:mobil_aricilik/core/region/country_currencies.dart';
-import 'package:mobil_aricilik/core/region/region_provider.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/region/country_currencies.dart';
+import 'package:mobil_arici/core/region/region_provider.dart';
 
 /// Geçici ülke seçici: para birimi tablosundaki tüm kodlar, adsız. Ülke
 /// ileride işletme kaydından (`organizations.country_code`) gelecek.

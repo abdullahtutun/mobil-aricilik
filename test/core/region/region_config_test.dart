@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/core/region/region_config.dart';
-import 'package:mobil_aricilik/core/utils/units.dart';
+import 'package:mobil_arici/core/region/region_config.dart';
+import 'package:mobil_arici/core/utils/units.dart';
 
 const _allFeatures = RegionFeatures(
   aks: true,

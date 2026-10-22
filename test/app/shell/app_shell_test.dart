@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_aricilik/app/app.dart';
-import 'package:mobil_aricilik/app/router.dart';
-import 'package:mobil_aricilik/app/routes.dart';
-import 'package:mobil_aricilik/app/shell/app_navigation_bar.dart';
-import 'package:mobil_aricilik/app/shell/more_screen.dart';
-import 'package:mobil_aricilik/app/shell/quick_record_sheet.dart';
-import 'package:mobil_aricilik/app/shell/scan_screen.dart';
-import 'package:mobil_aricilik/core/design_system/design_system.dart';
-import 'package:mobil_aricilik/features/apiaries/presentation/apiaries_screen.dart';
-import 'package:mobil_aricilik/features/settings/presentation/settings_screen.dart';
-import 'package:mobil_aricilik/features/tasks/presentation/tasks_screen.dart';
-import 'package:mobil_aricilik/features/today/presentation/today_screen.dart';
+import 'package:mobil_arici/app/app.dart';
+import 'package:mobil_arici/app/router.dart';
+import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
+import 'package:mobil_arici/app/shell/more_screen.dart';
+import 'package:mobil_arici/app/shell/quick_record_sheet.dart';
+import 'package:mobil_arici/app/shell/scan_screen.dart';
+import 'package:mobil_arici/core/design_system/design_system.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
+import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
+import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
+import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
 Future<ProviderContainer> _pumpApp(WidgetTester tester) async {
   final container = ProviderContainer.test();
@@ -253,12 +253,12 @@ void main() {
   });
 
   group('Derin link', () {
-    testWidgets('mobilaricilik:// linki aynı yollu ekranı açar', (
+    testWidgets('mobilarici:// linki aynı yollu ekranı açar', (
       tester,
     ) async {
       await _pumpApp(tester);
 
-      await _openDeepLink(tester, 'mobilaricilik://more/settings');
+      await _openDeepLink(tester, 'mobilarici://more/settings');
 
       expect(find.byType(SettingsScreen), findsOneWidget);
       expect(
@@ -272,7 +272,7 @@ void main() {
       await tester.tap(_navItem('Tasks'));
       await tester.pumpAndSettle();
 
-      await _openDeepLink(tester, 'mobilaricilik://hives/42');
+      await _openDeepLink(tester, 'mobilarici://hives/42');
 
       expect(find.byType(TodayScreen), findsOneWidget);
       expect(find.byType(ErrorWidget), findsNothing);
@@ -282,7 +282,7 @@ void main() {
       tester,
     ) async {
       tester.platformDispatcher.defaultRouteNameTestValue =
-          'mobilaricilik://tasks';
+          'mobilarici://tasks';
       addTearDown(tester.platformDispatcher.clearDefaultRouteNameTestValue);
 
       await _pumpApp(tester);

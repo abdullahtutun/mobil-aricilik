@@ -1,4 +1,4 @@
-import 'package:mobil_aricilik/core/l10n/app_language.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'language_provider.g.dart';

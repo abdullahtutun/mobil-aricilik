@@ -1,10 +1,10 @@
-import 'package:mobil_aricilik/app/routes.dart';
+import 'package:mobil_arici/app/routes.dart';
 
 /// Uygulamanın derin link şeması. AndroidManifest ve Info.plist'te de aynı
 /// şema kayıtlı.
-const deepLinkScheme = 'mobilaricilik';
+const deepLinkScheme = 'mobilarici';
 
-/// Derin linki router konumuna çevirir: `mobilaricilik://hives/42?tab=1` →
+/// Derin linki router konumuna çevirir: `mobilarici://hives/42?tab=1` →
 /// `/hives/42?tab=1`. Platform linki olduğu gibi verir; host ilk yol parçası
 /// sayılır. Şema bizim değilse (uygulama içi konumlar) null.
 String? deepLinkLocation(Uri uri) {

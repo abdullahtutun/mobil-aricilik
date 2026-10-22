@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobil_aricilik/core/design_system/components/app_status.dart';
-import 'package:mobil_aricilik/core/design_system/theme_context.dart';
-import 'package:mobil_aricilik/core/design_system/tokens/app_colors.dart';
-import 'package:mobil_aricilik/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/design_system/components/app_status.dart';
+import 'package:mobil_arici/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_colors.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Arılık ızgarasındaki kovan karosu: büyük numara, güç puanı noktaları,
 /// ana arı renk noktası ve uyarı ikonu.
