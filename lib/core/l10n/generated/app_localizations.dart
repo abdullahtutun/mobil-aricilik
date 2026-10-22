@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// App name. The brand name stays Turkish in every language.
   ///
   /// In en, this message translates to:
-  /// **'Mobil Arıcılık'**
+  /// **'Mobil Arıcı'**
   String get appTitle;
 
   /// Joins the parts of a screen reader label, e.g. on a hive tile.

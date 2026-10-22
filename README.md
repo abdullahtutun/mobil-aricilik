@@ -1,6 +1,6 @@
 # mobil_aricilik
 
-Mobil Arıcılık - offline-first arıcılık uygulaması
+Mobil Arıcı - offline-first arıcılık uygulaması
 
 ## Getting Started
 

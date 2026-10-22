@@ -10,7 +10,7 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appTitle => 'Mobil Arıcılık';
+  String get appTitle => 'Mobil Arıcı';
 
   @override
   String get listSeparator => ', ';

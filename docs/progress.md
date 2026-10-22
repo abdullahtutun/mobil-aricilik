@@ -70,6 +70,12 @@
 - Yerelde denendi. `tr`, `en` ve locale'siz yeni kullanıcı ile mevcut kullanıcı için Mailpit'e doğru dilde konu ve gövde düştü. Locale boşken şablon hata vermiyor. E-postadaki kod `verify` (`type: email`) ile oturum açtı, aynı kodun ikinci kullanımı `otp_expired` döndü. Yeni kod istemek eskisini geçersiz kılıyor. Görünüm 360dp genişlikte kontrol edildi.
 - `signInWithOtp` içindeki `data` yalnız kullanıcı ilk oluşturulurken yazılıyor; mevcut kullanıcıda yok sayılıyor (denendi). Auth adımında ilk istek `data: {'locale': languageCode}` göndermeli, dil değişince de `updateUser` ile locale güncellenmeli. Yoksa e-posta ilk kayıttaki dilde gider. Davet, e-posta değişikliği ve şifre sıfırlama şablonları varsayılan İngilizce kaldı.
 
+### 2026-10-22 — Uygulama adı: Mobil Arıcı
+
+- Uygulamanın adı "Mobil Arıcılık"tan "Mobil Arıcı"ya değişti. ARB'deki `appTitle` (TR/EN) ve üretilen l10n dosyaları güncellendi. Android'de `appName` placeholder'ı ve iOS'ta altı yapılandırmadaki `APP_DISPLAY_NAME` değişti; dev sürümün adı artık "Mobil Arıcı Dev". OTP şablonunda ve `config.toml` konu satırlarında da yeni ad var; Türkçe ek "Mobil Arıcı'ya" oldu. CLAUDE.md, README, `pubspec.yaml` açıklaması, ozellikler.md ve teknik.md de güncellendi. Pencere başlığı testi yeni adı bekliyor.
+- Teknik kimlikler değişmedi: Dart paket adı `mobil_aricilik`, uygulama kimliği `com.abdullahtutun.mobilaricilik`, derin link şeması `mobilaricilik://`, Supabase `project_id` ve klasör adı. Uygulama kimliği mağazaya çıktıktan, şema da QR etiketlere basıldıktan sonra değiştirilemez. Değiştirilecekse ilk yayından ve ilk etiket baskısından önce yapılmalı.
+- OTP şablonu Supabase paneline daha önce yapıştırıldıysa, yeni dosya "Confirm signup" ve "Magic Link" şablonlarına yeniden yapıştırılmalı. Konu satırları da elle güncellenmeli.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.

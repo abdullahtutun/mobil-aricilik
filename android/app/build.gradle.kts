@@ -29,11 +29,11 @@ android {
         create("dev") {
             dimension = "environment"
             applicationIdSuffix = ".dev"
-            manifestPlaceholders["appName"] = "Mobil Arıcılık Dev"
+            manifestPlaceholders["appName"] = "Mobil Arıcı Dev"
         }
         create("prod") {
             dimension = "environment"
-            manifestPlaceholders["appName"] = "Mobil Arıcılık"
+            manifestPlaceholders["appName"] = "Mobil Arıcı"
         }
     }
 

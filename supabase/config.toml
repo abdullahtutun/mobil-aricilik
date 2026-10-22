@@ -251,11 +251,11 @@ otp_expiry = 600
 # E-posta OTP: yeni kullanıcıya confirmation, mevcut kullanıcıya magic_link gider.
 # İkisi de aynı TR/EN kod şablonunu kullanır; dil user_metadata.locale'den.
 [auth.email.template.confirmation]
-subject = '{{ if eq .Data.locale "tr" }}Mobil Arıcılık giriş kodunuz{{ else }}Your Mobil Arıcılık sign-in code{{ end }}'
+subject = '{{ if eq .Data.locale "tr" }}Mobil Arıcı giriş kodunuz{{ else }}Your Mobil Arıcı sign-in code{{ end }}'
 content_path = "./supabase/templates/otp.html"
 
 [auth.email.template.magic_link]
-subject = '{{ if eq .Data.locale "tr" }}Mobil Arıcılık giriş kodunuz{{ else }}Your Mobil Arıcılık sign-in code{{ end }}'
+subject = '{{ if eq .Data.locale "tr" }}Mobil Arıcı giriş kodunuz{{ else }}Your Mobil Arıcı sign-in code{{ end }}'
 content_path = "./supabase/templates/otp.html"
 
 # Uncomment to customize notification email template

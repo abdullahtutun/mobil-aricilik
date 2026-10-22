@@ -36,7 +36,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final title = tester.widget<Title>(find.byType(Title));
-      expect(title.title, 'Mobil Arıcılık');
+      expect(title.title, 'Mobil Arıcı');
     });
 
     testWidgets('desteklenmeyen cihaz dilinde İngilizce açılır', (

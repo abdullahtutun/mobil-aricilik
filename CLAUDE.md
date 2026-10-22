@@ -1,4 +1,4 @@
-# Mobil Arıcılık
+# Mobil Arıcı
 
 Arıcının defterini, kayıtlarını ve resmi evrakını tek telefonda toplayan, dağda internetsiz ve eldivenle kullanılabilen offline-first saha uygulaması. Arayüz TR/EN; Türkiye'ye özel modüller (AKS, mevzuat, destekler) yalnızca TR bölge profilinde görünür.
 Ayrıntılar: [docs/ozellikler.md](docs/ozellikler.md) (ürün), [docs/teknik.md](docs/teknik.md) (mimari, tasarım dili, yol haritası).

@@ -1,4 +1,4 @@
-# Mobil Arıcılık – Teknik Altyapı ve UI/UX Taslağı
+# Mobil Arıcı – Teknik Altyapı ve UI/UX Taslağı
 
 Oct 21, 2026 · @Abdullah Tutun
 
@@ -214,7 +214,7 @@ lib/
 
 ## 7. Tasarım dili
 
-Uygulamanın adı **Mobil Arıcılık**. Tasarım sistemi ve tüm ekran tasarımları bu bölümdeki dil esas alınarak Claude tarafından hazırlanır; ayrı bir tasarımcı yoktur.
+Uygulamanın adı **Mobil Arıcı**. Tasarım sistemi ve tüm ekran tasarımları bu bölümdeki dil esas alınarak Claude tarafından hazırlanır; ayrı bir tasarımcı yoktur.
 
 Karakter: **Sıcak, sakin, güvenilir** — bal ve petekten ilham alan, ama "çocuk uygulaması" gibi durmayan, iş aracı ciddiyetinde bir arayüz. Material 3 temelinde, tokenlar `ThemeExtension` ile taşınır.
 
@@ -380,7 +380,7 @@ Alt navigasyonda 4 sekme + ortada büyük bir **Okut / Kaydet** butonu: Sahada e
 
 ## 12. Çok dil ve bölge profili (TR / Diğer)
 
-Mobil Arıcılık tüm dünyada kullanılacak; Türkiye'ye özel her şey bir **bölge profili** arkasında durur: TR profilinde görünür, diğer ülkelerde gizli ve pasiftir.
+Mobil Arıcı tüm dünyada kullanılacak; Türkiye'ye özel her şey bir **bölge profili** arkasında durur: TR profilinde görünür, diğer ülkelerde gizli ve pasiftir.
 
 **Dil (i18n)**
 
@@ -428,7 +428,7 @@ Kaba tahmin: 1–2 Flutter geliştirici ile **7 sprint (2'şer hafta) ≈ 14 haf
 - [ ] Hostinger e-postası: gönderim adresi, SPF/DKIM/DMARC kayıtları ve planın günlük limitinin beklenen kayıt sayısına yetip yetmediği.
 - [ ] Open-Meteo lisansı: Ücretsiz API yalnızca ticari olmayan kullanım içindir. Uygulama gelir getirecekse (ücretli plan, reklam) Open-Meteo aboneliği ya da Open-Meteo'nun kendi sunucumuzda kurulumu gerekir.
 - [ ] Offline harita paketleri için bölge kesme ve barındırma (OpenFreeMap MBTiles → bölge paketleri → depolama).
-- [ ] İngilizce mağaza adı ve açıklaması (Mobil Arıcılık markası korunarak).
+- [ ] İngilizce mağaza adı ve açıklaması (Mobil Arıcı markası korunarak).
 - [ ] Pilot grup olmadığı için geri bildirim kanalı: Uygulama içi "Görüş bildir", beta yorumları ve kullanım analitiği ilk sürümden itibaren açık.
 - [ ] Tasarım sistemi ve ana ekranların tasarımı (TR ve EN metinlerle), sprint 1 bitmeden (Claude).
 

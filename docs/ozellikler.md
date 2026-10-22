@@ -1,4 +1,4 @@
-# Mobil Arıcılık – Özellik Taslağı
+# Mobil Arıcı – Özellik Taslağı
 
 Oct 20, 2026 · @Abdullah Tutun
 
@@ -14,7 +14,7 @@ Uygulamanın amacı: arıcının defterini, hafızasını ve resmi evrak yükün
 
 ## Bölge profili ve dil
 
-Mobil Arıcılık dünyanın her yerinde kullanılabilir. Arayüz Türkçe ve İngilizce gelir; dil ile ülke birbirinden bağımsız seçilir. İşletme kurulurken seçilen ülke **bölge profilini** belirler.
+Mobil Arıcı dünyanın her yerinde kullanılabilir. Arayüz Türkçe ve İngilizce gelir; dil ile ülke birbirinden bağımsız seçilir. İşletme kurulurken seçilen ülke **bölge profilini** belirler.
 
 - **TR profili:** AKS ve işletme tescil bilgileri, arılı kovan desteği hatırlatıcıları, mevzuat kütüphanesi, TR ilaç listesi, il/ilçe tarım müdürlüğü rehberi, Türkiye flora takvimi ve gezginci belge türleri açık.
 - **Diğer ülkeler:** Bu modüller gizli ve pasif. Yerlerine genel karşılıklar gelir: serbest kayıt numarası, kullanıcı tanımlı belge türleri, kullanıcının girdiği yerel otorite iletişimi, etken madde bazlı ilaç listesi, kullanıcının oluşturduğu flora takvimi.
