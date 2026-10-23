@@ -34,7 +34,7 @@
 --
 -- İmleç taze bölgedeyse (since_seq >= ufuk) next_seq ilerleyemez. Bu
 -- durumda sayfa dolu dönseydi istemci aynı sayfayı sonsuza dek isterdi.
--- Taze bölgede en çok 1000 numara olduğu için limit yerine 1000 kullanılır:
+-- Taze bölgede en çok 1000 numara olduğu için page_size yerine 1000 kullanılır:
 -- bölgenin tamamı tek sayfada döner, has_more false olur.
 --
 -- Son dağıtılan numara satırlardan önce, ayrı bir sorguda okunur. Fonksiyon
@@ -57,7 +57,7 @@ $$;
 
 -- table_name: server_seq kolonu olan public tablolardan biri.
 -- since_seq: imleç; server_seq'i bundan büyük satırlar döner.
--- limit: sayfadaki en çok satır (1..1000). İmleç taze bölgedeyse
+-- page_size: sayfadaki en çok satır (1..1000). İmleç taze bölgedeyse
 -- aşılabilir, en çok 1000 satır döner.
 --
 -- Dönen değer:
@@ -72,7 +72,7 @@ $$;
 create function public.sync_pull(
   table_name text,
   since_seq bigint,
-  "limit" integer
+  page_size integer
 )
 returns jsonb
 language plpgsql
@@ -81,10 +81,10 @@ set search_path = ''
 as $$
 declare
   lookback constant bigint := 1000;
-  max_limit constant integer := 1000;
+  max_page_size constant integer := 1000;
   last_seq bigint;
   horizon bigint;
-  page_size integer;
+  max_rows integer;
   row_expression text;
   page_rows jsonb;
   page_last_seq bigint;
@@ -92,8 +92,8 @@ declare
 begin
   if sync_pull.table_name is null
      or sync_pull.since_seq is null
-     or coalesce(sync_pull."limit" < 1, true) then
-    raise exception 'table_name, since_seq ve en az 1 olan limit verilmeli'
+     or coalesce(sync_pull.page_size < 1, true) then
+    raise exception 'table_name, since_seq ve en az 1 olan page_size verilmeli'
       using errcode = '22023';
   end if;
   if not exists (
@@ -111,9 +111,9 @@ begin
 
   last_seq := private.last_server_seq();
   horizon := last_seq - lookback;
-  page_size := case
+  max_rows := case
     when sync_pull.since_seq >= horizon then lookback
-    else least(sync_pull."limit", max_limit)
+    else least(sync_pull.page_size, max_page_size)
   end;
 
   row_expression := case sync_pull.table_name
@@ -148,7 +148,7 @@ begin
     sync_pull.table_name, row_expression
   )
   into page_rows, page_last_seq, has_more
-  using sync_pull.since_seq, last_seq, page_size;
+  using sync_pull.since_seq, last_seq, max_rows;
 
   return pg_catalog.jsonb_build_object(
     'rows', page_rows,

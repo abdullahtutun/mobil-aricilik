@@ -160,7 +160,7 @@ alter table public.apiaries enable trigger set_server_seq;
 
 set local role authenticated;
 
--- İmleç taze bölgede; limit 1.
+-- İmleç taze bölgede; page_size 1.
 create temp table fresh2 as
 select public.sync_pull('apiaries', (select (response ->> 'next_seq')::bigint from fresh1), 1)
   as response;
@@ -176,7 +176,7 @@ select is(
   jsonb_build_object(
     'next_seq', (select (response ->> 'next_seq')::bigint from fresh1),
     'has_more', false),
-  'taze bölge limite bakılmadan tek sayfada döner, döngü takılmaz'
+  'taze bölge page_size''a bakılmadan tek sayfada döner, döngü takılmaz'
 );
 
 -- Silinen satır
