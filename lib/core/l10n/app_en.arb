@@ -354,8 +354,114 @@
   "@scanLongPressHint": {
     "description": "Screen reader hint for long pressing the center Scan button; read after 'double tap and hold to'."
   },
-  "scanPlaceholderTitle": "Scan a hive",
-  "scanPlaceholderMessage": "Scanning the QR code or NFC tag on a hive will open its hive card; scanning is coming soon.",
+  "scanHint": "Fit the code on the hive label inside the frame.",
+  "scanAgain": "Scan again",
+  "cameraErrorTitle": "Couldn't open the camera",
+  "cameraErrorPermissionDenied": "Camera permission wasn't given. To scan labels, allow the camera for this app in Settings.",
+  "cameraErrorUnsupported": "This device has no camera that can scan.",
+  "cameraErrorUnknown": "Close this screen and try again.",
+  "labelUnknownTitle": "This code isn't linked to a hive",
+  "@labelUnknownTitle": {
+    "description": "Shown after scanning a code that is neither a Mobil Arıcı hive label nor a label assigned to a hive."
+  },
+  "labelUnknownMessage": "It isn't a Mobil Arıcı label, or it hasn't been assigned to a hive yet. If it's on a hive, assign it; scanning it will then open the hive card.",
+  "labelUnknownOwnTitle": "This label's hive wasn't found",
+  "@labelUnknownOwnTitle": {
+    "description": "Shown after scanning a Mobil Arıcı hive label whose hive isn't on this phone."
+  },
+  "labelUnknownOwnMessage": "The hive may have been deleted or not reached this phone yet. You can also assign the label to another hive.",
+  "labelCode": "Code: {code}",
+  "@labelCode": {
+    "description": "The raw content of the scanned code.",
+    "placeholders": {
+      "code": {
+        "type": "String",
+        "example": "4006381333931"
+      }
+    }
+  },
+  "labelAssign": "Assign to a hive",
+  "labelAssignTitle": "Assign label to a hive",
+  "labelAssignMessage": "Pick the hive the label is on. Scanning the label will then open that hive's card.",
+  "labelAssignSearch": "Hive number",
+  "labelAssignNoMatch": "No hive matches your search.",
+  "labelAssignNoHives": "No hives yet. Add hives from the Apiaries tab first.",
+  "labelAssignHasOther": "Has another label",
+  "labelReplaceTitle": "Replace the label of hive {number}?",
+  "@labelReplaceTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "labelReplaceMessage": "This hive already has a label. The new one replaces it; the old label will no longer open this hive.",
+  "labelReplaceConfirm": "Yes, replace",
+  "labelAssigned": "Label assigned: hive {number}",
+  "@labelAssigned": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "hiveLabelsTitle": "Print labels",
+  "@hiveLabelsTitle": {
+    "description": "Screen for choosing hives and printing their QR labels on A4 label sheets; also the tooltip of the button opening it."
+  },
+  "hiveLabelsMessage": "Pick the hives to print labels for. An A4 page holds 24 labels (70 × 37 mm); print at 100% scale.",
+  "hiveLabelsNoHives": "This apiary has no hives to print labels for.",
+  "hiveLabelsSelectAll": "Select all",
+  "hiveLabelsSelectNone": "Select none",
+  "hiveLabelsNoneSelected": "No hives selected",
+  "hiveLabelsCount": "{count, plural, =1{1 label} other{{count} labels}}",
+  "@hiveLabelsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "hiveLabelsPages": "{count, plural, =1{1 page} other{{count} pages}}",
+  "@hiveLabelsPages": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "hiveLabelsSummary": "{labels} · {pages}",
+  "@hiveLabelsSummary": {
+    "description": "Number of labels and pages to print, e.g. '20 labels · 1 page'.",
+    "placeholders": {
+      "labels": {
+        "type": "String",
+        "example": "20 labels"
+      },
+      "pages": {
+        "type": "String",
+        "example": "1 page"
+      }
+    }
+  },
+  "hiveLabelsPreparing": "Preparing the PDF…",
+  "hiveLabelsPrint": "Print",
+  "hiveLabelsShare": "Share PDF",
+  "hiveLabelsDocumentName": "Hive labels - {apiary}",
+  "@hiveLabelsDocumentName": {
+    "description": "Title of the label PDF; also its file name when shared.",
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Hilltop"
+      }
+    }
+  },
+  "hiveLabelsError": "Couldn't prepare the PDF. Try again.",
   "quickRecordTitle": "Quick record",
   "@quickRecordTitle": {
     "description": "Menu opened by long pressing the center Scan button."

@@ -3,12 +3,16 @@ import 'dart:async';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
+import 'package:mobil_arici/core/services/code_scanner_provider.dart';
+import 'package:mobil_arici/core/services/print_service_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 
+import 'fake_code_scanner.dart';
 import 'fake_organization_service.dart';
+import 'fake_print_service.dart';
 import 'test_database.dart';
 
 const testUser = AppUser(id: 'test-user', email: 'ari@example.com');
@@ -65,11 +69,18 @@ class FakeAuthService implements AuthService {
 }
 
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
-/// DB bellek içi; verilmezse boş açılır.
-List<Override> signedIn({FakeAuthService? auth, AppDatabase? db}) => [
+/// DB bellek içi; verilmezse boş açılır. Kamera ve yazıcı sahte.
+List<Override> signedIn({
+  FakeAuthService? auth,
+  AppDatabase? db,
+  FakeCodeScanner? scanner,
+  FakePrintService? printer,
+}) => [
   authServiceProvider.overrideWithValue(
     auth ?? FakeAuthService(user: testUser),
   ),
   ...organizationOverrides(),
   appDatabaseProvider.overrideWithValue(db ?? openTestDatabase()),
+  codeScannerProvider.overrideWithValue((scanner ?? FakeCodeScanner()).builder),
+  printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
 ];

@@ -788,17 +788,221 @@ abstract class AppLocalizations {
   /// **'open the quick record menu'**
   String get scanLongPressHint;
 
-  /// No description provided for @scanPlaceholderTitle.
+  /// No description provided for @scanHint.
   ///
   /// In en, this message translates to:
-  /// **'Scan a hive'**
-  String get scanPlaceholderTitle;
+  /// **'Fit the code on the hive label inside the frame.'**
+  String get scanHint;
 
-  /// No description provided for @scanPlaceholderMessage.
+  /// No description provided for @scanAgain.
   ///
   /// In en, this message translates to:
-  /// **'Scanning the QR code or NFC tag on a hive will open its hive card; scanning is coming soon.'**
-  String get scanPlaceholderMessage;
+  /// **'Scan again'**
+  String get scanAgain;
+
+  /// No description provided for @cameraErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the camera'**
+  String get cameraErrorTitle;
+
+  /// No description provided for @cameraErrorPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission wasn\'t given. To scan labels, allow the camera for this app in Settings.'**
+  String get cameraErrorPermissionDenied;
+
+  /// No description provided for @cameraErrorUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This device has no camera that can scan.'**
+  String get cameraErrorUnsupported;
+
+  /// No description provided for @cameraErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Close this screen and try again.'**
+  String get cameraErrorUnknown;
+
+  /// Shown after scanning a code that is neither a Mobil Arıcı hive label nor a label assigned to a hive.
+  ///
+  /// In en, this message translates to:
+  /// **'This code isn\'t linked to a hive'**
+  String get labelUnknownTitle;
+
+  /// No description provided for @labelUnknownMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It isn\'t a Mobil Arıcı label, or it hasn\'t been assigned to a hive yet. If it\'s on a hive, assign it; scanning it will then open the hive card.'**
+  String get labelUnknownMessage;
+
+  /// Shown after scanning a Mobil Arıcı hive label whose hive isn't on this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'This label\'s hive wasn\'t found'**
+  String get labelUnknownOwnTitle;
+
+  /// No description provided for @labelUnknownOwnMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The hive may have been deleted or not reached this phone yet. You can also assign the label to another hive.'**
+  String get labelUnknownOwnMessage;
+
+  /// The raw content of the scanned code.
+  ///
+  /// In en, this message translates to:
+  /// **'Code: {code}'**
+  String labelCode(String code);
+
+  /// No description provided for @labelAssign.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign to a hive'**
+  String get labelAssign;
+
+  /// No description provided for @labelAssignTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign label to a hive'**
+  String get labelAssignTitle;
+
+  /// No description provided for @labelAssignMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the hive the label is on. Scanning the label will then open that hive\'s card.'**
+  String get labelAssignMessage;
+
+  /// No description provided for @labelAssignSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive number'**
+  String get labelAssignSearch;
+
+  /// No description provided for @labelAssignNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No hive matches your search.'**
+  String get labelAssignNoMatch;
+
+  /// No description provided for @labelAssignNoHives.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives yet. Add hives from the Apiaries tab first.'**
+  String get labelAssignNoHives;
+
+  /// No description provided for @labelAssignHasOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Has another label'**
+  String get labelAssignHasOther;
+
+  /// No description provided for @labelReplaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace the label of hive {number}?'**
+  String labelReplaceTitle(String number);
+
+  /// No description provided for @labelReplaceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This hive already has a label. The new one replaces it; the old label will no longer open this hive.'**
+  String get labelReplaceMessage;
+
+  /// No description provided for @labelReplaceConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, replace'**
+  String get labelReplaceConfirm;
+
+  /// No description provided for @labelAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Label assigned: hive {number}'**
+  String labelAssigned(String number);
+
+  /// Screen for choosing hives and printing their QR labels on A4 label sheets; also the tooltip of the button opening it.
+  ///
+  /// In en, this message translates to:
+  /// **'Print labels'**
+  String get hiveLabelsTitle;
+
+  /// No description provided for @hiveLabelsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the hives to print labels for. An A4 page holds 24 labels (70 × 37 mm); print at 100% scale.'**
+  String get hiveLabelsMessage;
+
+  /// No description provided for @hiveLabelsNoHives.
+  ///
+  /// In en, this message translates to:
+  /// **'This apiary has no hives to print labels for.'**
+  String get hiveLabelsNoHives;
+
+  /// No description provided for @hiveLabelsSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get hiveLabelsSelectAll;
+
+  /// No description provided for @hiveLabelsSelectNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Select none'**
+  String get hiveLabelsSelectNone;
+
+  /// No description provided for @hiveLabelsNoneSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives selected'**
+  String get hiveLabelsNoneSelected;
+
+  /// No description provided for @hiveLabelsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 label} other{{count} labels}}'**
+  String hiveLabelsCount(int count);
+
+  /// No description provided for @hiveLabelsPages.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 page} other{{count} pages}}'**
+  String hiveLabelsPages(int count);
+
+  /// Number of labels and pages to print, e.g. '20 labels · 1 page'.
+  ///
+  /// In en, this message translates to:
+  /// **'{labels} · {pages}'**
+  String hiveLabelsSummary(String labels, String pages);
+
+  /// No description provided for @hiveLabelsPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing the PDF…'**
+  String get hiveLabelsPreparing;
+
+  /// No description provided for @hiveLabelsPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Print'**
+  String get hiveLabelsPrint;
+
+  /// No description provided for @hiveLabelsShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share PDF'**
+  String get hiveLabelsShare;
+
+  /// Title of the label PDF; also its file name when shared.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive labels - {apiary}'**
+  String hiveLabelsDocumentName(String apiary);
+
+  /// No description provided for @hiveLabelsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t prepare the PDF. Try again.'**
+  String get hiveLabelsError;
 
   /// Menu opened by long pressing the center Scan button.
   ///

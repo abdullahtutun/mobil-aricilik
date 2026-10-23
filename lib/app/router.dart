@@ -15,9 +15,14 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
+import 'package:mobil_arici/features/hives/presentation/assign_label_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_form_screen.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_label_providers.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_link_screen.dart';
+import 'package:mobil_arici/features/hives/presentation/labels/hive_labels_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -113,6 +118,12 @@ GoRouter router(Ref ref) {
                           apiaryId: state.pathParameters[_apiaryId],
                         ),
                       ),
+                      GoRoute(
+                        path: 'labels',
+                        builder: (context, state) => HiveLabelsScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                        ),
+                      ),
                       // `:hiveId`'den önce; "new" ve "bulk" kimlik sanılmasın.
                       GoRoute(
                         path: 'hives/new',
@@ -176,6 +187,27 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.scan,
         builder: (context, state) => const ScanScreen(),
+      ),
+      // Kovan etiketinin derin linki (`mobilarici://h/<kimlik>`, telefonun
+      // kendi kamerasıyla okutulunca). Kovan bu telefondaysa kartına
+      // yönlenir; geri tuşu arılığa döner. Yoksa etiketi atamayı sunar.
+      GoRoute(
+        path: '/$hiveLabelHost/:$_hiveId',
+        redirect: (context, state) async {
+          final hive = await ref
+              .read(hiveLabelActionsProvider.notifier)
+              .find(hiveLabelCode(state.pathParameters[_hiveId]!));
+          return hive == null ? null : AppRoutes.hive(hive.apiaryId, hive.id);
+        },
+        builder: (context, state) =>
+            HiveLinkScreen(hiveId: state.pathParameters[_hiveId]!),
+      ),
+      // Kabuğun dışında; geri tuşu tanınmayan kod ekranına döner.
+      GoRoute(
+        path: AppRoutes.labelAssignPath,
+        builder: (context, state) => AssignLabelScreen(
+          code: state.uri.queryParameters[AppRoutes.labelCodeParameter] ?? '',
+        ),
       ),
       // Kabuğun dışında: çıkışta sekme yığınları da kapanır, sonraki
       // kullanıcı öncekinin ekranlarını görmez.

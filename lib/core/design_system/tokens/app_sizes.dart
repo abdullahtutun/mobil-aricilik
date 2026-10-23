@@ -12,6 +12,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.illustration,
     required this.illustrationIcon,
     required this.hiveTile,
+    required this.scanWindow,
   });
 
   static const standard = AppSizes(
@@ -22,6 +23,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     illustration: 96,
     illustrationIcon: 48,
     hiveTile: 104,
+    scanWindow: 240,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -46,6 +48,10 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// (eldiven modunda boşluklar büyüdüğü için iki).
   final double hiveTile;
 
+  /// Okut ekranında kodun getirileceği kare çerçeve; 360dp ekranda iki
+  /// yanda başparmak payı kalır.
+  final double scanWindow;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -55,6 +61,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? illustration,
     double? illustrationIcon,
     double? hiveTile,
+    double? scanWindow,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -64,6 +71,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       illustration: illustration ?? this.illustration,
       illustrationIcon: illustrationIcon ?? this.illustrationIcon,
       hiveTile: hiveTile ?? this.hiveTile,
+      scanWindow: scanWindow ?? this.scanWindow,
     );
   }
 
@@ -82,6 +90,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
         t,
       )!,
       hiveTile: lerpDouble(hiveTile, other.hiveTile, t)!,
+      scanWindow: lerpDouble(scanWindow, other.scanWindow, t)!,
     );
   }
 }

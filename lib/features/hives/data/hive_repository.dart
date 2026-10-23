@@ -35,6 +35,21 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     orderBy: [(t) => OrderingTerm.asc(t.number)],
   );
 
+  /// İşletmede [tagCode] etiketli kovan; yoksa ya da silinmişse null.
+  Future<Hive?> findByTagCode({
+    required String orgId,
+    required String tagCode,
+  }) =>
+      (db.select(db.hives)
+            ..where(
+              (t) =>
+                  t.orgId.equals(orgId) &
+                  t.tagCode.equals(tagCode) &
+                  t.deletedAt.isNull(),
+            )
+            ..limit(1))
+          .getSingleOrNull();
+
   /// Kovanı oluşturur ve [apiaryId] arılığına geldiğini geçmişe yazar;
   /// ikisi tek transaction'da.
   Future<Hive> create({
@@ -108,6 +123,29 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
       db.transaction(() async {
         final hive = await _requireLive(hiveId);
         return await updateRecord(hive.copyWith(status: status));
+      });
+
+  /// [tagCode] etiketini kovana atar; kovanın önceki etiketi düşer. Etiket
+  /// işletmede başka bir kovandaysa ondan alınır, çünkü bir etiket tek
+  /// kovanı açar (sunucuda da tekil). Hepsi tek transaction'da. Kovan
+  /// yoksa ya da silinmişse [StateError].
+  Future<Hive> assignTag(String hiveId, String tagCode) =>
+      db.transaction(() async {
+        final hive = await _requireLive(hiveId);
+        final holders =
+            await (db.select(db.hives)..where(
+                  (t) =>
+                      t.orgId.equals(hive.orgId) &
+                      t.tagCode.equals(tagCode) &
+                      t.id.equals(hiveId).not() &
+                      t.deletedAt.isNull(),
+                ))
+                .get();
+        for (final holder in holders) {
+          await updateRecord(holder.copyWith(tagCode: null));
+        }
+        if (hive.tagCode == tagCode) return hive;
+        return await updateRecord(hive.copyWith(tagCode: tagCode));
       });
 
   /// Kovanı [apiaryId] arılığına taşır ve geçmişe yazar; tek transaction.

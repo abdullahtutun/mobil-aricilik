@@ -440,11 +440,144 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scanLongPressHint => 'hızlı kayıt menüsünü aç';
 
   @override
-  String get scanPlaceholderTitle => 'Kovanı okut';
+  String get scanHint => 'Kovan etiketindeki kodu çerçeveye getir.';
 
   @override
-  String get scanPlaceholderMessage =>
-      'Kovandaki QR kodu ya da NFC etiketini okutunca kovan kartı açılacak; okutma yakında gelecek.';
+  String get scanAgain => 'Yeniden okut';
+
+  @override
+  String get cameraErrorTitle => 'Kamera açılamadı';
+
+  @override
+  String get cameraErrorPermissionDenied =>
+      'Kamera izni verilmedi. Etiket okutmak için Ayarlar\'dan bu uygulamaya kamera izni ver.';
+
+  @override
+  String get cameraErrorUnsupported =>
+      'Bu cihazda okutmak için kullanılabilecek kamera yok.';
+
+  @override
+  String get cameraErrorUnknown => 'Bu ekranı kapatıp yeniden dene.';
+
+  @override
+  String get labelUnknownTitle => 'Bu kod bir kovana bağlı değil';
+
+  @override
+  String get labelUnknownMessage =>
+      'Mobil Arıcı etiketi değil ya da henüz bir kovana atanmadı. Kovandaki etiketse bir kovana ata; sonra okutunca kovan kartı açılır.';
+
+  @override
+  String get labelUnknownOwnTitle => 'Bu etiketin kovanı bulunamadı';
+
+  @override
+  String get labelUnknownOwnMessage =>
+      'Kovan silinmiş ya da henüz bu telefona gelmemiş olabilir. Etiketi başka bir kovana da atayabilirsin.';
+
+  @override
+  String labelCode(String code) {
+    return 'Kod: $code';
+  }
+
+  @override
+  String get labelAssign => 'Bir kovana ata';
+
+  @override
+  String get labelAssignTitle => 'Etiketi kovana ata';
+
+  @override
+  String get labelAssignMessage =>
+      'Etiketin takılı olduğu kovanı seç. Sonra bu etiketi okutunca o kovanın kartı açılır.';
+
+  @override
+  String get labelAssignSearch => 'Kovan numarası';
+
+  @override
+  String get labelAssignNoMatch => 'Aramana uyan kovan yok.';
+
+  @override
+  String get labelAssignNoHives =>
+      'Henüz kovan yok. Önce Arılıklar sekmesinden kovan ekle.';
+
+  @override
+  String get labelAssignHasOther => 'Başka etiketi var';
+
+  @override
+  String labelReplaceTitle(String number) {
+    return 'Kovan $number için etiket değişsin mi?';
+  }
+
+  @override
+  String get labelReplaceMessage =>
+      'Bu kovanın başka bir etiketi var. Yeni etiket onun yerine geçer; eski etiket artık bu kovanı açmaz.';
+
+  @override
+  String get labelReplaceConfirm => 'Evet, değiştir';
+
+  @override
+  String labelAssigned(String number) {
+    return 'Etiket atandı: Kovan $number';
+  }
+
+  @override
+  String get hiveLabelsTitle => 'Etiket yazdır';
+
+  @override
+  String get hiveLabelsMessage =>
+      'Etiketi basılacak kovanları seç. A4 sayfaya 24 etiket (70 × 37 mm) sığar; yazdırırken ölçeği %100 seç.';
+
+  @override
+  String get hiveLabelsNoHives => 'Bu arılıkta etiket basılacak kovan yok.';
+
+  @override
+  String get hiveLabelsSelectAll => 'Tümünü seç';
+
+  @override
+  String get hiveLabelsSelectNone => 'Hiçbirini seçme';
+
+  @override
+  String get hiveLabelsNoneSelected => 'Seçili kovan yok';
+
+  @override
+  String hiveLabelsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count etiket',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveLabelsPages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sayfa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveLabelsSummary(String labels, String pages) {
+    return '$labels · $pages';
+  }
+
+  @override
+  String get hiveLabelsPreparing => 'PDF hazırlanıyor…';
+
+  @override
+  String get hiveLabelsPrint => 'Yazdır';
+
+  @override
+  String get hiveLabelsShare => 'PDF paylaş';
+
+  @override
+  String hiveLabelsDocumentName(String apiary) {
+    return 'Kovan etiketleri - $apiary';
+  }
+
+  @override
+  String get hiveLabelsError => 'PDF hazırlanamadı. Yeniden dene.';
 
   @override
   String get quickRecordTitle => 'Hızlı kayıt';

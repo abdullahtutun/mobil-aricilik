@@ -14,6 +14,7 @@ void main() {
         standard.illustration,
         standard.illustrationIcon,
         standard.hiveTile,
+        standard.scanWindow,
       ]) {
         expect(v % 4, 0, reason: '$v');
       }

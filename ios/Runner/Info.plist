@@ -37,6 +37,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>The camera scans the QR code on your hive labels to open the hive card. No internet is needed.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your apiary's location is taken from GPS when you ask for it. No internet is needed.</string>
 	<key>UIApplicationSceneManifest</key>

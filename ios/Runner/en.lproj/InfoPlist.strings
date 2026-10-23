@@ -1,2 +1,5 @@
 /* Konum izni sorulurken gösterilir (Info.plist: NSLocationWhenInUseUsageDescription). */
 "NSLocationWhenInUseUsageDescription" = "Your apiary's location is taken from GPS when you ask for it. No internet is needed.";
+
+/* Kamera izni sorulurken gösterilir (Info.plist: NSCameraUsageDescription). */
+"NSCameraUsageDescription" = "The camera scans the QR code on your hive labels to open the hive card. No internet is needed.";

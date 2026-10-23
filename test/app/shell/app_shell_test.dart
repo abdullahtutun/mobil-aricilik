@@ -183,7 +183,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ScanScreen), findsOneWidget);
-      expect(find.text('Scan a hive'), findsOneWidget);
+      expect(
+        find.text('Fit the code on the hive label inside the frame.'),
+        findsOneWidget,
+      );
       expect(find.byType(AppNavigationBar).hitTestable(), findsNothing);
 
       await tester.tap(find.byType(BackButton));

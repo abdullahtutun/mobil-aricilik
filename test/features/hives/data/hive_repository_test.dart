@@ -273,6 +273,107 @@ void main() {
     });
   });
 
+  group('etiket', () {
+    test('etiket koduyla işletmenin silinmemiş kovanı bulunur', () async {
+      final hive = await createHive('101');
+      await repository.assignTag(hive.id, 'TAG-1');
+      final other = await createHive('7', orgId: 'org-2');
+      await repository.assignTag(other.id, 'TAG-2');
+      final removed = await createHive('9');
+      await repository.assignTag(removed.id, 'TAG-3');
+      await repository.delete(removed.id);
+
+      expect(
+        await repository.findByTagCode(orgId: 'org-1', tagCode: 'TAG-1'),
+        isA<Hive>().having((h) => h.id, 'id', hive.id),
+      );
+      expect(
+        await repository.findByTagCode(orgId: 'org-1', tagCode: 'TAG-2'),
+        isNull,
+      );
+      expect(
+        await repository.findByTagCode(orgId: 'org-1', tagCode: 'TAG-3'),
+        isNull,
+      );
+      expect(
+        await repository.findByTagCode(orgId: 'org-1', tagCode: 'tag-1'),
+        isNull,
+      );
+    });
+
+    test("atama en son hâlin üzerine yazılır ve outbox'a gider", () async {
+      final hive = await createHive('101');
+      await repository.update(hive.copyWith(marking: 'Mavi kapak'));
+      clock.advance(const Duration(minutes: 1));
+
+      final assigned = await repository.assignTag(hive.id, 'TAG-1');
+
+      expect(assigned.tagCode, 'TAG-1');
+      expect(assigned.marking, 'Mavi kapak');
+      expect(assigned.updatedAt, clock.current);
+      expect(
+        (await readOutbox(db)).last.payload,
+        containsPair('tag_code', 'TAG-1'),
+      );
+    });
+
+    test(
+      'başka kovandaki etiket ondan alınır; öbür işletmeye dokunulmaz',
+      () async {
+        final first = await createHive('101');
+        final second = await createHive('102');
+        final foreign = await createHive('101', orgId: 'org-2');
+        await repository.assignTag(first.id, 'TAG-1');
+        await repository.assignTag(foreign.id, 'TAG-1');
+
+        await repository.assignTag(second.id, 'TAG-1');
+
+        expect((await repository.findById(first.id))!.tagCode, isNull);
+        expect((await repository.findById(second.id))!.tagCode, 'TAG-1');
+        expect((await repository.findById(foreign.id))!.tagCode, 'TAG-1');
+        final outbox = await readOutbox(db);
+        expect(
+          [for (final e in outbox.skip(outbox.length - 2)) e.recordId],
+          [first.id, second.id],
+        );
+      },
+    );
+
+    test('kovan zaten bu etiketteyse bir şey yazılmaz', () async {
+      final hive = await createHive('101');
+      await repository.assignTag(hive.id, 'TAG-1');
+      final outboxBefore = (await readOutbox(db)).length;
+
+      await repository.assignTag(hive.id, 'TAG-1');
+
+      expect(await readOutbox(db), hasLength(outboxBefore));
+    });
+
+    test('kovanın kaydı yazılamazsa öbür kovan etiketini korur', () async {
+      final first = await createHive('101');
+      final second = await createHive('102');
+      await repository.assignTag(first.id, 'TAG-1');
+      await breakInsert('outbox', when: "NEW.record_id = '${second.id}'");
+
+      await expectLater(
+        repository.assignTag(second.id, 'TAG-1'),
+        throwsA(isA<SqliteException>()),
+      );
+
+      expect((await repository.findById(first.id))!.tagCode, 'TAG-1');
+      expect((await repository.findById(second.id))!.tagCode, isNull);
+    });
+
+    test('olmayan ya da silinmiş kovana etiket atanamaz', () async {
+      final removed = await createHive('101');
+      await repository.delete(removed.id);
+
+      for (final id in ['yok', removed.id]) {
+        await expectLater(repository.assignTag(id, 'TAG-1'), throwsStateError);
+      }
+    });
+  });
+
   test('watchByApiary yalnız o arılığın silinmemiş kovanları', () async {
     final a = await createHive('102');
     final b = await createHive('101');

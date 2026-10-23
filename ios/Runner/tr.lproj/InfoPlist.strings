@@ -1,2 +1,5 @@
 /* Konum izni sorulurken gösterilir (Info.plist: NSLocationWhenInUseUsageDescription). */
 "NSLocationWhenInUseUsageDescription" = "Arılığının konumu yalnız sen istediğinde GPS'ten alınır. İnternet gerekmez.";
+
+/* Kamera izni sorulurken gösterilir (Info.plist: NSCameraUsageDescription). */
+"NSCameraUsageDescription" = "Kamera, kovan etiketindeki QR kodu okutup kovan kartını açmak için kullanılır. İnternet gerekmez.";

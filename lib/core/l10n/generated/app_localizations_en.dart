@@ -443,11 +443,147 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanLongPressHint => 'open the quick record menu';
 
   @override
-  String get scanPlaceholderTitle => 'Scan a hive';
+  String get scanHint => 'Fit the code on the hive label inside the frame.';
 
   @override
-  String get scanPlaceholderMessage =>
-      'Scanning the QR code or NFC tag on a hive will open its hive card; scanning is coming soon.';
+  String get scanAgain => 'Scan again';
+
+  @override
+  String get cameraErrorTitle => 'Couldn\'t open the camera';
+
+  @override
+  String get cameraErrorPermissionDenied =>
+      'Camera permission wasn\'t given. To scan labels, allow the camera for this app in Settings.';
+
+  @override
+  String get cameraErrorUnsupported =>
+      'This device has no camera that can scan.';
+
+  @override
+  String get cameraErrorUnknown => 'Close this screen and try again.';
+
+  @override
+  String get labelUnknownTitle => 'This code isn\'t linked to a hive';
+
+  @override
+  String get labelUnknownMessage =>
+      'It isn\'t a Mobil Arıcı label, or it hasn\'t been assigned to a hive yet. If it\'s on a hive, assign it; scanning it will then open the hive card.';
+
+  @override
+  String get labelUnknownOwnTitle => 'This label\'s hive wasn\'t found';
+
+  @override
+  String get labelUnknownOwnMessage =>
+      'The hive may have been deleted or not reached this phone yet. You can also assign the label to another hive.';
+
+  @override
+  String labelCode(String code) {
+    return 'Code: $code';
+  }
+
+  @override
+  String get labelAssign => 'Assign to a hive';
+
+  @override
+  String get labelAssignTitle => 'Assign label to a hive';
+
+  @override
+  String get labelAssignMessage =>
+      'Pick the hive the label is on. Scanning the label will then open that hive\'s card.';
+
+  @override
+  String get labelAssignSearch => 'Hive number';
+
+  @override
+  String get labelAssignNoMatch => 'No hive matches your search.';
+
+  @override
+  String get labelAssignNoHives =>
+      'No hives yet. Add hives from the Apiaries tab first.';
+
+  @override
+  String get labelAssignHasOther => 'Has another label';
+
+  @override
+  String labelReplaceTitle(String number) {
+    return 'Replace the label of hive $number?';
+  }
+
+  @override
+  String get labelReplaceMessage =>
+      'This hive already has a label. The new one replaces it; the old label will no longer open this hive.';
+
+  @override
+  String get labelReplaceConfirm => 'Yes, replace';
+
+  @override
+  String labelAssigned(String number) {
+    return 'Label assigned: hive $number';
+  }
+
+  @override
+  String get hiveLabelsTitle => 'Print labels';
+
+  @override
+  String get hiveLabelsMessage =>
+      'Pick the hives to print labels for. An A4 page holds 24 labels (70 × 37 mm); print at 100% scale.';
+
+  @override
+  String get hiveLabelsNoHives =>
+      'This apiary has no hives to print labels for.';
+
+  @override
+  String get hiveLabelsSelectAll => 'Select all';
+
+  @override
+  String get hiveLabelsSelectNone => 'Select none';
+
+  @override
+  String get hiveLabelsNoneSelected => 'No hives selected';
+
+  @override
+  String hiveLabelsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count labels',
+      one: '1 label',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveLabelsPages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pages',
+      one: '1 page',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveLabelsSummary(String labels, String pages) {
+    return '$labels · $pages';
+  }
+
+  @override
+  String get hiveLabelsPreparing => 'Preparing the PDF…';
+
+  @override
+  String get hiveLabelsPrint => 'Print';
+
+  @override
+  String get hiveLabelsShare => 'Share PDF';
+
+  @override
+  String hiveLabelsDocumentName(String apiary) {
+    return 'Hive labels - $apiary';
+  }
+
+  @override
+  String get hiveLabelsError => 'Couldn\'t prepare the PDF. Try again.';
 
   @override
   String get quickRecordTitle => 'Quick record';

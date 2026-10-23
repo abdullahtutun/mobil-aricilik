@@ -30,6 +30,12 @@ class ApiaryDetailScreen extends ConsumerWidget {
       AsyncData(value: final summary?) => Scaffold(
         appBar: AppBar(
           actions: [
+            if (hasHives)
+              IconButton(
+                tooltip: l10n.hiveLabelsTitle,
+                icon: const Icon(Icons.qr_code_2_rounded),
+                onPressed: () => context.go(AppRoutes.hiveLabels(apiaryId)),
+              ),
             IconButton(
               tooltip: l10n.apiaryEdit,
               icon: const Icon(Icons.edit_rounded),

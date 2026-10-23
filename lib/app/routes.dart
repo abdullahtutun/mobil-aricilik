@@ -19,6 +19,21 @@ abstract final class AppRoutes {
   static String hiveEdit(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/edit';
 
+  /// Arılıktaki kovanların etiketlerini seçip yazdırma.
+  static String hiveLabels(String apiaryId) => '/apiaries/$apiaryId/labels';
+
+  /// Kovan etiketinin derin linki (`mobilarici://h/<kimlik>`). Kovan varsa
+  /// kartına yönlenir, yoksa etiketi atamayı sunar.
+  static String hiveLink(String hiveId) => '/h/$hiveId';
+
+  /// Tanınmayan etiketi bir kovana atama; sekmelerin üstünde açılır.
+  static const labelAssignPath = '/labels/assign';
+  static const labelCodeParameter = 'code';
+  static String labelAssign(String code) => Uri(
+    path: labelAssignPath,
+    queryParameters: {labelCodeParameter: code},
+  ).toString();
+
   static const settings = '/more/settings';
 
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.
