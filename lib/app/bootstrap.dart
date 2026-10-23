@@ -1,11 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/app/app.dart';
+import 'package:mobil_arici/app/background_sync.dart';
 import 'package:mobil_arici/app/flavor.dart';
-import 'package:mobil_arici/features/auth/data/secure_session_storage.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:mobil_arici/app/supabase_setup.dart';
+import 'package:mobil_arici/core/sync/sync_triggers.dart';
 
 /// Uygulamayı verilen flavor ile başlatır.
 Future<void> bootstrap(Flavor flavor) async {
@@ -27,24 +30,15 @@ Future<void> bootstrap(Flavor flavor) async {
     yield LicenseEntryWithLineBreaks(const ['Inter'], license);
   });
 
-  // Ağı beklemez: kayıtlı oturum diskten okunur, süresi dolmuşsa yenileme
-  // arka planda denenir. Çevrimdışı yenileme hatası oturumu kapatmaz;
-  // otomatik yenileme ağ gelince token'ı tazeler.
-  await Supabase.initialize(
-    url: flavor.supabaseUrl,
-    publishableKey: flavor.supabaseAnonKey,
-    authOptions: FlutterAuthClientOptions(
-      localStorage: SecureSessionStorage(supabaseUrl: flavor.supabaseUrl),
-      // Giriş yalnızca e-postadaki kodla; linkle oturum açılmaz, derin
-      // linkler router'a kalır.
-      detectSessionInUri: false,
-    ),
-  );
+  await initializeSupabase(flavor);
 
-  runApp(
-    ProviderScope(
-      overrides: [flavorProvider.overrideWithValue(flavor)],
-      child: const App(),
-    ),
-  );
+  final container =
+      ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])
+        // Senkron tetikleri uygulama açık kaldıkça çalışır.
+        ..listen(syncTriggersProvider, (_, _) {});
+
+  runApp(UncontrolledProviderScope(container: container, child: const App()));
+
+  // Açılışı bekletmez.
+  unawaited(registerBackgroundSync(flavor));
 }

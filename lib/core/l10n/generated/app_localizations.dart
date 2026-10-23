@@ -1669,6 +1669,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A card can also go without a title; the content starts right away.'**
   String get gallerySampleUntitledCard;
+
+  /// Sync icon in the app bar: every local record has reached the server.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get syncStatusSynced;
+
+  /// Sync icon in the app bar: records waiting to be sent (e.g. offline).
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pending'**
+  String syncStatusPending(int count);
+
+  /// Sync icon in the app bar: the server rejected a record or the last sync failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get syncStatusError;
+
+  /// Screen reader label of the sync icon in the app bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync: {status}'**
+  String syncStatusSemantics(String status);
+
+  /// No description provided for @syncTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncTitle;
+
+  /// No description provided for @syncSyncedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Every record on this phone has reached the server.'**
+  String get syncSyncedMessage;
+
+  /// No description provided for @syncPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record is waiting to be sent.} other{{count} records are waiting to be sent.}}'**
+  String syncPendingMessage(int count);
+
+  /// No description provided for @syncProblemOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach the server. Sync will try again when you\'re back online.'**
+  String get syncProblemOffline;
+
+  /// No description provided for @syncProblemFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync couldn\'t finish. Try again a little later.'**
+  String get syncProblemFailed;
+
+  /// No description provided for @syncProblemUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'This version can no longer sync. Update the app.'**
+  String get syncProblemUpgrade;
+
+  /// No description provided for @syncLastSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced {time}'**
+  String syncLastSynced(String time);
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @syncRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing…'**
+  String get syncRunning;
+
+  /// No description provided for @syncRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t be sent ({count})'**
+  String syncRejectedTitle(int count);
+
+  /// No description provided for @syncRejectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The server didn\'t accept these records. Everything else keeps syncing.'**
+  String get syncRejectedMessage;
+
+  /// No description provided for @syncRejectedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{reason} · {date}'**
+  String syncRejectedSubtitle(String reason, String date);
+
+  /// No description provided for @syncRejectionForbidden.
+  ///
+  /// In en, this message translates to:
+  /// **'You aren\'t allowed to change this record'**
+  String get syncRejectionForbidden;
+
+  /// No description provided for @syncRejectionConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Conflicts with another record (e.g. the same label)'**
+  String get syncRejectionConflict;
+
+  /// No description provided for @syncRejectionMissingReference.
+  ///
+  /// In en, this message translates to:
+  /// **'A record it belongs to is missing on the server'**
+  String get syncRejectionMissingReference;
+
+  /// No description provided for @syncRejectionUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This kind of record isn\'t synced'**
+  String get syncRejectionUnsupported;
+
+  /// No description provided for @syncRejectionInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The record has invalid data'**
+  String get syncRejectionInvalid;
+
+  /// No description provided for @syncRejectionUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown reason'**
+  String get syncRejectionUnknown;
+
+  /// Kind of a record that couldn't be sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get syncTableOrganizations;
+
+  /// No description provided for @syncTableMemberships.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership'**
+  String get syncTableMemberships;
+
+  /// No description provided for @syncTableApiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get syncTableApiaries;
+
+  /// No description provided for @syncTableQueens.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen'**
+  String get syncTableQueens;
+
+  /// No description provided for @syncTableHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive'**
+  String get syncTableHives;
+
+  /// No description provided for @syncTableHiveLocationHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive move'**
+  String get syncTableHiveLocationHistory;
+
+  /// No description provided for @initialSyncTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading your records'**
+  String get initialSyncTitle;
+
+  /// No description provided for @initialSyncMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your business\'s records are being downloaded to this phone. This happens only once; after that the app works without internet too.'**
+  String get initialSyncMessage;
+
+  /// No description provided for @initialSyncRows.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record downloaded} other{{count} records downloaded}}'**
+  String initialSyncRows(int count);
+
+  /// No description provided for @initialSyncFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Download couldn\'t finish'**
+  String get initialSyncFailedTitle;
 }
 
 class _AppLocalizationsDelegate

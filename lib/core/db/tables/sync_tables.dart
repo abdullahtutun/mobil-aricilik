@@ -23,7 +23,11 @@ class Outbox extends Table {
   TextColumn get lastError => text().nullable()();
 }
 
-/// Tablo başına son çekilen `server_seq`.
+/// [SyncState]'te tablo adı yerine geçen işaret: satır varsa bu cihazda
+/// ilk tam çekme bitmiştir. Tablo adı olamayacak bir değer.
+const fullPullMarker = ':full_pull';
+
+/// Tablo başına son çekilen `server_seq`. Ayrıca [fullPullMarker] satırı.
 @DataClassName('SyncCursor')
 class SyncState extends Table {
   TextColumn get recordTable => text()();

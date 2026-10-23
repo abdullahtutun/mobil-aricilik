@@ -39,6 +39,34 @@ void main() {
         SessionStage.signedOut,
       );
     });
+
+    test('ilk tam çekme bitmeden sekmeler açılmaz; kurulum önce gelir', () {
+      expect(
+        sessionStageOf(
+          signedIn: true,
+          hasOrganization: true,
+          fullPullDone: false,
+        ),
+        SessionStage.initialSync,
+      );
+      expect(
+        sessionStageOf(
+          signedIn: true,
+          hasOrganization: true,
+          settingUp: true,
+          fullPullDone: false,
+        ),
+        SessionStage.settingUp,
+      );
+      expect(
+        sessionStageOf(
+          signedIn: true,
+          hasOrganization: false,
+          fullPullDone: false,
+        ),
+        SessionStage.needsOrganization,
+      );
+    });
   });
 
   group('sessionRedirect', () {
@@ -140,6 +168,59 @@ void main() {
       expect(
         _redirect(SessionStage.needsOrganization, '/onboarding?from=%2Ftasks'),
         isNull,
+      );
+    });
+
+    test('ilk çekme sürerken her konum ilk çekme ekranına gider, konum '
+        'saklanır', () {
+      for (final path in [
+        AppRoutes.today,
+        AppRoutes.signIn,
+        AppRoutes.onboarding,
+        AppRoutes.onboardingApiary,
+      ]) {
+        expect(
+          _redirect(SessionStage.initialSync, path),
+          AppRoutes.initialSync,
+          reason: path,
+        );
+      }
+      expect(
+        _redirect(SessionStage.initialSync, '/hives/42'),
+        '/initial-sync?from=%2Fhives%2F42',
+      );
+      expect(
+        _redirect(SessionStage.initialSync, '/onboarding/apiary?from=%2Ftasks'),
+        '/initial-sync?from=%2Ftasks',
+      );
+    });
+
+    test('ilk çekme sürerken ilk çekme ekranı açık kalır', () {
+      expect(
+        _redirect(SessionStage.initialSync, AppRoutes.initialSync),
+        isNull,
+      );
+      expect(
+        _redirect(SessionStage.initialSync, '/initial-sync?from=%2Ftasks'),
+        isNull,
+      );
+    });
+
+    test('ilk çekme bitince saklanan konuma ya da Bugün’e dönülür', () {
+      expect(
+        _redirect(SessionStage.ready, '/initial-sync?from=%2Fhives%2F42'),
+        '/hives/42',
+      );
+      expect(
+        _redirect(SessionStage.ready, AppRoutes.initialSync),
+        AppRoutes.today,
+      );
+      expect(
+        _redirect(
+          SessionStage.needsOrganization,
+          '/initial-sync?from=%2Ftasks',
+        ),
+        '/onboarding?from=%2Ftasks',
       );
     });
 

@@ -7,7 +7,10 @@ import 'package:mobil_arici/app/session_redirect.dart';
 import 'package:mobil_arici/app/shell/app_shell.dart';
 import 'package:mobil_arici/app/shell/more_screen.dart';
 import 'package:mobil_arici/app/shell/scan_screen.dart';
+import 'package:mobil_arici/app/sync/initial_sync_screen.dart';
+import 'package:mobil_arici/app/sync/sync_screen.dart';
 import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
+import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.dart';
@@ -42,18 +45,21 @@ const _hiveId = 'hiveId';
 GoRouter router(Ref ref) {
   final isDev = ref.watch(flavorProvider) == Flavor.dev;
 
-  // Router yeniden kurulmasın (sekme yığınları kaybolur); oturum, işletme
-  // ya da kurulum değişince yalnız yönlendirme yeniden değerlendirilir.
+  // Router yeniden kurulmasın (sekme yığınları kaybolur); oturum, işletme,
+  // kurulum ya da ilk çekme değişince yalnız yönlendirme yeniden
+  // değerlendirilir.
   SessionStage stage() => sessionStageOf(
     signedIn: ref.read(currentUserProvider) != null,
     hasOrganization: ref.read(currentOrganizationProvider).value != null,
     settingUp: ref.read(setupInProgressProvider),
+    fullPullDone: ref.read(fullPullDoneProvider).value ?? false,
   );
   final session = ValueNotifier(stage());
   ref
     ..listen(currentUserProvider, (_, _) => session.value = stage())
     ..listen(currentOrganizationProvider, (_, _) => session.value = stage())
     ..listen(setupInProgressProvider, (_, _) => session.value = stage())
+    ..listen(fullPullDoneProvider, (_, _) => session.value = stage())
     ..onDispose(session.dispose);
 
   final router = GoRouter(
@@ -188,6 +194,11 @@ GoRouter router(Ref ref) {
         path: AppRoutes.scan,
         builder: (context, state) => const ScanScreen(),
       ),
+      // Kabuğun dışında: geri tuşu ikona dokunulan sekmeye döner.
+      GoRoute(
+        path: AppRoutes.sync,
+        builder: (context, state) => const SyncScreen(),
+      ),
       // Kovan etiketinin derin linki (`mobilarici://h/<kimlik>`, telefonun
       // kendi kamerasıyla okutulunca). Kovan bu telefondaysa kartına
       // yönlenir; geri tuşu arılığa döner. Yoksa etiketi atamayı sunar.
@@ -234,6 +245,11 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.onboardingApiary,
         builder: (context, state) => const FirstApiaryScreen(),
+      ),
+      // Kabuğun dışında: kayıtlar inene kadar sekmeler yok.
+      GoRoute(
+        path: AppRoutes.initialSync,
+        builder: (context, state) => const InitialSyncScreen(),
       ),
     ],
   );

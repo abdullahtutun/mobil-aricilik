@@ -12,7 +12,7 @@ import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
 
-export 'tables/sync_tables.dart' show OutboxOperation;
+export 'tables/sync_tables.dart' show OutboxOperation, fullPullMarker;
 
 part 'app_database.g.dart';
 

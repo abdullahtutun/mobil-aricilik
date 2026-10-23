@@ -13,6 +13,7 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'fake_code_scanner.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
+import 'fake_sync_service.dart';
 import 'test_database.dart';
 
 const testUser = AppUser(id: 'test-user', email: 'ari@example.com');
@@ -69,12 +70,15 @@ class FakeAuthService implements AuthService {
 }
 
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
-/// DB bellek içi; verilmezse boş açılır. Kamera ve yazıcı sahte.
+/// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı ve senkron sahte;
+/// ilk tam çekme bitmiş sayılır ([fullPullDone] yanlışsa DB'den okunur).
 List<Override> signedIn({
   FakeAuthService? auth,
   AppDatabase? db,
   FakeCodeScanner? scanner,
   FakePrintService? printer,
+  FakeSyncService? sync,
+  bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
     auth ?? FakeAuthService(user: testUser),
@@ -83,4 +87,5 @@ List<Override> signedIn({
   appDatabaseProvider.overrideWithValue(db ?? openTestDatabase()),
   codeScannerProvider.overrideWithValue((scanner ?? FakeCodeScanner()).builder),
   printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
+  ...syncOverrides(service: sync, fullPullDone: fullPullDone),
 ];

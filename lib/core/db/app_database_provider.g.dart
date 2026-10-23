@@ -8,22 +8,16 @@ part of 'app_database_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Cihazdaki veritabanı (uygulama belgeleri klasöründe
-/// `mobil_arici.sqlite`). Bağlantı ilk sorguda açılır, açılış beklemez.
 /// Testler bellek içi DB ile override eder.
 
 @ProviderFor(appDatabase)
 final appDatabaseProvider = AppDatabaseProvider._();
 
-/// Cihazdaki veritabanı (uygulama belgeleri klasöründe
-/// `mobil_arici.sqlite`). Bağlantı ilk sorguda açılır, açılış beklemez.
 /// Testler bellek içi DB ile override eder.
 
 final class AppDatabaseProvider
     extends $FunctionalProvider<AppDatabase, AppDatabase, AppDatabase>
     with $Provider<AppDatabase> {
-  /// Cihazdaki veritabanı (uygulama belgeleri klasöründe
-  /// `mobil_arici.sqlite`). Bağlantı ilk sorguda açılır, açılış beklemez.
   /// Testler bellek içi DB ile override eder.
   AppDatabaseProvider._()
     : super(
@@ -58,4 +52,4 @@ final class AppDatabaseProvider
   }
 }
 
-String _$appDatabaseHash() => r'751fb6f450e375a7e74739a296c8bd3b8a0d31bf';
+String _$appDatabaseHash() => r'da094d91db39d2711d8d54d5b40adb8b720bca6e';

@@ -934,4 +934,135 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get gallerySampleUntitledCard =>
       'Başlıksız kart da olur; içerik doğrudan başlar.';
+
+  @override
+  String get syncStatusSynced => 'Eşitlendi';
+
+  @override
+  String syncStatusPending(int count) {
+    return '$count bekliyor';
+  }
+
+  @override
+  String get syncStatusError => 'Hata';
+
+  @override
+  String syncStatusSemantics(String status) {
+    return 'Eşitleme: $status';
+  }
+
+  @override
+  String get syncTitle => 'Eşitleme';
+
+  @override
+  String get syncSyncedMessage =>
+      'Bu telefondaki tüm kayıtlar sunucuya ulaştı.';
+
+  @override
+  String syncPendingMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kayıt gönderilmeyi bekliyor.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncProblemOffline =>
+      'Sunucuya ulaşılamadı. İnternet gelince yeniden denenecek.';
+
+  @override
+  String get syncProblemFailed =>
+      'Eşitleme tamamlanamadı. Biraz sonra yeniden dene.';
+
+  @override
+  String get syncProblemUpgrade =>
+      'Bu sürüm artık eşitlenemiyor. Uygulamayı güncelle.';
+
+  @override
+  String syncLastSynced(String time) {
+    return 'Son eşitleme $time';
+  }
+
+  @override
+  String get syncNow => 'Şimdi eşitle';
+
+  @override
+  String get syncRunning => 'Eşitleniyor…';
+
+  @override
+  String syncRejectedTitle(int count) {
+    return 'Gönderilemeyen kayıtlar ($count)';
+  }
+
+  @override
+  String get syncRejectedMessage =>
+      'Sunucu bu kayıtları kabul etmedi. Diğer kayıtlar eşitlenmeye devam ediyor.';
+
+  @override
+  String syncRejectedSubtitle(String reason, String date) {
+    return '$reason · $date';
+  }
+
+  @override
+  String get syncRejectionForbidden => 'Bu kaydı değiştirme yetkin yok';
+
+  @override
+  String get syncRejectionConflict =>
+      'Başka bir kayıtla çakışıyor (ör. aynı etiket)';
+
+  @override
+  String get syncRejectionMissingReference => 'Bağlı olduğu kayıt sunucuda yok';
+
+  @override
+  String get syncRejectionUnsupported => 'Bu tür kayıt eşitlenmiyor';
+
+  @override
+  String get syncRejectionInvalid => 'Kayıttaki veri geçersiz';
+
+  @override
+  String get syncRejectionUnknown => 'Bilinmeyen neden';
+
+  @override
+  String get syncTableOrganizations => 'İşletme';
+
+  @override
+  String get syncTableMemberships => 'Üyelik';
+
+  @override
+  String get syncTableApiaries => 'Arılık';
+
+  @override
+  String get syncTableQueens => 'Ana arı';
+
+  @override
+  String get syncTableHives => 'Kovan';
+
+  @override
+  String get syncTableHiveLocationHistory => 'Kovan taşıma';
+
+  @override
+  String get initialSyncTitle => 'Kayıtların indiriliyor';
+
+  @override
+  String get initialSyncMessage =>
+      'İşletmenin kayıtları bu telefona indiriliyor. Bu yalnız bir kez yapılır; sonra uygulama internetsiz de çalışır.';
+
+  @override
+  String initialSyncRows(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString kayıt indirildi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get initialSyncFailedTitle => 'İndirme tamamlanamadı';
 }

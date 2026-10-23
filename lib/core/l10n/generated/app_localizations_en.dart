@@ -941,4 +941,139 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gallerySampleUntitledCard =>
       'A card can also go without a title; the content starts right away.';
+
+  @override
+  String get syncStatusSynced => 'Synced';
+
+  @override
+  String syncStatusPending(int count) {
+    return '$count pending';
+  }
+
+  @override
+  String get syncStatusError => 'Error';
+
+  @override
+  String syncStatusSemantics(String status) {
+    return 'Sync: $status';
+  }
+
+  @override
+  String get syncTitle => 'Sync';
+
+  @override
+  String get syncSyncedMessage =>
+      'Every record on this phone has reached the server.';
+
+  @override
+  String syncPendingMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count records are waiting to be sent.',
+      one: '1 record is waiting to be sent.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncProblemOffline =>
+      'Couldn\'t reach the server. Sync will try again when you\'re back online.';
+
+  @override
+  String get syncProblemFailed =>
+      'Sync couldn\'t finish. Try again a little later.';
+
+  @override
+  String get syncProblemUpgrade =>
+      'This version can no longer sync. Update the app.';
+
+  @override
+  String syncLastSynced(String time) {
+    return 'Last synced $time';
+  }
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncRunning => 'Syncing…';
+
+  @override
+  String syncRejectedTitle(int count) {
+    return 'Couldn\'t be sent ($count)';
+  }
+
+  @override
+  String get syncRejectedMessage =>
+      'The server didn\'t accept these records. Everything else keeps syncing.';
+
+  @override
+  String syncRejectedSubtitle(String reason, String date) {
+    return '$reason · $date';
+  }
+
+  @override
+  String get syncRejectionForbidden =>
+      'You aren\'t allowed to change this record';
+
+  @override
+  String get syncRejectionConflict =>
+      'Conflicts with another record (e.g. the same label)';
+
+  @override
+  String get syncRejectionMissingReference =>
+      'A record it belongs to is missing on the server';
+
+  @override
+  String get syncRejectionUnsupported => 'This kind of record isn\'t synced';
+
+  @override
+  String get syncRejectionInvalid => 'The record has invalid data';
+
+  @override
+  String get syncRejectionUnknown => 'Unknown reason';
+
+  @override
+  String get syncTableOrganizations => 'Business';
+
+  @override
+  String get syncTableMemberships => 'Membership';
+
+  @override
+  String get syncTableApiaries => 'Apiary';
+
+  @override
+  String get syncTableQueens => 'Queen';
+
+  @override
+  String get syncTableHives => 'Hive';
+
+  @override
+  String get syncTableHiveLocationHistory => 'Hive move';
+
+  @override
+  String get initialSyncTitle => 'Downloading your records';
+
+  @override
+  String get initialSyncMessage =>
+      'Your business\'s records are being downloaded to this phone. This happens only once; after that the app works without internet too.';
+
+  @override
+  String initialSyncRows(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString records downloaded',
+      one: '1 record downloaded',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get initialSyncFailedTitle => 'Download couldn\'t finish';
 }

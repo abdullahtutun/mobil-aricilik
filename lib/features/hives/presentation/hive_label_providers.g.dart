@@ -93,7 +93,7 @@ final class HiveLabelActionsProvider
   }
 }
 
-String _$hiveLabelActionsHash() => r'cb97adcebe89cfb21c09caa17d0062bce67ffaaf';
+String _$hiveLabelActionsHash() => r'e50ffa9937c42fae633d30f7a69591f901cdc241';
 
 /// Okutulan ya da derin linkle gelen etiket kodunu kovana çevirir ve
 /// tanınmayan etiketi kovana atar. Her şey yerel DB'de; ağ gerekmez.

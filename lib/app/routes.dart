@@ -39,6 +39,12 @@ abstract final class AppRoutes {
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.
   static const scan = '/scan';
 
+  /// Üst bardaki senkron ikonunun açtığı ayrıntı; sekmelerin üstünde açılır.
+  static const sync = '/sync';
+
+  /// İlk girişte tam çekme; bitene kadar sekmeler açılmaz.
+  static const initialSync = '/initial-sync';
+
   /// Giriş yapılmamışken açılabilen tek rotalar.
   static const signIn = '/sign-in';
   static const signInCode = '/sign-in/code';

@@ -5,6 +5,7 @@ import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
+import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
@@ -16,6 +17,8 @@ import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/fake_sync_service.dart';
+import '../../../helpers/test_database.dart';
 
 /// Varsayılan olarak kullanıcının sunucuda işletmesi var.
 Future<ProviderContainer> _pumpApp(
@@ -27,6 +30,9 @@ Future<ProviderContainer> _pumpApp(
     overrides: [
       authServiceProvider.overrideWithValue(auth),
       ...organizationOverrides(service: organizations),
+      // Bugün'ün üst barındaki senkron ikonu yerel DB'yi okur.
+      appDatabaseProvider.overrideWithValue(openTestDatabase()),
+      ...syncOverrides(),
     ],
   );
   await tester.pumpWidget(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
@@ -9,7 +10,10 @@ class TasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.tabTasks)),
+      appBar: AppBar(
+        title: Text(l10n.tabTasks),
+        actions: const [SyncStatusButton()],
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: EmptyState(

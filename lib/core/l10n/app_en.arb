@@ -647,5 +647,110 @@
   "gallerySampleAddApiary": "Add your first apiary",
   "gallerySampleLastInspection": "Last inspection",
   "gallerySampleLastInspectionBody": "3 days ago · 7 frames with bees · queen seen",
-  "gallerySampleUntitledCard": "A card can also go without a title; the content starts right away."
+  "gallerySampleUntitledCard": "A card can also go without a title; the content starts right away.",
+
+  "syncStatusSynced": "Synced",
+  "@syncStatusSynced": {
+    "description": "Sync icon in the app bar: every local record has reached the server."
+  },
+  "syncStatusPending": "{count} pending",
+  "@syncStatusPending": {
+    "description": "Sync icon in the app bar: records waiting to be sent (e.g. offline).",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "syncStatusError": "Error",
+  "@syncStatusError": {
+    "description": "Sync icon in the app bar: the server rejected a record or the last sync failed."
+  },
+  "syncStatusSemantics": "Sync: {status}",
+  "@syncStatusSemantics": {
+    "description": "Screen reader label of the sync icon in the app bar.",
+    "placeholders": {
+      "status": {
+        "type": "String",
+        "example": "3 pending"
+      }
+    }
+  },
+  "syncTitle": "Sync",
+  "syncSyncedMessage": "Every record on this phone has reached the server.",
+  "syncPendingMessage": "{count, plural, =1{1 record is waiting to be sent.} other{{count} records are waiting to be sent.}}",
+  "@syncPendingMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "syncProblemOffline": "Couldn't reach the server. Sync will try again when you're back online.",
+  "syncProblemFailed": "Sync couldn't finish. Try again a little later.",
+  "syncProblemUpgrade": "This version can no longer sync. Update the app.",
+  "syncLastSynced": "Last synced {time}",
+  "@syncLastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "2:32 PM"
+      }
+    }
+  },
+  "syncNow": "Sync now",
+  "syncRunning": "Syncing…",
+  "syncRejectedTitle": "Couldn't be sent ({count})",
+  "@syncRejectedTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "syncRejectedMessage": "The server didn't accept these records. Everything else keeps syncing.",
+  "syncRejectedSubtitle": "{reason} · {date}",
+  "@syncRejectedSubtitle": {
+    "placeholders": {
+      "reason": {
+        "type": "String",
+        "example": "Invalid data"
+      },
+      "date": {
+        "type": "String",
+        "example": "Oct 23, 2026, 2:32 PM"
+      }
+    }
+  },
+  "syncRejectionForbidden": "You aren't allowed to change this record",
+  "syncRejectionConflict": "Conflicts with another record (e.g. the same label)",
+  "syncRejectionMissingReference": "A record it belongs to is missing on the server",
+  "syncRejectionUnsupported": "This kind of record isn't synced",
+  "syncRejectionInvalid": "The record has invalid data",
+  "syncRejectionUnknown": "Unknown reason",
+  "syncTableOrganizations": "Business",
+  "@syncTableOrganizations": {
+    "description": "Kind of a record that couldn't be sent."
+  },
+  "syncTableMemberships": "Membership",
+  "syncTableApiaries": "Apiary",
+  "syncTableQueens": "Queen",
+  "syncTableHives": "Hive",
+  "syncTableHiveLocationHistory": "Hive move",
+  "initialSyncTitle": "Downloading your records",
+  "initialSyncMessage": "Your business's records are being downloaded to this phone. This happens only once; after that the app works without internet too.",
+  "initialSyncRows": "{count, plural, =1{1 record downloaded} other{{count} records downloaded}}",
+  "@initialSyncRows": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "1234"
+      }
+    }
+  },
+  "initialSyncFailedTitle": "Download couldn't finish"
 }

@@ -12,7 +12,11 @@ enum SessionStage {
   /// İşletme onboarding'de yeni kuruldu; ilk arılık adımı sürüyor.
   settingUp,
 
-  /// Giriş yapılmış ve işletme belli.
+  /// İşletme belli ama bu cihazda ilk tam çekme bitmedi ya da henüz
+  /// bilinmiyor (yerel DB okunuyor).
+  initialSync,
+
+  /// Giriş yapılmış, işletme belli ve kayıtlar bu cihazda.
   ready,
 }
 
@@ -20,45 +24,50 @@ SessionStage sessionStageOf({
   required bool signedIn,
   required bool hasOrganization,
   bool settingUp = false,
+  bool fullPullDone = true,
 }) {
   if (!signedIn) return SessionStage.signedOut;
   if (!hasOrganization) return SessionStage.needsOrganization;
-  return settingUp ? SessionStage.settingUp : SessionStage.ready;
+  if (settingUp) return SessionStage.settingUp;
+  return fullPullDone ? SessionStage.ready : SessionStage.initialSync;
 }
 
-/// Onboarding'e yönlendirilirken asıl açılmak istenen konum.
+/// Onboarding'e ya da ilk çekmeye yönlendirilirken asıl açılmak istenen
+/// konum.
 const onboardingFromParameter = 'from';
 
 /// Oturuma göre yönlendirme: giriş yapılmamışsa her konum giriş ekranına,
-/// işletme yoksa onboarding'e, işletme yeni kurulduysa ilk arılık adımına
-/// gider. Her şey hazırsa giriş ekranları Bugün'e, onboarding asıl açılmak
-/// istenen konuma gider (işletme cihazdan okunurken gelen derin link
-/// kaybolmasın). Değişiklik yoksa null.
+/// işletme yoksa onboarding'e, işletme yeni kurulduysa ilk arılık adımına,
+/// kayıtlar henüz inmediyse ilk çekme ekranına gider. Her şey hazırsa giriş
+/// ekranları Bugün'e, onboarding ve ilk çekme asıl açılmak istenen konuma
+/// gider (işletme cihazdan okunurken gelen derin link kaybolmasın).
+/// Değişiklik yoksa null.
 String? sessionRedirect({required SessionStage stage, required Uri location}) {
   final path = location.path;
   final onSignIn = _isUnder(AppRoutes.signIn, path);
-  final onOnboarding = _isUnder(AppRoutes.onboarding, path);
   switch (stage) {
     case SessionStage.signedOut:
       return onSignIn ? null : AppRoutes.signIn;
     case SessionStage.needsOrganization:
-      return _onboardingStep(AppRoutes.onboarding, location);
+      return _gateStep(AppRoutes.onboarding, location);
     case SessionStage.settingUp:
-      return _onboardingStep(AppRoutes.onboardingApiary, location);
+      return _gateStep(AppRoutes.onboardingApiary, location);
+    case SessionStage.initialSync:
+      return _gateStep(AppRoutes.initialSync, location);
     case SessionStage.ready:
-      if (onOnboarding) return _returnLocation(location) ?? AppRoutes.today;
+      if (_isGate(path)) return _returnLocation(location) ?? AppRoutes.today;
       return onSignIn ? AppRoutes.today : null;
   }
 }
 
-/// Onboarding'in [step] adımına götürür; zaten oradaysa null. Başka bir
-/// onboarding adımından gelinirse saklanan konum taşınır. Giriş ekranları
-/// ve Bugün saklanmaz, onboarding bitince zaten Bugün açılır.
-String? _onboardingStep(String step, Uri location) {
+/// Kapı ekranlarından [step]'e götürür; zaten oradaysa null. Başka bir kapı
+/// ekranından gelinirse saklanan konum taşınır. Giriş ekranları ve Bugün
+/// saklanmaz, kapı geçilince zaten Bugün açılır.
+String? _gateStep(String step, Uri location) {
   final path = location.path;
   if (path == step) return null;
   final String? from;
-  if (_isUnder(AppRoutes.onboarding, path)) {
+  if (_isGate(path)) {
     from = location.queryParameters[onboardingFromParameter];
   } else if (_isUnder(AppRoutes.signIn, path) || path == AppRoutes.today) {
     from = null;
@@ -73,13 +82,18 @@ String? _onboardingStep(String step, Uri location) {
 }
 
 /// Yalnız uygulama içi konuma dönülür; başka şemaya ya da hosta gidilmez.
-String? _returnLocation(Uri onboarding) {
-  final from = onboarding.queryParameters[onboardingFromParameter];
+String? _returnLocation(Uri gate) {
+  final from = gate.queryParameters[onboardingFromParameter];
   if (from == null || !from.startsWith('/') || from.startsWith('//')) {
     return null;
   }
   return from;
 }
+
+/// Onboarding adımları ve ilk çekme: oturum hazır olana kadar tutulan
+/// ekranlar.
+bool _isGate(String path) =>
+    _isUnder(AppRoutes.onboarding, path) || path == AppRoutes.initialSync;
 
 bool _isUnder(String route, String path) =>
     path == route || path.startsWith('$route/');
