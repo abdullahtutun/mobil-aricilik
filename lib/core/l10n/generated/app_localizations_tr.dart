@@ -194,6 +194,232 @@ class AppLocalizationsTr extends AppLocalizations {
   String get apiaryFormSave => 'Kaydet';
 
   @override
+  String get apiaryHivesTitle => 'Kovanlar';
+
+  @override
+  String get hiveLayoutGrid => 'Izgara görünümü';
+
+  @override
+  String get hiveLayoutList => 'Liste görünümü';
+
+  @override
+  String get hivesEmptyTitle => 'Henüz kovan yok';
+
+  @override
+  String get hivesEmptyMessage =>
+      'Bu arılıktaki kovanları ekle; hepsini tek seferde oluşturabilirsin.';
+
+  @override
+  String get hivesAdd => 'Kovan ekle';
+
+  @override
+  String get hivesAddOne => 'Tek kovan';
+
+  @override
+  String get hivesAddOneHint => 'Numarasını, tipini ve kaynağını gir';
+
+  @override
+  String get hivesAddBulk => 'Toplu oluştur';
+
+  @override
+  String get hivesAddBulkHint => 'Ör. 101\'den başlayarak 20 kovan';
+
+  @override
+  String hivesInactiveTitle(int count) {
+    return 'Aktif olmayan ($count)';
+  }
+
+  @override
+  String get hivesLoadError => 'Kovanlar okunamadı.';
+
+  @override
+  String hiveLabel(String number) {
+    return 'Kovan $number';
+  }
+
+  @override
+  String hiveTypeAndSource(String type, String source) {
+    return '$type · $source';
+  }
+
+  @override
+  String get hiveTypeLangstroth => 'Langstroth';
+
+  @override
+  String get hiveTypeDadant => 'Dadant';
+
+  @override
+  String get hiveTypeLocal => 'Yerel';
+
+  @override
+  String get hiveTypeOther => 'Diğer';
+
+  @override
+  String get hiveStatusActive => 'Aktif';
+
+  @override
+  String get hiveStatusDead => 'Söndü';
+
+  @override
+  String get hiveStatusMerged => 'Birleşti';
+
+  @override
+  String get hiveStatusSold => 'Satıldı';
+
+  @override
+  String get hiveStatusLost => 'Kayboldu';
+
+  @override
+  String get hiveSourceSwarm => 'Oğul';
+
+  @override
+  String get hiveSourceSplit => 'Bölme';
+
+  @override
+  String get hiveSourcePurchase => 'Satın alma';
+
+  @override
+  String get hiveSourcePackage => 'Paket arı';
+
+  @override
+  String get hiveFormNewTitle => 'Yeni kovan';
+
+  @override
+  String get hiveFormEditTitle => 'Kovanı düzenle';
+
+  @override
+  String get hiveFormNumber => 'Kovan numarası';
+
+  @override
+  String get hiveFormNumberHint => 'Ör. 101';
+
+  @override
+  String get hiveFormType => 'Kovan tipi';
+
+  @override
+  String get hiveFormStatus => 'Durum';
+
+  @override
+  String get hiveFormSource => 'Kaynak';
+
+  @override
+  String get hiveFormSave => 'Kaydet';
+
+  @override
+  String get hiveBulkTitle => 'Toplu kovan oluştur';
+
+  @override
+  String get hiveBulkCount => 'Kaç kovan';
+
+  @override
+  String get hiveBulkCountHint => 'Ör. 20';
+
+  @override
+  String hiveBulkCountTooMany(int max) {
+    return 'Tek seferde en fazla $max';
+  }
+
+  @override
+  String get hiveBulkStart => 'İlk numara';
+
+  @override
+  String get hiveBulkStartHint => 'Ör. 101';
+
+  @override
+  String hiveBulkPreview(int count, String first, String last) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$first–$last arası $count kovan oluşturulacak.',
+      one: '$first numaralı kovan oluşturulacak.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveBulkSave => 'Kovanları oluştur';
+
+  @override
+  String hiveBulkCreated(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan oluşturuldu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveNotFoundTitle => 'Kovan bulunamadı';
+
+  @override
+  String get hiveNotFoundMessage =>
+      'Silinmiş ya da bu cihaza henüz gelmemiş olabilir.';
+
+  @override
+  String get hiveEdit => 'Düzenle';
+
+  @override
+  String hiveCardApiary(String name) {
+    return 'Arılık: $name';
+  }
+
+  @override
+  String get hiveQueenTitle => 'Ana arı';
+
+  @override
+  String get hiveQueenPlaceholder =>
+      'Henüz ana arı kaydı yok. Ana arı kartı yakında geliyor.';
+
+  @override
+  String get hiveMove => 'Başka arılığa taşı';
+
+  @override
+  String hiveMoveTitle(String number) {
+    return 'Kovan $number nereye taşınsın?';
+  }
+
+  @override
+  String get hiveMoveNoOtherApiary =>
+      'Taşınacak başka arılık yok. Önce Arılıklar sekmesinden bir arılık ekle.';
+
+  @override
+  String hiveMoved(String number, String apiary) {
+    return 'Kovan $number taşındı: $apiary';
+  }
+
+  @override
+  String get hiveChangeStatus => 'Durumu değiştir';
+
+  @override
+  String hiveStatusSheetTitle(String number) {
+    return 'Kovan $number: yeni durum';
+  }
+
+  @override
+  String hiveStatusConfirmTitle(String status, String number) {
+    String _temp0 = intl.Intl.selectLogic(status, {
+      'dead': 'Kovan $number söndü olarak kaydedilsin mi?',
+      'merged': 'Kovan $number birleşti olarak kaydedilsin mi?',
+      'sold': 'Kovan $number satıldı olarak kaydedilsin mi?',
+      'other': 'Kovan $number kayboldu olarak kaydedilsin mi?',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveStatusConfirmMessage =>
+      'Arılığın aktif kovan sayısından düşer. Sonradan yeniden aktif yapabilirsin.';
+
+  @override
+  String get hiveStatusConfirm => 'Evet, kaydet';
+
+  @override
+  String hiveStatusChanged(String number, String status) {
+    return 'Kovan $number: $status';
+  }
+
+  @override
   String get tasksEmptyTitle => 'Henüz görev yok';
 
   @override
@@ -356,6 +582,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get actionRetry => 'Yeniden dene';
+
+  @override
+  String get actionUndo => 'Geri al';
 
   @override
   String onboardingStepCounter(int current, int total) {

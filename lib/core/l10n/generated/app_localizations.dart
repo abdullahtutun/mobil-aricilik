@@ -392,6 +392,366 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get apiaryFormSave;
 
+  /// Heading of the hive grid or list on an apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get apiaryHivesTitle;
+
+  /// No description provided for @hiveLayoutGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid view'**
+  String get hiveLayoutGrid;
+
+  /// No description provided for @hiveLayoutList.
+  ///
+  /// In en, this message translates to:
+  /// **'List view'**
+  String get hiveLayoutList;
+
+  /// No description provided for @hivesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives yet'**
+  String get hivesEmptyTitle;
+
+  /// No description provided for @hivesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the hives standing in this apiary; you can create many at once.'**
+  String get hivesEmptyMessage;
+
+  /// No description provided for @hivesAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add hives'**
+  String get hivesAdd;
+
+  /// No description provided for @hivesAddOne.
+  ///
+  /// In en, this message translates to:
+  /// **'One hive'**
+  String get hivesAddOne;
+
+  /// No description provided for @hivesAddOneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter its number, type and source'**
+  String get hivesAddOneHint;
+
+  /// No description provided for @hivesAddBulk.
+  ///
+  /// In en, this message translates to:
+  /// **'Many at once'**
+  String get hivesAddBulk;
+
+  /// No description provided for @hivesAddBulkHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 20 hives starting at 101'**
+  String get hivesAddBulkHint;
+
+  /// Heading above the dead, merged, sold and lost hives of an apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Not active ({count})'**
+  String hivesInactiveTitle(int count);
+
+  /// No description provided for @hivesLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read the hives.'**
+  String get hivesLoadError;
+
+  /// A hive named by its number, in messages and dialogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number}'**
+  String hiveLabel(String number);
+
+  /// Second line of a hive on the hive list.
+  ///
+  /// In en, this message translates to:
+  /// **'{type} · {source}'**
+  String hiveTypeAndSource(String type, String source);
+
+  /// No description provided for @hiveTypeLangstroth.
+  ///
+  /// In en, this message translates to:
+  /// **'Langstroth'**
+  String get hiveTypeLangstroth;
+
+  /// No description provided for @hiveTypeDadant.
+  ///
+  /// In en, this message translates to:
+  /// **'Dadant'**
+  String get hiveTypeDadant;
+
+  /// No description provided for @hiveTypeLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Local'**
+  String get hiveTypeLocal;
+
+  /// No description provided for @hiveTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get hiveTypeOther;
+
+  /// No description provided for @hiveStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get hiveStatusActive;
+
+  /// No description provided for @hiveStatusDead.
+  ///
+  /// In en, this message translates to:
+  /// **'Dead'**
+  String get hiveStatusDead;
+
+  /// No description provided for @hiveStatusMerged.
+  ///
+  /// In en, this message translates to:
+  /// **'Merged'**
+  String get hiveStatusMerged;
+
+  /// No description provided for @hiveStatusSold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold'**
+  String get hiveStatusSold;
+
+  /// Hive status: stolen, destroyed by animals or otherwise gone.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get hiveStatusLost;
+
+  /// No description provided for @hiveSourceSwarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Swarm'**
+  String get hiveSourceSwarm;
+
+  /// No description provided for @hiveSourceSplit.
+  ///
+  /// In en, this message translates to:
+  /// **'Split'**
+  String get hiveSourceSplit;
+
+  /// No description provided for @hiveSourcePurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Bought'**
+  String get hiveSourcePurchase;
+
+  /// No description provided for @hiveSourcePackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Package bees'**
+  String get hiveSourcePackage;
+
+  /// No description provided for @hiveFormNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New hive'**
+  String get hiveFormNewTitle;
+
+  /// No description provided for @hiveFormEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit hive'**
+  String get hiveFormEditTitle;
+
+  /// No description provided for @hiveFormNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive number'**
+  String get hiveFormNumber;
+
+  /// No description provided for @hiveFormNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 101'**
+  String get hiveFormNumberHint;
+
+  /// No description provided for @hiveFormType.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive type'**
+  String get hiveFormType;
+
+  /// No description provided for @hiveFormStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get hiveFormStatus;
+
+  /// No description provided for @hiveFormSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get hiveFormSource;
+
+  /// No description provided for @hiveFormSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get hiveFormSave;
+
+  /// No description provided for @hiveBulkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create many hives'**
+  String get hiveBulkTitle;
+
+  /// No description provided for @hiveBulkCount.
+  ///
+  /// In en, this message translates to:
+  /// **'How many hives'**
+  String get hiveBulkCount;
+
+  /// No description provided for @hiveBulkCountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 20'**
+  String get hiveBulkCountHint;
+
+  /// No description provided for @hiveBulkCountTooMany.
+  ///
+  /// In en, this message translates to:
+  /// **'At most {max} at once'**
+  String hiveBulkCountTooMany(int max);
+
+  /// No description provided for @hiveBulkStart.
+  ///
+  /// In en, this message translates to:
+  /// **'First number'**
+  String get hiveBulkStart;
+
+  /// No description provided for @hiveBulkStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 101'**
+  String get hiveBulkStartHint;
+
+  /// Summary of the hives about to be created in bulk.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Hive {first} will be created.} other{{count} hives will be created: {first} to {last}.}}'**
+  String hiveBulkPreview(int count, String first, String last);
+
+  /// No description provided for @hiveBulkSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Create hives'**
+  String get hiveBulkSave;
+
+  /// No description provided for @hiveBulkCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive created} other{{count} hives created}}'**
+  String hiveBulkCreated(int count);
+
+  /// No description provided for @hiveNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive not found'**
+  String get hiveNotFoundTitle;
+
+  /// No description provided for @hiveNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It may have been deleted or not reached this device yet.'**
+  String get hiveNotFoundMessage;
+
+  /// No description provided for @hiveEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get hiveEdit;
+
+  /// Screen reader text for the apiary under the big hive number.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary: {name}'**
+  String hiveCardApiary(String name);
+
+  /// No description provided for @hiveQueenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen'**
+  String get hiveQueenTitle;
+
+  /// No description provided for @hiveQueenPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'No queen recorded yet. Queen cards are coming soon.'**
+  String get hiveQueenPlaceholder;
+
+  /// No description provided for @hiveMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to another apiary'**
+  String get hiveMove;
+
+  /// Heading of the list of apiaries a hive can be moved to.
+  ///
+  /// In en, this message translates to:
+  /// **'Move hive {number} to'**
+  String hiveMoveTitle(String number);
+
+  /// No description provided for @hiveMoveNoOtherApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'There\'s no other apiary to move it to. Add one from the Apiaries tab first.'**
+  String get hiveMoveNoOtherApiary;
+
+  /// No description provided for @hiveMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} moved to {apiary}'**
+  String hiveMoved(String number, String apiary);
+
+  /// No description provided for @hiveChangeStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Change status'**
+  String get hiveChangeStatus;
+
+  /// No description provided for @hiveStatusSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New status for hive {number}'**
+  String hiveStatusSheetTitle(String number);
+
+  /// Asked before a hive stops counting as active. status is the server value: dead, merged, sold or lost.
+  ///
+  /// In en, this message translates to:
+  /// **'{status, select, dead{Record hive {number} as dead?} merged{Record hive {number} as merged?} sold{Record hive {number} as sold?} other{Record hive {number} as lost?}}'**
+  String hiveStatusConfirmTitle(String status, String number);
+
+  /// No description provided for @hiveStatusConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It will no longer count among the apiary\'s active hives. You can make it active again later.'**
+  String get hiveStatusConfirmMessage;
+
+  /// No description provided for @hiveStatusConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, record'**
+  String get hiveStatusConfirm;
+
+  /// Shown with an Undo button after a hive's status changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number}: {status}'**
+  String hiveStatusChanged(String number, String status);
+
   /// No description provided for @tasksEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -691,6 +1051,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try again'**
   String get actionRetry;
+
+  /// No description provided for @actionUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get actionUndo;
 
   /// Progress in the first-run setup shown after sign-in.
   ///

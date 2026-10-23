@@ -15,6 +15,9 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_screen.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_form_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -28,6 +31,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'router.g.dart';
 
 const _apiaryId = 'apiaryId';
+const _hiveId = 'hiveId';
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
@@ -108,6 +112,35 @@ GoRouter router(Ref ref) {
                         builder: (context, state) => ApiaryFormScreen(
                           apiaryId: state.pathParameters[_apiaryId],
                         ),
+                      ),
+                      // `:hiveId`'den önce; "new" ve "bulk" kimlik sanılmasın.
+                      GoRoute(
+                        path: 'hives/new',
+                        builder: (context, state) => HiveFormScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'hives/bulk',
+                        builder: (context, state) => BulkHiveFormScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'hives/:$_hiveId',
+                        builder: (context, state) => HiveCardScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                          hiveId: state.pathParameters[_hiveId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            builder: (context, state) => HiveFormScreen(
+                              apiaryId: state.pathParameters[_apiaryId]!,
+                              hiveId: state.pathParameters[_hiveId],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

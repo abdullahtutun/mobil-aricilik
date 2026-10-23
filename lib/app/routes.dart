@@ -10,6 +10,15 @@ abstract final class AppRoutes {
   static String apiary(String id) => '/apiaries/$id';
   static String apiaryEdit(String id) => '/apiaries/$id/edit';
 
+  /// Kovan rotaları arılığın altında: geri tuşu arılığa döner. Kovan
+  /// başka arılığa taşınsa da kart yoldaki arılığa değil kovana bakar.
+  static String hiveNew(String apiaryId) => '/apiaries/$apiaryId/hives/new';
+  static String hivesBulk(String apiaryId) => '/apiaries/$apiaryId/hives/bulk';
+  static String hive(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId';
+  static String hiveEdit(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/edit';
+
   static const settings = '/more/settings';
 
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.

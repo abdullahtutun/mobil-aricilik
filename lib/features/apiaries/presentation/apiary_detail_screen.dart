@@ -8,9 +8,12 @@ import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
+import 'package:mobil_arici/features/hives/presentation/widgets/apiary_hives_section.dart';
 
-/// Arılık detayı. Şimdilik üst kısım: ad, aktif kovan sayısı, son ziyaret.
-/// Harita şeridi, kovan ızgarası ve eylem çubuğu kendi adımlarında gelecek.
+/// Arılık detayı: üst kısım (ad, aktif kovan sayısı, son ziyaret) ve kovan
+/// ızgarası/listesi. Harita şeridi ve eylem çubuğu kendi adımlarında
+/// gelecek.
 class ApiaryDetailScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
 
@@ -19,6 +22,10 @@ class ApiaryDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final spacing = context.spacing;
+    final hasHives =
+        ref.watch(apiaryHivesProvider(apiaryId)).value?.isNotEmpty ?? false;
+
     return switch (ref.watch(apiarySummaryProvider(apiaryId))) {
       AsyncData(value: final summary?) => Scaffold(
         appBar: AppBar(
@@ -30,9 +37,27 @@ class ApiaryDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
+        // Kovan yokken boş durumun kendi butonu var.
+        floatingActionButton: hasHives
+            ? FloatingActionButton.extended(
+                onPressed: () => openAddHives(context, apiaryId),
+                icon: const Icon(Icons.add_rounded),
+                label: Text(l10n.hivesAdd),
+              )
+            : null,
         body: ListView(
-          padding: EdgeInsets.all(context.spacing.lg),
-          children: [_Header(summary)],
+          // Son satır kovan ekle butonunun altında kalmasın.
+          padding: EdgeInsets.fromLTRB(
+            spacing.lg,
+            spacing.lg,
+            spacing.lg,
+            context.touchTargets.fieldLarge + spacing.xl,
+          ),
+          children: [
+            _Header(summary),
+            SizedBox(height: spacing.xl),
+            ApiaryHivesSection(apiaryId: apiaryId),
+          ],
         ),
       ),
       AsyncData() => Scaffold(appBar: AppBar(), body: const ApiaryNotFound()),

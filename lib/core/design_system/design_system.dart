@@ -9,6 +9,7 @@ export 'components/empty_state.dart';
 export 'components/hive_tile.dart';
 export 'components/section_card.dart';
 export 'components/status_badge.dart';
+export 'components/undo_snack_bar.dart';
 export 'theme_context.dart';
 export 'tokens/app_colors.dart';
 export 'tokens/app_radii.dart';

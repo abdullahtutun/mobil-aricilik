@@ -147,6 +147,200 @@
   "apiaryFormLandownerPhone": "Landowner's phone",
   "apiaryFormNotes": "Notes",
   "apiaryFormSave": "Save",
+  "apiaryHivesTitle": "Hives",
+  "@apiaryHivesTitle": {
+    "description": "Heading of the hive grid or list on an apiary."
+  },
+  "hiveLayoutGrid": "Grid view",
+  "hiveLayoutList": "List view",
+  "hivesEmptyTitle": "No hives yet",
+  "hivesEmptyMessage": "Add the hives standing in this apiary; you can create many at once.",
+  "hivesAdd": "Add hives",
+  "hivesAddOne": "One hive",
+  "hivesAddOneHint": "Enter its number, type and source",
+  "hivesAddBulk": "Many at once",
+  "hivesAddBulkHint": "e.g. 20 hives starting at 101",
+  "hivesInactiveTitle": "Not active ({count})",
+  "@hivesInactiveTitle": {
+    "description": "Heading above the dead, merged, sold and lost hives of an apiary.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "hivesLoadError": "Couldn't read the hives.",
+  "hiveLabel": "Hive {number}",
+  "@hiveLabel": {
+    "description": "A hive named by its number, in messages and dialogs.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "hiveTypeAndSource": "{type} · {source}",
+  "@hiveTypeAndSource": {
+    "description": "Second line of a hive on the hive list.",
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "Langstroth"
+      },
+      "source": {
+        "type": "String",
+        "example": "Swarm"
+      }
+    }
+  },
+  "hiveTypeLangstroth": "Langstroth",
+  "hiveTypeDadant": "Dadant",
+  "hiveTypeLocal": "Local",
+  "hiveTypeOther": "Other",
+  "hiveStatusActive": "Active",
+  "hiveStatusDead": "Dead",
+  "hiveStatusMerged": "Merged",
+  "hiveStatusSold": "Sold",
+  "hiveStatusLost": "Lost",
+  "@hiveStatusLost": {
+    "description": "Hive status: stolen, destroyed by animals or otherwise gone."
+  },
+  "hiveSourceSwarm": "Swarm",
+  "hiveSourceSplit": "Split",
+  "hiveSourcePurchase": "Bought",
+  "hiveSourcePackage": "Package bees",
+  "hiveFormNewTitle": "New hive",
+  "hiveFormEditTitle": "Edit hive",
+  "hiveFormNumber": "Hive number",
+  "hiveFormNumberHint": "e.g. 101",
+  "hiveFormType": "Hive type",
+  "hiveFormStatus": "Status",
+  "hiveFormSource": "Source",
+  "hiveFormSave": "Save",
+  "hiveBulkTitle": "Create many hives",
+  "hiveBulkCount": "How many hives",
+  "hiveBulkCountHint": "e.g. 20",
+  "hiveBulkCountTooMany": "At most {max} at once",
+  "@hiveBulkCountTooMany": {
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "example": "500"
+      }
+    }
+  },
+  "hiveBulkStart": "First number",
+  "hiveBulkStartHint": "e.g. 101",
+  "hiveBulkPreview": "{count, plural, =1{Hive {first} will be created.} other{{count} hives will be created: {first} to {last}.}}",
+  "@hiveBulkPreview": {
+    "description": "Summary of the hives about to be created in bulk.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      },
+      "first": {
+        "type": "String",
+        "example": "101"
+      },
+      "last": {
+        "type": "String",
+        "example": "120"
+      }
+    }
+  },
+  "hiveBulkSave": "Create hives",
+  "hiveBulkCreated": "{count, plural, =1{1 hive created} other{{count} hives created}}",
+  "@hiveBulkCreated": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "hiveNotFoundTitle": "Hive not found",
+  "hiveNotFoundMessage": "It may have been deleted or not reached this device yet.",
+  "hiveEdit": "Edit",
+  "hiveCardApiary": "Apiary: {name}",
+  "@hiveCardApiary": {
+    "description": "Screen reader text for the apiary under the big hive number.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Hilltop"
+      }
+    }
+  },
+  "hiveQueenTitle": "Queen",
+  "hiveQueenPlaceholder": "No queen recorded yet. Queen cards are coming soon.",
+  "hiveMove": "Move to another apiary",
+  "hiveMoveTitle": "Move hive {number} to",
+  "@hiveMoveTitle": {
+    "description": "Heading of the list of apiaries a hive can be moved to.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "hiveMoveNoOtherApiary": "There's no other apiary to move it to. Add one from the Apiaries tab first.",
+  "hiveMoved": "Hive {number} moved to {apiary}",
+  "@hiveMoved": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      },
+      "apiary": {
+        "type": "String",
+        "example": "Hilltop"
+      }
+    }
+  },
+  "hiveChangeStatus": "Change status",
+  "hiveStatusSheetTitle": "New status for hive {number}",
+  "@hiveStatusSheetTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "hiveStatusConfirmTitle": "{status, select, dead{Record hive {number} as dead?} merged{Record hive {number} as merged?} sold{Record hive {number} as sold?} other{Record hive {number} as lost?}}",
+  "@hiveStatusConfirmTitle": {
+    "description": "Asked before a hive stops counting as active. status is the server value: dead, merged, sold or lost.",
+    "placeholders": {
+      "status": {
+        "type": "String",
+        "example": "dead"
+      },
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "hiveStatusConfirmMessage": "It will no longer count among the apiary's active hives. You can make it active again later.",
+  "hiveStatusConfirm": "Yes, record",
+  "hiveStatusChanged": "Hive {number}: {status}",
+  "@hiveStatusChanged": {
+    "description": "Shown with an Undo button after a hive's status changes.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      },
+      "status": {
+        "type": "String",
+        "example": "Active"
+      }
+    }
+  },
   "tasksEmptyTitle": "No tasks yet",
   "tasksEmptyMessage": "Your reminders and to-dos will be listed here by date.",
   "moreEmptyTitle": "More modules on the way",
@@ -252,6 +446,7 @@
   "settingsSignOutConfirmMessage": "To sign back in you'll need a new code sent to your email, which needs internet.",
   "actionCancel": "Cancel",
   "actionRetry": "Try again",
+  "actionUndo": "Undo",
 
   "onboardingStepCounter": "Step {current} of {total}",
   "@onboardingStepCounter": {

@@ -196,6 +196,233 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apiaryFormSave => 'Save';
 
   @override
+  String get apiaryHivesTitle => 'Hives';
+
+  @override
+  String get hiveLayoutGrid => 'Grid view';
+
+  @override
+  String get hiveLayoutList => 'List view';
+
+  @override
+  String get hivesEmptyTitle => 'No hives yet';
+
+  @override
+  String get hivesEmptyMessage =>
+      'Add the hives standing in this apiary; you can create many at once.';
+
+  @override
+  String get hivesAdd => 'Add hives';
+
+  @override
+  String get hivesAddOne => 'One hive';
+
+  @override
+  String get hivesAddOneHint => 'Enter its number, type and source';
+
+  @override
+  String get hivesAddBulk => 'Many at once';
+
+  @override
+  String get hivesAddBulkHint => 'e.g. 20 hives starting at 101';
+
+  @override
+  String hivesInactiveTitle(int count) {
+    return 'Not active ($count)';
+  }
+
+  @override
+  String get hivesLoadError => 'Couldn\'t read the hives.';
+
+  @override
+  String hiveLabel(String number) {
+    return 'Hive $number';
+  }
+
+  @override
+  String hiveTypeAndSource(String type, String source) {
+    return '$type · $source';
+  }
+
+  @override
+  String get hiveTypeLangstroth => 'Langstroth';
+
+  @override
+  String get hiveTypeDadant => 'Dadant';
+
+  @override
+  String get hiveTypeLocal => 'Local';
+
+  @override
+  String get hiveTypeOther => 'Other';
+
+  @override
+  String get hiveStatusActive => 'Active';
+
+  @override
+  String get hiveStatusDead => 'Dead';
+
+  @override
+  String get hiveStatusMerged => 'Merged';
+
+  @override
+  String get hiveStatusSold => 'Sold';
+
+  @override
+  String get hiveStatusLost => 'Lost';
+
+  @override
+  String get hiveSourceSwarm => 'Swarm';
+
+  @override
+  String get hiveSourceSplit => 'Split';
+
+  @override
+  String get hiveSourcePurchase => 'Bought';
+
+  @override
+  String get hiveSourcePackage => 'Package bees';
+
+  @override
+  String get hiveFormNewTitle => 'New hive';
+
+  @override
+  String get hiveFormEditTitle => 'Edit hive';
+
+  @override
+  String get hiveFormNumber => 'Hive number';
+
+  @override
+  String get hiveFormNumberHint => 'e.g. 101';
+
+  @override
+  String get hiveFormType => 'Hive type';
+
+  @override
+  String get hiveFormStatus => 'Status';
+
+  @override
+  String get hiveFormSource => 'Source';
+
+  @override
+  String get hiveFormSave => 'Save';
+
+  @override
+  String get hiveBulkTitle => 'Create many hives';
+
+  @override
+  String get hiveBulkCount => 'How many hives';
+
+  @override
+  String get hiveBulkCountHint => 'e.g. 20';
+
+  @override
+  String hiveBulkCountTooMany(int max) {
+    return 'At most $max at once';
+  }
+
+  @override
+  String get hiveBulkStart => 'First number';
+
+  @override
+  String get hiveBulkStartHint => 'e.g. 101';
+
+  @override
+  String hiveBulkPreview(int count, String first, String last) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives will be created: $first to $last.',
+      one: 'Hive $first will be created.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveBulkSave => 'Create hives';
+
+  @override
+  String hiveBulkCreated(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives created',
+      one: '1 hive created',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveNotFoundTitle => 'Hive not found';
+
+  @override
+  String get hiveNotFoundMessage =>
+      'It may have been deleted or not reached this device yet.';
+
+  @override
+  String get hiveEdit => 'Edit';
+
+  @override
+  String hiveCardApiary(String name) {
+    return 'Apiary: $name';
+  }
+
+  @override
+  String get hiveQueenTitle => 'Queen';
+
+  @override
+  String get hiveQueenPlaceholder =>
+      'No queen recorded yet. Queen cards are coming soon.';
+
+  @override
+  String get hiveMove => 'Move to another apiary';
+
+  @override
+  String hiveMoveTitle(String number) {
+    return 'Move hive $number to';
+  }
+
+  @override
+  String get hiveMoveNoOtherApiary =>
+      'There\'s no other apiary to move it to. Add one from the Apiaries tab first.';
+
+  @override
+  String hiveMoved(String number, String apiary) {
+    return 'Hive $number moved to $apiary';
+  }
+
+  @override
+  String get hiveChangeStatus => 'Change status';
+
+  @override
+  String hiveStatusSheetTitle(String number) {
+    return 'New status for hive $number';
+  }
+
+  @override
+  String hiveStatusConfirmTitle(String status, String number) {
+    String _temp0 = intl.Intl.selectLogic(status, {
+      'dead': 'Record hive $number as dead?',
+      'merged': 'Record hive $number as merged?',
+      'sold': 'Record hive $number as sold?',
+      'other': 'Record hive $number as lost?',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveStatusConfirmMessage =>
+      'It will no longer count among the apiary\'s active hives. You can make it active again later.';
+
+  @override
+  String get hiveStatusConfirm => 'Yes, record';
+
+  @override
+  String hiveStatusChanged(String number, String status) {
+    return 'Hive $number: $status';
+  }
+
+  @override
   String get tasksEmptyTitle => 'No tasks yet';
 
   @override
@@ -358,6 +585,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionRetry => 'Try again';
+
+  @override
+  String get actionUndo => 'Undo';
 
   @override
   String onboardingStepCounter(int current, int total) {

@@ -13,6 +13,7 @@ void main() {
         standard.queenDot,
         standard.illustration,
         standard.illustrationIcon,
+        standard.hiveTile,
       ]) {
         expect(v % 4, 0, reason: '$v');
       }
