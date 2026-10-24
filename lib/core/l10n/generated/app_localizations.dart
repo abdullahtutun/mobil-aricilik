@@ -1616,6 +1616,30 @@ abstract class AppLocalizations {
   /// **'Section card'**
   String get gallerySectionCard;
 
+  /// No description provided for @galleryStrengthDots.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength dots'**
+  String get galleryStrengthDots;
+
+  /// No description provided for @galleryTimelineTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline row'**
+  String get galleryTimelineTile;
+
+  /// Sample apiary name in the component gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Hilltop'**
+  String get gallerySampleApiaryHill;
+
+  /// Sample apiary name in the component gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Riverside'**
+  String get gallerySampleApiaryPlain;
+
   /// No description provided for @gallerySampleStartInspection.
   ///
   /// In en, this message translates to:

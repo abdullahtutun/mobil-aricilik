@@ -707,6 +707,16 @@
   "galleryHiveTile": "Hive tile",
   "galleryEmptyState": "Empty state",
   "gallerySectionCard": "Section card",
+  "galleryStrengthDots": "Strength dots",
+  "galleryTimelineTile": "Timeline row",
+  "gallerySampleApiaryHill": "Hilltop",
+  "@gallerySampleApiaryHill": {
+    "description": "Sample apiary name in the component gallery."
+  },
+  "gallerySampleApiaryPlain": "Riverside",
+  "@gallerySampleApiaryPlain": {
+    "description": "Sample apiary name in the component gallery."
+  },
   "gallerySampleStartInspection": "Start inspection",
   "gallerySampleAddPhoto": "Add photo",
   "gallerySampleSave": "Save",

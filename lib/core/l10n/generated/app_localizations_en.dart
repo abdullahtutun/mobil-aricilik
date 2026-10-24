@@ -923,6 +923,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gallerySectionCard => 'Section card';
 
   @override
+  String get galleryStrengthDots => 'Strength dots';
+
+  @override
+  String get galleryTimelineTile => 'Timeline row';
+
+  @override
+  String get gallerySampleApiaryHill => 'Hilltop';
+
+  @override
+  String get gallerySampleApiaryPlain => 'Riverside';
+
+  @override
   String get gallerySampleStartInspection => 'Start inspection';
 
   @override

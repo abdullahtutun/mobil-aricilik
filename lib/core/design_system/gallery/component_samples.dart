@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart'
     show QueenMarkColor;
 
@@ -12,8 +13,10 @@ enum GalleryComponent {
   bigStepper(_BigStepperSamples()),
   statusBadge(_StatusBadgeSamples()),
   hiveTile(_HiveTileSamples()),
+  strengthDots(_StrengthDotsSamples()),
   emptyState(_EmptyStateSamples()),
-  sectionCard(_SectionCardSamples());
+  sectionCard(_SectionCardSamples()),
+  timelineTile(_TimelineTileSamples());
 
   new(this.samples);
 
@@ -25,8 +28,10 @@ enum GalleryComponent {
     GalleryComponent.bigStepper => l10n.galleryBigStepper,
     GalleryComponent.statusBadge => l10n.galleryStatusBadge,
     GalleryComponent.hiveTile => l10n.galleryHiveTile,
+    GalleryComponent.strengthDots => l10n.galleryStrengthDots,
     GalleryComponent.emptyState => l10n.galleryEmptyState,
     GalleryComponent.sectionCard => l10n.gallerySectionCard,
+    GalleryComponent.timelineTile => l10n.galleryTimelineTile,
   };
 }
 
@@ -241,6 +246,38 @@ class _HiveTileSamples extends StatelessWidget {
   }
 }
 
+/// Puansızdan 5'e her değer, kovan kartındaki gibi kelimesiyle.
+class _StrengthDotsSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final spacing = context.spacing;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: spacing.sm,
+      children: [
+        for (final strength in <int?>[null, 1, 2, 3, 4, 5])
+          Row(
+            children: [
+              StrengthDots(strength: strength),
+              SizedBox(width: spacing.md),
+              Expanded(
+                child: Text(
+                  strength == null
+                      ? l10n.hiveStrengthNone
+                      : l10n.hiveTileStrength(strength),
+                  style: context.typography.body,
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+}
+
 class _EmptyStateSamples extends StatelessWidget {
   const new();
 
@@ -283,6 +320,53 @@ class _SectionCardSamples extends StatelessWidget {
           ),
         ),
         SectionCard(child: Text(l10n.gallerySampleUntitledCard)),
+      ],
+    );
+  }
+}
+
+/// Kovan kartındaki gibi üç olay: muayene, taşıma ve ilk arılık (son
+/// satır, altında çizgi yok). Zamanlar sabit; golden saate bağlı kalmasın.
+class _TimelineTileSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final format = AppFormat.of(context);
+    final hill = l10n.gallerySampleApiaryHill;
+    final plain = l10n.gallerySampleApiaryPlain;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TimelineTile(
+          icon: Icons.fact_check_rounded,
+          title: l10n.timelineInspection,
+          time: format.dateTime(DateTime(2026, 10, 21, 14, 5)),
+          details: [
+            l10n.timelineField(l10n.inspectionQueen, l10n.queenStateSeen),
+            l10n.timelineField(
+              l10n.inspectionFrames,
+              [
+                l10n.timelineBeeFrames(7),
+                l10n.timelineBroodFrames(4),
+              ].join(l10n.listSeparator),
+            ),
+          ],
+        ),
+        TimelineTile(
+          icon: Icons.local_shipping_rounded,
+          title: l10n.timelineMoved,
+          time: format.dateTime(DateTime(2026, 10, 12, 9, 30)),
+          details: [l10n.timelineMoveRoute(hill, plain)],
+        ),
+        TimelineTile(
+          icon: Icons.add_location_alt_rounded,
+          title: l10n.timelineAdded,
+          time: format.dateTime(DateTime(2026, 9, 3, 8, 15)),
+          details: [hill],
+          isLast: true,
+        ),
       ],
     );
   }

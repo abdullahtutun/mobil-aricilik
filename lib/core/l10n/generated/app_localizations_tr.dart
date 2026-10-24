@@ -916,6 +916,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get gallerySectionCard => 'Bölüm kartı';
 
   @override
+  String get galleryStrengthDots => 'Güç noktaları';
+
+  @override
+  String get galleryTimelineTile => 'Zaman tüneli satırı';
+
+  @override
+  String get gallerySampleApiaryHill => 'Yayla';
+
+  @override
+  String get gallerySampleApiaryPlain => 'Ova';
+
+  @override
   String get gallerySampleStartInspection => 'Muayene başlat';
 
   @override
