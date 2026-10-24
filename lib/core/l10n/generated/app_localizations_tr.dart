@@ -378,6 +378,9 @@ class AppLocalizationsTr extends AppLocalizations {
       'Henüz ana arı kaydı yok. Ana arı kartı yakında geliyor.';
 
   @override
+  String get hiveStrengthNone => 'Henüz güç puanı yok';
+
+  @override
   String get hiveTimelineTitle => 'Geçmiş';
 
   @override

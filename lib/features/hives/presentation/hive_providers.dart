@@ -59,9 +59,21 @@ Stream<Map<String, int>> apiaryHiveStrengths(Ref ref, String apiaryId) => ref
       },
     );
 
+/// Kovanın muayeneleri, en yeni önce.
 @riverpod
 Stream<List<Inspection>> hiveInspections(Ref ref, String hiveId) =>
     ref.watch(inspectionRepositoryProvider).watchByHive(hiveId);
+
+/// Kovanın güç puanı, son muayenesinden ([strengthScore]); muayene ya da
+/// arılı çerçeve yoksa null. Zaman tüneliyle aynı akışı okur.
+@riverpod
+Future<int?> hiveStrength(Ref ref, String hiveId) async {
+  final inspections = await ref.watch(hiveInspectionsProvider(hiveId).future);
+  return switch (inspections) {
+    [final latest, ...] => strengthScore(latest.values),
+    [] => null,
+  };
+}
 
 @riverpod
 Stream<List<HiveLocationEntry>> hiveLocationHistory(Ref ref, String hiveId) =>

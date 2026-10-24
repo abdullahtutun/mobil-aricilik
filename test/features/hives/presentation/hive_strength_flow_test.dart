@@ -12,6 +12,7 @@ import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -219,6 +220,74 @@ void main() {
     expect(_listStrengths(tester), [5, 1, null, 3, 3]);
   });
 
+  group('Kovan kartı', () {
+    /// Kartın başlığındaki güç noktaları.
+    Finder cardDots() => find.descendant(
+      of: find.byType(HiveCardScreen),
+      matching: find.byType(StrengthDots),
+    );
+
+    testWidgets('son muayenenin puanı noktalar ve kelimesiyle; yeni '
+        'muayenede kendiliğinden güncellenir', (tester) async {
+      final hive = await createHive('101');
+      await inspect(hive, const InspectionValues(beeFrames: 9));
+      await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
+
+      expect(find.text('Strength 5 of 5'), findsOneWidget);
+      expect(tester.widget<StrengthDots>(cardDots()).strength, 5);
+      expect(find.text('No strength score yet'), findsNothing);
+
+      await tester.runAsync(
+        () => inspect(
+          hive,
+          const InspectionValues(beeFrames: 4, queenState: QueenState.none),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Strength 1 of 5'), findsOneWidget);
+      expect(tester.widget<StrengthDots>(cardDots()).strength, 1);
+    });
+
+    testWidgets('muayene ya da arılı çerçeve yoksa "puan yok" yazar', (
+      tester,
+    ) async {
+      final hive = await createHive('101');
+      final container = await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hive(yayla.id, hive.id),
+      );
+
+      expect(find.text('No strength score yet'), findsOneWidget);
+      expect(tester.widget<StrengthDots>(cardDots()).strength, isNull);
+
+      await tester.runAsync(
+        () => inspect(
+          hive,
+          const InspectionValues(queenState: QueenState.seen, broodFrames: 5),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('No strength score yet'), findsOneWidget);
+
+      container.read(languageProvider.notifier).language = AppLanguage.turkish;
+      await tester.pumpAndSettle();
+      expect(find.text('Henüz güç puanı yok'), findsOneWidget);
+    });
+
+    testWidgets('aktif olmayan kovanın kartında puan yok', (tester) async {
+      final hive = await createHive('101', status: HiveStatus.dead);
+      await inspect(hive, const InspectionValues(beeFrames: 9));
+      await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
+
+      expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
+      expect(cardDots(), findsNothing);
+      expect(find.text('Strength 5 of 5'), findsNothing);
+      expect(find.text('No strength score yet'), findsNothing);
+    });
+  });
+
   testWidgets('tek aktif kovanda sıra seçimi yok', (tester) async {
     await createHive('1');
     await createHive('2', status: HiveStatus.sold);
@@ -243,6 +312,9 @@ void main() {
     expect(find.bySemanticsLabel('Kovan 2, Güç 1/5'), findsOneWidget);
     await _tap(tester, find.byTooltip('Liste görünümü'));
     expect(find.bySemanticsLabel(RegExp('Güç 5/5')), findsOneWidget);
+
+    await _tap(tester, find.text('2'));
+    expect(find.text('Güç 1/5'), findsOneWidget);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {

@@ -284,6 +284,10 @@
   },
   "hiveQueenTitle": "Queen",
   "hiveQueenPlaceholder": "No queen recorded yet. Queen cards are coming soon.",
+  "hiveStrengthNone": "No strength score yet",
+  "@hiveStrengthNone": {
+    "description": "On the hive card when there's no inspection, or the last one has no count of frames with bees."
+  },
   "hiveTimelineTitle": "History",
   "timelineInspection": "Inspection",
   "timelineAdded": "Added to apiary",

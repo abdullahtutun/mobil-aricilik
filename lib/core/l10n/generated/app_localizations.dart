@@ -704,6 +704,12 @@ abstract class AppLocalizations {
   /// **'No queen recorded yet. Queen cards are coming soon.'**
   String get hiveQueenPlaceholder;
 
+  /// On the hive card when there's no inspection, or the last one has no count of frames with bees.
+  ///
+  /// In en, this message translates to:
+  /// **'No strength score yet'**
+  String get hiveStrengthNone;
+
   /// No description provided for @hiveTimelineTitle.
   ///
   /// In en, this message translates to:

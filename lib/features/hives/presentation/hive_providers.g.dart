@@ -400,8 +400,12 @@ final class ApiaryHiveStrengthsFamily extends $Family
   String toString() => r'apiaryHiveStrengthsProvider';
 }
 
+/// Kovanın muayeneleri, en yeni önce.
+
 @ProviderFor(hiveInspections)
 final hiveInspectionsProvider = HiveInspectionsFamily._();
+
+/// Kovanın muayeneleri, en yeni önce.
 
 final class HiveInspectionsProvider
     extends
@@ -411,6 +415,7 @@ final class HiveInspectionsProvider
           Stream<List<Inspection>>
         >
     with $FutureModifier<List<Inspection>>, $StreamProvider<List<Inspection>> {
+  /// Kovanın muayeneleri, en yeni önce.
   HiveInspectionsProvider._({
     required HiveInspectionsFamily super.from,
     required String super.argument,
@@ -457,6 +462,8 @@ final class HiveInspectionsProvider
 
 String _$hiveInspectionsHash() => r'6f7ded8b5dd838596c674dd3183e3af4fc8ea0ad';
 
+/// Kovanın muayeneleri, en yeni önce.
+
 final class HiveInspectionsFamily extends $Family
     with $FunctionalFamilyOverride<Stream<List<Inspection>>, String> {
   HiveInspectionsFamily._()
@@ -468,11 +475,96 @@ final class HiveInspectionsFamily extends $Family
         isAutoDispose: true,
       );
 
+  /// Kovanın muayeneleri, en yeni önce.
+
   HiveInspectionsProvider call(String hiveId) =>
       HiveInspectionsProvider._(argument: hiveId, from: this);
 
   @override
   String toString() => r'hiveInspectionsProvider';
+}
+
+/// Kovanın güç puanı, son muayenesinden ([strengthScore]); muayene ya da
+/// arılı çerçeve yoksa null. Zaman tüneliyle aynı akışı okur.
+
+@ProviderFor(hiveStrength)
+final hiveStrengthProvider = HiveStrengthFamily._();
+
+/// Kovanın güç puanı, son muayenesinden ([strengthScore]); muayene ya da
+/// arılı çerçeve yoksa null. Zaman tüneliyle aynı akışı okur.
+
+final class HiveStrengthProvider
+    extends $FunctionalProvider<AsyncValue<int?>, int?, FutureOr<int?>>
+    with $FutureModifier<int?>, $FutureProvider<int?> {
+  /// Kovanın güç puanı, son muayenesinden ([strengthScore]); muayene ya da
+  /// arılı çerçeve yoksa null. Zaman tüneliyle aynı akışı okur.
+  HiveStrengthProvider._({
+    required HiveStrengthFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'hiveStrengthProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveStrengthHash();
+
+  @override
+  String toString() {
+    return r'hiveStrengthProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<int?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<int?> create(Ref ref) {
+    final argument = this.argument as String;
+    return hiveStrength(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HiveStrengthProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$hiveStrengthHash() => r'a3fde43b0d30daa8cb197bf4588c3c1ecdc9113e';
+
+/// Kovanın güç puanı, son muayenesinden ([strengthScore]); muayene ya da
+/// arılı çerçeve yoksa null. Zaman tüneliyle aynı akışı okur.
+
+final class HiveStrengthFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<int?>, String> {
+  HiveStrengthFamily._()
+    : super(
+        retry: null,
+        name: r'hiveStrengthProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Kovanın güç puanı, son muayenesinden ([strengthScore]); muayene ya da
+  /// arılı çerçeve yoksa null. Zaman tüneliyle aynı akışı okur.
+
+  HiveStrengthProvider call(String hiveId) =>
+      HiveStrengthProvider._(argument: hiveId, from: this);
+
+  @override
+  String toString() => r'hiveStrengthProvider';
 }
 
 @ProviderFor(hiveLocationHistory)

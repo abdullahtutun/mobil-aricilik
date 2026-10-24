@@ -103,6 +103,7 @@
   "hiveCardApiary": "Arılık: {name}",
   "hiveQueenTitle": "Ana arı",
   "hiveQueenPlaceholder": "Henüz ana arı kaydı yok. Ana arı kartı yakında geliyor.",
+  "hiveStrengthNone": "Henüz güç puanı yok",
   "hiveTimelineTitle": "Geçmiş",
   "timelineInspection": "Muayene",
   "timelineAdded": "Arılığa eklendi",

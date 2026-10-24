@@ -14,7 +14,8 @@ import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_timeline_section.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 
-/// Kovan kartı: büyük numara, arılık, durum rozeti ve ana arı şeridi;
+/// Kovan kartı: büyük numara, arılık, durum rozeti, güç puanı ve ana arı
+/// şeridi;
 /// altında taşıma ve durum değiştirme, en altta zaman tüneli. Aktif kovanda
 /// altta sabit "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Özet
 /// kartları kendi adımında gelecek.
@@ -170,6 +171,7 @@ class _Header extends ConsumerWidget {
         .value
         ?.apiary
         .name;
+    final strength = ref.watch(hiveStrengthProvider(hive.id));
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -216,9 +218,56 @@ class _Header extends ConsumerWidget {
           ),
         ],
         SizedBox(height: spacing.md),
-        StatusBadge(
-          status: hive.status.appStatus,
-          label: hive.status.label(l10n),
+        Wrap(
+          spacing: spacing.md,
+          runSpacing: spacing.sm,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            StatusBadge(
+              status: hive.status.appStatus,
+              label: hive.status.label(l10n),
+            ),
+            // Aktif olmayan kovanın eski puanı yanıltır; ızgaradaki gibi
+            // gösterilmez. Puan yüklenirken de boş kalır, "yok" yanıp
+            // sönmesin.
+            if (hive.status.isCounted && strength.hasValue)
+              _Strength(strength.value),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+/// Güç puanı: noktalar ve kelimesi ("Güç 3/5"); puan yoksa nedenini yazar.
+class _Strength extends StatelessWidget {
+  const new(this.strength);
+
+  final int? strength;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final strength = this.strength;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        StrengthDots(strength: strength),
+        SizedBox(width: context.spacing.sm),
+        Flexible(
+          child: strength == null
+              ? Text(
+                  l10n.hiveStrengthNone,
+                  style: context.typography.body.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                )
+              : Text(
+                  l10n.hiveTileStrength(strength),
+                  style: context.typography.label,
+                ),
         ),
       ],
     );

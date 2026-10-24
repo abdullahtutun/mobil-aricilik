@@ -381,6 +381,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'No queen recorded yet. Queen cards are coming soon.';
 
   @override
+  String get hiveStrengthNone => 'No strength score yet';
+
+  @override
   String get hiveTimelineTitle => 'History';
 
   @override
