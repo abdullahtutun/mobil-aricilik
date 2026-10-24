@@ -224,30 +224,6 @@ abstract class AppLocalizations {
   /// **'No visits yet'**
   String get apiaryNoVisit;
 
-  /// Second line of an apiary on the list: hive count and last visit.
-  ///
-  /// In en, this message translates to:
-  /// **'{hives} · {visit}'**
-  String apiaryListSubtitle(String hives, String visit);
-
-  /// Label under the big hive count at the top of an apiary.
-  ///
-  /// In en, this message translates to:
-  /// **'Active hives'**
-  String get apiaryActiveHives;
-
-  /// No description provided for @apiaryLastVisitLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Last visit'**
-  String get apiaryLastVisitLabel;
-
-  /// Value of 'Last visit' when the apiary was never visited.
-  ///
-  /// In en, this message translates to:
-  /// **'None yet'**
-  String get apiaryVisitNone;
-
   /// No description provided for @apiaryEdit.
   ///
   /// In en, this message translates to:
@@ -391,30 +367,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get apiaryFormSave;
-
-  /// Heading of the hive grid or list on an apiary.
-  ///
-  /// In en, this message translates to:
-  /// **'Hives'**
-  String get apiaryHivesTitle;
-
-  /// No description provided for @hiveLayoutGrid.
-  ///
-  /// In en, this message translates to:
-  /// **'Grid view'**
-  String get hiveLayoutGrid;
-
-  /// No description provided for @hiveLayoutList.
-  ///
-  /// In en, this message translates to:
-  /// **'List view'**
-  String get hiveLayoutList;
-
-  /// Order of the hives in an apiary: by hive number.
-  ///
-  /// In en, this message translates to:
-  /// **'By number'**
-  String get hiveSortNumber;
 
   /// Order of the hives in an apiary: lowest strength score first, unscored hives last.
   ///
@@ -1136,24 +1088,6 @@ abstract class AppLocalizations {
   /// **'This record type is coming soon.'**
   String get quickRecordComingSoon;
 
-  /// No description provided for @signInTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
-  String get signInTitle;
-
-  /// No description provided for @signInEmailMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email and we\'ll send you a 6-digit code. No password needed.'**
-  String get signInEmailMessage;
-
-  /// No description provided for @signInEmailLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get signInEmailLabel;
-
   /// No description provided for @signInSendCode.
   ///
   /// In en, this message translates to:
@@ -1165,12 +1099,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sending…'**
   String get signInSending;
-
-  /// No description provided for @signInCodeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the code'**
-  String get signInCodeTitle;
 
   /// No description provided for @signInCodeMessage.
   ///
@@ -1370,30 +1298,6 @@ abstract class AppLocalizations {
   /// **'Setting up…'**
   String get onboardingFinishing;
 
-  /// No description provided for @onboardingLanguageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Which language should we use?'**
-  String get onboardingLanguageTitle;
-
-  /// No description provided for @onboardingLanguageMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'You can change it later in Settings.'**
-  String get onboardingLanguageMessage;
-
-  /// No description provided for @onboardingCountryTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Where is your business?'**
-  String get onboardingCountryTitle;
-
-  /// No description provided for @onboardingCountryMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Your country sets the currency, units and region-specific modules.'**
-  String get onboardingCountryMessage;
-
   /// No description provided for @onboardingCountrySearch.
   ///
   /// In en, this message translates to:
@@ -1417,12 +1321,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No country matches your search.'**
   String get onboardingCountryNoMatch;
-
-  /// No description provided for @onboardingNameTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'What\'s your business called?'**
-  String get onboardingNameTitle;
 
   /// No description provided for @onboardingNameMessage.
   ///
@@ -2263,6 +2161,444 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Inspection'**
   String get syncTableInspections;
+
+  /// No description provided for @signInTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your apiary notebook, in your pocket. Works without internet.'**
+  String get signInTagline;
+
+  /// No description provided for @signInEmailLabelLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email address'**
+  String get signInEmailLabelLong;
+
+  /// No description provided for @signInEmailHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'No password. We\'ll send a 6-digit code to your address.'**
+  String get signInEmailHelper;
+
+  /// No description provided for @signInEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'name@example.com'**
+  String get signInEmailHint;
+
+  /// No description provided for @signInCodeHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code from your email'**
+  String get signInCodeHeading;
+
+  /// No description provided for @signInPasteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste code'**
+  String get signInPasteCode;
+
+  /// No description provided for @signInCodeSpamHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Not there? Check your spam folder. After signing in once, the app opens without internet too.'**
+  String get signInCodeSpamHint;
+
+  /// No description provided for @signInChangeEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Change email'**
+  String get signInChangeEmail;
+
+  /// No description provided for @onboardingLanguageCountryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language and country'**
+  String get onboardingLanguageCountryTitle;
+
+  /// No description provided for @onboardingAppLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'App language'**
+  String get onboardingAppLanguage;
+
+  /// No description provided for @onboardingDeviceLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Device language'**
+  String get onboardingDeviceLanguage;
+
+  /// No description provided for @onboardingCountryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country you keep bees in'**
+  String get onboardingCountryLabel;
+
+  /// No description provided for @onboardingCountryChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a country'**
+  String get onboardingCountryChoose;
+
+  /// No description provided for @onboardingRegionFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turned on for {country}'**
+  String onboardingRegionFeaturesTitle(String country);
+
+  /// No description provided for @onboardingRegionDefaultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings for {country}'**
+  String onboardingRegionDefaultsTitle(String country);
+
+  /// No description provided for @onboardingRegionDefaultsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Units and currency follow your country.'**
+  String get onboardingRegionDefaultsMessage;
+
+  /// No description provided for @onboardingBusinessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your business'**
+  String get onboardingBusinessTitle;
+
+  /// No description provided for @regionFeatureAks.
+  ///
+  /// In en, this message translates to:
+  /// **'AKS and business registration details'**
+  String get regionFeatureAks;
+
+  /// No description provided for @regionFeatureSubsidies.
+  ///
+  /// In en, this message translates to:
+  /// **'hive subsidy reminders'**
+  String get regionFeatureSubsidies;
+
+  /// No description provided for @regionFeatureRegulations.
+  ///
+  /// In en, this message translates to:
+  /// **'regulation summaries'**
+  String get regionFeatureRegulations;
+
+  /// No description provided for @regionFeatureTrDrugList.
+  ///
+  /// In en, this message translates to:
+  /// **'licensed medicine list'**
+  String get regionFeatureTrDrugList;
+
+  /// No description provided for @regionFeatureTrFlora.
+  ///
+  /// In en, this message translates to:
+  /// **'Türkiye flora calendar'**
+  String get regionFeatureTrFlora;
+
+  /// No description provided for @regionFeatureTrMigrationDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'migratory beekeeping documents'**
+  String get regionFeatureTrMigrationDocs;
+
+  /// No description provided for @unitKilogram.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get unitKilogram;
+
+  /// No description provided for @unitPound.
+  ///
+  /// In en, this message translates to:
+  /// **'lb'**
+  String get unitPound;
+
+  /// No description provided for @unitCelsius.
+  ///
+  /// In en, this message translates to:
+  /// **'°C'**
+  String get unitCelsius;
+
+  /// No description provided for @unitFahrenheit.
+  ///
+  /// In en, this message translates to:
+  /// **'°F'**
+  String get unitFahrenheit;
+
+  /// No description provided for @hemisphereNorthern.
+  ///
+  /// In en, this message translates to:
+  /// **'Northern hemisphere'**
+  String get hemisphereNorthern;
+
+  /// No description provided for @hemisphereSouthern.
+  ///
+  /// In en, this message translates to:
+  /// **'Southern hemisphere'**
+  String get hemisphereSouthern;
+
+  /// No description provided for @relativeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get relativeToday;
+
+  /// No description provided for @relativeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'yesterday'**
+  String get relativeYesterday;
+
+  /// No description provided for @relativeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day ago} other{{count} days ago}}'**
+  String relativeDaysAgo(int count);
+
+  /// No description provided for @apiariesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 apiary} other{{count} apiaries}}'**
+  String apiariesCount(int count);
+
+  /// No description provided for @apiariesSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{apiaries} · {hives}'**
+  String apiariesSummary(String apiaries, String hives);
+
+  /// Unit under the big active hive count on an apiary card.
+  ///
+  /// In en, this message translates to:
+  /// **'hives'**
+  String get apiaryHiveCountUnit;
+
+  /// No description provided for @hiveLayoutGridShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get hiveLayoutGridShort;
+
+  /// No description provided for @hiveLayoutListShort.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get hiveLayoutListShort;
+
+  /// No description provided for @apiaryDetailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{hives} · {visit}'**
+  String apiaryDetailSubtitle(String hives, String visit);
+
+  /// Small label above the big hive number on the hive card.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive'**
+  String get hiveCardKind;
+
+  /// No description provided for @hiveLastInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Last inspection'**
+  String get hiveLastInspection;
+
+  /// No description provided for @hiveLastInspectionNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet'**
+  String get hiveLastInspectionNone;
+
+  /// No description provided for @hiveBulkPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get hiveBulkPreviewTitle;
+
+  /// No description provided for @hiveBulkSaveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Create 1 hive} other{Create {count} hives}}'**
+  String hiveBulkSaveCount(int count);
+
+  /// Stands for the skipped items between the first and last in a shortened list.
+  ///
+  /// In en, this message translates to:
+  /// **'…'**
+  String get listEllipsis;
+
+  /// No description provided for @scanOfflineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet needed · vibrates when read'**
+  String get scanOfflineHint;
+
+  /// Separates two parts of a title, e.g. 'Inspection · 104'.
+  ///
+  /// In en, this message translates to:
+  /// **' · '**
+  String get titleSeparator;
+
+  /// No description provided for @settingsGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsGeneral;
+
+  /// No description provided for @settingsGloveMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Glove mode'**
+  String get settingsGloveMode;
+
+  /// No description provided for @settingsGloveModeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Every touch target grows one step.'**
+  String get settingsGloveModeHint;
+
+  /// No description provided for @settingsCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get settingsCountry;
+
+  /// No description provided for @settingsCountryValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {code}'**
+  String settingsCountryValue(String name, String code);
+
+  /// Section title on the More tab above Settings and Sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get moreSectionHelp;
+
+  /// No description provided for @galleryFormFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Form fields'**
+  String get galleryFormFields;
+
+  /// No description provided for @galleryRadioCardGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Choice cards'**
+  String get galleryRadioCardGroup;
+
+  /// No description provided for @gallerySegmentedTabs.
+  ///
+  /// In en, this message translates to:
+  /// **'View switcher'**
+  String get gallerySegmentedTabs;
+
+  /// No description provided for @galleryListGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Grouped list'**
+  String get galleryListGroup;
+
+  /// No description provided for @galleryNoteCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Note card'**
+  String get galleryNoteCard;
+
+  /// No description provided for @gallerySummaryTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary tile'**
+  String get gallerySummaryTile;
+
+  /// No description provided for @galleryActionTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Action tiles'**
+  String get galleryActionTile;
+
+  /// No description provided for @galleryAppLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Logo and honeycomb'**
+  String get galleryAppLogo;
+
+  /// No description provided for @gallerySampleApiaryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary name'**
+  String get gallerySampleApiaryName;
+
+  /// No description provided for @gallerySampleFirstNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'First number'**
+  String get gallerySampleFirstNumber;
+
+  /// No description provided for @gallerySampleNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No password. We\'ll send a 6-digit code to your address.'**
+  String get gallerySampleNoteHint;
+
+  /// No description provided for @gallerySampleGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get gallerySampleGrid;
+
+  /// No description provided for @gallerySampleList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get gallerySampleList;
+
+  /// No description provided for @gallerySampleMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get gallerySampleMap;
+
+  /// No description provided for @gallerySampleInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get gallerySampleInspections;
+
+  /// No description provided for @gallerySampleNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turned on for Türkiye'**
+  String get gallerySampleNoteTitle;
+
+  /// No description provided for @gallerySampleNoteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'AKS and business registration details, regulation summaries and the licensed medicine list.'**
+  String get gallerySampleNoteMessage;
+
+  /// No description provided for @gallerySampleLastInspectionValue.
+  ///
+  /// In en, this message translates to:
+  /// **'3 days ago'**
+  String get gallerySampleLastInspectionValue;
+
+  /// No description provided for @gallerySampleFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'8 bee frames · 5 brood'**
+  String get gallerySampleFrames;
+
+  /// No description provided for @gallerySampleActiveTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Active treatment'**
+  String get gallerySampleActiveTreatment;
+
+  /// No description provided for @gallerySampleDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'12 days left'**
+  String get gallerySampleDaysLeft;
 }
 
 class _AppLocalizationsDelegate

@@ -99,20 +99,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get apiaryNoVisit => 'Henüz ziyaret yok';
 
   @override
-  String apiaryListSubtitle(String hives, String visit) {
-    return '$hives · $visit';
-  }
-
-  @override
-  String get apiaryActiveHives => 'Aktif kovan';
-
-  @override
-  String get apiaryLastVisitLabel => 'Son ziyaret';
-
-  @override
-  String get apiaryVisitNone => 'Henüz yok';
-
-  @override
   String get apiaryEdit => 'Düzenle';
 
   @override
@@ -192,18 +178,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get apiaryFormSave => 'Kaydet';
-
-  @override
-  String get apiaryHivesTitle => 'Kovanlar';
-
-  @override
-  String get hiveLayoutGrid => 'Izgara görünümü';
-
-  @override
-  String get hiveLayoutList => 'Liste görünümü';
-
-  @override
-  String get hiveSortNumber => 'Numaraya göre';
 
   @override
   String get hiveSortWeakestFirst => 'Zayıflar önce';
@@ -656,23 +630,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quickRecordComingSoon => 'Bu kayıt türü yakında gelecek.';
 
   @override
-  String get signInTitle => 'Giriş yap';
-
-  @override
-  String get signInEmailMessage =>
-      'E-posta adresini yaz, sana 6 haneli bir kod gönderelim. Şifre yok.';
-
-  @override
-  String get signInEmailLabel => 'E-posta';
-
-  @override
   String get signInSendCode => 'Kod gönder';
 
   @override
   String get signInSending => 'Gönderiliyor…';
-
-  @override
-  String get signInCodeTitle => 'Kodu gir';
 
   @override
   String signInCodeMessage(String email) {
@@ -786,20 +747,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get onboardingFinishing => 'Kuruluyor…';
 
   @override
-  String get onboardingLanguageTitle => 'Hangi dili kullanalım?';
-
-  @override
-  String get onboardingLanguageMessage =>
-      'Dili sonra Ayarlar\'dan değiştirebilirsin.';
-
-  @override
-  String get onboardingCountryTitle => 'İşletmen hangi ülkede?';
-
-  @override
-  String get onboardingCountryMessage =>
-      'Ülke; para birimini, ölçü birimlerini ve bölgeye özel modülleri belirler.';
-
-  @override
   String get onboardingCountrySearch => 'Ülke ara';
 
   @override
@@ -810,9 +757,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get onboardingCountryNoMatch => 'Aramana uyan ülke yok.';
-
-  @override
-  String get onboardingNameTitle => 'İşletmenin adı ne?';
 
   @override
   String get onboardingNameMessage =>
@@ -1291,4 +1235,261 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncTableInspections => 'Muayene';
+
+  @override
+  String get signInTagline =>
+      'Arılığın defteri, cebinde. İnternet olmasa da çalışır.';
+
+  @override
+  String get signInEmailLabelLong => 'E-posta adresin';
+
+  @override
+  String get signInEmailHelper =>
+      'Şifre yok. Adresine 6 haneli bir kod göndereceğiz.';
+
+  @override
+  String get signInEmailHint => 'ornek@eposta.com';
+
+  @override
+  String get signInCodeHeading => 'E-postana gelen kodu gir';
+
+  @override
+  String get signInPasteCode => 'Kodu yapıştır';
+
+  @override
+  String get signInCodeSpamHint =>
+      'Gelmediyse istenmeyen (spam) klasörüne bak. Bir kez girdikten sonra uygulama internetsiz de açılır.';
+
+  @override
+  String get signInChangeEmail => 'E-postayı değiştir';
+
+  @override
+  String get onboardingLanguageCountryTitle => 'Dil ve ülke';
+
+  @override
+  String get onboardingAppLanguage => 'Uygulama dili';
+
+  @override
+  String get onboardingDeviceLanguage => 'Cihaz dili';
+
+  @override
+  String get onboardingCountryLabel => 'Arıcılık yaptığın ülke';
+
+  @override
+  String get onboardingCountryChoose => 'Ülke seç';
+
+  @override
+  String onboardingRegionFeaturesTitle(String country) {
+    return '$country için açılanlar';
+  }
+
+  @override
+  String onboardingRegionDefaultsTitle(String country) {
+    return '$country için ayarlar';
+  }
+
+  @override
+  String get onboardingRegionDefaultsMessage =>
+      'Birimler ve para birimi ülkene göre seçildi.';
+
+  @override
+  String get onboardingBusinessTitle => 'İşletmeni tanıyalım';
+
+  @override
+  String get regionFeatureAks => 'AKS ve işletme tescil bilgileri';
+
+  @override
+  String get regionFeatureSubsidies => 'arılı kovan desteği hatırlatıcıları';
+
+  @override
+  String get regionFeatureRegulations => 'mevzuat özetleri';
+
+  @override
+  String get regionFeatureTrDrugList => 'ruhsatlı ilaç listesi';
+
+  @override
+  String get regionFeatureTrFlora => 'Türkiye flora takvimi';
+
+  @override
+  String get regionFeatureTrMigrationDocs => 'gezginci belgeleri';
+
+  @override
+  String get unitKilogram => 'kg';
+
+  @override
+  String get unitPound => 'lb';
+
+  @override
+  String get unitCelsius => '°C';
+
+  @override
+  String get unitFahrenheit => '°F';
+
+  @override
+  String get hemisphereNorthern => 'Kuzey yarımküre';
+
+  @override
+  String get hemisphereSouthern => 'Güney yarımküre';
+
+  @override
+  String get relativeToday => 'bugün';
+
+  @override
+  String get relativeYesterday => 'dün';
+
+  @override
+  String relativeDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gün önce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String apiariesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count arılık',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String apiariesSummary(String apiaries, String hives) {
+    return '$apiaries · $hives';
+  }
+
+  @override
+  String get apiaryHiveCountUnit => 'kovan';
+
+  @override
+  String get hiveLayoutGridShort => 'Izgara';
+
+  @override
+  String get hiveLayoutListShort => 'Liste';
+
+  @override
+  String apiaryDetailSubtitle(String hives, String visit) {
+    return '$hives · $visit';
+  }
+
+  @override
+  String get hiveCardKind => 'Kovan';
+
+  @override
+  String get hiveLastInspection => 'Son muayene';
+
+  @override
+  String get hiveLastInspectionNone => 'Henüz yok';
+
+  @override
+  String get hiveBulkPreviewTitle => 'Önizleme';
+
+  @override
+  String hiveBulkSaveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan oluştur',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get listEllipsis => '…';
+
+  @override
+  String get scanOfflineHint => 'İnternet gerekmez · okununca titrer';
+
+  @override
+  String get titleSeparator => ' · ';
+
+  @override
+  String get settingsGeneral => 'Genel';
+
+  @override
+  String get settingsGloveMode => 'Eldiven modu';
+
+  @override
+  String get settingsGloveModeHint =>
+      'Bütün dokunma hedefleri bir kademe büyür.';
+
+  @override
+  String get settingsCountry => 'Ülke';
+
+  @override
+  String settingsCountryValue(String name, String code) {
+    return '$name · $code';
+  }
+
+  @override
+  String get moreSectionHelp => 'Yardım';
+
+  @override
+  String get galleryFormFields => 'Form alanları';
+
+  @override
+  String get galleryRadioCardGroup => 'Seçim kartları';
+
+  @override
+  String get gallerySegmentedTabs => 'Görünüm seçici';
+
+  @override
+  String get galleryListGroup => 'Gruplu liste';
+
+  @override
+  String get galleryNoteCard => 'Not kartı';
+
+  @override
+  String get gallerySummaryTile => 'Özet karosu';
+
+  @override
+  String get galleryActionTile => 'Eylem karoları';
+
+  @override
+  String get galleryAppLogo => 'Logo ve petek deseni';
+
+  @override
+  String get gallerySampleApiaryName => 'Arılık adı';
+
+  @override
+  String get gallerySampleFirstNumber => 'İlk numara';
+
+  @override
+  String get gallerySampleNoteHint =>
+      'Şifre yok. Adresine 6 haneli bir kod göndereceğiz.';
+
+  @override
+  String get gallerySampleGrid => 'Izgara';
+
+  @override
+  String get gallerySampleList => 'Liste';
+
+  @override
+  String get gallerySampleMap => 'Harita';
+
+  @override
+  String get gallerySampleInspections => 'Muayene';
+
+  @override
+  String get gallerySampleNoteTitle => 'Türkiye için açılanlar';
+
+  @override
+  String get gallerySampleNoteMessage =>
+      'AKS ve işletme tescil bilgileri, mevzuat özetleri ve ruhsatlı ilaç listesi.';
+
+  @override
+  String get gallerySampleLastInspectionValue => '3 gün önce';
+
+  @override
+  String get gallerySampleFrames => '8 arılı · 5 yavrulu';
+
+  @override
+  String get gallerySampleActiveTreatment => 'Aktif ilaç';
+
+  @override
+  String get gallerySampleDaysLeft => '12 gün kaldı';
 }

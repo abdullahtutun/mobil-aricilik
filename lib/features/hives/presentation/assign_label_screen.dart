@@ -58,7 +58,7 @@ class _AssignLabelScreenState extends ConsumerState<AssignLabelScreen> {
                 SizedBox(height: spacing.lg),
                 TextField(
                   decoration: InputDecoration(
-                    labelText: l10n.labelAssignSearch,
+                    hintText: l10n.labelAssignSearch,
                     prefixIcon: const Icon(Icons.search_rounded),
                   ),
                   textInputAction: TextInputAction.search,

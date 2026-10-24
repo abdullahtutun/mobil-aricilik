@@ -6,7 +6,7 @@ import 'package:mobil_arici/features/apiaries/presentation/apiary_form_controlle
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_form_fields.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_controller.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/step_header.dart';
+import 'package:mobil_arici/features/onboarding/presentation/widgets/onboarding_stepper.dart';
 
 /// Onboarding'in son adımı: işletme kurulduktan sonra ilk arılık. Arılık
 /// formunun aynısı; her şey yerel DB'ye yazılır, ağ gerekmez. Kaydedince ya
@@ -23,44 +23,59 @@ class FirstApiaryScreen extends ConsumerWidget {
     final form = ref.watch(provider).value;
     final setup = ref.read(setupInProgressProvider.notifier);
 
+    final saving = form?.saving ?? false;
+
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          l10n.onboardingStepCounter(onboardingStepCount, onboardingStepCount),
-        ),
-        actions: [
-          // Altta yalnız Kaydet; klavye açıkken form görünür kalsın.
-          TextButton(
-            style: TextButton.styleFrom(
-              minimumSize: Size.square(context.touchTargets.minimum),
-              textStyle: context.typography.label,
-            ),
-            onPressed: (form?.saving ?? false) ? null : setup.finish,
-            child: Text(l10n.onboardingApiarySkip),
-          ),
-        ],
-      ),
       body: BottomActionLayout(
         body: form == null
             ? const SizedBox.shrink()
             : ListView(
                 padding: EdgeInsets.all(spacing.lg),
                 children: [
-                  StepHeader(
-                    title: l10n.onboardingApiaryTitle,
-                    message: l10n.onboardingApiaryMessage,
+                  OnboardingStepper(
+                    current: onboardingStepCount,
+                    total: onboardingStepCount,
+                  ),
+                  SizedBox(height: spacing.xl),
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      l10n.onboardingApiaryTitle,
+                      style: context.typography.headline,
+                    ),
+                  ),
+                  SizedBox(height: spacing.sm),
+                  Text(
+                    l10n.onboardingApiaryMessage,
+                    style: context.typography.body.copyWith(
+                      color: context.colors.textSecondary,
+                    ),
                   ),
                   SizedBox(height: spacing.xl),
                   const ApiaryFormFields(apiaryId: null),
                 ],
               ),
-        action: BigButton(
-          label: l10n.onboardingApiarySave,
-          icon: Icons.check_rounded,
-          onPressed: (form?.canSave ?? false)
-              ? () => _save(context, ref)
-              : null,
+        action: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            BigButton(
+              label: l10n.onboardingApiarySave,
+              onPressed: (form?.canSave ?? false)
+                  ? () => _save(context, ref)
+                  : null,
+            ),
+            SizedBox(height: spacing.sm),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: context.colors.textSecondary,
+                minimumSize: Size.fromHeight(context.touchTargets.minimum),
+                textStyle: context.typography.label,
+              ),
+              onPressed: saving ? null : setup.finish,
+              child: Text(l10n.onboardingApiarySkip),
+            ),
+          ],
         ),
       ),
     );

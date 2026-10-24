@@ -14,8 +14,9 @@ class HiveTypeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return SectionCard(
-      title: l10n.hiveFormType,
+    return LabeledField(
+      label: l10n.hiveFormType,
+      group: true,
       child: ChoiceChipGroup<HiveType>(
         options: [
           for (final type in HiveType.values)
@@ -40,8 +41,9 @@ class HiveSourceField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return SectionCard(
-      title: l10n.hiveFormSource,
+    return LabeledField(
+      label: l10n.hiveFormSource,
+      group: true,
       child: ChoiceChipGroup<HiveSource>(
         options: [
           for (final source in HiveSource.values)

@@ -4,9 +4,9 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 /// Alt gezinmedeki sekmeler. Sıra, router'daki dal (branch) sırasıyla aynı;
 /// ortadaki Okut butonu sekme değildir.
 enum AppTab {
-  today(Icons.today_outlined, Icons.today_rounded),
-  apiaries(Icons.hive_outlined, Icons.hive_rounded),
-  tasks(Icons.assignment_outlined, Icons.assignment_rounded),
+  today(Icons.wb_sunny_outlined, Icons.wb_sunny_rounded),
+  apiaries(Icons.place_outlined, Icons.place_rounded),
+  tasks(Icons.checklist_rounded, Icons.fact_check_rounded),
   more(Icons.grid_view_outlined, Icons.grid_view_rounded);
 
   new(this.icon, this.selectedIcon);

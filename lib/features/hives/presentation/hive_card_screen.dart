@@ -1,9 +1,12 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/core/utils/relative_date.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
@@ -12,13 +15,14 @@ import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_timeline_section.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 
-/// Kovan kartı: büyük numara, arılık, durum rozeti, güç puanı ve ana arı
-/// şeridi;
-/// altında taşıma ve durum değiştirme, en altta zaman tüneli. Aktif kovanda
-/// altta sabit "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Özet
-/// kartları kendi adımında gelecek.
+/// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
+/// puanı; ana arı şeridi ve son muayene özeti; taşıma ve durum değiştirme;
+/// en altta zaman tüneli. Aktif kovanda altta sabit "Muayene başlat" hızlı
+/// muayeneyi kartın üstünde açar. Diğer özet karoları (ilaç, varroa,
+/// verim) kendi adımlarında gelecek.
 ///
 /// [apiaryId] yoldaki arılık (geri tuşu oraya döner); gösterilen arılık
 /// kovanın kendi arılığıdır.
@@ -36,10 +40,11 @@ class HiveCardScreen extends ConsumerWidget {
     return switch (ref.watch(hiveProvider(hiveId))) {
       AsyncData(value: final hive?) => Scaffold(
         appBar: AppBar(
+          title: _ApiaryTitle(hive.apiaryId),
           actions: [
             IconButton(
               tooltip: l10n.hiveEdit,
-              icon: const Icon(Icons.edit_rounded),
+              icon: const Icon(Icons.edit_outlined),
               onPressed: () => context.go(AppRoutes.hiveEdit(apiaryId, hiveId)),
             ),
           ],
@@ -54,11 +59,13 @@ class HiveCardScreen extends ConsumerWidget {
               _Header(hive),
               SizedBox(height: spacing.lg),
               const _QueenStrip(),
-              SizedBox(height: spacing.xl),
+              SizedBox(height: spacing.md),
+              _LastInspection(hiveId),
+              SizedBox(height: spacing.lg),
               BigButton(
                 variant: BigButtonVariant.secondary,
                 label: l10n.hiveMove,
-                icon: Icons.local_shipping_rounded,
+                icon: Icons.local_shipping_outlined,
                 onPressed: () => _move(context, ref, hive),
               ),
               SizedBox(height: context.touchTargets.gap),
@@ -133,8 +140,8 @@ class HiveCardScreen extends ConsumerWidget {
   }
 }
 
-/// Aktif kovanda altta sabit "Muayene başlat" ([inspect]); diğerlerinde
-/// yalnız [child].
+/// Aktif kovanda altta, çizgiyle ayrılmış sabit "Muayene başlat"
+/// ([inspect]); diğerlerinde yalnız [child].
 class _WithInspectButton extends StatelessWidget {
   const new({required this.inspect, required this.child});
 
@@ -146,16 +153,34 @@ class _WithInspectButton extends StatelessWidget {
     final inspect = this.inspect;
     if (inspect == null) return child;
     return BottomActionLayout(
+      separated: true,
       body: child,
       action: BigButton(
         label: AppLocalizations.of(context).hiveStartInspection,
-        icon: Icons.fact_check_rounded,
         onPressed: inspect,
       ),
     );
   }
 }
 
+/// Üst çubukta kovanın arılığı; ekran okuyucu "Arılık: Yayla" okur.
+class _ApiaryTitle extends ConsumerWidget {
+  const new(this.apiaryId);
+
+  final String apiaryId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final name = ref.watch(apiarySummaryProvider(apiaryId)).value?.apiary.name;
+    if (name == null) return const SizedBox.shrink();
+    return Text(
+      name,
+      semanticsLabel: AppLocalizations.of(context).hiveCardApiary(name),
+    );
+  }
+}
+
+/// "KOVAN", altında dev numara; sağda durum rozeti, altında güç puanı.
 class _Header extends ConsumerWidget {
   const new(this.hive);
 
@@ -164,76 +189,56 @@ class _Header extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
     final spacing = context.spacing;
-    final apiaryName = ref
-        .watch(apiarySummaryProvider(hive.apiaryId))
-        .value
-        ?.apiary
-        .name;
     final strength = ref.watch(hiveStrengthProvider(hive.id));
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Semantics(
-          header: true,
-          label: l10n.hiveLabel(hive.number),
-          excludeSemantics: true,
-          // Uzun numara ve büyük yazı boyutunda kırılmasın, küçülsün.
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              hive.number,
-              maxLines: 1,
-              style: context.typography.numberLarge,
-            ),
-          ),
-        ),
-        if (apiaryName != null) ...[
-          SizedBox(height: spacing.xs),
-          Semantics(
-            label: l10n.hiveCardApiary(apiaryName),
-            excludeSemantics: true,
-            child: Row(
-              children: [
-                Icon(
-                  Icons.place_rounded,
-                  size: context.sizes.iconSmall,
-                  color: colors.textSecondary,
-                ),
-                SizedBox(width: spacing.xs),
-                Expanded(
-                  child: Text(
-                    apiaryName,
-                    style: context.typography.subtitle.copyWith(
-                      color: colors.textSecondary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-        SizedBox(height: spacing.md),
-        Wrap(
-          spacing: spacing.md,
-          runSpacing: spacing.sm,
-          crossAxisAlignment: WrapCrossAlignment.center,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            StatusBadge(
-              status: hive.status.appStatus,
-              label: hive.status.label(l10n),
+            Expanded(
+              child: Semantics(
+                header: true,
+                label: l10n.hiveLabel(hive.number),
+                excludeSemantics: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SectionLabel(l10n.hiveCardKind),
+                    // Uzun numara ve büyük yazı boyutunda kırılmasın,
+                    // küçülsün.
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        hive.number,
+                        maxLines: 1,
+                        style: context.typography.display,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            // Aktif olmayan kovanın eski puanı yanıltır; ızgaradaki gibi
-            // gösterilmez. Puan yüklenirken de boş kalır, "yok" yanıp
-            // sönmesin.
-            if (hive.status.isCounted && strength.hasValue)
-              _Strength(strength.value),
+            SizedBox(width: spacing.md),
+            Padding(
+              padding: EdgeInsets.only(bottom: spacing.sm),
+              child: StatusBadge(
+                status: hive.status.appStatus,
+                label: hive.status.label(l10n),
+              ),
+            ),
           ],
         ),
+        // Aktif olmayan kovanın eski puanı yanıltır; ızgaradaki gibi
+        // gösterilmez. Puan yüklenirken de boş kalır, "yok" yanıp sönmesin.
+        if (hive.status.isCounted && strength.hasValue) ...[
+          SizedBox(height: spacing.sm),
+          _Strength(strength.value),
+        ],
       ],
     );
   }
@@ -283,34 +288,86 @@ class _QueenStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = context.colors;
+    final spacing = context.spacing;
 
-    return SectionCard(
-      title: l10n.hiveQueenTitle,
-      child: Row(
-        children: [
-          SizedBox.square(
-            dimension: context.sizes.queenDot,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: colors.outline,
-                  width: context.strokes.border,
+    return MergeSemantics(
+      child: AppCard(
+        child: Padding(
+          padding: EdgeInsets.all(spacing.lg),
+          child: Row(
+            children: [
+              SizedBox.square(
+                dimension: context.touchTargets.minimum,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: colors.surfaceContainer,
+                  ),
+                  child: Icon(
+                    Icons.workspace_premium_outlined,
+                    size: context.sizes.icon,
+                    color: colors.textSecondary,
+                  ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(width: context.spacing.md),
-          Expanded(
-            child: Text(
-              l10n.hiveQueenPlaceholder,
-              style: context.typography.body.copyWith(
-                color: colors.textSecondary,
+              SizedBox(width: spacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(l10n.hiveQueenTitle, style: context.typography.label),
+                    Text(
+                      l10n.hiveQueenPlaceholder,
+                      style: context.typography.bodySmall.copyWith(
+                        color: colors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
+    );
+  }
+}
+
+/// Son muayene karosu: ne zaman ve girilen çerçeveler; muayene yoksa
+/// "Henüz yok".
+class _LastInspection extends ConsumerWidget {
+  const new(this.hiveId);
+
+  final String hiveId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final inspections = ref.watch(hiveInspectionsProvider(hiveId));
+    // Yüklenirken boş kalır; "yok" yanıp sönmesin.
+    if (!inspections.hasValue) return const SizedBox.shrink();
+    final latest = inspections.value!.firstOrNull;
+    if (latest == null) {
+      return SummaryTile(
+        label: l10n.hiveLastInspection,
+        value: l10n.hiveLastInspectionNone,
+      );
+    }
+    final values = latest.values;
+    final frames = [
+      if (values.beeFrames case final count?) l10n.timelineBeeFrames(count),
+      if (values.broodFrames case final count?) l10n.timelineBroodFrames(count),
+      if (values.honeyFrames case final count?) l10n.timelineHoneyFrames(count),
+    ];
+    return SummaryTile(
+      label: l10n.hiveLastInspection,
+      value: relativeDay(
+        l10n,
+        AppFormat.of(context),
+        latest.inspectedAt,
+        now: clock.now(),
+      ),
+      detail: frames.isEmpty ? null : frames.join(l10n.listSeparator),
     );
   }
 }

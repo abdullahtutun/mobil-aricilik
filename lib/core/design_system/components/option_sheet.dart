@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_arici/core/design_system/components/action_tile.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
 /// Seçim sayfasını sekmelerin ve alt gezinmenin üstünde açar; seçilen
@@ -20,6 +21,7 @@ class SheetOption<T> {
     required this.label,
     this.iconColor,
     this.hint,
+    this.selected,
   });
 
   final T value;
@@ -31,6 +33,9 @@ class SheetOption<T> {
 
   /// Etiketin altında ikincil satır.
   final String? hint;
+
+  /// Seçim listesinde: ekran okuyucuya seçili olup olmadığı söylenir.
+  final bool? selected;
 }
 
 /// Seçim sayfası: başlık ve seçenekler. Seçenek yoksa [emptyMessage] yazar.
@@ -83,7 +88,75 @@ class OptionSheet<T> extends StatelessWidget {
                 iconColor: option.iconColor,
                 label: option.label,
                 hint: option.hint,
+                selected: option.selected,
                 onTap: () => Navigator.of(context).pop(option.value),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Seçim sayfasının ızgara hali: başlık ve [columns] sütunlu büyük
+/// karolar ([ActionTile]). [highlighted] seçenek dolgulu çizilir (ör. en
+/// sık kayıt). Seçim [OptionSheet]'teki gibi sayfanın navigator'ıyla döner.
+class OptionGridSheet<T> extends StatelessWidget {
+  const new({
+    required this.title,
+    required this.options,
+    super.key,
+    this.highlighted,
+    this.columns = 3,
+  });
+
+  final String title;
+  final List<SheetOption<T>> options;
+  final T? highlighted;
+  final int columns;
+
+  @override
+  Widget build(BuildContext context) {
+    final spacing = context.spacing;
+    final gap = context.touchTargets.gap;
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: spacing.lg,
+          right: spacing.lg,
+          bottom: spacing.lg,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: gap,
+          children: [
+            Semantics(
+              header: true,
+              child: Text(title, style: context.typography.title),
+            ),
+            for (var row = 0; row < options.length; row += columns)
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: gap,
+                  children: [
+                    for (var i = row; i < row + columns; i++)
+                      Expanded(
+                        child: i < options.length
+                            ? ActionTile(
+                                icon: options[i].icon,
+                                label: options[i].label,
+                                iconColor: options[i].iconColor,
+                                highlighted: options[i].value == highlighted,
+                                onTap: () =>
+                                    Navigator.of(context).pop(options[i].value),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                  ],
+                ),
               ),
           ],
         ),
@@ -103,6 +176,7 @@ class OptionTile extends StatelessWidget {
     this.iconColor,
     this.hint,
     this.badge,
+    this.selected,
   });
 
   final IconData icon;
@@ -120,6 +194,10 @@ class OptionTile extends StatelessWidget {
   /// Null ise satır pasif.
   final VoidCallback? onTap;
 
+  /// Seçim listesinde: ekran okuyucuya seçili olup olmadığı söylenir.
+  /// Seçimi çizmek (ör. onay ikonu) çağırana kalır.
+  final bool? selected;
+
   @override
   Widget build(BuildContext context) {
     final spacing = context.spacing;
@@ -129,6 +207,7 @@ class OptionTile extends StatelessWidget {
     return Semantics(
       container: true,
       button: true,
+      selected: selected,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(context.radii.button),

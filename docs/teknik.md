@@ -214,37 +214,45 @@ lib/
 
 ## 7. Tasarım dili
 
-Uygulamanın adı **Mobil Arıcı**. Tasarım sistemi ve tüm ekran tasarımları bu bölümdeki dil esas alınarak Claude tarafından hazırlanır; ayrı bir tasarımcı yoktur.
+Uygulamanın adı **Mobil Arıcı**. Tasarım sistemi ve tüm ekran tasarımları bu bölümdeki dil esas alınarak Claude tarafından hazırlanır; ayrı bir tasarımcı yoktur. Ekran tasarımları `docs/design/` altında, ekran adıyla PNG olarak durur (ör. `Kovan kartı.png`); tasarım sisteminin kendisi `Tasarım sistemi v1.png`. Bir ekran yazılırken önce o ekranın tasarımı açılır.
 
 Karakter: **Sıcak, sakin, güvenilir** — bal ve petekten ilham alan, ama "çocuk uygulaması" gibi durmayan, iş aracı ciddiyetinde bir arayüz. Material 3 temelinde, tokenlar `ThemeExtension` ile taşınır.
 
-**Renk tokenları (başlangıç önerisi)**
+**Renk tokenları (tasarım sistemi v1)**
+
+Kaynak `core/design_system/tokens/app_colors.dart`; güneş modu paletinin değerleri orada.
 
 | Token | Açık tema | Koyu tema | Kullanım |
 | --- | --- | --- | --- |
-| primary (Koyu bal) | #B86E00 | #FFB74D | Ana butonlar, seçili sekme |
+| primary (Koyu bal) | #9A5B00 | #FFB74D | Ana butonlar, seçili chip ve sekme |
 | on-primary | #FFFFFF | #2B1700 | Primary üzerindeki yazı |
-| secondary (Çam yeşili) | #2F5D50 | #8CC7B4 | İkincil eylemler, arılık vurgusu |
+| honey (Bal) | #F2B544 | #F2B544 | Vurgu dolgusu, bildirimdeki Geri al |
+| secondary (Çam yeşili) | #2F5D50 | #8CC7B4 | İşletme rozeti, ikincil vurgu |
 | surface (Petek kreması) | #FFF8EE | #17140F | Ekran zemini |
-| surface-container | #F6EBDA | #231F18 | Kartlar |
-| text-primary | #1F1A14 | #F3ECE2 | Ana metin |
+| surface-container (Kart zemini) | #F6EBDA | #231F18 | Sayaç, not kartı, seçici izi |
+| tile (Yüzey) | #FFFFFF | #2A251D | Kartlar, karolar, metin alanları |
+| divider (Çizgi) | #E8DCC8 | #3B342A | Kart ve chip kenarlığı, ayraç |
+| text-primary (Mürekkep) | #1F1A14 | #F3ECE2 | Ana metin, bildirim zemini |
 | text-secondary | #5E554A | #BDB2A4 | Yardımcı metin |
-| status-good | #2E7D32 | #81C784 | Güçlü kovan, eşitlendi |
-| status-warning | #E65100 | #FFAB40 | Zayıf, süre yaklaşıyor |
-| status-critical | #C62828 | #EF9A9A | Anasız, bekleme süresi, ihbarı mecburi |
-| status-info | #1565C0 | #90CAF9 | Bilgi, görev |
+| status-good / zemin | #2E7D32 / #E3F0E3 | #81C784 / #1E3320 | Güçlü kovan, eşitlendi |
+| status-warning / zemin | #A23B00 / #FCE9DA | #FFAB40 / #3D2414 | Zayıf, süre yaklaşıyor |
+| status-critical / zemin | #B3261E / #FBE3E3 | #EF9A9A / #3D1C1C | Anasız, bekleme süresi, ihbarı mecburi |
+| status-info / zemin | #1557A8 / #E1ECF8 | #90CAF9 / #1A2A3D | Bilgi, görev |
+
+Durum rozetleri ve uyarı kartları durumun açık zemininde, yazı ve ikon durum renginde çizilir. Güneş modunda birincil renk siyah.
 
 Durum renkleri asla tek başına anlam taşımaz: her durum ikon + kelime ile birlikte gösterilir (renk körlüğü ve güneş altında okunabilirlik).
 
 **Tipografi**
 
 - Yazı tipi: Inter (ya da Nunito Sans) — Türkçe karakterlerde (İ, ı, ş, ğ) temiz, rakamlar tabular (sayı sütunları hizalı).
-- Ölçek: Gövde 16, sahada 18; başlık 22/28; büyük sayılar (kovan no, kg, çerçeve) 32–40 kalın — göz ilk sayıyı yakalar.
+- Ölçek: Gövde 16, sahada 18; başlık 22/28 kalın; büyük sayılar (kovan no, kg, çerçeve) 32–40 kalın, kovan kartının numarası 72 — göz ilk sayıyı yakalar. Buton etiketi 18 kalın. Bölüm başlıkları küçük, kalın ve büyük harf ("ANA ARI"); büyük harf uygulamanın dilinin kuralıyla yapılır.
 - Sistem yazı boyutu büyütmeye 1.5x'e kadar layout kırılmadan uyum.
 
 **Ölçü ve biçim**
 
-- 4/8 aralık sistemi; kart köşe yarıçapı 16, buton 12.
+- 4/8 aralık sistemi; kart köşe yarıçapı 16, buton 12, chip ve rozet tam yuvarlak.
+- Büyük buton 60dp (eldivende 68), chip 56dp.
 - Dokunma hedefi: en az 48dp (Material), **sahada eylemler 56–64dp**; hedefler arası en az 8dp boşluk.
 - Petek/altıgen motifi ölçülü: boş durum illustrasyonları, güç puanı rozeti, açılış ekranı. Her yerde altıgen = yorucu.
 - İkonlar: Material Symbols (Rounded) + arıcılığa özel çizilmiş küçük set (kovan, ana arı, çerçeve, körük, kat, meme, varroa).
@@ -323,7 +331,7 @@ Alt navigasyonda 4 sekme + ortada büyük bir **Okut / Kaydet** butonu: Sahada e
 
 **İlk kurulum (onboarding)**
 
-- E-posta ve 6 haneli kod ile giriş → dil ve ülke (cihazdan önerilir; Türkiye seçilirse TR modülleri açılır) → işletme adı ve bölge → "Kaç kovanın var?" (kovan bazlı mı grup bazlı mı takip önerisini buna göre yapar) → ilk arılık (konumu GPS'ten) → kovanları toplu oluştur. Toplam 2 dakikayı geçmemeli.
+- E-posta ve 6 haneli kod ile giriş → üç adım: (1) dil ve ülke (cihazdan önerilir; ülkenin açtığı modüller, birimler ve para birimi altta özetlenir; Türkiye seçilirse TR modülleri açılır), (2) işletme adı ve "Kaç kovanın var?" (kovan bazlı mı grup bazlı mı takip önerisini buna göre yapar), (3) ilk arılık (konumu GPS'ten) ve kovanları toplu oluştur. Toplam 2 dakikayı geçmemeli.
 
 ## 10. Etkileşim desenleri ve erişilebilirlik
 

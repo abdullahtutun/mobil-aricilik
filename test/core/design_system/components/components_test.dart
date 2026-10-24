@@ -759,4 +759,322 @@ void main() {
       expect(AppStatus.info.colorIn(c), c.statusInfo);
     });
   });
+
+  group('SectionLabel', () {
+    testWidgets(
+      'yerelin kuralıyla büyük harf; ekran okuyucu olduğu gibi okur',
+      (tester) async {
+        await tester.pumpWidget(_app(const SectionLabel('Yapılan işlem')));
+
+        expect(find.text('YAPILAN İŞLEM'), findsOneWidget);
+        expect(
+          tester.getSemantics(find.byType(SectionLabel)),
+          isSemantics(label: 'Yapılan işlem', isHeader: true),
+        );
+      },
+    );
+
+    testWidgets('durum verilirse durum renginde', (tester) async {
+      await tester.pumpWidget(
+        _app(const SectionLabel('Sorun', status: AppStatus.critical)),
+      );
+
+      expect(
+        tester.widget<Text>(find.text('SORUN')).style?.color,
+        AppColors.light.statusCritical,
+      );
+    });
+  });
+
+  group('LabeledField', () {
+    testWidgets('tek alanda ad alanla birlikte okunur', (tester) async {
+      await tester.pumpWidget(
+        _app(const LabeledField(label: 'Arılık adı', child: TextField())),
+      );
+
+      expect(
+        tester.getSemantics(find.byType(TextField)),
+        isSemantics(label: 'Arılık adı', isTextField: true),
+      );
+    });
+
+    testWidgets('grupta seçenekler ayrı kalır', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          LabeledField(
+            label: 'Kovan tipi',
+            group: true,
+            child: ChoiceChipGroup<String>(
+              options: const [
+                ChoiceChipOption(value: 'a', label: 'A'),
+                ChoiceChipOption(value: 'b', label: 'B'),
+              ],
+              selected: const {'a'},
+              onChanged: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        tester.getSemantics(find.text('B')),
+        isSemantics(label: 'B', isButton: true, hasSelectedState: true),
+      );
+    });
+  });
+
+  group('ChoiceChipGroup sütunları', () {
+    testWidgets("verilirse chip'ler eşit genişlikte", (tester) async {
+      await tester.pumpWidget(
+        _app(
+          SizedBox(
+            width: 300,
+            child: ChoiceChipGroup<String>(
+              columns: 2,
+              options: const [
+                ChoiceChipOption(value: 'a', label: 'A'),
+                ChoiceChipOption(value: 'b', label: 'Uzun bir seçenek'),
+                ChoiceChipOption(value: 'c', label: 'C'),
+              ],
+              selected: const {},
+              onChanged: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      double width(String label) => tester
+          .getSize(
+            find.ancestor(of: find.text(label), matching: find.byType(InkWell)),
+          )
+          .width;
+      expect(width('A'), width('Uzun bir seçenek'));
+      expect(width('C'), width('A'));
+      expect(
+        tester.getTopLeft(find.text('C')).dy,
+        greaterThan(tester.getTopLeft(find.text('A')).dy),
+      );
+    });
+  });
+
+  group('SegmentedTabs', () {
+    testWidgets('seçili segment ekran okuyucuya söylenir; dokununca değişir', (
+      tester,
+    ) async {
+      String? changed;
+      await tester.pumpWidget(
+        _app(
+          SegmentedTabs<String>(
+            options: const [
+              SegmentOption(value: 'grid', label: 'Izgara'),
+              SegmentOption(value: 'list', label: 'Liste'),
+            ],
+            selected: 'grid',
+            onChanged: (value) => changed = value,
+          ),
+        ),
+      );
+
+      expect(
+        tester.getSemantics(find.text('Izgara')),
+        isSemantics(
+          label: 'Izgara',
+          isButton: true,
+          isSelected: true,
+          hasSelectedState: true,
+          isInMutuallyExclusiveGroup: true,
+          hasTapAction: true,
+        ),
+      );
+      await tester.tap(find.text('Liste'));
+      expect(changed, 'list');
+      expect(
+        tester
+            .getSize(
+              find.ancestor(
+                of: find.text('Liste'),
+                matching: find.byType(InkWell),
+              ),
+            )
+            .height,
+        greaterThanOrEqualTo(AppTouchTargets.standard.minimum),
+      );
+    });
+  });
+
+  group('RadioCardGroup', () {
+    testWidgets('seçili kart dolu daireli ve seçili okunur; dokununca seçer', (
+      tester,
+    ) async {
+      String? changed;
+      await tester.pumpWidget(
+        _app(
+          RadioCardGroup<String>(
+            options: const [
+              RadioCardOption(value: 'tr', label: 'Türkçe', hint: 'Cihaz dili'),
+              RadioCardOption(value: 'en', label: 'English'),
+            ],
+            selected: 'tr',
+            onChanged: (value) => changed = value,
+          ),
+        ),
+      );
+
+      expect(find.text('Cihaz dili'), findsOneWidget);
+      expect(
+        tester.getSemantics(find.text('Türkçe')),
+        isSemantics(isSelected: true, isButton: true, hasSelectedState: true),
+      );
+      await tester.tap(find.text('English'));
+      expect(changed, 'en');
+    });
+  });
+
+  group('ListRow', () {
+    testWidgets('dokunulabilir satırda ok var; değeri sağda', (tester) async {
+      var taps = 0;
+      await tester.pumpWidget(
+        _app(
+          ListGroup(
+            children: [
+              ListRow(title: 'Dil', value: 'Türkçe', onTap: () => taps++),
+              const ListRow(title: 'Ülke', value: 'Türkiye · TR'),
+            ],
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
+      expect(find.byType(Divider), findsOneWidget);
+      await tester.tap(find.text('Dil'));
+      expect(taps, 1);
+      expect(
+        tester.getTopLeft(find.text('Türkçe')).dx,
+        greaterThan(tester.getTopLeft(find.text('Dil')).dx),
+      );
+    });
+  });
+
+  group('SummaryTile', () {
+    testWidgets('durum verilirse durumun zemininde; tek parça okunur', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(
+          const SummaryTile(
+            label: 'Aktif ilaç',
+            value: '12 gün kaldı',
+            status: AppStatus.critical,
+          ),
+        ),
+      );
+
+      final card = tester.widget<Material>(
+        find.descendant(
+          of: find.byType(AppCard),
+          matching: find.byType(Material),
+        ),
+      );
+      expect(card.color, AppColors.light.statusCriticalContainer);
+      expect(
+        tester.getSemantics(find.byType(SummaryTile)),
+        isSemantics(label: 'Aktif ilaç\n12 gün kaldı'),
+      );
+    });
+  });
+
+  group('OptionGridSheet', () {
+    testWidgets(
+      'karoya dokunmak sayfayı değeriyle kapatır; vurgulu karo dolu',
+      (tester) async {
+        String? result;
+        await tester.pumpWidget(
+          _app(
+            Builder(
+              builder: (context) => TextButton(
+                onPressed: () async => result = await showOptionSheet<String>(
+                  context,
+                  (context) => const OptionGridSheet(
+                    title: 'Hızlı kayıt',
+                    highlighted: 'a',
+                    options: [
+                      SheetOption(
+                        value: 'a',
+                        icon: Icons.description_outlined,
+                        label: 'Muayene',
+                      ),
+                      SheetOption(
+                        value: 'b',
+                        icon: Icons.water_drop_outlined,
+                        label: 'Besleme',
+                      ),
+                    ],
+                  ),
+                ),
+                child: const Text('Aç'),
+              ),
+            ),
+          ),
+        );
+        await tester.tap(find.text('Aç'));
+        await tester.pumpAndSettle();
+
+        final highlighted = tester.widget<ActionTile>(
+          find.ancestor(
+            of: find.text('Muayene'),
+            matching: find.byType(ActionTile),
+          ),
+        );
+        expect(highlighted.highlighted, isTrue);
+        await tester.tap(find.text('Besleme'));
+        await tester.pumpAndSettle();
+
+        expect(result, 'b');
+        expect(find.text('Hızlı kayıt'), findsNothing);
+      },
+    );
+  });
+
+  group('BottomActionLayout', () {
+    testWidgets('separated ise eylemin üstünde çizgi var', (tester) async {
+      Future<void> pump({required bool separated}) => tester.pumpWidget(
+        _app(
+          BottomActionLayout(
+            separated: separated,
+            body: const SizedBox.shrink(),
+            action: const Text('Kaydet'),
+          ),
+        ),
+      );
+
+      await pump(separated: false);
+      expect(find.byType(Divider), findsNothing);
+      await pump(separated: true);
+      expect(find.byType(Divider), findsOneWidget);
+    });
+  });
+
+  group('HoneycombBackdrop', () {
+    testWidgets('güneş modunda çizilmez', (tester) async {
+      Future<int> paints(AppearanceSettings settings) async {
+        await tester.pumpWidget(
+          _app(const HoneycombBackdrop(), settings: settings),
+        );
+        await tester.pumpAndSettle();
+        return find
+            .descendant(
+              of: find.byType(HoneycombBackdrop),
+              matching: find.byType(CustomPaint),
+            )
+            .evaluate()
+            .length;
+      }
+
+      expect(await paints(const AppearanceSettings()), 1);
+      expect(
+        await paints(const AppearanceSettings(colorMode: AppColorMode.sun)),
+        0,
+      );
+    });
+  });
 }

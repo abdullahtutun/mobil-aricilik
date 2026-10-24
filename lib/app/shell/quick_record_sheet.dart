@@ -4,16 +4,26 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Hızlı kayıt menüsündeki kayıt türleri (teknik.md §8).
 enum QuickRecordType {
-  inspection(Icons.fact_check_rounded),
-  feeding(Icons.water_drop_rounded),
-  treatment(Icons.medication_rounded),
-  harvest(Icons.scale_rounded),
-  note(Icons.sticky_note_2_rounded),
-  expense(Icons.payments_rounded);
+  inspection(Icons.description_outlined),
+  feeding(Icons.water_drop_outlined),
+  treatment(Icons.medication_outlined),
+  harvest(Icons.scale_outlined),
+  note(Icons.mic_none_rounded),
+  expense(Icons.credit_card_rounded);
 
   new(this.icon);
 
   final IconData icon;
+
+  /// İkon rengi türü ayırt etmeye yardım eder; anlamı kelime taşır.
+  Color iconColorIn(AppColors colors) => switch (this) {
+    inspection => colors.primary,
+    feeding => colors.statusInfo,
+    treatment => colors.statusCritical,
+    harvest => colors.primary,
+    note => colors.secondary,
+    expense => colors.textSecondary,
+  };
 
   String label(AppLocalizations l10n) => switch (this) {
     inspection => l10n.quickRecordInspection,
@@ -29,17 +39,24 @@ enum QuickRecordType {
 Future<QuickRecordType?> showQuickRecordSheet(BuildContext context) =>
     showOptionSheet(context, (context) => const QuickRecordSheet());
 
+/// Büyük karolar; en sık kayıt (muayene) dolgulu ve ilk sırada.
 class QuickRecordSheet extends StatelessWidget {
   const new({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return OptionSheet(
+    return OptionGridSheet(
       title: l10n.quickRecordTitle,
+      highlighted: QuickRecordType.inspection,
       options: [
         for (final type in QuickRecordType.values)
-          SheetOption(value: type, icon: type.icon, label: type.label(l10n)),
+          SheetOption(
+            value: type,
+            icon: type.icon,
+            iconColor: type.iconColorIn(context.colors),
+            label: type.label(l10n),
+          ),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/design_system/tokens/app_typography.dart';
 
 List<TextStyle> _styles(AppTypography t) => [
+  t.display,
   t.numberLarge,
   t.number,
   t.headline,

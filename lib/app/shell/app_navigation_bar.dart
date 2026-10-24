@@ -4,7 +4,8 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Alt gezinme: iki yanda ikişer sekme, ortada başparmağın altında büyük
-/// Okut / Kaydet butonu.
+/// yuvarlak Okut butonu. Seçili sekmenin ikonu kart zemininde bir hapın
+/// içinde, ikon dolu ve etiket koyu bal; seçim yalnız renkle verilmez.
 class AppNavigationBar extends StatelessWidget {
   const new({
     required this.currentTab,
@@ -37,7 +38,7 @@ class AppNavigationBar extends StatelessWidget {
     );
 
     return Material(
-      color: colors.surfaceContainer,
+      color: colors.surface,
       shape: Border(
         top: BorderSide(color: colors.divider, width: context.strokes.border),
       ),
@@ -76,6 +77,7 @@ class _TabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final spacing = context.spacing;
     final foreground = selected ? colors.primary : colors.textSecondary;
     final typography = context.typography;
     final labelStyle = (selected ? typography.labelSmall : typography.bodySmall)
@@ -94,12 +96,24 @@ class _TabItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                selected ? tab.selectedIcon : tab.icon,
-                size: context.sizes.icon,
-                color: foreground,
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: selected ? colors.surfaceContainer : colors.surface,
+                  borderRadius: BorderRadius.circular(context.radii.pill),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: spacing.lg,
+                    vertical: spacing.xs,
+                  ),
+                  child: Icon(
+                    selected ? tab.selectedIcon : tab.icon,
+                    size: context.sizes.icon,
+                    color: foreground,
+                  ),
+                ),
               ),
-              SizedBox(height: context.spacing.xs),
+              SizedBox(height: spacing.xs),
               Text(
                 tab.label(AppLocalizations.of(context)),
                 maxLines: 1,
@@ -115,7 +129,8 @@ class _TabItem extends StatelessWidget {
   }
 }
 
-/// Dokun: okut. Basılı tut: hızlı kayıt. Tooltip yok; uzun basmayla çakışır.
+/// Dokun: okut. Basılı tut: hızlı kayıt. Koyu bal daire, içinde okutma
+/// ikonu; adı ekran okuyucuya gider. Tooltip yok; uzun basmayla çakışır.
 class _ScanButton extends StatelessWidget {
   const new({required this.onTap, required this.onLongPress});
 
@@ -134,36 +149,18 @@ class _ScanButton extends StatelessWidget {
       onLongPressHint: l10n.scanLongPressHint,
       child: Material(
         color: colors.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(context.radii.card),
-        ),
+        shape: const CircleBorder(),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
           onLongPress: onLongPress,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: size, minHeight: size),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: context.spacing.md),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.qr_code_scanner_rounded,
-                    size: context.sizes.icon,
-                    color: colors.onPrimary,
-                  ),
-                  SizedBox(height: context.spacing.xs),
-                  Text(
-                    l10n.scanTitle,
-                    maxLines: 1,
-                    style: context.typography.labelSmall.copyWith(
-                      color: colors.onPrimary,
-                    ),
-                  ),
-                ],
-              ),
+          child: SizedBox.square(
+            dimension: size,
+            child: Icon(
+              Icons.qr_code_scanner_rounded,
+              size: context.sizes.icon,
+              color: colors.onPrimary,
+              semanticLabel: l10n.scanTitle,
             ),
           ),
         ),

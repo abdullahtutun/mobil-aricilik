@@ -91,29 +91,6 @@
     }
   },
   "apiaryNoVisit": "No visits yet",
-  "apiaryListSubtitle": "{hives} · {visit}",
-  "@apiaryListSubtitle": {
-    "description": "Second line of an apiary on the list: hive count and last visit.",
-    "placeholders": {
-      "hives": {
-        "type": "String",
-        "example": "12 hives"
-      },
-      "visit": {
-        "type": "String",
-        "example": "No visits yet"
-      }
-    }
-  },
-  "apiaryActiveHives": "Active hives",
-  "@apiaryActiveHives": {
-    "description": "Label under the big hive count at the top of an apiary."
-  },
-  "apiaryLastVisitLabel": "Last visit",
-  "apiaryVisitNone": "None yet",
-  "@apiaryVisitNone": {
-    "description": "Value of 'Last visit' when the apiary was never visited."
-  },
   "apiaryEdit": "Edit",
   "apiaryNotFoundTitle": "Apiary not found",
   "apiaryNotFoundMessage": "It may have been deleted or not reached this device yet.",
@@ -147,16 +124,6 @@
   "apiaryFormLandownerPhone": "Landowner's phone",
   "apiaryFormNotes": "Notes",
   "apiaryFormSave": "Save",
-  "apiaryHivesTitle": "Hives",
-  "@apiaryHivesTitle": {
-    "description": "Heading of the hive grid or list on an apiary."
-  },
-  "hiveLayoutGrid": "Grid view",
-  "hiveLayoutList": "List view",
-  "hiveSortNumber": "By number",
-  "@hiveSortNumber": {
-    "description": "Order of the hives in an apiary: by hive number."
-  },
   "hiveSortWeakestFirst": "Weakest first",
   "@hiveSortWeakestFirst": {
     "description": "Order of the hives in an apiary: lowest strength score first, unscored hives last."
@@ -559,12 +526,8 @@
   "quickRecordExpense": "Expense",
   "quickRecordComingSoon": "This record type is coming soon.",
 
-  "signInTitle": "Sign in",
-  "signInEmailMessage": "Enter your email and we'll send you a 6-digit code. No password needed.",
-  "signInEmailLabel": "Email",
   "signInSendCode": "Send code",
   "signInSending": "Sending…",
-  "signInCodeTitle": "Enter the code",
   "signInCodeMessage": "We sent a 6-digit code to {email}.",
   "@signInCodeMessage": {
     "placeholders": {
@@ -653,10 +616,6 @@
   "onboardingContinue": "Continue",
   "onboardingFinish": "Set up business",
   "onboardingFinishing": "Setting up…",
-  "onboardingLanguageTitle": "Which language should we use?",
-  "onboardingLanguageMessage": "You can change it later in Settings.",
-  "onboardingCountryTitle": "Where is your business?",
-  "onboardingCountryMessage": "Your country sets the currency, units and region-specific modules.",
   "onboardingCountrySearch": "Search countries",
   "onboardingCountrySuggested": "Suggested for your device",
   "@onboardingCountrySuggested": {
@@ -664,7 +623,6 @@
   },
   "onboardingCountryAll": "All countries",
   "onboardingCountryNoMatch": "No country matches your search.",
-  "onboardingNameTitle": "What's your business called?",
   "onboardingNameMessage": "This name appears on your records and reports.",
   "onboardingNameLabel": "Business name",
   "onboardingNameHint": "e.g. Golden Comb Apiaries",
@@ -935,5 +893,171 @@
     }
   },
   "inspectionLoadError": "The inspection couldn't be opened",
-  "syncTableInspections": "Inspection"
+  "syncTableInspections": "Inspection",
+
+  "signInTagline": "Your apiary notebook, in your pocket. Works without internet.",
+  "signInEmailLabelLong": "Your email address",
+  "signInEmailHelper": "No password. We'll send a 6-digit code to your address.",
+  "signInEmailHint": "name@example.com",
+  "signInCodeHeading": "Enter the code from your email",
+  "signInPasteCode": "Paste code",
+  "signInCodeSpamHint": "Not there? Check your spam folder. After signing in once, the app opens without internet too.",
+  "signInChangeEmail": "Change email",
+
+  "onboardingLanguageCountryTitle": "Language and country",
+  "onboardingAppLanguage": "App language",
+  "onboardingDeviceLanguage": "Device language",
+  "onboardingCountryLabel": "Country you keep bees in",
+  "onboardingCountryChoose": "Choose a country",
+  "onboardingRegionFeaturesTitle": "Turned on for {country}",
+  "@onboardingRegionFeaturesTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String",
+        "example": "Türkiye"
+      }
+    }
+  },
+  "onboardingRegionDefaultsTitle": "Settings for {country}",
+  "@onboardingRegionDefaultsTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String",
+        "example": "Germany"
+      }
+    }
+  },
+  "onboardingRegionDefaultsMessage": "Units and currency follow your country.",
+  "onboardingBusinessTitle": "Tell us about your business",
+  "regionFeatureAks": "AKS and business registration details",
+  "regionFeatureSubsidies": "hive subsidy reminders",
+  "regionFeatureRegulations": "regulation summaries",
+  "regionFeatureTrDrugList": "licensed medicine list",
+  "regionFeatureTrFlora": "Türkiye flora calendar",
+  "regionFeatureTrMigrationDocs": "migratory beekeeping documents",
+  "unitKilogram": "kg",
+  "unitPound": "lb",
+  "unitCelsius": "°C",
+  "unitFahrenheit": "°F",
+  "hemisphereNorthern": "Northern hemisphere",
+  "hemisphereSouthern": "Southern hemisphere",
+
+  "relativeToday": "today",
+  "relativeYesterday": "yesterday",
+  "relativeDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@relativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "apiariesCount": "{count, plural, =1{1 apiary} other{{count} apiaries}}",
+  "@apiariesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "apiariesSummary": "{apiaries} · {hives}",
+  "@apiariesSummary": {
+    "placeholders": {
+      "apiaries": {
+        "type": "String"
+      },
+      "hives": {
+        "type": "String"
+      }
+    }
+  },
+  "apiaryHiveCountUnit": "hives",
+  "@apiaryHiveCountUnit": {
+    "description": "Unit under the big active hive count on an apiary card."
+  },
+
+  "hiveLayoutGridShort": "Grid",
+  "hiveLayoutListShort": "List",
+  "apiaryDetailSubtitle": "{hives} · {visit}",
+  "@apiaryDetailSubtitle": {
+    "placeholders": {
+      "hives": {
+        "type": "String"
+      },
+      "visit": {
+        "type": "String"
+      }
+    }
+  },
+
+  "hiveCardKind": "Hive",
+  "@hiveCardKind": {
+    "description": "Small label above the big hive number on the hive card."
+  },
+  "hiveLastInspection": "Last inspection",
+  "hiveLastInspectionNone": "None yet",
+
+  "hiveBulkPreviewTitle": "Preview",
+  "hiveBulkSaveCount": "{count, plural, =1{Create 1 hive} other{Create {count} hives}}",
+  "@hiveBulkSaveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listEllipsis": "…",
+  "@listEllipsis": {
+    "description": "Stands for the skipped items between the first and last in a shortened list."
+  },
+
+  "scanOfflineHint": "No internet needed · vibrates when read",
+
+  "titleSeparator": " · ",
+  "@titleSeparator": {
+    "description": "Separates two parts of a title, e.g. 'Inspection · 104'."
+  },
+
+  "settingsGeneral": "General",
+  "settingsGloveMode": "Glove mode",
+  "settingsGloveModeHint": "Every touch target grows one step.",
+  "settingsCountry": "Country",
+  "settingsCountryValue": "{name} · {code}",
+  "@settingsCountryValue": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+
+  "moreSectionHelp": "Help",
+  "@moreSectionHelp": {
+    "description": "Section title on the More tab above Settings and Sync."
+  },
+
+  "galleryFormFields": "Form fields",
+  "galleryRadioCardGroup": "Choice cards",
+  "gallerySegmentedTabs": "View switcher",
+  "galleryListGroup": "Grouped list",
+  "galleryNoteCard": "Note card",
+  "gallerySummaryTile": "Summary tile",
+  "galleryActionTile": "Action tiles",
+  "galleryAppLogo": "Logo and honeycomb",
+  "gallerySampleApiaryName": "Apiary name",
+  "gallerySampleFirstNumber": "First number",
+  "gallerySampleNoteHint": "No password. We'll send a 6-digit code to your address.",
+  "gallerySampleGrid": "Grid",
+  "gallerySampleList": "List",
+  "gallerySampleMap": "Map",
+  "gallerySampleInspections": "Inspections",
+  "gallerySampleNoteTitle": "Turned on for Türkiye",
+  "gallerySampleNoteMessage": "AKS and business registration details, regulation summaries and the licensed medicine list.",
+  "gallerySampleLastInspectionValue": "3 days ago",
+  "gallerySampleFrames": "8 bee frames · 5 brood",
+  "gallerySampleActiveTreatment": "Active treatment",
+  "gallerySampleDaysLeft": "12 days left"
 }

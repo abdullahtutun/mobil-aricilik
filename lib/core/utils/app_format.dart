@@ -30,6 +30,22 @@ class AppFormat {
   String dateTime(DateTime value) =>
       DateFormat.yMMMd(locale).add_jm().format(value);
 
+  /// Para biriminin simgesi; simgesi olmayan birimde kodu. `₺`, `€`, `CHF`
+  String currencySymbol(String currencyCode) => NumberFormat.simpleCurrency(
+    locale: locale,
+    name: currencyCode,
+  ).currencySymbol;
+
+  /// Yerelin kuralıyla büyük harf: Türkçede `i` → `İ`, `ı` → `I`.
+  /// Bölüm etiketi gibi büyük harfle yazılan metinler için; Dart'ın
+  /// `toUpperCase`'i Türkçe `i`yi `I` yapar.
+  String upperCase(String value) {
+    if (!locale.startsWith('tr') && !locale.startsWith('az')) {
+      return value.toUpperCase();
+    }
+    return value.replaceAll('i', 'İ').replaceAll('ı', 'I').toUpperCase();
+  }
+
   /// Basamak ayraçlı sayı. En çok [maxFractionDigits] ondalık yazılır,
   /// sondaki sıfırlar atılır. `1.234,5`, `1,234.5`
   String number(num value, {int maxFractionDigits = 2}) {

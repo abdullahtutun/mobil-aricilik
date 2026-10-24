@@ -50,77 +50,94 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
       apiaryFormControllerProvider(widget.apiaryId).notifier,
     );
 
+    final fieldStyle = context.typography.subtitle.copyWith(
+      fontWeight: context.typography.body.fontWeight,
+    );
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: _name,
-          autofocus: widget.autofocusName,
-          textCapitalization: TextCapitalization.words,
-          textInputAction: TextInputAction.next,
-          style: context.typography.body,
-          decoration: _decoration(
-            label: l10n.apiaryFormName,
-            hint: l10n.apiaryFormNameHint,
+        LabeledField(
+          label: l10n.apiaryFormName,
+          child: TextField(
+            controller: _name,
+            autofocus: widget.autofocusName,
+            textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.next,
+            style: fieldStyle,
+            decoration: InputDecoration(hintText: l10n.apiaryFormNameHint),
+            onChanged: controller.updateName,
           ),
-          onChanged: controller.updateName,
         ),
-        SizedBox(height: spacing.lg),
+        SizedBox(height: spacing.xl),
         _LocationSection(apiaryId: widget.apiaryId),
-        SizedBox(height: spacing.lg),
-        TextField(
-          controller: _landownerName,
-          textCapitalization: TextCapitalization.words,
-          textInputAction: TextInputAction.next,
-          style: context.typography.body,
-          decoration: _decoration(label: l10n.apiaryFormLandownerName),
-          onChanged: controller.updateLandownerName,
+        SizedBox(height: spacing.xl),
+        // Ad ve telefon yan yana; ikisi de kısa.
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          spacing: spacing.md,
+          children: [
+            Expanded(
+              child: LabeledField(
+                label: l10n.apiaryFormLandownerName,
+                child: TextField(
+                  controller: _landownerName,
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  style: context.typography.body,
+                  onChanged: controller.updateLandownerName,
+                ),
+              ),
+            ),
+            Expanded(
+              child: LabeledField(
+                label: l10n.apiaryFormLandownerPhone,
+                child: TextField(
+                  controller: _landownerPhone,
+                  keyboardType: TextInputType.phone,
+                  textInputAction: TextInputAction.next,
+                  style: context.typography.body,
+                  onChanged: controller.updateLandownerPhone,
+                ),
+              ),
+            ),
+          ],
         ),
-        SizedBox(height: spacing.lg),
-        TextField(
-          controller: _landownerPhone,
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          style: context.typography.body,
-          decoration: _decoration(label: l10n.apiaryFormLandownerPhone),
-          onChanged: controller.updateLandownerPhone,
-        ),
-        SizedBox(height: spacing.lg),
-        TextField(
-          controller: _notes,
-          keyboardType: TextInputType.multiline,
-          textCapitalization: TextCapitalization.sentences,
-          minLines: 3,
-          maxLines: null,
-          style: context.typography.body,
-          decoration: _decoration(label: l10n.apiaryFormNotes),
-          onChanged: controller.updateNotes,
+        SizedBox(height: spacing.xl),
+        LabeledField(
+          label: l10n.apiaryFormNotes,
+          child: TextField(
+            controller: _notes,
+            keyboardType: TextInputType.multiline,
+            textCapitalization: TextCapitalization.sentences,
+            minLines: 2,
+            maxLines: null,
+            style: context.typography.body,
+            onChanged: controller.updateNotes,
+          ),
         ),
       ],
     );
   }
-
-  static InputDecoration _decoration({required String label, String? hint}) {
-    return InputDecoration(
-      labelText: label,
-      hintText: hint,
-      alignLabelWithHint: true,
-    );
-  }
 }
 
-/// Konum bölümündeki ikincil eylemler (kaldır, ayarları aç): tam genişlik,
-/// en az dokunma hedefi yüksekliğinde.
-ButtonStyle _secondaryActionStyle(BuildContext context) => TextButton.styleFrom(
-  minimumSize: Size.fromHeight(context.touchTargets.minimum),
-  foregroundColor: context.colors.secondary,
+/// Konum kartındaki eylemler: kart zemininde koyu bal yazılı, en az
+/// dokunma hedefi yüksekliğinde.
+ButtonStyle _locationActionStyle(BuildContext context) => TextButton.styleFrom(
+  minimumSize: Size.square(context.touchTargets.minimum),
+  backgroundColor: context.colors.surfaceContainer,
+  foregroundColor: context.colors.primary,
   textStyle: context.typography.label,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(context.radii.button),
+  ),
 );
 
-/// Konum: kayıtlı koordinat ya da "konum yok", GPS'ten alma ve kaldırma.
-/// Konum ancak dokununca alınır; arıcı arılıkta değilken (ör. evde) yanlış
-/// nokta kendiliğinden yazılmasın.
+/// Konum: solda konum işareti, yanında kayıtlı koordinat ve doğruluğu ya da
+/// "konum yok"; altında GPS'ten alma ve kaldırma. Konum ancak dokununca
+/// alınır; arıcı arılıkta değilken (ör. evde) yanlış nokta kendiliğinden
+/// yazılmasın.
 class _LocationSection extends ConsumerWidget {
   const new({required this.apiaryId});
 
@@ -129,96 +146,134 @@ class _LocationSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
     final spacing = context.spacing;
     final provider = apiaryFormControllerProvider(apiaryId);
     final form = ref.watch(provider).value;
     if (form == null) return const SizedBox.shrink();
     final controller = ref.read(provider.notifier);
-    final secondaryText = context.typography.body.copyWith(
-      color: context.colors.textSecondary,
+    final secondaryText = context.typography.bodySmall.copyWith(
+      color: colors.textSecondary,
     );
+    final latitude = form.latitude;
+    final longitude = form.longitude;
+    final accuracy = form.accuracyM;
+    final failure = form.locationFailure;
+    final action = _locationActionStyle(context);
 
-    final List<Widget> children;
+    final Widget details;
+    final List<Widget> actions;
     if (form.locating) {
-      children = [
-        Semantics(
-          liveRegion: true,
-          child: Row(
-            children: [
-              SizedBox.square(
-                dimension: context.sizes.icon,
-                child: const CircularProgressIndicator(),
+      details = Semantics(
+        liveRegion: true,
+        child: Text(l10n.apiaryFormLocating, style: context.typography.body),
+      );
+      actions = [
+        TextButton(
+          style: action,
+          onPressed: controller.cancelLocate,
+          child: Text(l10n.actionCancel),
+        ),
+      ];
+    } else {
+      details = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (latitude != null && longitude != null) ...[
+            Text(
+              AppFormat.of(context).coordinates(latitude, longitude),
+              style: context.typography.label,
+            ),
+            if (accuracy != null)
+              Text(
+                l10n.apiaryFormLocationAccuracy(accuracy.round()),
+                style: secondaryText,
               ),
-              SizedBox(width: spacing.md),
-              Expanded(
-                child: Text(
-                  l10n.apiaryFormLocating,
-                  style: context.typography.body,
+          ] else
+            Text(l10n.apiaryFormLocationNone, style: secondaryText),
+        ],
+      );
+      actions = [
+        TextButton(
+          style: action,
+          onPressed: controller.locate,
+          child: Text(
+            form.hasLocation
+                ? l10n.apiaryFormLocationRetake
+                : l10n.apiaryFormLocationTake,
+          ),
+        ),
+        if (form.hasLocation)
+          TextButton(
+            style: action.copyWith(
+              foregroundColor: WidgetStatePropertyAll(colors.textSecondary),
+            ),
+            onPressed: controller.clearLocation,
+            child: Text(l10n.apiaryFormLocationClear),
+          ),
+      ];
+    }
+
+    return LabeledField(
+      label: l10n.apiaryFormLocation,
+      group: true,
+      child: AppCard(
+        child: Padding(
+          padding: EdgeInsets.all(spacing.md),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  SizedBox.square(
+                    dimension: context.touchTargets.fieldLarge,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: colors.surfaceContainer,
+                        borderRadius: BorderRadius.circular(
+                          context.radii.button,
+                        ),
+                      ),
+                      child: Center(
+                        child: form.locating
+                            ? SizedBox.square(
+                                dimension: context.sizes.icon,
+                                child: const CircularProgressIndicator(),
+                              )
+                            : Icon(
+                                form.hasLocation
+                                    ? Icons.location_on_rounded
+                                    : Icons.location_off_outlined,
+                                size: context.sizes.icon,
+                                color: form.hasLocation
+                                    ? colors.primary
+                                    : colors.textSecondary,
+                              ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: spacing.md),
+                  Expanded(child: details),
+                ],
+              ),
+              if (failure != null) ...[
+                SizedBox(height: spacing.md),
+                _LocationFailureMessage(
+                  failure,
+                  onOpenSettings: controller.openLocationSettings,
                 ),
+              ],
+              SizedBox(height: spacing.md),
+              Wrap(
+                spacing: spacing.sm,
+                runSpacing: spacing.sm,
+                children: actions,
               ),
             ],
           ),
         ),
-        SizedBox(height: spacing.md),
-        BigButton(
-          variant: BigButtonVariant.secondary,
-          label: l10n.actionCancel,
-          icon: Icons.close_rounded,
-          onPressed: controller.cancelLocate,
-        ),
-      ];
-    } else {
-      final latitude = form.latitude;
-      final longitude = form.longitude;
-      final accuracy = form.accuracyM;
-      final failure = form.locationFailure;
-      children = [
-        if (latitude != null && longitude != null) ...[
-          Text(
-            AppFormat.of(context).coordinates(latitude, longitude),
-            style: context.typography.subtitle,
-          ),
-          if (accuracy != null)
-            Text(
-              l10n.apiaryFormLocationAccuracy(accuracy.round()),
-              style: secondaryText,
-            ),
-        ] else
-          Text(l10n.apiaryFormLocationNone, style: secondaryText),
-        if (failure != null) ...[
-          SizedBox(height: spacing.md),
-          _LocationFailureMessage(
-            failure,
-            onOpenSettings: controller.openLocationSettings,
-          ),
-        ],
-        SizedBox(height: spacing.md),
-        BigButton(
-          variant: BigButtonVariant.secondary,
-          label: form.hasLocation
-              ? l10n.apiaryFormLocationRetake
-              : l10n.apiaryFormLocationTake,
-          icon: Icons.my_location_rounded,
-          onPressed: controller.locate,
-        ),
-        if (form.hasLocation) ...[
-          SizedBox(height: spacing.sm),
-          TextButton.icon(
-            style: _secondaryActionStyle(context),
-            onPressed: controller.clearLocation,
-            icon: const Icon(Icons.location_off_rounded),
-            label: Text(l10n.apiaryFormLocationClear),
-          ),
-        ],
-      ];
-    }
-
-    return SectionCard(
-      title: l10n.apiaryFormLocation,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: children,
       ),
     );
   }
@@ -253,7 +308,7 @@ class _LocationFailureMessage extends StatelessWidget {
         ),
         if (fixableInSettings)
           TextButton.icon(
-            style: _secondaryActionStyle(context),
+            style: _locationActionStyle(context),
             onPressed: onOpenSettings,
             icon: const Icon(Icons.settings_rounded),
             label: Text(l10n.apiaryFormOpenSettings),

@@ -100,20 +100,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apiaryNoVisit => 'No visits yet';
 
   @override
-  String apiaryListSubtitle(String hives, String visit) {
-    return '$hives · $visit';
-  }
-
-  @override
-  String get apiaryActiveHives => 'Active hives';
-
-  @override
-  String get apiaryLastVisitLabel => 'Last visit';
-
-  @override
-  String get apiaryVisitNone => 'None yet';
-
-  @override
   String get apiaryEdit => 'Edit';
 
   @override
@@ -194,18 +180,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get apiaryFormSave => 'Save';
-
-  @override
-  String get apiaryHivesTitle => 'Hives';
-
-  @override
-  String get hiveLayoutGrid => 'Grid view';
-
-  @override
-  String get hiveLayoutList => 'List view';
-
-  @override
-  String get hiveSortNumber => 'By number';
 
   @override
   String get hiveSortWeakestFirst => 'Weakest first';
@@ -662,23 +636,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quickRecordComingSoon => 'This record type is coming soon.';
 
   @override
-  String get signInTitle => 'Sign in';
-
-  @override
-  String get signInEmailMessage =>
-      'Enter your email and we\'ll send you a 6-digit code. No password needed.';
-
-  @override
-  String get signInEmailLabel => 'Email';
-
-  @override
   String get signInSendCode => 'Send code';
 
   @override
   String get signInSending => 'Sending…';
-
-  @override
-  String get signInCodeTitle => 'Enter the code';
 
   @override
   String signInCodeMessage(String email) {
@@ -792,20 +753,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingFinishing => 'Setting up…';
 
   @override
-  String get onboardingLanguageTitle => 'Which language should we use?';
-
-  @override
-  String get onboardingLanguageMessage =>
-      'You can change it later in Settings.';
-
-  @override
-  String get onboardingCountryTitle => 'Where is your business?';
-
-  @override
-  String get onboardingCountryMessage =>
-      'Your country sets the currency, units and region-specific modules.';
-
-  @override
   String get onboardingCountrySearch => 'Search countries';
 
   @override
@@ -816,9 +763,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingCountryNoMatch => 'No country matches your search.';
-
-  @override
-  String get onboardingNameTitle => 'What\'s your business called?';
 
   @override
   String get onboardingNameMessage =>
@@ -1303,4 +1247,263 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncTableInspections => 'Inspection';
+
+  @override
+  String get signInTagline =>
+      'Your apiary notebook, in your pocket. Works without internet.';
+
+  @override
+  String get signInEmailLabelLong => 'Your email address';
+
+  @override
+  String get signInEmailHelper =>
+      'No password. We\'ll send a 6-digit code to your address.';
+
+  @override
+  String get signInEmailHint => 'name@example.com';
+
+  @override
+  String get signInCodeHeading => 'Enter the code from your email';
+
+  @override
+  String get signInPasteCode => 'Paste code';
+
+  @override
+  String get signInCodeSpamHint =>
+      'Not there? Check your spam folder. After signing in once, the app opens without internet too.';
+
+  @override
+  String get signInChangeEmail => 'Change email';
+
+  @override
+  String get onboardingLanguageCountryTitle => 'Language and country';
+
+  @override
+  String get onboardingAppLanguage => 'App language';
+
+  @override
+  String get onboardingDeviceLanguage => 'Device language';
+
+  @override
+  String get onboardingCountryLabel => 'Country you keep bees in';
+
+  @override
+  String get onboardingCountryChoose => 'Choose a country';
+
+  @override
+  String onboardingRegionFeaturesTitle(String country) {
+    return 'Turned on for $country';
+  }
+
+  @override
+  String onboardingRegionDefaultsTitle(String country) {
+    return 'Settings for $country';
+  }
+
+  @override
+  String get onboardingRegionDefaultsMessage =>
+      'Units and currency follow your country.';
+
+  @override
+  String get onboardingBusinessTitle => 'Tell us about your business';
+
+  @override
+  String get regionFeatureAks => 'AKS and business registration details';
+
+  @override
+  String get regionFeatureSubsidies => 'hive subsidy reminders';
+
+  @override
+  String get regionFeatureRegulations => 'regulation summaries';
+
+  @override
+  String get regionFeatureTrDrugList => 'licensed medicine list';
+
+  @override
+  String get regionFeatureTrFlora => 'Türkiye flora calendar';
+
+  @override
+  String get regionFeatureTrMigrationDocs => 'migratory beekeeping documents';
+
+  @override
+  String get unitKilogram => 'kg';
+
+  @override
+  String get unitPound => 'lb';
+
+  @override
+  String get unitCelsius => '°C';
+
+  @override
+  String get unitFahrenheit => '°F';
+
+  @override
+  String get hemisphereNorthern => 'Northern hemisphere';
+
+  @override
+  String get hemisphereSouthern => 'Southern hemisphere';
+
+  @override
+  String get relativeToday => 'today';
+
+  @override
+  String get relativeYesterday => 'yesterday';
+
+  @override
+  String relativeDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String apiariesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count apiaries',
+      one: '1 apiary',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String apiariesSummary(String apiaries, String hives) {
+    return '$apiaries · $hives';
+  }
+
+  @override
+  String get apiaryHiveCountUnit => 'hives';
+
+  @override
+  String get hiveLayoutGridShort => 'Grid';
+
+  @override
+  String get hiveLayoutListShort => 'List';
+
+  @override
+  String apiaryDetailSubtitle(String hives, String visit) {
+    return '$hives · $visit';
+  }
+
+  @override
+  String get hiveCardKind => 'Hive';
+
+  @override
+  String get hiveLastInspection => 'Last inspection';
+
+  @override
+  String get hiveLastInspectionNone => 'None yet';
+
+  @override
+  String get hiveBulkPreviewTitle => 'Preview';
+
+  @override
+  String hiveBulkSaveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Create $count hives',
+      one: 'Create 1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get listEllipsis => '…';
+
+  @override
+  String get scanOfflineHint => 'No internet needed · vibrates when read';
+
+  @override
+  String get titleSeparator => ' · ';
+
+  @override
+  String get settingsGeneral => 'General';
+
+  @override
+  String get settingsGloveMode => 'Glove mode';
+
+  @override
+  String get settingsGloveModeHint => 'Every touch target grows one step.';
+
+  @override
+  String get settingsCountry => 'Country';
+
+  @override
+  String settingsCountryValue(String name, String code) {
+    return '$name · $code';
+  }
+
+  @override
+  String get moreSectionHelp => 'Help';
+
+  @override
+  String get galleryFormFields => 'Form fields';
+
+  @override
+  String get galleryRadioCardGroup => 'Choice cards';
+
+  @override
+  String get gallerySegmentedTabs => 'View switcher';
+
+  @override
+  String get galleryListGroup => 'Grouped list';
+
+  @override
+  String get galleryNoteCard => 'Note card';
+
+  @override
+  String get gallerySummaryTile => 'Summary tile';
+
+  @override
+  String get galleryActionTile => 'Action tiles';
+
+  @override
+  String get galleryAppLogo => 'Logo and honeycomb';
+
+  @override
+  String get gallerySampleApiaryName => 'Apiary name';
+
+  @override
+  String get gallerySampleFirstNumber => 'First number';
+
+  @override
+  String get gallerySampleNoteHint =>
+      'No password. We\'ll send a 6-digit code to your address.';
+
+  @override
+  String get gallerySampleGrid => 'Grid';
+
+  @override
+  String get gallerySampleList => 'List';
+
+  @override
+  String get gallerySampleMap => 'Map';
+
+  @override
+  String get gallerySampleInspections => 'Inspections';
+
+  @override
+  String get gallerySampleNoteTitle => 'Turned on for Türkiye';
+
+  @override
+  String get gallerySampleNoteMessage =>
+      'AKS and business registration details, regulation summaries and the licensed medicine list.';
+
+  @override
+  String get gallerySampleLastInspectionValue => '3 days ago';
+
+  @override
+  String get gallerySampleFrames => '8 bee frames · 5 brood';
+
+  @override
+  String get gallerySampleActiveTreatment => 'Active treatment';
+
+  @override
+  String get gallerySampleDaysLeft => '12 days left';
 }

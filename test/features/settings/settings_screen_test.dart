@@ -28,23 +28,27 @@ Future<ProviderContainer> _pumpSettings(
 Finder _inSettings(Finder finder) =>
     find.descendant(of: find.byType(SettingsScreen), matching: finder);
 
-/// [section] başlıklı kartın içi; "Sistem" hem dilde hem temada var.
-Finder _inSection(String section, Finder finder) => find.descendant(
-  of: find.ancestor(of: find.text(section), matching: find.byType(SectionCard)),
-  matching: finder,
-);
-
-Future<void> _tapInSettings(
-  WidgetTester tester,
-  String text, {
-  String? section,
-}) async {
-  final target = section == null
-      ? _inSettings(find.text(text))
-      : _inSection(section, find.text(text));
+Future<void> _tapInSettings(WidgetTester tester, String text) async {
+  final target = _inSettings(find.text(text));
   await tester.ensureVisible(target);
   await tester.pumpAndSettle();
   await tester.tap(target);
+  await tester.pumpAndSettle();
+}
+
+/// Dil satırına dokunur, açılan sayfadan [language]'i seçer.
+Future<void> _chooseLanguage(
+  WidgetTester tester, {
+  required String row,
+  required String language,
+}) async {
+  await _tapInSettings(tester, row);
+  await tester.tap(
+    find.descendant(
+      of: find.byType(OptionSheet<AppLanguage>),
+      matching: find.text(language),
+    ),
+  );
   await tester.pumpAndSettle();
 }
 
@@ -64,28 +68,41 @@ void main() {
       expect(find.byType(SettingsScreen), findsOneWidget);
     });
 
-    testWidgets('dil seçimi arayüz dilini değiştirir', (tester) async {
+    testWidgets('dil satırı sayfa açar; seçim arayüz dilini değiştirir', (
+      tester,
+    ) async {
       final container = await _pumpSettings(tester);
 
-      await _tapInSettings(tester, 'Türkçe');
+      await _chooseLanguage(tester, row: 'Language', language: 'Türkçe');
 
       expect(container.read(languageProvider), AppLanguage.turkish);
       expect(find.text('Ayarlar'), findsOneWidget);
+      expect(_inSettings(find.text('Türkçe')), findsOneWidget);
 
-      await _tapInSettings(tester, 'Sistem', section: 'Dil');
+      await _chooseLanguage(tester, row: 'Dil', language: 'Sistem');
 
       expect(container.read(languageProvider), AppLanguage.system);
       expect(find.text('Settings'), findsOneWidget);
     });
 
-    testWidgets('seçili chip yeniden dokunulunca seçim kalkmaz', (
+    testWidgets('seçili dil sayfada işaretli; kapatılırsa değişmez', (
       tester,
     ) async {
       final container = await _pumpSettings(tester);
+      await _chooseLanguage(tester, row: 'Language', language: 'English');
 
-      await _tapInSettings(tester, 'English');
-      await _tapInSettings(tester, 'English');
+      await _tapInSettings(tester, 'Language');
+      final sheet = find.byType(OptionSheet<AppLanguage>);
+      expect(
+        tester.getSemantics(
+          find.descendant(of: sheet, matching: find.byType(OptionTile)).at(2),
+        ),
+        isSemantics(label: 'English', isSelected: true, isButton: true),
+      );
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
 
+      expect(sheet, findsNothing);
       expect(container.read(languageProvider), AppLanguage.english);
     });
 
@@ -108,11 +125,28 @@ void main() {
       expect(colorMode(), AppColorMode.light);
     });
 
-    testWidgets('ülke seçimi yok; ülke işletmeden gelir', (tester) async {
+    testWidgets('eldiven modu anahtarla açılır ve kapanır', (tester) async {
+      final container = await _pumpSettings(tester);
+      bool glove() => container.read(appearanceProvider).gloveMode;
+
+      await _tapInSettings(tester, 'Glove mode');
+      expect(glove(), isTrue);
+
+      await _tapInSettings(tester, 'Glove mode');
+      expect(glove(), isFalse);
+    });
+
+    testWidgets('ülke işletmeden gelir; gösterilir ama seçilmez', (
+      tester,
+    ) async {
       await _pumpSettings(tester);
 
-      expect(_inSettings(find.text('Country')), findsNothing);
-      expect(_inSettings(find.text('TR · TRY')), findsNothing);
+      final row = find.ancestor(
+        of: _inSettings(find.text('Country')),
+        matching: find.byType(ListRow),
+      );
+      expect(tester.widget<ListRow>(row).value, 'Türkiye · TR');
+      expect(tester.widget<ListRow>(row).onTap, isNull);
     });
   });
 
@@ -129,10 +163,7 @@ void main() {
       await _pumpSettings(tester);
       await scrollToAccount(tester);
 
-      final email = _inSection(
-        'Account',
-        find.text('Signed in as ${testUser.email}'),
-      );
+      final email = _inSettings(find.text('Signed in as ${testUser.email}'));
       await tester.ensureVisible(email);
       expect(email, findsOneWidget);
     });
@@ -144,7 +175,7 @@ void main() {
       await _pumpSettings(tester, auth: auth);
       await scrollToAccount(tester);
 
-      await _tapInSettings(tester, 'Sign out', section: 'Account');
+      await _tapInSettings(tester, 'Sign out');
       expect(find.text('Sign out?'), findsOneWidget);
       await tester.tap(
         find.descendant(
@@ -164,7 +195,7 @@ void main() {
       await _pumpSettings(tester, auth: auth);
       await scrollToAccount(tester);
 
-      await _tapInSettings(tester, 'Sign out', section: 'Account');
+      await _tapInSettings(tester, 'Sign out');
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 

@@ -34,15 +34,15 @@ class HiveFormScreen extends ConsumerWidget {
 
     return switch (ref.watch(_provider)) {
       AsyncData(value: final form?) => Scaffold(
-        appBar: AppBar(title: title),
+        appBar: AppBar(leading: const CloseButton(), title: title),
         body: BottomActionLayout(
+          separated: true,
           body: ListView(
             padding: EdgeInsets.all(context.spacing.lg),
             children: [_HiveFormFields(_provider, isNew: hiveId == null)],
           ),
           action: BigButton(
             label: l10n.hiveFormSave,
-            icon: Icons.check_rounded,
             onPressed: form.canSave ? () => _save(context, ref, form) : null,
           ),
         ),
@@ -116,22 +116,24 @@ class _HiveFormFieldsState extends ConsumerState<_HiveFormFields> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: _number,
-          autofocus: widget.isNew,
-          textInputAction: TextInputAction.done,
-          style: context.typography.body,
-          decoration: InputDecoration(
-            labelText: l10n.hiveFormNumber,
-            hintText: l10n.hiveFormNumberHint,
+        InlineField(
+          label: l10n.hiveFormNumber,
+          field: TextField(
+            controller: _number,
+            autofocus: widget.isNew,
+            textInputAction: TextInputAction.done,
+            textAlign: TextAlign.center,
+            style: context.typography.number,
+            decoration: InputDecoration(hintText: l10n.hiveFormNumberHint),
+            onChanged: controller.updateNumber,
           ),
-          onChanged: controller.updateNumber,
         ),
-        SizedBox(height: spacing.lg),
+        SizedBox(height: spacing.xl),
         HiveTypeField(selected: form.type, onChanged: controller.selectType),
-        SizedBox(height: spacing.lg),
-        SectionCard(
-          title: l10n.hiveFormStatus,
+        SizedBox(height: spacing.xl),
+        LabeledField(
+          label: l10n.hiveFormStatus,
+          group: true,
           child: ChoiceChipGroup<HiveStatus>(
             options: [
               for (final status in HiveStatus.values)
@@ -145,7 +147,7 @@ class _HiveFormFieldsState extends ConsumerState<_HiveFormFields> {
             },
           ),
         ),
-        SizedBox(height: spacing.lg),
+        SizedBox(height: spacing.xl),
         HiveSourceField(
           selected: form.source,
           onChanged: controller.selectSource,

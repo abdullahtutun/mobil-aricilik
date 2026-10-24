@@ -8,7 +8,8 @@ import 'package:mobil_arici/features/apiaries/presentation/apiary_form_controlle
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_form_fields.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
 
-/// Arılık ekleme ([apiaryId] null) ve düzenleme. Kaydedince yeni arılığın
+/// Arılık ekleme ([apiaryId] null) ve düzenleme: üstte Kapat ve başlık,
+/// altta çizgiyle ayrılmış Kaydet. Kaydedince yeni arılığın
 /// detayı açılır; düzenlemede detaya dönülür.
 class ApiaryFormScreen extends ConsumerWidget {
   const new({super.key, this.apiaryId});
@@ -24,8 +25,9 @@ class ApiaryFormScreen extends ConsumerWidget {
 
     return switch (ref.watch(apiaryFormControllerProvider(apiaryId))) {
       AsyncData(value: final form?) => Scaffold(
-        appBar: AppBar(title: title),
+        appBar: AppBar(leading: const CloseButton(), title: title),
         body: BottomActionLayout(
+          separated: true,
           body: ListView(
             padding: EdgeInsets.all(context.spacing.lg),
             children: [
@@ -37,7 +39,6 @@ class ApiaryFormScreen extends ConsumerWidget {
           ),
           action: BigButton(
             label: l10n.apiaryFormSave,
-            icon: Icons.check_rounded,
             onPressed: form.canSave ? () => _save(context, ref) : null,
           ),
         ),

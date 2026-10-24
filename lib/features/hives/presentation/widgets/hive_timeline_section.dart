@@ -30,20 +30,22 @@ class HiveTimelineSection extends ConsumerWidget {
       for (final summary in apiaries) summary.apiary.id: summary.apiary.name,
     };
 
-    return SectionCard(
-      title: l10n.hiveTimelineTitle,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (final (i, event) in events.indexed)
-            _EventTile(
-              key: ValueKey(event.id),
-              event: event,
-              apiaryNames: apiaryNames,
-              isLast: i == events.length - 1,
-            ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Semantics(
+          header: true,
+          child: Text(l10n.hiveTimelineTitle, style: context.typography.title),
+        ),
+        SizedBox(height: context.spacing.lg),
+        for (final (i, event) in events.indexed)
+          _EventTile(
+            key: ValueKey(event.id),
+            event: event,
+            apiaryNames: apiaryNames,
+            isLast: i == events.length - 1,
+          ),
+      ],
     );
   }
 }

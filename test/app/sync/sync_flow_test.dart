@@ -117,7 +117,7 @@ void main() {
       expect(find.bySemanticsLabel('Sync: Error'), findsOneWidget);
       await tap(tester, inAppBar('Error'));
 
-      expect(find.text("Couldn't be sent (1)"), findsOneWidget);
+      expect(find.text("COULDN'T BE SENT (1)"), findsOneWidget);
       expect(find.text('Apiary'), findsOneWidget);
       expect(
         find.textContaining(
@@ -180,7 +180,7 @@ void main() {
         final indicator = status == SyncStatus.retryLater ? 'Synced' : 'Error';
         expect(
           find.descendant(
-            of: find.byType(StatusBadge),
+            of: find.byType(SyncScreen),
             matching: find.text(indicator),
           ),
           findsOneWidget,
@@ -200,7 +200,7 @@ void main() {
 
       expect(find.text('Eşitleme'), findsOneWidget);
       expect(find.text('1 kayıt gönderilmeyi bekliyor.'), findsOneWidget);
-      expect(find.text('Gönderilemeyen kayıtlar (1)'), findsOneWidget);
+      expect(find.text('GÖNDERİLEMEYEN KAYITLAR (1)'), findsOneWidget);
       expect(find.text('Arılık'), findsOneWidget);
       expect(
         find.textContaining('Bu kaydı değiştirme yetkin yok · '),

@@ -18,7 +18,15 @@ enum GalleryComponent {
   sectionCard(_SectionCardSamples()),
   timelineTile(_TimelineTileSamples()),
   snackBar(_SnackBarSamples()),
-  criticalLockCard(_CriticalLockCardSamples());
+  criticalLockCard(_CriticalLockCardSamples()),
+  formFields(_FormFieldSamples()),
+  radioCardGroup(_RadioCardGroupSamples()),
+  segmentedTabs(_SegmentedTabsSamples()),
+  listGroup(_ListGroupSamples()),
+  noteCard(_NoteCardSamples()),
+  summaryTile(_SummaryTileSamples()),
+  actionTile(_ActionTileSamples()),
+  appLogo(_AppLogoSamples());
 
   new(this.samples);
 
@@ -36,6 +44,14 @@ enum GalleryComponent {
     GalleryComponent.timelineTile => l10n.galleryTimelineTile,
     GalleryComponent.snackBar => l10n.gallerySnackBar,
     GalleryComponent.criticalLockCard => l10n.galleryCriticalLockCard,
+    GalleryComponent.formFields => l10n.galleryFormFields,
+    GalleryComponent.radioCardGroup => l10n.galleryRadioCardGroup,
+    GalleryComponent.segmentedTabs => l10n.gallerySegmentedTabs,
+    GalleryComponent.listGroup => l10n.galleryListGroup,
+    GalleryComponent.noteCard => l10n.galleryNoteCard,
+    GalleryComponent.summaryTile => l10n.gallerySummaryTile,
+    GalleryComponent.actionTile => l10n.galleryActionTile,
+    GalleryComponent.appLogo => l10n.galleryAppLogo,
   };
 }
 
@@ -400,6 +416,239 @@ class _CriticalLockCardSamples extends StatelessWidget {
     return CriticalLockCard(
       title: l10n.gallerySampleWithdrawalTitle,
       message: l10n.gallerySampleWithdrawalMessage,
+    );
+  }
+}
+
+/// Bölüm başlığı, üstte adlı metin alanı ve sayaç görünümünde kısa alan.
+class _FormFieldSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final spacing = context.spacing;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SectionLabel(l10n.gallerySampleQueen),
+        SizedBox(height: spacing.md),
+        LabeledField(
+          label: l10n.gallerySampleApiaryName,
+          helper: l10n.gallerySampleNoteHint,
+          child: TextFormField(
+            initialValue: l10n.gallerySampleApiaryHill,
+            style: context.typography.body,
+          ),
+        ),
+        SizedBox(height: spacing.md),
+        InlineField(
+          label: l10n.gallerySampleFirstNumber,
+          field: TextFormField(
+            initialValue: '141',
+            textAlign: TextAlign.center,
+            style: context.typography.number,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _RadioCardGroupSamples extends StatefulWidget {
+  const new();
+
+  @override
+  State<_RadioCardGroupSamples> createState() => _RadioCardGroupSamplesState();
+}
+
+class _RadioCardGroupSamplesState extends State<_RadioCardGroupSamples> {
+  _QueenSighting _selected = _QueenSighting.seen;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return RadioCardGroup<_QueenSighting>(
+      options: [
+        RadioCardOption(
+          value: _QueenSighting.seen,
+          label: l10n.gallerySampleQueenSeen,
+          hint: l10n.gallerySampleStrong,
+        ),
+        RadioCardOption(
+          value: _QueenSighting.none,
+          label: l10n.gallerySampleNone,
+        ),
+      ],
+      selected: _selected,
+      onChanged: (value) => setState(() => _selected = value),
+    );
+  }
+}
+
+enum _View { grid, list, map }
+
+class _SegmentedTabsSamples extends StatefulWidget {
+  const new();
+
+  @override
+  State<_SegmentedTabsSamples> createState() => _SegmentedTabsSamplesState();
+}
+
+class _SegmentedTabsSamplesState extends State<_SegmentedTabsSamples> {
+  _View _view = _View.grid;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: SegmentedTabs<_View>(
+        options: [
+          SegmentOption(value: _View.grid, label: l10n.gallerySampleGrid),
+          SegmentOption(value: _View.list, label: l10n.gallerySampleList),
+          SegmentOption(value: _View.map, label: l10n.gallerySampleMap),
+        ],
+        selected: _view,
+        onChanged: (value) => setState(() => _view = value),
+      ),
+    );
+  }
+}
+
+class _ListGroupSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return ListGroup(
+      children: [
+        ListRow(title: l10n.gallerySampleInspections, value: '32'),
+        ListRow(
+          title: l10n.gallerySampleQueen,
+          value: l10n.gallerySampleQueenSeen,
+          onTap: _noop,
+        ),
+        ListRow(
+          title: l10n.gallerySampleLastInspection,
+          subtitle: l10n.gallerySampleLastInspectionBody,
+        ),
+      ],
+    );
+  }
+}
+
+class _NoteCardSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: context.spacing.md,
+      children: [
+        NoteCard(
+          title: l10n.gallerySampleNoteTitle,
+          message: l10n.gallerySampleNoteMessage,
+        ),
+        NoteCard(
+          icon: Icons.mail_outline_rounded,
+          message: l10n.gallerySampleNoteHint,
+        ),
+      ],
+    );
+  }
+}
+
+class _SummaryTileSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: context.touchTargets.gap,
+        children: [
+          Expanded(
+            child: SummaryTile(
+              label: l10n.gallerySampleLastInspection,
+              value: l10n.gallerySampleLastInspectionValue,
+              detail: l10n.gallerySampleFrames,
+            ),
+          ),
+          Expanded(
+            child: SummaryTile(
+              label: l10n.gallerySampleActiveTreatment,
+              value: l10n.gallerySampleDaysLeft,
+              status: AppStatus.critical,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Hızlı kayıt sayfasındaki gibi; ilk karo dolgulu.
+class _ActionTileSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: context.touchTargets.gap,
+        children: [
+          Expanded(
+            child: ActionTile(
+              icon: Icons.description_outlined,
+              label: l10n.quickRecordInspection,
+              highlighted: true,
+              onTap: _noop,
+            ),
+          ),
+          Expanded(
+            child: ActionTile(
+              icon: Icons.water_drop_outlined,
+              iconColor: colors.statusInfo,
+              label: l10n.quickRecordFeeding,
+              onTap: _noop,
+            ),
+          ),
+          Expanded(
+            child: ActionTile(
+              icon: Icons.medication_outlined,
+              iconColor: colors.statusCritical,
+              label: l10n.quickRecordTreatment,
+              onTap: _noop,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AppLogoSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: context.sizes.honeycomb,
+      child: const Stack(
+        children: [
+          PositionedDirectional(top: 0, end: 0, child: HoneycombBackdrop()),
+          Align(alignment: AlignmentDirectional.centerStart, child: AppLogo()),
+        ],
+      ),
     );
   }
 }

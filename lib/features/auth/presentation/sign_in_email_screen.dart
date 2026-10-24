@@ -41,41 +41,78 @@ class _SignInEmailScreenState extends ConsumerState<SignInEmailScreen> {
     final failure = state.failure;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.signInTitle)),
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.all(spacing.lg),
-          children: [
-            Text(l10n.signInEmailMessage, style: context.typography.body),
-            SizedBox(height: spacing.lg),
-            TextField(
-              controller: _email,
-              // İstek sürerken klavye kapanmasın; hata çıkınca düzeltmeye
-              // hazır kalsın.
-              readOnly: state.busy,
-              autofocus: true,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.send,
-              autofillHints: const [AutofillHints.email],
-              autocorrect: false,
-              style: context.typography.body,
-              decoration: InputDecoration(labelText: l10n.signInEmailLabel),
-              onChanged: (_) =>
-                  ref.read(signInControllerProvider.notifier).clearFailure(),
-              onSubmitted: (_) => _submit(),
+      body: Stack(
+        children: [
+          const PositionedDirectional(
+            top: 0,
+            end: 0,
+            child: HoneycombBackdrop(),
+          ),
+          BottomActionLayout(
+            body: ListView(
+              padding: EdgeInsets.fromLTRB(
+                spacing.lg,
+                spacing.xxxl,
+                spacing.lg,
+                spacing.lg,
+              ),
+              children: [
+                const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: AppLogo(),
+                ),
+                SizedBox(height: spacing.xl),
+                Semantics(
+                  header: true,
+                  child: Text(
+                    l10n.appTitle,
+                    style: context.typography.headline,
+                  ),
+                ),
+                SizedBox(height: spacing.sm),
+                Text(
+                  l10n.signInTagline,
+                  style: context.typography.subtitle.copyWith(
+                    color: context.colors.textSecondary,
+                    fontWeight: context.typography.body.fontWeight,
+                  ),
+                ),
+                SizedBox(height: spacing.xxl),
+                LabeledField(
+                  label: l10n.signInEmailLabelLong,
+                  helper: l10n.signInEmailHelper,
+                  child: TextField(
+                    controller: _email,
+                    // İstek sürerken klavye kapanmasın; hata çıkınca
+                    // düzeltmeye hazır kalsın.
+                    readOnly: state.busy,
+                    autofocus: true,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.send,
+                    autofillHints: const [AutofillHints.email],
+                    autocorrect: false,
+                    style: context.typography.subtitle.copyWith(
+                      fontWeight: context.typography.body.fontWeight,
+                    ),
+                    decoration: InputDecoration(hintText: l10n.signInEmailHint),
+                    onChanged: (_) => ref
+                        .read(signInControllerProvider.notifier)
+                        .clearFailure(),
+                    onSubmitted: (_) => _submit(),
+                  ),
+                ),
+                if (failure != null) ...[
+                  SizedBox(height: spacing.md),
+                  AuthFailureMessage(failure),
+                ],
+              ],
             ),
-            if (failure != null) ...[
-              SizedBox(height: spacing.md),
-              AuthFailureMessage(failure),
-            ],
-            SizedBox(height: spacing.xl),
-            BigButton(
+            action: BigButton(
               label: state.busy ? l10n.signInSending : l10n.signInSendCode,
-              icon: Icons.mail_rounded,
               onPressed: state.busy ? null : _submit,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

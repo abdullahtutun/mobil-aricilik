@@ -4,11 +4,10 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/auth/presentation/widgets/sign_out_button.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_controller.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/country_step.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/hive_count_step.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/language_step.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/name_step.dart';
+import 'package:mobil_arici/features/onboarding/presentation/widgets/business_step.dart';
+import 'package:mobil_arici/features/onboarding/presentation/widgets/language_country_step.dart';
 import 'package:mobil_arici/features/onboarding/presentation/widgets/onboarding_failure_message.dart';
+import 'package:mobil_arici/features/onboarding/presentation/widgets/onboarding_stepper.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 
@@ -93,26 +92,25 @@ class _OnboardingFlow extends ConsumerWidget {
         if (!didPop) controller.back();
       },
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: state.isFirstStep
-              ? null
-              : BackButton(onPressed: state.busy ? null : controller.back),
-          title: Text(
-            l10n.onboardingStepCounter(
-              state.step.index + 1,
-              onboardingStepCount,
-            ),
-          ),
-          actions: const [SignOutButton()],
-        ),
         body: BottomActionLayout(
-          body: switch (state.step) {
-            OnboardingStep.language => const LanguageStep(),
-            OnboardingStep.country => const CountryStep(),
-            OnboardingStep.name => const NameStep(),
-            OnboardingStep.hiveCount => const HiveCountStep(),
-          },
+          body: ListView(
+            padding: EdgeInsets.all(spacing.lg),
+            children: [
+              OnboardingStepper(
+                current: state.step.index + 1,
+                total: onboardingStepCount,
+                onBack: state.isFirstStep || state.busy
+                    ? null
+                    : controller.back,
+              ),
+              SizedBox(height: spacing.xl),
+              switch (state.step) {
+                OnboardingStep.languageAndCountry =>
+                  const LanguageCountryStep(),
+                OnboardingStep.business => const BusinessStep(),
+              },
+            ],
+          ),
           action: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -126,13 +124,11 @@ class _OnboardingFlow extends ConsumerWidget {
                   label: state.busy
                       ? l10n.onboardingFinishing
                       : l10n.onboardingFinish,
-                  icon: Icons.check_rounded,
                   onPressed: state.canContinue ? controller.submit : null,
                 )
               else
                 BigButton(
                   label: l10n.onboardingContinue,
-                  icon: Icons.arrow_forward_rounded,
                   onPressed: state.canContinue ? controller.next : null,
                 ),
             ],

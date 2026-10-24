@@ -40,27 +40,45 @@ Future<ProviderContainer> _open(
   return container;
 }
 
+/// Dokunur; öğe tembel listede henüz kurulmadıysa önce ona kaydırır
+/// (kovan kartı uzun, alttaki butonlar ilk açılışta kurulmaz).
 Future<void> _tap(WidgetTester tester, Finder finder) async {
+  if (finder.evaluate().isEmpty) {
+    await tester.scrollUntilVisible(
+      finder,
+      200,
+      scrollable: find.byType(Scrollable).hitTestable().first,
+    );
+  }
   await tester.ensureVisible(finder);
   await tester.pumpAndSettle();
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }
 
+/// Adı [label] olan alanın metin kutusu (ad, satırda ya da üstte yazar).
+Finder _field(String label) => find.descendant(
+  of: find.ancestor(
+    of: find.text(label),
+    matching: find.byWidgetPredicate(
+      (widget) => widget is InlineField || widget is LabeledField,
+    ),
+  ),
+  matching: find.byType(TextField),
+);
+
 Future<void> _enter(WidgetTester tester, String label, String text) async {
-  await tester.enterText(find.widgetWithText(TextField, label), text);
+  await tester.enterText(_field(label), text);
   await tester.pump();
 }
 
 BigButton _button(WidgetTester tester, String label) =>
     tester.widget<BigButton>(find.widgetWithText(BigButton, label));
 
-/// Kovan kartının başlığındaki (konum ikonlu) arılık; aynı ad zaman
-/// tünelinde de geçer.
-Finder _cardApiary(String name) => find.descendant(
-  of: find.widgetWithIcon(Row, Icons.place_rounded),
-  matching: find.text(name),
-);
+/// Kovan kartının üst çubuğundaki arılık; aynı ad zaman tünelinde de
+/// geçer.
+Finder _cardApiary(String name) =>
+    find.descendant(of: find.byType(AppBar), matching: find.text(name));
 
 /// Açık seçim sayfasındaki [text]. Sayfa generic (`OptionSheet<Apiary>`),
 /// `byType` tam tipi arar.
@@ -119,7 +137,8 @@ void main() {
     ) async {
       await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
       expect(find.text('No hives yet'), findsOneWidget);
-      expect(find.byType(FloatingActionButton), findsNothing);
+      // Yalnız boş durumun butonu.
+      expect(find.widgetWithText(BigButton, 'Add hives'), findsOneWidget);
 
       await _tap(tester, find.widgetWithText(BigButton, 'Add hives'));
       expect(find.text('One hive'), findsOneWidget);
@@ -135,17 +154,15 @@ void main() {
       );
       await _tap(tester, find.text('Local'));
       await _tap(tester, find.text('Swarm'));
-      await _tap(tester, find.text('Create hives'));
+      expect(find.text('Create 20 hives'), findsOneWidget);
+      await _tap(tester, find.text('Create 20 hives'));
 
       expect(find.byType(ApiaryDetailScreen), findsOneWidget);
       expect(find.text('20 hives created'), findsOneWidget);
       expect(find.byType(HiveTile), findsNWidgets(20));
       // Üstteki aktif kovan sayısı.
-      expect(find.text('20'), findsOneWidget);
-      expect(
-        find.widgetWithText(FloatingActionButton, 'Add hives'),
-        findsOneWidget,
-      );
+      expect(find.text('20 hives · No visits yet'), findsOneWidget);
+      expect(find.widgetWithText(BigButton, 'Add hives'), findsOneWidget);
       final first = tester.getTopLeft(find.text('101'));
       final second = tester.getTopLeft(find.text('102'));
       final last = tester.getTopLeft(find.text('120'));
@@ -178,10 +195,7 @@ void main() {
       await createHive('101');
       await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
 
-      await _tap(
-        tester,
-        find.widgetWithText(FloatingActionButton, 'Add hives'),
-      );
+      await _tap(tester, find.widgetWithText(BigButton, 'Add hives'));
       await _tap(tester, find.text('One hive'));
 
       expect(find.byType(HiveFormScreen), findsOneWidget);
@@ -221,16 +235,16 @@ void main() {
       await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
 
       // Üstte yalnız aktifler sayılır.
-      expect(find.text('3'), findsOneWidget);
+      expect(find.text('3 hives · No visits yet'), findsOneWidget);
       expect(find.byType(HiveTile), findsNWidgets(5));
       final x = [
         for (final n in ['9', '10', '101']) tester.getTopLeft(find.text(n)).dx,
       ];
       expect(x, [...x]..sort());
-      expect(find.text('Not active (2)'), findsOneWidget);
+      expect(find.text('NOT ACTIVE (2)'), findsOneWidget);
       expect(
         tester.getTopLeft(find.text('5')).dy,
-        greaterThan(tester.getTopLeft(find.text('Not active (2)')).dy),
+        greaterThan(tester.getTopLeft(find.text('NOT ACTIVE (2)')).dy),
       );
       // Karoda durum ikonla, kelimesi ekran okuyucuda.
       final deadTile = tester.widget<HiveTile>(
@@ -239,11 +253,11 @@ void main() {
       expect(deadTile.alertStatus, AppStatus.critical);
       expect(deadTile.alertLabel, 'Dead');
       expect(
-        tester.getSemantics(find.byTooltip('Grid view')),
+        tester.getSemantics(find.text('Grid')),
         isSemantics(isSelected: true, isButton: true),
       );
 
-      await _tap(tester, find.byTooltip('List view'));
+      await _tap(tester, find.text('List'));
 
       expect(find.byType(HiveTile), findsNothing);
       expect(find.text('Langstroth · Swarm'), findsOneWidget);
@@ -251,7 +265,7 @@ void main() {
       expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
       expect(find.widgetWithText(StatusBadge, 'Sold'), findsOneWidget);
       expect(
-        tester.getSemantics(find.byTooltip('List view')),
+        tester.getSemantics(find.text('List')),
         isSemantics(isSelected: true, isButton: true),
       );
 
@@ -401,10 +415,7 @@ void main() {
       await _tap(tester, find.byTooltip('Edit'));
       expect(find.text('Edit hive'), findsOneWidget);
       expect(
-        tester
-            .widget<TextField>(find.widgetWithText(TextField, 'Hive number'))
-            .controller
-            ?.text,
+        tester.widget<TextField>(_field('Hive number')).controller?.text,
         '101',
       );
       await _enter(tester, 'Hive number', '102');
@@ -457,10 +468,9 @@ void main() {
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    expect(find.text('Kovanlar'), findsOneWidget);
-    expect(find.widgetWithText(FloatingActionButton, 'Kovan ekle'), findsOne);
-    expect(find.byTooltip('Izgara görünümü'), findsOneWidget);
-    await _tap(tester, find.byTooltip('Liste görünümü'));
+    expect(find.widgetWithText(BigButton, 'Kovan ekle'), findsOne);
+    expect(find.text('Izgara'), findsOneWidget);
+    await _tap(tester, find.text('Liste'));
     expect(find.text('Langstroth'), findsOneWidget);
 
     container.read(routerProvider).go(AppRoutes.hive(yayla.id, hive.id));
@@ -521,7 +531,7 @@ void main() {
     // Eldivende boşluklar büyür, karolar daralmaz.
     expect(columns(), 2);
 
-    await _tap(tester, find.byTooltip('List view'));
+    await _tap(tester, find.text('List'));
     expect(tester.takeException(), isNull);
 
     final router = container.read(routerProvider)

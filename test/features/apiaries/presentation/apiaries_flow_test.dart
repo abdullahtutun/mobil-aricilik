@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
@@ -68,8 +69,14 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
+/// Adı [label] olan alanın metin kutusu (ad alanın üstünde yazar).
+Finder _field(String label) => find.descendant(
+  of: find.ancestor(of: find.text(label), matching: find.byType(LabeledField)),
+  matching: find.byType(TextField),
+);
+
 Future<void> _enter(WidgetTester tester, String label, String text) async {
-  await tester.enterText(find.widgetWithText(TextField, label), text);
+  await tester.enterText(_field(label), text);
   await tester.pump();
 }
 
@@ -90,7 +97,7 @@ void main() {
       await _openApiaries(tester, db: db);
 
       expect(find.text('No apiaries yet'), findsOneWidget);
-      expect(find.byType(FloatingActionButton), findsNothing);
+      expect(find.byTooltip('Add apiary'), findsNothing);
       await _tap(tester, find.text('Add your first apiary'));
 
       expect(find.byType(ApiaryFormScreen), findsOneWidget);
@@ -105,18 +112,16 @@ void main() {
 
       expect(find.byType(ApiaryDetailScreen), findsOneWidget);
       expect(find.text('Yayla'), findsOneWidget);
-      expect(find.text('0'), findsOneWidget);
-      expect(find.text('Active hives'), findsOneWidget);
-      expect(find.text('Last visit'), findsOneWidget);
-      expect(find.text('None yet'), findsOneWidget);
+      expect(find.text('No hives · No visits yet'), findsOneWidget);
 
       // Geri: form değil liste.
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.byType(ApiariesScreen), findsOneWidget);
       expect(find.text('Yayla'), findsOneWidget);
-      expect(find.text('No hives · No visits yet'), findsOneWidget);
-      expect(find.widgetWithText(FloatingActionButton, 'Add apiary'), findsOne);
+      expect(find.text('No visits yet'), findsOneWidget);
+      expect(find.text('0'), findsOneWidget);
+      expect(find.byTooltip('Add apiary'), findsOne);
 
       final saved = await db.select(db.apiaries).get();
       expect(saved.single.orgId, _orgId);
@@ -146,6 +151,11 @@ void main() {
         );
       }
 
+      // Beş kart bir ekrana sığsın.
+      tester.view
+        ..physicalSize = const Size(800, 1600)
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       await _openApiaries(tester, db: db);
 
       final names = ['Arılık 2', 'Arılık 10', 'Cevizli', 'Çamlık', 'Yayla'];
@@ -154,8 +164,9 @@ void main() {
       ];
       expect(tops, [...tops]..sort());
       expect(find.text('Başkası'), findsNothing);
-      expect(find.text('2 hives · No visits yet'), findsOneWidget);
-      expect(find.text('No hives · No visits yet'), findsNWidgets(4));
+      expect(find.text('5 apiaries · 2 hives'), findsOneWidget);
+      expect(find.text('2'), findsOneWidget);
+      expect(find.text('0'), findsNWidgets(4));
     });
 
     testWidgets('kovan eklenince liste kendiliğinden güncellenir', (
@@ -163,7 +174,7 @@ void main() {
     ) async {
       final yayla = await apiaries.create(orgId: _orgId, name: 'Yayla');
       await _openApiaries(tester, db: db);
-      expect(find.text('No hives · No visits yet'), findsOneWidget);
+      expect(find.text('0'), findsOneWidget);
 
       await HiveRepository(db).create(
         orgId: _orgId,
@@ -173,10 +184,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('1 hive · No visits yet'), findsOneWidget);
+      expect(find.text('1'), findsOneWidget);
+      expect(find.text('1 apiary · 1 hive'), findsOneWidget);
     });
 
-    testWidgets('son ziyaret varsa tarihi yazılır', (tester) async {
+    testWidgets('son ziyaret yakınsa gün olarak yazılır', (tester) async {
       final apiary = Apiary(
         id: 'a1',
         orgId: _orgId,
@@ -189,22 +201,24 @@ void main() {
         activeHiveCount: 12,
         lastVisitAt: DateTime.utc(2026, 10, 21, 9),
       );
-      final container = await _openApiaries(
-        tester,
-        db: db,
-        overrides: [
-          apiaryListProvider.overrideWith((ref) => Stream.value([summary])),
-          apiarySummaryProvider(apiary.id)
-              .overrideWith((ref) => Stream.value(summary)),
-        ],
-      );
+      await withClock(Clock.fixed(DateTime(2026, 10, 24, 10)), () async {
+        final container = await _openApiaries(
+          tester,
+          db: db,
+          overrides: [
+            apiaryListProvider.overrideWith((ref) => Stream.value([summary])),
+            apiarySummaryProvider(apiary.id)
+                .overrideWith((ref) => Stream.value(summary)),
+          ],
+        );
 
-      expect(find.text('12 hives · Last visit Oct 21, 2026'), findsOneWidget);
+        expect(find.text('Last visit 3 days ago'), findsOneWidget);
+        expect(find.text('12'), findsOneWidget);
 
-      container.read(routerProvider).go(AppRoutes.apiary(apiary.id));
-      await tester.pumpAndSettle();
-      expect(find.text('12'), findsOneWidget);
-      expect(find.text('Oct 21, 2026'), findsOneWidget);
+        container.read(routerProvider).go(AppRoutes.apiary(apiary.id));
+        await tester.pumpAndSettle();
+        expect(find.text('12 hives · Last visit 3 days ago'), findsOneWidget);
+      });
     });
 
     testWidgets('Türkçe metinler', (tester) async {
@@ -214,17 +228,14 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Arılıklar'), findsWidgets);
-      expect(find.text('Kovan yok · Henüz ziyaret yok'), findsOneWidget);
-      expect(
-        find.widgetWithText(FloatingActionButton, 'Arılık ekle'),
-        findsOne,
-      );
+      expect(find.text('1 arılık · Kovan yok'), findsOneWidget);
+      expect(find.text('Henüz ziyaret yok'), findsOneWidget);
+      expect(find.text('kovan'), findsOneWidget);
+      expect(find.byTooltip('Arılık ekle'), findsOne);
 
       container.read(routerProvider).go(AppRoutes.apiary(yayla.id));
       await tester.pumpAndSettle();
-      expect(find.text('Aktif kovan'), findsOneWidget);
-      expect(find.text('Son ziyaret'), findsOneWidget);
-      expect(find.text('Henüz yok'), findsOneWidget);
+      expect(find.text('Kovan yok · Henüz ziyaret yok'), findsOneWidget);
       expect(find.byTooltip('Düzenle'), findsOneWidget);
     });
   });
@@ -252,12 +263,7 @@ void main() {
       // Kayıtlı konumun doğruluğu bilinmez.
       expect(find.textContaining('Accuracy'), findsNothing);
       expect(
-        tester
-            .widget<TextField>(
-              find.widgetWithText(TextField, "Landowner's name"),
-            )
-            .controller
-            ?.text,
+        tester.widget<TextField>(_field("Landowner's name")).controller?.text,
         'Ahmet',
       );
 

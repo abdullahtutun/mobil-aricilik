@@ -224,7 +224,7 @@ return $default(_that.organizationId,_that.step,_that.suggestedCountryCode,_that
 
 
 class _OnboardingState implements OnboardingState {
-  const _OnboardingState({required this.organizationId, this.step = OnboardingStep.language, this.suggestedCountryCode, this.countryCode, this.name = '', this.hiveCountRange, this.busy = false, this.failure});
+  const _OnboardingState({required this.organizationId, this.step = OnboardingStep.languageAndCountry, this.suggestedCountryCode, this.countryCode, this.name = '', this.hiveCountRange, this.busy = false, this.failure});
   
 
 /// Kurulacak işletmenin kimliği. Yeniden denemede aynı kalır; yanıtı

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 /// Renk içermez; renk temadan (`textPrimary`) gelir.
 class AppTypography extends ThemeExtension<AppTypography> {
   const new({
+    required this.display,
     required this.numberLarge,
     required this.number,
     required this.headline,
@@ -24,6 +25,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     required double button,
   }) {
     return AppTypography(
+      display: _style(72, FontWeight.w700, 1),
       numberLarge: _style(40, FontWeight.w700, 1.1),
       number: _style(32, FontWeight.w700, 1.15),
       headline: _style(28, FontWeight.w700, 1.25),
@@ -54,6 +56,9 @@ class AppTypography extends ThemeExtension<AppTypography> {
     label: 18,
     button: 20,
   );
+
+  /// Kovan kartındaki dev numara; ekranın konusu olan tek sayı.
+  final TextStyle display;
 
   /// Kovan no gibi ilk bakışta yakalanması gereken sayılar.
   final TextStyle numberLarge;
@@ -110,6 +115,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
 
   @override
   AppTypography copyWith({
+    TextStyle? display,
     TextStyle? numberLarge,
     TextStyle? number,
     TextStyle? headline,
@@ -122,6 +128,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     TextStyle? button,
   }) {
     return AppTypography(
+      display: display ?? this.display,
       numberLarge: numberLarge ?? this.numberLarge,
       number: number ?? this.number,
       headline: headline ?? this.headline,
@@ -139,6 +146,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
   AppTypography lerp(AppTypography? other, double t) {
     if (other == null) return this;
     return AppTypography(
+      display: TextStyle.lerp(display, other.display, t)!,
       numberLarge: TextStyle.lerp(numberLarge, other.numberLarge, t)!,
       number: TextStyle.lerp(number, other.number, t)!,
       headline: TextStyle.lerp(headline, other.headline, t)!,

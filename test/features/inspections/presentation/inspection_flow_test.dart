@@ -85,7 +85,15 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
-Finder _section(String title) => find.widgetWithText(SectionCard, title);
+/// Başlığı [title] olan bölüm: başlığın hemen üstündeki sütun.
+Finder _section(String title) => find
+    .ancestor(
+      of: find.byWidgetPredicate(
+        (widget) => widget is SectionLabel && widget.text == title,
+      ),
+      matching: find.byType(Column),
+    )
+    .first;
 
 /// [section] bölümündeki [label] chip'i (ör. "Yok" birden çok bölümde var).
 Finder _chip(String section, String label) =>
@@ -158,7 +166,7 @@ void main() {
 
       expect(find.byType(HiveCardScreen), findsOneWidget);
       expect(_location(container), AppRoutes.hiveInspect(yayla.id, hive.id));
-      expect(find.text('Inspect hive 101'), findsOneWidget);
+      expect(find.bySemanticsLabel('Inspect hive 101'), findsOneWidget);
       expect(find.text('First inspection'), findsOneWidget);
       expect(find.byType(EditableText), findsNothing);
       expect(_stepper(tester, 'With bees').value, isNull);
@@ -453,7 +461,9 @@ void main() {
     await tester.tap(
       find.descendant(
         of: find.byType(AppNavigationBar),
-        matching: find.text('Scan'),
+        matching: find.byWidgetPredicate(
+          (widget) => widget is Icon && widget.semanticLabel == 'Scan',
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -501,26 +511,26 @@ void main() {
         'Soluk değerler önceki muayeneden. Değişeni düzelt; diğerleri olduğu '
         'gibi kaydedilir.';
 
+    expect(find.bySemanticsLabel('Kovan 101 muayenesi'), findsOneWidget);
     for (final text in [
-      'Kovan 101 muayenesi',
       'Önceki muayene 22 Eki 2026',
       legend,
-      'Ana arı',
+      'ANA ARI',
       'Görüldü',
       'Yumurta var',
-      'Çerçeveler',
+      'ÇERÇEVELER',
       'Arılı',
       'Yavrulu',
       'Ballı',
-      'Mizaç',
+      'MİZAÇ',
       'Sakin',
       'Sinirli',
-      'Oğul belirtisi',
-      'Ana arı memesi',
+      'OĞUL BELİRTİSİ',
+      'ANA ARI MEMESİ',
       'Ana değiştirme',
       'Acil',
-      'Hastalık şüphesi',
-      'Yapılan işlem',
+      'HASTALIK ŞÜPHESİ',
+      'YAPILAN İŞLEM',
       'Kat verildi',
       'Ana ızgarası takıldı',
       'Polen tuzağı takıldı',

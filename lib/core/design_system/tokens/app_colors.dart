@@ -111,10 +111,11 @@ class AppColors extends ThemeExtension<AppColors> {
     queenBlue: Color(0xFF1E88E5),
   );
 
-  /// Güneş modu: saf beyaz zemin, siyah metin, her çift 7:1 üzeri, gölge yok.
+  /// Güneş modu: saf beyaz zemin, siyah metin ve siyah birincil eylem
+  /// (Muayene · güneş modu tasarımı), her çift 7:1 üzeri, gölge yok.
   /// Durum zeminleri beyaza çok yakın; durum yazısı üstlerinde de 7:1.
   static const sun = AppColors(
-    primary: Color(0xFF7A4700),
+    primary: Color(0xFF000000),
     onPrimary: Color(0xFFFFFFFF),
     secondary: Color(0xFF1F4238),
     onSecondary: Color(0xFFFFFFFF),

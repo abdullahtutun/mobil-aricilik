@@ -49,6 +49,17 @@ abstract final class AppTheme {
     );
   }
 
+  static OutlineInputBorder _inputBorder(
+    AppRadii radii,
+    Color color,
+    double width,
+  ) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(radii.button),
+      borderSide: BorderSide(color: color, width: width),
+    );
+  }
+
   static ThemeData build({
     required Brightness brightness,
     required AppColors colors,
@@ -104,11 +115,46 @@ abstract final class AppTheme {
       shadowColor: colors.shadow,
       materialTapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity(horizontal: density, vertical: density),
-      // Metin alanları çerçeveli; eldivenle dokunulacak yer belli olsun.
+      // Metin alanları beyaz ve çerçeveli; eldivenle dokunulacak yer belli
+      // olsun. Odakta çerçeve koyu bal.
       inputDecorationTheme: InputDecorationThemeData(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radii.button),
+        filled: true,
+        fillColor: colors.tile,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: spacing.lg,
+          vertical: spacing.lg,
         ),
+        hintStyle: typography.body.copyWith(color: colors.textSecondary),
+        border: _inputBorder(radii, colors.divider, strokes.focus),
+        enabledBorder: _inputBorder(radii, colors.divider, strokes.focus),
+        focusedBorder: _inputBorder(radii, colors.primary, strokes.focus),
+        errorBorder: _inputBorder(radii, colors.statusCritical, strokes.focus),
+        focusedErrorBorder: _inputBorder(
+          radii,
+          colors.statusCritical,
+          strokes.focus,
+        ),
+      ),
+      // Üst çubuk zeminle bir; kaydırınca renk değiştirmez. Geri oku sade
+      // köşeli ok.
+      appBarTheme: AppBarThemeData(
+        backgroundColor: colors.surface,
+        foregroundColor: colors.textPrimary,
+        surfaceTintColor: colors.surface,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        titleTextStyle: typography.title.copyWith(color: colors.textPrimary),
+      ),
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (context) =>
+            const Icon(Icons.chevron_left_rounded),
+        closeButtonIconBuilder: (context) => const Icon(Icons.close_rounded),
+      ),
+      dividerTheme: DividerThemeData(
+        color: colors.divider,
+        thickness: strokes.border,
+        space: strokes.border,
       ),
       // Bildirim: koyu mürekkep zemin, bal sarısı eylem; altta yüzer.
       snackBarTheme: SnackBarThemeData(

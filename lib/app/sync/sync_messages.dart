@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/sync/sync_indicator.dart';
@@ -8,6 +9,13 @@ AppStatus syncIndicatorStatus(SyncIndicator indicator) => switch (indicator) {
   SyncIndicator.synced => AppStatus.good,
   SyncIndicator.pending => AppStatus.info,
   SyncIndicator.error => AppStatus.critical,
+};
+
+/// Senkron durumunun bulut ikonu; renk ve kelimeyle birlikte kullanılır.
+IconData syncIndicatorIcon(SyncIndicator indicator) => switch (indicator) {
+  SyncIndicator.synced => Icons.cloud_done_rounded,
+  SyncIndicator.pending => Icons.cloud_upload_rounded,
+  SyncIndicator.error => Icons.sync_problem_rounded,
 };
 
 /// Senkron durumunu anlatan kelime: "Eşitlendi", "3 bekliyor", "Hata".

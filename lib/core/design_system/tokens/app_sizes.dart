@@ -13,6 +13,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.illustrationIcon,
     required this.hiveTile,
     required this.scanWindow,
+    required this.honeycomb,
   });
 
   static const standard = AppSizes(
@@ -24,6 +25,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     illustrationIcon: 48,
     hiveTile: 104,
     scanWindow: 240,
+    honeycomb: 240,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -52,6 +54,9 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// yanda başparmak payı kalır.
   final double scanWindow;
 
+  /// Giriş ekranlarının köşesindeki petek deseni.
+  final double honeycomb;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -62,6 +67,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? illustrationIcon,
     double? hiveTile,
     double? scanWindow,
+    double? honeycomb,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -72,6 +78,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       illustrationIcon: illustrationIcon ?? this.illustrationIcon,
       hiveTile: hiveTile ?? this.hiveTile,
       scanWindow: scanWindow ?? this.scanWindow,
+      honeycomb: honeycomb ?? this.honeycomb,
     );
   }
 
@@ -91,6 +98,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       )!,
       hiveTile: lerpDouble(hiveTile, other.hiveTile, t)!,
       scanWindow: lerpDouble(scanWindow, other.scanWindow, t)!,
+      honeycomb: lerpDouble(honeycomb, other.honeycomb, t)!,
     );
   }
 }

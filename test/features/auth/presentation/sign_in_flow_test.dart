@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/app/app.dart';
@@ -47,6 +48,10 @@ Finder _field(Type screen) =>
 
 BigButton _button(WidgetTester tester, String label) =>
     tester.widget<BigButton>(find.widgetWithText(BigButton, label));
+
+/// Tekrar gönder gibi metin butonları.
+TextButton _textButton(WidgetTester tester, String label) =>
+    tester.widget<TextButton>(find.widgetWithText(TextButton, label));
 
 /// E-postayı yazıp kodu ister; geçiş bitince kod ekranındadır. Sayaç
 /// çalıştığı için pumpAndSettle kullanılmaz, o 60 saniyeyi bitirirdi.
@@ -194,6 +199,45 @@ void main() {
   });
 
   group('Kod adımı', () {
+    testWidgets('Kodu yapıştır panodaki rakamları yazar ve doğrular', (
+      tester,
+    ) async {
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        (call) async => call.method == 'Clipboard.getData'
+            ? <String, Object?>{'text': 'Kodun: 482 913'}
+            : null,
+      );
+      addTearDown(
+        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          SystemChannels.platform,
+          null,
+        ),
+      );
+      final auth = FakeAuthService();
+      await _pumpApp(tester, auth);
+      await _requestCode(tester, 'ari@example.com');
+
+      await tester.tap(find.text('Paste code'));
+      await tester.pumpAndSettle();
+
+      expect(auth.verifiedCodes.single.code, '482913');
+      expect(find.byType(TodayScreen), findsOneWidget);
+    });
+
+    testWidgets('E-postayı değiştir e-posta adımına döner', (tester) async {
+      final auth = FakeAuthService();
+      await _pumpApp(tester, auth);
+      await _requestCode(tester, 'ari@example.com');
+
+      await tester.tap(find.text('Change email'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SignInEmailScreen), findsOneWidget);
+      expect(find.byType(SignInCodeScreen), findsNothing);
+      await _closeApp(tester);
+    });
+
     testWidgets('kod yazılınca kendiliğinden doğrulanır, Bugün açılır', (
       tester,
     ) async {
@@ -306,13 +350,13 @@ void main() {
 
       final seconds = container.read(signInControllerProvider).resendSeconds;
       expect(seconds, inInclusiveRange(1, 60));
-      expect(_button(tester, 'Resend code ($seconds s)').onPressed, isNull);
+      expect(_textButton(tester, 'Resend code ($seconds s)').onPressed, isNull);
 
       await tester.pump(const Duration(seconds: 1));
       expect(find.text('Resend code (${seconds - 1} s)'), findsOneWidget);
 
       await tester.pump(Duration(seconds: seconds - 1));
-      expect(_button(tester, 'Resend code').onPressed, isNotNull);
+      expect(_textButton(tester, 'Resend code').onPressed, isNotNull);
 
       await tester.tap(find.text('Resend code'));
       await tester.pump();

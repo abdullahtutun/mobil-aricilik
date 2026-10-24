@@ -98,4 +98,17 @@ void main() {
       expect(tr.currency(1234.5, currencyCode: 'JPY'), '¥1.235');
     });
   });
+
+  group('upperCase ve currencySymbol', () {
+    test('Türkçede i İ, ı I olur; İngilizcede Dart kuralı', () {
+      expect(tr.upperCase('işletme ılık'), 'İŞLETME ILIK');
+      expect(en.upperCase('queen bees'), 'QUEEN BEES');
+    });
+
+    test('para biriminin simgesi; simgesi yoksa kodu', () {
+      expect(tr.currencySymbol('TRY'), '₺');
+      expect(en.currencySymbol('EUR'), '€');
+      expect(en.currencySymbol('CHF'), 'CHF');
+    });
+  });
 }

@@ -50,7 +50,7 @@ class _InspectionForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
-    final gap = SizedBox(height: spacing.md);
+    final gap = SizedBox(height: spacing.lg);
     final controller = ref.read(
       inspectionFormControllerProvider(hiveId).notifier,
     );
@@ -58,6 +58,7 @@ class _InspectionForm extends ConsumerWidget {
     final values = draft.values;
 
     return BottomActionLayout(
+      separated: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -90,6 +91,7 @@ class _InspectionForm extends ConsumerWidget {
                   ],
                   _ChoiceField<QueenState>(
                     title: l10n.inspectionQueen,
+                    columns: QueenState.values.length,
                     options: [
                       for (final state in QueenState.values)
                         ChoiceChipOption(
@@ -102,7 +104,7 @@ class _InspectionForm extends ConsumerWidget {
                     onChanged: controller.setQueenState,
                   ),
                   gap,
-                  SectionCard(
+                  _Section(
                     title: l10n.inspectionFrames,
                     child: Column(
                       children: [
@@ -186,7 +188,7 @@ class _InspectionForm extends ConsumerWidget {
                         controller.setDiseaseSuspected(suspected: suspected),
                   ),
                   gap,
-                  SectionCard(
+                  _Section(
                     title: l10n.inspectionActions,
                     child: ChoiceChipGroup<InspectionAction>(
                       multiSelect: true,
@@ -209,7 +211,6 @@ class _InspectionForm extends ConsumerWidget {
       ),
       action: BigButton(
         label: l10n.inspectionSave,
-        icon: Icons.check_rounded,
         onPressed: form.saving ? null : () => _save(context, ref),
       ),
     );
@@ -269,9 +270,20 @@ class _Header extends StatelessWidget {
               children: [
                 Semantics(
                   header: true,
-                  child: Text(
-                    l10n.inspectionTitle(form.hive.number),
-                    style: context.typography.title,
+                  label: l10n.inspectionTitle(form.hive.number),
+                  excludeSemantics: true,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: l10n.timelineInspection),
+                        TextSpan(text: l10n.titleSeparator),
+                        TextSpan(
+                          text: form.hive.number,
+                          style: TextStyle(color: context.colors.primary),
+                        ),
+                      ],
+                    ),
+                    style: context.typography.headline,
                   ),
                 ),
                 Text(
@@ -338,6 +350,27 @@ class _Note extends StatelessWidget {
   }
 }
 
+/// Bölüm: büyük harfli küçük başlık, altında içerik.
+class _Section extends StatelessWidget {
+  const new({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SectionLabel(title),
+        SizedBox(height: context.spacing.sm),
+        child,
+      ],
+    );
+  }
+}
+
 /// Tek seçimli chip alanı. Seçili chip'e yeniden dokunmak seçimi kaldırır;
 /// öneriye dokunmak onu onaylar.
 class _ChoiceField<T> extends StatelessWidget {
@@ -347,8 +380,11 @@ class _ChoiceField<T> extends StatelessWidget {
     required this.value,
     required this.suggested,
     required this.onChanged,
+    this.columns,
   });
 
+  /// Verilirse chip'ler eşit sütunlarda.
+  final int? columns;
   final String title;
   final List<ChoiceChipOption<T>> options;
   final T? value;
@@ -358,9 +394,10 @@ class _ChoiceField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final value = this.value;
-    return SectionCard(
+    return _Section(
       title: title,
       child: ChoiceChipGroup<T>(
+        columns: columns,
         options: options,
         selected: {?value},
         suggested: suggested,

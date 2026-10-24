@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
-/// Zaman tünelinde bir olay: solda türünün ikonu ve bir sonraki olaya inen
-/// çizgi; sağda başlık, zaman ve ayrıntı satırları.
+/// Zaman tünelinde bir olay: solda türünün ikonu kart zemininde bir
+/// dairede ve bir sonraki olaya inen çizgi; sağda kalın başlık ve en sağda
+/// zaman, altında ikincil ayrıntı satırları.
 ///
 /// İkon yalnız türü gösterir, anlamı başlıkta yazar. Ekran okuyucu satırı
 /// tek parça okur.
@@ -32,8 +33,10 @@ class TimelineTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final spacing = context.spacing;
-    final sizes = context.sizes;
     final typography = context.typography;
+    final secondary = typography.bodySmall.copyWith(
+      color: colors.textSecondary,
+    );
 
     return MergeSemantics(
       child: IntrinsicHeight(
@@ -42,53 +45,63 @@ class TimelineTile extends StatelessWidget {
           children: [
             Column(
               children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: colors.surfaceContainer,
-                    border: Border.all(
-                      color: colors.outline,
-                      width: context.strokes.border,
+                SizedBox.square(
+                  dimension: context.touchTargets.minimum,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: colors.surfaceContainer,
+                      border: colors.surfaceContainer == colors.surface
+                          ? Border.all(
+                              color: colors.divider,
+                              width: context.strokes.border,
+                            )
+                          : null,
                     ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(spacing.sm),
                     child: Icon(
                       icon,
-                      size: sizes.iconSmall,
-                      color: colors.textPrimary,
+                      size: context.sizes.iconSmall,
+                      color: colors.primary,
                     ),
                   ),
                 ),
                 if (!isLast)
                   Expanded(
                     child: SizedBox(
-                      width: context.strokes.border,
-                      child: ColoredBox(color: colors.outline),
+                      width: context.strokes.focus,
+                      child: ColoredBox(color: colors.divider),
                     ),
                   ),
               ],
             ),
-            SizedBox(width: spacing.md),
+            SizedBox(width: spacing.lg),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: spacing.xs,
-                  bottom: isLast ? 0 : spacing.lg,
+                  top: spacing.sm,
+                  bottom: isLast ? 0 : spacing.xl,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: typography.label),
-                    Text(
-                      time,
-                      style: typography.bodySmall.copyWith(
-                        color: colors.textSecondary,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: Text(title, style: typography.label)),
+                        SizedBox(width: spacing.sm),
+                        // Büyük yazıda zaman kendi sütununda kırılır.
+                        Flexible(
+                          child: Text(
+                            time,
+                            textAlign: TextAlign.end,
+                            style: secondary,
+                          ),
+                        ),
+                      ],
                     ),
                     for (final line in details) ...[
                       SizedBox(height: spacing.xs),
-                      Text(line, style: typography.bodySmall),
+                      Text(line, style: secondary),
                     ],
                   ],
                 ),

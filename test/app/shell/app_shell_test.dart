@@ -28,10 +28,15 @@ Future<ProviderContainer> _pumpApp(WidgetTester tester) async {
   return container;
 }
 
-/// Alt gezinmedeki bir öğe (sekme ya da Okut).
+/// Alt gezinmedeki bir öğe: sekmenin etiketi ya da Okut'un ikonu (adı
+/// yalnız ekran okuyucuda).
 Finder _navItem(String label) => find.descendant(
   of: find.byType(AppNavigationBar),
-  matching: find.text(label),
+  matching: find.byWidgetPredicate(
+    (widget) =>
+        (widget is Text && widget.data == label) ||
+        (widget is Icon && widget.semanticLabel == label),
+  ),
 );
 
 /// Platformdan gelen derin linki taklit eder (Android/iOS tam URI verir).
@@ -189,7 +194,7 @@ void main() {
       );
       expect(find.byType(AppNavigationBar).hitTestable(), findsNothing);
 
-      await tester.tap(find.byType(BackButton));
+      await tester.tap(find.byTooltip('Close'));
       await tester.pumpAndSettle();
 
       expect(find.byType(ScanScreen), findsNothing);

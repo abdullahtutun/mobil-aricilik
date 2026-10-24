@@ -76,9 +76,15 @@ bool _checked(WidgetTester tester, String label) => tester
 BigButton _button(WidgetTester tester, String label) =>
     tester.widget<BigButton>(find.widgetWithText(BigButton, label));
 
-IconButton _shareButton(WidgetTester tester) => tester.widget<IconButton>(
-  find.widgetWithIcon(IconButton, Icons.share_rounded),
-);
+BigButton _shareButton(WidgetTester tester) => _button(tester, 'Share PDF');
+
+/// Kovan listesi önizlemenin altında; bir ekrana sığsın.
+void _tall(WidgetTester tester) {
+  tester.view
+    ..physicalSize = const Size(800, 2000)
+    ..devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+}
 
 void main() {
   late AppDatabase db;
@@ -118,6 +124,7 @@ void main() {
   testWidgets('arılıktan açılır; aktif kovanlar seçili gelir, yazdırılır', (
     tester,
   ) async {
+    _tall(tester);
     await createHive('10');
     await createHive('9');
     await createHive('5', status: HiveStatus.dead);
@@ -154,6 +161,7 @@ void main() {
   });
 
   testWidgets('seçim değişir; hiç seçili yokken yazdırılamaz', (tester) async {
+    _tall(tester);
     await createHive('101');
     await createHive('5', status: HiveStatus.sold);
     await _open(
@@ -196,7 +204,7 @@ void main() {
     );
     expect(find.text('25 labels · 2 pages'), findsOneWidget);
 
-    await _tapAndBuild(tester, find.byTooltip('Share PDF'));
+    await _tapAndBuild(tester, find.widgetWithText(BigButton, 'Share PDF'));
 
     expect(printer.shared.single.filename, 'Hive labels - Yayla.pdf');
     expect(printer.printed, isEmpty);
@@ -232,6 +240,7 @@ void main() {
   });
 
   testWidgets('Türkçe metinler', (tester) async {
+    _tall(tester);
     await createHive('101');
     await createHive('102');
     final container = await _open(
@@ -257,7 +266,7 @@ void main() {
     await _tap(tester, find.text('Hiçbirini seçme'));
     expect(find.text('Seçili kovan yok'), findsOneWidget);
     await _tap(tester, find.text('Tümünü seç'));
-    expect(find.byTooltip('PDF paylaş'), findsOneWidget);
+    expect(find.widgetWithText(BigButton, 'PDF paylaş'), findsOneWidget);
 
     await _tapAndBuild(tester, find.widgetWithText(BigButton, 'Yazdır'));
     expect(printer.printed.single.name, 'Kovan etiketleri - Yayla');
@@ -294,7 +303,8 @@ void main() {
           .first,
     );
     await _tap(tester, find.text('Select all'));
-    expect(find.text('2 labels · 1 page'), findsOneWidget);
     expect(tester.takeException(), isNull);
+    expect(find.text('Hive A-123456'), findsOneWidget);
+    expect(_checked(tester, 'Hive A-123456'), isTrue);
   });
 }

@@ -32,11 +32,10 @@ class SyncStatusButton extends ConsumerWidget {
 
     return TextButton.icon(
       onPressed: () => context.push(AppRoutes.sync),
-      icon: Icon(switch (indicator) {
-        SyncIndicator.synced => Icons.cloud_done_rounded,
-        SyncIndicator.pending => Icons.cloud_upload_rounded,
-        SyncIndicator.error => Icons.sync_problem_rounded,
-      }, color: syncIndicatorStatus(indicator).colorIn(context.colors)),
+      icon: Icon(
+        syncIndicatorIcon(indicator),
+        color: syncIndicatorStatus(indicator).colorIn(context.colors),
+      ),
       label: Text(label, semanticsLabel: l10n.syncStatusSemantics(label)),
     );
   }

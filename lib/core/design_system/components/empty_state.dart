@@ -1,6 +1,5 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:mobil_arici/core/design_system/components/app_logo.dart';
 import 'package:mobil_arici/core/design_system/components/big_button.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
@@ -96,22 +95,11 @@ class _HexagonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = size.center(Offset.zero);
-    final radius = size.shortestSide / 2 - strokeWidth / 2;
-    final path = Path();
-    for (var i = 0; i < 6; i++) {
-      final angle = -math.pi / 2 + i * math.pi / 3;
-      final point = center + Offset(math.cos(angle), math.sin(angle)) * radius;
-      if (i == 0) {
-        path.moveTo(point.dx, point.dy);
-      } else {
-        path.lineTo(point.dx, point.dy);
-      }
-    }
-    path.close();
-
     canvas.drawPath(
-      path,
+      hexagonPath(
+        size.center(Offset.zero),
+        size.shortestSide / 2 - strokeWidth / 2,
+      ),
       Paint()
         ..color = stroke
         ..style = PaintingStyle.stroke

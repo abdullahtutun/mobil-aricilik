@@ -11,10 +11,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'onboarding_controller.freezed.dart';
 part 'onboarding_controller.g.dart';
 
-/// Onboarding adımları, sırasıyla. Dil seçimi doğrudan uygulamanın diline
-/// yazılır; diğerleri işletme kurulurken gönderilir. İşletme kurulunca
-/// yerel bir adım daha gelir: ilk arılık (`FirstApiaryScreen`).
-enum OnboardingStep { language, country, name, hiveCount }
+/// Onboarding adımları, sırasıyla: dil ve ülke; işletme adı ve kovan
+/// sayısı. Dil seçimi doğrudan uygulamanın diline yazılır; diğerleri
+/// işletme kurulurken gönderilir. İşletme kurulunca yerel bir adım daha
+/// gelir: ilk arılık (`FirstApiaryScreen`).
+enum OnboardingStep { languageAndCountry, business }
 
 /// Adım sayacındaki toplam: işletme adımları ve ilk arılık.
 int get onboardingStepCount => OnboardingStep.values.length + 1;
@@ -25,7 +26,7 @@ abstract class OnboardingState with _$OnboardingState {
     /// Kurulacak işletmenin kimliği. Yeniden denemede aynı kalır; yanıtı
     /// kaybolan istek tekrarlanınca ikinci işletme açılmaz.
     required String organizationId,
-    @Default(OnboardingStep.language) OnboardingStep step,
+    @Default(OnboardingStep.languageAndCountry) OnboardingStep step,
 
     /// Cihazın dil listesinden önerilen ülke; listede en üstte durur.
     String? suggestedCountryCode,
@@ -51,14 +52,13 @@ extension OnboardingProgress on OnboardingState {
   bool get canContinue =>
       !busy &&
       switch (step) {
-        OnboardingStep.language => true,
-        OnboardingStep.country => countryCode != null,
-        OnboardingStep.name => name.trim().isNotEmpty,
-        OnboardingStep.hiveCount => hiveCountRange != null,
+        OnboardingStep.languageAndCountry => countryCode != null,
+        OnboardingStep.business =>
+          name.trim().isNotEmpty && hiveCountRange != null,
       };
 }
 
-/// Dil → ülke → işletme adı → kovan sayısı akışı. Ekran açık kaldığı sürece
+/// Dil ve ülke → işletme adı ve kovan sayısı akışı. Ekran açık kaldığı sürece
 /// yaşar. İşletme kurulunca yönlendirmeyi (ilk arılık adımına) router yapar.
 @riverpod
 class OnboardingController extends _$OnboardingController {

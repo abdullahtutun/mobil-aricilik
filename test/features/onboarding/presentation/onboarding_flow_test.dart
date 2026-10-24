@@ -16,9 +16,9 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/country_step.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/hive_count_step.dart';
-import 'package:mobil_arici/features/onboarding/presentation/widgets/name_step.dart';
+import 'package:mobil_arici/features/onboarding/presentation/widgets/business_step.dart';
+import 'package:mobil_arici/features/onboarding/presentation/widgets/country_picker.dart';
+import 'package:mobil_arici/features/onboarding/presentation/widgets/language_country_step.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
@@ -75,20 +75,35 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
 Future<void> _continue(WidgetTester tester) =>
     _tap(tester, find.widgetWithText(BigButton, 'Continue'));
 
-ListTile _countryTile(WidgetTester tester, String name) => tester.widget(
-  find.ancestor(of: find.text(name), matching: find.byType(ListTile)),
+/// Ülke alanına (seçili ülkenin adı ya da "Choose a country") dokunup
+/// seçiciyi açar.
+Future<void> _openCountryPicker(WidgetTester tester, String fieldText) => _tap(
+  tester,
+  find.descendant(
+    of: find.byType(LanguageCountryStep),
+    matching: find.text(fieldText),
+  ),
 );
 
-Finder _inCountryStep(Finder finder) =>
-    find.descendant(of: find.byType(CountryStep), matching: finder);
+Finder _inPicker(Finder finder) =>
+    find.descendant(of: find.byType(CountryPicker), matching: finder);
 
-/// Dil, ülke (önerilen), ad ve kovan aralığı adımlarını geçip işletmeyi
+Finder _nameField() => find.descendant(
+  of: find.byType(BusinessStep),
+  matching: find.byType(TextField),
+);
+
+/// Adı [label] olan alanın metin kutusu (ad alanın üstünde yazar).
+Finder _field(String label) => find.descendant(
+  of: find.ancestor(of: find.text(label), matching: find.byType(LabeledField)),
+  matching: find.byType(TextField),
+);
+
+/// Dil ve ülke (önerilen), ad ve kovan aralığı adımlarını geçip işletmeyi
 /// kurar.
 Future<void> _setUpBusiness(WidgetTester tester) async {
   await _continue(tester);
-  await _continue(tester);
-  await tester.enterText(find.byType(TextField), 'Golden Comb');
-  await _continue(tester);
+  await tester.enterText(_nameField(), 'Golden Comb');
   await _tap(tester, find.text('None yet'));
   await _tap(tester, find.text('Set up business'));
 }
@@ -102,42 +117,31 @@ void main() {
 
       expect(find.byType(OnboardingScreen), findsOneWidget);
       expect(find.byType(AppNavigationBar), findsNothing);
-      expect(find.text('Step 1 of 5'), findsOneWidget);
-      expect(find.text('Which language should we use?'), findsOneWidget);
+      expect(find.text('STEP 1 OF 3'), findsOneWidget);
+      expect(find.text('Language and country'), findsOneWidget);
     });
 
-    testWidgets('dört adım tamamlanınca işletme kurulur, ilk arılık açılır', (
+    testWidgets('iki adım tamamlanınca işletme kurulur, ilk arılık açılır', (
       tester,
     ) async {
       final service = FakeOrganizationService();
       final container = await _pumpApp(tester, service: service);
 
-      // Dil: cihaz dili seçili gelir.
-      await _continue(tester);
-
-      // Ülke: aranıp seçilir.
-      expect(find.text('Step 2 of 5'), findsOneWidget);
-      await tester.enterText(_inCountryStep(find.byType(TextField)), 'germ');
+      // Dil ve ülke: cihaz dili seçili, ülke seçiciden aranıp seçilir.
+      await _openCountryPicker(tester, 'United States');
+      await tester.enterText(_inPicker(find.byType(TextField)), 'germ');
       await tester.pumpAndSettle();
-      await _tap(tester, find.text('Germany'));
-      expect(_countryTile(tester, 'Germany').selected, isTrue);
+      await _tap(tester, _inPicker(find.text('Germany')));
+      expect(find.byType(CountryPicker), findsNothing);
+      expect(find.text('Settings for Germany'), findsOneWidget);
+      expect(find.text('€ EUR'), findsOneWidget);
       await _continue(tester);
 
-      // Ad: yazılmadan geçilmez.
-      expect(find.text('Step 3 of 5'), findsOneWidget);
-      expect(_button(tester, 'Continue').onPressed, isNull);
-      await tester.enterText(
-        find.descendant(
-          of: find.byType(NameStep),
-          matching: find.byType(TextField),
-        ),
-        '  Golden Comb  ',
-      );
+      // İşletme: ad ve kovan aralığı girilmeden kurulmaz.
+      expect(find.text('STEP 2 OF 3'), findsOneWidget);
+      expect(_button(tester, 'Set up business').onPressed, isNull);
+      await tester.enterText(_nameField(), '  Golden Comb  ');
       await tester.pump();
-      await _continue(tester);
-
-      // Kovan sayısı: seçilmeden kurulmaz.
-      expect(find.text('Step 4 of 5'), findsOneWidget);
       expect(_button(tester, 'Set up business').onPressed, isNull);
       await _tap(tester, find.text('11–50'));
       await _tap(tester, find.text('Set up business'));
@@ -155,7 +159,7 @@ void main() {
       );
       expect(created.id, matches(RegExp('^[0-9a-f-]{14}7')));
       expect(find.byType(FirstApiaryScreen), findsOneWidget);
-      expect(find.text('Step 5 of 5'), findsOneWidget);
+      expect(find.text('STEP 3 OF 3'), findsOneWidget);
       expect(find.byType(AppNavigationBar), findsNothing);
 
       final region = container.read(regionConfigProvider);
@@ -169,53 +173,72 @@ void main() {
       await _tap(tester, find.text('Türkçe'));
 
       expect(container.read(languageProvider), AppLanguage.turkish);
-      expect(find.text('Hangi dili kullanalım?'), findsOneWidget);
-      expect(find.text('Adım 1/5'), findsOneWidget);
+      expect(find.text('Dil ve ülke'), findsOneWidget);
+      // Dokunulan kart başa kaydırıldı; sayaç ekranın üstünde kaldı.
+      expect(find.text('ADIM 1/3', skipOffstage: false), findsOneWidget);
 
       await _tap(tester, find.text('Devam'));
-      expect(find.text('İşletmen hangi ülkede?'), findsOneWidget);
+      expect(find.text('İşletmeni tanıyalım'), findsOneWidget);
     });
 
-    testWidgets('cihaz dilinin ülkesi önerilir ve seçili gelir', (
+    testWidgets('cihaz dilinin ülkesi önerilir; bölgenin getirdikleri yazar', (
       tester,
     ) async {
       _setDeviceLocales(tester, const [Locale('tr', 'TR')]);
       await _pumpApp(tester);
 
-      await _tap(tester, find.text('Devam'));
-
-      expect(_inCountryStep(find.text('Cihazına göre önerilen')), findsOne);
-      expect(_countryTile(tester, 'Türkiye').selected, isTrue);
-      expect(_inCountryStep(find.text('TRY')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(RadioCardGroup<AppLanguage>),
+          matching: find.text('Cihaz dili'),
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('Türkiye için açılanlar'), findsOneWidget);
+      expect(
+        find.textContaining('AKS ve işletme tescil bilgileri'),
+        findsOneWidget,
+      );
+      expect(find.text('₺ TRY'), findsOneWidget);
+      expect(find.text('Kuzey yarımküre'), findsOneWidget);
       expect(_button(tester, 'Devam').onPressed, isNotNull);
+
+      await _openCountryPicker(tester, 'Türkiye');
+      expect(_inPicker(find.text('CİHAZINA GÖRE ÖNERİLEN')), findsOneWidget);
+      expect(
+        tester.getSemantics(
+          find.ancestor(
+            of: _inPicker(find.text('Türkiye')),
+            matching: find.byType(OptionTile),
+          ),
+        ),
+        isSemantics(isSelected: true, isButton: true, label: 'Türkiye\nTRY'),
+      );
     });
 
     testWidgets('ülke önerilemezse seçilene kadar geçilmez', (tester) async {
       _setDeviceLocales(tester, const [Locale('en')]);
       await _pumpApp(tester);
 
-      await _continue(tester);
-
-      expect(
-        _inCountryStep(find.text('Suggested for your device')),
-        findsNothing,
-      );
       expect(_button(tester, 'Continue').onPressed, isNull);
+      await _openCountryPicker(tester, 'Choose a country');
+      expect(_inPicker(find.text('SUGGESTED FOR YOUR DEVICE')), findsNothing);
 
-      await _tap(tester, find.text('Afghanistan'));
+      await _tap(tester, _inPicker(find.text('Afghanistan')));
 
+      expect(find.byType(CountryPicker), findsNothing);
       expect(_button(tester, 'Continue').onPressed, isNotNull);
     });
 
     testWidgets('aramaya uyan ülke yoksa söylenir', (tester) async {
       await _pumpApp(tester);
-      await _continue(tester);
+      await _openCountryPicker(tester, 'United States');
 
-      await tester.enterText(_inCountryStep(find.byType(TextField)), 'xyz');
+      await tester.enterText(_inPicker(find.byType(TextField)), 'xyz');
       await tester.pumpAndSettle();
 
       expect(find.text('No country matches your search.'), findsOneWidget);
-      expect(_inCountryStep(find.byType(ListTile)), findsNothing);
+      expect(_inPicker(find.byType(OptionTile)), findsNothing);
     });
 
     testWidgets('geri dönülünce önceki adım açılır, yazılan ad korunur', (
@@ -223,20 +246,20 @@ void main() {
     ) async {
       await _pumpApp(tester);
       await _continue(tester);
-      await _continue(tester);
-      await tester.enterText(find.byType(TextField), 'Golden Comb');
-      await _continue(tester);
-      expect(find.byType(HiveCountStep), findsOneWidget);
+      await tester.enterText(_nameField(), 'Golden Comb');
+      await tester.pump();
 
-      await tester.pageBack();
-      await tester.pumpAndSettle();
-      expect(find.byType(NameStep), findsOneWidget);
+      await _tap(tester, find.text('Back'));
+      expect(find.byType(LanguageCountryStep), findsOneWidget);
+      expect(find.text('Back'), findsNothing);
+
+      await _continue(tester);
       expect(find.text('Golden Comb'), findsOneWidget);
 
       // Android geri tuşu da önceki adıma döner.
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
-      expect(find.byType(CountryStep), findsOneWidget);
+      expect(find.byType(LanguageCountryStep), findsOneWidget);
       expect(find.byType(OnboardingScreen), findsOneWidget);
     });
 
@@ -245,9 +268,7 @@ void main() {
     ) async {
       await _pumpApp(tester);
       await _continue(tester);
-      await _continue(tester);
-      await tester.enterText(find.byType(TextField), 'Golden Comb');
-      await _continue(tester);
+      await tester.enterText(_nameField(), 'Golden Comb');
 
       for (final label in [
         'None yet',
@@ -273,9 +294,7 @@ void main() {
         ..createFailure = OrganizationFailure.network;
       await _pumpApp(tester, service: service);
       await _continue(tester);
-      await _continue(tester);
-      await tester.enterText(find.byType(TextField), 'Golden Comb');
-      await _continue(tester);
+      await tester.enterText(_nameField(), 'Golden Comb');
       await _tap(tester, find.text('None yet'));
 
       await _tap(tester, find.text('Set up business'));
@@ -285,7 +304,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.byIcon(AppStatus.critical.icon), findsOneWidget);
-      expect(find.byType(HiveCountStep), findsOneWidget);
+      expect(find.byType(BusinessStep), findsOneWidget);
 
       service.createFailure = null;
       await _tap(tester, find.text('Set up business'));
@@ -304,7 +323,7 @@ void main() {
       await _pumpApp(tester, service: service);
 
       expect(find.text("Couldn't load your business"), findsOneWidget);
-      expect(find.text('Step 1 of 5'), findsNothing);
+      expect(find.text('STEP 1 OF 3'), findsNothing);
 
       service.fetchFailure = null;
       await _tap(tester, find.text('Try again'));
@@ -334,19 +353,9 @@ void main() {
       addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
 
       await _pumpApp(tester);
+      expect(tester.takeException(), isNull);
       await _continue(tester);
-      await _continue(tester);
-      await tester.enterText(find.byType(TextField), 'Golden Comb');
-      await _continue(tester);
-      // Büyük yazıda soru ekranı doldurur; chip'lere kaydırılarak ulaşılır.
-      await tester.scrollUntilVisible(
-        find.text('More than 200'),
-        200,
-        scrollable: find.descendant(
-          of: find.byType(HiveCountStep),
-          matching: find.byType(Scrollable),
-        ),
-      );
+      await tester.enterText(_nameField(), 'Golden Comb');
       await _tap(tester, find.text('More than 200'));
 
       expect(tester.takeException(), isNull);
@@ -365,22 +374,13 @@ void main() {
 
       // Ad yazılmadan kaydedilmez.
       expect(_button(tester, 'Save apiary').onPressed, isNull);
-      await tester.enterText(
-        find.widgetWithText(TextField, 'Apiary name'),
-        '  Yayla  ',
-      );
+      await tester.enterText(_field('Apiary name'), '  Yayla  ');
       await tester.pump();
       await _tap(tester, find.text('Take location from GPS'));
       expect(find.text('40.12346, 29.65432'), findsOneWidget);
       expect(find.text('Accuracy ±8 m'), findsOneWidget);
-      await tester.enterText(
-        find.widgetWithText(TextField, "Landowner's name"),
-        'Ahmet Yılmaz',
-      );
-      await tester.enterText(
-        find.widgetWithText(TextField, "Landowner's phone"),
-        '0555 111 22 33',
-      );
+      await tester.enterText(_field("Landowner's name"), 'Ahmet Yılmaz');
+      await tester.enterText(_field("Landowner's phone"), '0555 111 22 33');
       await tester.pump();
       await _tap(tester, find.text('Save apiary'));
 
@@ -404,10 +404,7 @@ void main() {
       final db = openTestDatabase();
       await _pumpApp(tester, db: db);
       await _setUpBusiness(tester);
-      await tester.enterText(
-        find.widgetWithText(TextField, 'Apiary name'),
-        'Yayla',
-      );
+      await tester.enterText(_field('Apiary name'), 'Yayla');
 
       await _tap(tester, find.text('Skip for now'));
 
@@ -424,8 +421,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(FirstApiaryScreen), findsOneWidget);
-      expect(find.byType(HiveCountStep), findsNothing);
-      expect(find.byType(BackButton), findsNothing);
+      expect(find.byType(BusinessStep), findsNothing);
+      expect(find.text('Back'), findsNothing);
     });
 
     testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {

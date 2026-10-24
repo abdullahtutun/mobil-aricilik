@@ -129,14 +129,14 @@ class _DigitBox extends StatelessWidget {
     final digit = this.digit;
 
     return SizedBox(
-      height: context.touchTargets.fieldLarge,
+      height: context.touchTargets.fieldLarge + context.spacing.sm,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: colors.surfaceContainer,
+          color: colors.tile,
           borderRadius: BorderRadius.circular(context.radii.button),
           border: Border.all(
-            color: active ? colors.primary : colors.outline,
-            width: active ? strokes.focus : strokes.border,
+            color: active ? colors.primary : colors.divider,
+            width: strokes.focus,
           ),
         ),
         child: Center(

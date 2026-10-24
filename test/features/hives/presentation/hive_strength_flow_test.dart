@@ -10,6 +10,7 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
@@ -52,9 +53,9 @@ List<(String, int?)> _tiles(WidgetTester tester) => [
     (tile.number, tile.strength),
 ];
 
-Set<HiveSort> _sort(WidgetTester tester) => tester
-    .widget<ChoiceChipGroup<HiveSort>>(find.byType(ChoiceChipGroup<HiveSort>))
-    .selected;
+HiveSort _sort(WidgetTester tester) =>
+    ProviderScope.containerOf(tester.element(find.byType(ApiaryDetailScreen)))
+        .read(hiveSortPreferenceProvider);
 
 /// Listedeki aktif kovanların güç puanları, ekrandaki sırasıyla.
 List<int?> _listStrengths(WidgetTester tester) => [
@@ -180,9 +181,12 @@ void main() {
       ('10', 3),
       ('5', null),
     ]);
-    final byNumber = find.text('By number');
     final weakestFirst = find.text('Weakest first');
-    expect(_sort(tester), {HiveSort.number});
+    expect(_sort(tester), HiveSort.number);
+    expect(
+      tester.getSemantics(weakestFirst),
+      isSemantics(hasToggledState: true, isToggled: false, isButton: true),
+    );
 
     await _tap(tester, weakestFirst);
 
@@ -194,7 +198,11 @@ void main() {
       ('3', null),
       ('5', null),
     ]);
-    expect(_sort(tester), {HiveSort.weakestFirst});
+    expect(_sort(tester), HiveSort.weakestFirst);
+    expect(
+      tester.getSemantics(weakestFirst),
+      isSemantics(hasToggledState: true, isToggled: true, isButton: true),
+    );
     // Ekranda da öyle: geniş ekranda aktifler tek satırda, en zayıf solda.
     final x = [
       for (final n in ['2', '9', '10', '1', '3'])
@@ -202,12 +210,13 @@ void main() {
     ];
     expect(x, [...x]..sort());
 
-    // Seçili chip'e yeniden dokunmak seçimi kaldırmaz.
+    // Yeniden dokunmak numara sırasına döndürür.
     await _tap(tester, weakestFirst);
-    expect(_sort(tester), {HiveSort.weakestFirst});
-    expect(_tiles(tester).first, ('2', 1));
+    expect(_sort(tester), HiveSort.number);
+    expect(_tiles(tester).first, ('1', 5));
+    await _tap(tester, weakestFirst);
 
-    await _tap(tester, find.byTooltip('List view'));
+    await _tap(tester, find.text('List'));
 
     expect(find.byType(HiveTile), findsNothing);
     // Aktif olmayan kovanın satırında nokta değil durum rozeti var.
@@ -216,7 +225,7 @@ void main() {
     expect(find.bySemanticsLabel(RegExp('Strength 1 of 5')), findsOneWidget);
     expect(find.bySemanticsLabel(RegExp('Strength 3 of 5')), findsNWidgets(2));
 
-    await _tap(tester, byNumber);
+    await _tap(tester, weakestFirst);
     expect(_listStrengths(tester), [5, 1, null, 3, 3]);
   });
 
@@ -307,10 +316,9 @@ void main() {
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    expect(find.text('Numaraya göre'), findsOneWidget);
     await _tap(tester, find.text('Zayıflar önce'));
     expect(find.bySemanticsLabel('Kovan 2, Güç 1/5'), findsOneWidget);
-    await _tap(tester, find.byTooltip('Liste görünümü'));
+    await _tap(tester, find.text('Liste'));
     expect(find.bySemanticsLabel(RegExp('Güç 5/5')), findsOneWidget);
 
     await _tap(tester, find.text('2'));
@@ -338,12 +346,15 @@ void main() {
     container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
-    final chip = tester.getSize(
-      find.ancestor(of: find.text('By number'), matching: find.byType(InkWell)),
+    final toggle = tester.getSize(
+      find.ancestor(
+        of: find.text('Weakest first'),
+        matching: find.byType(InkWell),
+      ),
     );
-    expect(chip.height, greaterThanOrEqualTo(AppTouchTargets.glove.field));
+    expect(toggle.height, greaterThanOrEqualTo(AppTouchTargets.glove.minimum));
 
-    await _tap(tester, find.byTooltip('List view'));
+    await _tap(tester, find.text('List'));
     expect(tester.takeException(), isNull);
   });
 }

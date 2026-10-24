@@ -71,7 +71,9 @@ Future<void> _openScan(WidgetTester tester) async {
   await tester.tap(
     find.descendant(
       of: find.byType(AppNavigationBar),
-      matching: find.text('Scan'),
+      matching: find.byWidgetPredicate(
+        (widget) => widget is Icon && widget.semanticLabel == 'Scan',
+      ),
     ),
   );
   await tester.pumpAndSettle();
@@ -161,7 +163,7 @@ void main() {
       expect(find.byType(ScanScreen), findsNothing);
       expect(find.byType(HiveCardScreen), findsOneWidget);
       expect(find.byType(InspectionSheet), findsOneWidget);
-      expect(find.text('Inspect hive 101'), findsOneWidget);
+      expect(find.bySemanticsLabel('Inspect hive 101'), findsOneWidget);
       expect(haptics, ['HapticFeedbackType.heavyImpact']);
       expect(scanner.isOpen, isFalse);
 
@@ -212,12 +214,9 @@ void main() {
 
       expect(find.byType(HiveCardScreen), findsOneWidget);
       expect(find.text('7'), findsOneWidget);
-      // Başlıktaki arılık; ad zaman tünelinde de geçer.
+      // Üst çubuktaki arılık; ad zaman tünelinde de geçer.
       expect(
-        find.descendant(
-          of: find.widgetWithIcon(Row, Icons.place_rounded),
-          matching: find.text('Ova'),
-        ),
+        find.descendant(of: find.byType(AppBar), matching: find.text('Ova')),
         findsOneWidget,
       );
       expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
@@ -439,7 +438,9 @@ void main() {
     await tester.tap(
       find.descendant(
         of: find.byType(AppNavigationBar),
-        matching: find.text('Okut'),
+        matching: find.byWidgetPredicate(
+          (widget) => widget is Icon && widget.semanticLabel == 'Okut',
+        ),
       ),
     );
     await tester.pumpAndSettle();

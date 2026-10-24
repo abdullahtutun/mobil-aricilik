@@ -87,27 +87,19 @@ class _HiveSections extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: spacing.md,
+          runSpacing: spacing.sm,
           children: [
-            Expanded(
-              child: Semantics(
-                header: true,
-                child: Text(
-                  l10n.apiaryHivesTitle,
-                  style: context.typography.title,
-                ),
-              ),
-            ),
             const _LayoutToggle(),
+            // Tek kovanda sıra seçimi anlamsız.
+            if (active.length > 1) const _SortToggle(),
           ],
         ),
-        // Tek kovanda sıra seçimi anlamsız.
-        if (active.length > 1) ...[
-          SizedBox(height: spacing.md),
-          const _SortChoice(),
-        ],
         if (active.isNotEmpty) ...[
-          SizedBox(height: spacing.md),
+          SizedBox(height: spacing.lg),
           _HiveCollection(
             apiaryId: apiaryId,
             hives: active,
@@ -116,13 +108,7 @@ class _HiveSections extends ConsumerWidget {
         ],
         if (inactive.isNotEmpty) ...[
           SizedBox(height: spacing.xl),
-          Semantics(
-            header: true,
-            child: Text(
-              l10n.hivesInactiveTitle(inactive.length),
-              style: context.typography.subtitle,
-            ),
-          ),
+          SectionLabel(l10n.hivesInactiveTitle(inactive.length)),
           SizedBox(height: spacing.md),
           // Sönen ya da satılan kovanın eski puanı yanıltır.
           _HiveCollection(
@@ -136,29 +122,46 @@ class _HiveSections extends ConsumerWidget {
   }
 }
 
-/// Aktif kovanların sırası: numaraya göre ya da zayıflar önce.
-class _SortChoice extends ConsumerWidget {
+/// "Zayıflar önce" aç/kapa: açıkken aktif kovanlar puana göre, kapalıyken
+/// numaraya göre. Açık hali renk dışında dolgu, onay ikonu ve ekran
+/// okuyucunun "açık" bilgisiyle de görünür.
+class _SortToggle extends ConsumerWidget {
   const new();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final weakestFirst =
+        ref.watch(hiveSortPreferenceProvider) == HiveSort.weakestFirst;
 
-    return ChoiceChipGroup<HiveSort>(
-      options: [
-        ChoiceChipOption(value: HiveSort.number, label: l10n.hiveSortNumber),
-        ChoiceChipOption(
-          value: HiveSort.weakestFirst,
-          label: l10n.hiveSortWeakestFirst,
+    // Aç/kapa bilgisi butonun kendi düğümüne yazılsın.
+    return MergeSemantics(
+      child: Semantics(
+        toggled: weakestFirst,
+        child: TextButton.icon(
+          style: TextButton.styleFrom(
+            minimumSize: Size.square(context.touchTargets.minimum),
+            backgroundColor: weakestFirst
+                ? colors.surfaceContainer
+                : colors.surface,
+            foregroundColor: weakestFirst
+                ? colors.primary
+                : colors.textSecondary,
+            textStyle: context.typography.label,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(context.radii.button),
+            ),
+          ),
+          onPressed: () => ref.read(hiveSortPreferenceProvider.notifier).sort =
+              weakestFirst ? HiveSort.number : HiveSort.weakestFirst,
+          icon: Icon(
+            weakestFirst ? Icons.check_rounded : Icons.filter_list_rounded,
+            size: context.sizes.iconSmall,
+          ),
+          label: Text(l10n.hiveSortWeakestFirst),
         ),
-      ],
-      selected: {ref.watch(hiveSortPreferenceProvider)},
-      onChanged: (selected) {
-        // Her zaman bir sıra seçili; seçili chip'e yeniden dokunmak seçimi
-        // kaldırmasın.
-        if (selected.isEmpty) return;
-        ref.read(hiveSortPreferenceProvider.notifier).sort = selected.single;
-      },
+      ),
     );
   }
 }
@@ -170,79 +173,14 @@ class _LayoutToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final layout = ref.watch(hiveLayoutPreferenceProvider);
-    void select(HiveLayout value) =>
-        ref.read(hiveLayoutPreferenceProvider.notifier).layout = value;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: context.touchTargets.gap,
-      children: [
-        _LayoutButton(
-          icon: Icons.grid_view_rounded,
-          tooltip: l10n.hiveLayoutGrid,
-          selected: layout == HiveLayout.grid,
-          onPressed: () => select(HiveLayout.grid),
-        ),
-        _LayoutButton(
-          icon: Icons.view_list_rounded,
-          tooltip: l10n.hiveLayoutList,
-          selected: layout == HiveLayout.list,
-          onPressed: () => select(HiveLayout.list),
-        ),
+    return SegmentedTabs<HiveLayout>(
+      options: [
+        SegmentOption(value: HiveLayout.grid, label: l10n.hiveLayoutGridShort),
+        SegmentOption(value: HiveLayout.list, label: l10n.hiveLayoutListShort),
       ],
-    );
-  }
-}
-
-/// Seçili görünüm dolgulu; seçim yalnız renkle değil, dolgu ve ekran
-/// okuyucunun "seçili" bilgisiyle de verilir.
-class _LayoutButton extends StatelessWidget {
-  const new({
-    required this.icon,
-    required this.tooltip,
-    required this.selected,
-    required this.onPressed,
-  });
-
-  final IconData icon;
-  final String tooltip;
-  final bool selected;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final size = context.touchTargets.minimum;
-
-    // Seçim bilgisi butonun kendi düğümüne yazılsın.
-    return MergeSemantics(
-      child: Semantics(
-        selected: selected,
-        inMutuallyExclusiveGroup: true,
-        child: IconButton(
-          onPressed: onPressed,
-          tooltip: tooltip,
-          icon: Icon(icon),
-          style: IconButton.styleFrom(
-            backgroundColor: selected ? colors.secondary : null,
-            foregroundColor: selected ? colors.onSecondary : colors.textPrimary,
-            fixedSize: Size.square(size),
-            minimumSize: Size.square(size),
-            iconSize: context.sizes.icon,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(context.radii.button),
-              side: BorderSide(
-                color: selected ? colors.secondary : colors.outline,
-                width: context.strokes.border,
-              ),
-            ),
-            // Eldiven büyümesi zaten tokenda; yoğunluk bir kez daha eklemesin.
-            visualDensity: VisualDensity.standard,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-        ),
-      ),
+      selected: ref.watch(hiveLayoutPreferenceProvider),
+      onChanged: (layout) =>
+          ref.read(hiveLayoutPreferenceProvider.notifier).layout = layout,
     );
   }
 }

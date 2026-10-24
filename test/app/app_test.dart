@@ -30,9 +30,16 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      for (final label in ['Arılıklar', 'Okut', 'Görevler', 'Daha fazla']) {
+      for (final label in ['Arılıklar', 'Görevler', 'Daha fazla']) {
         expect(find.text(label), findsOneWidget);
       }
+      // Okut'un adı yalnız ekran okuyucuda.
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is Icon && widget.semanticLabel == 'Okut',
+        ),
+        findsOneWidget,
+      );
       // Bugün hem sekme etiketi hem ekran başlığı.
       expect(find.text('Bugün'), findsNWidgets(2));
     });

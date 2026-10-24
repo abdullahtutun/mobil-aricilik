@@ -9,8 +9,10 @@ import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_controller.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_choice_fields.dart';
 
-/// Toplu kovan oluşturma: kaç kovan, ilk numara, tip ve kaynak. Butonun
-/// üstünde hangi numaraların oluşacağı yazar. Kaydedince arılığa dönülür.
+/// Toplu kovan oluşturma: kaç kovan ve ilk numara (sayaç görünümünde kısa
+/// alanlar), tip ve kaynak chip'leri; altında hangi numaraların oluşacağı
+/// önizleme kartında. Buton kaç kovan oluşacağını yazar. Kaydedince
+/// arılığa dönülür.
 class BulkHiveFormScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
 
@@ -24,36 +26,19 @@ class BulkHiveFormScreen extends ConsumerWidget {
 
     return switch (ref.watch(bulkHiveFormControllerProvider(apiaryId))) {
       AsyncData(value: final form?) => Scaffold(
-        appBar: AppBar(title: title),
+        appBar: AppBar(leading: const CloseButton(), title: title),
         body: BottomActionLayout(
+          separated: true,
           body: ListView(
             padding: EdgeInsets.all(spacing.lg),
             children: [_BulkHiveFormFields(apiaryId: apiaryId)],
           ),
-          action: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (form.numbers case final numbers?) ...[
-                Semantics(
-                  liveRegion: true,
-                  child: Text(
-                    l10n.hiveBulkPreview(
-                      numbers.length,
-                      numbers.first,
-                      numbers.last,
-                    ),
-                    style: context.typography.subtitle,
-                  ),
-                ),
-                SizedBox(height: spacing.md),
-              ],
-              BigButton(
-                label: l10n.hiveBulkSave,
-                icon: Icons.library_add_rounded,
-                onPressed: form.canSave ? () => _save(context, ref) : null,
-              ),
-            ],
+          action: BigButton(
+            label: switch (form.numbers) {
+              final numbers? => l10n.hiveBulkSaveCount(numbers.length),
+              null => l10n.hiveBulkSave,
+            },
+            onPressed: form.canSave ? () => _save(context, ref) : null,
           ),
         ),
       ),
@@ -96,46 +81,135 @@ class _BulkHiveFormFields extends ConsumerWidget {
     final form = ref.watch(provider).value;
     if (form == null) return const SizedBox.shrink();
     final controller = ref.read(provider.notifier);
+    final numberStyle = context.typography.number;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          autofocus: true,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          textInputAction: TextInputAction.next,
-          style: context.typography.body,
-          decoration: InputDecoration(
-            labelText: l10n.hiveBulkCount,
-            hintText: l10n.hiveBulkCountHint,
-            errorText: form.countTooLarge
-                ? l10n.hiveBulkCountTooMany(maxBulkHiveCount)
-                : null,
+        InlineField(
+          label: l10n.hiveBulkCount,
+          field: TextField(
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            textInputAction: TextInputAction.next,
+            textAlign: TextAlign.center,
+            style: numberStyle,
+            decoration: InputDecoration(hintText: l10n.hiveBulkCountHint),
+            onChanged: controller.updateCount,
           ),
-          onChanged: controller.updateCount,
         ),
-        SizedBox(height: spacing.lg),
-        TextField(
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          textInputAction: TextInputAction.done,
-          style: context.typography.body,
-          decoration: InputDecoration(
-            labelText: l10n.hiveBulkStart,
-            hintText: l10n.hiveBulkStartHint,
+        if (form.countTooLarge) ...[
+          SizedBox(height: spacing.sm),
+          StatusMessage(
+            status: AppStatus.warning,
+            message: l10n.hiveBulkCountTooMany(maxBulkHiveCount),
           ),
-          onChanged: controller.updateStartNumber,
+        ],
+        SizedBox(height: context.touchTargets.gap),
+        InlineField(
+          label: l10n.hiveBulkStart,
+          field: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            textInputAction: TextInputAction.done,
+            textAlign: TextAlign.center,
+            style: numberStyle,
+            decoration: InputDecoration(hintText: l10n.hiveBulkStartHint),
+            onChanged: controller.updateStartNumber,
+          ),
         ),
-        SizedBox(height: spacing.lg),
+        SizedBox(height: spacing.xl),
         HiveTypeField(selected: form.type, onChanged: controller.selectType),
-        SizedBox(height: spacing.lg),
+        SizedBox(height: spacing.xl),
         HiveSourceField(
           selected: form.source,
           onChanged: controller.selectSource,
         ),
+        if (form.numbers case final numbers?) ...[
+          SizedBox(height: spacing.xl),
+          _Preview(numbers),
+        ],
       ],
+    );
+  }
+}
+
+/// Oluşacak numaralar: ilk üçü, "…" ve sonuncusu; altında cümlesi. Ekran
+/// okuyucu cümleyi okur, değişince kendiliğinden.
+class _Preview extends StatelessWidget {
+  const new(this.numbers);
+
+  final List<String> numbers;
+
+  /// Bundan uzun listede ortası "…" olur.
+  static const _shown = 4;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final spacing = context.spacing;
+    final shown = numbers.length <= _shown
+        ? numbers
+        : [...numbers.take(_shown - 1), l10n.listEllipsis, numbers.last];
+
+    return AppCard(
+      child: Padding(
+        padding: EdgeInsets.all(spacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionLabel(l10n.hiveBulkPreviewTitle),
+            SizedBox(height: spacing.sm),
+            ExcludeSemantics(
+              child: Wrap(
+                spacing: spacing.sm,
+                runSpacing: spacing.sm,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  for (final number in shown)
+                    if (number == l10n.listEllipsis)
+                      Text(number, style: context.typography.label)
+                    else
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: context.colors.surfaceContainer,
+                          borderRadius: BorderRadius.circular(
+                            context.radii.small,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: spacing.md,
+                            vertical: spacing.xs,
+                          ),
+                          child: Text(
+                            number,
+                            style: context.typography.subtitle,
+                          ),
+                        ),
+                      ),
+                ],
+              ),
+            ),
+            SizedBox(height: spacing.md),
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                l10n.hiveBulkPreview(
+                  numbers.length,
+                  numbers.first,
+                  numbers.last,
+                ),
+                style: context.typography.bodySmall.copyWith(
+                  color: context.colors.textSecondary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

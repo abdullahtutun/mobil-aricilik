@@ -26,13 +26,18 @@ class ChoiceChipGroup<T> extends StatelessWidget {
     super.key,
     this.multiSelect = false,
     this.suggested = false,
-  });
+    this.columns,
+  }) : assert(columns == null || columns > 0, 'sütun sayısı pozitif olmalı');
 
   final List<ChoiceChipOption<T>> options;
   final Set<T> selected;
   final ValueChanged<Set<T>> onChanged;
   final bool multiSelect;
   final bool suggested;
+
+  /// Verilirse chip'ler bu kadar eşit sütunda dizilir (ör. 2×2 aralık
+  /// seçimi); boşsa içerikleri kadar geniş ve satıra sığdıkça yan yana.
+  final int? columns;
 
   void _toggle(T value) {
     final isSelected = selected.contains(value);
@@ -50,17 +55,41 @@ class ChoiceChipGroup<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gap = context.touchTargets.gap;
-    return Wrap(
+    Widget chip(ChoiceChipOption<T> option, {bool expand = false}) => _Chip(
+      label: option.label,
+      selected: selected.contains(option.value),
+      suggested: suggested,
+      exclusive: !multiSelect,
+      expand: expand,
+      onTap: () => _toggle(option.value),
+    );
+
+    final columns = this.columns;
+    if (columns == null) {
+      return Wrap(
+        spacing: gap,
+        runSpacing: gap,
+        children: [for (final option in options) chip(option)],
+      );
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       spacing: gap,
-      runSpacing: gap,
       children: [
-        for (final option in options)
-          _Chip(
-            label: option.label,
-            selected: selected.contains(option.value),
-            suggested: suggested,
-            exclusive: !multiSelect,
-            onTap: () => _toggle(option.value),
+        for (var row = 0; row < options.length; row += columns)
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: gap,
+              children: [
+                for (var i = row; i < row + columns; i++)
+                  Expanded(
+                    child: i < options.length
+                        ? chip(options[i], expand: true)
+                        : const SizedBox.shrink(),
+                  ),
+              ],
+            ),
           ),
       ],
     );
@@ -73,6 +102,7 @@ class _Chip extends StatelessWidget {
     required this.selected,
     required this.suggested,
     required this.exclusive,
+    required this.expand,
     required this.onTap,
   });
 
@@ -82,6 +112,9 @@ class _Chip extends StatelessWidget {
   /// Seçim bir öneri; seçili chip çerçeveli ve geçmiş ikonlu.
   final bool suggested;
   final bool exclusive;
+
+  /// Sütun düzeninde: hücreyi doldurur, içerik ortada.
+  final bool expand;
   final VoidCallback onTap;
 
   @override
@@ -123,7 +156,8 @@ class _Chip extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: spacing.xl),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (selected) ...[
                     Icon(
@@ -136,6 +170,7 @@ class _Chip extends StatelessWidget {
                   Flexible(
                     child: Text(
                       label,
+                      textAlign: TextAlign.center,
                       style: context.typography.label.copyWith(
                         color: foreground,
                       ),
