@@ -104,7 +104,7 @@ $$;
 -- Şema sürümü
 
 select throws_ok(
-  $$select public.sync_push('[]', now(), 2)$$,
+  $$select public.sync_push('[]', now(), 0)$$,
   'PT426',
   null,
   'desteklenmeyen şema sürümü reddedilir'

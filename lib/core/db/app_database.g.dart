@@ -3794,6 +3794,1506 @@ extension HiveLocationEntryToInsertable on HiveLocationEntry {
   }
 }
 
+class $InspectionsTable extends Inspections
+    with TableInfo<$InspectionsTable, Inspection> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $InspectionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _inspectedAtMeta = const VerificationMeta(
+    'inspectedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> inspectedAt = GeneratedColumn<DateTime>(
+    'inspected_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<QueenState?, String> queenState =
+      GeneratedColumn<String>(
+        'queen_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<QueenState?>($InspectionsTable.$converterqueenStaten);
+  static const VerificationMeta _beeFramesMeta = const VerificationMeta(
+    'beeFrames',
+  );
+  @override
+  late final GeneratedColumn<int> beeFrames = GeneratedColumn<int>(
+    'bee_frames',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _broodFramesMeta = const VerificationMeta(
+    'broodFrames',
+  );
+  @override
+  late final GeneratedColumn<int> broodFrames = GeneratedColumn<int>(
+    'brood_frames',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _honeyFramesMeta = const VerificationMeta(
+    'honeyFrames',
+  );
+  @override
+  late final GeneratedColumn<int> honeyFrames = GeneratedColumn<int>(
+    'honey_frames',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<Temperament?, String>
+  temperament = GeneratedColumn<String>(
+    'temperament',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<Temperament?>($InspectionsTable.$convertertemperamentn);
+  static const VerificationMeta _swarmSignsMeta = const VerificationMeta(
+    'swarmSigns',
+  );
+  @override
+  late final GeneratedColumn<bool> swarmSigns = GeneratedColumn<bool>(
+    'swarm_signs',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("swarm_signs" IN (0, 1))',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<QueenCells?, String> queenCells =
+      GeneratedColumn<String>(
+        'queen_cells',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<QueenCells?>($InspectionsTable.$converterqueenCellsn);
+  static const VerificationMeta _diseaseSuspectedMeta = const VerificationMeta(
+    'diseaseSuspected',
+  );
+  @override
+  late final GeneratedColumn<bool> diseaseSuspected = GeneratedColumn<bool>(
+    'disease_suspected',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("disease_suspected" IN (0, 1))',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  data = GeneratedColumn<String>(
+    'data',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('{}'),
+  ).withConverter<Map<String, Object?>>($InspectionsTable.$converterdata);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    hiveId,
+    apiaryId,
+    inspectedAt,
+    queenState,
+    beeFrames,
+    broodFrames,
+    honeyFrames,
+    temperament,
+    swarmSigns,
+    queenCells,
+    diseaseSuspected,
+    data,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'inspections';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Inspection> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('inspected_at')) {
+      context.handle(
+        _inspectedAtMeta,
+        inspectedAt.isAcceptableOrUnknown(
+          data['inspected_at']!,
+          _inspectedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_inspectedAtMeta);
+    }
+    if (data.containsKey('bee_frames')) {
+      context.handle(
+        _beeFramesMeta,
+        beeFrames.isAcceptableOrUnknown(data['bee_frames']!, _beeFramesMeta),
+      );
+    }
+    if (data.containsKey('brood_frames')) {
+      context.handle(
+        _broodFramesMeta,
+        broodFrames.isAcceptableOrUnknown(
+          data['brood_frames']!,
+          _broodFramesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('honey_frames')) {
+      context.handle(
+        _honeyFramesMeta,
+        honeyFrames.isAcceptableOrUnknown(
+          data['honey_frames']!,
+          _honeyFramesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('swarm_signs')) {
+      context.handle(
+        _swarmSignsMeta,
+        swarmSigns.isAcceptableOrUnknown(data['swarm_signs']!, _swarmSignsMeta),
+      );
+    }
+    if (data.containsKey('disease_suspected')) {
+      context.handle(
+        _diseaseSuspectedMeta,
+        diseaseSuspected.isAcceptableOrUnknown(
+          data['disease_suspected']!,
+          _diseaseSuspectedMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Inspection map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Inspection(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      inspectedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}inspected_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      queenState: $InspectionsTable.$converterqueenStaten.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}queen_state'],
+        ),
+      ),
+      beeFrames: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}bee_frames'],
+      ),
+      broodFrames: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}brood_frames'],
+      ),
+      honeyFrames: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}honey_frames'],
+      ),
+      temperament: $InspectionsTable.$convertertemperamentn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}temperament'],
+        ),
+      ),
+      swarmSigns: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}swarm_signs'],
+      ),
+      queenCells: $InspectionsTable.$converterqueenCellsn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}queen_cells'],
+        ),
+      ),
+      diseaseSuspected: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}disease_suspected'],
+      ),
+      data: $InspectionsTable.$converterdata.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}data'],
+        )!,
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $InspectionsTable createAlias(String alias) {
+    return $InspectionsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<QueenState, String> $converterqueenState =
+      const ServerEnumConverter(QueenState.values);
+  static TypeConverter<QueenState?, String?> $converterqueenStaten =
+      NullAwareTypeConverter.wrap($converterqueenState);
+  static TypeConverter<Temperament, String> $convertertemperament =
+      const ServerEnumConverter(Temperament.values);
+  static TypeConverter<Temperament?, String?> $convertertemperamentn =
+      NullAwareTypeConverter.wrap($convertertemperament);
+  static TypeConverter<QueenCells, String> $converterqueenCells =
+      const ServerEnumConverter(QueenCells.values);
+  static TypeConverter<QueenCells?, String?> $converterqueenCellsn =
+      NullAwareTypeConverter.wrap($converterqueenCells);
+  static TypeConverter<Map<String, Object?>, String> $converterdata =
+      const JsonMapConverter();
+}
+
+class InspectionsCompanion extends UpdateCompanion<Inspection> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> hiveId;
+  final Value<String> apiaryId;
+  final Value<DateTime> inspectedAt;
+  final Value<QueenState?> queenState;
+  final Value<int?> beeFrames;
+  final Value<int?> broodFrames;
+  final Value<int?> honeyFrames;
+  final Value<Temperament?> temperament;
+  final Value<bool?> swarmSigns;
+  final Value<QueenCells?> queenCells;
+  final Value<bool?> diseaseSuspected;
+  final Value<Map<String, Object?>> data;
+  final Value<int> rowid;
+  const InspectionsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.inspectedAt = const Value.absent(),
+    this.queenState = const Value.absent(),
+    this.beeFrames = const Value.absent(),
+    this.broodFrames = const Value.absent(),
+    this.honeyFrames = const Value.absent(),
+    this.temperament = const Value.absent(),
+    this.swarmSigns = const Value.absent(),
+    this.queenCells = const Value.absent(),
+    this.diseaseSuspected = const Value.absent(),
+    this.data = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  InspectionsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String hiveId,
+    required String apiaryId,
+    required DateTime inspectedAt,
+    this.queenState = const Value.absent(),
+    this.beeFrames = const Value.absent(),
+    this.broodFrames = const Value.absent(),
+    this.honeyFrames = const Value.absent(),
+    this.temperament = const Value.absent(),
+    this.swarmSigns = const Value.absent(),
+    this.queenCells = const Value.absent(),
+    this.diseaseSuspected = const Value.absent(),
+    this.data = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       hiveId = Value(hiveId),
+       apiaryId = Value(apiaryId),
+       inspectedAt = Value(inspectedAt);
+  static Insertable<Inspection> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? hiveId,
+    Expression<String>? apiaryId,
+    Expression<DateTime>? inspectedAt,
+    Expression<String>? queenState,
+    Expression<int>? beeFrames,
+    Expression<int>? broodFrames,
+    Expression<int>? honeyFrames,
+    Expression<String>? temperament,
+    Expression<bool>? swarmSigns,
+    Expression<String>? queenCells,
+    Expression<bool>? diseaseSuspected,
+    Expression<String>? data,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (inspectedAt != null) 'inspected_at': inspectedAt,
+      if (queenState != null) 'queen_state': queenState,
+      if (beeFrames != null) 'bee_frames': beeFrames,
+      if (broodFrames != null) 'brood_frames': broodFrames,
+      if (honeyFrames != null) 'honey_frames': honeyFrames,
+      if (temperament != null) 'temperament': temperament,
+      if (swarmSigns != null) 'swarm_signs': swarmSigns,
+      if (queenCells != null) 'queen_cells': queenCells,
+      if (diseaseSuspected != null) 'disease_suspected': diseaseSuspected,
+      if (data != null) 'data': data,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  InspectionsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? hiveId,
+    Value<String>? apiaryId,
+    Value<DateTime>? inspectedAt,
+    Value<QueenState?>? queenState,
+    Value<int?>? beeFrames,
+    Value<int?>? broodFrames,
+    Value<int?>? honeyFrames,
+    Value<Temperament?>? temperament,
+    Value<bool?>? swarmSigns,
+    Value<QueenCells?>? queenCells,
+    Value<bool?>? diseaseSuspected,
+    Value<Map<String, Object?>>? data,
+    Value<int>? rowid,
+  }) {
+    return InspectionsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      hiveId: hiveId ?? this.hiveId,
+      apiaryId: apiaryId ?? this.apiaryId,
+      inspectedAt: inspectedAt ?? this.inspectedAt,
+      queenState: queenState ?? this.queenState,
+      beeFrames: beeFrames ?? this.beeFrames,
+      broodFrames: broodFrames ?? this.broodFrames,
+      honeyFrames: honeyFrames ?? this.honeyFrames,
+      temperament: temperament ?? this.temperament,
+      swarmSigns: swarmSigns ?? this.swarmSigns,
+      queenCells: queenCells ?? this.queenCells,
+      diseaseSuspected: diseaseSuspected ?? this.diseaseSuspected,
+      data: data ?? this.data,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (inspectedAt.present) {
+      map['inspected_at'] = Variable<DateTime>(inspectedAt.value);
+    }
+    if (queenState.present) {
+      map['queen_state'] = Variable<String>(
+        $InspectionsTable.$converterqueenStaten.toSql(queenState.value),
+      );
+    }
+    if (beeFrames.present) {
+      map['bee_frames'] = Variable<int>(beeFrames.value);
+    }
+    if (broodFrames.present) {
+      map['brood_frames'] = Variable<int>(broodFrames.value);
+    }
+    if (honeyFrames.present) {
+      map['honey_frames'] = Variable<int>(honeyFrames.value);
+    }
+    if (temperament.present) {
+      map['temperament'] = Variable<String>(
+        $InspectionsTable.$convertertemperamentn.toSql(temperament.value),
+      );
+    }
+    if (swarmSigns.present) {
+      map['swarm_signs'] = Variable<bool>(swarmSigns.value);
+    }
+    if (queenCells.present) {
+      map['queen_cells'] = Variable<String>(
+        $InspectionsTable.$converterqueenCellsn.toSql(queenCells.value),
+      );
+    }
+    if (diseaseSuspected.present) {
+      map['disease_suspected'] = Variable<bool>(diseaseSuspected.value);
+    }
+    if (data.present) {
+      map['data'] = Variable<String>(
+        $InspectionsTable.$converterdata.toSql(data.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InspectionsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('inspectedAt: $inspectedAt, ')
+          ..write('queenState: $queenState, ')
+          ..write('beeFrames: $beeFrames, ')
+          ..write('broodFrames: $broodFrames, ')
+          ..write('honeyFrames: $honeyFrames, ')
+          ..write('temperament: $temperament, ')
+          ..write('swarmSigns: $swarmSigns, ')
+          ..write('queenCells: $queenCells, ')
+          ..write('diseaseSuspected: $diseaseSuspected, ')
+          ..write('data: $data, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$InspectionInsertable implements Insertable<Inspection> {
+  Inspection _object;
+  _$InspectionInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return InspectionsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      hiveId: Value(_object.hiveId),
+      apiaryId: Value(_object.apiaryId),
+      inspectedAt: Value(_object.inspectedAt),
+      queenState: Value(_object.queenState),
+      beeFrames: Value(_object.beeFrames),
+      broodFrames: Value(_object.broodFrames),
+      honeyFrames: Value(_object.honeyFrames),
+      temperament: Value(_object.temperament),
+      swarmSigns: Value(_object.swarmSigns),
+      queenCells: Value(_object.queenCells),
+      diseaseSuspected: Value(_object.diseaseSuspected),
+      data: Value(_object.data),
+    ).toColumns(false);
+  }
+}
+
+extension InspectionToInsertable on Inspection {
+  _$InspectionInsertable toInsertable() {
+    return _$InspectionInsertable(this);
+  }
+}
+
+class $InspectionDraftsTable extends InspectionDrafts
+    with TableInfo<$InspectionDraftsTable, InspectionDraftRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $InspectionDraftsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<InspectionDraft, String> draft =
+      GeneratedColumn<String>(
+        'draft',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<InspectionDraft>($InspectionDraftsTable.$converterdraft);
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [hiveId, orgId, draft, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'inspection_drafts';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<InspectionDraftRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {hiveId};
+  @override
+  InspectionDraftRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return InspectionDraftRow(
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      draft: $InspectionDraftsTable.$converterdraft.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}draft'],
+        )!,
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $InspectionDraftsTable createAlias(String alias) {
+    return $InspectionDraftsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<InspectionDraft, String> $converterdraft =
+      const InspectionDraftConverter();
+}
+
+class InspectionDraftRow extends DataClass
+    implements Insertable<InspectionDraftRow> {
+  final String hiveId;
+  final String orgId;
+  final InspectionDraft draft;
+  final DateTime updatedAt;
+  const InspectionDraftRow({
+    required this.hiveId,
+    required this.orgId,
+    required this.draft,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['hive_id'] = Variable<String>(hiveId);
+    map['org_id'] = Variable<String>(orgId);
+    {
+      map['draft'] = Variable<String>(
+        $InspectionDraftsTable.$converterdraft.toSql(draft),
+      );
+    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  InspectionDraftsCompanion toCompanion(bool nullToAbsent) {
+    return InspectionDraftsCompanion(
+      hiveId: Value(hiveId),
+      orgId: Value(orgId),
+      draft: Value(draft),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory InspectionDraftRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return InspectionDraftRow(
+      hiveId: serializer.fromJson<String>(json['hiveId']),
+      orgId: serializer.fromJson<String>(json['orgId']),
+      draft: serializer.fromJson<InspectionDraft>(json['draft']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'hiveId': serializer.toJson<String>(hiveId),
+      'orgId': serializer.toJson<String>(orgId),
+      'draft': serializer.toJson<InspectionDraft>(draft),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  InspectionDraftRow copyWith({
+    String? hiveId,
+    String? orgId,
+    InspectionDraft? draft,
+    DateTime? updatedAt,
+  }) => InspectionDraftRow(
+    hiveId: hiveId ?? this.hiveId,
+    orgId: orgId ?? this.orgId,
+    draft: draft ?? this.draft,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  InspectionDraftRow copyWithCompanion(InspectionDraftsCompanion data) {
+    return InspectionDraftRow(
+      hiveId: data.hiveId.present ? data.hiveId.value : this.hiveId,
+      orgId: data.orgId.present ? data.orgId.value : this.orgId,
+      draft: data.draft.present ? data.draft.value : this.draft,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InspectionDraftRow(')
+          ..write('hiveId: $hiveId, ')
+          ..write('orgId: $orgId, ')
+          ..write('draft: $draft, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(hiveId, orgId, draft, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is InspectionDraftRow &&
+          other.hiveId == this.hiveId &&
+          other.orgId == this.orgId &&
+          other.draft == this.draft &&
+          other.updatedAt == this.updatedAt);
+}
+
+class InspectionDraftsCompanion extends UpdateCompanion<InspectionDraftRow> {
+  final Value<String> hiveId;
+  final Value<String> orgId;
+  final Value<InspectionDraft> draft;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const InspectionDraftsCompanion({
+    this.hiveId = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.draft = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  InspectionDraftsCompanion.insert({
+    required String hiveId,
+    required String orgId,
+    required InspectionDraft draft,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : hiveId = Value(hiveId),
+       orgId = Value(orgId),
+       draft = Value(draft),
+       updatedAt = Value(updatedAt);
+  static Insertable<InspectionDraftRow> custom({
+    Expression<String>? hiveId,
+    Expression<String>? orgId,
+    Expression<String>? draft,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (hiveId != null) 'hive_id': hiveId,
+      if (orgId != null) 'org_id': orgId,
+      if (draft != null) 'draft': draft,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  InspectionDraftsCompanion copyWith({
+    Value<String>? hiveId,
+    Value<String>? orgId,
+    Value<InspectionDraft>? draft,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return InspectionDraftsCompanion(
+      hiveId: hiveId ?? this.hiveId,
+      orgId: orgId ?? this.orgId,
+      draft: draft ?? this.draft,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (draft.present) {
+      map['draft'] = Variable<String>(
+        $InspectionDraftsTable.$converterdraft.toSql(draft.value),
+      );
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InspectionDraftsCompanion(')
+          ..write('hiveId: $hiveId, ')
+          ..write('orgId: $orgId, ')
+          ..write('draft: $draft, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $InspectionRemindersTable extends InspectionReminders
+    with TableInfo<$InspectionRemindersTable, InspectionReminder> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $InspectionRemindersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _inspectionIdMeta = const VerificationMeta(
+    'inspectionId',
+  );
+  @override
+  late final GeneratedColumn<String> inspectionId = GeneratedColumn<String>(
+    'inspection_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _daysMeta = const VerificationMeta('days');
+  @override
+  late final GeneratedColumn<int> days = GeneratedColumn<int>(
+    'days',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _remindAtMeta = const VerificationMeta(
+    'remindAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> remindAt = GeneratedColumn<DateTime>(
+    'remind_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    inspectionId,
+    orgId,
+    hiveId,
+    days,
+    remindAt,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'inspection_reminders';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<InspectionReminder> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('inspection_id')) {
+      context.handle(
+        _inspectionIdMeta,
+        inspectionId.isAcceptableOrUnknown(
+          data['inspection_id']!,
+          _inspectionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_inspectionIdMeta);
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('days')) {
+      context.handle(
+        _daysMeta,
+        days.isAcceptableOrUnknown(data['days']!, _daysMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_daysMeta);
+    }
+    if (data.containsKey('remind_at')) {
+      context.handle(
+        _remindAtMeta,
+        remindAt.isAcceptableOrUnknown(data['remind_at']!, _remindAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_remindAtMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {inspectionId};
+  @override
+  InspectionReminder map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return InspectionReminder(
+      inspectionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}inspection_id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      days: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}days'],
+      )!,
+      remindAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}remind_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $InspectionRemindersTable createAlias(String alias) {
+    return $InspectionRemindersTable(attachedDatabase, alias);
+  }
+}
+
+class InspectionReminder extends DataClass
+    implements Insertable<InspectionReminder> {
+  final String inspectionId;
+  final String orgId;
+  final String hiveId;
+  final int days;
+  final DateTime remindAt;
+  final DateTime createdAt;
+  const InspectionReminder({
+    required this.inspectionId,
+    required this.orgId,
+    required this.hiveId,
+    required this.days,
+    required this.remindAt,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['inspection_id'] = Variable<String>(inspectionId);
+    map['org_id'] = Variable<String>(orgId);
+    map['hive_id'] = Variable<String>(hiveId);
+    map['days'] = Variable<int>(days);
+    map['remind_at'] = Variable<DateTime>(remindAt);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  InspectionRemindersCompanion toCompanion(bool nullToAbsent) {
+    return InspectionRemindersCompanion(
+      inspectionId: Value(inspectionId),
+      orgId: Value(orgId),
+      hiveId: Value(hiveId),
+      days: Value(days),
+      remindAt: Value(remindAt),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory InspectionReminder.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return InspectionReminder(
+      inspectionId: serializer.fromJson<String>(json['inspectionId']),
+      orgId: serializer.fromJson<String>(json['orgId']),
+      hiveId: serializer.fromJson<String>(json['hiveId']),
+      days: serializer.fromJson<int>(json['days']),
+      remindAt: serializer.fromJson<DateTime>(json['remindAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'inspectionId': serializer.toJson<String>(inspectionId),
+      'orgId': serializer.toJson<String>(orgId),
+      'hiveId': serializer.toJson<String>(hiveId),
+      'days': serializer.toJson<int>(days),
+      'remindAt': serializer.toJson<DateTime>(remindAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  InspectionReminder copyWith({
+    String? inspectionId,
+    String? orgId,
+    String? hiveId,
+    int? days,
+    DateTime? remindAt,
+    DateTime? createdAt,
+  }) => InspectionReminder(
+    inspectionId: inspectionId ?? this.inspectionId,
+    orgId: orgId ?? this.orgId,
+    hiveId: hiveId ?? this.hiveId,
+    days: days ?? this.days,
+    remindAt: remindAt ?? this.remindAt,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  InspectionReminder copyWithCompanion(InspectionRemindersCompanion data) {
+    return InspectionReminder(
+      inspectionId: data.inspectionId.present
+          ? data.inspectionId.value
+          : this.inspectionId,
+      orgId: data.orgId.present ? data.orgId.value : this.orgId,
+      hiveId: data.hiveId.present ? data.hiveId.value : this.hiveId,
+      days: data.days.present ? data.days.value : this.days,
+      remindAt: data.remindAt.present ? data.remindAt.value : this.remindAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InspectionReminder(')
+          ..write('inspectionId: $inspectionId, ')
+          ..write('orgId: $orgId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('days: $days, ')
+          ..write('remindAt: $remindAt, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(inspectionId, orgId, hiveId, days, remindAt, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is InspectionReminder &&
+          other.inspectionId == this.inspectionId &&
+          other.orgId == this.orgId &&
+          other.hiveId == this.hiveId &&
+          other.days == this.days &&
+          other.remindAt == this.remindAt &&
+          other.createdAt == this.createdAt);
+}
+
+class InspectionRemindersCompanion extends UpdateCompanion<InspectionReminder> {
+  final Value<String> inspectionId;
+  final Value<String> orgId;
+  final Value<String> hiveId;
+  final Value<int> days;
+  final Value<DateTime> remindAt;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const InspectionRemindersCompanion({
+    this.inspectionId = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.days = const Value.absent(),
+    this.remindAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  InspectionRemindersCompanion.insert({
+    required String inspectionId,
+    required String orgId,
+    required String hiveId,
+    required int days,
+    required DateTime remindAt,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : inspectionId = Value(inspectionId),
+       orgId = Value(orgId),
+       hiveId = Value(hiveId),
+       days = Value(days),
+       remindAt = Value(remindAt),
+       createdAt = Value(createdAt);
+  static Insertable<InspectionReminder> custom({
+    Expression<String>? inspectionId,
+    Expression<String>? orgId,
+    Expression<String>? hiveId,
+    Expression<int>? days,
+    Expression<DateTime>? remindAt,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (inspectionId != null) 'inspection_id': inspectionId,
+      if (orgId != null) 'org_id': orgId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (days != null) 'days': days,
+      if (remindAt != null) 'remind_at': remindAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  InspectionRemindersCompanion copyWith({
+    Value<String>? inspectionId,
+    Value<String>? orgId,
+    Value<String>? hiveId,
+    Value<int>? days,
+    Value<DateTime>? remindAt,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return InspectionRemindersCompanion(
+      inspectionId: inspectionId ?? this.inspectionId,
+      orgId: orgId ?? this.orgId,
+      hiveId: hiveId ?? this.hiveId,
+      days: days ?? this.days,
+      remindAt: remindAt ?? this.remindAt,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (inspectionId.present) {
+      map['inspection_id'] = Variable<String>(inspectionId.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (days.present) {
+      map['days'] = Variable<int>(days.value);
+    }
+    if (remindAt.present) {
+      map['remind_at'] = Variable<DateTime>(remindAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InspectionRemindersCompanion(')
+          ..write('inspectionId: $inspectionId, ')
+          ..write('orgId: $orgId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('days: $days, ')
+          ..write('remindAt: $remindAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $OutboxTable extends Outbox with TableInfo<$OutboxTable, OutboxEntry> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -4545,6 +6045,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $HivesTable hives = $HivesTable(this);
   late final $HiveLocationHistoryTable hiveLocationHistory =
       $HiveLocationHistoryTable(this);
+  late final $InspectionsTable inspections = $InspectionsTable(this);
+  late final $InspectionDraftsTable inspectionDrafts = $InspectionDraftsTable(
+    this,
+  );
+  late final $InspectionRemindersTable inspectionReminders =
+      $InspectionRemindersTable(this);
   late final $OutboxTable outbox = $OutboxTable(this);
   late final $SyncStateTable syncState = $SyncStateTable(this);
   late final Index membershipsOrgIdIdx = Index(
@@ -4575,6 +6081,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'hive_location_history_hive_id_idx',
     'CREATE INDEX hive_location_history_hive_id_idx ON hive_location_history (hive_id)',
   );
+  late final Index inspectionsOrgIdIdx = Index(
+    'inspections_org_id_idx',
+    'CREATE INDEX inspections_org_id_idx ON inspections (org_id)',
+  );
+  late final Index inspectionsHiveIdIdx = Index(
+    'inspections_hive_id_idx',
+    'CREATE INDEX inspections_hive_id_idx ON inspections (hive_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4586,6 +6100,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     queens,
     hives,
     hiveLocationHistory,
+    inspections,
+    inspectionDrafts,
+    inspectionReminders,
     outbox,
     syncState,
     membershipsOrgIdIdx,
@@ -4595,6 +6112,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     hivesApiaryIdIdx,
     hiveLocationHistoryOrgIdIdx,
     hiveLocationHistoryHiveIdIdx,
+    inspectionsOrgIdIdx,
+    inspectionsHiveIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -6853,6 +8372,959 @@ typedef $$HiveLocationHistoryTableProcessedTableManager =
       HiveLocationEntry,
       PrefetchHooks Function()
     >;
+typedef $$InspectionsTableCreateCompanionBuilder =
+    InspectionsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String hiveId,
+      required String apiaryId,
+      required DateTime inspectedAt,
+      Value<QueenState?> queenState,
+      Value<int?> beeFrames,
+      Value<int?> broodFrames,
+      Value<int?> honeyFrames,
+      Value<Temperament?> temperament,
+      Value<bool?> swarmSigns,
+      Value<QueenCells?> queenCells,
+      Value<bool?> diseaseSuspected,
+      Value<Map<String, Object?>> data,
+      Value<int> rowid,
+    });
+typedef $$InspectionsTableUpdateCompanionBuilder =
+    InspectionsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> hiveId,
+      Value<String> apiaryId,
+      Value<DateTime> inspectedAt,
+      Value<QueenState?> queenState,
+      Value<int?> beeFrames,
+      Value<int?> broodFrames,
+      Value<int?> honeyFrames,
+      Value<Temperament?> temperament,
+      Value<bool?> swarmSigns,
+      Value<QueenCells?> queenCells,
+      Value<bool?> diseaseSuspected,
+      Value<Map<String, Object?>> data,
+      Value<int> rowid,
+    });
+
+class $$InspectionsTableFilterComposer
+    extends Composer<_$AppDatabase, $InspectionsTable> {
+  $$InspectionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get inspectedAt => $composableBuilder(
+    column: $table.inspectedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<QueenState?, QueenState, String>
+  get queenState => $composableBuilder(
+    column: $table.queenState,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get beeFrames => $composableBuilder(
+    column: $table.beeFrames,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get broodFrames => $composableBuilder(
+    column: $table.broodFrames,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get honeyFrames => $composableBuilder(
+    column: $table.honeyFrames,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Temperament?, Temperament, String>
+  get temperament => $composableBuilder(
+    column: $table.temperament,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get swarmSigns => $composableBuilder(
+    column: $table.swarmSigns,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<QueenCells?, QueenCells, String>
+  get queenCells => $composableBuilder(
+    column: $table.queenCells,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get diseaseSuspected => $composableBuilder(
+    column: $table.diseaseSuspected,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    Map<String, Object?>,
+    Map<String, Object>,
+    String
+  >
+  get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$InspectionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $InspectionsTable> {
+  $$InspectionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get inspectedAt => $composableBuilder(
+    column: $table.inspectedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get queenState => $composableBuilder(
+    column: $table.queenState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get beeFrames => $composableBuilder(
+    column: $table.beeFrames,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get broodFrames => $composableBuilder(
+    column: $table.broodFrames,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get honeyFrames => $composableBuilder(
+    column: $table.honeyFrames,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get temperament => $composableBuilder(
+    column: $table.temperament,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get swarmSigns => $composableBuilder(
+    column: $table.swarmSigns,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get queenCells => $composableBuilder(
+    column: $table.queenCells,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get diseaseSuspected => $composableBuilder(
+    column: $table.diseaseSuspected,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$InspectionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $InspectionsTable> {
+  $$InspectionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get inspectedAt => $composableBuilder(
+    column: $table.inspectedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<QueenState?, String> get queenState =>
+      $composableBuilder(
+        column: $table.queenState,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<int> get beeFrames =>
+      $composableBuilder(column: $table.beeFrames, builder: (column) => column);
+
+  GeneratedColumn<int> get broodFrames => $composableBuilder(
+    column: $table.broodFrames,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get honeyFrames => $composableBuilder(
+    column: $table.honeyFrames,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<Temperament?, String> get temperament =>
+      $composableBuilder(
+        column: $table.temperament,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<bool> get swarmSigns => $composableBuilder(
+    column: $table.swarmSigns,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<QueenCells?, String> get queenCells =>
+      $composableBuilder(
+        column: $table.queenCells,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<bool> get diseaseSuspected => $composableBuilder(
+    column: $table.diseaseSuspected,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<Map<String, Object?>, String> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
+}
+
+class $$InspectionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $InspectionsTable,
+          Inspection,
+          $$InspectionsTableFilterComposer,
+          $$InspectionsTableOrderingComposer,
+          $$InspectionsTableAnnotationComposer,
+          $$InspectionsTableCreateCompanionBuilder,
+          $$InspectionsTableUpdateCompanionBuilder,
+          (
+            Inspection,
+            BaseReferences<_$AppDatabase, $InspectionsTable, Inspection>,
+          ),
+          Inspection,
+          PrefetchHooks Function()
+        > {
+  $$InspectionsTableTableManager(_$AppDatabase db, $InspectionsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$InspectionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$InspectionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$InspectionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<DateTime> inspectedAt = const Value.absent(),
+                Value<QueenState?> queenState = const Value.absent(),
+                Value<int?> beeFrames = const Value.absent(),
+                Value<int?> broodFrames = const Value.absent(),
+                Value<int?> honeyFrames = const Value.absent(),
+                Value<Temperament?> temperament = const Value.absent(),
+                Value<bool?> swarmSigns = const Value.absent(),
+                Value<QueenCells?> queenCells = const Value.absent(),
+                Value<bool?> diseaseSuspected = const Value.absent(),
+                Value<Map<String, Object?>> data = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => InspectionsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                inspectedAt: inspectedAt,
+                queenState: queenState,
+                beeFrames: beeFrames,
+                broodFrames: broodFrames,
+                honeyFrames: honeyFrames,
+                temperament: temperament,
+                swarmSigns: swarmSigns,
+                queenCells: queenCells,
+                diseaseSuspected: diseaseSuspected,
+                data: data,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String hiveId,
+                required String apiaryId,
+                required DateTime inspectedAt,
+                Value<QueenState?> queenState = const Value.absent(),
+                Value<int?> beeFrames = const Value.absent(),
+                Value<int?> broodFrames = const Value.absent(),
+                Value<int?> honeyFrames = const Value.absent(),
+                Value<Temperament?> temperament = const Value.absent(),
+                Value<bool?> swarmSigns = const Value.absent(),
+                Value<QueenCells?> queenCells = const Value.absent(),
+                Value<bool?> diseaseSuspected = const Value.absent(),
+                Value<Map<String, Object?>> data = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => InspectionsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                inspectedAt: inspectedAt,
+                queenState: queenState,
+                beeFrames: beeFrames,
+                broodFrames: broodFrames,
+                honeyFrames: honeyFrames,
+                temperament: temperament,
+                swarmSigns: swarmSigns,
+                queenCells: queenCells,
+                diseaseSuspected: diseaseSuspected,
+                data: data,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$InspectionsTable, Inspection>(table),
+                  BaseReferences<_$AppDatabase, $InspectionsTable, Inspection>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$InspectionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $InspectionsTable,
+      Inspection,
+      $$InspectionsTableFilterComposer,
+      $$InspectionsTableOrderingComposer,
+      $$InspectionsTableAnnotationComposer,
+      $$InspectionsTableCreateCompanionBuilder,
+      $$InspectionsTableUpdateCompanionBuilder,
+      (
+        Inspection,
+        BaseReferences<_$AppDatabase, $InspectionsTable, Inspection>,
+      ),
+      Inspection,
+      PrefetchHooks Function()
+    >;
+typedef $$InspectionDraftsTableCreateCompanionBuilder =
+    InspectionDraftsCompanion Function({
+      required String hiveId,
+      required String orgId,
+      required InspectionDraft draft,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$InspectionDraftsTableUpdateCompanionBuilder =
+    InspectionDraftsCompanion Function({
+      Value<String> hiveId,
+      Value<String> orgId,
+      Value<InspectionDraft> draft,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$InspectionDraftsTableFilterComposer
+    extends Composer<_$AppDatabase, $InspectionDraftsTable> {
+  $$InspectionDraftsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<InspectionDraft, InspectionDraft, String>
+  get draft => $composableBuilder(
+    column: $table.draft,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$InspectionDraftsTableOrderingComposer
+    extends Composer<_$AppDatabase, $InspectionDraftsTable> {
+  $$InspectionDraftsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get draft => $composableBuilder(
+    column: $table.draft,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$InspectionDraftsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $InspectionDraftsTable> {
+  $$InspectionDraftsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<InspectionDraft, String> get draft =>
+      $composableBuilder(column: $table.draft, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$InspectionDraftsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $InspectionDraftsTable,
+          InspectionDraftRow,
+          $$InspectionDraftsTableFilterComposer,
+          $$InspectionDraftsTableOrderingComposer,
+          $$InspectionDraftsTableAnnotationComposer,
+          $$InspectionDraftsTableCreateCompanionBuilder,
+          $$InspectionDraftsTableUpdateCompanionBuilder,
+          (
+            InspectionDraftRow,
+            BaseReferences<
+              _$AppDatabase,
+              $InspectionDraftsTable,
+              InspectionDraftRow
+            >,
+          ),
+          InspectionDraftRow,
+          PrefetchHooks Function()
+        > {
+  $$InspectionDraftsTableTableManager(
+    _$AppDatabase db,
+    $InspectionDraftsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$InspectionDraftsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$InspectionDraftsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$InspectionDraftsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> hiveId = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<InspectionDraft> draft = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => InspectionDraftsCompanion(
+                hiveId: hiveId,
+                orgId: orgId,
+                draft: draft,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String hiveId,
+                required String orgId,
+                required InspectionDraft draft,
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => InspectionDraftsCompanion.insert(
+                hiveId: hiveId,
+                orgId: orgId,
+                draft: draft,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$InspectionDraftsTable, InspectionDraftRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $InspectionDraftsTable,
+                    InspectionDraftRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$InspectionDraftsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $InspectionDraftsTable,
+      InspectionDraftRow,
+      $$InspectionDraftsTableFilterComposer,
+      $$InspectionDraftsTableOrderingComposer,
+      $$InspectionDraftsTableAnnotationComposer,
+      $$InspectionDraftsTableCreateCompanionBuilder,
+      $$InspectionDraftsTableUpdateCompanionBuilder,
+      (
+        InspectionDraftRow,
+        BaseReferences<
+          _$AppDatabase,
+          $InspectionDraftsTable,
+          InspectionDraftRow
+        >,
+      ),
+      InspectionDraftRow,
+      PrefetchHooks Function()
+    >;
+typedef $$InspectionRemindersTableCreateCompanionBuilder =
+    InspectionRemindersCompanion Function({
+      required String inspectionId,
+      required String orgId,
+      required String hiveId,
+      required int days,
+      required DateTime remindAt,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$InspectionRemindersTableUpdateCompanionBuilder =
+    InspectionRemindersCompanion Function({
+      Value<String> inspectionId,
+      Value<String> orgId,
+      Value<String> hiveId,
+      Value<int> days,
+      Value<DateTime> remindAt,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$InspectionRemindersTableFilterComposer
+    extends Composer<_$AppDatabase, $InspectionRemindersTable> {
+  $$InspectionRemindersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get inspectionId => $composableBuilder(
+    column: $table.inspectionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get days => $composableBuilder(
+    column: $table.days,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get remindAt => $composableBuilder(
+    column: $table.remindAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$InspectionRemindersTableOrderingComposer
+    extends Composer<_$AppDatabase, $InspectionRemindersTable> {
+  $$InspectionRemindersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get inspectionId => $composableBuilder(
+    column: $table.inspectionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get days => $composableBuilder(
+    column: $table.days,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get remindAt => $composableBuilder(
+    column: $table.remindAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$InspectionRemindersTableAnnotationComposer
+    extends Composer<_$AppDatabase, $InspectionRemindersTable> {
+  $$InspectionRemindersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get inspectionId => $composableBuilder(
+    column: $table.inspectionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<int> get days =>
+      $composableBuilder(column: $table.days, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get remindAt =>
+      $composableBuilder(column: $table.remindAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$InspectionRemindersTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $InspectionRemindersTable,
+          InspectionReminder,
+          $$InspectionRemindersTableFilterComposer,
+          $$InspectionRemindersTableOrderingComposer,
+          $$InspectionRemindersTableAnnotationComposer,
+          $$InspectionRemindersTableCreateCompanionBuilder,
+          $$InspectionRemindersTableUpdateCompanionBuilder,
+          (
+            InspectionReminder,
+            BaseReferences<
+              _$AppDatabase,
+              $InspectionRemindersTable,
+              InspectionReminder
+            >,
+          ),
+          InspectionReminder,
+          PrefetchHooks Function()
+        > {
+  $$InspectionRemindersTableTableManager(
+    _$AppDatabase db,
+    $InspectionRemindersTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$InspectionRemindersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$InspectionRemindersTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$InspectionRemindersTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> inspectionId = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<int> days = const Value.absent(),
+                Value<DateTime> remindAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => InspectionRemindersCompanion(
+                inspectionId: inspectionId,
+                orgId: orgId,
+                hiveId: hiveId,
+                days: days,
+                remindAt: remindAt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String inspectionId,
+                required String orgId,
+                required String hiveId,
+                required int days,
+                required DateTime remindAt,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => InspectionRemindersCompanion.insert(
+                inspectionId: inspectionId,
+                orgId: orgId,
+                hiveId: hiveId,
+                days: days,
+                remindAt: remindAt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$InspectionRemindersTable, InspectionReminder>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $InspectionRemindersTable,
+                    InspectionReminder
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$InspectionRemindersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $InspectionRemindersTable,
+      InspectionReminder,
+      $$InspectionRemindersTableFilterComposer,
+      $$InspectionRemindersTableOrderingComposer,
+      $$InspectionRemindersTableAnnotationComposer,
+      $$InspectionRemindersTableCreateCompanionBuilder,
+      $$InspectionRemindersTableUpdateCompanionBuilder,
+      (
+        InspectionReminder,
+        BaseReferences<
+          _$AppDatabase,
+          $InspectionRemindersTable,
+          InspectionReminder
+        >,
+      ),
+      InspectionReminder,
+      PrefetchHooks Function()
+    >;
 typedef $$OutboxTableCreateCompanionBuilder = OutboxCompanion Function({
   Value<int> id,
   required String recordTable,
@@ -7283,6 +9755,12 @@ class $AppDatabaseManager {
       $$HivesTableTableManager(_db, _db.hives);
   $$HiveLocationHistoryTableTableManager get hiveLocationHistory =>
       $$HiveLocationHistoryTableTableManager(_db, _db.hiveLocationHistory);
+  $$InspectionsTableTableManager get inspections =>
+      $$InspectionsTableTableManager(_db, _db.inspections);
+  $$InspectionDraftsTableTableManager get inspectionDrafts =>
+      $$InspectionDraftsTableTableManager(_db, _db.inspectionDrafts);
+  $$InspectionRemindersTableTableManager get inspectionReminders =>
+      $$InspectionRemindersTableTableManager(_db, _db.inspectionReminders);
   $$OutboxTableTableManager get outbox =>
       $$OutboxTableTableManager(_db, _db.outbox);
   $$SyncStateTableTableManager get syncState =>

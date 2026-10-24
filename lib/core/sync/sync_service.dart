@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:drift/drift.dart';
@@ -60,6 +61,7 @@ class SyncService {
     _db.queens,
     _db.hives,
     _db.hiveLocationHistory,
+    _db.inspections,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.
@@ -475,6 +477,9 @@ class _Row {
     }
     final value = switch ((column.type, json)) {
       (DriftSqlType.string, final String text) => text,
+      // jsonb (ör. muayenenin `data`'sı) yerelde JSON metni.
+      (DriftSqlType.string, Map<String, Object?>() || List<Object?>()) =>
+        jsonEncode(json),
       (DriftSqlType.int, final int number) => number,
       (DriftSqlType.double, final num number) => number.toDouble(),
       (DriftSqlType.bool, final bool flag) => flag,

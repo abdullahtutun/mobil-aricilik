@@ -1,9 +1,10 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/deep_link.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/session_redirect.dart';
+import 'package:mobil_arici/app/sheet_page.dart';
 import 'package:mobil_arici/app/shell/app_shell.dart';
 import 'package:mobil_arici/app/shell/more_screen.dart';
 import 'package:mobil_arici/app/shell/scan_screen.dart';
@@ -26,6 +27,7 @@ import 'package:mobil_arici/features/hives/presentation/hive_form_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_label_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_link_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/labels/hive_labels_screen.dart';
+import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -62,7 +64,11 @@ GoRouter router(Ref ref) {
     ..listen(fullPullDoneProvider, (_, _) => session.value = stage())
     ..onDispose(session.dispose);
 
+  // Sekmelerin ve alt gezinmenin üstünde açılan alt sayfaların navigator'ı.
+  final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+
   final router = GoRouter(
+    navigatorKey: rootNavigatorKey,
     refreshListenable: session,
     // Önce `mobilarici://x/y` → `/x/y` (uygulama içi konumlara dokunmaz);
     // router yeni konumla yeniden çağırınca oturum kapısı uygulanır.
@@ -157,6 +163,18 @@ GoRouter router(Ref ref) {
                               hiveId: state.pathParameters[_hiveId],
                             ),
                           ),
+                          // Kartın üstünde alttan açılır; kart arkada
+                          // görünür kalır, kapatınca karta dönülür.
+                          GoRoute(
+                            path: 'inspect',
+                            parentNavigatorKey: rootNavigatorKey,
+                            pageBuilder: (context, state) => SheetPage<void>(
+                              key: state.pageKey,
+                              child: InspectionSheet(
+                                hiveId: state.pathParameters[_hiveId]!,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -200,15 +218,16 @@ GoRouter router(Ref ref) {
         builder: (context, state) => const SyncScreen(),
       ),
       // Kovan etiketinin derin linki (`mobilarici://h/<kimlik>`, telefonun
-      // kendi kamerasıyla okutulunca). Kovan bu telefondaysa kartına
-      // yönlenir; geri tuşu arılığa döner. Yoksa etiketi atamayı sunar.
+      // kendi kamerasıyla okutulunca). Kovan bu telefondaysa Okut'taki gibi
+      // kartına ve muayenesine yönlenir; geri tuşu arılığa döner. Yoksa
+      // etiketi atamayı sunar.
       GoRoute(
         path: '/$hiveLabelHost/:$_hiveId',
         redirect: (context, state) async {
           final hive = await ref
               .read(hiveLabelActionsProvider.notifier)
               .find(hiveLabelCode(state.pathParameters[_hiveId]!));
-          return hive == null ? null : AppRoutes.hive(hive.apiaryId, hive.id);
+          return hive == null ? null : AppRoutes.scannedHive(hive);
         },
         builder: (context, state) =>
             HiveLinkScreen(hiveId: state.pathParameters[_hiveId]!),

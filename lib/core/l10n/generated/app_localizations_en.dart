@@ -1076,4 +1076,151 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initialSyncFailedTitle => 'Download couldn\'t finish';
+
+  @override
+  String get suggestedValue => 'From the last record';
+
+  @override
+  String get stepperNoValue => 'Not set';
+
+  @override
+  String get hiveStartInspection => 'Start inspection';
+
+  @override
+  String inspectionTitle(String number) {
+    return 'Inspect hive $number';
+  }
+
+  @override
+  String inspectionPrevious(String date) {
+    return 'Last inspection $date';
+  }
+
+  @override
+  String get inspectionFirst => 'First inspection';
+
+  @override
+  String get inspectionSuggestedLegend =>
+      'Faded values are from the last inspection. Change what\'s different; the rest is saved as it is.';
+
+  @override
+  String get inspectionDraftSaved => 'Kept as a draft on this phone';
+
+  @override
+  String get inspectionRestart => 'Start over';
+
+  @override
+  String get inspectionQueen => 'Queen';
+
+  @override
+  String get queenStateSeen => 'Seen';
+
+  @override
+  String get queenStateEggs => 'Eggs seen';
+
+  @override
+  String get queenStateNone => 'None';
+
+  @override
+  String get inspectionFrames => 'Frames';
+
+  @override
+  String get inspectionBeeFrames => 'With bees';
+
+  @override
+  String get inspectionBroodFrames => 'With brood';
+
+  @override
+  String get inspectionHoneyFrames => 'With honey';
+
+  @override
+  String get inspectionTemperament => 'Temperament';
+
+  @override
+  String get temperamentCalm => 'Calm';
+
+  @override
+  String get temperamentNervous => 'Nervous';
+
+  @override
+  String get inspectionSwarmSigns => 'Swarm signs';
+
+  @override
+  String get inspectionQueenCells => 'Queen cells';
+
+  @override
+  String get queenCellsNone => 'None';
+
+  @override
+  String get queenCellsSwarm => 'Swarm';
+
+  @override
+  String get queenCellsSupersedure => 'Supersedure';
+
+  @override
+  String get queenCellsEmergency => 'Emergency';
+
+  @override
+  String get inspectionDisease => 'Disease suspected';
+
+  @override
+  String get inspectionAnswerNo => 'No';
+
+  @override
+  String get inspectionAnswerYes => 'Yes';
+
+  @override
+  String get inspectionActions => 'Done today';
+
+  @override
+  String get inspectionActionSuperAdded => 'Super added';
+
+  @override
+  String get inspectionActionSuperRemoved => 'Super removed';
+
+  @override
+  String get inspectionActionFramesAdded => 'Frames added';
+
+  @override
+  String get inspectionActionFoundationAdded => 'Foundation given';
+
+  @override
+  String get inspectionActionFed => 'Fed';
+
+  @override
+  String get inspectionActionExcluderFitted => 'Excluder fitted';
+
+  @override
+  String get inspectionActionEntranceReduced => 'Entrance reduced';
+
+  @override
+  String get inspectionActionPollenTrapFitted => 'Pollen trap fitted';
+
+  @override
+  String get inspectionSave => 'Save';
+
+  @override
+  String inspectionSaved(String number) {
+    return 'Hive $number inspection saved';
+  }
+
+  @override
+  String get inspectionRemindPrompt => 'Remind in';
+
+  @override
+  String inspectionRemindDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get inspectionLoadError => 'The inspection couldn\'t be opened';
+
+  @override
+  String get syncTableInspections => 'Inspection';
 }

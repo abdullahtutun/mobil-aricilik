@@ -1065,4 +1065,150 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get initialSyncFailedTitle => 'İndirme tamamlanamadı';
+
+  @override
+  String get suggestedValue => 'Önceki kayıttan';
+
+  @override
+  String get stepperNoValue => 'Girilmedi';
+
+  @override
+  String get hiveStartInspection => 'Muayene başlat';
+
+  @override
+  String inspectionTitle(String number) {
+    return 'Kovan $number muayenesi';
+  }
+
+  @override
+  String inspectionPrevious(String date) {
+    return 'Önceki muayene $date';
+  }
+
+  @override
+  String get inspectionFirst => 'İlk muayene';
+
+  @override
+  String get inspectionSuggestedLegend =>
+      'Soluk değerler önceki muayeneden. Değişeni düzelt; diğerleri olduğu gibi kaydedilir.';
+
+  @override
+  String get inspectionDraftSaved => 'Bu telefonda taslak olarak saklanıyor';
+
+  @override
+  String get inspectionRestart => 'Baştan başla';
+
+  @override
+  String get inspectionQueen => 'Ana arı';
+
+  @override
+  String get queenStateSeen => 'Görüldü';
+
+  @override
+  String get queenStateEggs => 'Yumurta var';
+
+  @override
+  String get queenStateNone => 'Yok';
+
+  @override
+  String get inspectionFrames => 'Çerçeveler';
+
+  @override
+  String get inspectionBeeFrames => 'Arılı';
+
+  @override
+  String get inspectionBroodFrames => 'Yavrulu';
+
+  @override
+  String get inspectionHoneyFrames => 'Ballı';
+
+  @override
+  String get inspectionTemperament => 'Mizaç';
+
+  @override
+  String get temperamentCalm => 'Sakin';
+
+  @override
+  String get temperamentNervous => 'Sinirli';
+
+  @override
+  String get inspectionSwarmSigns => 'Oğul belirtisi';
+
+  @override
+  String get inspectionQueenCells => 'Ana arı memesi';
+
+  @override
+  String get queenCellsNone => 'Yok';
+
+  @override
+  String get queenCellsSwarm => 'Oğul';
+
+  @override
+  String get queenCellsSupersedure => 'Ana değiştirme';
+
+  @override
+  String get queenCellsEmergency => 'Acil';
+
+  @override
+  String get inspectionDisease => 'Hastalık şüphesi';
+
+  @override
+  String get inspectionAnswerNo => 'Yok';
+
+  @override
+  String get inspectionAnswerYes => 'Var';
+
+  @override
+  String get inspectionActions => 'Yapılan işlem';
+
+  @override
+  String get inspectionActionSuperAdded => 'Kat verildi';
+
+  @override
+  String get inspectionActionSuperRemoved => 'Kat alındı';
+
+  @override
+  String get inspectionActionFramesAdded => 'Çerçeve eklendi';
+
+  @override
+  String get inspectionActionFoundationAdded => 'Temel petek verildi';
+
+  @override
+  String get inspectionActionFed => 'Besleme yapıldı';
+
+  @override
+  String get inspectionActionExcluderFitted => 'Ana ızgarası takıldı';
+
+  @override
+  String get inspectionActionEntranceReduced => 'Giriş daraltıldı';
+
+  @override
+  String get inspectionActionPollenTrapFitted => 'Polen tuzağı takıldı';
+
+  @override
+  String get inspectionSave => 'Kaydet';
+
+  @override
+  String inspectionSaved(String number) {
+    return 'Kovan $number muayenesi kaydedildi';
+  }
+
+  @override
+  String get inspectionRemindPrompt => 'Tekrar bakmayı hatırlat';
+
+  @override
+  String inspectionRemindDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days gün',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get inspectionLoadError => 'Muayene açılamadı';
+
+  @override
+  String get syncTableInspections => 'Muayene';
 }

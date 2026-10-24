@@ -111,6 +111,44 @@ void main() {
 
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
     });
+
+    testWidgets('öneri dolu değil, geçmiş ikonuyla çizilir ve ekran '
+        'okuyucuya söylenir; dokunmak onu onaylar', (tester) async {
+      Set<String>? changed;
+      await tester.pumpWidget(
+        _app(
+          ChoiceChipGroup(
+            options: options,
+            selected: const {'a'},
+            suggested: true,
+            onChanged: (value) => changed = value,
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.history_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.check_rounded), findsNothing);
+      expect(
+        tester.getSemantics(find.text('A')),
+        matchesSemantics(
+          label: 'A',
+          hint: 'Önceki kayıttan',
+          isButton: true,
+          isSelected: true,
+          hasSelectedState: true,
+          isInMutuallyExclusiveGroup: true,
+          hasTapAction: true,
+          hasFocusAction: true,
+          isFocusable: true,
+        ),
+      );
+
+      await tester.tap(find.text('A'));
+      expect(changed, {'a'});
+
+      await tester.tap(find.text('B'));
+      expect(changed, {'b'});
+    });
   });
 
   group('BigStepper', () {
@@ -155,6 +193,63 @@ void main() {
       expect(await enabledAt(0), (false, true));
       expect(await enabledAt(5), (true, true));
       expect(await enabledAt(10), (true, false));
+    });
+
+    testWidgets('değer girilmemişse − en küçüğü, + bir adım fazlasını verir; '
+        'ekran okuyucu "Girilmedi" der', (tester) async {
+      final values = <int>[];
+      await tester.pumpWidget(
+        _app(
+          BigStepper(
+            label: 'Ballı çerçeve',
+            value: null,
+            max: 10,
+            onChanged: values.add,
+          ),
+        ),
+      );
+
+      expect(find.text('–'), findsOneWidget);
+      final semantics = tester.getSemantics(find.byType(BigStepper));
+      expect(semantics.value, 'Girilmedi');
+      expect(semantics.increasedValue, '1');
+      expect(semantics.decreasedValue, '0');
+
+      await tester.tap(button(Icons.remove_rounded));
+      await tester.tap(button(Icons.add_rounded));
+
+      expect(values, [0, 1]);
+    });
+
+    testWidgets('öneri soluk çizilir; altında ikon ve kelimeyle yazar', (
+      tester,
+    ) async {
+      Future<Color?> numberColor({required bool suggested}) async {
+        await tester.pumpWidget(
+          _app(
+            BigStepper(
+              label: 'Arılı çerçeve',
+              value: 8,
+              suggested: suggested,
+              onChanged: (_) {},
+            ),
+          ),
+        );
+        return tester.widget<Text>(find.text('8')).style?.color;
+      }
+
+      final normal = await numberColor(suggested: false);
+      expect(find.text('Önceki kayıttan'), findsNothing);
+
+      final suggested = await numberColor(suggested: true);
+      expect(suggested, AppColors.light.textSecondary);
+      expect(suggested, isNot(normal));
+      expect(find.text('Önceki kayıttan'), findsOneWidget);
+      expect(find.byIcon(Icons.history_rounded), findsOneWidget);
+      expect(
+        tester.getSemantics(find.byType(BigStepper)).hint,
+        'Önceki kayıttan',
+      );
     });
   });
 
@@ -398,6 +493,73 @@ void main() {
 
       expect(find.text('Birinci'), findsNothing);
       expect(find.text('İkinci'), findsOneWidget);
+    });
+  });
+
+  group('showUndoSnackBar', () {
+    testWidgets('ek içerik mesajın altında; ona dokunmak bildirimi kapatmaz, '
+        'Geri al kapatır', (tester) async {
+      var undone = 0;
+      var tapped = 0;
+      await tester.pumpWidget(
+        _app(
+          Builder(
+            builder: (context) => TextButton(
+              onPressed: () => showUndoSnackBar(
+                context,
+                message: 'Kaydedildi',
+                onUndo: () => undone++,
+                details: TextButton(
+                  onPressed: () => tapped++,
+                  child: const Text('Seçenek'),
+                ),
+              ),
+              child: const Text('Göster'),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Göster'));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.getTopLeft(find.text('Seçenek')).dy,
+        greaterThan(tester.getBottomLeft(find.text('Kaydedildi')).dy),
+      );
+      await tester.tap(find.text('Seçenek'));
+      await tester.pumpAndSettle();
+      expect(tapped, 1);
+      expect(find.text('Kaydedildi'), findsOneWidget);
+
+      await tester.tap(find.text('Geri al'));
+      await tester.pumpAndSettle();
+      expect(undone, 1);
+      expect(find.text('Kaydedildi'), findsNothing);
+    });
+
+    testWidgets('ek içerikli bildirim de 6 sn sonra kapanır', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          Builder(
+            builder: (context) => TextButton(
+              onPressed: () => showUndoSnackBar(
+                context,
+                message: 'Kaydedildi',
+                onUndo: () {},
+                details: const Text('Seçenek'),
+              ),
+              child: const Text('Göster'),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Göster'));
+      await tester.pumpAndSettle();
+
+      await tester.pump(undoSnackBarDuration);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Kaydedildi'), findsNothing);
     });
   });
 

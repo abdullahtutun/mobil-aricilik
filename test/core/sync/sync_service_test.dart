@@ -15,6 +15,8 @@ import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
@@ -177,6 +179,27 @@ Map<String, Object?> _moveRow(int seq) => {
   'hive_id': 'hive-1',
   'apiary_id': 'apiary-1',
   'moved_at': '2026-10-23T06:30:00+00:00',
+};
+
+Map<String, Object?> _inspectionRow(int seq) => {
+  ..._standard('inspection-1', seq),
+  'org_id': _org,
+  'hive_id': 'hive-1',
+  'apiary_id': 'apiary-1',
+  'inspected_at': '2026-10-23T07:15:00+00:00',
+  'queen_state': 'eggs',
+  'bee_frames': 8,
+  'brood_frames': 5,
+  'honey_frames': null,
+  'temperament': 'nervous',
+  'swarm_signs': true,
+  'queen_cells': 'swarm',
+  'disease_suspected': false,
+  // jsonb nesne olarak gelir; bu sürümün tanımadığı anahtar korunur.
+  'data': {
+    'actions': ['super_added', 'fed', 'new_action'],
+    'later_field': 1,
+  },
 };
 
 bool _isPull(http.Request request) =>
@@ -668,11 +691,12 @@ void main() {
         'queens': [_queenRow(4)],
         'hives': [_hiveRow('hive-1', 5)],
         'hive_location_history': [_moveRow(6)],
+        'inspections': [_inspectionRow(7)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 6),
+        const SyncResult(status: SyncStatus.done, pulled: 7),
       );
 
       expect(requests.map(_pullOf), [
@@ -682,6 +706,7 @@ void main() {
         (table: 'queens', since: 0),
         (table: 'hives', since: 0),
         (table: 'hive_location_history', since: 0),
+        (table: 'inspections', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -718,6 +743,22 @@ void main() {
       final move = (await HiveLocationRepository(db).findById('move-1'))!;
       expect(move.movedAt, DateTime.utc(2026, 10, 23, 6, 30));
 
+      final inspection = (await InspectionRepository(db)
+          .findById('inspection-1'))!;
+      expect(inspection.inspectedAt, DateTime.utc(2026, 10, 23, 7, 15));
+      expect(inspection.queenState, QueenState.eggs);
+      expect(inspection.temperament, Temperament.nervous);
+      expect(inspection.queenCells, QueenCells.swarm);
+      expect(inspection.swarmSigns, isTrue);
+      expect(inspection.diseaseSuspected, isFalse);
+      expect(inspection.beeFrames, 8);
+      expect(inspection.honeyFrames, isNull);
+      expect(inspection.actions, {
+        InspectionAction.superAdded,
+        InspectionAction.fed,
+      });
+      expect(inspection.data['later_field'], 1);
+
       expect(await _cursors(db), {
         'organizations': 1,
         'memberships': 2,
@@ -725,6 +766,7 @@ void main() {
         'queens': 4,
         'hives': 5,
         'hive_location_history': 6,
+        'inspections': 7,
         fullPullMarker: 0,
       });
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
@@ -906,6 +948,20 @@ void main() {
       });
     }
 
+    test('nesne olmayan jsonb sayfayı reddeder', () async {
+      handler = _server({
+        'inspections': [
+          {
+            ..._inspectionRow(1),
+            'data': ['fed'],
+          },
+        ],
+      });
+
+      expect(await service.pull(), const SyncResult(status: SyncStatus.failed));
+      expect(await db.select(db.inspections).get(), isEmpty);
+    });
+
     test('ilerlemeden “devamı var” diyen yanıtta durur', () async {
       handler = (request) => _isPull(request)
           ? _json({'rows': const <Object>[], 'next_seq': 0, 'has_more': true})
@@ -963,10 +1019,14 @@ void main() {
 
       await service.pull(onProgress: progress.add);
 
-      SyncProgress at(int tablesDone, int rows) =>
-          SyncProgress(tablesDone: tablesDone, tableCount: 6, rowsPulled: rows);
+      final tableCount = service.pullTables.length;
+      SyncProgress at(int tablesDone, int rows) => SyncProgress(
+        tablesDone: tablesDone,
+        tableCount: tableCount,
+        rowsPulled: rows,
+      );
       expect(progress.first, at(0, 0));
-      expect(progress.last, at(6, 3));
+      expect(progress.last, at(tableCount, 3));
       expect(progress, contains(at(2, 3)));
       expect(
         progress.map((event) => event.tablesDone),
@@ -1050,7 +1110,7 @@ void main() {
       expect(service.sync(), same(first));
       release.complete();
       expect(await first, const SyncResult(status: SyncStatus.done, pushed: 1));
-      expect(requests, hasLength(7));
+      expect(requests, hasLength(1 + service.pullTables.length));
     });
   });
 }

@@ -12,7 +12,8 @@ import 'package:mobil_arici/core/utils/haptics.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/unknown_label_view.dart';
 
 /// Ortadaki Okut butonunun açtığı ekran: kovan etiketi okutulunca
-/// titreşir ve kovan kartı açılır (geri tuşu arılığa döner). Tanınmayan
+/// titreşir, kovan kartı ve üstünde hızlı muayene açılır (aktif olmayan
+/// kovanda yalnız kart; geri tuşu arılığa döner). Tanınmayan
 /// kodda kamera kapanır, ekran nedenini söyler ve etiketi bir kovana
 /// atamayı sunar. NFC kendi adımında gelecek.
 class ScanScreen extends ConsumerWidget {
@@ -25,7 +26,7 @@ class ScanScreen extends ConsumerWidget {
     ref.listen(scanControllerProvider, (_, state) {
       if (state case ScanFound(:final hive)) {
         unawaited(AppHaptics.scanSuccess());
-        context.go(AppRoutes.hive(hive.apiaryId, hive.id));
+        context.go(AppRoutes.scannedHive(hive));
       }
     });
 

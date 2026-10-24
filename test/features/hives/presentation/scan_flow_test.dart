@@ -24,6 +24,7 @@ import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
 import 'package:mobil_arici/features/hives/presentation/assign_label_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_link_screen.dart';
+import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_code_scanner.dart';
@@ -93,6 +94,12 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
+/// Telefonun geri tuşu.
+Future<void> _systemBack(WidgetTester tester) async {
+  await tester.binding.handlePopRoute();
+  await tester.pumpAndSettle();
+}
+
 /// Platformdan gelen derin linki taklit eder (Android/iOS tam URI verir).
 Future<void> _openDeepLink(WidgetTester tester, String link) async {
   unawaited(
@@ -137,8 +144,9 @@ void main() {
   );
 
   group('Okut', () {
-    testWidgets('kovan etiketi okutulunca titreşir ve kovan kartı açılır; '
-        'geri arılığa döner', (tester) async {
+    testWidgets('kovan etiketi okutulunca titreşir, kovan kartı ve üstünde '
+        'muayene açılır; geri tuşu önce muayeneyi kapatır, sonra arılığa '
+        'döner', (tester) async {
       final hive = await createHive('101');
       await _open(tester, db: db, scanner: scanner, haptics: haptics);
       await _openScan(tester);
@@ -152,9 +160,14 @@ void main() {
 
       expect(find.byType(ScanScreen), findsNothing);
       expect(find.byType(HiveCardScreen), findsOneWidget);
-      expect(find.text('101'), findsOneWidget);
+      expect(find.byType(InspectionSheet), findsOneWidget);
+      expect(find.text('Inspect hive 101'), findsOneWidget);
       expect(haptics, ['HapticFeedbackType.heavyImpact']);
       expect(scanner.isOpen, isFalse);
+
+      await _systemBack(tester);
+      expect(find.byType(InspectionSheet), findsNothing);
+      expect(find.text('101'), findsOneWidget);
 
       await tester.pageBack();
       await tester.pumpAndSettle();
@@ -175,15 +188,16 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(HiveCardScreen), findsOneWidget);
+      expect(find.byType(InspectionSheet), findsOneWidget);
       expect(haptics, hasLength(1));
+      await _systemBack(tester);
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.byType(ApiaryDetailScreen), findsOneWidget);
     });
 
-    testWidgets('atanmış etiket kodu ve aktif olmayan kovan da açılır', (
-      tester,
-    ) async {
+    testWidgets('atanmış etiket kodu ve aktif olmayan kovan da açılır; '
+        'aktif olmayan kovanda muayene açılmaz', (tester) async {
       final ova = await ApiaryRepository(db).create(orgId: _orgId, name: 'Ova');
       await createHive(
         '7',
@@ -200,6 +214,8 @@ void main() {
       expect(find.text('7'), findsOneWidget);
       expect(find.text('Ova'), findsOneWidget);
       expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
+      expect(find.byType(InspectionSheet), findsNothing);
+      expect(find.text('Start inspection'), findsNothing);
       expect(haptics, hasLength(1));
     });
 
@@ -333,16 +349,17 @@ void main() {
   });
 
   group('Derin link', () {
-    testWidgets('mobilarici://h/<kimlik> kovan kartını açar; geri arılığa', (
-      tester,
-    ) async {
+    testWidgets('mobilarici://h/<kimlik> kovan kartını ve muayeneyi açar; '
+        'geri arılığa', (tester) async {
       final hive = await createHive('101');
       await _open(tester, db: db, scanner: scanner);
 
       await _openDeepLink(tester, hiveLabelCode(hive.id));
 
       expect(find.byType(HiveCardScreen), findsOneWidget);
+      expect(find.byType(InspectionSheet), findsOneWidget);
       expect(find.text('101'), findsOneWidget);
+      await _systemBack(tester);
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.byType(ApiaryDetailScreen), findsOneWidget);

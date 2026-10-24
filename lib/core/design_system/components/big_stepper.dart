@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
+/// Değer girilmemiş sayaçta sayının yerinde duran işaret; dilden bağımsız.
+const _noValue = '–';
+
 /// Eldivenle kaydırmadan sayı girmek için büyük −/+ butonlu sayaç.
 ///
-/// Sınırda ilgili buton pasifleşir. Ekran okuyucuda ayarlanabilir değer
-/// olarak görünür (yukarı/aşağı kaydırma ile artar/azalır).
+/// Sınırda ilgili buton pasifleşir. [value] boşsa (girilmedi) − [min]'i,
+/// + bir adım fazlasını verir. [suggested] değer bir öneridir (ör. önceki
+/// kayıttan): sayı soluk çizilir, etiketin altında ikon ve kelimeyle
+/// yazar. Ekran okuyucuda ayarlanabilir değer olarak görünür (yukarı/aşağı
+/// kaydırma ile artar/azalır).
 class BigStepper extends StatelessWidget {
   const new({
     required this.label,
@@ -15,62 +21,107 @@ class BigStepper extends StatelessWidget {
     this.min = 0,
     this.max,
     this.step = 1,
+    this.suggested = false,
   }) : assert(max == null || min <= max, 'min, max değerini geçemez'),
        assert(step > 0, 'step pozitif olmalı');
 
   final String label;
-  final int value;
+  final int? value;
   final ValueChanged<int> onChanged;
   final int min;
   final int? max;
   final int step;
+  final bool suggested;
 
-  bool get _canDecrease => value - step >= min;
-  bool get _canIncrease => max == null || value + step <= max!;
+  int? get _decreased => switch (value) {
+    null => min,
+    final value when value - step >= min => value - step,
+    _ => null,
+  };
 
-  void _decrease() => onChanged(value - step);
-  void _increase() => onChanged(value + step);
+  int? get _increased {
+    final next = switch (value) {
+      null => min + step,
+      final value => value + step,
+    };
+    return max == null || next <= max! ? next : null;
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final spacing = context.spacing;
     final targets = context.touchTargets;
+    final decreased = _decreased;
+    final increased = _increased;
+    final value = this.value;
 
     return Semantics(
       container: true,
       label: label,
-      value: '$value',
-      increasedValue: _canIncrease ? '${value + step}' : null,
-      decreasedValue: _canDecrease ? '${value - step}' : null,
-      onIncrease: _canIncrease ? _increase : null,
-      onDecrease: _canDecrease ? _decrease : null,
+      value: value == null ? l10n.stepperNoValue : '$value',
+      hint: suggested ? l10n.suggestedValue : null,
+      increasedValue: increased == null ? null : '$increased',
+      decreasedValue: decreased == null ? null : '$decreased',
+      onIncrease: increased == null ? null : () => onChanged(increased),
+      onDecrease: decreased == null ? null : () => onChanged(decreased),
       child: Row(
         children: [
           Expanded(
             child: ExcludeSemantics(
-              child: Text(label, style: context.typography.body),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label, style: context.typography.body),
+                  if (suggested)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.history_rounded,
+                          size: context.sizes.iconSmall,
+                          color: colors.textSecondary,
+                        ),
+                        SizedBox(width: spacing.xs),
+                        Flexible(
+                          child: Text(
+                            l10n.suggestedValue,
+                            style: context.typography.bodySmall.copyWith(
+                              color: colors.textSecondary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
             ),
           ),
           SizedBox(width: targets.gap),
           _StepButton(
             icon: Icons.remove_rounded,
             tooltip: l10n.stepperDecrease,
-            onPressed: _canDecrease ? _decrease : null,
+            onPressed: decreased == null ? null : () => onChanged(decreased),
           ),
           ConstrainedBox(
             constraints: BoxConstraints(minWidth: targets.fieldLarge),
             child: ExcludeSemantics(
               child: Text(
-                '$value',
+                value == null ? _noValue : '$value',
                 textAlign: TextAlign.center,
-                style: context.typography.number,
+                style: suggested || value == null
+                    ? context.typography.number.copyWith(
+                        color: colors.textSecondary,
+                      )
+                    : context.typography.number,
               ),
             ),
           ),
           _StepButton(
             icon: Icons.add_rounded,
             tooltip: l10n.stepperIncrease,
-            onPressed: _canIncrease ? _increase : null,
+            onPressed: increased == null ? null : () => onChanged(increased),
           ),
         ],
       ),

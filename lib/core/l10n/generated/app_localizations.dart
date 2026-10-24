@@ -1861,6 +1861,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download couldn\'t finish'**
   String get initialSyncFailedTitle;
+
+  /// Caption and screen reader hint of a value suggested from the previous record (shown faded).
+  ///
+  /// In en, this message translates to:
+  /// **'From the last record'**
+  String get suggestedValue;
+
+  /// Screen reader value of a stepper that has no value yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get stepperNoValue;
+
+  /// No description provided for @hiveStartInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Start inspection'**
+  String get hiveStartInspection;
+
+  /// No description provided for @inspectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspect hive {number}'**
+  String inspectionTitle(String number);
+
+  /// No description provided for @inspectionPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Last inspection {date}'**
+  String inspectionPrevious(String date);
+
+  /// No description provided for @inspectionFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'First inspection'**
+  String get inspectionFirst;
+
+  /// No description provided for @inspectionSuggestedLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Faded values are from the last inspection. Change what\'s different; the rest is saved as it is.'**
+  String get inspectionSuggestedLegend;
+
+  /// No description provided for @inspectionDraftSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept as a draft on this phone'**
+  String get inspectionDraftSaved;
+
+  /// No description provided for @inspectionRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start over'**
+  String get inspectionRestart;
+
+  /// No description provided for @inspectionQueen.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen'**
+  String get inspectionQueen;
+
+  /// No description provided for @queenStateSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Seen'**
+  String get queenStateSeen;
+
+  /// No description provided for @queenStateEggs.
+  ///
+  /// In en, this message translates to:
+  /// **'Eggs seen'**
+  String get queenStateEggs;
+
+  /// No description provided for @queenStateNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get queenStateNone;
+
+  /// No description provided for @inspectionFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Frames'**
+  String get inspectionFrames;
+
+  /// No description provided for @inspectionBeeFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'With bees'**
+  String get inspectionBeeFrames;
+
+  /// No description provided for @inspectionBroodFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'With brood'**
+  String get inspectionBroodFrames;
+
+  /// No description provided for @inspectionHoneyFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'With honey'**
+  String get inspectionHoneyFrames;
+
+  /// No description provided for @inspectionTemperament.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperament'**
+  String get inspectionTemperament;
+
+  /// No description provided for @temperamentCalm.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm'**
+  String get temperamentCalm;
+
+  /// No description provided for @temperamentNervous.
+  ///
+  /// In en, this message translates to:
+  /// **'Nervous'**
+  String get temperamentNervous;
+
+  /// No description provided for @inspectionSwarmSigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Swarm signs'**
+  String get inspectionSwarmSigns;
+
+  /// No description provided for @inspectionQueenCells.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen cells'**
+  String get inspectionQueenCells;
+
+  /// No description provided for @queenCellsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get queenCellsNone;
+
+  /// No description provided for @queenCellsSwarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Swarm'**
+  String get queenCellsSwarm;
+
+  /// No description provided for @queenCellsSupersedure.
+  ///
+  /// In en, this message translates to:
+  /// **'Supersedure'**
+  String get queenCellsSupersedure;
+
+  /// No description provided for @queenCellsEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get queenCellsEmergency;
+
+  /// No description provided for @inspectionDisease.
+  ///
+  /// In en, this message translates to:
+  /// **'Disease suspected'**
+  String get inspectionDisease;
+
+  /// Answer to swarm signs or disease suspicion.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get inspectionAnswerNo;
+
+  /// No description provided for @inspectionAnswerYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get inspectionAnswerYes;
+
+  /// No description provided for @inspectionActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Done today'**
+  String get inspectionActions;
+
+  /// No description provided for @inspectionActionSuperAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Super added'**
+  String get inspectionActionSuperAdded;
+
+  /// No description provided for @inspectionActionSuperRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Super removed'**
+  String get inspectionActionSuperRemoved;
+
+  /// No description provided for @inspectionActionFramesAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Frames added'**
+  String get inspectionActionFramesAdded;
+
+  /// No description provided for @inspectionActionFoundationAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Foundation given'**
+  String get inspectionActionFoundationAdded;
+
+  /// No description provided for @inspectionActionFed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fed'**
+  String get inspectionActionFed;
+
+  /// No description provided for @inspectionActionExcluderFitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Excluder fitted'**
+  String get inspectionActionExcluderFitted;
+
+  /// No description provided for @inspectionActionEntranceReduced.
+  ///
+  /// In en, this message translates to:
+  /// **'Entrance reduced'**
+  String get inspectionActionEntranceReduced;
+
+  /// No description provided for @inspectionActionPollenTrapFitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Pollen trap fitted'**
+  String get inspectionActionPollenTrapFitted;
+
+  /// No description provided for @inspectionSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get inspectionSave;
+
+  /// No description provided for @inspectionSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} inspection saved'**
+  String inspectionSaved(String number);
+
+  /// No description provided for @inspectionRemindPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind in'**
+  String get inspectionRemindPrompt;
+
+  /// No description provided for @inspectionRemindDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day} other{{days} days}}'**
+  String inspectionRemindDays(int days);
+
+  /// No description provided for @inspectionLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'The inspection couldn\'t be opened'**
+  String get inspectionLoadError;
+
+  /// No description provided for @syncTableInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get syncTableInspections;
 }
 
 class _AppLocalizationsDelegate

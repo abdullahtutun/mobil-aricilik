@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/server_enum.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
@@ -83,10 +84,11 @@ void main() {
 
   test('senkronlanan tablolar sunucudaki kolonların aynası', () {
     final db = openTestDatabase();
+    // Yalnız bu telefondaki tablolar (outbox, taslaklar) `server_seq`
+    // taşımaz.
     final local = {
       for (final table in db.allTables)
-        if (table.actualTableName != 'outbox' &&
-            table.actualTableName != 'sync_state')
+        if (table.$columns.any((column) => column.name == 'server_seq'))
           table.actualTableName: {
             for (final column in table.$columns) column.name,
           },
@@ -119,6 +121,9 @@ void main() {
       'queen_source': values(QueenSource.values),
       'queen_mating_status': values(QueenMatingStatus.values),
       'hive_count_range': values(HiveCountRange.values),
+      'inspection_queen_state': values(QueenState.values),
+      'inspection_temperament': values(Temperament.values),
+      'inspection_queen_cells': values(QueenCells.values),
     };
 
     expect(local, server.enums);

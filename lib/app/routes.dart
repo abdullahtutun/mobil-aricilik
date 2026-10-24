@@ -1,3 +1,6 @@
+import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+
 /// Rota yolları. Geliştirici rotaları yalnızca dev flavor'da kayıtlıdır.
 abstract final class AppRoutes {
   // Alt gezinmedeki sekmeler; her biri kendi gezinme yığınını tutar.
@@ -18,6 +21,16 @@ abstract final class AppRoutes {
       '/apiaries/$apiaryId/hives/$hiveId';
   static String hiveEdit(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/edit';
+
+  /// Kovan kartı ve üstünde alttan açılan hızlı muayene.
+  static String hiveInspect(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/inspect';
+
+  /// Okutulan kovan: muayene edilebiliyorsa kartı ve üstünde muayene,
+  /// değilse (ör. sönmüş) yalnız kartı.
+  static String scannedHive(Hive hive) => canInspect(hive)
+      ? hiveInspect(hive.apiaryId, hive.id)
+      : AppRoutes.hive(hive.apiaryId, hive.id);
 
   /// Arılıktaki kovanların etiketlerini seçip yazdırma.
   static String hiveLabels(String apiaryId) => '/apiaries/$apiaryId/labels';

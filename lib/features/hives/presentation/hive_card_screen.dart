@@ -11,10 +11,12 @@ import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 
 /// Kovan kartı: büyük numara, arılık, durum rozeti ve ana arı şeridi;
-/// altında taşıma ve durum değiştirme. Özet kartları, zaman tüneli ve
-/// Muayene başlat kendi adımlarında gelecek.
+/// altında taşıma ve durum değiştirme. Aktif kovanda altta sabit "Muayene
+/// başlat" hızlı muayeneyi kartın üstünde açar. Özet kartları ve zaman
+/// tüneli kendi adımlarında gelecek.
 ///
 /// [apiaryId] yoldaki arılık (geri tuşu oraya döner); gösterilen arılık
 /// kovanın kendi arılığıdır.
@@ -40,27 +42,32 @@ class HiveCardScreen extends ConsumerWidget {
             ),
           ],
         ),
-        body: ListView(
-          padding: EdgeInsets.all(spacing.lg),
-          children: [
-            _Header(hive),
-            SizedBox(height: spacing.lg),
-            const _QueenStrip(),
-            SizedBox(height: spacing.xl),
-            BigButton(
-              variant: BigButtonVariant.secondary,
-              label: l10n.hiveMove,
-              icon: Icons.local_shipping_rounded,
-              onPressed: () => _move(context, ref, hive),
-            ),
-            SizedBox(height: context.touchTargets.gap),
-            BigButton(
-              variant: BigButtonVariant.secondary,
-              label: l10n.hiveChangeStatus,
-              icon: Icons.swap_horiz_rounded,
-              onPressed: () => _changeStatus(context, ref, hive),
-            ),
-          ],
+        body: _WithInspectButton(
+          inspect: canInspect(hive)
+              ? () => context.go(AppRoutes.hiveInspect(apiaryId, hiveId))
+              : null,
+          child: ListView(
+            padding: EdgeInsets.all(spacing.lg),
+            children: [
+              _Header(hive),
+              SizedBox(height: spacing.lg),
+              const _QueenStrip(),
+              SizedBox(height: spacing.xl),
+              BigButton(
+                variant: BigButtonVariant.secondary,
+                label: l10n.hiveMove,
+                icon: Icons.local_shipping_rounded,
+                onPressed: () => _move(context, ref, hive),
+              ),
+              SizedBox(height: context.touchTargets.gap),
+              BigButton(
+                variant: BigButtonVariant.secondary,
+                label: l10n.hiveChangeStatus,
+                icon: Icons.swap_horiz_rounded,
+                onPressed: () => _changeStatus(context, ref, hive),
+              ),
+            ],
+          ),
         ),
       ),
       AsyncData() => Scaffold(appBar: AppBar(), body: const HiveNotFound()),
@@ -117,6 +124,29 @@ class HiveCardScreen extends ConsumerWidget {
       context,
       message: l10n.hiveStatusChanged(hive.number, status.label(l10n)),
       onUndo: () => actions.setStatus(hive.id, previous),
+    );
+  }
+}
+
+/// Aktif kovanda altta sabit "Muayene başlat" ([inspect]); diğerlerinde
+/// yalnız [child].
+class _WithInspectButton extends StatelessWidget {
+  const new({required this.inspect, required this.child});
+
+  final VoidCallback? inspect;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final inspect = this.inspect;
+    if (inspect == null) return child;
+    return BottomActionLayout(
+      body: child,
+      action: BigButton(
+        label: AppLocalizations.of(context).hiveStartInspection,
+        icon: Icons.fact_check_rounded,
+        onPressed: inspect,
+      ),
     );
   }
 }

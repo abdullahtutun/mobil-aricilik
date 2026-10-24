@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 class ChoiceChipOption<T> {
   const new({required this.value, required this.label});
@@ -13,6 +14,10 @@ class ChoiceChipOption<T> {
 /// Tek seçimde ([multiSelect] false) en fazla bir değer seçilidir; seçili
 /// chip'e yeniden dokunmak seçimi kaldırır. Seçim yalnızca renkle değil,
 /// onay ikonuyla da gösterilir.
+///
+/// [suggested] seçim bir öneridir (ör. önceki kayıttan): seçili chip dolu
+/// değil çerçeveli çizilir, onay yerine geçmiş ikonu taşır. Öneriye
+/// dokunmak onu onaylar; seçim aynı kalır ve [onChanged] çağrılır.
 class ChoiceChipGroup<T> extends StatelessWidget {
   const new({
     required this.options,
@@ -20,16 +25,20 @@ class ChoiceChipGroup<T> extends StatelessWidget {
     required this.onChanged,
     super.key,
     this.multiSelect = false,
+    this.suggested = false,
   });
 
   final List<ChoiceChipOption<T>> options;
   final Set<T> selected;
   final ValueChanged<Set<T>> onChanged;
   final bool multiSelect;
+  final bool suggested;
 
   void _toggle(T value) {
     final isSelected = selected.contains(value);
-    if (multiSelect) {
+    if (isSelected && suggested) {
+      onChanged(selected);
+    } else if (multiSelect) {
       onChanged(
         isSelected ? ({...selected}..remove(value)) : {...selected, value},
       );
@@ -49,6 +58,7 @@ class ChoiceChipGroup<T> extends StatelessWidget {
           _Chip(
             label: option.label,
             selected: selected.contains(option.value),
+            suggested: suggested,
             exclusive: !multiSelect,
             onTap: () => _toggle(option.value),
           ),
@@ -61,12 +71,16 @@ class _Chip extends StatelessWidget {
   const new({
     required this.label,
     required this.selected,
+    required this.suggested,
     required this.exclusive,
     required this.onTap,
   });
 
   final String label;
   final bool selected;
+
+  /// Seçim bir öneri; seçili chip çerçeveli ve geçmiş ikonlu.
+  final bool suggested;
   final bool exclusive;
   final VoidCallback onTap;
 
@@ -74,12 +88,19 @@ class _Chip extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final spacing = context.spacing;
-    final foreground = selected ? colors.onSecondary : colors.textPrimary;
+    final filled = selected && !suggested;
+    final foreground = switch ((selected, suggested)) {
+      (true, false) => colors.onSecondary,
+      (true, true) => colors.textSecondary,
+      (false, _) => colors.textPrimary,
+    };
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(context.radii.small),
       side: BorderSide(
         color: selected ? colors.secondary : colors.outline,
-        width: context.strokes.border,
+        width: selected && suggested
+            ? context.strokes.focus
+            : context.strokes.border,
       ),
     );
 
@@ -87,8 +108,11 @@ class _Chip extends StatelessWidget {
       button: true,
       selected: selected,
       inMutuallyExclusiveGroup: exclusive,
+      hint: selected && suggested
+          ? AppLocalizations.of(context).suggestedValue
+          : null,
       child: Material(
-        color: selected ? colors.secondary : colors.surface,
+        color: filled ? colors.secondary : colors.surface,
         shape: shape,
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -105,7 +129,7 @@ class _Chip extends StatelessWidget {
                 children: [
                   if (selected) ...[
                     Icon(
-                      Icons.check_rounded,
+                      suggested ? Icons.history_rounded : Icons.check_rounded,
                       size: context.sizes.iconSmall,
                       color: foreground,
                     ),

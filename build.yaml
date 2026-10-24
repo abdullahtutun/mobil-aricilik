@@ -10,3 +10,9 @@ targets:
           # Zamanlar ISO-8601 metin (mikrosaniye, UTC'de "Z"); varsayılan
           # tam sayı saniyeye yuvarlar, son yazan kazanır kararı bozulur.
           store_date_time_values_as_text: true
+          # `dart run drift_dev make-migrations`: her şema sürümünün dökümü,
+          # adım adım migration kodu ve migration testleri.
+          databases:
+            app_database: lib/core/db/app_database.dart
+          schema_dir: drift_schemas/
+          test_dir: test/core/db/migrations/

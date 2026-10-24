@@ -752,5 +752,91 @@
       }
     }
   },
-  "initialSyncFailedTitle": "Download couldn't finish"
+  "initialSyncFailedTitle": "Download couldn't finish",
+
+  "suggestedValue": "From the last record",
+  "@suggestedValue": {
+    "description": "Caption and screen reader hint of a value suggested from the previous record (shown faded)."
+  },
+  "stepperNoValue": "Not set",
+  "@stepperNoValue": {
+    "description": "Screen reader value of a stepper that has no value yet."
+  },
+  "hiveStartInspection": "Start inspection",
+  "inspectionTitle": "Inspect hive {number}",
+  "@inspectionTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "inspectionPrevious": "Last inspection {date}",
+  "@inspectionPrevious": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Oct 20, 2026"
+      }
+    }
+  },
+  "inspectionFirst": "First inspection",
+  "inspectionSuggestedLegend": "Faded values are from the last inspection. Change what's different; the rest is saved as it is.",
+  "inspectionDraftSaved": "Kept as a draft on this phone",
+  "inspectionRestart": "Start over",
+  "inspectionQueen": "Queen",
+  "queenStateSeen": "Seen",
+  "queenStateEggs": "Eggs seen",
+  "queenStateNone": "None",
+  "inspectionFrames": "Frames",
+  "inspectionBeeFrames": "With bees",
+  "inspectionBroodFrames": "With brood",
+  "inspectionHoneyFrames": "With honey",
+  "inspectionTemperament": "Temperament",
+  "temperamentCalm": "Calm",
+  "temperamentNervous": "Nervous",
+  "inspectionSwarmSigns": "Swarm signs",
+  "inspectionQueenCells": "Queen cells",
+  "queenCellsNone": "None",
+  "queenCellsSwarm": "Swarm",
+  "queenCellsSupersedure": "Supersedure",
+  "queenCellsEmergency": "Emergency",
+  "inspectionDisease": "Disease suspected",
+  "inspectionAnswerNo": "No",
+  "@inspectionAnswerNo": {
+    "description": "Answer to swarm signs or disease suspicion."
+  },
+  "inspectionAnswerYes": "Yes",
+  "inspectionActions": "Done today",
+  "inspectionActionSuperAdded": "Super added",
+  "inspectionActionSuperRemoved": "Super removed",
+  "inspectionActionFramesAdded": "Frames added",
+  "inspectionActionFoundationAdded": "Foundation given",
+  "inspectionActionFed": "Fed",
+  "inspectionActionExcluderFitted": "Excluder fitted",
+  "inspectionActionEntranceReduced": "Entrance reduced",
+  "inspectionActionPollenTrapFitted": "Pollen trap fitted",
+  "inspectionSave": "Save",
+  "inspectionSaved": "Hive {number} inspection saved",
+  "@inspectionSaved": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "inspectionRemindPrompt": "Remind in",
+  "inspectionRemindDays": "{days, plural, =1{1 day} other{{days} days}}",
+  "@inspectionRemindDays": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "inspectionLoadError": "The inspection couldn't be opened",
+  "syncTableInspections": "Inspection"
 }
