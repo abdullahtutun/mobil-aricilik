@@ -10,8 +10,13 @@ import 'package:mobil_arici/features/queens/domain/queen.dart';
 
 import '../../helpers/test_database.dart';
 
-/// `supabase/migrations` içindeki tablo kolonları ve enum değerleri.
-({Map<String, Set<String>> tables, Map<String, List<String>> enums})
+/// `supabase/migrations` içindeki tablo kolonları, enum değerleri ve
+/// `sync_push`'un kabul ettiği şema sürümleri.
+({
+  Map<String, Set<String>> tables,
+  Map<String, List<String>> enums,
+  List<int> supportedVersions,
+})
 _serverSchema() {
   final files =
       Directory('supabase/migrations')
@@ -23,6 +28,7 @@ _serverSchema() {
 
   final tables = <String, Set<String>>{};
   final enums = <String, List<String>>{};
+  var supportedVersions = <int>[];
   const notColumns = {'unique', 'foreign', 'check', 'constraint', 'primary'};
 
   for (final file in files) {
@@ -50,15 +56,23 @@ _serverSchema() {
         for (final value in RegExp(r"'(\w+)'").allMatches(match[2]!)) value[1]!,
       ];
     }
+    // Fonksiyon `create or replace` ile yenilenir; son migration geçerli.
+    for (final match in RegExp(
+      r'supported_versions constant integer\[\] := array\[([^\]]*)\]',
+    ).allMatches(sql)) {
+      supportedVersions = [
+        for (final value in RegExp(r'\d+').allMatches(match[1]!))
+          int.parse(value[0]!),
+      ];
+    }
   }
-  return (tables: tables, enums: enums);
+  return (tables: tables, enums: enums, supportedVersions: supportedVersions);
 }
 
 void main() {
   final server = _serverSchema();
 
   test('migration ayrıştırması tabloları ve enumları buluyor', () {
-    expect(server.tables, hasLength(6));
     expect(server.tables['hives'], containsAll(['id', 'org_id', 'number']));
     expect(server.enums['queen_source'], [
       'own_rearing',
@@ -108,5 +122,13 @@ void main() {
     };
 
     expect(local, server.enums);
+  });
+
+  test('sync_push Drift şema sürümünü kabul eder', () {
+    // Sürüm sunucunun listesinde yoksa her gönderim PT426 alır ve güncel
+    // uygulama güncelleme ister.
+    final db = openTestDatabase();
+
+    expect(server.supportedVersions, contains(db.schemaVersion));
   });
 }

@@ -188,6 +188,12 @@
 - Senkron kaydı iki yerde yapılıyor. Push için sunucudaki `private.sync_push_change` `kind` eşlemesine `state` ya da `event` girişi ekleniyor, pull için `SyncService.pullTables` ve `syncTableLabel`. `sync_pull` yeni tablo için değişiklik istemiyor.
 - Bölüm, kodda görülen iki tuzağı da yazıyor. Yeni tablo `schema_mirror_test.dart`'taki tablo sayısını değiştiriyor. `schemaVersion` artarsa yeni sürüm `sync_push`'taki `supported_versions`'a eklenmeli; eklenmezse her gönderim `PT426` alır.
 
+### 2026-10-24 — Kalıptaki iki tuzak testle yakalanıyor
+
+- Tablo sayısı artık testlerde sabit değil. `schema_mirror_test.dart` içindeki `hasLength(6)` kaldırıldı; tablo kümesini zaten ayna testi karşılaştırıyor. `sync_service_test.dart` içindeki üç `hasLength(6)` (tablo başına bir çekme isteği) `pullTables.length` oldu. Yeni tablo eklenince yalnız bilerek konmuş korumalar kırılıyor: ayna testi ve `pullTables`'ın her yerel senkron tablosunu içerdiği test.
+- `schema_mirror_test.dart` artık `sync_push`'taki `supported_versions` listesini de okuyor. Fonksiyon `create or replace` ile yenileneceği için son migration'daki liste geçerli sayılıyor. Yeni test, Drift `schemaVersion`'ı bu listede değilse kırılıyor. CLAUDE.md'deki kalıp metni buna göre güncellendi. Uzak projeye migration'ın yayından önce uygulanması testle denetlenemiyor; bu kural kalıpta yazıyor.
+- Denendi: `schemaVersion` 2 yapılınca yeni test `Expected: contains <2>, Actual: [1]` ile kırıldı. Yeni bir tablo ve `array[1, 2]` taşıyan geçici bir migration eklenince yalnız ayna testi kırıldı, sürüm testi geçti. İkisi de geri alındı. Toplam 562 test.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.

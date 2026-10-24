@@ -989,7 +989,7 @@ void main() {
       expect(service.pull(), same(first));
       release.complete();
       expect((await first).status, SyncStatus.done);
-      expect(requests, hasLength(6));
+      expect(requests, hasLength(service.pullTables.length));
     });
   });
 
@@ -1006,7 +1006,7 @@ void main() {
       );
       expect(requests.first.url.path, '/rest/v1/rpc/sync_push');
       expect(requests.skip(1).every(_isPull), isTrue);
-      expect(requests.skip(1), hasLength(6));
+      expect(requests.skip(1), hasLength(service.pullTables.length));
     });
 
     test('gönderme bitmezse çekmez', () async {
@@ -1031,7 +1031,7 @@ void main() {
         await service.sync(),
         const SyncResult(status: SyncStatus.done, pushed: 1, rejected: 1),
       );
-      expect(requests.where(_isPull), hasLength(6));
+      expect(requests.where(_isPull), hasLength(service.pullTables.length));
     });
 
     test('tur sürerken gelen çağrı aynı turu bekler', () async {
