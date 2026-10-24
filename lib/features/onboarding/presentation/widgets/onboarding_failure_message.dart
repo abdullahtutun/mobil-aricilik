@@ -13,8 +13,7 @@ String onboardingFailureText(
   };
 }
 
-/// İşletme kurulamadı: kritik durum ikonu ve rengiyle birlikte cümle. Ekran
-/// okuyucu hata çıkınca kendiliğinden okur.
+/// İşletme kurulamadı: kritik durum cümlesi.
 class OnboardingFailureMessage extends StatelessWidget {
   const new(this.failure, {super.key});
 
@@ -22,26 +21,9 @@ class OnboardingFailureMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const status = AppStatus.critical;
-    return Semantics(
-      liveRegion: true,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            status.icon,
-            size: context.sizes.icon,
-            color: status.colorIn(context.colors),
-          ),
-          SizedBox(width: context.spacing.sm),
-          Expanded(
-            child: Text(
-              onboardingFailureText(AppLocalizations.of(context), failure),
-              style: context.typography.body,
-            ),
-          ),
-        ],
-      ),
+    return StatusMessage(
+      status: AppStatus.critical,
+      message: onboardingFailureText(AppLocalizations.of(context), failure),
     );
   }
 }

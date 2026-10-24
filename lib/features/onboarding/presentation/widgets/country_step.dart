@@ -85,9 +85,6 @@ class _CountryStepState extends ConsumerState<CountryStep> {
             decoration: InputDecoration(
               labelText: l10n.onboardingCountrySearch,
               prefixIcon: const Icon(Icons.search_rounded),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(context.radii.button),
-              ),
             ),
             onChanged: (_) => setState(() {}),
           ),

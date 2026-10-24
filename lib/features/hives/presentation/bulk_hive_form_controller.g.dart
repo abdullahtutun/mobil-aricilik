@@ -64,7 +64,7 @@ final class BulkHiveFormControllerProvider
 }
 
 String _$bulkHiveFormControllerHash() =>
-    r'b2ecbec4e6153628e4d47fa1da0515969fb96fe0';
+    r'81e157502b195699b86d79952382820edced07fd';
 
 /// "20 kovan oluştur, 101'den başla": aynı tip ve kaynakta ardışık
 /// numaralı aktif kovanlar. Ekran açık kaldığı sürece yaşar. Arılık yoksa

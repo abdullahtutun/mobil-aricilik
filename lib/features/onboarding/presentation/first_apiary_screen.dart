@@ -41,36 +41,26 @@ class FirstApiaryScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: form == null
-                  ? const SizedBox.shrink()
-                  : ListView(
-                      padding: EdgeInsets.all(spacing.lg),
-                      children: [
-                        StepHeader(
-                          title: l10n.onboardingApiaryTitle,
-                          message: l10n.onboardingApiaryMessage,
-                        ),
-                        SizedBox(height: spacing.xl),
-                        const ApiaryFormFields(apiaryId: null),
-                      ],
-                    ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(spacing.lg),
-              child: BigButton(
-                label: l10n.onboardingApiarySave,
-                icon: Icons.check_rounded,
-                onPressed: (form?.canSave ?? false)
-                    ? () => _save(context, ref)
-                    : null,
+      body: BottomActionLayout(
+        body: form == null
+            ? const SizedBox.shrink()
+            : ListView(
+                padding: EdgeInsets.all(spacing.lg),
+                children: [
+                  StepHeader(
+                    title: l10n.onboardingApiaryTitle,
+                    message: l10n.onboardingApiaryMessage,
+                  ),
+                  SizedBox(height: spacing.xl),
+                  const ApiaryFormFields(apiaryId: null),
+                ],
               ),
-            ),
-          ],
+        action: BigButton(
+          label: l10n.onboardingApiarySave,
+          icon: Icons.check_rounded,
+          onPressed: (form?.canSave ?? false)
+              ? () => _save(context, ref)
+              : null,
         ),
       ),
     );

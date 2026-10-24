@@ -13,6 +13,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     required this.body,
     required this.bodySmall,
     required this.label,
+    required this.labelSmall,
   });
 
   factory _scale({
@@ -29,6 +30,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       body: _style(body, FontWeight.w400, 1.5),
       bodySmall: _style(bodySmall, FontWeight.w400, 1.45),
       label: _style(label, FontWeight.w600, 1.25),
+      labelSmall: _style(bodySmall, FontWeight.w600, 1.45),
     );
   }
 
@@ -58,6 +60,9 @@ class AppTypography extends ThemeExtension<AppTypography> {
   /// Buton ve chip etiketleri.
   final TextStyle label;
 
+  /// Alt gezinme gibi dar yerlerdeki etiketler; [bodySmall] boyunda, kalın.
+  final TextStyle labelSmall;
+
   static TextStyle _style(double size, FontWeight weight, double height) {
     return TextStyle(
       fontFamily: fontFamily,
@@ -71,7 +76,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
 
   /// Material bileşenlerinin varsayılan stilleri bu ölçekten gelsin diye.
   TextTheme toTextTheme() {
-    final labelSmall = bodySmall.copyWith(fontWeight: FontWeight.w500);
+    final materialLabelSmall = bodySmall.copyWith(fontWeight: FontWeight.w500);
     return TextTheme(
       displayLarge: numberLarge,
       displayMedium: number,
@@ -86,8 +91,8 @@ class AppTypography extends ThemeExtension<AppTypography> {
       bodyMedium: body,
       bodySmall: bodySmall,
       labelLarge: label,
-      labelMedium: labelSmall,
-      labelSmall: labelSmall,
+      labelMedium: materialLabelSmall,
+      labelSmall: materialLabelSmall,
     );
   }
 
@@ -101,6 +106,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     TextStyle? body,
     TextStyle? bodySmall,
     TextStyle? label,
+    TextStyle? labelSmall,
   }) {
     return AppTypography(
       numberLarge: numberLarge ?? this.numberLarge,
@@ -111,6 +117,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       body: body ?? this.body,
       bodySmall: bodySmall ?? this.bodySmall,
       label: label ?? this.label,
+      labelSmall: labelSmall ?? this.labelSmall,
     );
   }
 
@@ -126,6 +133,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       body: TextStyle.lerp(body, other.body, t)!,
       bodySmall: TextStyle.lerp(bodySmall, other.bodySmall, t)!,
       label: TextStyle.lerp(label, other.label, t)!,
+      labelSmall: TextStyle.lerp(labelSmall, other.labelSmall, t)!,
     );
   }
 }

@@ -277,7 +277,6 @@ class _HiveListRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
     final spacing = context.spacing;
     final type = hive.type.label(l10n);
     final details = switch (hive.source) {
@@ -285,76 +284,52 @@ class _HiveListRow extends StatelessWidget {
       null => type,
     };
 
-    return MergeSemantics(
-      child: Material(
-        color: colors.surfaceContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(context.radii.card),
-          side: BorderSide(
-            color: colors.divider,
-            width: context.strokes.border,
-          ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: context.touchTargets.field),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: spacing.lg,
-                vertical: spacing.sm,
-              ),
-              child: Row(
-                children: [
-                  // Uzun numara ve büyük yazı boyutunda kırılmasın, küçülsün.
-                  Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: AlignmentDirectional.centerStart,
-                      child: Semantics(
-                        label: l10n.hiveLabel(hive.number),
-                        excludeSemantics: true,
-                        child: Text(
-                          hive.number,
-                          maxLines: 1,
-                          style: context.typography.number,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: spacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          details,
-                          style: context.typography.bodySmall.copyWith(
-                            color: colors.textSecondary,
-                          ),
-                        ),
-                        if (!hive.status.isCounted) ...[
-                          SizedBox(height: spacing.xs),
-                          StatusBadge(
-                            status: hive.status.appStatus,
-                            label: hive.status.label(l10n),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: spacing.sm),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    size: context.sizes.icon,
-                    color: colors.textSecondary,
-                  ),
-                ],
+    return NavigationCard(
+      onTap: onTap,
+      padding: EdgeInsets.symmetric(
+        horizontal: spacing.lg,
+        vertical: spacing.sm,
+      ),
+      child: Row(
+        children: [
+          // Uzun numara ve büyük yazı boyutunda kırılmasın, küçülsün.
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: Semantics(
+                label: l10n.hiveLabel(hive.number),
+                excludeSemantics: true,
+                child: Text(
+                  hive.number,
+                  maxLines: 1,
+                  style: context.typography.number,
+                ),
               ),
             ),
           ),
-        ),
+          SizedBox(width: spacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  details,
+                  style: context.typography.bodySmall.copyWith(
+                    color: context.colors.textSecondary,
+                  ),
+                ),
+                if (!hive.status.isCounted) ...[
+                  SizedBox(height: spacing.xs),
+                  StatusBadge(
+                    status: hive.status.appStatus,
+                    label: hive.status.label(l10n),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

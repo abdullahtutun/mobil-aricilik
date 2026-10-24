@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mobil_arici/core/services/secure_storage.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 
 /// İşletmenin cihazdaki kopyası; uygulama çevrimdışı açılınca işletme
@@ -18,13 +19,7 @@ abstract interface class OrganizationCache {
 /// Kopyayı oturumla aynı yerde, Keychain/Keystore'da tutar. Okuma ve yazma
 /// hataları yutulur; en kötü durumda işletme yeniden sunucudan alınır.
 class SecureOrganizationCache implements OrganizationCache {
-  const new({
-    this.storage = const FlutterSecureStorage(
-      iOptions: IOSOptions(
-        accessibility: KeychainAccessibility.first_unlock_this_device,
-      ),
-    ),
-  });
+  const new({this.storage = appSecureStorage});
 
   final FlutterSecureStorage storage;
 

@@ -101,10 +101,7 @@ class _HiveLabelsScreenState extends ConsumerState<HiveLabelsScreen> {
           await service.sharePdf(bytes, filename: '${_fileName(title)}.pdf');
       }
     } on Exception {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(l10n.hiveLabelsError)));
-      }
+      if (mounted) showMessageSnackBar(context, l10n.hiveLabelsError);
     } finally {
       if (mounted) setState(() => _busy = false);
     }

@@ -1,20 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mobil_arici/core/services/secure_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Supabase oturumunu (access + refresh token) Keychain/Keystore'da tutar;
 /// varsayılan SharedPreferences düz metin saklardı.
 class SecureSessionStorage extends LocalStorage {
-  new({
-    required String supabaseUrl,
-    this.storage = const FlutterSecureStorage(
-      // Arka plan senkronu kilit ekranındayken de token okuyabilsin; kayıt
-      // yedekle başka cihaza taşınmasın.
-      iOptions: IOSOptions(
-        accessibility: KeychainAccessibility.first_unlock_this_device,
-      ),
-    ),
-  }) : key = 'sb-${Uri.parse(supabaseUrl).host.split('.').first}-auth-token';
+  new({required String supabaseUrl, this.storage = appSecureStorage})
+    : key = 'sb-${Uri.parse(supabaseUrl).host.split('.').first}-auth-token';
 
   final FlutterSecureStorage storage;
 

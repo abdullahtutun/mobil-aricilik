@@ -125,44 +125,48 @@ class ApiaryFormController extends _$ApiaryFormController {
   /// silindiyse durum null olur.
   Future<String?> save() async {
     final form = state.value;
-    final orgId = ref.read(currentOrganizationProvider).value?.id;
+    final orgId = ref.read(currentOrgIdProvider);
     if (form == null || !form.canSave || orgId == null) return null;
     _update((form) => form.copyWith(saving: true));
 
     final repository = ref.read(apiaryRepositoryProvider);
     final id = apiaryId;
-    final Apiary saved;
-    if (id == null) {
-      saved = await repository.create(
-        orgId: orgId,
-        name: form.name.trim(),
-        latitude: form.latitude,
-        longitude: form.longitude,
-        landownerName: _orNull(form.landownerName),
-        landownerPhone: _orNull(form.landownerPhone),
-        notes: _orNull(form.notes),
-      );
-    } else {
-      // Formda olmayan alanlar (ör. senkronla gelen su kaynağı) en son
-      // hâlinden alınır.
-      final latest = await repository.findById(id);
-      if (latest == null) {
-        if (ref.mounted) state = const AsyncData(null);
-        return null;
-      }
-      saved = await repository.update(
-        latest.copyWith(
+    // Yazma hata atsa da Kaydet yeniden açılsın.
+    try {
+      final Apiary saved;
+      if (id == null) {
+        saved = await repository.create(
+          orgId: orgId,
           name: form.name.trim(),
           latitude: form.latitude,
           longitude: form.longitude,
           landownerName: _orNull(form.landownerName),
           landownerPhone: _orNull(form.landownerPhone),
           notes: _orNull(form.notes),
-        ),
-      );
+        );
+      } else {
+        // Formda olmayan alanlar (ör. senkronla gelen su kaynağı) en son
+        // hâlinden alınır.
+        final latest = await repository.findById(id);
+        if (latest == null) {
+          if (ref.mounted) state = const AsyncData(null);
+          return null;
+        }
+        saved = await repository.update(
+          latest.copyWith(
+            name: form.name.trim(),
+            latitude: form.latitude,
+            longitude: form.longitude,
+            landownerName: _orNull(form.landownerName),
+            landownerPhone: _orNull(form.landownerPhone),
+            notes: _orNull(form.notes),
+          ),
+        );
+      }
+      return saved.id;
+    } finally {
+      if (ref.mounted) _update((form) => form.copyWith(saving: false));
     }
-    if (ref.mounted) _update((form) => form.copyWith(saving: false));
-    return saved.id;
   }
 
   void _update(ApiaryFormState Function(ApiaryFormState form) change) {

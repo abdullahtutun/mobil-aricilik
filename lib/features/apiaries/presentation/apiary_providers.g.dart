@@ -102,7 +102,7 @@ final class ApiaryListProvider
   }
 }
 
-String _$apiaryListHash() => r'53e46a1cf90b0baef3d770ac6d23cbb73bf0e1fe';
+String _$apiaryListHash() => r'7c9822824eeca81c9eb68c8b43faa68a9d059f92';
 
 /// Detayın üst kısmı; arılık yoksa ya da silindiyse null.
 

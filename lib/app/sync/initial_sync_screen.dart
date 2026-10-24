@@ -9,7 +9,7 @@ import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
-import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/auth/presentation/widgets/sign_out_button.dart';
 
 /// İlk girişte tam çekme (teknik.md §3): işletmenin kayıtları bu telefona
 /// inene kadar sekmeler açılmaz; yeni cihazda boş listeyi görüp aynı
@@ -69,7 +69,7 @@ class _InitialSyncScreenState extends ConsumerState<InitialSyncScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        actions: const [_SignOutButton()],
+        actions: const [SignOutButton()],
       ),
       body: SafeArea(
         child: Center(child: SingleChildScrollView(child: content)),
@@ -140,21 +140,6 @@ class _Progress extends StatelessWidget {
           ],
         ],
       ),
-    );
-  }
-}
-
-/// Çıkış: sunucuya hiç ulaşılamıyorsa ya da yanlış hesapla girildiyse
-/// kullanıcı burada kalmasın.
-class _SignOutButton extends ConsumerWidget {
-  const new();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return IconButton(
-      tooltip: AppLocalizations.of(context).settingsSignOut,
-      icon: const Icon(Icons.logout_rounded),
-      onPressed: () => ref.read(currentUserProvider.notifier).signOut(),
     );
   }
 }

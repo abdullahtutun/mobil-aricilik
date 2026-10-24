@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/features/queens/domain/queen.dart'
+    show QueenMarkColor;
 
 Widget _app(
   Widget child, {
@@ -191,6 +193,233 @@ void main() {
 
       expect(find.bySemanticsLabel('Kovan 7'), findsOneWidget);
       semantics.dispose();
+    });
+  });
+
+  group('showConfirmDialog', () {
+    Future<bool?> answer(WidgetTester tester, String button) async {
+      bool? result;
+      await tester.pumpWidget(
+        _app(
+          Builder(
+            builder: (context) => TextButton(
+              onPressed: () async => result = await showConfirmDialog(
+                context,
+                title: 'Silinsin mi?',
+                message: 'Geri alınamaz.',
+                confirmLabel: 'Sil',
+              ),
+              child: const Text('Aç'),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Aç'));
+      await tester.pumpAndSettle();
+      expect(find.text('Silinsin mi?'), findsOneWidget);
+      await tester.tap(find.text(button));
+      await tester.pumpAndSettle();
+      return result;
+    }
+
+    testWidgets('onaylanırsa true', (tester) async {
+      expect(await answer(tester, 'Sil'), isTrue);
+    });
+
+    testWidgets('vazgeçilirse false', (tester) async {
+      expect(await answer(tester, 'Vazgeç'), isFalse);
+    });
+  });
+
+  group('OptionSheet', () {
+    Future<void> open(
+      WidgetTester tester,
+      List<SheetOption<String>> options,
+      ValueChanged<String?> onResult,
+    ) async {
+      await tester.pumpWidget(
+        _app(
+          Builder(
+            builder: (context) => TextButton(
+              onPressed: () async => onResult(
+                await showOptionSheet<String>(
+                  context,
+                  (context) => OptionSheet(
+                    title: 'Taşı',
+                    options: options,
+                    emptyMessage: 'Başka arılık yok',
+                  ),
+                ),
+              ),
+              child: const Text('Aç'),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Aç'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('dokunulan seçeneğin değeriyle kapanır', (tester) async {
+      String? result;
+      await open(tester, const [
+        SheetOption(value: 'a', icon: Icons.place_rounded, label: 'Yayla'),
+        SheetOption(
+          value: 'b',
+          icon: Icons.place_rounded,
+          label: 'Ova',
+          hint: '12 kovan',
+        ),
+      ], (value) => result = value);
+
+      expect(find.text('12 kovan'), findsOneWidget);
+      await tester.tap(find.text('Ova'));
+      await tester.pumpAndSettle();
+
+      expect(result, 'b');
+      expect(find.text('Taşı'), findsNothing);
+    });
+
+    testWidgets('seçenek yoksa boş mesajı yazar', (tester) async {
+      await open(tester, const [], (_) {});
+
+      expect(find.text('Başka arılık yok'), findsOneWidget);
+    });
+  });
+
+  group('OptionTile', () {
+    testWidgets('ekran okuyucu satırı tek buton olarak okur', (tester) async {
+      final semantics = tester.ensureSemantics();
+      await tester.pumpWidget(
+        _app(
+          OptionTile(
+            icon: Icons.hive_rounded,
+            label: 'Kovan 12',
+            hint: 'Başka etiketi var',
+            badge: const StatusBadge(status: AppStatus.info, label: 'Satıldı'),
+            onTap: () {},
+          ),
+        ),
+      );
+
+      expect(
+        tester.getSemantics(find.byType(OptionTile)),
+        isSemantics(
+          label: 'Kovan 12\nBaşka etiketi var\nSatıldı',
+          isButton: true,
+        ),
+      );
+      semantics.dispose();
+    });
+  });
+
+  group('StatusMessage', () {
+    testWidgets('cümle durumun ikonu ve rengiyle gelir', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          const StatusMessage(status: AppStatus.warning, message: 'Konum yok'),
+        ),
+      );
+
+      final icon = tester.widget<Icon>(find.byIcon(AppStatus.warning.icon));
+      expect(icon.color, AppColors.light.statusWarning);
+      expect(find.text('Konum yok'), findsOneWidget);
+    });
+  });
+
+  group('NavigationCard', () {
+    testWidgets('dokununca açar; sağda ok var', (tester) async {
+      var taps = 0;
+      await tester.pumpWidget(
+        _app(NavigationCard(onTap: () => taps++, child: const Text('Yayla'))),
+      );
+
+      await tester.tap(find.text('Yayla'));
+
+      expect(taps, 1);
+      expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
+    });
+
+    testWidgets('dokunma hedefi en az saha alanı yüksekliğinde', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(NavigationCard(onTap: () {}, child: const Text('Yayla'))),
+      );
+
+      expect(
+        tester.getSize(find.byType(NavigationCard)).height,
+        greaterThanOrEqualTo(AppTouchTargets.standard.field),
+      );
+    });
+  });
+
+  group('EmptyState', () {
+    testWidgets('ortalanmışı sığmazsa kayar', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          const EmptyState(
+            icon: Icons.hive_rounded,
+            title: 'Arılık yok',
+            message: 'İlk arılığını ekle.',
+            centered: true,
+          ),
+        ),
+      );
+
+      expect(
+        find.ancestor(
+          of: find.text('Arılık yok'),
+          matching: find.byType(SingleChildScrollView),
+        ),
+        findsOneWidget,
+      );
+    });
+  });
+
+  group('showMessageSnackBar', () {
+    testWidgets('önceki bildirimin yerini alır', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          Builder(
+            builder: (context) => TextButton(
+              onPressed: () {
+                showMessageSnackBar(context, 'Birinci');
+                showMessageSnackBar(context, 'İkinci');
+              },
+              child: const Text('Göster'),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Göster'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Birinci'), findsNothing);
+      expect(find.text('İkinci'), findsOneWidget);
+    });
+  });
+
+  group('BottomActionLayout', () {
+    testWidgets('eylem kayan içeriğin altında sabit', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light(const AppearanceSettings()),
+          home: Scaffold(
+            body: BottomActionLayout(
+              body: ListView(
+                children: [for (var i = 0; i < 50; i++) Text('Satır $i')],
+              ),
+              action: BigButton(label: 'Kaydet', onPressed: () {}),
+            ),
+          ),
+        ),
+      );
+
+      final screen = tester.getSize(find.byType(Scaffold));
+      final button = tester.getRect(find.byType(BigButton));
+      expect(button.bottom, screen.height - AppSpacing.standard.lg);
     });
   });
 

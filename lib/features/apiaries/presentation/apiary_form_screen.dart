@@ -25,30 +25,20 @@ class ApiaryFormScreen extends ConsumerWidget {
     return switch (ref.watch(apiaryFormControllerProvider(apiaryId))) {
       AsyncData(value: final form?) => Scaffold(
         appBar: AppBar(title: title),
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        body: BottomActionLayout(
+          body: ListView(
+            padding: EdgeInsets.all(context.spacing.lg),
             children: [
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.all(context.spacing.lg),
-                  children: [
-                    ApiaryFormFields(
-                      apiaryId: apiaryId,
-                      autofocusName: apiaryId == null,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(context.spacing.lg),
-                child: BigButton(
-                  label: l10n.apiaryFormSave,
-                  icon: Icons.check_rounded,
-                  onPressed: form.canSave ? () => _save(context, ref) : null,
-                ),
+              ApiaryFormFields(
+                apiaryId: apiaryId,
+                autofocusName: apiaryId == null,
               ),
             ],
+          ),
+          action: BigButton(
+            label: l10n.apiaryFormSave,
+            icon: Icons.check_rounded,
+            onPressed: form.canSave ? () => _save(context, ref) : null,
           ),
         ),
       ),

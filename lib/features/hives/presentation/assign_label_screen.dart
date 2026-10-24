@@ -10,6 +10,7 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_label_providers.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 
 /// Tanınmayan etiketi kovana atar: kovanlar arılıklarına göre listelenir,
@@ -120,24 +121,13 @@ class _AssignLabelScreenState extends ConsumerState<AssignLabelScreen> {
     final l10n = AppLocalizations.of(context);
     final code = normalizeLabelCode(widget.code);
     if (hive.tagCode != null && hive.tagCode != code) {
-      final replace = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(l10n.labelReplaceTitle(hive.number)),
-          content: Text(l10n.labelReplaceMessage),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(l10n.actionCancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(l10n.labelReplaceConfirm),
-            ),
-          ],
-        ),
+      final replace = await showConfirmDialog(
+        context,
+        title: l10n.labelReplaceTitle(hive.number),
+        message: l10n.labelReplaceMessage,
+        confirmLabel: l10n.labelReplaceConfirm,
       );
-      if (replace != true || !mounted) return;
+      if (!replace || !mounted) return;
     }
 
     setState(() => _saving = true);
@@ -145,9 +135,7 @@ class _AssignLabelScreenState extends ConsumerState<AssignLabelScreen> {
         .read(hiveLabelActionsProvider.notifier)
         .assign(hive.id, widget.code);
     if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(l10n.labelAssigned(saved.number))));
+    showMessageSnackBar(context, l10n.labelAssigned(saved.number));
     context.go(AppRoutes.hive(saved.apiaryId, saved.id));
   }
 }
@@ -168,58 +156,17 @@ class _HiveRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
-    final spacing = context.spacing;
-
-    return MergeSemantics(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(context.radii.button),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: context.touchTargets.field),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: spacing.sm,
-              vertical: spacing.sm,
+    return OptionTile(
+      icon: Icons.hive_rounded,
+      label: l10n.hiveLabel(hive.number),
+      hint: hasOtherLabel ? l10n.labelAssignHasOther : null,
+      badge: hive.status.isCounted
+          ? null
+          : StatusBadge(
+              status: hive.status.appStatus,
+              label: hive.status.label(l10n),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.hive_rounded,
-                  size: context.sizes.icon,
-                  color: colors.primary,
-                ),
-                SizedBox(width: spacing.lg),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.hiveLabel(hive.number),
-                        style: context.typography.label,
-                      ),
-                      if (hasOtherLabel)
-                        Text(
-                          l10n.labelAssignHasOther,
-                          style: context.typography.bodySmall.copyWith(
-                            color: colors.textSecondary,
-                          ),
-                        ),
-                      if (!hive.status.isCounted) ...[
-                        SizedBox(height: spacing.xs),
-                        StatusBadge(
-                          status: hive.status.appStatus,
-                          label: hive.status.label(l10n),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      onTap: onTap,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/utils/natural_order.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hive_providers.g.dart';
@@ -16,7 +17,19 @@ HiveRepository hiveRepository(Ref ref) =>
 Stream<List<Hive>> apiaryHives(Ref ref, String apiaryId) => ref
     .watch(hiveRepositoryProvider)
     .watchByApiary(apiaryId)
-    .map((hives) => hives..sort((a, b) => compareNatural(a.number, b.number)));
+    .map(_sortedByNumber);
+
+/// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
+/// yoksa boş.
+@riverpod
+Stream<List<Hive>> organizationHives(Ref ref) {
+  final orgId = ref.watch(currentOrgIdProvider);
+  if (orgId == null) return Stream.value(const []);
+  return ref.watch(hiveRepositoryProvider).watchAll(orgId).map(_sortedByNumber);
+}
+
+List<Hive> _sortedByNumber(List<Hive> hives) =>
+    hives..sort((a, b) => compareNatural(a.number, b.number));
 
 /// Kovan kartı; kovan yoksa ya da silindiyse null.
 @riverpod

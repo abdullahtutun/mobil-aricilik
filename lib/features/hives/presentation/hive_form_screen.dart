@@ -7,6 +7,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_form_controller.dart';
+import 'package:mobil_arici/features/hives/presentation/widgets/hive_choice_fields.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
@@ -34,27 +35,15 @@ class HiveFormScreen extends ConsumerWidget {
     return switch (ref.watch(_provider)) {
       AsyncData(value: final form?) => Scaffold(
         appBar: AppBar(title: title),
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.all(context.spacing.lg),
-                  children: [_HiveFormFields(_provider, isNew: hiveId == null)],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(context.spacing.lg),
-                child: BigButton(
-                  label: l10n.hiveFormSave,
-                  icon: Icons.check_rounded,
-                  onPressed: form.canSave
-                      ? () => _save(context, ref, form)
-                      : null,
-                ),
-              ),
-            ],
+        body: BottomActionLayout(
+          body: ListView(
+            padding: EdgeInsets.all(context.spacing.lg),
+            children: [_HiveFormFields(_provider, isNew: hiveId == null)],
+          ),
+          action: BigButton(
+            label: l10n.hiveFormSave,
+            icon: Icons.check_rounded,
+            onPressed: form.canSave ? () => _save(context, ref, form) : null,
           ),
         ),
       ),
@@ -135,27 +124,11 @@ class _HiveFormFieldsState extends ConsumerState<_HiveFormFields> {
           decoration: InputDecoration(
             labelText: l10n.hiveFormNumber,
             hintText: l10n.hiveFormNumberHint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(context.radii.button),
-            ),
           ),
           onChanged: controller.updateNumber,
         ),
         SizedBox(height: spacing.lg),
-        SectionCard(
-          title: l10n.hiveFormType,
-          child: ChoiceChipGroup<HiveType>(
-            options: [
-              for (final type in HiveType.values)
-                ChoiceChipOption(value: type, label: type.label(l10n)),
-            ],
-            selected: {form.type},
-            // Tip zorunlu; seçili chip'e yeniden dokunmak seçimi kaldırmaz.
-            onChanged: (selected) {
-              if (selected.isNotEmpty) controller.selectType(selected.single);
-            },
-          ),
-        ),
+        HiveTypeField(selected: form.type, onChanged: controller.selectType),
         SizedBox(height: spacing.lg),
         SectionCard(
           title: l10n.hiveFormStatus,
@@ -173,18 +146,9 @@ class _HiveFormFieldsState extends ConsumerState<_HiveFormFields> {
           ),
         ),
         SizedBox(height: spacing.lg),
-        SectionCard(
-          title: l10n.hiveFormSource,
-          child: ChoiceChipGroup<HiveSource>(
-            options: [
-              for (final source in HiveSource.values)
-                ChoiceChipOption(value: source, label: source.label(l10n)),
-            ],
-            selected: {?form.source},
-            // Kaynak isteğe bağlı; seçili chip'e yeniden dokunmak kaldırır.
-            onChanged: (selected) =>
-                controller.selectSource(selected.firstOrNull),
-          ),
+        HiveSourceField(
+          selected: form.source,
+          onChanged: controller.selectSource,
         ),
       ],
     );

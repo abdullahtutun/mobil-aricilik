@@ -78,4 +78,4 @@ final class SyncTriggersProvider extends $FunctionalProvider<void, void, void>
   }
 }
 
-String _$syncTriggersHash() => r'4881c36810c74208acae19c2ec84bebb81b0e0ce';
+String _$syncTriggersHash() => r'de3f02fbddd66b8f2b38ad63cdf50b2ad000306c';

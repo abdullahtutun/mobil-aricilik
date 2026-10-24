@@ -52,17 +52,24 @@ abstract class BaseRepository<T extends SyncColumns, R extends SyncedRecord> {
   /// Kayıt; yoksa ya da silinmişse null.
   Future<R?> findById(String id) => _select(id).getSingleOrNull();
 
+  /// Kayıt; yoksa ya da silinmişse [StateError].
+  @protected
+  Future<R> requireById(String id) async =>
+      await findById(id) ??
+      (throw StateError('${table.actualTableName}/$id yok ya da silinmiş'));
+
+  /// [filter]'a uyan silinmemiş kayıtların sorgusu.
+  @protected
+  SimpleSelectStatement<T, R> selectWhere(
+    Expression<bool> Function(T t) filter,
+  ) => db.select(table)..where((t) => t.deletedAt.isNull() & filter(t));
+
   /// [filter]'a uyan silinmemiş kayıtları [orderBy] sırasıyla izler.
   @protected
   Stream<List<R>> watchWhere(
     Expression<bool> Function(T t) filter, {
     List<OrderingTerm Function(T t)> orderBy = const [],
-  }) {
-    final query = db.select(table)
-      ..where((t) => t.deletedAt.isNull() & filter(t))
-      ..orderBy(orderBy);
-    return query.watch();
-  }
+  }) => (selectWhere(filter)..orderBy(orderBy)).watch();
 
   /// Yeni kaydı tabloya ve outbox'a yazar. Kimlik ve zamanları alt sınıf
   /// verir ([now]).

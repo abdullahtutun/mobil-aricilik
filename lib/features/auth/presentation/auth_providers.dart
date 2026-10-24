@@ -1,15 +1,14 @@
+import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
 
 part 'auth_providers.g.dart';
 
-/// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-/// override eder.
+/// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
 AuthService authService(Ref ref) =>
-    SupabaseAuthService(Supabase.instance.client.auth);
+    SupabaseAuthService(ref.watch(supabaseClientProvider).auth);
 
 /// Oturumdaki kullanıcı; null ise giriş yapılmamış. Çevrimdışıyken süresi
 /// dolan token oturumu kapatmaz, yalnız sunucu refresh token'ı reddederse

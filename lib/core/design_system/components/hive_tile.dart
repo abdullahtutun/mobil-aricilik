@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_arici/core/design_system/components/app_card.dart';
 import 'package:mobil_arici/core/design_system/components/app_status.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
-import 'package:mobil_arici/core/design_system/tokens/app_colors.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/features/queens/domain/queen.dart'
+    show QueenMarkColor;
 
 /// Arılık ızgarasındaki kovan karosu: büyük numara, güç puanı noktaları,
 /// ana arı renk noktası ve uyarı ikonu.
@@ -62,69 +64,58 @@ class HiveTile extends StatelessWidget {
       button: onTap != null,
       label: _semanticsLabel(AppLocalizations.of(context)),
       excludeSemantics: true,
-      child: Material(
-        color: colors.surfaceContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(context.radii.card),
-          side: BorderSide(
-            color: colors.divider,
-            width: context.strokes.border,
+      child: AppCard(
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: context.touchTargets.fieldLarge,
+            minHeight: context.touchTargets.fieldLarge,
           ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: context.touchTargets.fieldLarge,
-              minHeight: context.touchTargets.fieldLarge,
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(spacing.md),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Dar karoda ve büyük yazı boyutunda numara kırılmasın,
-                      // küçülsün.
-                      Expanded(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            number,
-                            maxLines: 1,
-                            style: context.typography.numberLarge,
-                          ),
+          child: Padding(
+            padding: EdgeInsets.all(spacing.md),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Dar karoda ve büyük yazı boyutunda numara kırılmasın,
+                    // küçülsün.
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          number,
+                          maxLines: 1,
+                          style: context.typography.numberLarge,
                         ),
                       ),
-                      if (alertStatus != null)
-                        Icon(
-                          alertStatus.icon,
-                          size: sizes.icon,
-                          color: alertStatus.colorIn(colors),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: spacing.sm),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: _StrengthDots(strength: strength),
-                        ),
+                    ),
+                    if (alertStatus != null)
+                      Icon(
+                        alertStatus.icon,
+                        size: sizes.icon,
+                        color: alertStatus.colorIn(colors),
                       ),
-                      SizedBox(width: spacing.sm),
-                      _QueenDot(color: queenColor),
-                    ],
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                SizedBox(height: spacing.sm),
+                Row(
+                  children: [
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: AlignmentDirectional.centerStart,
+                        child: _StrengthDots(strength: strength),
+                      ),
+                    ),
+                    SizedBox(width: spacing.sm),
+                    _QueenDot(color: queenColor),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

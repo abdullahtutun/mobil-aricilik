@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
-import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/auth/presentation/widgets/sign_out_button.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_controller.dart';
 import 'package:mobil_arici/features/onboarding/presentation/widgets/country_step.dart';
 import 'package:mobil_arici/features/onboarding/presentation/widgets/hive_count_step.dart';
@@ -34,21 +34,6 @@ class OnboardingScreen extends ConsumerWidget {
   }
 }
 
-/// Çıkış: yanlış hesapla girildiyse ya da sunucuya ulaşılamıyorsa kullanıcı
-/// burada kalmasın.
-class _SignOutButton extends ConsumerWidget {
-  const new();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return IconButton(
-      tooltip: AppLocalizations.of(context).settingsSignOut,
-      icon: const Icon(Icons.logout_rounded),
-      onPressed: () => ref.read(currentUserProvider.notifier).signOut(),
-    );
-  }
-}
-
 class _Loading extends StatelessWidget {
   const new();
 
@@ -76,7 +61,7 @@ class _LoadError extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(actions: const [_SignOutButton()]),
+      appBar: AppBar(actions: const [SignOutButton()]),
       body: SafeArea(
         child: EmptyState(
           icon: Icons.cloud_off_rounded,
@@ -119,48 +104,37 @@ class _OnboardingFlow extends ConsumerWidget {
               onboardingStepCount,
             ),
           ),
-          actions: const [_SignOutButton()],
+          actions: const [SignOutButton()],
         ),
-        body: SafeArea(
-          child: Column(
+        body: BottomActionLayout(
+          body: switch (state.step) {
+            OnboardingStep.language => const LanguageStep(),
+            OnboardingStep.country => const CountryStep(),
+            OnboardingStep.name => const NameStep(),
+            OnboardingStep.hiveCount => const HiveCountStep(),
+          },
+          action: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: switch (state.step) {
-                  OnboardingStep.language => const LanguageStep(),
-                  OnboardingStep.country => const CountryStep(),
-                  OnboardingStep.name => const NameStep(),
-                  OnboardingStep.hiveCount => const HiveCountStep(),
-                },
-              ),
-              // Birincil eylem başparmağın ulaştığı yerde, altta.
-              Padding(
-                padding: EdgeInsets.all(spacing.lg),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (failure != null) ...[
-                      OnboardingFailureMessage(failure),
-                      SizedBox(height: spacing.md),
-                    ],
-                    if (state.isLastStep)
-                      BigButton(
-                        label: state.busy
-                            ? l10n.onboardingFinishing
-                            : l10n.onboardingFinish,
-                        icon: Icons.check_rounded,
-                        onPressed: state.canContinue ? controller.submit : null,
-                      )
-                    else
-                      BigButton(
-                        label: l10n.onboardingContinue,
-                        icon: Icons.arrow_forward_rounded,
-                        onPressed: state.canContinue ? controller.next : null,
-                      ),
-                  ],
+              if (failure != null) ...[
+                OnboardingFailureMessage(failure),
+                SizedBox(height: spacing.md),
+              ],
+              if (state.isLastStep)
+                BigButton(
+                  label: state.busy
+                      ? l10n.onboardingFinishing
+                      : l10n.onboardingFinish,
+                  icon: Icons.check_rounded,
+                  onPressed: state.canContinue ? controller.submit : null,
+                )
+              else
+                BigButton(
+                  label: l10n.onboardingContinue,
+                  icon: Icons.arrow_forward_rounded,
+                  onPressed: state.canContinue ? controller.next : null,
                 ),
-              ),
             ],
           ),
         ),

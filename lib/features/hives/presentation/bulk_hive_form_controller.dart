@@ -68,22 +68,26 @@ class BulkHiveFormController extends _$BulkHiveFormController {
   Future<int?> save() async {
     final form = state.value;
     final numbers = form?.numbers;
-    final orgId = ref.read(currentOrganizationProvider).value?.id;
+    final orgId = ref.read(currentOrgIdProvider);
     if (form == null || numbers == null || form.saving || orgId == null) {
       return null;
     }
     _update((form) => form.copyWith(saving: true));
-    final created = await ref
-        .read(hiveRepositoryProvider)
-        .createMany(
-          orgId: orgId,
-          apiaryId: apiaryId,
-          numbers: numbers,
-          type: form.type,
-          source: form.source,
-        );
-    if (ref.mounted) _update((form) => form.copyWith(saving: false));
-    return created.length;
+    // Yazma hata atsa da Kaydet yeniden açılsın.
+    try {
+      final created = await ref
+          .read(hiveRepositoryProvider)
+          .createMany(
+            orgId: orgId,
+            apiaryId: apiaryId,
+            numbers: numbers,
+            type: form.type,
+            source: form.source,
+          );
+      return created.length;
+    } finally {
+      if (ref.mounted) _update((form) => form.copyWith(saving: false));
+    }
   }
 
   void _update(BulkHiveFormState Function(BulkHiveFormState form) change) {

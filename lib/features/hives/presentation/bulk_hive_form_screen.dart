@@ -5,10 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
-import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_controller.dart';
-import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
+import 'package:mobil_arici/features/hives/presentation/widgets/hive_choice_fields.dart';
 
 /// Toplu kovan oluşturma: kaç kovan, ilk numara, tip ve kaynak. Butonun
 /// üstünde hangi numaraların oluşacağı yazar. Kaydedince arılığa dönülür.
@@ -26,45 +25,33 @@ class BulkHiveFormScreen extends ConsumerWidget {
     return switch (ref.watch(bulkHiveFormControllerProvider(apiaryId))) {
       AsyncData(value: final form?) => Scaffold(
         appBar: AppBar(title: title),
-        body: SafeArea(
-          child: Column(
+        body: BottomActionLayout(
+          body: ListView(
+            padding: EdgeInsets.all(spacing.lg),
+            children: [_BulkHiveFormFields(apiaryId: apiaryId)],
+          ),
+          action: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.all(spacing.lg),
-                  children: [_BulkHiveFormFields(apiaryId: apiaryId)],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(spacing.lg),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (form.numbers case final numbers?) ...[
-                      Semantics(
-                        liveRegion: true,
-                        child: Text(
-                          l10n.hiveBulkPreview(
-                            numbers.length,
-                            numbers.first,
-                            numbers.last,
-                          ),
-                          style: context.typography.subtitle,
-                        ),
-                      ),
-                      SizedBox(height: spacing.md),
-                    ],
-                    BigButton(
-                      label: l10n.hiveBulkSave,
-                      icon: Icons.library_add_rounded,
-                      onPressed: form.canSave
-                          ? () => _save(context, ref)
-                          : null,
+              if (form.numbers case final numbers?) ...[
+                Semantics(
+                  liveRegion: true,
+                  child: Text(
+                    l10n.hiveBulkPreview(
+                      numbers.length,
+                      numbers.first,
+                      numbers.last,
                     ),
-                  ],
+                    style: context.typography.subtitle,
+                  ),
                 ),
+                SizedBox(height: spacing.md),
+              ],
+              BigButton(
+                label: l10n.hiveBulkSave,
+                icon: Icons.library_add_rounded,
+                onPressed: form.canSave ? () => _save(context, ref) : null,
               ),
             ],
           ),
@@ -88,13 +75,10 @@ class BulkHiveFormScreen extends ConsumerWidget {
         .read(bulkHiveFormControllerProvider(apiaryId).notifier)
         .save();
     if (created == null || !context.mounted) return;
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context).hiveBulkCreated(created)),
-        ),
-      );
+    showMessageSnackBar(
+      context,
+      AppLocalizations.of(context).hiveBulkCreated(created),
+    );
     context.pop();
   }
 }
@@ -123,11 +107,10 @@ class _BulkHiveFormFields extends ConsumerWidget {
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           textInputAction: TextInputAction.next,
           style: context.typography.body,
-          decoration: _decoration(
-            context,
-            label: l10n.hiveBulkCount,
-            hint: l10n.hiveBulkCountHint,
-            error: form.countTooLarge
+          decoration: InputDecoration(
+            labelText: l10n.hiveBulkCount,
+            hintText: l10n.hiveBulkCountHint,
+            errorText: form.countTooLarge
                 ? l10n.hiveBulkCountTooMany(maxBulkHiveCount)
                 : null,
           ),
@@ -139,58 +122,20 @@ class _BulkHiveFormFields extends ConsumerWidget {
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           textInputAction: TextInputAction.done,
           style: context.typography.body,
-          decoration: _decoration(
-            context,
-            label: l10n.hiveBulkStart,
-            hint: l10n.hiveBulkStartHint,
+          decoration: InputDecoration(
+            labelText: l10n.hiveBulkStart,
+            hintText: l10n.hiveBulkStartHint,
           ),
           onChanged: controller.updateStartNumber,
         ),
         SizedBox(height: spacing.lg),
-        SectionCard(
-          title: l10n.hiveFormType,
-          child: ChoiceChipGroup<HiveType>(
-            options: [
-              for (final type in HiveType.values)
-                ChoiceChipOption(value: type, label: type.label(l10n)),
-            ],
-            selected: {form.type},
-            // Tip zorunlu; seçili chip'e yeniden dokunmak seçimi kaldırmaz.
-            onChanged: (selected) {
-              if (selected.isNotEmpty) controller.selectType(selected.single);
-            },
-          ),
-        ),
+        HiveTypeField(selected: form.type, onChanged: controller.selectType),
         SizedBox(height: spacing.lg),
-        SectionCard(
-          title: l10n.hiveFormSource,
-          child: ChoiceChipGroup<HiveSource>(
-            options: [
-              for (final source in HiveSource.values)
-                ChoiceChipOption(value: source, label: source.label(l10n)),
-            ],
-            selected: {?form.source},
-            onChanged: (selected) =>
-                controller.selectSource(selected.firstOrNull),
-          ),
+        HiveSourceField(
+          selected: form.source,
+          onChanged: controller.selectSource,
         ),
       ],
-    );
-  }
-
-  static InputDecoration _decoration(
-    BuildContext context, {
-    required String label,
-    required String hint,
-    String? error,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      hintText: hint,
-      errorText: error,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(context.radii.button),
-      ),
     );
   }
 }

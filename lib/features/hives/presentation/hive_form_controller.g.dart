@@ -60,7 +60,7 @@ final class HiveFormControllerProvider
 }
 
 String _$hiveFormControllerHash() =>
-    r'7e37a72ba13e94735eba8e3d388622fdcc05f820';
+    r'2bebc728fa15288a0c5560081d6d345c885e2cab';
 
 /// Kovan ekleme ([hiveId] null) ve düzenleme formu. Ekran açık kaldığı
 /// sürece yaşar. Eklenecek arılık ya da düzenlenecek kovan yoksa (ya da

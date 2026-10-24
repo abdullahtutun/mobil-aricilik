@@ -33,16 +33,13 @@ class ApiariesScreen extends ConsumerWidget {
             )
           : null,
       body: switch (apiaries) {
-        AsyncData(value: []) => Center(
-          child: SingleChildScrollView(
-            child: EmptyState(
-              icon: Icons.hive_rounded,
-              title: l10n.apiariesEmptyTitle,
-              message: l10n.apiariesEmptyMessage,
-              actionLabel: l10n.apiariesAddFirst,
-              onAction: () => context.go(AppRoutes.apiaryNew),
-            ),
-          ),
+        AsyncData(value: []) => EmptyState(
+          icon: Icons.hive_rounded,
+          title: l10n.apiariesEmptyTitle,
+          message: l10n.apiariesEmptyMessage,
+          actionLabel: l10n.apiariesAddFirst,
+          onAction: () => context.go(AppRoutes.apiaryNew),
+          centered: true,
         ),
         AsyncData(:final value) => ListView.separated(
           // Son satır arılık ekle butonunun altında kalmasın.
@@ -72,64 +69,28 @@ class _ApiaryListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
-    final spacing = context.spacing;
     final lastVisit = summary.lastVisitAt;
     final visit = lastVisit == null
         ? l10n.apiaryNoVisit
         : l10n.apiaryLastVisit(AppFormat.of(context).date(lastVisit.toLocal()));
 
-    return MergeSemantics(
-      child: Material(
-        color: colors.surfaceContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(context.radii.card),
-          side: BorderSide(
-            color: colors.divider,
-            width: context.strokes.border,
-          ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () => context.go(AppRoutes.apiary(summary.apiary.id)),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: context.touchTargets.field),
-            child: Padding(
-              padding: EdgeInsets.all(spacing.lg),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          summary.apiary.name,
-                          style: context.typography.subtitle,
-                        ),
-                        SizedBox(height: spacing.xs),
-                        Text(
-                          l10n.apiaryListSubtitle(
-                            l10n.apiaryHiveCount(summary.activeHiveCount),
-                            visit,
-                          ),
-                          style: context.typography.bodySmall.copyWith(
-                            color: colors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: spacing.sm),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    size: context.sizes.icon,
-                    color: colors.textSecondary,
-                  ),
-                ],
-              ),
+    return NavigationCard(
+      onTap: () => context.go(AppRoutes.apiary(summary.apiary.id)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(summary.apiary.name, style: context.typography.subtitle),
+          SizedBox(height: context.spacing.xs),
+          Text(
+            l10n.apiaryListSubtitle(
+              l10n.apiaryHiveCount(summary.activeHiveCount),
+              visit,
+            ),
+            style: context.typography.bodySmall.copyWith(
+              color: context.colors.textSecondary,
             ),
           ),
-        ),
+        ],
       ),
     );
   }

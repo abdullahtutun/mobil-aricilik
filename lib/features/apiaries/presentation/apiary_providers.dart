@@ -1,5 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart'
-    show ProviderListenableSelect;
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/utils/natural_order.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
@@ -17,11 +15,7 @@ ApiaryRepository apiaryRepository(Ref ref) =>
 /// yoksa boş.
 @riverpod
 Stream<List<ApiarySummary>> apiaryList(Ref ref) {
-  final orgId = ref.watch(
-    currentOrganizationProvider.select(
-      (organization) => organization.value?.id,
-    ),
-  );
+  final orgId = ref.watch(currentOrgIdProvider);
   if (orgId == null) return Stream.value(const []);
   return ref
       .watch(apiaryRepositoryProvider)

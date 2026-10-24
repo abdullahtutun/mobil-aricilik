@@ -1,11 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/core/db/server_enum.dart';
 import 'package:mobil_arici/core/db/synced_record.dart';
-import 'package:mobil_arici/core/design_system/tokens/app_colors.dart'
-    show QueenMarkColor;
 
 part 'queen.freezed.dart';
 part 'queen.g.dart';
+
+/// Ana arı işaret rengi: uluslararası beş renk (`public.queen_mark_color`,
+/// değerler adıyla aynı). Görünümü `AppColors.queenMark`'ta.
+enum QueenMarkColor { white, yellow, red, green, blue }
 
 /// Kendi üretimi, satın alınan yetiştirici, sertifikalı damızlık
 /// (`public.queen_source`).

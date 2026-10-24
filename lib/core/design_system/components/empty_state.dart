@@ -13,6 +13,7 @@ class EmptyState extends StatelessWidget {
     super.key,
     this.actionLabel,
     this.onAction,
+    this.centered = false,
   }) : assert(
          (actionLabel == null) == (onAction == null),
          'eylem etiketi ve geri çağrısı birlikte verilmeli',
@@ -26,8 +27,18 @@ class EmptyState extends StatelessWidget {
   final String? actionLabel;
   final VoidCallback? onAction;
 
+  /// Ekranın tek içeriği: ortalanır; küçük ekranda ya da büyük yazı
+  /// boyutunda sığmazsa kayar.
+  final bool centered;
+
   @override
   Widget build(BuildContext context) {
+    final content = _content(context);
+    if (!centered) return content;
+    return Center(child: SingleChildScrollView(child: content));
+  }
+
+  Widget _content(BuildContext context) {
     final colors = context.colors;
     final spacing = context.spacing;
     final sizes = context.sizes;

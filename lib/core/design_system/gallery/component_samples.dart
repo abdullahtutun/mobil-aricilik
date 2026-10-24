@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/features/queens/domain/queen.dart'
+    show QueenMarkColor;
 
 /// Galerideki bileşenler. Golden testler de bu örnekleri çizer; galeride
 /// görünen ile test edilen aynı kalır.

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-/// Ana arı işaret rengi: uluslararası beş renk. Yıldan renge kural
-/// ana arı alanında; burada yalnızca görünüm var.
-enum QueenMarkColor { white, yellow, red, green, blue }
+import 'package:mobil_arici/features/queens/domain/queen.dart'
+    show QueenMarkColor;
 
 /// Renk tokenları (teknik.md §7).
 ///

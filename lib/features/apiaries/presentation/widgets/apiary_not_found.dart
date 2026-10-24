@@ -10,14 +10,11 @@ class ApiaryNotFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Center(
-      child: SingleChildScrollView(
-        child: EmptyState(
-          icon: Icons.wrong_location_rounded,
-          title: l10n.apiaryNotFoundTitle,
-          message: l10n.apiaryNotFoundMessage,
-        ),
-      ),
+    return EmptyState(
+      icon: Icons.wrong_location_rounded,
+      title: l10n.apiaryNotFoundTitle,
+      message: l10n.apiaryNotFoundMessage,
+      centered: true,
     );
   }
 }

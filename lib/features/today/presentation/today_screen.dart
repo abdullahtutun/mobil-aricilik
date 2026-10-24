@@ -27,14 +27,11 @@ class TodayScreen extends ConsumerWidget {
           const SyncStatusButton(),
         ],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: EmptyState(
-            icon: Icons.today_rounded,
-            title: l10n.todayEmptyTitle,
-            message: l10n.todayEmptyMessage,
-          ),
-        ),
+      body: EmptyState(
+        icon: Icons.today_rounded,
+        title: l10n.todayEmptyTitle,
+        message: l10n.todayEmptyMessage,
+        centered: true,
       ),
     );
   }

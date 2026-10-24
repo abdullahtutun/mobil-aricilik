@@ -59,12 +59,7 @@ class _SignInEmailScreenState extends ConsumerState<SignInEmailScreen> {
               autofillHints: const [AutofillHints.email],
               autocorrect: false,
               style: context.typography.body,
-              decoration: InputDecoration(
-                labelText: l10n.signInEmailLabel,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(context.radii.button),
-                ),
-              ),
+              decoration: InputDecoration(labelText: l10n.signInEmailLabel),
               onChanged: (_) =>
                   ref.read(signInControllerProvider.notifier).clearFailure(),
               onSubmitted: (_) => _submit(),

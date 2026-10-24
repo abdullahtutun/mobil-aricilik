@@ -10,14 +10,11 @@ class HiveNotFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Center(
-      child: SingleChildScrollView(
-        child: EmptyState(
-          icon: Icons.search_off_rounded,
-          title: l10n.hiveNotFoundTitle,
-          message: l10n.hiveNotFoundMessage,
-        ),
-      ),
+    return EmptyState(
+      icon: Icons.search_off_rounded,
+      title: l10n.hiveNotFoundTitle,
+      message: l10n.hiveNotFoundMessage,
+      centered: true,
     );
   }
 }

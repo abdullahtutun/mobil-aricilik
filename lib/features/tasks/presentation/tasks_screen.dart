@@ -14,14 +14,11 @@ class TasksScreen extends StatelessWidget {
         title: Text(l10n.tabTasks),
         actions: const [SyncStatusButton()],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: EmptyState(
-            icon: Icons.assignment_rounded,
-            title: l10n.tasksEmptyTitle,
-            message: l10n.tasksEmptyMessage,
-          ),
-        ),
+      body: EmptyState(
+        icon: Icons.assignment_rounded,
+        title: l10n.tasksEmptyTitle,
+        message: l10n.tasksEmptyMessage,
+        centered: true,
       ),
     );
   }

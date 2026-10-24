@@ -122,6 +122,19 @@ void main() {
       expect(theme.extension<AppTouchTargets>(), same(AppTouchTargets.glove));
     });
 
+    test('metin alanları çerçeveli; köşe buton yarıçapında', () {
+      final border = AppTheme.light(standard).inputDecorationTheme.border;
+
+      expect(
+        border,
+        isA<OutlineInputBorder>().having(
+          (b) => b.borderRadius,
+          'borderRadius',
+          BorderRadius.circular(AppRadii.standard.button),
+        ),
+      );
+    });
+
     test('themeMode renk moduna göre seçilir', () {
       ThemeMode modeOf(AppColorMode m) =>
           AppTheme.themeMode(AppearanceSettings(colorMode: m));

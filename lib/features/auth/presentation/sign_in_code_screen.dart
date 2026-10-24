@@ -45,8 +45,7 @@ class _SignInCodeScreenState extends ConsumerState<SignInCodeScreen> {
     if (!sent || !mounted) return;
     _code.clear();
     _focus.requestFocus();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.signInCodeResent)));
+    showMessageSnackBar(context, l10n.signInCodeResent);
   }
 
   @override

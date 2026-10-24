@@ -39,16 +39,9 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
   Future<Hive?> findByTagCode({
     required String orgId,
     required String tagCode,
-  }) =>
-      (db.select(db.hives)
-            ..where(
-              (t) =>
-                  t.orgId.equals(orgId) &
-                  t.tagCode.equals(tagCode) &
-                  t.deletedAt.isNull(),
-            )
-            ..limit(1))
-          .getSingleOrNull();
+  }) => (selectWhere(
+    (t) => t.orgId.equals(orgId) & t.tagCode.equals(tagCode),
+  )..limit(1)).getSingleOrNull();
 
   /// Kovanı oluşturur ve [apiaryId] arılığına geldiğini geçmişe yazar;
   /// ikisi tek transaction'da.
@@ -121,7 +114,7 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
   /// silinmişse [StateError].
   Future<Hive> setStatus(String hiveId, HiveStatus status) =>
       db.transaction(() async {
-        final hive = await _requireLive(hiveId);
+        final hive = await requireById(hiveId);
         return await updateRecord(hive.copyWith(status: status));
       });
 
@@ -131,16 +124,13 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
   /// yoksa ya da silinmişse [StateError].
   Future<Hive> assignTag(String hiveId, String tagCode) =>
       db.transaction(() async {
-        final hive = await _requireLive(hiveId);
-        final holders =
-            await (db.select(db.hives)..where(
-                  (t) =>
-                      t.orgId.equals(hive.orgId) &
-                      t.tagCode.equals(tagCode) &
-                      t.id.equals(hiveId).not() &
-                      t.deletedAt.isNull(),
-                ))
-                .get();
+        final hive = await requireById(hiveId);
+        final holders = await selectWhere(
+          (t) =>
+              t.orgId.equals(hive.orgId) &
+              t.tagCode.equals(tagCode) &
+              t.id.equals(hiveId).not(),
+        ).get();
         for (final holder in holders) {
           await updateRecord(holder.copyWith(tagCode: null));
         }
@@ -153,7 +143,7 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
   /// silinmişse [StateError].
   Future<HiveMove?> move(String hiveId, {required String apiaryId}) =>
       db.transaction(() async {
-        final hive = await _requireLive(hiveId);
+        final hive = await requireById(hiveId);
         if (hive.apiaryId == apiaryId) return null;
         final moved = await updateRecord(hive.copyWith(apiaryId: apiaryId));
         final entry = await _locations.add(
@@ -175,8 +165,4 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     await _locations.delete(move.entry.id);
     return true;
   });
-
-  Future<Hive> _requireLive(String hiveId) async =>
-      await findById(hiveId) ??
-      (throw StateError('hives/$hiveId yok ya da silinmiş'));
 }

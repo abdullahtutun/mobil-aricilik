@@ -93,33 +93,48 @@ class SyncService {
   Future<SyncResult> _push() async {
     var pushed = 0;
     var rejected = 0;
-    var retries = 0;
     SyncResult result(SyncStatus status) =>
         SyncResult(status: status, pushed: pushed, rejected: rejected);
 
-    while (true) {
-      final batch = await _nextBatch();
-      if (batch.isEmpty) return result(SyncStatus.done);
+    try {
+      while (true) {
+        final batch = await _nextBatch();
+        if (batch.isEmpty) return result(SyncStatus.done);
 
-      final Map<String, dynamic> response;
+        final response = await _withRetry(
+          () => _send(batch),
+          onFailure: () => _countAttempt(batch.map((entry) => entry.id)),
+        );
+        final applied = await _apply(batch, response);
+        pushed += applied.pushed;
+        rejected += applied.rejected;
+        // Sonucu gelmeyen kayıt yeniden gönderilirse tur dönüp durur.
+        if (!applied.complete) return result(SyncStatus.failed);
+      }
+    } on _TurnEnded catch (ended) {
+      return result(ended.status);
+    }
+  }
+
+  /// [request]'i gönderir; geçici hatada üstel bekleyerek en fazla
+  /// [maxRetries] kez yeniden dener. Başarısız her denemeden sonra önce
+  /// [onFailure] çalışır. Hata geçici değilse ya da denemeler biterse turu
+  /// hatanın durumuyla bitirir ([_TurnEnded]).
+  Future<Map<String, dynamic>> _withRetry(
+    Future<Map<String, dynamic>> Function() request, {
+    Future<void> Function()? onFailure,
+  }) async {
+    for (var retries = 0; ; retries++) {
       try {
-        response = await _send(batch);
+        return await request();
       } on Exception catch (error) {
-        await _countAttempt(batch.map((entry) => entry.id));
+        await onFailure?.call();
         final status = _statusFor(error);
         if (status != SyncStatus.retryLater || retries == maxRetries) {
-          return result(status);
+          throw _TurnEnded(status);
         }
-        await delay(initialBackoff * (1 << retries++));
-        continue;
       }
-      retries = 0;
-
-      final applied = await _apply(batch, response);
-      pushed += applied.pushed;
-      rejected += applied.rejected;
-      // Sonucu gelmeyen kayıt yeniden gönderilirse tur dönüp durur.
-      if (!applied.complete) return result(SyncStatus.failed);
+      await delay(initialBackoff * (1 << retries));
     }
   }
 
@@ -221,7 +236,6 @@ class SyncService {
   ) async {
     final tables = pullTables;
     var pulled = 0;
-    var retries = 0;
     SyncResult result(SyncStatus status) =>
         SyncResult(status: status, pulled: pulled);
     void report(int tablesDone) => onProgress?.call(
@@ -232,45 +246,37 @@ class SyncService {
       ),
     );
 
-    for (final (index, table) in tables.indexed) {
-      report(index);
-      var since = await _cursor(table);
-      // Atlanan ilk satırın bir öncesi; imleç bu turda bunu geçmez.
-      int? hold;
-      while (true) {
-        final Map<String, dynamic> response;
-        try {
-          response = await _fetch(table, since);
-        } on Exception catch (error) {
-          final status = _statusFor(error);
-          if (status != SyncStatus.retryLater || retries == maxRetries) {
-            return result(status);
-          }
-          await delay(initialBackoff * (1 << retries++));
-          continue;
-        }
-        retries = 0;
-
-        final _Page page;
-        try {
-          page = _Page.parse(table, response);
-        } on FormatException {
-          return result(SyncStatus.failed);
-        }
-        // Sunucu ilerlemeden "devamı var" derse aynı sayfa sonsuza dek
-        // istenirdi.
-        if (page.hasMore && page.nextSeq <= since) {
-          return result(SyncStatus.failed);
-        }
-
-        final written = await _writePage(table, page, hold);
-        hold = written.hold;
-        pulled += written.rows;
+    try {
+      for (final (index, table) in tables.indexed) {
         report(index);
+        var since = await _cursor(table);
+        // Atlanan ilk satırın bir öncesi; imleç bu turda bunu geçmez.
+        int? hold;
+        while (true) {
+          final response = await _withRetry(() => _fetch(table, since));
+          final _Page page;
+          try {
+            page = _Page.parse(table, response);
+          } on FormatException {
+            return result(SyncStatus.failed);
+          }
+          // Sunucu ilerlemeden "devamı var" derse aynı sayfa sonsuza dek
+          // istenirdi.
+          if (page.hasMore && page.nextSeq <= since) {
+            return result(SyncStatus.failed);
+          }
 
-        if (!page.hasMore) break;
-        since = page.nextSeq;
+          final written = await _writePage(table, page, hold);
+          hold = written.hold;
+          pulled += written.rows;
+          report(index);
+
+          if (!page.hasMore) break;
+          since = page.nextSeq;
+        }
       }
+    } on _TurnEnded catch (ended) {
+      return result(ended.status);
     }
 
     await _db
@@ -398,6 +404,14 @@ class SyncService {
       _transientCodes.contains(code) ||
       (code.length == 5 &&
           _transientSqlStateClasses.contains(code.substring(0, 2)));
+}
+
+/// Turu [status] ile bitirir: [SyncService._withRetry] atar, gönderme ya da
+/// çekme turu yakalayıp o durumla döner.
+class _TurnEnded implements Exception {
+  const new(this.status);
+
+  final SyncStatus status;
 }
 
 /// `sync_pull` yanıtının bir sayfası, yerel kolonlara çevrilmiş.

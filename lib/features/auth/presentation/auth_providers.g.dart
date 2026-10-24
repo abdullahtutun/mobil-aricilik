@@ -8,20 +8,17 @@ part of 'auth_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-/// override eder.
+/// Testler sahtesiyle override eder.
 
 @ProviderFor(authService)
 final authServiceProvider = AuthServiceProvider._();
 
-/// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-/// override eder.
+/// Testler sahtesiyle override eder.
 
 final class AuthServiceProvider
     extends $FunctionalProvider<AuthService, AuthService, AuthService>
     with $Provider<AuthService> {
-  /// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-  /// override eder.
+  /// Testler sahtesiyle override eder.
   AuthServiceProvider._()
     : super(
         from: null,
@@ -55,7 +52,7 @@ final class AuthServiceProvider
   }
 }
 
-String _$authServiceHash() => r'a5ac1ece41b9fa570528a6cdd2ac17df4e4f5844';
+String _$authServiceHash() => r'ae39ea777ca4a2561735f896d78112bc06520243';
 
 /// Oturumdaki kullanıcı; null ise giriş yapılmamış. Çevrimdışıyken süresi
 /// dolan token oturumu kapatmaz, yalnız sunucu refresh token'ı reddederse

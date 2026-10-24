@@ -61,7 +61,6 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
           textInputAction: TextInputAction.next,
           style: context.typography.body,
           decoration: _decoration(
-            context,
             label: l10n.apiaryFormName,
             hint: l10n.apiaryFormNameHint,
           ),
@@ -75,7 +74,7 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
           textCapitalization: TextCapitalization.words,
           textInputAction: TextInputAction.next,
           style: context.typography.body,
-          decoration: _decoration(context, label: l10n.apiaryFormLandownerName),
+          decoration: _decoration(label: l10n.apiaryFormLandownerName),
           onChanged: controller.updateLandownerName,
         ),
         SizedBox(height: spacing.lg),
@@ -84,10 +83,7 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
           style: context.typography.body,
-          decoration: _decoration(
-            context,
-            label: l10n.apiaryFormLandownerPhone,
-          ),
+          decoration: _decoration(label: l10n.apiaryFormLandownerPhone),
           onChanged: controller.updateLandownerPhone,
         ),
         SizedBox(height: spacing.lg),
@@ -98,28 +94,29 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
           minLines: 3,
           maxLines: null,
           style: context.typography.body,
-          decoration: _decoration(context, label: l10n.apiaryFormNotes),
+          decoration: _decoration(label: l10n.apiaryFormNotes),
           onChanged: controller.updateNotes,
         ),
       ],
     );
   }
 
-  static InputDecoration _decoration(
-    BuildContext context, {
-    required String label,
-    String? hint,
-  }) {
+  static InputDecoration _decoration({required String label, String? hint}) {
     return InputDecoration(
       labelText: label,
       hintText: hint,
       alignLabelWithHint: true,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(context.radii.button),
-      ),
     );
   }
 }
+
+/// Konum bölümündeki ikincil eylemler (kaldır, ayarları aç): tam genişlik,
+/// en az dokunma hedefi yüksekliğinde.
+ButtonStyle _secondaryActionStyle(BuildContext context) => TextButton.styleFrom(
+  minimumSize: Size.fromHeight(context.touchTargets.minimum),
+  foregroundColor: context.colors.secondary,
+  textStyle: context.typography.label,
+);
 
 /// Konum: kayıtlı koordinat ya da "konum yok", GPS'ten alma ve kaldırma.
 /// Konum ancak dokununca alınır; arıcı arılıkta değilken (ör. evde) yanlış
@@ -207,11 +204,7 @@ class _LocationSection extends ConsumerWidget {
         if (form.hasLocation) ...[
           SizedBox(height: spacing.sm),
           TextButton.icon(
-            style: TextButton.styleFrom(
-              minimumSize: Size.fromHeight(context.touchTargets.minimum),
-              foregroundColor: context.colors.secondary,
-              textStyle: context.typography.label,
-            ),
+            style: _secondaryActionStyle(context),
             onPressed: controller.clearLocation,
             icon: const Icon(Icons.location_off_rounded),
             label: Text(l10n.apiaryFormLocationClear),
@@ -231,8 +224,8 @@ class _LocationSection extends ConsumerWidget {
   }
 }
 
-/// Konum alınamadı: uyarı ikonu ve rengiyle cümle; ayardan çözülebilen
-/// hatada ayarları açan buton. Ekran okuyucu hata çıkınca okur.
+/// Konum alınamadı: uyarı cümlesi; ayardan çözülebilen hatada ayarları açan
+/// buton.
 class _LocationFailureMessage extends StatelessWidget {
   const new(this.failure, {required this.onOpenSettings});
 
@@ -242,7 +235,6 @@ class _LocationFailureMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    const status = AppStatus.warning;
     final fixableInSettings = switch (failure) {
       LocationFailure.serviceDisabled ||
       LocationFailure.permissionDeniedForever => true,
@@ -255,33 +247,13 @@ class _LocationFailureMessage extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Semantics(
-          liveRegion: true,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                status.icon,
-                size: context.sizes.icon,
-                color: status.colorIn(context.colors),
-              ),
-              SizedBox(width: context.spacing.sm),
-              Expanded(
-                child: Text(
-                  _message(l10n, failure),
-                  style: context.typography.body,
-                ),
-              ),
-            ],
-          ),
+        StatusMessage(
+          status: AppStatus.warning,
+          message: _message(l10n, failure),
         ),
         if (fixableInSettings)
           TextButton.icon(
-            style: TextButton.styleFrom(
-              minimumSize: Size.fromHeight(context.touchTargets.minimum),
-              foregroundColor: context.colors.secondary,
-              textStyle: context.typography.label,
-            ),
+            style: _secondaryActionStyle(context),
             onPressed: onOpenSettings,
             icon: const Icon(Icons.settings_rounded),
             label: Text(l10n.apiaryFormOpenSettings),

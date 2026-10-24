@@ -2,22 +2,21 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ProviderListenableSelect;
-import 'package:mobil_arici/core/region/country_currencies.dart';
+import 'package:mobil_arici/core/region/region_config.dart';
+import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/data/organization_cache.dart';
 import 'package:mobil_arici/features/organization/data/organization_service.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
 
 part 'organization_providers.g.dart';
 
-/// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-/// override eder.
+/// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
 OrganizationService organizationService(Ref ref) =>
-    SupabaseOrganizationService(Supabase.instance.client);
+    SupabaseOrganizationService(ref.watch(supabaseClientProvider));
 
 @Riverpod(keepAlive: true)
 OrganizationCache organizationCache(Ref ref) => const SecureOrganizationCache();
@@ -57,9 +56,9 @@ class CurrentOrganization extends _$CurrentOrganization {
     return organization;
   }
 
-  /// İşletmeyi kurar; para birimi ülkeden çıkar. Aynı [id] ile yeniden
-  /// çağrı (ör. yanıtı kaybolan istek) ikinci işletme açmaz. Hata
-  /// [OrganizationServiceException] olarak gelir.
+  /// İşletmeyi kurar; para birimi ülkenin bölge yapılandırmasından çıkar.
+  /// Aynı [id] ile yeniden çağrı (ör. yanıtı kaybolan istek) ikinci işletme
+  /// açmaz. Hata [OrganizationServiceException] olarak gelir.
   Future<void> create({
     required String id,
     required String name,
@@ -75,7 +74,7 @@ class CurrentOrganization extends _$CurrentOrganization {
             id: id,
             name: name,
             countryCode: countryCode,
-            currency: currencyCodeFor(countryCode),
+            currency: resolveRegionConfig(countryCode).currencyCode,
             hiveCountRange: hiveCountRange,
           ),
         );
@@ -101,3 +100,10 @@ class CurrentOrganization extends _$CurrentOrganization {
     if (ref.mounted) state = AsyncData(fresh);
   }
 }
+
+/// Oturumdaki işletmenin kimliği; işletme yoksa ya da henüz yüklenmediyse
+/// null. Yalnız kimlik değişince yayar.
+@Riverpod(keepAlive: true)
+String? currentOrgId(Ref ref) => ref.watch(
+  currentOrganizationProvider.select((organization) => organization.value?.id),
+);

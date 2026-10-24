@@ -8,14 +8,12 @@ part of 'organization_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-/// override eder.
+/// Testler sahtesiyle override eder.
 
 @ProviderFor(organizationService)
 final organizationServiceProvider = OrganizationServiceProvider._();
 
-/// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-/// override eder.
+/// Testler sahtesiyle override eder.
 
 final class OrganizationServiceProvider
     extends
@@ -25,8 +23,7 @@ final class OrganizationServiceProvider
           OrganizationService
         >
     with $Provider<OrganizationService> {
-  /// `bootstrap` Supabase'i başlattıktan sonra okunur; testler sahtesiyle
-  /// override eder.
+  /// Testler sahtesiyle override eder.
   OrganizationServiceProvider._()
     : super(
         from: null,
@@ -62,7 +59,7 @@ final class OrganizationServiceProvider
 }
 
 String _$organizationServiceHash() =>
-    r'e932ae0a1eb27932b51afb0c9fef80fc1d626264';
+    r'7bb33ee2d4cb4ca15f087e22895fe88c6679794c';
 
 @ProviderFor(organizationCache)
 final organizationCacheProvider = OrganizationCacheProvider._();
@@ -155,7 +152,7 @@ final class CurrentOrganizationProvider
 }
 
 String _$currentOrganizationHash() =>
-    r'13e3b34fd4afbb0233c18a5ef81cee77b2609607';
+    r'ecbbcd68d2590f309afd0a3363cf8eb8852ba359';
 
 /// Oturumdaki kullanıcının işletmesi; null ise işletmesi yok ve onboarding
 /// açılır.
@@ -181,3 +178,52 @@ abstract class _$CurrentOrganization extends $AsyncNotifier<Organization?> {
     return element.handleCreate(ref, build);
   }
 }
+
+/// Oturumdaki işletmenin kimliği; işletme yoksa ya da henüz yüklenmediyse
+/// null. Yalnız kimlik değişince yayar.
+
+@ProviderFor(currentOrgId)
+final currentOrgIdProvider = CurrentOrgIdProvider._();
+
+/// Oturumdaki işletmenin kimliği; işletme yoksa ya da henüz yüklenmediyse
+/// null. Yalnız kimlik değişince yayar.
+
+final class CurrentOrgIdProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  /// Oturumdaki işletmenin kimliği; işletme yoksa ya da henüz yüklenmediyse
+  /// null. Yalnız kimlik değişince yayar.
+  CurrentOrgIdProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentOrgIdProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentOrgIdHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return currentOrgId(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$currentOrgIdHash() => r'42b911b32ed632dce9ac43e1724ffd3789ec3635';

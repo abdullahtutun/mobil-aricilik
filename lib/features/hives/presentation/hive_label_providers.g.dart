@@ -8,52 +8,6 @@ part of 'hive_label_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
-/// yoksa boş.
-
-@ProviderFor(organizationHives)
-final organizationHivesProvider = OrganizationHivesProvider._();
-
-/// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
-/// yoksa boş.
-
-final class OrganizationHivesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Hive>>,
-          List<Hive>,
-          Stream<List<Hive>>
-        >
-    with $FutureModifier<List<Hive>>, $StreamProvider<List<Hive>> {
-  /// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
-  /// yoksa boş.
-  OrganizationHivesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'organizationHivesProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$organizationHivesHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<List<Hive>> $createElement($ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<Hive>> create(Ref ref) {
-    return organizationHives(ref);
-  }
-}
-
-String _$organizationHivesHash() => r'6a6fd7a47813c48417957de44a44efb7c63f9304';
-
 /// Okutulan ya da derin linkle gelen etiket kodunu kovana çevirir ve
 /// tanınmayan etiketi kovana atar. Her şey yerel DB'de; ağ gerekmez.
 
@@ -93,7 +47,7 @@ final class HiveLabelActionsProvider
   }
 }
 
-String _$hiveLabelActionsHash() => r'e50ffa9937c42fae633d30f7a69591f901cdc241';
+String _$hiveLabelActionsHash() => r'd13a22122e382b49a1da10339d9bd1cf6922d5d5';
 
 /// Okutulan ya da derin linkle gelen etiket kodunu kovana çevirir ve
 /// tanınmayan etiketi kovana atar. Her şey yerel DB'de; ağ gerekmez.

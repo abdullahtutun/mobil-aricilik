@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/services/location_service_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_form_controller.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 
 import '../../../helpers/fake_auth_service.dart';
@@ -139,6 +140,26 @@ void main() {
       expect(form()!.canSave, isTrue);
     });
 
+    test('yazma hata atarsa kaydetme biter, yeniden denenebilir', () async {
+      final failing = ProviderContainer.test(
+        overrides: [
+          ...signedIn(db: db),
+          locationServiceProvider.overrideWithValue(location),
+          apiaryRepositoryProvider.overrideWithValue(_FailingRepository(db)),
+        ],
+      );
+      await failing.read(currentOrganizationProvider.future);
+      final provider = apiaryFormControllerProvider(null);
+      failing.listen(provider, (_, _) {});
+      await failing.read(provider.future);
+      final controller = failing.read(provider.notifier)..updateName('Yayla');
+
+      await expectLater(controller.save(), throwsA(isA<StateError>()));
+
+      expect(failing.read(provider).value!.saving, isFalse);
+      expect(failing.read(provider).value!.canSave, isTrue);
+    });
+
     test('konum kaldırılabilir', () async {
       final controller = await open()
         ..updateName('Yayla');
@@ -225,4 +246,25 @@ void main() {
       expect(form('yok'), isNull);
     });
   });
+}
+
+/// Yeni arılığı yazamayan repository (ör. dolu disk).
+class _FailingRepository extends ApiaryRepository {
+  new(super.db);
+
+  @override
+  Future<Apiary> create({
+    required String orgId,
+    required String name,
+    double? latitude,
+    double? longitude,
+    int? altitudeM,
+    String? landownerName,
+    String? landownerPhone,
+    LandTenure? landTenure,
+    String? waterSource,
+    int? vehicleDistanceM,
+    String? roadNotes,
+    String? notes,
+  }) async => throw StateError('yazılamadı');
 }

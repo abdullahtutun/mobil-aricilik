@@ -1,6 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart'
-    show ProviderListenableSelect;
-import 'package:mobil_arici/core/utils/natural_order.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
@@ -9,24 +6,6 @@ import 'package:mobil_arici/features/organization/presentation/organization_prov
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hive_label_providers.g.dart';
-
-/// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
-/// yoksa boş.
-@riverpod
-Stream<List<Hive>> organizationHives(Ref ref) {
-  final orgId = ref.watch(
-    currentOrganizationProvider.select(
-      (organization) => organization.value?.id,
-    ),
-  );
-  if (orgId == null) return Stream.value(const []);
-  return ref
-      .watch(hiveRepositoryProvider)
-      .watchAll(orgId)
-      .map(
-        (hives) => hives..sort((a, b) => compareNatural(a.number, b.number)),
-      );
-}
 
 /// Okutulan ya da derin linkle gelen etiket kodunu kovana çevirir ve
 /// tanınmayan etiketi kovana atar. Her şey yerel DB'de; ağ gerekmez.
@@ -43,7 +22,7 @@ class HiveLabelActions extends _$HiveLabelActions {
     if (hiveIdFromLabelCode(code) case final hiveId?) {
       if (await repository.findById(hiveId) case final hive?) return hive;
     }
-    final orgId = ref.read(currentOrganizationProvider).value?.id;
+    final orgId = ref.read(currentOrgIdProvider);
     if (orgId == null) return null;
     return await repository.findByTagCode(
       orgId: orgId,

@@ -83,39 +83,43 @@ class HiveFormController extends _$HiveFormController {
     if (form == null || !form.canSave) return null;
     final repository = ref.read(hiveRepositoryProvider);
     final id = hiveId;
-    final orgId = ref.read(currentOrganizationProvider).value?.id;
+    final orgId = ref.read(currentOrgIdProvider);
     if (id == null && orgId == null) return null;
     _update((form) => form.copyWith(saving: true));
 
-    final Hive saved;
-    if (id == null) {
-      saved = await repository.create(
-        orgId: orgId!,
-        number: form.number.trim(),
-        type: form.type,
-        apiaryId: apiaryId,
-        status: form.status,
-        source: form.source,
-      );
-    } else {
-      // Formda olmayan alanlar (ör. arılık, ana arı) en son hâlinden
-      // alınır.
-      final latest = await repository.findById(id);
-      if (latest == null) {
-        if (ref.mounted) state = const AsyncData(null);
-        return null;
-      }
-      saved = await repository.update(
-        latest.copyWith(
+    // Yazma hata atsa da Kaydet yeniden açılsın.
+    try {
+      final Hive saved;
+      if (id == null) {
+        saved = await repository.create(
+          orgId: orgId!,
           number: form.number.trim(),
           type: form.type,
+          apiaryId: apiaryId,
           status: form.status,
           source: form.source,
-        ),
-      );
+        );
+      } else {
+        // Formda olmayan alanlar (ör. arılık, ana arı) en son hâlinden
+        // alınır.
+        final latest = await repository.findById(id);
+        if (latest == null) {
+          if (ref.mounted) state = const AsyncData(null);
+          return null;
+        }
+        saved = await repository.update(
+          latest.copyWith(
+            number: form.number.trim(),
+            type: form.type,
+            status: form.status,
+            source: form.source,
+          ),
+        );
+      }
+      return saved.id;
+    } finally {
+      if (ref.mounted) _update((form) => form.copyWith(saving: false));
     }
-    if (ref.mounted) _update((form) => form.copyWith(saving: false));
-    return saved.id;
   }
 
   void _update(HiveFormState Function(HiveFormState form) change) {

@@ -8,8 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
-import 'package:mobil_arici/core/design_system/tokens/app_colors.dart'
-    show QueenMarkColor;
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';

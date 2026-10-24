@@ -47,9 +47,6 @@ class _NameStepState extends ConsumerState<NameStep> {
           decoration: InputDecoration(
             labelText: l10n.onboardingNameLabel,
             hintText: l10n.onboardingNameHint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(context.radii.button),
-            ),
           ),
           onChanged: controller.updateName,
           onSubmitted: (_) => controller.next(),

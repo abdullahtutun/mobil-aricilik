@@ -11,6 +11,7 @@ List<TextStyle> _styles(AppTypography t) => [
   t.body,
   t.bodySmall,
   t.label,
+  t.labelSmall,
 ];
 
 void main() {
@@ -55,6 +56,13 @@ void main() {
     test('gövde standartta 16, sahada 18', () {
       expect(AppTypography.standard.body.fontSize, 16);
       expect(AppTypography.field.body.fontSize, 18);
+    });
+
+    test('küçük etiket küçük gövde boyunda ve kalın', () {
+      for (final typography in [AppTypography.standard, AppTypography.field]) {
+        expect(typography.labelSmall.fontSize, typography.bodySmall.fontSize);
+        expect(typography.labelSmall.fontWeight, FontWeight.w600);
+      }
     });
 
     test('saha ölçeğinde hiçbir stil küçülmez', () {

@@ -112,7 +112,7 @@ final class ApiaryHivesProvider
   }
 }
 
-String _$apiaryHivesHash() => r'3e7e4f6ca0590f7793339cda34aa0d4867fc8a32';
+String _$apiaryHivesHash() => r'914a5de490a88eea1aa6581d01177de417399440';
 
 /// Arılıktaki kovanlar (her durumda); numaralar sayı sırasıyla ("9" <
 /// "10").
@@ -137,6 +137,52 @@ final class ApiaryHivesFamily extends $Family
   @override
   String toString() => r'apiaryHivesProvider';
 }
+
+/// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
+/// yoksa boş.
+
+@ProviderFor(organizationHives)
+final organizationHivesProvider = OrganizationHivesProvider._();
+
+/// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
+/// yoksa boş.
+
+final class OrganizationHivesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Hive>>,
+          List<Hive>,
+          Stream<List<Hive>>
+        >
+    with $FutureModifier<List<Hive>>, $StreamProvider<List<Hive>> {
+  /// İşletmenin kovanları (her durumda); numaralar sayı sırasıyla. İşletme
+  /// yoksa boş.
+  OrganizationHivesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'organizationHivesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$organizationHivesHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Hive>> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Hive>> create(Ref ref) {
+    return organizationHives(ref);
+  }
+}
+
+String _$organizationHivesHash() => r'66165a9e7ebc62f72f08c44cf062ff71ac080773';
 
 /// Kovan kartı; kovan yoksa ya da silindiyse null.
 

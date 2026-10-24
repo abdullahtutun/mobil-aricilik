@@ -4,6 +4,7 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
 import 'package:mobil_arici/app/shell/app_tab.dart';
 import 'package:mobil_arici/app/shell/quick_record_sheet.dart';
+import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Sekmeli kabuk. Her sekme kendi gezinme yığınını korur.
@@ -16,13 +17,10 @@ class AppShell extends StatelessWidget {
     final type = await showQuickRecordSheet(context);
     if (type == null || !context.mounted) return;
     // Kayıt formları kendi adımlarında gelecek.
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context).quickRecordComingSoon),
-        ),
-      );
+    showMessageSnackBar(
+      context,
+      AppLocalizations.of(context).quickRecordComingSoon,
+    );
   }
 
   @override

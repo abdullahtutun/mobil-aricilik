@@ -99,6 +99,12 @@ abstract final class AppTheme {
       shadowColor: colors.shadow,
       materialTapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity(horizontal: density, vertical: density),
+      // Metin alanları çerçeveli; eldivenle dokunulacak yer belli olsun.
+      inputDecorationTheme: InputDecorationThemeData(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radii.button),
+        ),
+      ),
       extensions: [
         colors,
         typography,

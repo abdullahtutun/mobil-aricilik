@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart' show Variable;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
-import 'package:mobil_arici/core/design_system/tokens/app_colors.dart'
-    show QueenMarkColor;
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
 

@@ -60,7 +60,7 @@ final class ApiaryFormControllerProvider
 }
 
 String _$apiaryFormControllerHash() =>
-    r'8202c6bc51b526a59f51ad0f8163ee3b679b8316';
+    r'45f4db05a7e8171c2c33dd4abaa59b5efa9ebaf1';
 
 /// Arılık ekleme ([apiaryId] null) ve düzenleme formu. Ekran açık kaldığı
 /// sürece yaşar. Düzenlenecek arılık yoksa ya da silinmişse durum null.

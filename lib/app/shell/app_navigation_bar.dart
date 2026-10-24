@@ -77,10 +77,9 @@ class _TabItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final foreground = selected ? colors.primary : colors.textSecondary;
-    final labelStyle = context.typography.bodySmall.copyWith(
-      color: foreground,
-      fontWeight: selected ? FontWeight.w600 : null,
-    );
+    final typography = context.typography;
+    final labelStyle = (selected ? typography.labelSmall : typography.bodySmall)
+        .copyWith(color: foreground);
 
     return Semantics(
       container: true,
@@ -159,9 +158,8 @@ class _ScanButton extends StatelessWidget {
                   Text(
                     l10n.scanTitle,
                     maxLines: 1,
-                    style: context.typography.bodySmall.copyWith(
+                    style: context.typography.labelSmall.copyWith(
                       color: colors.onPrimary,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],

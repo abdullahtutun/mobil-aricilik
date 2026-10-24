@@ -97,26 +97,13 @@ class SettingsScreen extends ConsumerWidget {
     WidgetRef ref,
   ) async {
     final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.settingsSignOutConfirmTitle),
-        content: Text(l10n.settingsSignOutConfirmMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.actionCancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(l10n.settingsSignOut),
-          ),
-        ],
-      ),
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l10n.settingsSignOutConfirmTitle,
+      message: l10n.settingsSignOutConfirmMessage,
+      confirmLabel: l10n.settingsSignOut,
     );
-    if (confirmed ?? false) {
-      await ref.read(currentUserProvider.notifier).signOut();
-    }
+    if (confirmed) await ref.read(currentUserProvider.notifier).signOut();
   }
 
   static String _languageLabel(AppLocalizations l10n, AppLanguage language) {
