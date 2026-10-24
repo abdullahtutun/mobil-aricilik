@@ -181,6 +181,13 @@
 - Bağlantı kesilmesi: İkinci paketin yanıtı yolda kaybolursa 50 kayıt outbox'ta kalıyor; yeniden gönderildiklerinde sunucu `applied: false` dönüyor ve çift kayıt oluşmuyor. Gönderim sunucuya ulaşmadan kesilirse kayıtlar outbox'ta kalıyor. Çekme tablolar arasında kesilirse inen tablolar korunuyor. Yeni telefonun ilk çekmesi iki sayfa arasında kesilirse yazılan sayfa ve imleç korunuyor, `:full_pull` yazılmıyor; sonraki tur kalanı indiriyor. Kesinti sırasında yapılan yerel yazma da kaybolmuyor.
 - Senkron motorunda ya da RPC'lerde hata çıkmadı, kod değişmedi. Testlerin gerçekten bir şey ölçtüğü denendi. `sync_push`'taki `updated_at` koşulu yerel DB'de geçici olarak kaldırılınca 3 test kırıldı. İstemcide iki bozma denendi: kesilen paketi outbox'tan silmek ve imleci yalnız tablo sonunda kaydetmek; bunlar 4 test kırdı. Hepsi geri alındı. Tek düzeltme test kurulumundaydı: düz `SupabaseClient` PKCE için depo istiyor, bu yüzden test istemcileri implicit akışla açılıyor. `integration_test` dev bağımlılığı eklendi.
 
+### 2026-10-24 — CLAUDE.md: yeni kayıt türü kalıbı
+
+- CLAUDE.md'ye "Yeni kayıt türü kalıbı" bölümü eklendi. Altı adımı var: Supabase migration + RLS + pgTAP, Drift aynası + migration, senkron tablo listesi (push/pull), repository + testler, ekranlar (tasarım sistemi + ARB) ve TR alanlarının `RegionConfig` bayrağıyla gizlenmesi. Kod değişmedi.
+- Örnekler C2 (arılıklar) ve C3 (kovanlar) dilimlerinden alındı. Bu tabloların 1–3. adımları C2/C3'ten önce, şema v2, Drift ve senkron adımlarında yapılmıştı; bölümde bu da yazıyor. C2/C3'te TR'ye özel alan olmadığı için 6. adımın örneği `organizations.tr_*` kolonları ve `RegionFeatures.aks`.
+- Senkron kaydı iki yerde yapılıyor. Push için sunucudaki `private.sync_push_change` `kind` eşlemesine `state` ya da `event` girişi ekleniyor, pull için `SyncService.pullTables` ve `syncTableLabel`. `sync_pull` yeni tablo için değişiklik istemiyor.
+- Bölüm, kodda görülen iki tuzağı da yazıyor. Yeni tablo `schema_mirror_test.dart`'taki tablo sayısını değiştiriyor. `schemaVersion` artarsa yeni sürüm `sync_push`'taki `supported_versions`'a eklenmeli; eklenmezse her gönderim `PT426` alır.
+
 ## Notlar
 
 - Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.
