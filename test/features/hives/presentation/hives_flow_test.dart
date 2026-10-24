@@ -42,6 +42,15 @@ Future<ProviderContainer> _open(
 
 /// Dokunur; öğe tembel listede henüz kurulmadıysa önce ona kaydırır
 /// (kovan kartı uzun, alttaki butonlar ilk açılışta kurulmaz).
+/// Kartı başa kaydırır; başlıktaki rozet yeniden kurulur.
+Future<void> _scrollToTop(WidgetTester tester) async {
+  await tester.drag(
+    find.byType(Scrollable).hitTestable().first,
+    const Offset(0, 2000),
+  );
+  await tester.pumpAndSettle();
+}
+
 Future<void> _tap(WidgetTester tester, Finder finder) async {
   if (finder.evaluate().isEmpty) {
     await tester.scrollUntilVisible(
@@ -394,6 +403,7 @@ void main() {
 
       await _tap(tester, find.text('Undo'));
       expect((await hives.findById(hive.id))!.status, HiveStatus.lost);
+      await _scrollToTop(tester);
       expect(find.widgetWithText(StatusBadge, 'Lost'), findsOneWidget);
 
       // Aktif olmayandan başka bir aktif olmayana: onay yok, geri al var.
@@ -481,6 +491,7 @@ void main() {
     await _tap(tester, find.text('Söndü'));
     expect(find.text('Kovan 101 söndü olarak kaydedilsin mi?'), findsOneWidget);
     await _tap(tester, find.text('Evet, kaydet'));
+    await _scrollToTop(tester);
     expect(find.text('Söndü'), findsOneWidget);
 
     container.read(routerProvider).go(AppRoutes.hivesBulk(yayla.id));

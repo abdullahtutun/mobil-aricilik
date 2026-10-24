@@ -11,6 +11,7 @@ import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 
 import 'fake_code_scanner.dart';
+import 'fake_media.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
 import 'fake_sync_service.dart';
@@ -70,14 +71,16 @@ class FakeAuthService implements AuthService {
 }
 
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
-/// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı ve senkron sahte;
-/// ilk tam çekme bitmiş sayılır ([fullPullDone] yanlışsa DB'den okunur).
+/// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, senkron ve medya
+/// (foto, ses, Storage) sahte; ilk tam çekme bitmiş sayılır ([fullPullDone]
+/// yanlışsa DB'den okunur).
 List<Override> signedIn({
   FakeAuthService? auth,
   AppDatabase? db,
   FakeCodeScanner? scanner,
   FakePrintService? printer,
   FakeSyncService? sync,
+  FakeMedia? media,
   bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
@@ -88,4 +91,5 @@ List<Override> signedIn({
   codeScannerProvider.overrideWithValue((scanner ?? FakeCodeScanner()).builder),
   printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
   ...syncOverrides(service: sync, fullPullDone: fullPullDone),
+  ...(media ?? FakeMedia()).overrides,
 ];

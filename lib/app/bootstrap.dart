@@ -8,6 +8,7 @@ import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/background_sync.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/supabase_setup.dart';
+import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 
 /// Uygulamayı verilen flavor ile başlatır.
@@ -34,8 +35,9 @@ Future<void> bootstrap(Flavor flavor) async {
 
   final container =
       ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])
-        // Senkron tetikleri uygulama açık kaldıkça çalışır.
-        ..listen(syncTriggersProvider, (_, _) {});
+        // Senkron ve medya yükleme tetikleri uygulama açık kaldıkça çalışır.
+        ..listen(syncTriggersProvider, (_, _) {})
+        ..listen(mediaUploadTriggersProvider, (_, _) {});
 
   runApp(UncontrolledProviderScope(container: container, child: const App()));
 

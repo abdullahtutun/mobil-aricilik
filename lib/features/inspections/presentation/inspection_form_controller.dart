@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_providers.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'inspection_form_controller.freezed.dart';
@@ -102,12 +104,27 @@ class InspectionFormController extends _$InspectionFormController {
   void setActions(Set<InspectionAction> actions) =>
       _change(null, (values) => values.copyWith(actions: actions));
 
-  /// Taslağı siler; form önceki muayenenin değerleriyle yeniden başlar.
+  /// Muayene sırasında çekilen foto ya da sesli notu taslağa ekler;
+  /// muayene kaydedilince ona bağlanır. Kaydedildiyse ya da kaydediliyorsa
+  /// false döner; dosya çağıranın.
+  bool addMedia(MediaCapture capture) {
+    final form = state.value;
+    if (form == null || form.saving || _saved) return false;
+    _write(form.draft.copyWith(media: [...form.draft.media, capture]));
+    return true;
+  }
+
+  /// Taslağı ve taslakta çekilen dosyaları siler; form önceki muayenenin
+  /// değerleriyle yeniden başlar.
   void restart() {
     final form = state.value;
     if (form == null || form.saving || _saved) return;
     state = AsyncData(form.copyWith(draft: prefilledDraft(form.previous)));
     unawaited(ref.read(inspectionDraftRepositoryProvider).discard(hiveId));
+    final files = ref.read(mediaFileStoreProvider);
+    for (final capture in form.draft.media) {
+      unawaited(files.delete(capture.fileName));
+    }
   }
 
   /// Muayeneyi yerel DB'ye yazar (taslak silinir) ve döner. Kaydetme
@@ -126,6 +143,7 @@ class InspectionFormController extends _$InspectionFormController {
             hiveId: hiveId,
             apiaryId: form.hive.apiaryId,
             values: form.draft.values,
+            media: form.draft.media,
           );
       _saved = true;
       return (inspection: inspection, draft: form.draft);
@@ -142,7 +160,12 @@ class InspectionFormController extends _$InspectionFormController {
   ) {
     final form = state.value;
     if (form == null || form.saving || _saved) return;
-    final draft = form.draft.change(field, change(form.draft.values));
+    _write(form.draft.change(field, change(form.draft.values)));
+  }
+
+  /// Formu [draft]'a çeker ve taslak olarak yazar.
+  void _write(InspectionDraft draft) {
+    final form = state.value!;
     state = AsyncData(form.copyWith(draft: draft));
     unawaited(
       ref

@@ -2,4 +2,7 @@
 "NSLocationWhenInUseUsageDescription" = "Your apiary's location is taken from GPS when you ask for it. No internet is needed.";
 
 /* Kamera izni sorulurken gösterilir (Info.plist: NSCameraUsageDescription). */
-"NSCameraUsageDescription" = "The camera scans the QR code on your hive labels to open the hive card. No internet is needed.";
+"NSCameraUsageDescription" = "The camera scans the QR code on your hive labels and takes photos for the hive card. No internet is needed.";
+
+/* Mikrofon izni sorulurken gösterilir (Info.plist: NSMicrophoneUsageDescription). */
+"NSMicrophoneUsageDescription" = "The microphone records voice notes for your hives. Recordings stay on the phone until they upload.";

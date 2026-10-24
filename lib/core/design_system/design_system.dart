@@ -6,6 +6,7 @@ export 'components/app_card.dart';
 export 'components/app_logo.dart';
 export 'components/app_status.dart';
 export 'components/big_button.dart';
+export 'components/big_icon_button.dart';
 export 'components/big_stepper.dart';
 export 'components/bottom_action_layout.dart';
 export 'components/choice_chip_group.dart';

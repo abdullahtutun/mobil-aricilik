@@ -9,6 +9,8 @@ import 'package:mobil_arici/features/inspections/data/inspection_repository.dart
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/media/data/media_repository.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 import '../../../helpers/test_database.dart';
 
@@ -390,6 +392,80 @@ void main() {
       expect(await reminders.findByInspection(inspection.id), isNull);
       // Yalnız muayenenin kendisi gönderilir.
       expect(await readOutbox(db), hasLength(1));
+    });
+  });
+
+  group('medya', () {
+    final photo = MediaCapture(
+      fileName: 'p.jpg',
+      kind: MediaKind.photo,
+      capturedAt: DateTime.utc(2026, 10, 22, 8, 58),
+      byteSize: 300000,
+    );
+    final voice = MediaCapture(
+      fileName: 'v.m4a',
+      kind: MediaKind.audio,
+      capturedAt: DateTime.utc(2026, 10, 22, 8, 59),
+      byteSize: 40000,
+      durationMs: 9000,
+    );
+
+    test('muayenede çekilenler muayeneye bağlı yazılır; outbox’ta muayene '
+        'medyadan önce', () async {
+      final inspection = await repository.add(
+        orgId: 'org-1',
+        hiveId: 'hive-1',
+        apiaryId: 'apiary-1',
+        values: _values,
+        media: [photo, voice],
+      );
+
+      final media = await MediaRepository(db).watchByHive('hive-1').first;
+      expect(media.map((m) => m.inspectionId), [inspection.id, inspection.id]);
+      expect(media.map((m) => m.kind), [MediaKind.photo, MediaKind.audio]);
+      expect((await readOutbox(db)).map((e) => e.recordTable), [
+        'inspections',
+        'media',
+        'media',
+      ]);
+      expect(await db.select(db.mediaUploads).get(), hasLength(2));
+    });
+
+    test('medya yazılamazsa muayene de yazılmaz, taslak kalır', () async {
+      await drafts.save(orgId: 'org-1', hiveId: 'hive-1', draft: _draft);
+      await breakInsert('media_uploads');
+
+      await expectLater(
+        repository.add(
+          orgId: 'org-1',
+          hiveId: 'hive-1',
+          apiaryId: 'apiary-1',
+          values: _values,
+          media: [photo],
+        ),
+        throwsA(isA<Exception>()),
+      );
+      expect(await db.select(db.inspections).get(), isEmpty);
+      expect(await db.select(db.media).get(), isEmpty);
+      expect(await drafts.find('hive-1'), isNotNull);
+    });
+
+    test('geri alma medyayı da siler ve yüklemesini kaldırır; taslak '
+        'çekimleriyle döner', () async {
+      final draft = _draft.copyWith(media: [photo]);
+      final inspection = await repository.add(
+        orgId: 'org-1',
+        hiveId: 'hive-1',
+        apiaryId: 'apiary-1',
+        values: _values,
+        media: draft.media,
+      );
+
+      await repository.undoAdd(inspection, draft);
+
+      expect(await MediaRepository(db).watchByHive('hive-1').first, isEmpty);
+      expect(await db.select(db.mediaUploads).get(), isEmpty);
+      expect((await drafts.find('hive-1'))!.media, [photo]);
     });
   });
 }

@@ -2599,6 +2599,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'12 days left'**
   String get gallerySampleDaysLeft;
+
+  /// No description provided for @syncTableMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo or voice note'**
+  String get syncTableMedia;
+
+  /// No description provided for @mediaTakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get mediaTakePhoto;
+
+  /// No description provided for @mediaRecordVoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a voice note'**
+  String get mediaRecordVoice;
+
+  /// No description provided for @mediaStopRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop recording'**
+  String get mediaStopRecording;
+
+  /// Shown while a voice note is being recorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording · {duration}'**
+  String mediaRecording(String duration);
+
+  /// No description provided for @mediaPhotoAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo added to hive {number}'**
+  String mediaPhotoAdded(String number);
+
+  /// No description provided for @mediaVoiceAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice note added to hive {number}'**
+  String mediaVoiceAdded(String number);
+
+  /// No description provided for @mediaCameraDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'No camera permission. You can allow it in the phone\'s settings.'**
+  String get mediaCameraDenied;
+
+  /// No description provided for @mediaMicrophoneDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'No microphone permission. You can allow it in the phone\'s settings.'**
+  String get mediaMicrophoneDenied;
+
+  /// No description provided for @mediaCaptureFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save. Try again.'**
+  String get mediaCaptureFailed;
+
+  /// No description provided for @mediaPhotoCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 photo} other{{count} photos}}'**
+  String mediaPhotoCount(int count);
+
+  /// No description provided for @mediaVoiceCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 voice note} other{{count} voice notes}}'**
+  String mediaVoiceCount(int count);
+
+  /// Photos and voice notes taken during the inspection, e.g. '2 photos, 1 voice note'.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved with the inspection: {items}'**
+  String inspectionMediaAttached(String items);
+
+  /// No description provided for @timelinePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get timelinePhoto;
+
+  /// No description provided for @timelineVoiceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice note'**
+  String get timelineVoiceNote;
+
+  /// No description provided for @mediaOpenPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Open photo'**
+  String get mediaOpenPhoto;
+
+  /// No description provided for @mediaDownloadPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo not on this phone. Tap to download.'**
+  String get mediaDownloadPhoto;
+
+  /// No description provided for @mediaPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Play · {duration}'**
+  String mediaPlay(String duration);
+
+  /// No description provided for @mediaStopPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get mediaStopPlaying;
+
+  /// No description provided for @mediaNotUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not uploaded yet. It arrives when the phone that took it is online.'**
+  String get mediaNotUploaded;
+
+  /// No description provided for @mediaDownloadOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download. Check your internet connection.'**
+  String get mediaDownloadOffline;
+
+  /// No description provided for @mediaDownloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download.'**
+  String get mediaDownloadFailed;
+
+  /// No description provided for @mediaNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo not found'**
+  String get mediaNotFound;
+
+  /// No description provided for @settingsData.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get settingsData;
+
+  /// No description provided for @settingsMediaWifiOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload photos on Wi‑Fi only'**
+  String get settingsMediaWifiOnly;
+
+  /// No description provided for @settingsMediaWifiOnlyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos and voice notes won\'t use mobile data.'**
+  String get settingsMediaWifiOnlyHint;
+
+  /// No description provided for @settingsPendingUploads.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 file waiting to upload} other{{count} files waiting to upload}}'**
+  String settingsPendingUploads(int count);
 }
 
 class _AppLocalizationsDelegate

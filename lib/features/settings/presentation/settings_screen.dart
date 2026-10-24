@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
@@ -7,10 +8,12 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
-/// ülke) ve hesap. Seçimler şimdilik yalnızca bellekte. Ülke burada
-/// seçilmez, yalnız gösterilir.
+/// ülke), veri ("sadece Wi‑Fi'da yükle" ve bekleyen dosyalar) ve hesap.
+/// Görünüm ve dil şimdilik yalnızca bellekte; Wi‑Fi seçimi bu telefonun
+/// yerel DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -96,6 +99,10 @@ class SettingsScreen extends ConsumerWidget {
             ],
           ),
           sectionGap,
+          SectionLabel(l10n.settingsData),
+          labelGap,
+          const ListGroup(children: [_MediaWifiOnlyTile()]),
+          sectionGap,
           SectionLabel(l10n.settingsAccount),
           labelGap,
           if (user?.email case final email?) ...[
@@ -172,5 +179,35 @@ class SettingsScreen extends ConsumerWidget {
       AppColorMode.dark => l10n.settingsColorModeDark,
       AppColorMode.sun => l10n.settingsColorModeSun,
     };
+  }
+}
+
+/// "Fotoğrafları sadece Wi‑Fi'da yükle"; altında yüklenmeyi bekleyen dosya
+/// sayısı ya da açıklama.
+class _MediaWifiOnlyTile extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final wifiOnly = ref.watch(mediaWifiOnlyProvider).value ?? false;
+    final pending = ref.watch(pendingMediaUploadsProvider).value ?? 0;
+
+    return SwitchListTile(
+      value: wifiOnly,
+      onChanged: (enabled) => ref
+          .read(localSettingsRepositoryProvider)
+          .setMediaWifiOnly(enabled: enabled),
+      contentPadding: EdgeInsets.symmetric(horizontal: context.spacing.lg),
+      title: Text(l10n.settingsMediaWifiOnly, style: context.typography.body),
+      subtitle: Text(
+        pending > 0
+            ? l10n.settingsPendingUploads(pending)
+            : l10n.settingsMediaWifiOnlyHint,
+        style: context.typography.bodySmall.copyWith(
+          color: context.colors.textSecondary,
+        ),
+      ),
+    );
   }
 }

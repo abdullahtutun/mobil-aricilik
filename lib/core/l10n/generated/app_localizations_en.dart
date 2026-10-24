@@ -1506,4 +1506,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gallerySampleDaysLeft => '12 days left';
+
+  @override
+  String get syncTableMedia => 'Photo or voice note';
+
+  @override
+  String get mediaTakePhoto => 'Take a photo';
+
+  @override
+  String get mediaRecordVoice => 'Record a voice note';
+
+  @override
+  String get mediaStopRecording => 'Stop recording';
+
+  @override
+  String mediaRecording(String duration) {
+    return 'Recording · $duration';
+  }
+
+  @override
+  String mediaPhotoAdded(String number) {
+    return 'Photo added to hive $number';
+  }
+
+  @override
+  String mediaVoiceAdded(String number) {
+    return 'Voice note added to hive $number';
+  }
+
+  @override
+  String get mediaCameraDenied =>
+      'No camera permission. You can allow it in the phone\'s settings.';
+
+  @override
+  String get mediaMicrophoneDenied =>
+      'No microphone permission. You can allow it in the phone\'s settings.';
+
+  @override
+  String get mediaCaptureFailed => 'Couldn\'t save. Try again.';
+
+  @override
+  String mediaPhotoCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count photos',
+      one: '1 photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mediaVoiceCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count voice notes',
+      one: '1 voice note',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String inspectionMediaAttached(String items) {
+    return 'Saved with the inspection: $items';
+  }
+
+  @override
+  String get timelinePhoto => 'Photo';
+
+  @override
+  String get timelineVoiceNote => 'Voice note';
+
+  @override
+  String get mediaOpenPhoto => 'Open photo';
+
+  @override
+  String get mediaDownloadPhoto => 'Photo not on this phone. Tap to download.';
+
+  @override
+  String mediaPlay(String duration) {
+    return 'Play · $duration';
+  }
+
+  @override
+  String get mediaStopPlaying => 'Stop';
+
+  @override
+  String get mediaNotUploaded =>
+      'Not uploaded yet. It arrives when the phone that took it is online.';
+
+  @override
+  String get mediaDownloadOffline =>
+      'Couldn\'t download. Check your internet connection.';
+
+  @override
+  String get mediaDownloadFailed => 'Couldn\'t download.';
+
+  @override
+  String get mediaNotFound => 'Photo not found';
+
+  @override
+  String get settingsData => 'Data';
+
+  @override
+  String get settingsMediaWifiOnly => 'Upload photos on Wi‑Fi only';
+
+  @override
+  String get settingsMediaWifiOnlyHint =>
+      'Photos and voice notes won\'t use mobile data.';
+
+  @override
+  String settingsPendingUploads(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count files waiting to upload',
+      one: '1 file waiting to upload',
+    );
+    return '$_temp0';
+  }
 }

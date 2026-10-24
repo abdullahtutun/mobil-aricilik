@@ -28,6 +28,7 @@ import 'package:mobil_arici/features/hives/presentation/hive_label_providers.dar
 import 'package:mobil_arici/features/hives/presentation/hive_link_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/labels/hive_labels_screen.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.dart';
+import 'package:mobil_arici/features/media/presentation/media_viewer_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -42,6 +43,7 @@ part 'router.g.dart';
 
 const _apiaryId = 'apiaryId';
 const _hiveId = 'hiveId';
+const _mediaId = 'mediaId';
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
@@ -216,6 +218,12 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.sync,
         builder: (context, state) => const SyncScreen(),
+      ),
+      // Kabuğun dışında: geri tuşu küçük resme dokunulan karta döner.
+      GoRoute(
+        path: '/media/:$_mediaId',
+        builder: (context, state) =>
+            MediaViewerScreen(mediaId: state.pathParameters[_mediaId]!),
       ),
       // Kovan etiketinin derin linki (`mobilarici://h/<kimlik>`, telefonun
       // kendi kamerasıyla okutulunca). Kovan bu telefondaysa Okut'taki gibi

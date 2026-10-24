@@ -14,6 +14,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.hiveTile,
     required this.scanWindow,
     required this.honeycomb,
+    required this.mediaThumbnail,
   });
 
   static const standard = AppSizes(
@@ -26,6 +27,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     hiveTile: 104,
     scanWindow: 240,
     honeycomb: 240,
+    mediaThumbnail: 72,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -57,6 +59,9 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// Giriş ekranlarının köşesindeki petek deseni.
   final double honeycomb;
 
+  /// Zaman tünelindeki foto küçük resmi (kare); dokunma hedefinden büyük.
+  final double mediaThumbnail;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -68,6 +73,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? hiveTile,
     double? scanWindow,
     double? honeycomb,
+    double? mediaThumbnail,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -79,6 +85,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       hiveTile: hiveTile ?? this.hiveTile,
       scanWindow: scanWindow ?? this.scanWindow,
       honeycomb: honeycomb ?? this.honeycomb,
+      mediaThumbnail: mediaThumbnail ?? this.mediaThumbnail,
     );
   }
 
@@ -99,6 +106,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       hiveTile: lerpDouble(hiveTile, other.hiveTile, t)!,
       scanWindow: lerpDouble(scanWindow, other.scanWindow, t)!,
       honeycomb: lerpDouble(honeycomb, other.honeycomb, t)!,
+      mediaThumbnail: lerpDouble(mediaThumbnail, other.mediaThumbnail, t)!,
     );
   }
 }

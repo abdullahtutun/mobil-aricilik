@@ -2,4 +2,7 @@
 "NSLocationWhenInUseUsageDescription" = "Arılığının konumu yalnız sen istediğinde GPS'ten alınır. İnternet gerekmez.";
 
 /* Kamera izni sorulurken gösterilir (Info.plist: NSCameraUsageDescription). */
-"NSCameraUsageDescription" = "Kamera, kovan etiketindeki QR kodu okutup kovan kartını açmak için kullanılır. İnternet gerekmez.";
+"NSCameraUsageDescription" = "Kamera, kovan etiketindeki QR kodu okutmak ve kovan kartına fotoğraf çekmek için kullanılır. İnternet gerekmez.";
+
+/* Mikrofon izni sorulurken gösterilir (Info.plist: NSMicrophoneUsageDescription). */
+"NSMicrophoneUsageDescription" = "Mikrofon, kovanlarına sesli not kaydetmek için kullanılır. Kayıtlar yüklenene kadar telefonda kalır.";

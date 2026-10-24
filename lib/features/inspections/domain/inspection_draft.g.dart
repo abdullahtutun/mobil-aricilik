@@ -16,6 +16,11 @@ _InspectionDraft _$InspectionDraftFromJson(Map<String, dynamic> json) =>
               ?.map((e) => $enumDecode(_$InspectionFieldEnumMap, e))
               .toSet() ??
           const <InspectionField>{},
+      media:
+          (json['media'] as List<dynamic>?)
+              ?.map((e) => MediaCapture.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <MediaCapture>[],
     );
 
 Map<String, dynamic> _$InspectionDraftToJson(_InspectionDraft instance) =>
@@ -24,6 +29,7 @@ Map<String, dynamic> _$InspectionDraftToJson(_InspectionDraft instance) =>
       'suggested': instance.suggested
           .map((e) => _$InspectionFieldEnumMap[e]!)
           .toList(),
+      'media': instance.media,
     };
 
 const _$InspectionFieldEnumMap = {

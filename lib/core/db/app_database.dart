@@ -3,6 +3,7 @@ import 'package:mobil_arici/core/db/app_database.steps.dart';
 import 'package:mobil_arici/core/db/converters.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
+import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
@@ -10,10 +11,12 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
 
+export 'tables/media_tables.dart' show MediaUploadStatus;
 export 'tables/sync_tables.dart' show OutboxOperation, fullPullMarker;
 
 part 'app_database.g.dart';
@@ -36,6 +39,9 @@ part 'app_database.g.dart';
     Inspections,
     InspectionDrafts,
     InspectionReminders,
+    Media,
+    MediaUploads,
+    LocalSettings,
     Outbox,
     SyncState,
   ],
@@ -44,7 +50,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -56,6 +62,14 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.inspectionsHiveIdIdx);
         await m.createTable(schema.inspectionDrafts);
         await m.createTable(schema.inspectionReminders);
+      },
+      // Medya; yükleme kuyruğu ve yerel ayarlar yalnız bu telefonda.
+      from2To3: (m, schema) async {
+        await m.createTable(schema.media);
+        await m.create(schema.mediaOrgIdIdx);
+        await m.create(schema.mediaHiveIdIdx);
+        await m.createTable(schema.mediaUploads);
+        await m.createTable(schema.localSettings);
       },
     ),
   );

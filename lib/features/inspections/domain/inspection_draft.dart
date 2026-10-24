@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 part 'inspection_draft.freezed.dart';
 part 'inspection_draft.g.dart';
@@ -27,6 +28,10 @@ abstract class InspectionDraft with _$InspectionDraft {
     /// Değeri önceki muayeneden gelen ve bu muayenede dokunulmamış alanlar;
     /// soluk gösterilir. Dokunulmasa da değerleriyle kaydedilir.
     @Default(<InspectionField>{}) Set<InspectionField> suggested,
+
+    /// Muayene sırasında çekilen foto ve sesli notlar; muayene kaydedilince
+    /// ona bağlı medya kaydı olur.
+    @Default(<MediaCapture>[]) List<MediaCapture> media,
   }) = _InspectionDraft;
 
   factory fromJson(Map<String, Object?> json) =>

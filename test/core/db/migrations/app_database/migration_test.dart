@@ -6,6 +6,7 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 // Dökümler ve `generated/` `dart run drift_dev make-migrations` ile üretilir;
 // her yeni sürümde bu testlere yeni sürümün veri testi eklenir.
@@ -78,6 +79,64 @@ void main() {
         expect(await rows(newDb.inspections), isEmpty);
         expect(await rows(newDb.inspectionDrafts), isEmpty);
         expect(await rows(newDb.inspectionReminders), isEmpty);
+      },
+    );
+  });
+
+  test("v2 → v3 muayeneleri, taslakları ve outbox'ı korur; medya, yükleme "
+      'kuyruğu ve yerel ayarlar boş gelir', () async {
+    const inspection = v2.InspectionsData(
+      id: 'inspection-1',
+      createdAt: '2026-10-24T09:00:00.000Z',
+      updatedAt: '2026-10-24T09:00:00.000Z',
+      orgId: 'org-1',
+      hiveId: 'hive-1',
+      apiaryId: 'apiary-1',
+      inspectedAt: '2026-10-24T09:00:00.000Z',
+      beeFrames: 7,
+      data: '{"actions":["fed"]}',
+    );
+    const draft = v2.InspectionDraftsData(
+      hiveId: 'hive-2',
+      orgId: 'org-1',
+      draft: '{"values":{"bee_frames":5},"suggested":[]}',
+      updatedAt: '2026-10-24T09:00:00.000Z',
+    );
+    const pending = v2.OutboxData(
+      id: 1,
+      recordTable: 'inspections',
+      recordId: 'inspection-1',
+      operation: 'upsert',
+      payload: '{"id":"inspection-1"}',
+      createdAt: '2026-10-24T09:00:00.000Z',
+      attempts: 0,
+    );
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 2,
+      newVersion: 3,
+      createOld: v2.DatabaseAtV2.new,
+      createNew: v3.DatabaseAtV3.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(oldDb.inspections, inspection)
+          ..insert(oldDb.inspectionDrafts, draft)
+          ..insert(oldDb.outbox, pending);
+      },
+      validateItems: (newDb) async {
+        Future<List<Map<String, dynamic>>> rows(
+          ResultSetImplementation<HasResultSet, DataClass> table,
+        ) async => [
+          for (final row in await newDb.select(table).get()) row.toJson(),
+        ];
+
+        expect(await rows(newDb.inspections), [inspection.toJson()]);
+        expect(await rows(newDb.inspectionDrafts), [draft.toJson()]);
+        expect(await rows(newDb.outbox), [pending.toJson()]);
+        expect(await rows(newDb.media), isEmpty);
+        expect(await rows(newDb.mediaUploads), isEmpty);
+        expect(await rows(newDb.localSettings), isEmpty);
       },
     );
   });

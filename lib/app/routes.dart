@@ -49,6 +49,9 @@ abstract final class AppRoutes {
 
   static const settings = '/more/settings';
 
+  /// Fotoğrafın tam ekranı; sekmelerin üstünde açılır.
+  static String mediaPhoto(String mediaId) => '/media/$mediaId';
+
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.
   static const scan = '/scan';
 

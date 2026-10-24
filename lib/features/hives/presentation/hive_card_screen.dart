@@ -17,12 +17,16 @@ import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_timeline_section.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/media/presentation/media_controllers.dart';
+import 'package:mobil_arici/features/media/presentation/widgets/media_action_row.dart';
 
 /// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
 /// puanı; ana arı şeridi ve son muayene özeti; taşıma ve durum değiştirme;
-/// en altta zaman tüneli. Aktif kovanda altta sabit "Muayene başlat" hızlı
-/// muayeneyi kartın üstünde açar. Diğer özet karoları (ilaç, varroa,
-/// verim) kendi adımlarında gelecek.
+/// en altta zaman tüneli. Altta sabit foto ve mikrofon butonları kovana
+/// tek dokunuşla foto ya da sesli not ekler; aktif kovanda yanlarındaki
+/// "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Diğer özet
+/// karoları (ilaç, varroa, verim) kendi adımlarında gelecek.
 ///
 /// [apiaryId] yoldaki arılık (geri tuşu oraya döner); gösterilen arılık
 /// kovanın kendi arılığıdır.
@@ -49,11 +53,20 @@ class HiveCardScreen extends ConsumerWidget {
             ),
           ],
         ),
-        body: _WithInspectButton(
-          inspect: canInspect(hive)
-              ? () => context.go(AppRoutes.hiveInspect(apiaryId, hiveId))
-              : null,
-          child: ListView(
+        body: BottomActionLayout(
+          separated: true,
+          action: MediaActionRow(
+            target: 'hive:$hiveId',
+            onCaptured: (capture) => _addMedia(context, ref, hive, capture),
+            action: canInspect(hive)
+                ? BigButton(
+                    label: l10n.hiveStartInspection,
+                    onPressed: () =>
+                        context.go(AppRoutes.hiveInspect(apiaryId, hiveId)),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          body: ListView(
             padding: EdgeInsets.all(spacing.lg),
             children: [
               _Header(hive),
@@ -90,6 +103,28 @@ class HiveCardScreen extends ConsumerWidget {
       // Yerel DB'den okunuyor; hemen gelir.
       AsyncValue() => Scaffold(appBar: AppBar()),
     };
+  }
+
+  /// Çekilen foto ya da sesli not hemen kovana yazılır; Geri al kaydı ve
+  /// dosyayı siler.
+  Future<void> _addMedia(
+    BuildContext context,
+    WidgetRef ref,
+    Hive hive,
+    MediaCapture capture,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final actions = ref.read(mediaActionsProvider.notifier);
+    final media = await actions.addToHive(hive, capture);
+    if (!context.mounted) return;
+    showUndoSnackBar(
+      context,
+      message: switch (capture.kind) {
+        MediaKind.photo => l10n.mediaPhotoAdded(hive.number),
+        MediaKind.audio => l10n.mediaVoiceAdded(hive.number),
+      },
+      onUndo: () => actions.undoAdd(media, capture),
+    );
   }
 
   /// Arılık seçilince hemen taşır; Geri al kovanı eski arılığına döndürür.
@@ -136,29 +171,6 @@ class HiveCardScreen extends ConsumerWidget {
       context,
       message: l10n.hiveStatusChanged(hive.number, status.label(l10n)),
       onUndo: () => actions.setStatus(hive.id, previous),
-    );
-  }
-}
-
-/// Aktif kovanda altta, çizgiyle ayrılmış sabit "Muayene başlat"
-/// ([inspect]); diğerlerinde yalnız [child].
-class _WithInspectButton extends StatelessWidget {
-  const new({required this.inspect, required this.child});
-
-  final VoidCallback? inspect;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final inspect = this.inspect;
-    if (inspect == null) return child;
-    return BottomActionLayout(
-      separated: true,
-      body: child,
-      action: BigButton(
-        label: AppLocalizations.of(context).hiveStartInspection,
-        onPressed: inspect,
-      ),
     );
   }
 }

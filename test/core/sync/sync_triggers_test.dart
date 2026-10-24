@@ -4,7 +4,6 @@ import 'dart:ui' show IsolateNameServer;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
-import 'package:mobil_arici/core/services/connectivity_service.dart';
 import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/sync/sync_repository.dart';
@@ -14,18 +13,10 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 
 import '../../helpers/fake_auth_service.dart';
+import '../../helpers/fake_connectivity_service.dart';
 import '../../helpers/fake_organization_service.dart';
 import '../../helpers/fake_sync_service.dart';
 import '../../helpers/test_database.dart';
-
-class _FakeConnectivityService implements ConnectivityService {
-  final _reconnected = StreamController<void>.broadcast();
-
-  void reconnect() => _reconnected.add(null);
-
-  @override
-  Stream<void> get reconnected => _reconnected.stream;
-}
 
 /// Provider'ların yeniden hesaplanması için yeterli süre; debounce'tan çok
 /// kısa.
@@ -53,7 +44,7 @@ class _FakeSyncRepository implements SyncRepository {
 void main() {
   late FakeAuthService auth;
   late FakeSyncService service;
-  late _FakeConnectivityService connectivity;
+  late FakeConnectivityService connectivity;
   late _FakeSyncRepository repository;
 
   /// Tetikleri `bootstrap` gibi dinler; işletme yüklenip açılış turu
@@ -80,7 +71,7 @@ void main() {
   setUp(() {
     auth = FakeAuthService(user: testUser);
     service = FakeSyncService();
-    connectivity = _FakeConnectivityService();
+    connectivity = FakeConnectivityService();
   });
 
   testWidgets('oturum ve işletme hazır olunca bir tur başlar', (tester) async {

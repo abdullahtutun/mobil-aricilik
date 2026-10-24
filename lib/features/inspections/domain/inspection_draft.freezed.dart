@@ -18,7 +18,9 @@ mixin _$InspectionDraft {
 
  InspectionValues get values;/// Değeri önceki muayeneden gelen ve bu muayenede dokunulmamış alanlar;
 /// soluk gösterilir. Dokunulmasa da değerleriyle kaydedilir.
- Set<InspectionField> get suggested;
+ Set<InspectionField> get suggested;/// Muayene sırasında çekilen foto ve sesli notlar; muayene kaydedilince
+/// ona bağlı medya kaydı olur.
+ List<MediaCapture> get media;
 /// Create a copy of InspectionDraft
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -32,20 +34,20 @@ $InspectionDraftCopyWith<InspectionDraft> get copyWith => _$InspectionDraftCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as InspectionDraft;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is InspectionDraft&&(identical(other.values, _this.values) || other.values == _this.values)&&const DeepCollectionEquality().equals(other.suggested, _this.suggested));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is InspectionDraft&&(identical(other.values, _this.values) || other.values == _this.values)&&const DeepCollectionEquality().equals(other.suggested, _this.suggested)&&const DeepCollectionEquality().equals(other.media, _this.media));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as InspectionDraft;
-  return Object.hash(runtimeType,_this.values,const DeepCollectionEquality().hash(_this.suggested));
+  return Object.hash(runtimeType,_this.values,const DeepCollectionEquality().hash(_this.suggested),const DeepCollectionEquality().hash(_this.media));
 }
 
 @override
 String toString() {
   final _this = this as InspectionDraft;
-  return 'InspectionDraft(values: ${_this.values}, suggested: ${_this.suggested})';
+  return 'InspectionDraft(values: ${_this.values}, suggested: ${_this.suggested}, media: ${_this.media})';
 }
 
 
@@ -56,7 +58,7 @@ abstract mixin class $InspectionDraftCopyWith<$Res>  {
   factory $InspectionDraftCopyWith(InspectionDraft value, $Res Function(InspectionDraft) _then) = _$InspectionDraftCopyWithImpl;
 @useResult
 $Res call({
- InspectionValues values, Set<InspectionField> suggested
+ InspectionValues values, Set<InspectionField> suggested, List<MediaCapture> media
 });
 
 
@@ -73,11 +75,12 @@ class _$InspectionDraftCopyWithImpl<$Res>
 
 /// Create a copy of InspectionDraft
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? values = null,Object? suggested = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? values = null,Object? suggested = null,Object? media = null,}) {
   return _then(InspectionDraft(
 values: null == values ? _self.values : values // ignore: cast_nullable_to_non_nullable
 as InspectionValues,suggested: null == suggested ? _self.suggested : suggested // ignore: cast_nullable_to_non_nullable
-as Set<InspectionField>,
+as Set<InspectionField>,media: null == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
+as List<MediaCapture>,
   ));
 }
 /// Create a copy of InspectionDraft
@@ -171,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( InspectionValues values,  Set<InspectionField> suggested)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( InspectionValues values,  Set<InspectionField> suggested,  List<MediaCapture> media)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _InspectionDraft() when $default != null:
-return $default(_that.values,_that.suggested);case _:
+return $default(_that.values,_that.suggested,_that.media);case _:
   return orElse();
 
 }
@@ -192,10 +195,10 @@ return $default(_that.values,_that.suggested);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( InspectionValues values,  Set<InspectionField> suggested)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( InspectionValues values,  Set<InspectionField> suggested,  List<MediaCapture> media)  $default,) {final _that = this;
 switch (_that) {
 case _InspectionDraft():
-return $default(_that.values,_that.suggested);case _:
+return $default(_that.values,_that.suggested,_that.media);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +215,10 @@ return $default(_that.values,_that.suggested);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( InspectionValues values,  Set<InspectionField> suggested)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( InspectionValues values,  Set<InspectionField> suggested,  List<MediaCapture> media)?  $default,) {final _that = this;
 switch (_that) {
 case _InspectionDraft() when $default != null:
-return $default(_that.values,_that.suggested);case _:
+return $default(_that.values,_that.suggested,_that.media);case _:
   return null;
 
 }
@@ -227,7 +230,7 @@ return $default(_that.values,_that.suggested);case _:
 @JsonSerializable()
 
 class _InspectionDraft implements InspectionDraft {
-  const _InspectionDraft({this.values = const InspectionValues(),  Set<InspectionField> suggested = const <InspectionField>{}}): _suggested = suggested;
+  const _InspectionDraft({this.values = const InspectionValues(),  Set<InspectionField> suggested = const <InspectionField>{},  List<MediaCapture> media = const <MediaCapture>[]}): _suggested = suggested,_media = media;
   factory _InspectionDraft.fromJson(Map<String, dynamic> json) => _$InspectionDraftFromJson(json);
 
 @override@JsonKey() final  InspectionValues values;
@@ -240,6 +243,17 @@ class _InspectionDraft implements InspectionDraft {
   if (_suggested is EqualUnmodifiableSetView) return _suggested;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableSetView(_suggested);
+}
+
+/// Muayene sırasında çekilen foto ve sesli notlar; muayene kaydedilince
+/// ona bağlı medya kaydı olur.
+ final  List<MediaCapture> _media;
+/// Muayene sırasında çekilen foto ve sesli notlar; muayene kaydedilince
+/// ona bağlı medya kaydı olur.
+@override@JsonKey() List<MediaCapture> get media {
+  if (_media is EqualUnmodifiableListView) return _media;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_media);
 }
 
 
@@ -256,18 +270,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _InspectionDraft&&(identical(other.values, values) || other.values == values)&&const DeepCollectionEquality().equals(other.suggested, _suggested));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _InspectionDraft&&(identical(other.values, values) || other.values == values)&&const DeepCollectionEquality().equals(other.suggested, _suggested)&&const DeepCollectionEquality().equals(other.media, _media));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,values,const DeepCollectionEquality().hash(_suggested));
+    return Object.hash(runtimeType,values,const DeepCollectionEquality().hash(_suggested),const DeepCollectionEquality().hash(_media));
 }
 
 @override
 String toString() {
-    return 'InspectionDraft(values: $values, suggested: $suggested)';
+    return 'InspectionDraft(values: $values, suggested: $suggested, media: $media)';
 }
 
 
@@ -278,7 +292,7 @@ abstract mixin class _$InspectionDraftCopyWith<$Res> implements $InspectionDraft
   factory _$InspectionDraftCopyWith(_InspectionDraft value, $Res Function(_InspectionDraft) _then) = __$InspectionDraftCopyWithImpl;
 @override @useResult
 $Res call({
- InspectionValues values, Set<InspectionField> suggested
+ InspectionValues values, Set<InspectionField> suggested, List<MediaCapture> media
 });
 
 
@@ -295,11 +309,12 @@ class __$InspectionDraftCopyWithImpl<$Res>
 
 /// Create a copy of InspectionDraft
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? values = null,Object? suggested = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? values = null,Object? suggested = null,Object? media = null,}) {
   return _then(_InspectionDraft(
 values: null == values ? _self.values : values // ignore: cast_nullable_to_non_nullable
 as InspectionValues,suggested: null == suggested ? _self._suggested : suggested // ignore: cast_nullable_to_non_nullable
-as Set<InspectionField>,
+as Set<InspectionField>,media: null == media ? _self._media : media // ignore: cast_nullable_to_non_nullable
+as List<MediaCapture>,
   ));
 }
 

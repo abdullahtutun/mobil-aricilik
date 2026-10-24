@@ -1492,4 +1492,122 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get gallerySampleDaysLeft => '12 gün kaldı';
+
+  @override
+  String get syncTableMedia => 'Foto ya da sesli not';
+
+  @override
+  String get mediaTakePhoto => 'Fotoğraf çek';
+
+  @override
+  String get mediaRecordVoice => 'Sesli not kaydet';
+
+  @override
+  String get mediaStopRecording => 'Kaydı bitir';
+
+  @override
+  String mediaRecording(String duration) {
+    return 'Kaydediliyor · $duration';
+  }
+
+  @override
+  String mediaPhotoAdded(String number) {
+    return 'Kovan $number: fotoğraf eklendi';
+  }
+
+  @override
+  String mediaVoiceAdded(String number) {
+    return 'Kovan $number: sesli not eklendi';
+  }
+
+  @override
+  String get mediaCameraDenied =>
+      'Kamera izni yok. Telefonun ayarlarından izin verebilirsin.';
+
+  @override
+  String get mediaMicrophoneDenied =>
+      'Mikrofon izni yok. Telefonun ayarlarından izin verebilirsin.';
+
+  @override
+  String get mediaCaptureFailed => 'Kaydedilemedi, yeniden dene.';
+
+  @override
+  String mediaPhotoCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fotoğraf',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mediaVoiceCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sesli not',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String inspectionMediaAttached(String items) {
+    return 'Muayeneyle kaydedilecek: $items';
+  }
+
+  @override
+  String get timelinePhoto => 'Fotoğraf';
+
+  @override
+  String get timelineVoiceNote => 'Sesli not';
+
+  @override
+  String get mediaOpenPhoto => 'Fotoğrafı aç';
+
+  @override
+  String get mediaDownloadPhoto =>
+      'Fotoğraf bu telefonda yok. İndirmek için dokun.';
+
+  @override
+  String mediaPlay(String duration) {
+    return 'Dinle · $duration';
+  }
+
+  @override
+  String get mediaStopPlaying => 'Durdur';
+
+  @override
+  String get mediaNotUploaded =>
+      'Henüz yüklenmedi. Çeken telefon internete bağlanınca gelir.';
+
+  @override
+  String get mediaDownloadOffline =>
+      'İndirilemedi. İnternet bağlantını kontrol et.';
+
+  @override
+  String get mediaDownloadFailed => 'İndirilemedi.';
+
+  @override
+  String get mediaNotFound => 'Fotoğraf bulunamadı';
+
+  @override
+  String get settingsData => 'Veri';
+
+  @override
+  String get settingsMediaWifiOnly => 'Fotoğrafları sadece Wi‑Fi\'da yükle';
+
+  @override
+  String get settingsMediaWifiOnlyHint =>
+      'Foto ve sesli notlar mobil veri harcamaz.';
+
+  @override
+  String settingsPendingUploads(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dosya yüklenmeyi bekliyor',
+    );
+    return '$_temp0';
+  }
 }

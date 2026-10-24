@@ -58,5 +58,6 @@ String syncTableLabel(AppLocalizations l10n, String table) => switch (table) {
   'hives' => l10n.syncTableHives,
   'hive_location_history' => l10n.syncTableHiveLocationHistory,
   'inspections' => l10n.syncTableInspections,
+  'media' => l10n.syncTableMedia,
   _ => table,
 };

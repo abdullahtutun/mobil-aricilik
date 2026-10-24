@@ -4,6 +4,9 @@
          doğruluk formda gösterilir. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- Kovana sesli not (record). Kamera izni mobile_scanner'dan gelir;
+         image_picker sistem kamerasını açmadan önce onu ister. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <application
         android:label="${appName}"
         android:name="${applicationName}"

@@ -6,16 +6,19 @@ import 'package:mobil_arici/features/inspections/data/inspection_draft_repositor
 import 'package:mobil_arici/features/inspections/data/inspection_reminder_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
+import 'package:mobil_arici/features/media/data/media_repository.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 /// Muayeneler; olay kaydı: yalnız eklenir, güncelleme yok, yanlış kayıt
-/// silinir. Kaydetme kovanın taslağını, geri alma hatırlatmayı ve taslağı
-/// aynı transaction'da yazar.
+/// silinir. Kaydetme muayenede çekilen medyayı ve kovanın taslağını, geri
+/// alma medyayı, hatırlatmayı ve taslağı aynı transaction'da yazar.
 class InspectionRepository
     extends BaseRepository<$InspectionsTable, Inspection> {
   new(super.db, {super.clock});
 
   late final _drafts = InspectionDraftRepository(db, clock: clock);
   late final _reminders = InspectionReminderRepository(db, clock: clock);
+  late final _media = MediaRepository(db, clock: clock);
 
   @override
   $InspectionsTable get table => db.inspections;
@@ -66,12 +69,14 @@ class InspectionRepository
       ]);
 
   /// Kovanın şimdi [apiaryId] arılığında yapılan muayenesini [values] ile
-  /// yazar ve kovanın taslağını siler; ikisi tek transaction'da.
+  /// yazar, muayenede çekilen [media]'yı ona bağlı medya olarak ekler ve
+  /// kovanın taslağını siler; hepsi tek transaction'da.
   Future<Inspection> add({
     required String orgId,
     required String hiveId,
     required String apiaryId,
     required InspectionValues values,
+    List<MediaCapture> media = const [],
   }) => db.transaction(() async {
     final at = now();
     final inspection = await insertRecord(
@@ -94,16 +99,25 @@ class InspectionRepository
         updatedAt: at,
       ),
     );
+    for (final capture in media) {
+      await _media.add(
+        orgId: orgId,
+        hiveId: hiveId,
+        inspectionId: inspection.id,
+        capture: capture,
+      );
+    }
     await _drafts.discard(hiveId);
     return inspection;
   });
 
-  /// Kaydı geri alır: muayene silinir, hatırlatması kalkar ve [draft]
-  /// kovanın taslağı olarak geri yazılır; form kaldığı yerden açılır.
-  /// Hepsi tek transaction'da.
+  /// Kaydı geri alır: muayene ve medyası silinir, hatırlatması kalkar ve
+  /// [draft] kovanın taslağı olarak geri yazılır; form, çekimleriyle
+  /// birlikte kaldığı yerden açılır. Hepsi tek transaction'da.
   Future<void> undoAdd(Inspection inspection, InspectionDraft draft) =>
       db.transaction(() async {
         await delete(inspection.id);
+        await _media.removeByInspection(inspection.id);
         await _reminders.clear(inspection.id);
         await _drafts.save(
           orgId: inspection.orgId,

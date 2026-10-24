@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 final _start = DateTime.utc(2026, 10, 1, 9);
 
@@ -26,6 +27,22 @@ Inspection _inspection(String id, {required int day}) {
     hiveId: 'hive-1',
     apiaryId: 'yayla',
     inspectedAt: at,
+    createdAt: at,
+    updatedAt: at,
+  );
+}
+
+MediaItem _media(String id, {required int day, String? inspectionId}) {
+  final at = _start.add(Duration(days: day));
+  return MediaItem(
+    id: id,
+    orgId: 'org-1',
+    hiveId: 'hive-1',
+    inspectionId: inspectionId,
+    kind: MediaKind.photo,
+    storagePath: 'org-1/hive-1/$id.jpg',
+    capturedAt: at,
+    byteSize: 1,
     createdAt: at,
     updatedAt: at,
   );
@@ -114,6 +131,35 @@ void main() {
 
     test('boş tünel', () {
       expect(sortTimeline(const []), isEmpty);
+    });
+  });
+
+  group('medya', () {
+    test('muayenede çekilenler muayenenin yanında, verildiği sırayla; '
+        'karttan eklenenler kendi olayı', () {
+      final inspections = [
+        _inspection('i1', day: 1),
+        _inspection('i2', day: 2),
+      ];
+      final media = [
+        _media('m1', day: 1, inspectionId: 'i1'),
+        _media('m2', day: 1, inspectionId: 'i1'),
+        _media('m3', day: 3),
+      ];
+
+      final events = inspectionEvents(inspections, media: media);
+      expect(events[0].media.map((m) => m.id), ['m1', 'm2']);
+      expect(events[1].media, isEmpty);
+
+      final standalone = mediaEvents(media, inspectionIds: {'i1', 'i2'});
+      expect(standalone.map((e) => e.id), ['m3']);
+      expect(standalone.single.at, media[2].capturedAt);
+    });
+
+    test('muayenesi tünelde olmayan medya kaybolmaz, kendi olayı olur', () {
+      final media = [_media('m1', day: 1, inspectionId: 'gone')];
+      expect(inspectionEvents(const [], media: media), isEmpty);
+      expect(mediaEvents(media).map((e) => e.id), ['m1']);
     });
   });
 }

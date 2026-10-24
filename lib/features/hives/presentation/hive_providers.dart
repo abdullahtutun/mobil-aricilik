@@ -8,6 +8,7 @@ import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
 import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_providers.dart';
+import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -85,12 +86,19 @@ Stream<List<HiveLocationEntry>> hiveLocationHistory(Ref ref, String hiveId) =>
 /// yeniden kurulur.
 @riverpod
 Future<List<HiveTimelineEvent>> hiveTimeline(Ref ref, String hiveId) async {
-  final sources = <Future<List<HiveTimelineEvent>>>[
-    ref.watch(hiveInspectionsProvider(hiveId).future).then(inspectionEvents),
-    ref.watch(hiveLocationHistoryProvider(hiveId).future).then(locationEvents),
-  ];
-  final events = await Future.wait(sources);
-  return sortTimeline(events.expand((events) => events));
+  final (inspections, media, locations) = await (
+    ref.watch(hiveInspectionsProvider(hiveId).future),
+    ref.watch(hiveMediaProvider(hiveId).future),
+    ref.watch(hiveLocationHistoryProvider(hiveId).future),
+  ).wait;
+  return sortTimeline([
+    ...inspectionEvents(inspections, media: media),
+    ...mediaEvents(
+      media,
+      inspectionIds: {for (final inspection in inspections) inspection.id},
+    ),
+    ...locationEvents(locations),
+  ]);
 }
 
 enum HiveLayout { grid, list }

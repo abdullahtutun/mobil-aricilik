@@ -3,6 +3,11 @@ import 'dart:ui' show IsolateNameServer;
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/supabase_setup.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
+import 'package:mobil_arici/core/services/connectivity_service.dart';
+import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/media_sync_service.dart';
+import 'package:mobil_arici/core/sync/media_upload_scheduler.dart';
+import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,11 +18,11 @@ import 'package:workmanager/workmanager.dart';
 /// olmalı.
 const backgroundSyncTask = 'com.abdullahtutun.mobilarici.sync';
 
-const _flavorKey = 'flavor';
-
 /// Periyodik arka plan senkronunu kaydeder: Android en sık 15 dakikada
 /// bir ve yalnız ağ varken çalıştırır; iOS zamanı kullanıma göre kendisi
 /// seçer. Kayıt zaten varsa ayarları güncellenir, sayaç sıfırlanmaz.
+/// Medya yükleme görevi ([backgroundMediaUploadTask]) aynı giriş noktasını
+/// kullanır; `MediaUploadScheduler` planlar.
 Future<void> registerBackgroundSync(Flavor flavor) async {
   await Workmanager().initialize(backgroundSyncDispatcher);
   await Workmanager().registerPeriodicTask(
@@ -26,26 +31,30 @@ Future<void> registerBackgroundSync(Flavor flavor) async {
     frequency: const Duration(minutes: 15),
     constraints: Constraints(networkType: NetworkType.connected),
     existingWorkPolicy: ExistingPeriodicWorkPolicy.update,
-    inputData: {_flavorKey: flavor.name},
+    inputData: {backgroundFlavorKey: flavor.name},
   );
 }
 
 /// workmanager'ın arka plan motorunda çalışan giriş noktası.
 ///
-/// Uygulama açıksa (aynı süreçte) turu ona devreder ve hemen biter: iki
+/// Uygulama açıksa (aynı süreçte) işi ona devreder ve hemen biter: iki
 /// motor aynı oturumu yenilerse refresh token yeniden kullanılmış sayılıp
 /// oturum düşebilir, iki tur da aynı outbox'ı gönderir. Uygulama kapalıysa
-/// Supabase'i ve DB'yi kendisi açıp bir tur çalıştırır. Oturum yoksa bir şey
-/// yapmaz.
+/// Supabase'i ve DB'yi kendisi açar. Oturum yoksa bir şey yapmaz.
+///
+/// Periyodik görev senkron turundan sonra bekleyen medyayı da yükler.
+/// Medya görevi yalnız yükler; geçici hatada false döner ve Android
+/// görevi üstel bekleyerek yeniden dener.
 @pragma('vm:entry-point')
 void backgroundSyncDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    if (IsolateNameServer.lookupPortByName(foregroundSyncPortName)
-        case final port?) {
+    final media = task == backgroundMediaUploadTask;
+    final portName = media ? foregroundMediaPortName : foregroundSyncPortName;
+    if (IsolateNameServer.lookupPortByName(portName) case final port?) {
       port.send(null);
       return true;
     }
-    final flavor = Flavor.values.asNameMap()[inputData?[_flavorKey]];
+    final flavor = Flavor.values.asNameMap()[inputData?[backgroundFlavorKey]];
     if (flavor == null) return true;
 
     await initializeSupabase(flavor);
@@ -54,10 +63,16 @@ void backgroundSyncDispatcher() {
 
     final db = openAppDatabase();
     try {
-      await SyncService(db, client).sync();
+      if (!media) await SyncService(db, client).sync();
+      final uploaded = await MediaSyncService(
+        db,
+        client,
+        MediaFileStore.app(),
+        PlusConnectivityService(),
+      ).uploadPending();
+      return !media || uploaded.outcome != MediaUploadOutcome.retryLater;
     } finally {
       await db.close();
     }
-    return true;
   });
 }

@@ -9,9 +9,12 @@ import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/presentation/widgets/inspection_labels.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/media/presentation/widgets/media_strip.dart';
 
 /// Kovan kartındaki zaman tüneli (teknik.md §9): kovanın bütün olayları
-/// ikonlu ve en yeni önce. Yeni kayıt geldikçe (bu telefonda ya da
+/// ikonlu ve en yeni önce; foto küçük resimleri ve sesli notlar satır
+/// içinde. Yeni kayıt geldikçe (bu telefonda ya da
 /// senkronla) kendiliğinden güncellenir. Olay yoksa hiç çizilmez.
 class HiveTimelineSection extends ConsumerWidget {
   const new({required this.hiveId, super.key});
@@ -71,11 +74,26 @@ class _EventTile extends StatelessWidget {
     String apiary(String id) => apiaryNames[id] ?? l10n.timelineUnknownApiary;
 
     return switch (event) {
-      InspectionEvent(:final inspection) => TimelineTile(
+      InspectionEvent(:final inspection, :final media) => TimelineTile(
         icon: Icons.fact_check_rounded,
         title: l10n.timelineInspection,
         time: time,
         details: inspectionSummary(l10n, inspection.values),
+        footer: media.isEmpty ? null : MediaStrip(media),
+        isLast: isLast,
+      ),
+      MediaEvent(:final media) => TimelineTile(
+        icon: switch (media.kind) {
+          MediaKind.photo => Icons.photo_camera_rounded,
+          MediaKind.audio => Icons.mic_rounded,
+        },
+        title: switch (media.kind) {
+          MediaKind.photo => l10n.timelinePhoto,
+          MediaKind.audio => l10n.timelineVoiceNote,
+        },
+        time: time,
+        // Sesli notun süresi Dinle butonunda yazar.
+        footer: MediaStrip([media]),
         isLast: isLast,
       ),
       LocationEvent(fromApiaryId: null, :final toApiaryId) => TimelineTile(

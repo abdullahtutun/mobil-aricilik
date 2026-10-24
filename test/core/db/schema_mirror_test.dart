@@ -5,6 +5,7 @@ import 'package:mobil_arici/core/db/server_enum.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
@@ -124,6 +125,7 @@ void main() {
       'inspection_queen_state': values(QueenState.values),
       'inspection_temperament': values(Temperament.values),
       'inspection_queen_cells': values(QueenCells.values),
+      'media_kind': values(MediaKind.values),
     };
 
     expect(local, server.enums);

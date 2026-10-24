@@ -62,6 +62,7 @@ class SyncService {
     _db.hives,
     _db.hiveLocationHistory,
     _db.inspections,
+    _db.media,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

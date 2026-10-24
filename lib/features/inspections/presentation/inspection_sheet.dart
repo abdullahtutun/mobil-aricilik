@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/haptics.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
@@ -15,12 +16,16 @@ import 'package:mobil_arici/features/inspections/presentation/inspection_form_co
 import 'package:mobil_arici/features/inspections/presentation/inspection_providers.dart';
 import 'package:mobil_arici/features/inspections/presentation/widgets/inspection_labels.dart';
 import 'package:mobil_arici/features/inspections/presentation/widgets/inspection_reminder_choice.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/media/presentation/widgets/media_action_row.dart';
 
 /// Hızlı muayene (teknik.md §9): kovan kartının üstünde alttan açılan
 /// sayfa. Hepsi chip ve büyük sayaç, klavye yok. Önceki muayenenin değerleri
 /// soluk gelir; dokunulmayanlar da olduğu gibi kaydedilir. Her değişiklik
-/// taslak olarak saklanır. Kaydet titreşir ve sayfayı kapatır; bildirimde
-/// Geri al ve "X gün sonra hatırlat" var.
+/// taslak olarak saklanır. Kaydet'in yanındaki mikrofon ve kamerayla
+/// çekilenler taslakta bekler, muayeneyle birlikte kaydedilir. Kaydet
+/// titreşir ve sayfayı kapatır; bildirimde Geri al ve "X gün sonra
+/// hatırlat" var.
 class InspectionSheet extends ConsumerWidget {
   const new({required this.hiveId, super.key});
 
@@ -75,6 +80,15 @@ class _InspectionForm extends ConsumerWidget {
                     _Note(
                       icon: Icons.history_rounded,
                       text: l10n.inspectionSuggestedLegend,
+                    ),
+                    gap,
+                  ],
+                  if (draft.media.isNotEmpty) ...[
+                    _Note(
+                      icon: Icons.attach_file_rounded,
+                      text: l10n.inspectionMediaAttached(
+                        _mediaSummary(l10n, draft.media),
+                      ),
                     ),
                     gap,
                   ],
@@ -209,11 +223,31 @@ class _InspectionForm extends ConsumerWidget {
           ),
         ],
       ),
-      action: BigButton(
-        label: l10n.inspectionSave,
-        onPressed: form.saving ? null : () => _save(context, ref),
+      action: MediaActionRow(
+        target: 'inspection:$hiveId',
+        voiceFirst: true,
+        onCaptured: (capture) async {
+          // Kaydedilirken gelen çekim muayeneye giremez; dosyası kalmasın.
+          if (!controller.addMedia(capture)) {
+            await ref.read(mediaFileStoreProvider).delete(capture.fileName);
+          }
+        },
+        action: BigButton(
+          label: l10n.inspectionSave,
+          onPressed: form.saving ? null : () => _save(context, ref),
+        ),
       ),
     );
+  }
+
+  /// "2 fotoğraf, 1 sesli not".
+  static String _mediaSummary(AppLocalizations l10n, List<MediaCapture> media) {
+    final photos = media.where((m) => m.kind == MediaKind.photo).length;
+    final voices = media.length - photos;
+    return [
+      if (photos > 0) l10n.mediaPhotoCount(photos),
+      if (voices > 0) l10n.mediaVoiceCount(voices),
+    ].join(l10n.listSeparator);
   }
 
   static List<ChoiceChipOption<bool>> _answers(AppLocalizations l10n) => [

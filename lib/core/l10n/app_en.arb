@@ -1059,5 +1059,99 @@
   "gallerySampleLastInspectionValue": "3 days ago",
   "gallerySampleFrames": "8 bee frames · 5 brood",
   "gallerySampleActiveTreatment": "Active treatment",
-  "gallerySampleDaysLeft": "12 days left"
+  "gallerySampleDaysLeft": "12 days left",
+
+  "syncTableMedia": "Photo or voice note",
+  "mediaTakePhoto": "Take a photo",
+  "mediaRecordVoice": "Record a voice note",
+  "mediaStopRecording": "Stop recording",
+  "mediaRecording": "Recording · {duration}",
+  "@mediaRecording": {
+    "description": "Shown while a voice note is being recorded.",
+    "placeholders": {
+      "duration": {
+        "type": "String",
+        "example": "0:07"
+      }
+    }
+  },
+  "mediaPhotoAdded": "Photo added to hive {number}",
+  "@mediaPhotoAdded": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "mediaVoiceAdded": "Voice note added to hive {number}",
+  "@mediaVoiceAdded": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "101"
+      }
+    }
+  },
+  "mediaCameraDenied": "No camera permission. You can allow it in the phone's settings.",
+  "mediaMicrophoneDenied": "No microphone permission. You can allow it in the phone's settings.",
+  "mediaCaptureFailed": "Couldn't save. Try again.",
+  "mediaPhotoCount": "{count, plural, =1{1 photo} other{{count} photos}}",
+  "@mediaPhotoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "mediaVoiceCount": "{count, plural, =1{1 voice note} other{{count} voice notes}}",
+  "@mediaVoiceCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "inspectionMediaAttached": "Saved with the inspection: {items}",
+  "@inspectionMediaAttached": {
+    "description": "Photos and voice notes taken during the inspection, e.g. '2 photos, 1 voice note'.",
+    "placeholders": {
+      "items": {
+        "type": "String",
+        "example": "2 photos, 1 voice note"
+      }
+    }
+  },
+  "timelinePhoto": "Photo",
+  "timelineVoiceNote": "Voice note",
+  "mediaOpenPhoto": "Open photo",
+  "mediaDownloadPhoto": "Photo not on this phone. Tap to download.",
+  "mediaPlay": "Play · {duration}",
+  "@mediaPlay": {
+    "placeholders": {
+      "duration": {
+        "type": "String",
+        "example": "0:12"
+      }
+    }
+  },
+  "mediaStopPlaying": "Stop",
+  "mediaNotUploaded": "Not uploaded yet. It arrives when the phone that took it is online.",
+  "mediaDownloadOffline": "Couldn't download. Check your internet connection.",
+  "mediaDownloadFailed": "Couldn't download.",
+  "mediaNotFound": "Photo not found",
+  "settingsData": "Data",
+  "settingsMediaWifiOnly": "Upload photos on Wi‑Fi only",
+  "settingsMediaWifiOnlyHint": "Photos and voice notes won't use mobile data.",
+  "settingsPendingUploads": "{count, plural, =1{1 file waiting to upload} other{{count} files waiting to upload}}",
+  "@settingsPendingUploads": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  }
 }

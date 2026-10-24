@@ -17,6 +17,8 @@ import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/media/data/media_repository.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
@@ -200,6 +202,18 @@ Map<String, Object?> _inspectionRow(int seq) => {
     'actions': ['super_added', 'fed', 'new_action'],
     'later_field': 1,
   },
+};
+
+Map<String, Object?> _mediaRow(int seq) => {
+  ..._standard('media-1', seq),
+  'org_id': _org,
+  'hive_id': 'hive-1',
+  'inspection_id': 'inspection-1',
+  'kind': 'audio',
+  'storage_path': '$_org/hive-1/media-1.m4a',
+  'captured_at': '2026-10-23T07:16:00+00:00',
+  'byte_size': 48000,
+  'duration_ms': 12000,
 };
 
 bool _isPull(http.Request request) =>
@@ -692,11 +706,12 @@ void main() {
         'hives': [_hiveRow('hive-1', 5)],
         'hive_location_history': [_moveRow(6)],
         'inspections': [_inspectionRow(7)],
+        'media': [_mediaRow(8)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 7),
+        const SyncResult(status: SyncStatus.done, pulled: 8),
       );
 
       expect(requests.map(_pullOf), [
@@ -707,6 +722,7 @@ void main() {
         (table: 'hives', since: 0),
         (table: 'hive_location_history', since: 0),
         (table: 'inspections', since: 0),
+        (table: 'media', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -759,6 +775,12 @@ void main() {
       });
       expect(inspection.data['later_field'], 1);
 
+      final media = (await MediaRepository(db).findById('media-1'))!;
+      expect(media.kind, MediaKind.audio);
+      expect(media.inspectionId, 'inspection-1');
+      expect(media.capturedAt, DateTime.utc(2026, 10, 23, 7, 16));
+      expect(media.durationMs, 12000);
+
       expect(await _cursors(db), {
         'organizations': 1,
         'memberships': 2,
@@ -767,6 +789,7 @@ void main() {
         'hives': 5,
         'hive_location_history': 6,
         'inspections': 7,
+        'media': 8,
         fullPullMarker: 0,
       });
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
