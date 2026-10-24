@@ -54,6 +54,20 @@ void main() {
       expect(scheme.onSurfaceVariant, c.textSecondary);
       expect(scheme.error, c.statusCritical);
       expect(scheme.outline, c.outline);
+      expect(scheme.tertiary, c.honey);
+      expect(scheme.inverseSurface, c.inverseSurface);
+      expect(scheme.inversePrimary, c.inversePrimary);
+    });
+
+    test('bildirim mürekkep zeminde, eylemi bal sarısı, altta yüzer', () {
+      final snackBar = AppTheme.light(standard).snackBarTheme;
+      const c = AppColors.light;
+
+      expect(snackBar.backgroundColor, c.inverseSurface);
+      expect(snackBar.contentTextStyle!.color, c.onInverseSurface);
+      expect(snackBar.actionTextColor, c.inversePrimary);
+      expect(snackBar.behavior, SnackBarBehavior.floating);
+      expect(snackBar.elevation, 0);
     });
 
     test('metin teması Inter, tabular ve token rengiyle', () {

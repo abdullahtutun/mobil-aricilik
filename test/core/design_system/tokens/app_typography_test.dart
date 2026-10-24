@@ -12,6 +12,7 @@ List<TextStyle> _styles(AppTypography t) => [
   t.bodySmall,
   t.label,
   t.labelSmall,
+  t.button,
 ];
 
 void main() {
@@ -38,6 +39,12 @@ void main() {
           expect(typography.numberLarge.fontSize, 40);
           expect(typography.number.fontWeight, FontWeight.w700);
           expect(typography.numberLarge.fontWeight, FontWeight.w700);
+          expect(typography.title.fontWeight, FontWeight.w700);
+        });
+
+        test('buton etiketi etiketten bir kademe büyük ve kalın', () {
+          expect(typography.button.fontSize, typography.label.fontSize! + 2);
+          expect(typography.button.fontWeight, FontWeight.w700);
         });
 
         test('Material metin teması aynı ölçekten gelir', () {

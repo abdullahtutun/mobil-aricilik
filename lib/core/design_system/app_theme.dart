@@ -65,12 +65,14 @@ abstract final class AppTheme {
       onPrimary: colors.onPrimary,
       secondary: colors.secondary,
       onSecondary: colors.onSecondary,
+      tertiary: colors.honey,
+      onTertiary: colors.textPrimary,
       error: colors.statusCritical,
       onError: colors.onStatus,
       surface: colors.surface,
       onSurface: colors.textPrimary,
       onSurfaceVariant: colors.textSecondary,
-      surfaceContainerLowest: colors.surface,
+      surfaceContainerLowest: colors.tile,
       surfaceContainerLow: colors.surfaceContainer,
       surfaceContainer: colors.surfaceContainer,
       surfaceContainerHigh: colors.surfaceContainer,
@@ -78,6 +80,9 @@ abstract final class AppTheme {
       outline: colors.outline,
       outlineVariant: colors.divider,
       shadow: colors.shadow,
+      inverseSurface: colors.inverseSurface,
+      onInverseSurface: colors.onInverseSurface,
+      inversePrimary: colors.inversePrimary,
       // Yükseltide primary tonu bindirilmesin; kart zemini tokendan gelir.
       surfaceTint: const Color(0x00000000),
     );
@@ -102,6 +107,20 @@ abstract final class AppTheme {
       // Metin alanları çerçeveli; eldivenle dokunulacak yer belli olsun.
       inputDecorationTheme: InputDecorationThemeData(
         border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radii.button),
+        ),
+      ),
+      // Bildirim: koyu mürekkep zemin, bal sarısı eylem; altta yüzer.
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colors.inverseSurface,
+        contentTextStyle: typography.body.copyWith(
+          color: colors.onInverseSurface,
+        ),
+        actionTextColor: colors.inversePrimary,
+        behavior: SnackBarBehavior.floating,
+        // Koyu zemin içerikten zaten ayrılıyor; gölge kalın kenar gibi çizilir.
+        elevation: 0,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radii.button),
         ),
       ),

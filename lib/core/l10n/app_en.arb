@@ -740,6 +740,11 @@
   "gallerySampleLastInspection": "Last inspection",
   "gallerySampleLastInspectionBody": "3 days ago · 7 frames with bees · queen seen",
   "gallerySampleUntitledCard": "A card can also go without a title; the content starts right away.",
+  "gallerySnackBar": "Snackbar",
+  "galleryCriticalLockCard": "Critical lock card",
+  "gallerySampleInspectionSaved": "Inspection saved",
+  "gallerySampleWithdrawalTitle": "In withdrawal period.",
+  "gallerySampleWithdrawalMessage": "Don't add a honey super to this hive for 12 more days.",
 
   "syncStatusSynced": "Synced",
   "@syncStatusSynced": {

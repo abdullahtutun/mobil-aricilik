@@ -1778,6 +1778,36 @@ abstract class AppLocalizations {
   /// **'A card can also go without a title; the content starts right away.'**
   String get gallerySampleUntitledCard;
 
+  /// No description provided for @gallerySnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Snackbar'**
+  String get gallerySnackBar;
+
+  /// No description provided for @galleryCriticalLockCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical lock card'**
+  String get galleryCriticalLockCard;
+
+  /// No description provided for @gallerySampleInspectionSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection saved'**
+  String get gallerySampleInspectionSaved;
+
+  /// No description provided for @gallerySampleWithdrawalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In withdrawal period.'**
+  String get gallerySampleWithdrawalTitle;
+
+  /// No description provided for @gallerySampleWithdrawalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t add a honey super to this hive for 12 more days.'**
+  String get gallerySampleWithdrawalMessage;
+
   /// Sync icon in the app bar: every local record has reached the server.
   ///
   /// In en, this message translates to:

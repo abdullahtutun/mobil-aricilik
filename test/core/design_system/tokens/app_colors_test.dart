@@ -23,6 +23,15 @@ Map<String, Color> _texts(AppColors c) => {
 Map<String, Color> _backgrounds(AppColors c) => {
   'surface': c.surface,
   'surfaceContainer': c.surfaceContainer,
+  'tile': c.tile,
+};
+
+/// Durum rengi ve kendi açık zemini (rozet, kritik kart).
+Map<String, (Color, Color)> _statusOnContainer(AppColors c) => {
+  'statusGood': (c.statusGood, c.statusGoodContainer),
+  'statusWarning': (c.statusWarning, c.statusWarningContainer),
+  'statusCritical': (c.statusCritical, c.statusCriticalContainer),
+  'statusInfo': (c.statusInfo, c.statusInfoContainer),
 };
 
 void main() {
@@ -78,6 +87,30 @@ void main() {
           }
         });
 
+        // Tasarım sistemi v1'in iyi çifti (#2E7D32 / #E3F0E3) 4.36:1; AA'nın
+        // 4.5'inin hemen altında. Görseldeki değer korundu, sınır onu
+        // sabitliyor: daha soluk bir çift girerse test kırılır.
+        test('durum yazısı kendi zemininde en az 4.3:1', () {
+          for (final pair in _statusOnContainer(colors).entries) {
+            final (fg, bg) = pair.value;
+            expectContrast(fg, bg, atLeast: 4.3, reason: pair.key);
+          }
+        });
+
+        test('bildirimde yazı ve eylem ters zeminde en az 4.5:1', () {
+          for (final (name, fg) in [
+            ('onInverseSurface', colors.onInverseSurface),
+            ('inversePrimary', colors.inversePrimary),
+          ]) {
+            expectContrast(
+              fg,
+              colors.inverseSurface,
+              atLeast: 4.5,
+              reason: name,
+            );
+          }
+        });
+
         test('durum renkleri ve kenarlık zeminlerde en az 3:1', () {
           final ui = {..._statuses(colors), 'outline': colors.outline};
           for (final bg in _backgrounds(colors).entries) {
@@ -100,6 +133,7 @@ void main() {
       test('zemin saf beyaz, metin siyah, gölge yok', () {
         expect(sun.surface, const Color(0xFFFFFFFF));
         expect(sun.surfaceContainer, const Color(0xFFFFFFFF));
+        expect(sun.tile, const Color(0xFFFFFFFF));
         expect(sun.textPrimary, const Color(0xFF000000));
         expect(sun.shadow.a, 0);
       });
@@ -114,6 +148,25 @@ void main() {
             reason: '${fg.key} / surface',
           );
         }
+      });
+
+      test('durum yazısı kendi zemininde ve bildirim eylemi en az 7:1', () {
+        for (final pair in _statusOnContainer(sun).entries) {
+          final (fg, bg) = pair.value;
+          expectContrast(fg, bg, atLeast: 7, reason: pair.key);
+        }
+        expectContrast(
+          sun.onInverseSurface,
+          sun.inverseSurface,
+          atLeast: 7,
+          reason: 'onInverseSurface',
+        );
+        expectContrast(
+          sun.inversePrimary,
+          sun.inverseSurface,
+          atLeast: 7,
+          reason: 'inversePrimary',
+        );
       });
 
       test('dolgu üstündeki on- renkleri en az 7:1', () {
@@ -149,6 +202,25 @@ void main() {
         expect(colors.queenMark(QueenMarkColor.white), colors.queenWhite);
         expect(colors.queenMark(QueenMarkColor.blue), colors.queenBlue);
       }
+    });
+
+    test('açık palet tasarım sistemi v1 değerlerinde', () {
+      const c = AppColors.light;
+      expect(c.primary, const Color(0xFF9A5B00));
+      expect(c.honey, const Color(0xFFF2B544));
+      expect(c.secondary, const Color(0xFF2F5D50));
+      expect(c.surface, const Color(0xFFFFF8EE));
+      expect(c.surfaceContainer, const Color(0xFFF6EBDA));
+      expect(c.tile, const Color(0xFFFFFFFF));
+      expect(c.divider, const Color(0xFFE8DCC8));
+      expect(c.textPrimary, const Color(0xFF1F1A14));
+      expect(c.textSecondary, const Color(0xFF5E554A));
+      expect(_statusOnContainer(c), {
+        'statusGood': (const Color(0xFF2E7D32), const Color(0xFFE3F0E3)),
+        'statusWarning': (const Color(0xFFA23B00), const Color(0xFFFCE9DA)),
+        'statusCritical': (const Color(0xFFB3261E), const Color(0xFFFBE3E3)),
+        'statusInfo': (const Color(0xFF1557A8), const Color(0xFFE1ECF8)),
+      });
     });
 
     test('lerp uçlarda kaynak paletleri verir', () {

@@ -7,6 +7,7 @@ class AppTouchTargets extends ThemeExtension<AppTouchTargets> {
   const new({
     required this.minimum,
     required this.field,
+    required this.button,
     required this.fieldLarge,
     required this.gap,
   });
@@ -15,6 +16,7 @@ class AppTouchTargets extends ThemeExtension<AppTouchTargets> {
   static const standard = AppTouchTargets(
     minimum: 48,
     field: 56,
+    button: 60,
     fieldLarge: 64,
     gap: 8,
   );
@@ -23,6 +25,7 @@ class AppTouchTargets extends ThemeExtension<AppTouchTargets> {
   static const glove = AppTouchTargets(
     minimum: 56,
     field: 64,
+    button: 68,
     fieldLarge: 72,
     gap: 12,
   );
@@ -33,7 +36,10 @@ class AppTouchTargets extends ThemeExtension<AppTouchTargets> {
   /// Sahada sık kullanılan eylemler (chip, stepper +/−).
   final double field;
 
-  /// Ekranın birincil saha eylemi (Kaydet, Okut).
+  /// Büyük buton (`BigButton`): Kaydet, Muayene başlat.
+  final double button;
+
+  /// Ekranın en büyük saha hedefi (Okut, kovan karosu).
   final double fieldLarge;
 
   /// Yan yana iki hedef arasındaki asgari boşluk.
@@ -43,12 +49,14 @@ class AppTouchTargets extends ThemeExtension<AppTouchTargets> {
   AppTouchTargets copyWith({
     double? minimum,
     double? field,
+    double? button,
     double? fieldLarge,
     double? gap,
   }) {
     return AppTouchTargets(
       minimum: minimum ?? this.minimum,
       field: field ?? this.field,
+      button: button ?? this.button,
       fieldLarge: fieldLarge ?? this.fieldLarge,
       gap: gap ?? this.gap,
     );
@@ -60,6 +68,7 @@ class AppTouchTargets extends ThemeExtension<AppTouchTargets> {
     return AppTouchTargets(
       minimum: lerpDouble(minimum, other.minimum, t)!,
       field: lerpDouble(field, other.field, t)!,
+      button: lerpDouble(button, other.button, t)!,
       fieldLarge: lerpDouble(fieldLarge, other.fieldLarge, t)!,
       gap: lerpDouble(gap, other.gap, t)!,
     );

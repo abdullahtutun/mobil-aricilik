@@ -287,6 +287,11 @@
   "gallerySampleLastInspection": "Son muayene",
   "gallerySampleLastInspectionBody": "3 gün önce · 7 arılı çerçeve · ana arı görüldü",
   "gallerySampleUntitledCard": "Başlıksız kart da olur; içerik doğrudan başlar.",
+  "gallerySnackBar": "Bildirim",
+  "galleryCriticalLockCard": "Kritik kilit kartı",
+  "gallerySampleInspectionSaved": "Muayene kaydedildi",
+  "gallerySampleWithdrawalTitle": "Bekleme süresinde.",
+  "gallerySampleWithdrawalMessage": "Bu kovana 12 gün daha bal katı verilmemeli.",
 
   "syncStatusSynced": "Eşitlendi",
   "syncStatusPending": "{count} bekliyor",

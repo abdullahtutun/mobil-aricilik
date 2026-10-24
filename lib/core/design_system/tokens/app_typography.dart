@@ -14,23 +14,26 @@ class AppTypography extends ThemeExtension<AppTypography> {
     required this.bodySmall,
     required this.label,
     required this.labelSmall,
+    required this.button,
   });
 
   factory _scale({
     required double body,
     required double bodySmall,
     required double label,
+    required double button,
   }) {
     return AppTypography(
       numberLarge: _style(40, FontWeight.w700, 1.1),
       number: _style(32, FontWeight.w700, 1.15),
       headline: _style(28, FontWeight.w700, 1.25),
-      title: _style(22, FontWeight.w600, 1.3),
+      title: _style(22, FontWeight.w700, 1.3),
       subtitle: _style(18, FontWeight.w600, 1.35),
       body: _style(body, FontWeight.w400, 1.5),
       bodySmall: _style(bodySmall, FontWeight.w400, 1.45),
       label: _style(label, FontWeight.w600, 1.25),
       labelSmall: _style(bodySmall, FontWeight.w600, 1.45),
+      button: _style(button, FontWeight.w700, 1.25),
     );
   }
 
@@ -41,10 +44,16 @@ class AppTypography extends ThemeExtension<AppTypography> {
     body: 16,
     bodySmall: 14,
     label: 16,
+    button: 18,
   );
 
   /// Saha modları (güneş, eldiven): gövde 18.
-  static final field = AppTypography._scale(body: 18, bodySmall: 16, label: 18);
+  static final field = AppTypography._scale(
+    body: 18,
+    bodySmall: 16,
+    label: 18,
+    button: 20,
+  );
 
   /// Kovan no gibi ilk bakışta yakalanması gereken sayılar.
   final TextStyle numberLarge;
@@ -62,6 +71,9 @@ class AppTypography extends ThemeExtension<AppTypography> {
 
   /// Alt gezinme gibi dar yerlerdeki etiketler; [bodySmall] boyunda, kalın.
   final TextStyle labelSmall;
+
+  /// Büyük buton etiketi; [label]'dan bir kademe büyük ve kalın.
+  final TextStyle button;
 
   static TextStyle _style(double size, FontWeight weight, double height) {
     return TextStyle(
@@ -107,6 +119,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     TextStyle? bodySmall,
     TextStyle? label,
     TextStyle? labelSmall,
+    TextStyle? button,
   }) {
     return AppTypography(
       numberLarge: numberLarge ?? this.numberLarge,
@@ -118,6 +131,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       bodySmall: bodySmall ?? this.bodySmall,
       label: label ?? this.label,
       labelSmall: labelSmall ?? this.labelSmall,
+      button: button ?? this.button,
     );
   }
 
@@ -134,6 +148,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       bodySmall: TextStyle.lerp(bodySmall, other.bodySmall, t)!,
       label: TextStyle.lerp(label, other.label, t)!,
       labelSmall: TextStyle.lerp(labelSmall, other.labelSmall, t)!,
+      button: TextStyle.lerp(button, other.button, t)!,
     );
   }
 }

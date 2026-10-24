@@ -7,11 +7,12 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart'
     show QueenMarkColor;
 
-/// Arılık ızgarasındaki kovan karosu: büyük numara, güç puanı noktaları,
-/// ana arı renk noktası ve uyarı ikonu.
+/// Arılık ızgarasındaki kovan karosu: üstte ana arı renk noktası ve uyarı
+/// ikonu, ortada büyük numara, altta güç puanı noktaları.
 ///
-/// Karoda uyarı yalnızca ikon + renkle görünür; kelimesi ([alertLabel])
-/// ekran okuyucuya gider.
+/// Uyarının kelimesi ([alertLabel]) ekran okuyucuya gider. Kritik uyarıda
+/// (ör. anasız) karo durumun zemininde çizilir ve kelime noktaların yerinde
+/// görünür; renk tek başına kalmaz.
 class HiveTile extends StatelessWidget {
   const new({
     required this.number,
@@ -59,6 +60,8 @@ class HiveTile extends StatelessWidget {
     final spacing = context.spacing;
     final sizes = context.sizes;
     final alertStatus = this.alertStatus;
+    final alertLabel = this.alertLabel;
+    final critical = alertStatus == AppStatus.critical;
 
     return Semantics(
       container: true,
@@ -67,6 +70,7 @@ class HiveTile extends StatelessWidget {
       excludeSemantics: true,
       child: AppCard(
         onTap: onTap,
+        status: critical ? alertStatus : null,
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minWidth: context.touchTargets.fieldLarge,
@@ -78,43 +82,51 @@ class HiveTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Dar karoda ve büyük yazı boyutunda numara kırılmasın,
-                    // küçülsün.
-                    Expanded(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                          number,
-                          maxLines: 1,
-                          style: context.typography.numberLarge,
+                // İkon olmasa da yer tutar; ızgaradaki karolar aynı boyda
+                // kalsın.
+                SizedBox(
+                  height: sizes.icon,
+                  child: Row(
+                    children: [
+                      _QueenDot(color: queenColor),
+                      const Spacer(),
+                      if (alertStatus != null)
+                        Icon(
+                          alertStatus.icon,
+                          size: sizes.icon,
+                          color: alertStatus.colorIn(colors),
                         ),
-                      ),
-                    ),
-                    if (alertStatus != null)
-                      Icon(
-                        alertStatus.icon,
-                        size: sizes.icon,
-                        color: alertStatus.colorIn(colors),
-                      ),
-                  ],
+                    ],
+                  ),
+                ),
+                SizedBox(height: spacing.xs),
+                // Dar karoda ve büyük yazı boyutunda numara kırılmasın,
+                // küçülsün.
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    number,
+                    maxLines: 1,
+                    style: context.typography.numberLarge,
+                  ),
                 ),
                 SizedBox(height: spacing.sm),
-                Row(
-                  children: [
-                    Expanded(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: AlignmentDirectional.centerStart,
-                        child: StrengthDots(strength: strength),
-                      ),
-                    ),
-                    SizedBox(width: spacing.sm),
-                    _QueenDot(color: queenColor),
-                  ],
+                SizedBox(
+                  height: sizes.queenDot,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: critical && alertLabel != null
+                        ? Text(
+                            alertLabel,
+                            maxLines: 1,
+                            style: context.typography.labelSmall.copyWith(
+                              color: alertStatus!.colorIn(colors),
+                            ),
+                          )
+                        : StrengthDots(strength: strength),
+                  ),
                 ),
               ],
             ),
@@ -134,7 +146,6 @@ class _QueenDot extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final color = this.color;
-    // Renk yoksa da yer tutar; ızgaradaki karolar aynı boyda kalsın.
     return SizedBox.square(
       dimension: context.sizes.queenDot,
       child: color == null

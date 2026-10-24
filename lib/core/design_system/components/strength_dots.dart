@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
-/// Güç puanı noktaları (1–5): puan kadar nokta dolu, kalanı çerçeveli.
-/// Puan yoksa hepsi boş.
+/// Güç puanı noktaları (1–5): puan kadar nokta dolu, kalanı soluk. Dolu
+/// noktalar puana göre renklenir: 1–2 dikkat, 3 koyu bal, 4–5 iyi. Anlamı
+/// noktaların sayısı taşır; renk yalnız destekler. Puan yoksa hepsi boş.
 ///
 /// Yalnız çizer; puanın kelimesini ekran okuyucuya kullanan widget verir.
 class StrengthDots extends StatelessWidget {
@@ -22,6 +23,11 @@ class StrengthDots extends StatelessWidget {
     final colors = context.colors;
     final size = context.sizes.strengthDot;
     final filledCount = strength ?? 0;
+    final filled = switch (filledCount) {
+      <= 2 => colors.statusWarning,
+      3 => colors.primary,
+      _ => colors.statusGood,
+    };
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -33,9 +39,9 @@ class StrengthDots extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: i < filledCount ? colors.primary : null,
+                color: i < filledCount ? filled : colors.surfaceContainer,
                 border: Border.all(
-                  color: i < filledCount ? colors.primary : colors.outline,
+                  color: i < filledCount ? filled : colors.divider,
                   width: context.strokes.border,
                 ),
               ),

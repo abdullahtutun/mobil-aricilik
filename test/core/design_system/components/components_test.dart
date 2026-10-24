@@ -20,14 +20,14 @@ Widget _app(
 
 void main() {
   group('BigButton', () {
-    testWidgets('yükseklik büyük saha hedefi; eldivende yoğunluk eklenmez', (
+    testWidgets('yükseklik buton hedefi (60); eldivende yoğunluk eklenmez', (
       tester,
     ) async {
       for (final (settings, height) in [
-        (const AppearanceSettings(), AppTouchTargets.standard.fieldLarge),
+        (const AppearanceSettings(), AppTouchTargets.standard.button),
         (
           const AppearanceSettings(gloveMode: true),
-          AppTouchTargets.glove.fieldLarge,
+          AppTouchTargets.glove.button,
         ),
       ]) {
         await tester.pumpWidget(
@@ -41,6 +41,16 @@ void main() {
 
         expect(tester.getSize(find.byType(BigButton)).height, height);
       }
+    });
+
+    testWidgets('expanded false ise içeriği kadar geniş', (tester) async {
+      await tester.pumpWidget(
+        _app(BigButton(label: 'Ekle', onPressed: () {}, expanded: false)),
+      );
+
+      final size = tester.getSize(find.byType(BigButton));
+      expect(size.width, lessThan(tester.view.physicalSize.width / 2));
+      expect(size.height, AppTouchTargets.standard.button);
     });
   });
 
@@ -280,6 +290,49 @@ void main() {
       semantics.dispose();
     });
 
+    testWidgets('kritik uyarıda karo kritik zeminde, kelime noktaların '
+        'yerinde', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          const HiveTile(
+            number: '103',
+            strength: 2,
+            alertStatus: AppStatus.critical,
+            alertLabel: 'Anasız',
+          ),
+        ),
+      );
+
+      expect(find.text('Anasız'), findsOneWidget);
+      expect(find.byType(StrengthDots), findsNothing);
+      final card = tester.widget<Material>(
+        find.descendant(
+          of: find.byType(AppCard),
+          matching: find.byType(Material),
+        ),
+      );
+      expect(card.color, AppColors.light.statusCriticalContainer);
+    });
+
+    testWidgets('uyarı kritik değilse kelime görünmez, noktalar kalır', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(
+          const HiveTile(
+            number: '102',
+            strength: 2,
+            alertStatus: AppStatus.warning,
+            alertLabel: 'Zayıf',
+          ),
+        ),
+      );
+
+      expect(find.text('Zayıf'), findsNothing);
+      expect(find.byIcon(AppStatus.warning.icon), findsOneWidget);
+      expect(find.byType(StrengthDots), findsOneWidget);
+    });
+
     testWidgets('puanlanmamış ve ana rengi olmayan kovanda yalnızca numara', (
       tester,
     ) async {
@@ -287,6 +340,97 @@ void main() {
       await tester.pumpWidget(_app(const HiveTile(number: '7')));
 
       expect(find.bySemanticsLabel('Kovan 7'), findsOneWidget);
+      semantics.dispose();
+    });
+  });
+
+  group('StrengthDots', () {
+    Future<List<Color?>> fills(WidgetTester tester, int? strength) async {
+      await tester.pumpWidget(_app(StrengthDots(strength: strength)));
+      return [
+        for (final box in tester.widgetList<DecoratedBox>(
+          find.descendant(
+            of: find.byType(StrengthDots),
+            matching: find.byType(DecoratedBox),
+          ),
+        ))
+          (box.decoration as BoxDecoration).color,
+      ];
+    }
+
+    testWidgets('dolu noktalar puana göre renklenir, kalanı soluk', (
+      tester,
+    ) async {
+      const c = AppColors.light;
+      expect(await fills(tester, 2), [
+        c.statusWarning,
+        c.statusWarning,
+        c.surfaceContainer,
+        c.surfaceContainer,
+        c.surfaceContainer,
+      ]);
+      expect((await fills(tester, 3)).first, c.primary);
+      expect(await fills(tester, 5), List.filled(5, c.statusGood));
+      expect(await fills(tester, null), List.filled(5, c.surfaceContainer));
+    });
+  });
+
+  group('StatusBadge', () {
+    testWidgets('durumun açık zemininde, yazı ve ikon durum renginde', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(const StatusBadge(status: AppStatus.good, label: 'Güçlü')),
+      );
+      const c = AppColors.light;
+
+      final box = tester.widget<DecoratedBox>(
+        find.descendant(
+          of: find.byType(StatusBadge),
+          matching: find.byType(DecoratedBox),
+        ),
+      );
+      expect((box.decoration as BoxDecoration).color, c.statusGoodContainer);
+      expect(
+        tester.widget<Text>(find.text('Güçlü')).style!.color,
+        c.statusGood,
+      );
+      expect(
+        tester.widget<Icon>(find.byIcon(AppStatus.good.icon)).color,
+        c.statusGood,
+      );
+    });
+  });
+
+  group('CriticalLockCard', () {
+    testWidgets('kilit ikonu, başlık ve açıklama tek cümle; ekran okuyucu '
+        'kendiliğinden okur', (tester) async {
+      final semantics = tester.ensureSemantics();
+      await tester.pumpWidget(
+        _app(
+          const CriticalLockCard(
+            title: 'Bekleme süresinde.',
+            message: 'Kat verilmemeli.',
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.lock_outline_rounded), findsOneWidget);
+      expect(
+        find.text('Bekleme süresinde. Kat verilmemeli.', findRichText: true),
+        findsOneWidget,
+      );
+      expect(
+        tester.getSemantics(
+          find
+              .descendant(
+                of: find.byType(CriticalLockCard),
+                matching: find.byType(Semantics),
+              )
+              .first,
+        ),
+        isSemantics(isLiveRegion: true),
+      );
       semantics.dispose();
     });
   });
@@ -450,6 +594,22 @@ void main() {
   });
 
   group('EmptyState', () {
+    testWidgets('eylem butonu içeriği kadar geniş', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          EmptyState(
+            icon: Icons.add_rounded,
+            title: 'Arılık yok',
+            message: 'İlk arılığını ekle.',
+            actionLabel: 'Ekle',
+            onAction: () {},
+          ),
+        ),
+      );
+
+      expect(tester.widget<BigButton>(find.byType(BigButton)).expanded, false);
+    });
+
     testWidgets('ortalanmışı sığmazsa kayar', (tester) async {
       await tester.pumpWidget(
         _app(

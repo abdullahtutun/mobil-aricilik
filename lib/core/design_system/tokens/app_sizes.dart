@@ -20,7 +20,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     icon: 24,
     strengthDot: 12,
     queenDot: 20,
-    illustration: 96,
+    illustration: 64,
     illustrationIcon: 48,
     hiveTile: 104,
     scanWindow: 240,
@@ -38,10 +38,10 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// Ana arı renk noktası.
   final double queenDot;
 
-  /// Boş durum altıgeni.
+  /// Boş durum altıgeni; ikonu [icon] boyunda.
   final double illustration;
 
-  /// Boş durum altıgenindeki ikon.
+  /// Tek başına duran büyük durum ikonu (okutma, ilk eşitleme).
   final double illustrationIcon;
 
   /// Izgaradaki kovan karosunun asgari eni; 360dp ekranda üç sütun

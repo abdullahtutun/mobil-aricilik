@@ -1007,6 +1007,22 @@ class AppLocalizationsEn extends AppLocalizations {
       'A card can also go without a title; the content starts right away.';
 
   @override
+  String get gallerySnackBar => 'Snackbar';
+
+  @override
+  String get galleryCriticalLockCard => 'Critical lock card';
+
+  @override
+  String get gallerySampleInspectionSaved => 'Inspection saved';
+
+  @override
+  String get gallerySampleWithdrawalTitle => 'In withdrawal period.';
+
+  @override
+  String get gallerySampleWithdrawalMessage =>
+      'Don\'t add a honey super to this hive for 12 more days.';
+
+  @override
   String get syncStatusSynced => 'Synced';
 
   @override

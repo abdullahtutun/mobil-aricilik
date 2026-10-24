@@ -5,7 +5,8 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 /// Değer girilmemiş sayaçta sayının yerinde duran işaret; dilden bağımsız.
 const _noValue = '–';
 
-/// Eldivenle kaydırmadan sayı girmek için büyük −/+ butonlu sayaç.
+/// Eldivenle kaydırmadan sayı girmek için büyük −/+ butonlu sayaç. Kart
+/// zemininde: solda etiket, sağda beyaz −, büyük sayı ve dolu +.
 ///
 /// Sınırda ilgili buton pasifleşir. [value] boşsa (girilmedi) − [min]'i,
 /// + bir adım fazlasını verir. [suggested] değer bir öneridir (ör. önceki
@@ -66,78 +67,105 @@ class BigStepper extends StatelessWidget {
       decreasedValue: decreased == null ? null : '$decreased',
       onIncrease: increased == null ? null : () => onChanged(increased),
       onDecrease: decreased == null ? null : () => onChanged(decreased),
-      child: Row(
-        children: [
-          Expanded(
-            child: ExcludeSemantics(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(label, style: context.typography.body),
-                  if (suggested)
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.history_rounded,
-                          size: context.sizes.iconSmall,
-                          color: colors.textSecondary,
-                        ),
-                        SizedBox(width: spacing.xs),
-                        Flexible(
-                          child: Text(
-                            l10n.suggestedValue,
-                            style: context.typography.bodySmall.copyWith(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.surfaceContainer,
+          borderRadius: BorderRadius.circular(context.radii.card),
+          border: Border.all(
+            color: colors.divider,
+            width: context.strokes.border,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: spacing.lg,
+            end: spacing.sm,
+            top: spacing.sm,
+            bottom: spacing.sm,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: ExcludeSemantics(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(label, style: context.typography.subtitle),
+                      if (suggested)
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.history_rounded,
+                              size: context.sizes.iconSmall,
                               color: colors.textSecondary,
                             ),
-                          ),
+                            SizedBox(width: spacing.xs),
+                            Flexible(
+                              child: Text(
+                                l10n.suggestedValue,
+                                style: context.typography.bodySmall.copyWith(
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-          SizedBox(width: targets.gap),
-          _StepButton(
-            icon: Icons.remove_rounded,
-            tooltip: l10n.stepperDecrease,
-            onPressed: decreased == null ? null : () => onChanged(decreased),
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(minWidth: targets.fieldLarge),
-            child: ExcludeSemantics(
-              child: Text(
-                value == null ? _noValue : '$value',
-                textAlign: TextAlign.center,
-                style: suggested || value == null
-                    ? context.typography.number.copyWith(
-                        color: colors.textSecondary,
-                      )
-                    : context.typography.number,
+              SizedBox(width: targets.gap),
+              _StepButton(
+                icon: Icons.remove_rounded,
+                tooltip: l10n.stepperDecrease,
+                filled: false,
+                onPressed: decreased == null
+                    ? null
+                    : () => onChanged(decreased),
               ),
-            ),
+              ConstrainedBox(
+                constraints: BoxConstraints(minWidth: targets.fieldLarge),
+                child: ExcludeSemantics(
+                  child: Text(
+                    value == null ? _noValue : '$value',
+                    textAlign: TextAlign.center,
+                    style: suggested || value == null
+                        ? context.typography.number.copyWith(
+                            color: colors.textSecondary,
+                          )
+                        : context.typography.number,
+                  ),
+                ),
+              ),
+              _StepButton(
+                icon: Icons.add_rounded,
+                tooltip: l10n.stepperIncrease,
+                filled: true,
+                onPressed: increased == null
+                    ? null
+                    : () => onChanged(increased),
+              ),
+            ],
           ),
-          _StepButton(
-            icon: Icons.add_rounded,
-            tooltip: l10n.stepperIncrease,
-            onPressed: increased == null ? null : () => onChanged(increased),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
+/// + koyu bal dolgulu, − beyaz; pasifken ikisi de soluk.
 class _StepButton extends StatelessWidget {
   const new({
     required this.icon,
     required this.tooltip,
+    required this.filled,
     required this.onPressed,
   });
 
   final IconData icon;
   final String tooltip;
+  final bool filled;
   final VoidCallback? onPressed;
 
   @override
@@ -145,12 +173,15 @@ class _StepButton extends StatelessWidget {
     final colors = context.colors;
     final size = context.touchTargets.field;
 
-    return IconButton.outlined(
+    return IconButton(
       onPressed: onPressed,
       tooltip: tooltip,
       icon: Icon(icon),
       style: IconButton.styleFrom(
-        foregroundColor: colors.textPrimary,
+        backgroundColor: filled ? colors.primary : colors.tile,
+        foregroundColor: filled ? colors.onPrimary : colors.textPrimary,
+        disabledBackgroundColor: filled ? colors.divider : colors.tile,
+        disabledForegroundColor: colors.textSecondary,
         fixedSize: Size.square(size),
         minimumSize: Size.square(size),
         iconSize: context.sizes.icon,
@@ -158,7 +189,7 @@ class _StepButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(context.radii.button),
         ),
         side: BorderSide(
-          color: onPressed == null ? colors.divider : colors.outline,
+          color: filled && onPressed != null ? colors.primary : colors.divider,
           width: context.strokes.border,
         ),
         // Eldiven büyümesi zaten tokenda; yoğunluk bir kez daha eklemesin.

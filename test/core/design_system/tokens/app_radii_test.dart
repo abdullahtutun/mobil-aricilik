@@ -3,7 +3,8 @@ import 'package:mobil_arici/core/design_system/tokens/app_radii.dart';
 
 void main() {
   group('AppRadii', () {
-    test('kart 16, buton 12, küçük öğe 8', () {
+    test('kart 16, buton 12, küçük öğe 8, chip tam yuvarlak', () {
+      expect(AppRadii.standard.pill, 999);
       expect(AppRadii.standard.card, 16);
       expect(AppRadii.standard.button, 12);
       expect(AppRadii.standard.small, 8);

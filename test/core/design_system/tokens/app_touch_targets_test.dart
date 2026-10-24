@@ -9,6 +9,7 @@ void main() {
     test('standart: en az 48, saha eylemleri 56–64, aralık en az 8', () {
       expect(standard.minimum, 48);
       expect(standard.field, inInclusiveRange(56, 64));
+      expect(standard.button, 60);
       expect(standard.fieldLarge, inInclusiveRange(56, 64));
       expect(standard.gap, greaterThanOrEqualTo(8));
     });
@@ -16,6 +17,7 @@ void main() {
     test('eldiven: her hedef bir kademe (8dp) büyük', () {
       expect(glove.minimum, standard.minimum + 8);
       expect(glove.field, standard.field + 8);
+      expect(glove.button, standard.button + 8);
       expect(glove.fieldLarge, standard.fieldLarge + 8);
       expect(glove.gap, greaterThan(standard.gap));
     });
@@ -23,8 +25,9 @@ void main() {
     test("her modda hedefler küçükten büyüğe sıralı ve 4'ün katı", () {
       for (final t in [standard, glove]) {
         expect(t.minimum, lessThan(t.field));
-        expect(t.field, lessThan(t.fieldLarge));
-        for (final v in [t.minimum, t.field, t.fieldLarge, t.gap]) {
+        expect(t.field, lessThan(t.button));
+        expect(t.button, lessThan(t.fieldLarge));
+        for (final v in [t.minimum, t.field, t.button, t.fieldLarge, t.gap]) {
           expect(v % 4, 0, reason: '$v');
         }
       }

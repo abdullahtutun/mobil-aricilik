@@ -5,6 +5,7 @@ import 'package:mobil_arici/core/design_system/components/big_button.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
 /// Boş liste: ne işe yaradığını tek cümlede anlatır ve ilk eylemi sunar.
+/// Üstte koyu bal çizgili petek gözü, altta içeriği kadar geniş buton.
 class EmptyState extends StatelessWidget {
   const new({
     required this.icon,
@@ -51,17 +52,12 @@ class EmptyState extends StatelessWidget {
         children: [
           CustomPaint(
             painter: _HexagonPainter(
-              fill: colors.surfaceContainer,
-              stroke: colors.divider,
-              strokeWidth: context.strokes.border,
+              stroke: colors.primary,
+              strokeWidth: context.strokes.focus,
             ),
             child: SizedBox.square(
               dimension: sizes.illustration,
-              child: Icon(
-                icon,
-                size: sizes.illustrationIcon,
-                color: colors.primary,
-              ),
+              child: Icon(icon, size: sizes.icon, color: colors.primary),
             ),
           ),
           SizedBox(height: spacing.lg),
@@ -83,7 +79,7 @@ class EmptyState extends StatelessWidget {
           ),
           if (actionLabel != null) ...[
             SizedBox(height: spacing.xl),
-            BigButton(label: actionLabel, onPressed: onAction),
+            BigButton(label: actionLabel, onPressed: onAction, expanded: false),
           ],
         ],
       ),
@@ -93,13 +89,8 @@ class EmptyState extends StatelessWidget {
 
 /// Sivri tepeli petek gözü; boş durum motifinin tek yeri.
 class _HexagonPainter extends CustomPainter {
-  const new({
-    required this.fill,
-    required this.stroke,
-    required this.strokeWidth,
-  });
+  const new({required this.stroke, required this.strokeWidth});
 
-  final Color fill;
   final Color stroke;
   final double strokeWidth;
 
@@ -119,22 +110,19 @@ class _HexagonPainter extends CustomPainter {
     }
     path.close();
 
-    canvas
-      ..drawPath(path, Paint()..color = fill)
-      ..drawPath(
-        path,
-        Paint()
-          ..color = stroke
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = strokeWidth
-          ..strokeJoin = StrokeJoin.round,
-      );
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = stroke
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth
+        ..strokeJoin = StrokeJoin.round,
+    );
   }
 
   @override
   bool shouldRepaint(_HexagonPainter oldDelegate) {
-    return fill != oldDelegate.fill ||
-        stroke != oldDelegate.stroke ||
+    return stroke != oldDelegate.stroke ||
         strokeWidth != oldDelegate.strokeWidth;
   }
 }

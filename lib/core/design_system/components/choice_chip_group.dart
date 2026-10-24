@@ -9,11 +9,11 @@ class ChoiceChipOption<T> {
   final String label;
 }
 
-/// Klavye yerine büyük chip'lerle seçim.
+/// Klavye yerine büyük, yuvarlak kenarlı chip'lerle seçim (56dp).
 ///
 /// Tek seçimde ([multiSelect] false) en fazla bir değer seçilidir; seçili
-/// chip'e yeniden dokunmak seçimi kaldırır. Seçim yalnızca renkle değil,
-/// onay ikonuyla da gösterilir.
+/// chip'e yeniden dokunmak seçimi kaldırır. Seçili chip koyu bal dolgulu;
+/// seçim yalnızca renkle değil, onay ikonuyla da gösterilir.
 ///
 /// [suggested] seçim bir öneridir (ör. önceki kayıttan): seçili chip dolu
 /// değil çerçeveli çizilir, onay yerine geçmiş ikonu taşır. Öneriye
@@ -90,17 +90,15 @@ class _Chip extends StatelessWidget {
     final spacing = context.spacing;
     final filled = selected && !suggested;
     final foreground = switch ((selected, suggested)) {
-      (true, false) => colors.onSecondary,
+      (true, false) => colors.onPrimary,
       (true, true) => colors.textSecondary,
       (false, _) => colors.textPrimary,
     };
     final shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(context.radii.small),
+      borderRadius: BorderRadius.circular(context.radii.pill),
       side: BorderSide(
-        color: selected ? colors.secondary : colors.outline,
-        width: selected && suggested
-            ? context.strokes.focus
-            : context.strokes.border,
+        color: selected ? colors.primary : colors.divider,
+        width: context.strokes.focus,
       ),
     );
 
@@ -112,7 +110,7 @@ class _Chip extends StatelessWidget {
           ? AppLocalizations.of(context).suggestedValue
           : null,
       child: Material(
-        color: filled ? colors.secondary : colors.surface,
+        color: filled ? colors.primary : colors.tile,
         shape: shape,
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -123,7 +121,7 @@ class _Chip extends StatelessWidget {
               minWidth: context.touchTargets.field,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: spacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: spacing.xl),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

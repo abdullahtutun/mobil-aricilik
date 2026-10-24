@@ -16,7 +16,9 @@ enum GalleryComponent {
   strengthDots(_StrengthDotsSamples()),
   emptyState(_EmptyStateSamples()),
   sectionCard(_SectionCardSamples()),
-  timelineTile(_TimelineTileSamples());
+  timelineTile(_TimelineTileSamples()),
+  snackBar(_SnackBarSamples()),
+  criticalLockCard(_CriticalLockCardSamples());
 
   new(this.samples);
 
@@ -32,6 +34,8 @@ enum GalleryComponent {
     GalleryComponent.emptyState => l10n.galleryEmptyState,
     GalleryComponent.sectionCard => l10n.gallerySectionCard,
     GalleryComponent.timelineTile => l10n.galleryTimelineTile,
+    GalleryComponent.snackBar => l10n.gallerySnackBar,
+    GalleryComponent.criticalLockCard => l10n.galleryCriticalLockCard,
   };
 }
 
@@ -285,7 +289,7 @@ class _EmptyStateSamples extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return EmptyState(
-      icon: Icons.hive_rounded,
+      icon: Icons.add_rounded,
       title: l10n.gallerySampleNoApiaries,
       message: l10n.gallerySampleNoApiariesMessage,
       actionLabel: l10n.gallerySampleAddApiary,
@@ -368,6 +372,34 @@ class _TimelineTileSamples extends StatelessWidget {
           isLast: true,
         ),
       ],
+    );
+  }
+}
+
+/// Geri al bildirimi, ekranda göründüğü haliyle (giriş animasyonu bitmiş).
+class _SnackBarSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return undoSnackBar(
+      context,
+      message: l10n.gallerySampleInspectionSaved,
+      onUndo: _noop,
+    ).withAnimation(kAlwaysCompleteAnimation);
+  }
+}
+
+class _CriticalLockCardSamples extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return CriticalLockCard(
+      title: l10n.gallerySampleWithdrawalTitle,
+      message: l10n.gallerySampleWithdrawalMessage,
     );
   }
 }

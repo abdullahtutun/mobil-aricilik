@@ -1000,6 +1000,22 @@ class AppLocalizationsTr extends AppLocalizations {
       'Başlıksız kart da olur; içerik doğrudan başlar.';
 
   @override
+  String get gallerySnackBar => 'Bildirim';
+
+  @override
+  String get galleryCriticalLockCard => 'Kritik kilit kartı';
+
+  @override
+  String get gallerySampleInspectionSaved => 'Muayene kaydedildi';
+
+  @override
+  String get gallerySampleWithdrawalTitle => 'Bekleme süresinde.';
+
+  @override
+  String get gallerySampleWithdrawalMessage =>
+      'Bu kovana 12 gün daha bal katı verilmemeli.';
+
+  @override
   String get syncStatusSynced => 'Eşitlendi';
 
   @override
