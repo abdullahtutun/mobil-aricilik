@@ -203,6 +203,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hiveLayoutList => 'Liste görünümü';
 
   @override
+  String get hiveSortNumber => 'Numaraya göre';
+
+  @override
+  String get hiveSortWeakestFirst => 'Zayıflar önce';
+
+  @override
   String get hivesEmptyTitle => 'Henüz kovan yok';
 
   @override
@@ -370,6 +376,49 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get hiveQueenPlaceholder =>
       'Henüz ana arı kaydı yok. Ana arı kartı yakında geliyor.';
+
+  @override
+  String get hiveTimelineTitle => 'Geçmiş';
+
+  @override
+  String get timelineInspection => 'Muayene';
+
+  @override
+  String get timelineAdded => 'Arılığa eklendi';
+
+  @override
+  String get timelineMoved => 'Taşındı';
+
+  @override
+  String timelineMoveRoute(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String get timelineUnknownApiary => 'Bilinmeyen arılık';
+
+  @override
+  String timelineField(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String timelineBeeFrames(int count) {
+    return '$count arılı';
+  }
+
+  @override
+  String timelineBroodFrames(int count) {
+    return '$count yavrulu';
+  }
+
+  @override
+  String timelineHoneyFrames(int count) {
+    return '$count ballı';
+  }
+
+  @override
+  String get timelineActions => 'Yapılanlar';
 
   @override
   String get hiveMove => 'Başka arılığa taşı';

@@ -11,12 +11,13 @@ import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
+import 'package:mobil_arici/features/hives/presentation/widgets/hive_timeline_section.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 
 /// Kovan kartı: büyük numara, arılık, durum rozeti ve ana arı şeridi;
-/// altında taşıma ve durum değiştirme. Aktif kovanda altta sabit "Muayene
-/// başlat" hızlı muayeneyi kartın üstünde açar. Özet kartları ve zaman
-/// tüneli kendi adımlarında gelecek.
+/// altında taşıma ve durum değiştirme, en altta zaman tüneli. Aktif kovanda
+/// altta sabit "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Özet
+/// kartları kendi adımında gelecek.
 ///
 /// [apiaryId] yoldaki arılık (geri tuşu oraya döner); gösterilen arılık
 /// kovanın kendi arılığıdır.
@@ -66,6 +67,9 @@ class HiveCardScreen extends ConsumerWidget {
                 icon: Icons.swap_horiz_rounded,
                 onPressed: () => _changeStatus(context, ref, hive),
               ),
+              // Geçmiş uzadıkça eylemler aşağı itilmesin diye en altta.
+              SizedBox(height: spacing.xl),
+              HiveTimelineSection(hiveId: hiveId),
             ],
           ),
         ),

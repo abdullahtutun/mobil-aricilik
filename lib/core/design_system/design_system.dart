@@ -15,6 +15,8 @@ export 'components/section_card.dart';
 export 'components/snack_bars.dart';
 export 'components/status_badge.dart';
 export 'components/status_message.dart';
+export 'components/strength_dots.dart';
+export 'components/timeline_tile.dart';
 export 'theme_context.dart';
 export 'tokens/app_colors.dart';
 export 'tokens/app_radii.dart';

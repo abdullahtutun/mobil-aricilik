@@ -50,6 +50,54 @@ final class HiveRepositoryProvider
 
 String _$hiveRepositoryHash() => r'a0aa1124c7c7aa16dc4881d1ffbb4ea988725a78';
 
+@ProviderFor(hiveLocationRepository)
+final hiveLocationRepositoryProvider = HiveLocationRepositoryProvider._();
+
+final class HiveLocationRepositoryProvider
+    extends
+        $FunctionalProvider<
+          HiveLocationRepository,
+          HiveLocationRepository,
+          HiveLocationRepository
+        >
+    with $Provider<HiveLocationRepository> {
+  HiveLocationRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hiveLocationRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveLocationRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<HiveLocationRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  HiveLocationRepository create(Ref ref) {
+    return hiveLocationRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(HiveLocationRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<HiveLocationRepository>(value),
+    );
+  }
+}
+
+String _$hiveLocationRepositoryHash() =>
+    r'ada8f1ada683faaa26a11135140324656aa87858';
+
 /// Arılıktaki kovanlar (her durumda); numaralar sayı sırasıyla ("9" <
 /// "10").
 
@@ -262,6 +310,350 @@ final class HiveFamily extends $Family
   String toString() => r'hiveProvider';
 }
 
+/// Arılıktaki kovanların güç puanları, her birinin son muayenesinden
+/// ([strengthScore]); puanı olmayan kovan haritada yok.
+
+@ProviderFor(apiaryHiveStrengths)
+final apiaryHiveStrengthsProvider = ApiaryHiveStrengthsFamily._();
+
+/// Arılıktaki kovanların güç puanları, her birinin son muayenesinden
+/// ([strengthScore]); puanı olmayan kovan haritada yok.
+
+final class ApiaryHiveStrengthsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<String, int>>,
+          Map<String, int>,
+          Stream<Map<String, int>>
+        >
+    with $FutureModifier<Map<String, int>>, $StreamProvider<Map<String, int>> {
+  /// Arılıktaki kovanların güç puanları, her birinin son muayenesinden
+  /// ([strengthScore]); puanı olmayan kovan haritada yok.
+  ApiaryHiveStrengthsProvider._({
+    required ApiaryHiveStrengthsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'apiaryHiveStrengthsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$apiaryHiveStrengthsHash();
+
+  @override
+  String toString() {
+    return r'apiaryHiveStrengthsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<Map<String, int>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<Map<String, int>> create(Ref ref) {
+    final argument = this.argument as String;
+    return apiaryHiveStrengths(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ApiaryHiveStrengthsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$apiaryHiveStrengthsHash() =>
+    r'5902bc7ab2644256b9613317c1827999d72aab58';
+
+/// Arılıktaki kovanların güç puanları, her birinin son muayenesinden
+/// ([strengthScore]); puanı olmayan kovan haritada yok.
+
+final class ApiaryHiveStrengthsFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<Map<String, int>>, String> {
+  ApiaryHiveStrengthsFamily._()
+    : super(
+        retry: null,
+        name: r'apiaryHiveStrengthsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Arılıktaki kovanların güç puanları, her birinin son muayenesinden
+  /// ([strengthScore]); puanı olmayan kovan haritada yok.
+
+  ApiaryHiveStrengthsProvider call(String apiaryId) =>
+      ApiaryHiveStrengthsProvider._(argument: apiaryId, from: this);
+
+  @override
+  String toString() => r'apiaryHiveStrengthsProvider';
+}
+
+@ProviderFor(hiveInspections)
+final hiveInspectionsProvider = HiveInspectionsFamily._();
+
+final class HiveInspectionsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Inspection>>,
+          List<Inspection>,
+          Stream<List<Inspection>>
+        >
+    with $FutureModifier<List<Inspection>>, $StreamProvider<List<Inspection>> {
+  HiveInspectionsProvider._({
+    required HiveInspectionsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'hiveInspectionsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveInspectionsHash();
+
+  @override
+  String toString() {
+    return r'hiveInspectionsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Inspection>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Inspection>> create(Ref ref) {
+    final argument = this.argument as String;
+    return hiveInspections(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HiveInspectionsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$hiveInspectionsHash() => r'6f7ded8b5dd838596c674dd3183e3af4fc8ea0ad';
+
+final class HiveInspectionsFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<Inspection>>, String> {
+  HiveInspectionsFamily._()
+    : super(
+        retry: null,
+        name: r'hiveInspectionsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  HiveInspectionsProvider call(String hiveId) =>
+      HiveInspectionsProvider._(argument: hiveId, from: this);
+
+  @override
+  String toString() => r'hiveInspectionsProvider';
+}
+
+@ProviderFor(hiveLocationHistory)
+final hiveLocationHistoryProvider = HiveLocationHistoryFamily._();
+
+final class HiveLocationHistoryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<HiveLocationEntry>>,
+          List<HiveLocationEntry>,
+          Stream<List<HiveLocationEntry>>
+        >
+    with
+        $FutureModifier<List<HiveLocationEntry>>,
+        $StreamProvider<List<HiveLocationEntry>> {
+  HiveLocationHistoryProvider._({
+    required HiveLocationHistoryFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'hiveLocationHistoryProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveLocationHistoryHash();
+
+  @override
+  String toString() {
+    return r'hiveLocationHistoryProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<HiveLocationEntry>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<HiveLocationEntry>> create(Ref ref) {
+    final argument = this.argument as String;
+    return hiveLocationHistory(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HiveLocationHistoryProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$hiveLocationHistoryHash() =>
+    r'74a19f57eaeb23bec08468624e887886ba823bda';
+
+final class HiveLocationHistoryFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<HiveLocationEntry>>, String> {
+  HiveLocationHistoryFamily._()
+    : super(
+        retry: null,
+        name: r'hiveLocationHistoryProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  HiveLocationHistoryProvider call(String hiveId) =>
+      HiveLocationHistoryProvider._(argument: hiveId, from: this);
+
+  @override
+  String toString() => r'hiveLocationHistoryProvider';
+}
+
+/// Kovanın zaman tüneli: bütün kayıt türlerinin olayları tek listede, en
+/// yeni önce. Yeni bir tür kendi akışını izleyen bir provider yazar ve
+/// olaylarını buradaki listeye ekler; kaynaklardan biri değişince tünel
+/// yeniden kurulur.
+
+@ProviderFor(hiveTimeline)
+final hiveTimelineProvider = HiveTimelineFamily._();
+
+/// Kovanın zaman tüneli: bütün kayıt türlerinin olayları tek listede, en
+/// yeni önce. Yeni bir tür kendi akışını izleyen bir provider yazar ve
+/// olaylarını buradaki listeye ekler; kaynaklardan biri değişince tünel
+/// yeniden kurulur.
+
+final class HiveTimelineProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<HiveTimelineEvent>>,
+          List<HiveTimelineEvent>,
+          FutureOr<List<HiveTimelineEvent>>
+        >
+    with
+        $FutureModifier<List<HiveTimelineEvent>>,
+        $FutureProvider<List<HiveTimelineEvent>> {
+  /// Kovanın zaman tüneli: bütün kayıt türlerinin olayları tek listede, en
+  /// yeni önce. Yeni bir tür kendi akışını izleyen bir provider yazar ve
+  /// olaylarını buradaki listeye ekler; kaynaklardan biri değişince tünel
+  /// yeniden kurulur.
+  HiveTimelineProvider._({
+    required HiveTimelineFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'hiveTimelineProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveTimelineHash();
+
+  @override
+  String toString() {
+    return r'hiveTimelineProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<HiveTimelineEvent>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<HiveTimelineEvent>> create(Ref ref) {
+    final argument = this.argument as String;
+    return hiveTimeline(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HiveTimelineProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$hiveTimelineHash() => r'4b6f6a8ad253382baba62f0049ed13430bc93089';
+
+/// Kovanın zaman tüneli: bütün kayıt türlerinin olayları tek listede, en
+/// yeni önce. Yeni bir tür kendi akışını izleyen bir provider yazar ve
+/// olaylarını buradaki listeye ekler; kaynaklardan biri değişince tünel
+/// yeniden kurulur.
+
+final class HiveTimelineFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<HiveTimelineEvent>>, String> {
+  HiveTimelineFamily._()
+    : super(
+        retry: null,
+        name: r'hiveTimelineProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Kovanın zaman tüneli: bütün kayıt türlerinin olayları tek listede, en
+  /// yeni önce. Yeni bir tür kendi akışını izleyen bir provider yazar ve
+  /// olaylarını buradaki listeye ekler; kaynaklardan biri değişince tünel
+  /// yeniden kurulur.
+
+  HiveTimelineProvider call(String hiveId) =>
+      HiveTimelineProvider._(argument: hiveId, from: this);
+
+  @override
+  String toString() => r'hiveTimelineProvider';
+}
+
 /// Arılık detayındaki kovan görünümü: ızgara ya da liste. Yalnız bellekte;
 /// uygulama yeniden açılınca ızgaraya döner.
 
@@ -318,6 +710,73 @@ abstract class _$HiveLayoutPreference extends $Notifier<HiveLayout> {
             as $ClassProviderElement<
               AnyNotifier<HiveLayout, HiveLayout>,
               HiveLayout,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+/// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
+/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+
+@ProviderFor(HiveSortPreference)
+final hiveSortPreferenceProvider = HiveSortPreferenceProvider._();
+
+/// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
+/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+final class HiveSortPreferenceProvider
+    extends $NotifierProvider<HiveSortPreference, HiveSort> {
+  /// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
+  /// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
+  /// bellekte; uygulama yeniden açılınca numara sırasına döner.
+  HiveSortPreferenceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hiveSortPreferenceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveSortPreferenceHash();
+
+  @$internal
+  @override
+  HiveSortPreference create() => HiveSortPreference();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(HiveSort value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<HiveSort>(value),
+    );
+  }
+}
+
+String _$hiveSortPreferenceHash() =>
+    r'a2a103646757eff74378a21b8eba99f38ded7cc7';
+
+/// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
+/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+
+abstract class _$HiveSortPreference extends $Notifier<HiveSort> {
+  HiveSort build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<HiveSort, HiveSort>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<HiveSort, HiveSort>,
+              HiveSort,
               Object?,
               Object?
             >;

@@ -205,6 +205,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hiveLayoutList => 'List view';
 
   @override
+  String get hiveSortNumber => 'By number';
+
+  @override
+  String get hiveSortWeakestFirst => 'Weakest first';
+
+  @override
   String get hivesEmptyTitle => 'No hives yet';
 
   @override
@@ -373,6 +379,49 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hiveQueenPlaceholder =>
       'No queen recorded yet. Queen cards are coming soon.';
+
+  @override
+  String get hiveTimelineTitle => 'History';
+
+  @override
+  String get timelineInspection => 'Inspection';
+
+  @override
+  String get timelineAdded => 'Added to apiary';
+
+  @override
+  String get timelineMoved => 'Moved';
+
+  @override
+  String timelineMoveRoute(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String get timelineUnknownApiary => 'Unknown apiary';
+
+  @override
+  String timelineField(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String timelineBeeFrames(int count) {
+    return '$count with bees';
+  }
+
+  @override
+  String timelineBroodFrames(int count) {
+    return '$count with brood';
+  }
+
+  @override
+  String timelineHoneyFrames(int count) {
+    return '$count with honey';
+  }
+
+  @override
+  String get timelineActions => 'Done';
 
   @override
   String get hiveMove => 'Move to another apiary';

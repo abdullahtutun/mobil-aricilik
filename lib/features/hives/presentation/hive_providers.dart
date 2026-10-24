@@ -1,7 +1,13 @@
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/utils/natural_order.dart';
+import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
+import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/inspections/presentation/inspection_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,6 +16,10 @@ part 'hive_providers.g.dart';
 @Riverpod(keepAlive: true)
 HiveRepository hiveRepository(Ref ref) =>
     HiveRepository(ref.watch(appDatabaseProvider));
+
+@Riverpod(keepAlive: true)
+HiveLocationRepository hiveLocationRepository(Ref ref) =>
+    HiveLocationRepository(ref.watch(appDatabaseProvider));
 
 /// Arılıktaki kovanlar (her durumda); numaralar sayı sırasıyla ("9" <
 /// "10").
@@ -36,6 +46,41 @@ List<Hive> _sortedByNumber(List<Hive> hives) =>
 Stream<Hive?> hive(Ref ref, String hiveId) =>
     ref.watch(hiveRepositoryProvider).watchById(hiveId);
 
+/// Arılıktaki kovanların güç puanları, her birinin son muayenesinden
+/// ([strengthScore]); puanı olmayan kovan haritada yok.
+@riverpod
+Stream<Map<String, int>> apiaryHiveStrengths(Ref ref, String apiaryId) => ref
+    .watch(inspectionRepositoryProvider)
+    .watchLatestByApiary(apiaryId)
+    .map(
+      (latest) => {
+        for (final MapEntry(key: hiveId, value: inspection) in latest.entries)
+          hiveId: ?strengthScore(inspection.values),
+      },
+    );
+
+@riverpod
+Stream<List<Inspection>> hiveInspections(Ref ref, String hiveId) =>
+    ref.watch(inspectionRepositoryProvider).watchByHive(hiveId);
+
+@riverpod
+Stream<List<HiveLocationEntry>> hiveLocationHistory(Ref ref, String hiveId) =>
+    ref.watch(hiveLocationRepositoryProvider).watchByHive(hiveId);
+
+/// Kovanın zaman tüneli: bütün kayıt türlerinin olayları tek listede, en
+/// yeni önce. Yeni bir tür kendi akışını izleyen bir provider yazar ve
+/// olaylarını buradaki listeye ekler; kaynaklardan biri değişince tünel
+/// yeniden kurulur.
+@riverpod
+Future<List<HiveTimelineEvent>> hiveTimeline(Ref ref, String hiveId) async {
+  final sources = <Future<List<HiveTimelineEvent>>>[
+    ref.watch(hiveInspectionsProvider(hiveId).future).then(inspectionEvents),
+    ref.watch(hiveLocationHistoryProvider(hiveId).future).then(locationEvents),
+  ];
+  final events = await Future.wait(sources);
+  return sortTimeline(events.expand((events) => events));
+}
+
 enum HiveLayout { grid, list }
 
 /// Arılık detayındaki kovan görünümü: ızgara ya da liste. Yalnız bellekte;
@@ -48,6 +93,21 @@ class HiveLayoutPreference extends _$HiveLayoutPreference {
   HiveLayout get layout => state;
 
   set layout(HiveLayout layout) => state = layout;
+}
+
+enum HiveSort { number, weakestFirst }
+
+/// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
+/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+@Riverpod(keepAlive: true)
+class HiveSortPreference extends _$HiveSortPreference {
+  @override
+  HiveSort build() => HiveSort.number;
+
+  HiveSort get sort => state;
+
+  set sort(HiveSort sort) => state = sort;
 }
 
 /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri

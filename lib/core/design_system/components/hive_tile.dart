@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/components/app_card.dart';
 import 'package:mobil_arici/core/design_system/components/app_status.dart';
+import 'package:mobil_arici/core/design_system/components/strength_dots.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart'
@@ -29,7 +30,7 @@ class HiveTile extends StatelessWidget {
          'uyarı ikonu kelimesiyle birlikte verilmeli',
        );
 
-  static const maxStrength = 5;
+  static const int maxStrength = StrengthDots.max;
 
   final String number;
 
@@ -108,7 +109,7 @@ class HiveTile extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: AlignmentDirectional.centerStart,
-                        child: _StrengthDots(strength: strength),
+                        child: StrengthDots(strength: strength),
                       ),
                     ),
                     SizedBox(width: spacing.sm),
@@ -120,40 +121,6 @@ class HiveTile extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _StrengthDots extends StatelessWidget {
-  const new({required this.strength});
-
-  final int? strength;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final size = context.sizes.strengthDot;
-    final filledCount = strength ?? 0;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: context.spacing.xs,
-      children: [
-        for (var i = 0; i < HiveTile.maxStrength; i++)
-          SizedBox.square(
-            dimension: size,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: i < filledCount ? colors.primary : null,
-                border: Border.all(
-                  color: i < filledCount ? colors.primary : colors.outline,
-                  width: context.strokes.border,
-                ),
-              ),
-            ),
-          ),
-      ],
     );
   }
 }

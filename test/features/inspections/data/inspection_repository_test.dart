@@ -1,6 +1,8 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/features/hives/data/hive_repository.dart';
+import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_reminder_repository.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
@@ -146,6 +148,157 @@ void main() {
 
       expect(second.id.compareTo(first.id), greaterThan(0));
       expect(await repository.latestByHive('hive-1'), second);
+    });
+  });
+
+  group('kovanın muayeneleri', () {
+    test('en yeni önce; silinen ve başka kovanınki yok', () async {
+      final first = await add();
+      clock.advance(const Duration(days: 3));
+      final second = await add();
+      clock.advance(const Duration(days: 3));
+      final deleted = await add();
+      await add(hiveId: 'hive-2');
+      await repository.delete(deleted.id);
+
+      expect(await repository.watchByHive('hive-1').first, [second, first]);
+      expect(await repository.watchByHive('yok').first, isEmpty);
+    });
+
+    test('yeni muayene ve silme akışa düşer', () async {
+      final ids = repository
+          .watchByHive('hive-1')
+          .map((list) => [for (final i in list) i.id]);
+      final first = await add();
+      clock.advance(const Duration(days: 1));
+      final expectation = expectLater(
+        ids,
+        emitsInOrder([
+          [first.id],
+          [isNotNull, first.id],
+          [first.id],
+        ]),
+      );
+      await pumpEventQueue();
+      final second = await add();
+      await pumpEventQueue();
+      await repository.delete(second.id);
+
+      await expectation;
+    });
+  });
+
+  group('arılığın son muayeneleri', () {
+    late HiveRepository hives;
+
+    setUp(() => hives = HiveRepository(db, clock: clock.call));
+
+    Future<Hive> createHive(String number, {String apiaryId = 'yayla'}) =>
+        hives.create(
+          orgId: 'org-1',
+          number: number,
+          type: HiveType.langstroth,
+          apiaryId: apiaryId,
+        );
+
+    Future<Inspection> inspect(Hive hive, {int beeFrames = 5}) =>
+        repository.add(
+          orgId: 'org-1',
+          hiveId: hive.id,
+          apiaryId: hive.apiaryId,
+          values: InspectionValues(beeFrames: beeFrames),
+        );
+
+    test('arılıktaki her kovanın en yeni muayenesi; muayenesiz ve başka '
+        'arılıktaki kovan yok', () async {
+      final a = await createHive('1');
+      final b = await createHive('2');
+      await createHive('3');
+      final other = await createHive('4', apiaryId: 'ova');
+      await inspect(a, beeFrames: 3);
+      await inspect(b);
+      clock.advance(const Duration(days: 7));
+      final aLatest = await inspect(a, beeFrames: 8);
+      await inspect(other);
+
+      final latest = await repository.watchLatestByApiary('yayla').first;
+
+      expect(latest.keys, unorderedEquals([a.id, b.id]));
+      expect(latest[a.id], aLatest);
+      expect(latest[a.id], await repository.latestByHive(a.id));
+      expect(latest[b.id], await repository.latestByHive(b.id));
+      expect(await repository.watchLatestByApiary('boş').first, isEmpty);
+    });
+
+    test('en yeni muayene silinince bir öncekine döner; hepsi silinince '
+        'kovan çıkar', () async {
+      final hive = await createHive('1');
+      final first = await inspect(hive);
+      clock.advance(const Duration(days: 1));
+      final second = await inspect(hive);
+
+      await repository.delete(second.id);
+      expect(await repository.watchLatestByApiary('yayla').first, {
+        hive.id: first,
+      });
+
+      await repository.delete(first.id);
+      expect(await repository.watchLatestByApiary('yayla').first, isEmpty);
+    });
+
+    test('aynı anda yapılanlardan kimliği büyük olan; latestByHive ile '
+        'aynı', () async {
+      final hive = await createHive('1');
+      await inspect(hive);
+      final second = await inspect(hive);
+
+      expect(await repository.watchLatestByApiary('yayla').first, {
+        hive.id: second,
+      });
+      expect(await repository.latestByHive(hive.id), second);
+    });
+
+    test('muayene kovanın şimdiki arılığına sayılır: taşınan kovan eski '
+        'arılıktan çıkar, yenisine girer; silinen kovan yok', () async {
+      final moved = await createHive('1');
+      final deleted = await createHive('2');
+      final inspection = await inspect(moved);
+      await inspect(deleted);
+      await hives.delete(deleted.id);
+
+      expect(await repository.watchLatestByApiary('yayla').first, {
+        moved.id: inspection,
+      });
+
+      await hives.move(moved.id, apiaryId: 'ova');
+
+      expect(await repository.watchLatestByApiary('yayla').first, isEmpty);
+      expect(await repository.watchLatestByApiary('ova').first, {
+        moved.id: inspection,
+      });
+    });
+
+    test('akış kovan taşınınca da yeniden yayar (kovan tablosunu da '
+        'izler)', () async {
+      final hive = await createHive('1');
+      final keys = repository
+          .watchLatestByApiary('ova')
+          .map((latest) => latest.keys.toList());
+      // Taşıma muayene tablosuna yazmaz; son değer yalnız kovan tablosundaki
+      // değişiklikten gelebilir.
+      final expectation = expectLater(
+        keys,
+        emitsInOrder([
+          isEmpty,
+          emitsThrough([hive.id]),
+        ]),
+      );
+      await pumpEventQueue();
+      await inspect(hive);
+      await pumpEventQueue();
+      await hives.move(hive.id, apiaryId: 'ova');
+
+      await expectation;
     });
   });
 

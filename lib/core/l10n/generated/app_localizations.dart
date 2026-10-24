@@ -410,6 +410,18 @@ abstract class AppLocalizations {
   /// **'List view'**
   String get hiveLayoutList;
 
+  /// Order of the hives in an apiary: by hive number.
+  ///
+  /// In en, this message translates to:
+  /// **'By number'**
+  String get hiveSortNumber;
+
+  /// Order of the hives in an apiary: lowest strength score first, unscored hives last.
+  ///
+  /// In en, this message translates to:
+  /// **'Weakest first'**
+  String get hiveSortWeakestFirst;
+
   /// No description provided for @hivesEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -691,6 +703,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No queen recorded yet. Queen cards are coming soon.'**
   String get hiveQueenPlaceholder;
+
+  /// No description provided for @hiveTimelineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get hiveTimelineTitle;
+
+  /// No description provided for @timelineInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get timelineInspection;
+
+  /// History entry for the apiary a hive was first placed in; the apiary name is on the next line.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to apiary'**
+  String get timelineAdded;
+
+  /// No description provided for @timelineMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved'**
+  String get timelineMoved;
+
+  /// Apiaries a hive was moved from and to.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to}'**
+  String timelineMoveRoute(String from, String to);
+
+  /// Apiary name in the hive history when the apiary was deleted or hasn't reached this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown apiary'**
+  String get timelineUnknownApiary;
+
+  /// A recorded inspection field in the hive history, e.g. "Queen: Seen".
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String timelineField(String label, String value);
+
+  /// No description provided for @timelineBeeFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} with bees'**
+  String timelineBeeFrames(int count);
+
+  /// No description provided for @timelineBroodFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} with brood'**
+  String timelineBroodFrames(int count);
+
+  /// No description provided for @timelineHoneyFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} with honey'**
+  String timelineHoneyFrames(int count);
+
+  /// Label for the actions recorded in a past inspection, e.g. "Done: Fed, Super added".
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get timelineActions;
 
   /// No description provided for @hiveMove.
   ///

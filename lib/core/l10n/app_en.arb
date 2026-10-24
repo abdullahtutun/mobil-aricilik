@@ -153,6 +153,14 @@
   },
   "hiveLayoutGrid": "Grid view",
   "hiveLayoutList": "List view",
+  "hiveSortNumber": "By number",
+  "@hiveSortNumber": {
+    "description": "Order of the hives in an apiary: by hive number."
+  },
+  "hiveSortWeakestFirst": "Weakest first",
+  "@hiveSortWeakestFirst": {
+    "description": "Order of the hives in an apiary: lowest strength score first, unscored hives last."
+  },
   "hivesEmptyTitle": "No hives yet",
   "hivesEmptyMessage": "Add the hives standing in this apiary; you can create many at once.",
   "hivesAdd": "Add hives",
@@ -276,6 +284,76 @@
   },
   "hiveQueenTitle": "Queen",
   "hiveQueenPlaceholder": "No queen recorded yet. Queen cards are coming soon.",
+  "hiveTimelineTitle": "History",
+  "timelineInspection": "Inspection",
+  "timelineAdded": "Added to apiary",
+  "@timelineAdded": {
+    "description": "History entry for the apiary a hive was first placed in; the apiary name is on the next line."
+  },
+  "timelineMoved": "Moved",
+  "timelineMoveRoute": "{from} → {to}",
+  "@timelineMoveRoute": {
+    "description": "Apiaries a hive was moved from and to.",
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Hilltop"
+      },
+      "to": {
+        "type": "String",
+        "example": "Riverside"
+      }
+    }
+  },
+  "timelineUnknownApiary": "Unknown apiary",
+  "@timelineUnknownApiary": {
+    "description": "Apiary name in the hive history when the apiary was deleted or hasn't reached this phone."
+  },
+  "timelineField": "{label}: {value}",
+  "@timelineField": {
+    "description": "A recorded inspection field in the hive history, e.g. \"Queen: Seen\".",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "Queen"
+      },
+      "value": {
+        "type": "String",
+        "example": "Seen"
+      }
+    }
+  },
+  "timelineBeeFrames": "{count} with bees",
+  "@timelineBeeFrames": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "timelineBroodFrames": "{count} with brood",
+  "@timelineBroodFrames": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "timelineHoneyFrames": "{count} with honey",
+  "@timelineHoneyFrames": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timelineActions": "Done",
+  "@timelineActions": {
+    "description": "Label for the actions recorded in a past inspection, e.g. \"Done: Fed, Super added\"."
+  },
   "hiveMove": "Move to another apiary",
   "hiveMoveTitle": "Move hive {number} to",
   "@hiveMoveTitle": {

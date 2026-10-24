@@ -55,6 +55,35 @@ Future<void> _enter(WidgetTester tester, String label, String text) async {
 BigButton _button(WidgetTester tester, String label) =>
     tester.widget<BigButton>(find.widgetWithText(BigButton, label));
 
+/// Kovan kartının başlığındaki (konum ikonlu) arılık; aynı ad zaman
+/// tünelinde de geçer.
+Finder _cardApiary(String name) => find.descendant(
+  of: find.widgetWithIcon(Row, Icons.place_rounded),
+  matching: find.text(name),
+);
+
+/// Açık seçim sayfasındaki [text]. Sayfa generic (`OptionSheet<Apiary>`),
+/// `byType` tam tipi arar.
+Finder _inSheet(String text) => find.descendant(
+  of: find.byWidgetPredicate((widget) => widget is OptionSheet),
+  matching: find.text(text),
+);
+
+/// Kartı başa kaydırır. Kart zaman tüneliyle uzun; alttaki butona dokunmak
+/// onu kaydırır ve tembel liste başlığı ağaçtan çıkarır.
+Future<void> _scrollCardToTop(WidgetTester tester) async {
+  await tester.drag(
+    find
+        .descendant(
+          of: find.byType(HiveCardScreen),
+          matching: find.byType(Scrollable),
+        )
+        .first,
+    const Offset(0, 2000),
+  );
+  await tester.pumpAndSettle();
+}
+
 void main() {
   late AppDatabase db;
   late HiveRepository hives;
@@ -242,16 +271,17 @@ void main() {
       final ova = await ApiaryRepository(db).create(orgId: _orgId, name: 'Ova');
       final hive = await createHive('101');
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
-      expect(find.text('Yayla'), findsOneWidget);
+      expect(_cardApiary('Yayla'), findsOneWidget);
 
       await _tap(tester, find.text('Move to another apiary'));
       expect(find.text('Move hive 101 to'), findsOneWidget);
       // Bulunduğu arılık listede yok.
-      expect(find.text('Yayla'), findsOneWidget);
-      await _tap(tester, find.text('Ova'));
+      expect(_inSheet('Yayla'), findsNothing);
+      await _tap(tester, _inSheet('Ova'));
 
       expect(find.text('Hive 101 moved to Ova'), findsOneWidget);
-      expect(find.text('Ova'), findsOneWidget);
+      await _scrollCardToTop(tester);
+      expect(_cardApiary('Ova'), findsOneWidget);
       expect((await hives.findById(hive.id))!.apiaryId, ova.id);
       expect(
         (await db.select(db.hiveLocationHistory).get()).map((e) => e.apiaryId),
@@ -260,7 +290,7 @@ void main() {
 
       await _tap(tester, find.text('Undo'));
 
-      expect(find.text('Yayla'), findsOneWidget);
+      expect(_cardApiary('Yayla'), findsOneWidget);
       expect((await hives.findById(hive.id))!.apiaryId, yayla.id);
       final live = await tester.runAsync(
         () => locations.watchByHive(hive.id).first,
@@ -289,7 +319,8 @@ void main() {
 
       await _tap(tester, find.text('Change status'));
       expect(find.text('New status for hive 101'), findsOneWidget);
-      expect(find.text('Active'), findsOneWidget); // yalnız rozet
+      // Şimdiki durum sayfada yok.
+      expect(_inSheet('Active'), findsNothing);
       await _tap(tester, find.text('Dead'));
 
       expect(find.text('Record hive 101 as dead?'), findsOneWidget);
@@ -302,6 +333,7 @@ void main() {
       );
       await _tap(tester, find.text('Cancel'));
       expect((await hives.findById(hive.id))!.status, HiveStatus.active);
+      await _scrollCardToTop(tester);
       expect(find.widgetWithText(StatusBadge, 'Active'), findsOneWidget);
 
       await _tap(tester, find.text('Change status'));
@@ -309,6 +341,7 @@ void main() {
       await _tap(tester, find.text('Yes, record'));
 
       expect((await hives.findById(hive.id))!.status, HiveStatus.dead);
+      await _scrollCardToTop(tester);
       expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
       // Onaylanan kayıtta geri al yok.
       expect(find.text('Undo'), findsNothing);

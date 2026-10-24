@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
+import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
@@ -23,9 +24,10 @@ Future<void> openAddHives(BuildContext context, String apiaryId) async {
   });
 }
 
-/// Arılık detayındaki kovanlar: aktifler ızgara ya da listede, aktif
-/// olmayanlar (söndü, birleşti, satıldı, kayboldu) altta ayrı bölümde ve
-/// durumlarıyla; karttan yeniden aktif yapılabilsinler diye gizlenmez.
+/// Arılık detayındaki kovanlar: aktifler ızgara ya da listede, güç
+/// puanlarıyla ve numaraya göre ya da zayıflar önce; aktif olmayanlar
+/// (söndü, birleşti, satıldı, kayboldu) altta ayrı bölümde, puansız ve
+/// durumlarıyla. Karttan yeniden aktif yapılabilsinler diye gizlenmezler.
 class ApiaryHivesSection extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
 
@@ -54,20 +56,28 @@ class ApiaryHivesSection extends ConsumerWidget {
   }
 }
 
-class _HiveSections extends StatelessWidget {
+class _HiveSections extends ConsumerWidget {
   const new({required this.apiaryId, required this.hives});
 
   final String apiaryId;
+
+  /// Numara sırasıyla.
   final List<Hive> hives;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
-    final active = [
+    final strengths =
+        ref.watch(apiaryHiveStrengthsProvider(apiaryId)).value ?? const {};
+    final counted = [
       for (final hive in hives)
         if (hive.status.isCounted) hive,
     ];
+    final active = switch (ref.watch(hiveSortPreferenceProvider)) {
+      HiveSort.number => counted,
+      HiveSort.weakestFirst => sortWeakestFirst(counted, strengths),
+    };
     final inactive = [
       for (final hive in hives)
         if (!hive.status.isCounted) hive,
@@ -91,9 +101,18 @@ class _HiveSections extends StatelessWidget {
             const _LayoutToggle(),
           ],
         ),
+        // Tek kovanda sıra seçimi anlamsız.
+        if (active.length > 1) ...[
+          SizedBox(height: spacing.md),
+          const _SortChoice(),
+        ],
         if (active.isNotEmpty) ...[
           SizedBox(height: spacing.md),
-          _HiveCollection(apiaryId: apiaryId, hives: active),
+          _HiveCollection(
+            apiaryId: apiaryId,
+            hives: active,
+            strengths: strengths,
+          ),
         ],
         if (inactive.isNotEmpty) ...[
           SizedBox(height: spacing.xl),
@@ -105,9 +124,41 @@ class _HiveSections extends StatelessWidget {
             ),
           ),
           SizedBox(height: spacing.md),
-          _HiveCollection(apiaryId: apiaryId, hives: inactive),
+          // Sönen ya da satılan kovanın eski puanı yanıltır.
+          _HiveCollection(
+            apiaryId: apiaryId,
+            hives: inactive,
+            strengths: const {},
+          ),
         ],
       ],
+    );
+  }
+}
+
+/// Aktif kovanların sırası: numaraya göre ya da zayıflar önce.
+class _SortChoice extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+
+    return ChoiceChipGroup<HiveSort>(
+      options: [
+        ChoiceChipOption(value: HiveSort.number, label: l10n.hiveSortNumber),
+        ChoiceChipOption(
+          value: HiveSort.weakestFirst,
+          label: l10n.hiveSortWeakestFirst,
+        ),
+      ],
+      selected: {ref.watch(hiveSortPreferenceProvider)},
+      onChanged: (selected) {
+        // Her zaman bir sıra seçili; seçili chip'e yeniden dokunmak seçimi
+        // kaldırmasın.
+        if (selected.isEmpty) return;
+        ref.read(hiveSortPreferenceProvider.notifier).sort = selected.single;
+      },
     );
   }
 }
@@ -197,24 +248,39 @@ class _LayoutButton extends StatelessWidget {
 }
 
 class _HiveCollection extends ConsumerWidget {
-  const new({required this.apiaryId, required this.hives});
+  const new({
+    required this.apiaryId,
+    required this.hives,
+    required this.strengths,
+  });
 
   final String apiaryId;
   final List<Hive> hives;
+
+  /// Kovan kimliğine göre güç puanı; puansız kovan yok.
+  final Map<String, int> strengths;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void open(Hive hive) => context.go(AppRoutes.hive(apiaryId, hive.id));
 
     return switch (ref.watch(hiveLayoutPreferenceProvider)) {
-      HiveLayout.grid => _HiveGrid(hives: hives, onOpen: open),
+      HiveLayout.grid => _HiveGrid(
+        hives: hives,
+        strengths: strengths,
+        onOpen: open,
+      ),
       HiveLayout.list => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: context.spacing.sm,
         children: [
           for (final hive in hives)
-            _HiveListRow(hive: hive, onTap: () => open(hive)),
+            _HiveListRow(
+              hive: hive,
+              strength: strengths[hive.id],
+              onTap: () => open(hive),
+            ),
         ],
       ),
     };
@@ -224,9 +290,14 @@ class _HiveCollection extends ConsumerWidget {
 /// Sütun sayısı genişlikten çıkar; karolar satırı eşit paylaşır. Karonun
 /// boyu içeriğinden gelir, büyük yazı boyutunda kırpılmaz.
 class _HiveGrid extends StatelessWidget {
-  const new({required this.hives, required this.onOpen});
+  const new({
+    required this.hives,
+    required this.strengths,
+    required this.onOpen,
+  });
 
   final List<Hive> hives;
+  final Map<String, int> strengths;
   final ValueChanged<Hive> onOpen;
 
   @override
@@ -251,6 +322,7 @@ class _HiveGrid extends StatelessWidget {
                 width: width,
                 child: HiveTile(
                   number: hive.number,
+                  strength: strengths[hive.id],
                   alertStatus: hive.status.isCounted
                       ? null
                       : hive.status.appStatus,
@@ -267,11 +339,13 @@ class _HiveGrid extends StatelessWidget {
   }
 }
 
-/// Listede kovan: büyük numara, tip ve kaynak; aktif değilse durum rozeti.
+/// Listede kovan: büyük numara, tip ve kaynak; aktifse güç puanı
+/// noktaları, değilse durum rozeti.
 class _HiveListRow extends StatelessWidget {
-  const new({required this.hive, required this.onTap});
+  const new({required this.hive, required this.strength, required this.onTap});
 
   final Hive hive;
+  final int? strength;
   final VoidCallback onTap;
 
   @override
@@ -319,13 +393,20 @@ class _HiveListRow extends StatelessWidget {
                     color: context.colors.textSecondary,
                   ),
                 ),
-                if (!hive.status.isCounted) ...[
-                  SizedBox(height: spacing.xs),
+                SizedBox(height: spacing.xs),
+                if (hive.status.isCounted)
+                  Semantics(
+                    label: switch (strength) {
+                      final strength? => l10n.hiveTileStrength(strength),
+                      null => null,
+                    },
+                    child: StrengthDots(strength: strength),
+                  )
+                else
                   StatusBadge(
                     status: hive.status.appStatus,
                     label: hive.status.label(l10n),
                   ),
-                ],
               ],
             ),
           ),

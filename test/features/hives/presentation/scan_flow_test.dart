@@ -212,7 +212,14 @@ void main() {
 
       expect(find.byType(HiveCardScreen), findsOneWidget);
       expect(find.text('7'), findsOneWidget);
-      expect(find.text('Ova'), findsOneWidget);
+      // Başlıktaki arılık; ad zaman tünelinde de geçer.
+      expect(
+        find.descendant(
+          of: find.widgetWithIcon(Row, Icons.place_rounded),
+          matching: find.text('Ova'),
+        ),
+        findsOneWidget,
+      );
       expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
       expect(find.byType(InspectionSheet), findsNothing);
       expect(find.text('Start inspection'), findsNothing);

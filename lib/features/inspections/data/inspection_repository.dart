@@ -27,13 +27,43 @@ class InspectionRepository
   /// Kovanın en son muayenesi; yoksa null. Aynı anda yapılanlardan kimliği
   /// (UUIDv7) büyük olan.
   Future<Inspection?> latestByHive(String hiveId) =>
-      (selectWhere((t) => t.hiveId.equals(hiveId))
-            ..orderBy([
-              (t) => OrderingTerm.desc(t.inspectedAt),
-              (t) => OrderingTerm.desc(t.id),
-            ])
-            ..limit(1))
-          .getSingleOrNull();
+      (_byHive(hiveId)..limit(1)).getSingleOrNull();
+
+  /// Kovanın muayeneleri, en yeni önce.
+  Stream<List<Inspection>> watchByHive(String hiveId) =>
+      _byHive(hiveId).watch();
+
+  /// Şimdi [apiaryId] arılığındaki (silinmemiş) her kovanın en son
+  /// muayenesi, kovan kimliğine göre; muayenesi olmayan kovan haritada
+  /// yok. "En son" [latestByHive] ile aynı. Kovan arılığa taşınınca ya da
+  /// arılıktan çıkınca da yeniden yayar.
+  Stream<Map<String, Inspection>> watchLatestByApiary(String apiaryId) {
+    final hives = db.hives;
+    final hiveIds = db.selectOnly(hives)
+      ..addColumns([hives.id])
+      ..where(hives.apiaryId.equals(apiaryId) & hives.deletedAt.isNull());
+    final later = db.alias(table, 'later');
+    return selectWhere(
+      (t) =>
+          t.hiveId.isInQuery(hiveIds) &
+          notExistsQuery(
+            db.select(later)..where(
+              (l) =>
+                  l.hiveId.equalsExp(t.hiveId) &
+                  l.deletedAt.isNull() &
+                  (l.inspectedAt.isBiggerThan(t.inspectedAt) |
+                      (l.inspectedAt.equalsExp(t.inspectedAt) &
+                          l.id.isBiggerThan(t.id))),
+            ),
+          ),
+    ).watch().map((latest) => {for (final row in latest) row.hiveId: row});
+  }
+
+  SimpleSelectStatement<$InspectionsTable, Inspection> _byHive(String hiveId) =>
+      selectWhere((t) => t.hiveId.equals(hiveId))..orderBy([
+        (t) => OrderingTerm.desc(t.inspectedAt),
+        (t) => OrderingTerm.desc(t.id),
+      ]);
 
   /// Kovanın şimdi [apiaryId] arılığında yapılan muayenesini [values] ile
   /// yazar ve kovanın taslağını siler; ikisi tek transaction'da.
