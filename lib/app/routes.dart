@@ -45,6 +45,11 @@ abstract final class AppRoutes {
   static String hiveTreat(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/treat';
 
+  /// Kovana ya da arılığının tümüne besleme; geri tuşu kovan kartına
+  /// döner.
+  static String hiveFeed(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/feed';
+
   /// İlaç uygulamasından işletmeye yeni ilaç ekleme; eklenen ilaç
   /// uygulamada seçilir.
   static String hiveTreatDrugNew(String apiaryId, String hiveId) =>

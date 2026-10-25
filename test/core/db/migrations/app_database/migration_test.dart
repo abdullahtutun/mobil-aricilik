@@ -10,6 +10,7 @@ import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
 import 'generated/schema_v6.dart' as v6;
+import 'generated/schema_v7.dart' as v7;
 
 // Dökümler ve `generated/` `dart run drift_dev make-migrations` ile üretilir;
 // her yeni sürümde bu testlere yeni sürümün veri testi eklenir.
@@ -294,4 +295,55 @@ void main() {
       },
     );
   });
+
+  test(
+    "v6 → v7 uygulamaları ve outbox'ı korur; besleme tablosu boş gelir",
+    () async {
+      const treatment = v6.TreatmentsData(
+        id: 'treatment-1',
+        createdAt: '2026-10-25T09:00:00.000Z',
+        updatedAt: '2026-10-25T09:00:00.000Z',
+        orgId: 'org-1',
+        hiveId: 'hive-1',
+        apiaryId: 'apiary-1',
+        refDrugId: 'ref-1',
+        applicationId: 'application-1',
+        productName: 'Amitraz şerit',
+        activeIngredient: 'amitraz',
+        dose: 2,
+        doseUnit: 'strip',
+        startedAt: '2026-10-25T09:00:00.000Z',
+        withdrawalDays: 0,
+      );
+
+      await verifier.testWithDataIntegrity(
+        oldVersion: 6,
+        newVersion: 7,
+        createOld: v6.DatabaseAtV6.new,
+        createNew: v7.DatabaseAtV7.new,
+        openTestedDatabase: AppDatabase.new,
+        createItems: (batch, oldDb) {
+          batch
+            ..insert(oldDb.treatments, treatment)
+            ..insert(
+              oldDb.outbox,
+              v6.OutboxCompanion.insert(
+                recordTable: 'treatments',
+                recordId: 'treatment-1',
+                operation: 'upsert',
+                payload: '{}',
+                createdAt: '2026-10-25T09:00:00.000Z',
+              ),
+            );
+        },
+        validateItems: (newDb) async {
+          final treatments = await newDb.select(newDb.treatments).get();
+          expect(treatments.single.toJson(), treatment.toJson());
+          final outbox = await newDb.select(newDb.outbox).get();
+          expect(outbox.single.recordId, 'treatment-1');
+          expect(await newDb.select(newDb.feedings).get(), isEmpty);
+        },
+      );
+    },
+  );
 }

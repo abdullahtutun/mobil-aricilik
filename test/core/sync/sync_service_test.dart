@@ -12,6 +12,8 @@ import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/feeding/data/feeding_repository.dart';
+import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/health/data/drug_repository.dart';
 import 'package:mobil_arici/features/health/data/mite_count_repository.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
@@ -271,6 +273,18 @@ Map<String, Object?> _treatmentRow(int seq) => {
   'started_at': '2026-10-24T09:00:00+00:00',
   'planned_removal_at': '2026-12-05T09:00:00+00:00',
   'withdrawal_days': 0,
+};
+
+Map<String, Object?> _feedingRow(int seq) => {
+  ..._standard('feeding-1', seq),
+  'org_id': _org,
+  'hive_id': 'hive-1',
+  'apiary_id': 'apiary-1',
+  'feeding_group_id': 'feeding-group-1',
+  'fed_at': '2026-10-26T09:00:00+00:00',
+  'kind': 'syrup_2_1',
+  // Sunucunun numeric'i metin değil sayı olarak gelir.
+  'amount': 3.785,
 };
 
 bool _isPull(http.Request request) =>
@@ -768,11 +782,12 @@ void main() {
         'ref_drugs': [_refDrugRow(10)],
         'drugs': [_drugRow(11)],
         'treatments': [_treatmentRow(12)],
+        'feedings': [_feedingRow(13)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 12),
+        const SyncResult(status: SyncStatus.done, pulled: 13),
       );
 
       expect(requests.map(_pullOf), [
@@ -788,6 +803,7 @@ void main() {
         (table: 'ref_drugs', since: 0),
         (table: 'drugs', since: 0),
         (table: 'treatments', since: 0),
+        (table: 'feedings', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -866,6 +882,11 @@ void main() {
       expect(treatment.batchNo, '24-118');
       expect(treatment.plannedRemovalAt, DateTime.utc(2026, 12, 5, 9));
       expect(treatment.applicationId, 'application-1');
+      final feeding = (await FeedingRepository(db).findById('feeding-1'))!;
+      expect(feeding.kind, FeedingKind.syrup2to1);
+      expect(feeding.amount, 3.785);
+      expect(feeding.feedingGroupId, 'feeding-group-1');
+      expect(feeding.fedAt, DateTime.utc(2026, 10, 26, 9));
 
       expect(await _cursors(db), {
         'organizations': 1,
@@ -880,6 +901,7 @@ void main() {
         'ref_drugs': 10,
         'drugs': 11,
         'treatments': 12,
+        'feedings': 13,
         fullPullMarker: 0,
       });
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.

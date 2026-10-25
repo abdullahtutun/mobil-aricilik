@@ -123,6 +123,14 @@ class HiveCardScreen extends ConsumerWidget {
                       context.go(AppRoutes.hiveTreat(apiaryId, hiveId)),
                 ),
                 SizedBox(height: context.touchTargets.gap),
+                BigButton(
+                  variant: BigButtonVariant.secondary,
+                  label: l10n.hiveFeed,
+                  icon: Icons.local_drink_outlined,
+                  onPressed: () =>
+                      context.go(AppRoutes.hiveFeed(apiaryId, hiveId)),
+                ),
+                SizedBox(height: context.touchTargets.gap),
               ],
               BigButton(
                 variant: BigButtonVariant.secondary,

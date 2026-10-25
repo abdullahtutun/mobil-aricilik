@@ -63,6 +63,35 @@ class InspectionRepository
     ).watch().map((latest) => {for (final row in latest) row.hiveId: row});
   }
 
+  /// Şimdi [apiaryId] arılığındaki (silinmemiş) kovanların "Kat verildi"
+  /// ya da "Kat alındı" içeren muayeneleri; bal katı olan kovanlar bundan
+  /// hesaplanır (`honeySuperHiveIds`). Kovan arılığa taşınınca da yeniden
+  /// yayar.
+  Stream<List<Inspection>> watchSuperChangesByApiary(String apiaryId) =>
+      _superChangesByApiary(apiaryId).watch();
+
+  /// [watchSuperChangesByApiary]'nin okuma anındaki hâli (ör. toplu
+  /// yazmanın transaction'ında).
+  Future<List<Inspection>> findSuperChangesByApiary(String apiaryId) =>
+      _superChangesByApiary(apiaryId).get();
+
+  SimpleSelectStatement<$InspectionsTable, Inspection> _superChangesByApiary(
+    String apiaryId,
+  ) {
+    final hives = db.hives;
+    final hiveIds = db.selectOnly(hives)
+      ..addColumns([hives.id])
+      ..where(hives.apiaryId.equals(apiaryId) & hives.deletedAt.isNull());
+    // `data` JSON metin; işlem adı tırnaklı arandığı için başka anahtarın
+    // değerine takılmaz. Kesin süzme kuralda (`InspectionFields.actions`).
+    return selectWhere(
+      (t) =>
+          t.hiveId.isInQuery(hiveIds) &
+          (t.data.like('%"${InspectionAction.superAdded.value}"%') |
+              t.data.like('%"${InspectionAction.superRemoved.value}"%')),
+    );
+  }
+
   SimpleSelectStatement<$InspectionsTable, Inspection> _byHive(String hiveId) =>
       selectWhere((t) => t.hiveId.equals(hiveId))..orderBy([
         (t) => OrderingTerm.desc(t.inspectedAt),

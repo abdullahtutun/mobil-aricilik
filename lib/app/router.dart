@@ -19,6 +19,7 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/feeding/presentation/feeding_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/drug_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/varroa_form_screen.dart';
@@ -214,6 +215,12 @@ GoRouter router(Ref ref) {
                                 ),
                               ),
                             ],
+                          ),
+                          GoRoute(
+                            path: 'feed',
+                            builder: (context, state) => FeedingFormScreen(
+                              hiveId: state.pathParameters[_hiveId]!,
+                            ),
                           ),
                           // Kartın üstünde alttan açılır; kart arkada
                           // görünür kalır, kapatınca karta dönülür.

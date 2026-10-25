@@ -1899,6 +1899,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get syncTableTreatments => 'İlaç uygulaması';
 
   @override
+  String get syncTableFeedings => 'Besleme';
+
+  @override
   String get drugIngredientAmitraz => 'Amitraz';
 
   @override
@@ -2205,4 +2208,128 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get treatmentReminderDenied =>
       'Bildirimler kapalı; çıkarma hatırlatıcısı kurulmadı.';
+
+  @override
+  String get hiveFeed => 'Besle';
+
+  @override
+  String get feedingFormTitle => 'Besleme';
+
+  @override
+  String feedingScopeHive(String number) {
+    return 'Kovan $number';
+  }
+
+  @override
+  String feedingScopeApiary(int count) {
+    return 'Arılığın tümü · $count';
+  }
+
+  @override
+  String get feedingKind => 'Tür';
+
+  @override
+  String get feedingKindSyrup1to1 => 'Şurup 1:1 · teşvik';
+
+  @override
+  String get feedingKindSyrup2to1 => 'Şurup 2:1 · kışlık';
+
+  @override
+  String get feedingKindBeeCake => 'Arı keki';
+
+  @override
+  String get feedingKindPollenSubstitute => 'Polen ikamesi';
+
+  @override
+  String feedingAmount(String unit) {
+    return 'Kovan başına ($unit)';
+  }
+
+  @override
+  String get feedingSuperHiveTitle => 'Bu kovanda bal katı var.';
+
+  @override
+  String get feedingSuperHiveMessage => 'Şurup bala karışabilir.';
+
+  @override
+  String feedingSuperSkippedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovanda bal katı var',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedingSuperSkippedMessage(String numbers) {
+    return '($numbers). Şurup bala karışmasın diye hariç tutuldu.';
+  }
+
+  @override
+  String get feedingPrepare => 'Hazırlanacak';
+
+  @override
+  String feedingPrepareCount(int count, String amount, String unit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan × $amount $unit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedingTotalSyrup(String amount, String unit) {
+    return '$amount $unit şurup';
+  }
+
+  @override
+  String feedingTotalBeeCake(String amount, String unit) {
+    return '$amount $unit arı keki';
+  }
+
+  @override
+  String feedingTotalPollenSubstitute(String amount, String unit) {
+    return '$amount $unit polen ikamesi';
+  }
+
+  @override
+  String get feedingSugar => 'Şeker';
+
+  @override
+  String get feedingWater => 'Su';
+
+  @override
+  String feedingApprox(String amount, String unit) {
+    return '≈ $amount $unit';
+  }
+
+  @override
+  String feedingSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovana kaydet',
+      one: 'Kaydet',
+      zero: 'Beslenecek kovan yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedingSaved(String number) {
+    return 'Kovan $number için besleme kaydedildi';
+  }
+
+  @override
+  String feedingSavedMany(int count) {
+    return '$count kovana besleme kaydedildi';
+  }
+
+  @override
+  String get unitLiter => 'L';
+
+  @override
+  String get unitGallon => 'gal';
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/server_enum.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
@@ -131,6 +132,7 @@ void main() {
       'mite_count_method': values(MiteCountMethod.values),
       'drug_active_ingredient': values(DrugActiveIngredient.values),
       'drug_dose_unit': values(DrugDoseUnit.values),
+      'feeding_kind': values(FeedingKind.values),
     };
 
     expect(local, server.enums);

@@ -1916,6 +1916,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncTableTreatments => 'Treatment';
 
   @override
+  String get syncTableFeedings => 'Feeding';
+
+  @override
   String get drugIngredientAmitraz => 'Amitraz';
 
   @override
@@ -2247,4 +2250,130 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get treatmentReminderDenied =>
       'Notifications are off; no removal reminder was set.';
+
+  @override
+  String get hiveFeed => 'Feed';
+
+  @override
+  String get feedingFormTitle => 'Feeding';
+
+  @override
+  String feedingScopeHive(String number) {
+    return 'Hive $number';
+  }
+
+  @override
+  String feedingScopeApiary(int count) {
+    return 'Whole apiary · $count';
+  }
+
+  @override
+  String get feedingKind => 'Type';
+
+  @override
+  String get feedingKindSyrup1to1 => 'Syrup 1:1 · stimulative';
+
+  @override
+  String get feedingKindSyrup2to1 => 'Syrup 2:1 · winter';
+
+  @override
+  String get feedingKindBeeCake => 'Bee cake';
+
+  @override
+  String get feedingKindPollenSubstitute => 'Pollen substitute';
+
+  @override
+  String feedingAmount(String unit) {
+    return 'Per hive ($unit)';
+  }
+
+  @override
+  String get feedingSuperHiveTitle => 'This hive has a honey super.';
+
+  @override
+  String get feedingSuperHiveMessage => 'Syrup may get into the honey.';
+
+  @override
+  String feedingSuperSkippedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives have a honey super',
+      one: '1 hive has a honey super',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedingSuperSkippedMessage(String numbers) {
+    return '($numbers). Left out so the syrup doesn\'t get into the honey.';
+  }
+
+  @override
+  String get feedingPrepare => 'To prepare';
+
+  @override
+  String feedingPrepareCount(int count, String amount, String unit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives × $amount $unit',
+      one: '1 hive × $amount $unit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedingTotalSyrup(String amount, String unit) {
+    return '$amount $unit syrup';
+  }
+
+  @override
+  String feedingTotalBeeCake(String amount, String unit) {
+    return '$amount $unit bee cake';
+  }
+
+  @override
+  String feedingTotalPollenSubstitute(String amount, String unit) {
+    return '$amount $unit pollen substitute';
+  }
+
+  @override
+  String get feedingSugar => 'Sugar';
+
+  @override
+  String get feedingWater => 'Water';
+
+  @override
+  String feedingApprox(String amount, String unit) {
+    return '≈ $amount $unit';
+  }
+
+  @override
+  String feedingSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Save to $count hives',
+      one: 'Save',
+      zero: 'No hive to feed',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedingSaved(String number) {
+    return 'Feeding saved for hive $number';
+  }
+
+  @override
+  String feedingSavedMany(int count) {
+    return 'Feeding saved for $count hives';
+  }
+
+  @override
+  String get unitLiter => 'L';
+
+  @override
+  String get unitGallon => 'gal';
 }

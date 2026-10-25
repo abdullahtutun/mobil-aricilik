@@ -1413,6 +1413,7 @@
   "syncTableRefDrugs": "Drug list",
   "syncTableDrugs": "Drug",
   "syncTableTreatments": "Treatment",
+  "syncTableFeedings": "Feeding",
   "drugIngredientAmitraz": "Amitraz",
   "drugIngredientOxalicAcid": "Oxalic acid",
   "drugIngredientFormicAcid": "Formic acid",
@@ -1712,5 +1713,160 @@
       }
     }
   },
-  "treatmentReminderDenied": "Notifications are off; no removal reminder was set."
+  "treatmentReminderDenied": "Notifications are off; no removal reminder was set.",
+  "hiveFeed": "Feed",
+  "feedingFormTitle": "Feeding",
+  "feedingScopeHive": "Hive {number}",
+  "@feedingScopeHive": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "feedingScopeApiary": "Whole apiary · {count}",
+  "@feedingScopeApiary": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "feedingKind": "Type",
+  "feedingKindSyrup1to1": "Syrup 1:1 · stimulative",
+  "feedingKindSyrup2to1": "Syrup 2:1 · winter",
+  "feedingKindBeeCake": "Bee cake",
+  "feedingKindPollenSubstitute": "Pollen substitute",
+  "feedingAmount": "Per hive ({unit})",
+  "@feedingAmount": {
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "L"
+      }
+    }
+  },
+  "feedingSuperHiveTitle": "This hive has a honey super.",
+  "feedingSuperHiveMessage": "Syrup may get into the honey.",
+  "feedingSuperSkippedTitle": "{count, plural, =1{1 hive has a honey super} other{{count} hives have a honey super}}",
+  "@feedingSuperSkippedTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "feedingSuperSkippedMessage": "({numbers}). Left out so the syrup doesn't get into the honey.",
+  "@feedingSuperSkippedMessage": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "105, 107, 110"
+      }
+    }
+  },
+  "feedingPrepare": "To prepare",
+  "feedingPrepareCount": "{count, plural, =1{1 hive × {amount} {unit}} other{{count} hives × {amount} {unit}}}",
+  "@feedingPrepareCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "37"
+      },
+      "amount": {
+        "type": "String",
+        "example": "3"
+      },
+      "unit": {
+        "type": "String",
+        "example": "L"
+      }
+    }
+  },
+  "feedingTotalSyrup": "{amount} {unit} syrup",
+  "@feedingTotalSyrup": {
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "111"
+      },
+      "unit": {
+        "type": "String",
+        "example": "L"
+      }
+    }
+  },
+  "feedingTotalBeeCake": "{amount} {unit} bee cake",
+  "@feedingTotalBeeCake": {
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "37"
+      },
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "feedingTotalPollenSubstitute": "{amount} {unit} pollen substitute",
+  "@feedingTotalPollenSubstitute": {
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "37"
+      },
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "feedingSugar": "Sugar",
+  "feedingWater": "Water",
+  "feedingApprox": "≈ {amount} {unit}",
+  "@feedingApprox": {
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "99"
+      },
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "feedingSave": "{count, plural, =0{No hive to feed} =1{Save} other{Save to {count} hives}}",
+  "@feedingSave": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "37"
+      }
+    }
+  },
+  "feedingSaved": "Feeding saved for hive {number}",
+  "@feedingSaved": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "feedingSavedMany": "Feeding saved for {count} hives",
+  "@feedingSavedMany": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "37"
+      }
+    }
+  },
+  "unitLiter": "L",
+  "unitGallon": "gal"
 }

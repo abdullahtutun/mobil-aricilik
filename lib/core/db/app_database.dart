@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.steps.dart';
 import 'package:mobil_arici/core/db/converters.dart';
+import 'package:mobil_arici/core/db/tables/feeding_tables.dart';
 import 'package:mobil_arici/core/db/tables/health_tables.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
@@ -8,6 +9,7 @@ import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
@@ -49,6 +51,7 @@ part 'app_database.g.dart';
     RefDrugs,
     Drugs,
     Treatments,
+    Feedings,
     LocalSettings,
     Outbox,
     SyncState,
@@ -58,7 +61,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -101,6 +104,14 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(schema.treatments, schema.treatments.applicationId);
         await m.create(schema.treatmentsApplicationIdIdx);
         await m.addColumn(schema.media, schema.media.treatmentId);
+      },
+      // Besleme kayıtları.
+      from6To7: (m, schema) async {
+        await m.createTable(schema.feedings);
+        await m.create(schema.feedingsOrgIdIdx);
+        await m.create(schema.feedingsHiveIdIdx);
+        await m.create(schema.feedingsApiaryIdIdx);
+        await m.create(schema.feedingsFeedingGroupIdIdx);
       },
     ),
   );

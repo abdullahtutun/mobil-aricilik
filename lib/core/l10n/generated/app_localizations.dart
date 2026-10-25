@@ -3188,6 +3188,12 @@ abstract class AppLocalizations {
   /// **'Treatment'**
   String get syncTableTreatments;
 
+  /// No description provided for @syncTableFeedings.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding'**
+  String get syncTableFeedings;
+
   /// No description provided for @drugIngredientAmitraz.
   ///
   /// In en, this message translates to:
@@ -3637,6 +3643,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications are off; no removal reminder was set.'**
   String get treatmentReminderDenied;
+
+  /// No description provided for @hiveFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed'**
+  String get hiveFeed;
+
+  /// No description provided for @feedingFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding'**
+  String get feedingFormTitle;
+
+  /// No description provided for @feedingScopeHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number}'**
+  String feedingScopeHive(String number);
+
+  /// No description provided for @feedingScopeApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole apiary · {count}'**
+  String feedingScopeApiary(int count);
+
+  /// No description provided for @feedingKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get feedingKind;
+
+  /// No description provided for @feedingKindSyrup1to1.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrup 1:1 · stimulative'**
+  String get feedingKindSyrup1to1;
+
+  /// No description provided for @feedingKindSyrup2to1.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrup 2:1 · winter'**
+  String get feedingKindSyrup2to1;
+
+  /// No description provided for @feedingKindBeeCake.
+  ///
+  /// In en, this message translates to:
+  /// **'Bee cake'**
+  String get feedingKindBeeCake;
+
+  /// No description provided for @feedingKindPollenSubstitute.
+  ///
+  /// In en, this message translates to:
+  /// **'Pollen substitute'**
+  String get feedingKindPollenSubstitute;
+
+  /// No description provided for @feedingAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Per hive ({unit})'**
+  String feedingAmount(String unit);
+
+  /// No description provided for @feedingSuperHiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This hive has a honey super.'**
+  String get feedingSuperHiveTitle;
+
+  /// No description provided for @feedingSuperHiveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrup may get into the honey.'**
+  String get feedingSuperHiveMessage;
+
+  /// No description provided for @feedingSuperSkippedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive has a honey super} other{{count} hives have a honey super}}'**
+  String feedingSuperSkippedTitle(int count);
+
+  /// No description provided for @feedingSuperSkippedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'({numbers}). Left out so the syrup doesn\'t get into the honey.'**
+  String feedingSuperSkippedMessage(String numbers);
+
+  /// No description provided for @feedingPrepare.
+  ///
+  /// In en, this message translates to:
+  /// **'To prepare'**
+  String get feedingPrepare;
+
+  /// No description provided for @feedingPrepareCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive × {amount} {unit}} other{{count} hives × {amount} {unit}}}'**
+  String feedingPrepareCount(int count, String amount, String unit);
+
+  /// No description provided for @feedingTotalSyrup.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {unit} syrup'**
+  String feedingTotalSyrup(String amount, String unit);
+
+  /// No description provided for @feedingTotalBeeCake.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {unit} bee cake'**
+  String feedingTotalBeeCake(String amount, String unit);
+
+  /// No description provided for @feedingTotalPollenSubstitute.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {unit} pollen substitute'**
+  String feedingTotalPollenSubstitute(String amount, String unit);
+
+  /// No description provided for @feedingSugar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sugar'**
+  String get feedingSugar;
+
+  /// No description provided for @feedingWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get feedingWater;
+
+  /// No description provided for @feedingApprox.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {amount} {unit}'**
+  String feedingApprox(String amount, String unit);
+
+  /// No description provided for @feedingSave.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No hive to feed} =1{Save} other{Save to {count} hives}}'**
+  String feedingSave(int count);
+
+  /// No description provided for @feedingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding saved for hive {number}'**
+  String feedingSaved(String number);
+
+  /// No description provided for @feedingSavedMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding saved for {count} hives'**
+  String feedingSavedMany(int count);
+
+  /// No description provided for @unitLiter.
+  ///
+  /// In en, this message translates to:
+  /// **'L'**
+  String get unitLiter;
+
+  /// No description provided for @unitGallon.
+  ///
+  /// In en, this message translates to:
+  /// **'gal'**
+  String get unitGallon;
 }
 
 class _AppLocalizationsDelegate

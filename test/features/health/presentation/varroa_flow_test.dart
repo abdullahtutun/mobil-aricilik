@@ -184,6 +184,8 @@ void main() {
       expect(saved.apiaryId, yayla.id);
 
       await _tap(tester, find.text('Undo'));
+      // Uzun kartta liste aşağıda kalmış olabilir; karo yukarıda.
+      await tester.scrollUntilVisible(find.text('VARROA'), -200);
       expect(
         find.descendant(of: _varroaTile(), matching: find.text('No count yet')),
         findsOneWidget,
