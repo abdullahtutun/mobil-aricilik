@@ -1775,4 +1775,134 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get syncTableMiteCounts => 'Varroa count';
+
+  @override
+  String get varroaMethodSugarRoll => 'Sugar roll';
+
+  @override
+  String get varroaMethodAlcoholWash => 'Alcohol wash';
+
+  @override
+  String get varroaMethodStickyBoard => 'Sticky board';
+
+  @override
+  String varroaFormTitle(String number) {
+    return 'Varroa · Hive $number';
+  }
+
+  @override
+  String get varroaMethod => 'Method';
+
+  @override
+  String get varroaSampleBees => 'Sample bees';
+
+  @override
+  String get varroaBoardDays => 'Days on board';
+
+  @override
+  String get varroaMites => 'Mites counted';
+
+  @override
+  String get varroaBoardMites => 'Mites dropped';
+
+  @override
+  String get varroaSave => 'Save';
+
+  @override
+  String varroaSaved(String number) {
+    return 'Varroa count saved for hive $number';
+  }
+
+  @override
+  String varroaPercent(double value) {
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String valueString = valueNumberFormat.format(value);
+
+    return '$valueString%';
+  }
+
+  @override
+  String varroaPerDay(double value) {
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String valueString = valueNumberFormat.format(value);
+
+    return '$valueString mites/day';
+  }
+
+  @override
+  String get varroaInfestation => 'Infestation';
+
+  @override
+  String get varroaDailyDrop => 'Daily drop';
+
+  @override
+  String get varroaReached => 'At threshold · plan treatment';
+
+  @override
+  String get varroaBelow => 'Below threshold';
+
+  @override
+  String varroaThresholdNote(String threshold) {
+    return 'Threshold $threshold (from Settings).';
+  }
+
+  @override
+  String get hiveVarroa => 'Varroa';
+
+  @override
+  String get hiveVarroaNone => 'No count yet';
+
+  @override
+  String get hiveVarroaReached => 'Threshold reached';
+
+  @override
+  String get hiveVarroaCount => 'Count varroa';
+
+  @override
+  String varroaChartTitle(String apiary) {
+    return '$apiary · recent counts';
+  }
+
+  @override
+  String varroaChartThreshold(String threshold) {
+    return 'threshold $threshold';
+  }
+
+  @override
+  String get varroaChartEmpty =>
+      'No sugar roll or alcohol wash counts yet. Add one from a hive card.';
+
+  @override
+  String varroaChartBar(String day, String value) {
+    return '$day: $value';
+  }
+
+  @override
+  String varroaChartSemantics(String threshold, String bars) {
+    return 'Average infestation per day, threshold $threshold: $bars';
+  }
+
+  @override
+  String get settingsVarroa => 'Varroa';
+
+  @override
+  String get settingsVarroaPercent => 'Infestation threshold';
+
+  @override
+  String get settingsVarroaPerDay => 'Sticky board threshold';
+
+  @override
+  String get settingsVarroaHint =>
+      'A warning is shown when a count reaches the threshold. Saved on this phone only.';
 }

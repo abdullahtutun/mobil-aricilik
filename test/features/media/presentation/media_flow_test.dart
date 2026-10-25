@@ -447,8 +447,9 @@ void main() {
       );
       await _open(tester, db: db, media: media, location: AppRoutes.settings);
 
+      // Bölüm adı satırın üstünde; _reveal yalnız aşağı kaydırır.
+      await _reveal(tester, find.text('DATA'));
       await _reveal(tester, find.text('1 file waiting to upload'));
-      expect(find.text('DATA'), findsOneWidget);
       final toggle = find.widgetWithText(
         SwitchListTile,
         'Upload photos on Wi‑Fi only',
@@ -490,8 +491,8 @@ void main() {
 
     container.read(routerProvider).go(AppRoutes.settings);
     await tester.pumpAndSettle();
+    await _reveal(tester, find.text('VERİ'));
     await _reveal(tester, find.text('2 dosya yüklenmeyi bekliyor'));
-    expect(find.text('VERİ'), findsOneWidget);
     expect(find.text("Fotoğrafları sadece Wi‑Fi'da yükle"), findsOneWidget);
     expect(find.text('2 dosya yüklenmeyi bekliyor'), findsOneWidget);
   });

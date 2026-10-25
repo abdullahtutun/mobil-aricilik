@@ -12,6 +12,8 @@ import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/health/data/mite_count_repository.dart';
+import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
@@ -214,6 +216,18 @@ Map<String, Object?> _mediaRow(int seq) => {
   'captured_at': '2026-10-23T07:16:00+00:00',
   'byte_size': 48000,
   'duration_ms': 12000,
+};
+
+Map<String, Object?> _miteCountRow(int seq) => {
+  ..._standard('mite-count-1', seq),
+  'org_id': _org,
+  'hive_id': 'hive-1',
+  'apiary_id': 'apiary-1',
+  'counted_at': '2026-10-23T07:20:00+00:00',
+  'method': 'sticky_board',
+  'mites': 30,
+  'sample_bees': null,
+  'days': 3,
 };
 
 bool _isPull(http.Request request) =>
@@ -707,11 +721,12 @@ void main() {
         'hive_location_history': [_moveRow(6)],
         'inspections': [_inspectionRow(7)],
         'media': [_mediaRow(8)],
+        'mite_counts': [_miteCountRow(9)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 8),
+        const SyncResult(status: SyncStatus.done, pulled: 9),
       );
 
       expect(requests.map(_pullOf), [
@@ -723,6 +738,7 @@ void main() {
         (table: 'hive_location_history', since: 0),
         (table: 'inspections', since: 0),
         (table: 'media', since: 0),
+        (table: 'mite_counts', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -781,6 +797,13 @@ void main() {
       expect(media.capturedAt, DateTime.utc(2026, 10, 23, 7, 16));
       expect(media.durationMs, 12000);
 
+      final count = (await MiteCountRepository(db).findById('mite-count-1'))!;
+      expect(count.method, MiteCountMethod.stickyBoard);
+      expect(count.countedAt, DateTime.utc(2026, 10, 23, 7, 20));
+      expect(count.mites, 30);
+      expect(count.sampleBees, isNull);
+      expect(count.days, 3);
+
       expect(await _cursors(db), {
         'organizations': 1,
         'memberships': 2,
@@ -790,6 +813,7 @@ void main() {
         'hive_location_history': 6,
         'inspections': 7,
         'media': 8,
+        'mite_counts': 9,
         fullPullMarker: 0,
       });
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.

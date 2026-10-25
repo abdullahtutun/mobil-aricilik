@@ -5,8 +5,9 @@ import 'package:mobil_arici/core/design_system/components/section_label.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
 /// Özet karosu (kovan kartı, arılık): küçük büyük harfli etiket, büyük
-/// değer ve altında ayrıntı. [status] verilirse durumun zemininde ve
-/// etiketi durum renginde. Ekran okuyucu karoyu tek parça okur.
+/// değer ve altında ayrıntı. [status] verilirse durumun zemininde,
+/// etiketi durum renginde ve önünde durumun ikonu. Ekran okuyucu karoyu
+/// tek parça okur.
 class SummaryTile extends StatelessWidget {
   const new({
     required this.label,
@@ -25,6 +26,7 @@ class SummaryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final spacing = context.spacing;
     final detail = this.detail;
+    final status = this.status;
 
     return MergeSemantics(
       child: AppCard(
@@ -35,7 +37,21 @@ class SummaryTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SectionLabel(label, status: status),
+              if (status == null)
+                SectionLabel(label)
+              else
+                // Durum yalnız renkle değil ikonuyla da görünsün.
+                Row(
+                  children: [
+                    Icon(
+                      status.icon,
+                      size: context.sizes.iconSmall,
+                      color: status.colorIn(context.colors),
+                    ),
+                    SizedBox(width: spacing.xs),
+                    Flexible(child: SectionLabel(label, status: status)),
+                  ],
+                ),
               SizedBox(height: spacing.xs),
               Text(value, style: context.typography.title),
               if (detail != null) ...[

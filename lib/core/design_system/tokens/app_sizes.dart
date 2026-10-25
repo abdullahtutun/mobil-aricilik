@@ -15,6 +15,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.scanWindow,
     required this.honeycomb,
     required this.mediaThumbnail,
+    required this.chart,
   });
 
   static const standard = AppSizes(
@@ -28,6 +29,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     scanWindow: 240,
     honeycomb: 240,
     mediaThumbnail: 72,
+    chart: 160,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -62,6 +64,10 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// Zaman tünelindeki foto küçük resmi (kare); dokunma hedefinden büyük.
   final double mediaThumbnail;
 
+  /// Çubuk grafiğin çizim alanının yüksekliği (varroa ölçümleri); eksen
+  /// yazıları hariç.
+  final double chart;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -74,6 +80,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? scanWindow,
     double? honeycomb,
     double? mediaThumbnail,
+    double? chart,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -86,6 +93,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       scanWindow: scanWindow ?? this.scanWindow,
       honeycomb: honeycomb ?? this.honeycomb,
       mediaThumbnail: mediaThumbnail ?? this.mediaThumbnail,
+      chart: chart ?? this.chart,
     );
   }
 
@@ -107,6 +115,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       scanWindow: lerpDouble(scanWindow, other.scanWindow, t)!,
       honeycomb: lerpDouble(honeycomb, other.honeycomb, t)!,
       mediaThumbnail: lerpDouble(mediaThumbnail, other.mediaThumbnail, t)!,
+      chart: lerpDouble(chart, other.chart, t)!,
     );
   }
 }

@@ -1280,5 +1280,133 @@
         "example": "2"
       }
     }
-  }
+  },
+
+  "syncTableMiteCounts": "Varroa count",
+  "varroaMethodSugarRoll": "Sugar roll",
+  "varroaMethodAlcoholWash": "Alcohol wash",
+  "varroaMethodStickyBoard": "Sticky board",
+  "varroaFormTitle": "Varroa · Hive {number}",
+  "@varroaFormTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "varroaMethod": "Method",
+  "varroaSampleBees": "Sample bees",
+  "varroaBoardDays": "Days on board",
+  "varroaMites": "Mites counted",
+  "varroaBoardMites": "Mites dropped",
+  "varroaSave": "Save",
+  "varroaSaved": "Varroa count saved for hive {number}",
+  "@varroaSaved": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "varroaPercent": "{value}%",
+  "@varroaPercent": {
+    "description": "Infestation as a percentage with one decimal, e.g. 3.0%.",
+    "placeholders": {
+      "value": {
+        "type": "double",
+        "format": "decimalPatternDigits",
+        "optionalParameters": {
+          "decimalDigits": 1
+        },
+        "example": "3.0"
+      }
+    }
+  },
+  "varroaPerDay": "{value} mites/day",
+  "@varroaPerDay": {
+    "description": "Daily mite drop on a sticky board, one decimal.",
+    "placeholders": {
+      "value": {
+        "type": "double",
+        "format": "decimalPatternDigits",
+        "optionalParameters": {
+          "decimalDigits": 1
+        },
+        "example": "10.0"
+      }
+    }
+  },
+  "varroaInfestation": "Infestation",
+  "varroaDailyDrop": "Daily drop",
+  "varroaReached": "At threshold · plan treatment",
+  "@varroaReached": {
+    "description": "Shown when the result is at or above the threshold."
+  },
+  "varroaBelow": "Below threshold",
+  "varroaThresholdNote": "Threshold {threshold} (from Settings).",
+  "@varroaThresholdNote": {
+    "placeholders": {
+      "threshold": {
+        "type": "String",
+        "example": "3%"
+      }
+    }
+  },
+  "hiveVarroa": "Varroa",
+  "hiveVarroaNone": "No count yet",
+  "hiveVarroaReached": "Threshold reached",
+  "hiveVarroaCount": "Count varroa",
+  "varroaChartTitle": "{apiary} · recent counts",
+  "@varroaChartTitle": {
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Yayla"
+      }
+    }
+  },
+  "varroaChartThreshold": "threshold {threshold}",
+  "@varroaChartThreshold": {
+    "description": "Label on the dashed threshold line of the chart.",
+    "placeholders": {
+      "threshold": {
+        "type": "String",
+        "example": "3%"
+      }
+    }
+  },
+  "varroaChartEmpty": "No sugar roll or alcohol wash counts yet. Add one from a hive card.",
+  "varroaChartBar": "{day}: {value}",
+  "@varroaChartBar": {
+    "description": "Screen reader text for one bar of the varroa chart.",
+    "placeholders": {
+      "day": {
+        "type": "String",
+        "example": "Oct 9"
+      },
+      "value": {
+        "type": "String",
+        "example": "3.0%"
+      }
+    }
+  },
+  "varroaChartSemantics": "Average infestation per day, threshold {threshold}: {bars}",
+  "@varroaChartSemantics": {
+    "placeholders": {
+      "threshold": {
+        "type": "String",
+        "example": "3%"
+      },
+      "bars": {
+        "type": "String",
+        "example": "Oct 9: 2.0%, today: 3.0%"
+      }
+    }
+  },
+  "settingsVarroa": "Varroa",
+  "settingsVarroaPercent": "Infestation threshold",
+  "settingsVarroaPerDay": "Sticky board threshold",
+  "settingsVarroaHint": "A warning is shown when a count reaches the threshold. Saved on this phone only."
 }

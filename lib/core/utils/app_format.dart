@@ -23,6 +23,9 @@ class AppFormat {
   /// Sayısal tarih. `21.10.2026`, `10/21/2026`
   String shortDate(DateTime value) => DateFormat.yMd(locale).format(value);
 
+  /// Yılsız gün ve ay; grafik eksenleri için. `9 Eki`, `Oct 9`
+  String dayMonth(DateTime value) => DateFormat.MMMd(locale).format(value);
+
   /// Yerelin saat düzeni. `14:05`, `2:05 PM`
   String time(DateTime value) => DateFormat.jm(locale).format(value);
 

@@ -134,7 +134,7 @@ final class VoiceRecordingControllerProvider
 }
 
 String _$voiceRecordingControllerHash() =>
-    r'28923ed7fb43be9acb7e6a99ef073f3b071aff0c';
+    r'793b9f068e36b29d0c5f016dd8a30651c02158a3';
 
 /// Bir ekrandaki ([target]: kovan kartı ya da muayene) sesli not kaydı.
 /// Kayıt yokken durum null. Ekran kapanınca (provider bırakılınca) süren

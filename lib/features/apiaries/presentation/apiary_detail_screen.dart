@@ -10,11 +10,13 @@ import 'package:mobil_arici/core/utils/relative_date.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/varroa_chart.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/apiary_hives_section.dart';
 
 /// Arılık detayı: büyük ad, altında aktif kovan sayısı ve son ziyaret;
-/// kovan ekle eylemi ve kovan ızgarası/listesi. Harita şeridi ve tur,
+/// kovan ekle eylemi, kovan ızgarası/listesi ve altında son varroa
+/// ölçümlerinin grafiği. Harita şeridi ve tur,
 /// toplu besleme gibi eylemler kendi adımlarında gelecek.
 class ApiaryDetailScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
@@ -64,6 +66,14 @@ class ApiaryDetailScreen extends ConsumerWidget {
             ],
             SizedBox(height: spacing.xl),
             ApiaryHivesSection(apiaryId: apiaryId),
+            // Sahada önce kovanlar görünsün; grafik altta.
+            if (hasHives) ...[
+              SizedBox(height: spacing.xl),
+              ApiaryVarroaCard(
+                apiaryId: apiaryId,
+                title: l10n.varroaChartTitle(l10n.hiveVarroa),
+              ),
+            ],
           ],
         ),
       ),

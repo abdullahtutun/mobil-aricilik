@@ -6422,6 +6422,589 @@ class MediaUploadsCompanion extends UpdateCompanion<MediaUpload> {
   }
 }
 
+class $MiteCountsTable extends MiteCounts
+    with TableInfo<$MiteCountsTable, MiteCount> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MiteCountsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _countedAtMeta = const VerificationMeta(
+    'countedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> countedAt = GeneratedColumn<DateTime>(
+    'counted_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<MiteCountMethod, String> method =
+      GeneratedColumn<String>(
+        'method',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<MiteCountMethod>($MiteCountsTable.$convertermethod);
+  static const VerificationMeta _mitesMeta = const VerificationMeta('mites');
+  @override
+  late final GeneratedColumn<int> mites = GeneratedColumn<int>(
+    'mites',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sampleBeesMeta = const VerificationMeta(
+    'sampleBees',
+  );
+  @override
+  late final GeneratedColumn<int> sampleBees = GeneratedColumn<int>(
+    'sample_bees',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _daysMeta = const VerificationMeta('days');
+  @override
+  late final GeneratedColumn<int> days = GeneratedColumn<int>(
+    'days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    hiveId,
+    apiaryId,
+    countedAt,
+    method,
+    mites,
+    sampleBees,
+    days,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'mite_counts';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MiteCount> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('counted_at')) {
+      context.handle(
+        _countedAtMeta,
+        countedAt.isAcceptableOrUnknown(data['counted_at']!, _countedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_countedAtMeta);
+    }
+    if (data.containsKey('mites')) {
+      context.handle(
+        _mitesMeta,
+        mites.isAcceptableOrUnknown(data['mites']!, _mitesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_mitesMeta);
+    }
+    if (data.containsKey('sample_bees')) {
+      context.handle(
+        _sampleBeesMeta,
+        sampleBees.isAcceptableOrUnknown(data['sample_bees']!, _sampleBeesMeta),
+      );
+    }
+    if (data.containsKey('days')) {
+      context.handle(
+        _daysMeta,
+        days.isAcceptableOrUnknown(data['days']!, _daysMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MiteCount map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MiteCount(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      countedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}counted_at'],
+      )!,
+      method: $MiteCountsTable.$convertermethod.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}method'],
+        )!,
+      ),
+      mites: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}mites'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      sampleBees: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sample_bees'],
+      ),
+      days: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}days'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $MiteCountsTable createAlias(String alias) {
+    return $MiteCountsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<MiteCountMethod, String> $convertermethod =
+      const ServerEnumConverter(MiteCountMethod.values);
+}
+
+class MiteCountsCompanion extends UpdateCompanion<MiteCount> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> hiveId;
+  final Value<String> apiaryId;
+  final Value<DateTime> countedAt;
+  final Value<MiteCountMethod> method;
+  final Value<int> mites;
+  final Value<int?> sampleBees;
+  final Value<int?> days;
+  final Value<int> rowid;
+  const MiteCountsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.countedAt = const Value.absent(),
+    this.method = const Value.absent(),
+    this.mites = const Value.absent(),
+    this.sampleBees = const Value.absent(),
+    this.days = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MiteCountsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String hiveId,
+    required String apiaryId,
+    required DateTime countedAt,
+    required MiteCountMethod method,
+    required int mites,
+    this.sampleBees = const Value.absent(),
+    this.days = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       hiveId = Value(hiveId),
+       apiaryId = Value(apiaryId),
+       countedAt = Value(countedAt),
+       method = Value(method),
+       mites = Value(mites);
+  static Insertable<MiteCount> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? hiveId,
+    Expression<String>? apiaryId,
+    Expression<DateTime>? countedAt,
+    Expression<String>? method,
+    Expression<int>? mites,
+    Expression<int>? sampleBees,
+    Expression<int>? days,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (countedAt != null) 'counted_at': countedAt,
+      if (method != null) 'method': method,
+      if (mites != null) 'mites': mites,
+      if (sampleBees != null) 'sample_bees': sampleBees,
+      if (days != null) 'days': days,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MiteCountsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? hiveId,
+    Value<String>? apiaryId,
+    Value<DateTime>? countedAt,
+    Value<MiteCountMethod>? method,
+    Value<int>? mites,
+    Value<int?>? sampleBees,
+    Value<int?>? days,
+    Value<int>? rowid,
+  }) {
+    return MiteCountsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      hiveId: hiveId ?? this.hiveId,
+      apiaryId: apiaryId ?? this.apiaryId,
+      countedAt: countedAt ?? this.countedAt,
+      method: method ?? this.method,
+      mites: mites ?? this.mites,
+      sampleBees: sampleBees ?? this.sampleBees,
+      days: days ?? this.days,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (countedAt.present) {
+      map['counted_at'] = Variable<DateTime>(countedAt.value);
+    }
+    if (method.present) {
+      map['method'] = Variable<String>(
+        $MiteCountsTable.$convertermethod.toSql(method.value),
+      );
+    }
+    if (mites.present) {
+      map['mites'] = Variable<int>(mites.value);
+    }
+    if (sampleBees.present) {
+      map['sample_bees'] = Variable<int>(sampleBees.value);
+    }
+    if (days.present) {
+      map['days'] = Variable<int>(days.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MiteCountsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('countedAt: $countedAt, ')
+          ..write('method: $method, ')
+          ..write('mites: $mites, ')
+          ..write('sampleBees: $sampleBees, ')
+          ..write('days: $days, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$MiteCountInsertable implements Insertable<MiteCount> {
+  MiteCount _object;
+  _$MiteCountInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return MiteCountsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      hiveId: Value(_object.hiveId),
+      apiaryId: Value(_object.apiaryId),
+      countedAt: Value(_object.countedAt),
+      method: Value(_object.method),
+      mites: Value(_object.mites),
+      sampleBees: Value(_object.sampleBees),
+      days: Value(_object.days),
+    ).toColumns(false);
+  }
+}
+
+extension MiteCountToInsertable on MiteCount {
+  _$MiteCountInsertable toInsertable() {
+    return _$MiteCountInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -7389,6 +7972,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $InspectionRemindersTable(this);
   late final $MediaTable media = $MediaTable(this);
   late final $MediaUploadsTable mediaUploads = $MediaUploadsTable(this);
+  late final $MiteCountsTable miteCounts = $MiteCountsTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $OutboxTable outbox = $OutboxTable(this);
   late final $SyncStateTable syncState = $SyncStateTable(this);
@@ -7436,6 +8020,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'media_hive_id_idx',
     'CREATE INDEX media_hive_id_idx ON media (hive_id)',
   );
+  late final Index miteCountsOrgIdIdx = Index(
+    'mite_counts_org_id_idx',
+    'CREATE INDEX mite_counts_org_id_idx ON mite_counts (org_id)',
+  );
+  late final Index miteCountsHiveIdIdx = Index(
+    'mite_counts_hive_id_idx',
+    'CREATE INDEX mite_counts_hive_id_idx ON mite_counts (hive_id)',
+  );
+  late final Index miteCountsApiaryIdIdx = Index(
+    'mite_counts_apiary_id_idx',
+    'CREATE INDEX mite_counts_apiary_id_idx ON mite_counts (apiary_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7452,6 +8048,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     inspectionReminders,
     media,
     mediaUploads,
+    miteCounts,
     localSettings,
     outbox,
     syncState,
@@ -7466,6 +8063,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     inspectionsHiveIdIdx,
     mediaOrgIdIdx,
     mediaHiveIdIdx,
+    miteCountsOrgIdIdx,
+    miteCountsHiveIdIdx,
+    miteCountsApiaryIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -11329,6 +11929,384 @@ typedef $$MediaUploadsTableProcessedTableManager =
       MediaUpload,
       PrefetchHooks Function()
     >;
+typedef $$MiteCountsTableCreateCompanionBuilder = MiteCountsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String hiveId,
+  required String apiaryId,
+  required DateTime countedAt,
+  required MiteCountMethod method,
+  required int mites,
+  Value<int?> sampleBees,
+  Value<int?> days,
+  Value<int> rowid,
+});
+typedef $$MiteCountsTableUpdateCompanionBuilder = MiteCountsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> hiveId,
+  Value<String> apiaryId,
+  Value<DateTime> countedAt,
+  Value<MiteCountMethod> method,
+  Value<int> mites,
+  Value<int?> sampleBees,
+  Value<int?> days,
+  Value<int> rowid,
+});
+
+class $$MiteCountsTableFilterComposer
+    extends Composer<_$AppDatabase, $MiteCountsTable> {
+  $$MiteCountsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get countedAt => $composableBuilder(
+    column: $table.countedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<MiteCountMethod, MiteCountMethod, String>
+  get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get mites => $composableBuilder(
+    column: $table.mites,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sampleBees => $composableBuilder(
+    column: $table.sampleBees,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get days => $composableBuilder(
+    column: $table.days,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MiteCountsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MiteCountsTable> {
+  $$MiteCountsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get countedAt => $composableBuilder(
+    column: $table.countedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get mites => $composableBuilder(
+    column: $table.mites,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sampleBees => $composableBuilder(
+    column: $table.sampleBees,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get days => $composableBuilder(
+    column: $table.days,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MiteCountsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MiteCountsTable> {
+  $$MiteCountsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get countedAt =>
+      $composableBuilder(column: $table.countedAt, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<MiteCountMethod, String> get method =>
+      $composableBuilder(column: $table.method, builder: (column) => column);
+
+  GeneratedColumn<int> get mites =>
+      $composableBuilder(column: $table.mites, builder: (column) => column);
+
+  GeneratedColumn<int> get sampleBees => $composableBuilder(
+    column: $table.sampleBees,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get days =>
+      $composableBuilder(column: $table.days, builder: (column) => column);
+}
+
+class $$MiteCountsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MiteCountsTable,
+          MiteCount,
+          $$MiteCountsTableFilterComposer,
+          $$MiteCountsTableOrderingComposer,
+          $$MiteCountsTableAnnotationComposer,
+          $$MiteCountsTableCreateCompanionBuilder,
+          $$MiteCountsTableUpdateCompanionBuilder,
+          (
+            MiteCount,
+            BaseReferences<_$AppDatabase, $MiteCountsTable, MiteCount>,
+          ),
+          MiteCount,
+          PrefetchHooks Function()
+        > {
+  $$MiteCountsTableTableManager(_$AppDatabase db, $MiteCountsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MiteCountsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MiteCountsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MiteCountsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<DateTime> countedAt = const Value.absent(),
+                Value<MiteCountMethod> method = const Value.absent(),
+                Value<int> mites = const Value.absent(),
+                Value<int?> sampleBees = const Value.absent(),
+                Value<int?> days = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MiteCountsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                countedAt: countedAt,
+                method: method,
+                mites: mites,
+                sampleBees: sampleBees,
+                days: days,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String hiveId,
+                required String apiaryId,
+                required DateTime countedAt,
+                required MiteCountMethod method,
+                required int mites,
+                Value<int?> sampleBees = const Value.absent(),
+                Value<int?> days = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MiteCountsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                countedAt: countedAt,
+                method: method,
+                mites: mites,
+                sampleBees: sampleBees,
+                days: days,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MiteCountsTable, MiteCount>(table),
+                  BaseReferences<_$AppDatabase, $MiteCountsTable, MiteCount>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MiteCountsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MiteCountsTable,
+      MiteCount,
+      $$MiteCountsTableFilterComposer,
+      $$MiteCountsTableOrderingComposer,
+      $$MiteCountsTableAnnotationComposer,
+      $$MiteCountsTableCreateCompanionBuilder,
+      $$MiteCountsTableUpdateCompanionBuilder,
+      (MiteCount, BaseReferences<_$AppDatabase, $MiteCountsTable, MiteCount>),
+      MiteCount,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -11916,6 +12894,8 @@ class $AppDatabaseManager {
       $$MediaTableTableManager(_db, _db.media);
   $$MediaUploadsTableTableManager get mediaUploads =>
       $$MediaUploadsTableTableManager(_db, _db.mediaUploads);
+  $$MiteCountsTableTableManager get miteCounts =>
+      $$MiteCountsTableTableManager(_db, _db.miteCounts);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$OutboxTableTableManager get outbox =>

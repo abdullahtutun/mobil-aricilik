@@ -2977,6 +2977,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{age, plural, other{Queens in active hives are younger than {age}, or have no year entered.}}'**
   String oldQueensEmptyMessage(int age);
+
+  /// No description provided for @syncTableMiteCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa count'**
+  String get syncTableMiteCounts;
+
+  /// No description provided for @varroaMethodSugarRoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Sugar roll'**
+  String get varroaMethodSugarRoll;
+
+  /// No description provided for @varroaMethodAlcoholWash.
+  ///
+  /// In en, this message translates to:
+  /// **'Alcohol wash'**
+  String get varroaMethodAlcoholWash;
+
+  /// No description provided for @varroaMethodStickyBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Sticky board'**
+  String get varroaMethodStickyBoard;
+
+  /// No description provided for @varroaFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa · Hive {number}'**
+  String varroaFormTitle(String number);
+
+  /// No description provided for @varroaMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Method'**
+  String get varroaMethod;
+
+  /// No description provided for @varroaSampleBees.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample bees'**
+  String get varroaSampleBees;
+
+  /// No description provided for @varroaBoardDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days on board'**
+  String get varroaBoardDays;
+
+  /// No description provided for @varroaMites.
+  ///
+  /// In en, this message translates to:
+  /// **'Mites counted'**
+  String get varroaMites;
+
+  /// No description provided for @varroaBoardMites.
+  ///
+  /// In en, this message translates to:
+  /// **'Mites dropped'**
+  String get varroaBoardMites;
+
+  /// No description provided for @varroaSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get varroaSave;
+
+  /// No description provided for @varroaSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa count saved for hive {number}'**
+  String varroaSaved(String number);
+
+  /// Infestation as a percentage with one decimal, e.g. 3.0%.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}%'**
+  String varroaPercent(double value);
+
+  /// Daily mite drop on a sticky board, one decimal.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} mites/day'**
+  String varroaPerDay(double value);
+
+  /// No description provided for @varroaInfestation.
+  ///
+  /// In en, this message translates to:
+  /// **'Infestation'**
+  String get varroaInfestation;
+
+  /// No description provided for @varroaDailyDrop.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily drop'**
+  String get varroaDailyDrop;
+
+  /// Shown when the result is at or above the threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'At threshold · plan treatment'**
+  String get varroaReached;
+
+  /// No description provided for @varroaBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'Below threshold'**
+  String get varroaBelow;
+
+  /// No description provided for @varroaThresholdNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Threshold {threshold} (from Settings).'**
+  String varroaThresholdNote(String threshold);
+
+  /// No description provided for @hiveVarroa.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa'**
+  String get hiveVarroa;
+
+  /// No description provided for @hiveVarroaNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No count yet'**
+  String get hiveVarroaNone;
+
+  /// No description provided for @hiveVarroaReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Threshold reached'**
+  String get hiveVarroaReached;
+
+  /// No description provided for @hiveVarroaCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Count varroa'**
+  String get hiveVarroaCount;
+
+  /// No description provided for @varroaChartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{apiary} · recent counts'**
+  String varroaChartTitle(String apiary);
+
+  /// Label on the dashed threshold line of the chart.
+  ///
+  /// In en, this message translates to:
+  /// **'threshold {threshold}'**
+  String varroaChartThreshold(String threshold);
+
+  /// No description provided for @varroaChartEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No sugar roll or alcohol wash counts yet. Add one from a hive card.'**
+  String get varroaChartEmpty;
+
+  /// Screen reader text for one bar of the varroa chart.
+  ///
+  /// In en, this message translates to:
+  /// **'{day}: {value}'**
+  String varroaChartBar(String day, String value);
+
+  /// No description provided for @varroaChartSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Average infestation per day, threshold {threshold}: {bars}'**
+  String varroaChartSemantics(String threshold, String bars);
+
+  /// No description provided for @settingsVarroa.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa'**
+  String get settingsVarroa;
+
+  /// No description provided for @settingsVarroaPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Infestation threshold'**
+  String get settingsVarroaPercent;
+
+  /// No description provided for @settingsVarroaPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Sticky board threshold'**
+  String get settingsVarroaPerDay;
+
+  /// No description provided for @settingsVarroaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A warning is shown when a count reaches the threshold. Saved on this phone only.'**
+  String get settingsVarroaHint;
 }
 
 class _AppLocalizationsDelegate

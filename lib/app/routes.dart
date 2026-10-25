@@ -36,6 +36,10 @@ abstract final class AppRoutes {
   static String hiveQueenEdit(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/queen/edit';
 
+  /// Kovanın varroa ölçümü; geri tuşu kovan kartına döner.
+  static String hiveVarroa(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/varroa';
+
   /// Okutulan kovan: muayene edilebiliyorsa kartı ve üstünde muayene,
   /// değilse (ör. sönmüş) yalnız kartı.
   static String scannedHive(Hive hive) => canInspect(hive)

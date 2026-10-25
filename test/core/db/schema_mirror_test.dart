@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/server_enum.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
@@ -126,6 +127,7 @@ void main() {
       'inspection_temperament': values(Temperament.values),
       'inspection_queen_cells': values(QueenCells.values),
       'media_kind': values(MediaKind.values),
+      'mite_count_method': values(MiteCountMethod.values),
     };
 
     expect(local, server.enums);

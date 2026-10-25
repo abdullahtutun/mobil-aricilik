@@ -453,4 +453,4 @@ final class HivesByQueenProvider
   }
 }
 
-String _$hivesByQueenHash() => r'f9dbd4c590305b0f1bede092312bb04680995cd8';
+String _$hivesByQueenHash() => r'7bed7d542c36cda8ddbe98b74136cef91c76b634';

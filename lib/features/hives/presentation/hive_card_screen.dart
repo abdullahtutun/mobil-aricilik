@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/relative_date.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
+import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
+import 'package:mobil_arici/features/health/presentation/varroa_providers.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
@@ -24,12 +28,13 @@ import 'package:mobil_arici/features/queens/presentation/queen_providers.dart';
 import 'package:mobil_arici/features/queens/presentation/widgets/queen_labels.dart';
 
 /// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
-/// puanı; ana arı şeridi (dokununca ana arı kartı) ve son muayene özeti;
-/// taşıma ve durum değiştirme; en altta zaman tüneli. Altta sabit foto ve
+/// puanı; ana arı şeridi (dokununca ana arı kartı), son muayene ve son
+/// varroa oranı; varroa ölçümü, taşıma ve durum değiştirme; en altta zaman
+/// tüneli. Altta sabit foto ve
 /// mikrofon butonları kovana tek dokunuşla foto ya da sesli not ekler;
 /// aktif kovanda yanlarındaki
 /// "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Diğer özet
-/// karoları (ilaç, varroa, verim) kendi adımlarında gelecek.
+/// karoları (ilaç, verim) kendi adımlarında gelecek.
 ///
 /// [apiaryId] yoldaki arılık (geri tuşu oraya döner); gösterilen arılık
 /// kovanın kendi arılığıdır.
@@ -76,8 +81,28 @@ class HiveCardScreen extends ConsumerWidget {
               SizedBox(height: spacing.lg),
               _QueenStrip(apiaryId: apiaryId, hiveId: hiveId),
               SizedBox(height: spacing.md),
-              _LastInspection(hiveId),
+              // Uzun yazıda iki karo aynı boyda kalsın.
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(child: _LastInspection(hiveId)),
+                    SizedBox(width: context.touchTargets.gap),
+                    Expanded(child: _LastVarroa(hiveId)),
+                  ],
+                ),
+              ),
               SizedBox(height: spacing.lg),
+              if (canInspect(hive)) ...[
+                BigButton(
+                  variant: BigButtonVariant.secondary,
+                  label: l10n.hiveVarroaCount,
+                  icon: Icons.bug_report_outlined,
+                  onPressed: () =>
+                      context.go(AppRoutes.hiveVarroa(apiaryId, hiveId)),
+                ),
+                SizedBox(height: context.touchTargets.gap),
+              ],
               BigButton(
                 variant: BigButtonVariant.secondary,
                 label: l10n.hiveMove,
@@ -404,6 +429,45 @@ class _LastInspection extends ConsumerWidget {
         now: clock.now(),
       ),
       detail: frames.isEmpty ? null : frames.join(l10n.listSeparator),
+    );
+  }
+}
+
+/// Son varroa karosu: sonuç, yöntem ve ne zaman; eşiğe ulaştıysa uyarı
+/// zemininde ve "Eşiğe ulaştı" yazar. Ölçüm yoksa "Ölçüm yok".
+class _LastVarroa extends ConsumerWidget {
+  const new(this.hiveId);
+
+  final String hiveId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final counts = ref.watch(hiveMiteCountsProvider(hiveId));
+    final thresholds =
+        ref.watch(varroaThresholdsProvider).value ?? defaultVarroaThresholds;
+    // Yüklenirken boş kalır; "yok" yanıp sönmesin.
+    if (!counts.hasValue) return const SizedBox.shrink();
+    final latest = counts.value!.firstOrNull;
+    final load = latest == null ? null : miteLoadOf(latest);
+    if (latest == null || load == null) {
+      return SummaryTile(label: l10n.hiveVarroa, value: l10n.hiveVarroaNone);
+    }
+    final reached = reachesThreshold(load, thresholds);
+    return SummaryTile(
+      label: l10n.hiveVarroa,
+      value: miteLoadText(l10n, load),
+      status: reached ? AppStatus.warning : null,
+      detail: [
+        if (reached) l10n.hiveVarroaReached,
+        latest.method.label(l10n),
+        relativeDay(
+          l10n,
+          AppFormat.of(context),
+          latest.countedAt,
+          now: clock.now(),
+        ),
+      ].join(l10n.titleSeparator),
     );
   }
 }

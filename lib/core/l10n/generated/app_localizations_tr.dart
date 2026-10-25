@@ -1758,4 +1758,134 @@ class AppLocalizationsTr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get syncTableMiteCounts => 'Varroa ölçümü';
+
+  @override
+  String get varroaMethodSugarRoll => 'Pudra şekeri';
+
+  @override
+  String get varroaMethodAlcoholWash => 'Alkol';
+
+  @override
+  String get varroaMethodStickyBoard => 'Alt tabla';
+
+  @override
+  String varroaFormTitle(String number) {
+    return 'Varroa · Kovan $number';
+  }
+
+  @override
+  String get varroaMethod => 'Yöntem';
+
+  @override
+  String get varroaSampleBees => 'Örnek arı';
+
+  @override
+  String get varroaBoardDays => 'Tablada gün';
+
+  @override
+  String get varroaMites => 'Sayılan akar';
+
+  @override
+  String get varroaBoardMites => 'Dökülen akar';
+
+  @override
+  String get varroaSave => 'Kaydet';
+
+  @override
+  String varroaSaved(String number) {
+    return 'Kovan $number varroa ölçümü kaydedildi';
+  }
+
+  @override
+  String varroaPercent(double value) {
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String valueString = valueNumberFormat.format(value);
+
+    return '%$valueString';
+  }
+
+  @override
+  String varroaPerDay(double value) {
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String valueString = valueNumberFormat.format(value);
+
+    return 'Günde $valueString akar';
+  }
+
+  @override
+  String get varroaInfestation => 'Bulaşıklık';
+
+  @override
+  String get varroaDailyDrop => 'Günlük döküm';
+
+  @override
+  String get varroaReached => 'Eşikte · mücadele planla';
+
+  @override
+  String get varroaBelow => 'Eşiğin altında';
+
+  @override
+  String varroaThresholdNote(String threshold) {
+    return 'Eşik $threshold (Ayarlar\'dan).';
+  }
+
+  @override
+  String get hiveVarroa => 'Varroa';
+
+  @override
+  String get hiveVarroaNone => 'Ölçüm yok';
+
+  @override
+  String get hiveVarroaReached => 'Eşiğe ulaştı';
+
+  @override
+  String get hiveVarroaCount => 'Varroa ölç';
+
+  @override
+  String varroaChartTitle(String apiary) {
+    return '$apiary · son ölçümler';
+  }
+
+  @override
+  String varroaChartThreshold(String threshold) {
+    return 'eşik $threshold';
+  }
+
+  @override
+  String get varroaChartEmpty =>
+      'Henüz pudra şekeri ya da alkol ölçümü yok. Kovan kartından ekleyebilirsiniz.';
+
+  @override
+  String varroaChartBar(String day, String value) {
+    return '$day: $value';
+  }
+
+  @override
+  String varroaChartSemantics(String threshold, String bars) {
+    return 'Gün başına ortalama bulaşıklık, eşik $threshold: $bars';
+  }
+
+  @override
+  String get settingsVarroa => 'Varroa';
+
+  @override
+  String get settingsVarroaPercent => 'Bulaşıklık eşiği';
+
+  @override
+  String get settingsVarroaPerDay => 'Alt tabla eşiği';
+
+  @override
+  String get settingsVarroaHint =>
+      'Ölçüm eşiğe ulaşınca uyarı çıkar. Yalnız bu telefonda saklanır.';
 }

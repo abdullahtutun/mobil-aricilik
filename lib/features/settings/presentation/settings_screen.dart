@@ -8,12 +8,15 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
-/// ülke), veri ("sadece Wi‑Fi'da yükle" ve bekleyen dosyalar) ve hesap.
-/// Görünüm ve dil şimdilik yalnızca bellekte; Wi‑Fi seçimi bu telefonun
-/// yerel DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
+/// ülke), veri ("sadece Wi‑Fi'da yükle" ve bekleyen dosyalar), varroa
+/// eşikleri ve hesap. Görünüm ve dil şimdilik yalnızca bellekte; Wi‑Fi
+/// seçimi ve varroa eşikleri bu telefonun yerel DB'sinde. Ülke burada
+/// seçilmez, yalnız gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -102,6 +105,10 @@ class SettingsScreen extends ConsumerWidget {
           SectionLabel(l10n.settingsData),
           labelGap,
           const ListGroup(children: [_MediaWifiOnlyTile()]),
+          sectionGap,
+          SectionLabel(l10n.settingsVarroa),
+          labelGap,
+          const _VarroaThresholds(),
           sectionGap,
           SectionLabel(l10n.settingsAccount),
           labelGap,
@@ -208,6 +215,95 @@ class _MediaWifiOnlyTile extends ConsumerWidget {
           color: context.colors.textSecondary,
         ),
       ),
+    );
+  }
+}
+
+/// Varroa uyarı eşikleri: bulaşıklık (pudra şekeri, alkol) ve alt tabla
+/// günlük dökümü; seçim alttan açılan sayfada, klavyesiz.
+class _VarroaThresholds extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final thresholds =
+        ref.watch(varroaThresholdsProvider).value ?? defaultVarroaThresholds;
+    final settings = ref.read(localSettingsRepositoryProvider);
+
+    Future<void> choose(
+      String title,
+      MiteLoadUnit unit,
+      List<double> options,
+      double current,
+      Future<void> Function(double value) save,
+    ) async {
+      final chosen = await showOptionSheet<double>(
+        context,
+        (context) => OptionSheet(
+          title: title,
+          options: [
+            for (final option in options)
+              SheetOption(
+                value: option,
+                icon: option == current
+                    ? Icons.check_circle_rounded
+                    : Icons.radio_button_unchecked_rounded,
+                iconColor: option == current ? null : context.colors.outline,
+                label: miteValueText(l10n, option, unit),
+                selected: option == current,
+              ),
+          ],
+        ),
+      );
+      if (chosen != null) await save(chosen);
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ListGroup(
+          children: [
+            ListRow(
+              title: l10n.settingsVarroaPercent,
+              value: miteValueText(
+                l10n,
+                thresholds.percent,
+                MiteLoadUnit.percent,
+              ),
+              onTap: () => choose(
+                l10n.settingsVarroaPercent,
+                MiteLoadUnit.percent,
+                percentThresholdOptions,
+                thresholds.percent,
+                settings.setVarroaPercentThreshold,
+              ),
+            ),
+            ListRow(
+              title: l10n.settingsVarroaPerDay,
+              value: miteValueText(
+                l10n,
+                thresholds.perDay,
+                MiteLoadUnit.perDay,
+              ),
+              onTap: () => choose(
+                l10n.settingsVarroaPerDay,
+                MiteLoadUnit.perDay,
+                perDayThresholdOptions,
+                thresholds.perDay,
+                settings.setVarroaPerDayThreshold,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: context.spacing.sm),
+        Text(
+          l10n.settingsVarroaHint,
+          style: context.typography.bodySmall.copyWith(
+            color: context.colors.textSecondary,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,12 +1,14 @@
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.steps.dart';
 import 'package:mobil_arici/core/db/converters.dart';
+import 'package:mobil_arici/core/db/tables/health_tables.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -41,6 +43,7 @@ part 'app_database.g.dart';
     InspectionReminders,
     Media,
     MediaUploads,
+    MiteCounts,
     LocalSettings,
     Outbox,
     SyncState,
@@ -50,7 +53,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -70,6 +73,13 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.mediaHiveIdIdx);
         await m.createTable(schema.mediaUploads);
         await m.createTable(schema.localSettings);
+      },
+      // Varroa ölçümleri.
+      from3To4: (m, schema) async {
+        await m.createTable(schema.miteCounts);
+        await m.create(schema.miteCountsOrgIdIdx);
+        await m.create(schema.miteCountsHiveIdIdx);
+        await m.create(schema.miteCountsApiaryIdIdx);
       },
     ),
   );

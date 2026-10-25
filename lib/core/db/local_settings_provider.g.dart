@@ -94,3 +94,47 @@ final class MediaWifiOnlyProvider
 }
 
 String _$mediaWifiOnlyHash() => r'857837556216810395de7759865cba36de9cac47';
+
+/// Varroa uyarı eşikleri (bu telefonun ayarı).
+
+@ProviderFor(varroaThresholds)
+final varroaThresholdsProvider = VarroaThresholdsProvider._();
+
+/// Varroa uyarı eşikleri (bu telefonun ayarı).
+
+final class VarroaThresholdsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<VarroaThresholds>,
+          VarroaThresholds,
+          Stream<VarroaThresholds>
+        >
+    with $FutureModifier<VarroaThresholds>, $StreamProvider<VarroaThresholds> {
+  /// Varroa uyarı eşikleri (bu telefonun ayarı).
+  VarroaThresholdsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'varroaThresholdsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$varroaThresholdsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<VarroaThresholds> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<VarroaThresholds> create(Ref ref) {
+    return varroaThresholds(ref);
+  }
+}
+
+String _$varroaThresholdsHash() => r'f86a5bfc69ac8abdfde3f08a3395811284beecb8';

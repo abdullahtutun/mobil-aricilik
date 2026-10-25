@@ -1682,9 +1682,505 @@ i1.GeneratedColumn<String> _column_77(String aliasedName) =>
       type: i1.DriftSqlType.string,
       $customConstraints: 'NOT NULL',
     );
+
+final class Schema4 extends i0.VersionedSchema {
+  Schema4({required super.database}) : super(version: 4);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    organizations,
+    memberships,
+    apiaries,
+    queens,
+    hives,
+    hiveLocationHistory,
+    inspections,
+    inspectionDrafts,
+    inspectionReminders,
+    media,
+    mediaUploads,
+    miteCounts,
+    localSettings,
+    outbox,
+    syncState,
+    membershipsOrgIdIdx,
+    apiariesOrgIdIdx,
+    queensOrgIdIdx,
+    hivesOrgIdIdx,
+    hivesApiaryIdIdx,
+    hiveLocationHistoryOrgIdIdx,
+    hiveLocationHistoryHiveIdIdx,
+    inspectionsOrgIdIdx,
+    inspectionsHiveIdIdx,
+    mediaOrgIdIdx,
+    mediaHiveIdIdx,
+    miteCountsOrgIdIdx,
+    miteCountsHiveIdIdx,
+    miteCountsApiaryIdIdx,
+  ];
+  late final Shape0 organizations = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'organizations',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+        _column_7,
+        _column_8,
+        _column_9,
+        _column_10,
+        _column_11,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape1 memberships = Shape1(
+    source: i0.VersionedTable(
+      entityName: 'memberships',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_13,
+        _column_14,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 apiaries = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'apiaries',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK((latitude IS NULL)=(longitude IS NULL))',
+      ],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_6,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_18,
+        _column_19,
+        _column_20,
+        _column_21,
+        _column_22,
+        _column_23,
+        _column_24,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 queens = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'queens',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_25,
+        _column_26,
+        _column_27,
+        _column_28,
+        _column_29,
+        _column_30,
+        _column_31,
+        _column_32,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape4 hives = Shape4(
+    source: i0.VersionedTable(
+      entityName: 'hives',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_36,
+        _column_37,
+        _column_38,
+        _column_39,
+        _column_40,
+        _column_29,
+        _column_41,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape5 hiveLocationHistory = Shape5(
+    source: i0.VersionedTable(
+      entityName: 'hive_location_history',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_43,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape6 inspections = Shape6(
+    source: i0.VersionedTable(
+      entityName: 'inspections',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_44,
+        _column_45,
+        _column_46,
+        _column_47,
+        _column_48,
+        _column_49,
+        _column_50,
+        _column_51,
+        _column_52,
+        _column_53,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape7 inspectionDrafts = Shape7(
+    source: i0.VersionedTable(
+      entityName: 'inspection_drafts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(hive_id)'],
+      columns: [_column_42, _column_12, _column_54, _column_2],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape8 inspectionReminders = Shape8(
+    source: i0.VersionedTable(
+      entityName: 'inspection_reminders',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(inspection_id)'],
+      columns: [
+        _column_55,
+        _column_12,
+        _column_42,
+        _column_56,
+        _column_57,
+        _column_1,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape11 media = Shape11(
+    source: i0.VersionedTable(
+      entityName: 'media',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_66,
+        _column_67,
+        _column_68,
+        _column_69,
+        _column_70,
+        _column_71,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape12 mediaUploads = Shape12(
+    source: i0.VersionedTable(
+      entityName: 'media_uploads',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(media_id)'],
+      columns: [
+        _column_72,
+        _column_12,
+        _column_73,
+        _column_74,
+        _column_63,
+        _column_75,
+        _column_64,
+        _column_1,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape14 miteCounts = Shape14(
+    source: i0.VersionedTable(
+      entityName: 'mite_counts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_78,
+        _column_79,
+        _column_80,
+        _column_81,
+        _column_82,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape13 localSettings = Shape13(
+    source: i0.VersionedTable(
+      entityName: 'local_settings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY("key")'],
+      columns: [_column_76, _column_77],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape9 outbox = Shape9(
+    source: i0.VersionedTable(
+      entityName: 'outbox',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_58,
+        _column_59,
+        _column_60,
+        _column_61,
+        _column_62,
+        _column_1,
+        _column_63,
+        _column_64,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape10 syncState = Shape10(
+    source: i0.VersionedTable(
+      entityName: 'sync_state',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(record_table)'],
+      columns: [_column_59, _column_65],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  final i1.Index membershipsOrgIdIdx = i1.Index(
+    'memberships_org_id_idx',
+    'CREATE INDEX memberships_org_id_idx ON memberships (org_id)',
+  );
+  final i1.Index apiariesOrgIdIdx = i1.Index(
+    'apiaries_org_id_idx',
+    'CREATE INDEX apiaries_org_id_idx ON apiaries (org_id)',
+  );
+  final i1.Index queensOrgIdIdx = i1.Index(
+    'queens_org_id_idx',
+    'CREATE INDEX queens_org_id_idx ON queens (org_id)',
+  );
+  final i1.Index hivesOrgIdIdx = i1.Index(
+    'hives_org_id_idx',
+    'CREATE INDEX hives_org_id_idx ON hives (org_id)',
+  );
+  final i1.Index hivesApiaryIdIdx = i1.Index(
+    'hives_apiary_id_idx',
+    'CREATE INDEX hives_apiary_id_idx ON hives (apiary_id)',
+  );
+  final i1.Index hiveLocationHistoryOrgIdIdx = i1.Index(
+    'hive_location_history_org_id_idx',
+    'CREATE INDEX hive_location_history_org_id_idx ON hive_location_history (org_id)',
+  );
+  final i1.Index hiveLocationHistoryHiveIdIdx = i1.Index(
+    'hive_location_history_hive_id_idx',
+    'CREATE INDEX hive_location_history_hive_id_idx ON hive_location_history (hive_id)',
+  );
+  final i1.Index inspectionsOrgIdIdx = i1.Index(
+    'inspections_org_id_idx',
+    'CREATE INDEX inspections_org_id_idx ON inspections (org_id)',
+  );
+  final i1.Index inspectionsHiveIdIdx = i1.Index(
+    'inspections_hive_id_idx',
+    'CREATE INDEX inspections_hive_id_idx ON inspections (hive_id)',
+  );
+  final i1.Index mediaOrgIdIdx = i1.Index(
+    'media_org_id_idx',
+    'CREATE INDEX media_org_id_idx ON media (org_id)',
+  );
+  final i1.Index mediaHiveIdIdx = i1.Index(
+    'media_hive_id_idx',
+    'CREATE INDEX media_hive_id_idx ON media (hive_id)',
+  );
+  final i1.Index miteCountsOrgIdIdx = i1.Index(
+    'mite_counts_org_id_idx',
+    'CREATE INDEX mite_counts_org_id_idx ON mite_counts (org_id)',
+  );
+  final i1.Index miteCountsHiveIdIdx = i1.Index(
+    'mite_counts_hive_id_idx',
+    'CREATE INDEX mite_counts_hive_id_idx ON mite_counts (hive_id)',
+  );
+  final i1.Index miteCountsApiaryIdIdx = i1.Index(
+    'mite_counts_apiary_id_idx',
+    'CREATE INDEX mite_counts_apiary_id_idx ON mite_counts (apiary_id)',
+  );
+}
+
+class Shape14 extends i0.VersionedTable {
+  Shape14({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdAt =>
+      columnsByName['created_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get updatedAt =>
+      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdBy =>
+      columnsByName['created_by']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get deletedAt =>
+      columnsByName['deleted_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get serverSeq =>
+      columnsByName['server_seq']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get orgId =>
+      columnsByName['org_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get hiveId =>
+      columnsByName['hive_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get apiaryId =>
+      columnsByName['apiary_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get countedAt =>
+      columnsByName['counted_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get method =>
+      columnsByName['method']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get mites =>
+      columnsByName['mites']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get sampleBees =>
+      columnsByName['sample_bees']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get days =>
+      columnsByName['days']! as i1.GeneratedColumn<int>;
+}
+
+i1.GeneratedColumn<String> _column_78(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'counted_at',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<String> _column_79(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'method',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<int> _column_80(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'mites',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<int> _column_81(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'sample_bees',
+      aliasedName,
+      true,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NULL',
+    );
+i1.GeneratedColumn<int> _column_82(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'days',
+      aliasedName,
+      true,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NULL',
+    );
 i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
   required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
+  required Future<void> Function(i1.Migrator m, Schema4 schema) from3To4,
 }) {
   return (currentVersion, database) async {
     switch (currentVersion) {
@@ -1698,6 +2194,11 @@ i0.MigrationStepWithVersion migrationSteps({
         final migrator = i1.Migrator(database, schema);
         await from2To3(migrator, schema);
         return 3;
+      case 3:
+        final schema = Schema4(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from3To4(migrator, schema);
+        return 4;
       default:
         throw ArgumentError.value('Unknown migration from $currentVersion');
     }
@@ -1707,6 +2208,11 @@ i0.MigrationStepWithVersion migrationSteps({
 i1.OnUpgrade stepByStep({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
   required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
+  required Future<void> Function(i1.Migrator m, Schema4 schema) from3To4,
 }) => i0.VersionedSchema.stepByStepHelper(
-  step: migrationSteps(from1To2: from1To2, from2To3: from2To3),
+  step: migrationSteps(
+    from1To2: from1To2,
+    from2To3: from2To3,
+    from3To4: from3To4,
+  ),
 );
