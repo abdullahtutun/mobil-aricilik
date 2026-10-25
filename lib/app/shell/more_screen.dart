@@ -10,7 +10,7 @@ import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 
 /// Seyrek kullanılan modüllerin girişi: üstte işletme kartı, altında iki
-/// sütunlu modül karoları. Şimdilik Ayarlar ve Senkron var; diğer
+/// sütunlu modül karoları. Şimdilik yaşlı analar, Ayarlar ve Senkron var; diğer
 /// modüller geldikçe kendi bölümlerine eklenir.
 class MoreScreen extends ConsumerWidget {
   const new({super.key});
@@ -37,6 +37,26 @@ class MoreScreen extends ConsumerWidget {
             ),
             SizedBox(height: spacing.xl),
           ],
+          SectionLabel(l10n.hiveQueenTitle),
+          SizedBox(height: spacing.sm),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: gap,
+              children: [
+                Expanded(
+                  child: _ModuleTile(
+                    icon: Icons.workspace_premium_outlined,
+                    label: l10n.oldQueensTitle,
+                    onTap: () => context.go(AppRoutes.oldQueens),
+                  ),
+                ),
+                // Karo öbür bölümlerdekiyle aynı genişlikte kalsın.
+                const Expanded(child: SizedBox.shrink()),
+              ],
+            ),
+          ),
+          SizedBox(height: spacing.xl),
           SectionLabel(l10n.moreSectionHelp),
           SizedBox(height: spacing.sm),
           IntrinsicHeight(

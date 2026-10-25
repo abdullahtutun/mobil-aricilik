@@ -348,10 +348,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hiveQueenTitle => 'Ana arı';
 
   @override
-  String get hiveQueenPlaceholder =>
-      'Henüz ana arı kaydı yok. Ana arı kartı yakında geliyor.';
-
-  @override
   String get hiveStrengthNone => 'Henüz güç puanı yok';
 
   @override
@@ -457,7 +453,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moreEmptyMessage =>
-      'Ana arılar, hasat, stok, finans, belgeler ve bilgi bankası burada olacak.';
+      'Hasat, stok, finans, belgeler ve bilgi bankası burada olacak.';
 
   @override
   String get scanTitle => 'Okut';
@@ -1607,6 +1603,158 @@ class AppLocalizationsTr extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count dosya yüklenmeyi bekliyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveQueenNone => 'Kayıt yok';
+
+  @override
+  String get hiveQueenNoneHint => 'Ana vermek için dokunun';
+
+  @override
+  String queenMarkColorName(String color) {
+    String _temp0 = intl.Intl.selectLogic(color, {
+      'white': 'Beyaz',
+      'yellow': 'Sarı',
+      'red': 'Kırmızı',
+      'green': 'Yeşil',
+      'blue': 'Mavi',
+      'other': 'Bilinmiyor',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get queenYearUnknown => 'Yılı bilinmiyor';
+
+  @override
+  String get queenUnmarked => 'İşaretsiz';
+
+  @override
+  String queenAge(int age) {
+    String _temp0 = intl.Intl.pluralLogic(
+      age,
+      locale: localeName,
+      other: '$age yaşında',
+      zero: '1 yaşından küçük',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get queenSourceOwnRearing => 'Kendi üretimi';
+
+  @override
+  String get queenSourcePurchased => 'Satın alındı';
+
+  @override
+  String get queenSourceCertifiedBreeder => 'Sertifikalı damızlık';
+
+  @override
+  String get queenSource => 'Kaynak';
+
+  @override
+  String get queenMother => 'Anne ana';
+
+  @override
+  String get queenMotherUnknown => 'Bilinmiyor';
+
+  @override
+  String get queenBreed => 'Irk';
+
+  @override
+  String get queenBreedHint => 'Ör. Kafkas';
+
+  @override
+  String get queenBreedLine => 'Hat';
+
+  @override
+  String get queenBreedLineHint => 'Ör. Artvin';
+
+  @override
+  String get queenWing => 'Kanat';
+
+  @override
+  String get queenWingClipped => 'Kesik';
+
+  @override
+  String get queenWingIntact => 'Kesik değil';
+
+  @override
+  String get queenYear => 'Yıl';
+
+  @override
+  String get queenYearHelper => 'Doğum ya da alım yılı';
+
+  @override
+  String get queenMark => 'İşaret rengi';
+
+  @override
+  String queenMarkSuggestion(String year, String color) {
+    return '$year rengi: $color';
+  }
+
+  @override
+  String get queenUnknown => 'Girilmedi';
+
+  @override
+  String get queenEdit => 'Ana arıyı düzenle';
+
+  @override
+  String get queenReplace => 'Ana değiştir';
+
+  @override
+  String get queenGive => 'Ana ver';
+
+  @override
+  String get queenNoneTitle => 'Ana arı kaydı yok';
+
+  @override
+  String get queenNoneMessage =>
+      'Kovana verdiğiniz anayı kaydedin; yılı, rengi ve soyu burada görünür.';
+
+  @override
+  String queenFormNewTitle(String number) {
+    return 'Yeni ana · Kovan $number';
+  }
+
+  @override
+  String get queenFormEditTitle => 'Ana arıyı düzenle';
+
+  @override
+  String get queenFormSave => 'Kaydet';
+
+  @override
+  String queenGiven(String number) {
+    return 'Kovan $number yeni anasını aldı';
+  }
+
+  @override
+  String get oldQueensTitle => 'Yaşlı analar';
+
+  @override
+  String oldQueensIntro(int age) {
+    String _temp0 = intl.Intl.pluralLogic(
+      age,
+      locale: localeName,
+      other:
+          'Aktif kovanlarda $age yaşına girmiş analar. Değiştirmeyi planlayın.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get oldQueensEmptyTitle => 'Yaşlı ana yok';
+
+  @override
+  String oldQueensEmptyMessage(int age) {
+    String _temp0 = intl.Intl.pluralLogic(
+      age,
+      locale: localeName,
+      other:
+          'Aktif kovanlardaki analar $age yaşından genç ya da yılları girilmemiş.',
     );
     return '$_temp0';
   }

@@ -12,6 +12,7 @@ import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
+import 'package:mobil_arici/features/queens/presentation/queen_providers.dart';
 
 /// Kovan ekle sayfasını açar; seçime göre tek kovan ya da toplu oluşturma
 /// formuna geçer.
@@ -226,8 +227,9 @@ class _HiveCollection extends ConsumerWidget {
 }
 
 /// Sütun sayısı genişlikten çıkar; karolar satırı eşit paylaşır. Karonun
-/// boyu içeriğinden gelir, büyük yazı boyutunda kırpılmaz.
-class _HiveGrid extends StatelessWidget {
+/// boyu içeriğinden gelir, büyük yazı boyutunda kırpılmaz. Üstteki nokta
+/// ananın işaret rengi; işaretsiz ya da anasız kovanda boş.
+class _HiveGrid extends ConsumerWidget {
   const new({
     required this.hives,
     required this.strengths,
@@ -239,10 +241,11 @@ class _HiveGrid extends StatelessWidget {
   final ValueChanged<Hive> onOpen;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final gap = context.touchTargets.gap;
     final minWidth = context.sizes.hiveTile;
+    final queenColors = ref.watch(queenMarkColorsProvider).value ?? const {};
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -260,6 +263,7 @@ class _HiveGrid extends StatelessWidget {
                 width: width,
                 child: HiveTile(
                   number: hive.number,
+                  queenColor: queenColors[hive.queenId],
                   strength: strengths[hive.id],
                   alertStatus: hive.status.isCounted
                       ? null

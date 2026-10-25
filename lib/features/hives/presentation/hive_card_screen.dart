@@ -20,11 +20,14 @@ import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/media/presentation/media_controllers.dart';
 import 'package:mobil_arici/features/media/presentation/widgets/media_action_row.dart';
+import 'package:mobil_arici/features/queens/presentation/queen_providers.dart';
+import 'package:mobil_arici/features/queens/presentation/widgets/queen_labels.dart';
 
 /// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
-/// puanı; ana arı şeridi ve son muayene özeti; taşıma ve durum değiştirme;
-/// en altta zaman tüneli. Altta sabit foto ve mikrofon butonları kovana
-/// tek dokunuşla foto ya da sesli not ekler; aktif kovanda yanlarındaki
+/// puanı; ana arı şeridi (dokununca ana arı kartı) ve son muayene özeti;
+/// taşıma ve durum değiştirme; en altta zaman tüneli. Altta sabit foto ve
+/// mikrofon butonları kovana tek dokunuşla foto ya da sesli not ekler;
+/// aktif kovanda yanlarındaki
 /// "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Diğer özet
 /// karoları (ilaç, varroa, verim) kendi adımlarında gelecek.
 ///
@@ -71,7 +74,7 @@ class HiveCardScreen extends ConsumerWidget {
             children: [
               _Header(hive),
               SizedBox(height: spacing.lg),
-              const _QueenStrip(),
+              _QueenStrip(apiaryId: apiaryId, hiveId: hiveId),
               SizedBox(height: spacing.md),
               _LastInspection(hiveId),
               SizedBox(height: spacing.lg),
@@ -291,51 +294,72 @@ class _Strength extends StatelessWidget {
   }
 }
 
-/// Ana arı şeridi; ana arı kartı gelene kadar yer tutucu. Boş renk noktası
-/// karodaki yerini gösterir.
-class _QueenStrip extends StatelessWidget {
-  const new();
+/// Ana arı şeridi: işaret rengi, "2025 · Mavi" ve "1 yaşında · Kafkas";
+/// dokununca ana arı kartı açılır. Kovanda ana yoksa dokunmak yeni ana
+/// verir.
+class _QueenStrip extends ConsumerWidget {
+  const new({required this.apiaryId, required this.hiveId});
+
+  final String apiaryId;
+  final String hiveId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final colors = context.colors;
     final spacing = context.spacing;
+    final queen = ref.watch(hiveQueenProvider(hiveId));
+    // Yüklenirken boş kalır; "kayıt yok" yanıp sönmesin.
+    if (!queen.hasValue) return const SizedBox.shrink();
+    final value = queen.value;
+    final detail = value == null
+        ? l10n.hiveQueenNoneHint
+        : value.detail(l10n, currentYear: clock.now().year);
 
     return MergeSemantics(
       child: AppCard(
+        onTap: () => context.go(
+          value == null
+              ? AppRoutes.hiveQueenNew(apiaryId, hiveId)
+              : AppRoutes.hiveQueen(apiaryId, hiveId),
+        ),
         child: Padding(
           padding: EdgeInsets.all(spacing.lg),
           child: Row(
             children: [
-              SizedBox.square(
+              QueenMarkCircle(
+                markColor: value?.markColor,
                 dimension: context.touchTargets.minimum,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: colors.surfaceContainer,
-                  ),
-                  child: Icon(
-                    Icons.workspace_premium_outlined,
-                    size: context.sizes.icon,
-                    color: colors.textSecondary,
-                  ),
-                ),
               ),
               SizedBox(width: spacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(l10n.hiveQueenTitle, style: context.typography.label),
                     Text(
-                      l10n.hiveQueenPlaceholder,
+                      l10n.hiveQueenTitle,
                       style: context.typography.bodySmall.copyWith(
                         color: colors.textSecondary,
                       ),
                     ),
+                    Text(
+                      value?.title(l10n) ?? l10n.hiveQueenNone,
+                      style: context.typography.label,
+                    ),
+                    if (detail != null)
+                      Text(
+                        detail,
+                        style: context.typography.bodySmall.copyWith(
+                          color: colors.textSecondary,
+                        ),
+                      ),
                   ],
                 ),
+              ),
+              Icon(
+                Icons.chevron_right_rounded,
+                size: context.sizes.icon,
+                color: colors.textSecondary,
               ),
             ],
           ),

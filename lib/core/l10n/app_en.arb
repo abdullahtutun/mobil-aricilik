@@ -250,7 +250,6 @@
     }
   },
   "hiveQueenTitle": "Queen",
-  "hiveQueenPlaceholder": "No queen recorded yet. Queen cards are coming soon.",
   "hiveStrengthNone": "No strength score yet",
   "@hiveStrengthNone": {
     "description": "On the hive card when there's no inspection, or the last one has no count of frames with bees."
@@ -393,7 +392,7 @@
   "tasksEmptyTitle": "No tasks yet",
   "tasksEmptyMessage": "Your reminders and to-dos will be listed here by date.",
   "moreEmptyTitle": "More modules on the way",
-  "moreEmptyMessage": "Queens, harvest, stock, finance, documents and the knowledge base will live here.",
+  "moreEmptyMessage": "Harvest, stock, finance, documents and the knowledge base will live here.",
 
   "scanTitle": "Scan",
   "@scanTitle": {
@@ -1151,6 +1150,134 @@
       "count": {
         "type": "int",
         "example": "3"
+      }
+    }
+  },
+
+  "hiveQueenNone": "Not recorded",
+  "@hiveQueenNone": {
+    "description": "On the hive card's queen strip when the hive has no queen record."
+  },
+  "hiveQueenNoneHint": "Tap to add a queen",
+  "queenMarkColorName": "{color, select, white{White} yellow{Yellow} red{Red} green{Green} blue{Blue} other{Unknown}}",
+  "@queenMarkColorName": {
+    "description": "Name of a queen's marking color.",
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "queenYearUnknown": "Year unknown",
+  "queenUnmarked": "Unmarked",
+  "@queenUnmarked": {
+    "description": "Queen without a paint mark."
+  },
+  "queenAge": "{age, plural, =0{Under a year old} =1{1 year old} other{{age} years old}}",
+  "@queenAge": {
+    "description": "Queen's age, from her year only.",
+    "placeholders": {
+      "age": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "queenSourceOwnRearing": "Own rearing",
+  "queenSourcePurchased": "Purchased",
+  "queenSourceCertifiedBreeder": "Certified breeder",
+  "queenSource": "Source",
+  "@queenSource": {
+    "description": "Where the queen came from."
+  },
+  "queenMother": "Mother queen",
+  "queenMotherUnknown": "Unknown",
+  "@queenMotherUnknown": {
+    "description": "Option and value when the mother queen isn't known."
+  },
+  "queenBreed": "Breed",
+  "queenBreedHint": "E.g. Caucasian",
+  "queenBreedLine": "Line",
+  "@queenBreedLine": {
+    "description": "Breeding line within the breed."
+  },
+  "queenBreedLineHint": "E.g. Artvin",
+  "queenWing": "Wing",
+  "@queenWing": {
+    "description": "Whether the queen's wing is clipped."
+  },
+  "queenWingClipped": "Clipped",
+  "queenWingIntact": "Not clipped",
+  "queenYear": "Year",
+  "queenYearHelper": "Year hatched or bought",
+  "queenMark": "Mark color",
+  "queenMarkSuggestion": "{year} color: {color}",
+  "@queenMarkSuggestion": {
+    "description": "International marking color of the selected year.",
+    "placeholders": {
+      "year": {
+        "type": "String",
+        "example": "2026"
+      },
+      "color": {
+        "type": "String",
+        "example": "White"
+      }
+    }
+  },
+  "queenUnknown": "Not entered",
+  "@queenUnknown": {
+    "description": "Queen card value for an empty field."
+  },
+  "queenEdit": "Edit queen",
+  "queenReplace": "Replace queen",
+  "queenGive": "Add queen",
+  "@queenGive": {
+    "description": "Give a hive its queen record."
+  },
+  "queenNoneTitle": "No queen recorded",
+  "queenNoneMessage": "Record the queen you gave this hive; her year, color and lineage show here.",
+  "queenFormNewTitle": "New queen · Hive {number}",
+  "@queenFormNewTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "queenFormEditTitle": "Edit queen",
+  "queenFormSave": "Save",
+  "queenGiven": "Hive {number} has a new queen",
+  "@queenGiven": {
+    "description": "Undo snackbar after giving a hive a new queen.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "oldQueensTitle": "Old queens",
+  "@oldQueensTitle": {
+    "description": "Queens in active hives that reached the replacement age."
+  },
+  "oldQueensIntro": "{age, plural, other{Queens in active hives that are {age} or older. Plan to replace them.}}",
+  "@oldQueensIntro": {
+    "placeholders": {
+      "age": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "oldQueensEmptyTitle": "No old queens",
+  "oldQueensEmptyMessage": "{age, plural, other{Queens in active hives are younger than {age}, or have no year entered.}}",
+  "@oldQueensEmptyMessage": {
+    "placeholders": {
+      "age": {
+        "type": "int",
+        "example": "2"
       }
     }
   }

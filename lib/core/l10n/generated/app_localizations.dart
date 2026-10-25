@@ -650,12 +650,6 @@ abstract class AppLocalizations {
   /// **'Queen'**
   String get hiveQueenTitle;
 
-  /// No description provided for @hiveQueenPlaceholder.
-  ///
-  /// In en, this message translates to:
-  /// **'No queen recorded yet. Queen cards are coming soon.'**
-  String get hiveQueenPlaceholder;
-
   /// On the hive card when there's no inspection, or the last one has no count of frames with bees.
   ///
   /// In en, this message translates to:
@@ -809,7 +803,7 @@ abstract class AppLocalizations {
   /// No description provided for @moreEmptyMessage.
   ///
   /// In en, this message translates to:
-  /// **'Queens, harvest, stock, finance, documents and the knowledge base will live here.'**
+  /// **'Harvest, stock, finance, documents and the knowledge base will live here.'**
   String get moreEmptyMessage;
 
   /// Label of the big center button in the bottom navigation and title of the scan screen it opens.
@@ -2761,6 +2755,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 file waiting to upload} other{{count} files waiting to upload}}'**
   String settingsPendingUploads(int count);
+
+  /// On the hive card's queen strip when the hive has no queen record.
+  ///
+  /// In en, this message translates to:
+  /// **'Not recorded'**
+  String get hiveQueenNone;
+
+  /// No description provided for @hiveQueenNoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to add a queen'**
+  String get hiveQueenNoneHint;
+
+  /// Name of a queen's marking color.
+  ///
+  /// In en, this message translates to:
+  /// **'{color, select, white{White} yellow{Yellow} red{Red} green{Green} blue{Blue} other{Unknown}}'**
+  String queenMarkColorName(String color);
+
+  /// No description provided for @queenYearUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Year unknown'**
+  String get queenYearUnknown;
+
+  /// Queen without a paint mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Unmarked'**
+  String get queenUnmarked;
+
+  /// Queen's age, from her year only.
+  ///
+  /// In en, this message translates to:
+  /// **'{age, plural, =0{Under a year old} =1{1 year old} other{{age} years old}}'**
+  String queenAge(int age);
+
+  /// No description provided for @queenSourceOwnRearing.
+  ///
+  /// In en, this message translates to:
+  /// **'Own rearing'**
+  String get queenSourceOwnRearing;
+
+  /// No description provided for @queenSourcePurchased.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchased'**
+  String get queenSourcePurchased;
+
+  /// No description provided for @queenSourceCertifiedBreeder.
+  ///
+  /// In en, this message translates to:
+  /// **'Certified breeder'**
+  String get queenSourceCertifiedBreeder;
+
+  /// Where the queen came from.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get queenSource;
+
+  /// No description provided for @queenMother.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother queen'**
+  String get queenMother;
+
+  /// Option and value when the mother queen isn't known.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get queenMotherUnknown;
+
+  /// No description provided for @queenBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get queenBreed;
+
+  /// No description provided for @queenBreedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. Caucasian'**
+  String get queenBreedHint;
+
+  /// Breeding line within the breed.
+  ///
+  /// In en, this message translates to:
+  /// **'Line'**
+  String get queenBreedLine;
+
+  /// No description provided for @queenBreedLineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. Artvin'**
+  String get queenBreedLineHint;
+
+  /// Whether the queen's wing is clipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Wing'**
+  String get queenWing;
+
+  /// No description provided for @queenWingClipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Clipped'**
+  String get queenWingClipped;
+
+  /// No description provided for @queenWingIntact.
+  ///
+  /// In en, this message translates to:
+  /// **'Not clipped'**
+  String get queenWingIntact;
+
+  /// No description provided for @queenYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get queenYear;
+
+  /// No description provided for @queenYearHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Year hatched or bought'**
+  String get queenYearHelper;
+
+  /// No description provided for @queenMark.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark color'**
+  String get queenMark;
+
+  /// International marking color of the selected year.
+  ///
+  /// In en, this message translates to:
+  /// **'{year} color: {color}'**
+  String queenMarkSuggestion(String year, String color);
+
+  /// Queen card value for an empty field.
+  ///
+  /// In en, this message translates to:
+  /// **'Not entered'**
+  String get queenUnknown;
+
+  /// No description provided for @queenEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit queen'**
+  String get queenEdit;
+
+  /// No description provided for @queenReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace queen'**
+  String get queenReplace;
+
+  /// Give a hive its queen record.
+  ///
+  /// In en, this message translates to:
+  /// **'Add queen'**
+  String get queenGive;
+
+  /// No description provided for @queenNoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No queen recorded'**
+  String get queenNoneTitle;
+
+  /// No description provided for @queenNoneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Record the queen you gave this hive; her year, color and lineage show here.'**
+  String get queenNoneMessage;
+
+  /// No description provided for @queenFormNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New queen · Hive {number}'**
+  String queenFormNewTitle(String number);
+
+  /// No description provided for @queenFormEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit queen'**
+  String get queenFormEditTitle;
+
+  /// No description provided for @queenFormSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get queenFormSave;
+
+  /// Undo snackbar after giving a hive a new queen.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} has a new queen'**
+  String queenGiven(String number);
+
+  /// Queens in active hives that reached the replacement age.
+  ///
+  /// In en, this message translates to:
+  /// **'Old queens'**
+  String get oldQueensTitle;
+
+  /// No description provided for @oldQueensIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'{age, plural, other{Queens in active hives that are {age} or older. Plan to replace them.}}'**
+  String oldQueensIntro(int age);
+
+  /// No description provided for @oldQueensEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No old queens'**
+  String get oldQueensEmptyTitle;
+
+  /// No description provided for @oldQueensEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{age, plural, other{Queens in active hives are younger than {age}, or have no year entered.}}'**
+  String oldQueensEmptyMessage(int age);
 }
 
 class _AppLocalizationsDelegate

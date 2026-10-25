@@ -33,6 +33,9 @@ import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/queens/presentation/old_queens_screen.dart';
+import 'package:mobil_arici/features/queens/presentation/queen_card_screen.dart';
+import 'package:mobil_arici/features/queens/presentation/queen_form_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
@@ -165,6 +168,28 @@ GoRouter router(Ref ref) {
                               hiveId: state.pathParameters[_hiveId],
                             ),
                           ),
+                          GoRoute(
+                            path: 'queen',
+                            builder: (context, state) => QueenCardScreen(
+                              apiaryId: state.pathParameters[_apiaryId]!,
+                              hiveId: state.pathParameters[_hiveId]!,
+                            ),
+                            routes: [
+                              GoRoute(
+                                path: 'new',
+                                builder: (context, state) => QueenFormScreen(
+                                  hiveId: state.pathParameters[_hiveId]!,
+                                ),
+                              ),
+                              GoRoute(
+                                path: 'edit',
+                                builder: (context, state) => QueenFormScreen(
+                                  hiveId: state.pathParameters[_hiveId]!,
+                                  editing: true,
+                                ),
+                              ),
+                            ],
+                          ),
                           // Kartın üstünde alttan açılır; kart arkada
                           // görünür kalır, kapatınca karta dönülür.
                           GoRoute(
@@ -202,6 +227,10 @@ GoRouter router(Ref ref) {
                   GoRoute(
                     path: 'settings',
                     builder: (context, state) => const SettingsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'old-queens',
+                    builder: (context, state) => const OldQueensScreen(),
                   ),
                 ],
               ),

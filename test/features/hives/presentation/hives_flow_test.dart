@@ -220,10 +220,7 @@ void main() {
       expect(find.text('Yayla'), findsOneWidget);
       expect(find.text('Active'), findsOneWidget);
       expect(find.text('Queen'), findsOneWidget);
-      expect(
-        find.text('No queen recorded yet. Queen cards are coming soon.'),
-        findsOneWidget,
-      );
+      expect(find.text('Not recorded'), findsOneWidget);
 
       await tester.pageBack();
       await tester.pumpAndSettle();

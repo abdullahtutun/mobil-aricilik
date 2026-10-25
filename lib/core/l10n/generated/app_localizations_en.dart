@@ -351,10 +351,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hiveQueenTitle => 'Queen';
 
   @override
-  String get hiveQueenPlaceholder =>
-      'No queen recorded yet. Queen cards are coming soon.';
-
-  @override
   String get hiveStrengthNone => 'No strength score yet';
 
   @override
@@ -460,7 +456,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moreEmptyMessage =>
-      'Queens, harvest, stock, finance, documents and the knowledge base will live here.';
+      'Harvest, stock, finance, documents and the knowledge base will live here.';
 
   @override
   String get scanTitle => 'Scan';
@@ -1623,6 +1619,159 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other: '$count files waiting to upload',
       one: '1 file waiting to upload',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveQueenNone => 'Not recorded';
+
+  @override
+  String get hiveQueenNoneHint => 'Tap to add a queen';
+
+  @override
+  String queenMarkColorName(String color) {
+    String _temp0 = intl.Intl.selectLogic(color, {
+      'white': 'White',
+      'yellow': 'Yellow',
+      'red': 'Red',
+      'green': 'Green',
+      'blue': 'Blue',
+      'other': 'Unknown',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get queenYearUnknown => 'Year unknown';
+
+  @override
+  String get queenUnmarked => 'Unmarked';
+
+  @override
+  String queenAge(int age) {
+    String _temp0 = intl.Intl.pluralLogic(
+      age,
+      locale: localeName,
+      other: '$age years old',
+      one: '1 year old',
+      zero: 'Under a year old',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get queenSourceOwnRearing => 'Own rearing';
+
+  @override
+  String get queenSourcePurchased => 'Purchased';
+
+  @override
+  String get queenSourceCertifiedBreeder => 'Certified breeder';
+
+  @override
+  String get queenSource => 'Source';
+
+  @override
+  String get queenMother => 'Mother queen';
+
+  @override
+  String get queenMotherUnknown => 'Unknown';
+
+  @override
+  String get queenBreed => 'Breed';
+
+  @override
+  String get queenBreedHint => 'E.g. Caucasian';
+
+  @override
+  String get queenBreedLine => 'Line';
+
+  @override
+  String get queenBreedLineHint => 'E.g. Artvin';
+
+  @override
+  String get queenWing => 'Wing';
+
+  @override
+  String get queenWingClipped => 'Clipped';
+
+  @override
+  String get queenWingIntact => 'Not clipped';
+
+  @override
+  String get queenYear => 'Year';
+
+  @override
+  String get queenYearHelper => 'Year hatched or bought';
+
+  @override
+  String get queenMark => 'Mark color';
+
+  @override
+  String queenMarkSuggestion(String year, String color) {
+    return '$year color: $color';
+  }
+
+  @override
+  String get queenUnknown => 'Not entered';
+
+  @override
+  String get queenEdit => 'Edit queen';
+
+  @override
+  String get queenReplace => 'Replace queen';
+
+  @override
+  String get queenGive => 'Add queen';
+
+  @override
+  String get queenNoneTitle => 'No queen recorded';
+
+  @override
+  String get queenNoneMessage =>
+      'Record the queen you gave this hive; her year, color and lineage show here.';
+
+  @override
+  String queenFormNewTitle(String number) {
+    return 'New queen · Hive $number';
+  }
+
+  @override
+  String get queenFormEditTitle => 'Edit queen';
+
+  @override
+  String get queenFormSave => 'Save';
+
+  @override
+  String queenGiven(String number) {
+    return 'Hive $number has a new queen';
+  }
+
+  @override
+  String get oldQueensTitle => 'Old queens';
+
+  @override
+  String oldQueensIntro(int age) {
+    String _temp0 = intl.Intl.pluralLogic(
+      age,
+      locale: localeName,
+      other:
+          'Queens in active hives that are $age or older. Plan to replace them.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get oldQueensEmptyTitle => 'No old queens';
+
+  @override
+  String oldQueensEmptyMessage(int age) {
+    String _temp0 = intl.Intl.pluralLogic(
+      age,
+      locale: localeName,
+      other:
+          'Queens in active hives are younger than $age, or have no year entered.',
     );
     return '$_temp0';
   }

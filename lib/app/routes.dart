@@ -26,6 +26,16 @@ abstract final class AppRoutes {
   static String hiveInspect(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/inspect';
 
+  /// Kovandaki ananın kartı; geri tuşu kovan kartına döner.
+  static String hiveQueen(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/queen';
+
+  /// Kovana yeni ana verme; kovanda ana varsa onun yerine geçer.
+  static String hiveQueenNew(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/queen/new';
+  static String hiveQueenEdit(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/queen/edit';
+
   /// Okutulan kovan: muayene edilebiliyorsa kartı ve üstünde muayene,
   /// değilse (ör. sönmüş) yalnız kartı.
   static String scannedHive(Hive hive) => canInspect(hive)
@@ -48,6 +58,9 @@ abstract final class AppRoutes {
   ).toString();
 
   static const settings = '/more/settings';
+
+  /// Aktif kovanlardaki değiştirilmesi gereken analar.
+  static const oldQueens = '/more/old-queens';
 
   /// Fotoğrafın tam ekranı; sekmelerin üstünde açılır.
   static String mediaPhoto(String mediaId) => '/media/$mediaId';
