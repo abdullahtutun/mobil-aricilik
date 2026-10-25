@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 
@@ -32,6 +33,10 @@ abstract class InspectionDraft with _$InspectionDraft {
     /// Muayene sırasında çekilen foto ve sesli notlar; muayene kaydedilince
     /// ona bağlı medya kaydı olur.
     @Default(<MediaCapture>[]) List<MediaCapture> media,
+
+    /// Bekleme süresindeki kovana bal katı bilerek verildi; gerekçesi
+    /// muayeneyle saklanır. Bal katı işlemi kaldırılınca silinir.
+    WithdrawalOverride? withdrawalOverride,
   }) = _InspectionDraft;
 
   factory fromJson(Map<String, Object?> json) =>

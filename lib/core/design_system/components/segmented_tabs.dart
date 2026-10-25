@@ -45,11 +45,14 @@ class SegmentedTabs<T> extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Dar ekranda ve büyük yazıda segment taşmaz, yazısı sarar.
             for (final option in options)
-              _Segment(
-                label: option.label,
-                selected: option.value == selected,
-                onTap: () => onChanged(option.value),
+              Flexible(
+                child: _Segment(
+                  label: option.label,
+                  selected: option.value == selected,
+                  onTap: () => onChanged(option.value),
+                ),
               ),
           ],
         ),
@@ -100,6 +103,7 @@ class _Segment extends StatelessWidget {
                 widthFactor: 1,
                 child: Text(
                   label,
+                  textAlign: TextAlign.center,
                   style: context.typography.label.copyWith(
                     color: selected ? colors.textPrimary : colors.textSecondary,
                   ),

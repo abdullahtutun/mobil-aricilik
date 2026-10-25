@@ -3169,6 +3169,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A warning is shown when a count reaches the threshold. Saved on this phone only.'**
   String get settingsVarroaHint;
+
+  /// No description provided for @syncTableRefDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug list'**
+  String get syncTableRefDrugs;
+
+  /// No description provided for @syncTableDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug'**
+  String get syncTableDrugs;
+
+  /// No description provided for @syncTableTreatments.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment'**
+  String get syncTableTreatments;
+
+  /// No description provided for @drugIngredientAmitraz.
+  ///
+  /// In en, this message translates to:
+  /// **'Amitraz'**
+  String get drugIngredientAmitraz;
+
+  /// No description provided for @drugIngredientOxalicAcid.
+  ///
+  /// In en, this message translates to:
+  /// **'Oxalic acid'**
+  String get drugIngredientOxalicAcid;
+
+  /// No description provided for @drugIngredientFormicAcid.
+  ///
+  /// In en, this message translates to:
+  /// **'Formic acid'**
+  String get drugIngredientFormicAcid;
+
+  /// No description provided for @drugIngredientThymol.
+  ///
+  /// In en, this message translates to:
+  /// **'Thymol'**
+  String get drugIngredientThymol;
+
+  /// No description provided for @drugIngredientFlumethrin.
+  ///
+  /// In en, this message translates to:
+  /// **'Flumethrin'**
+  String get drugIngredientFlumethrin;
+
+  /// No description provided for @drugIngredientTauFluvalinate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tau-fluvalinate'**
+  String get drugIngredientTauFluvalinate;
+
+  /// No description provided for @drugIngredientCoumaphos.
+  ///
+  /// In en, this message translates to:
+  /// **'Coumaphos'**
+  String get drugIngredientCoumaphos;
+
+  /// No description provided for @drugIngredientLacticAcid.
+  ///
+  /// In en, this message translates to:
+  /// **'Lactic acid'**
+  String get drugIngredientLacticAcid;
+
+  /// No description provided for @drugIngredientOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get drugIngredientOther;
+
+  /// No description provided for @drugUnitStrip.
+  ///
+  /// In en, this message translates to:
+  /// **'strip'**
+  String get drugUnitStrip;
+
+  /// No description provided for @drugUnitMl.
+  ///
+  /// In en, this message translates to:
+  /// **'ml'**
+  String get drugUnitMl;
+
+  /// No description provided for @drugUnitG.
+  ///
+  /// In en, this message translates to:
+  /// **'g'**
+  String get drugUnitG;
+
+  /// No description provided for @drugUnitDose.
+  ///
+  /// In en, this message translates to:
+  /// **'dose'**
+  String get drugUnitDose;
+
+  /// No description provided for @hiveTreat.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply treatment'**
+  String get hiveTreat;
+
+  /// No description provided for @treatmentFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment'**
+  String get treatmentFormTitle;
+
+  /// No description provided for @treatmentScopeHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number}'**
+  String treatmentScopeHive(String number);
+
+  /// No description provided for @treatmentScopeApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole apiary · {count}'**
+  String treatmentScopeApiary(int count);
+
+  /// No description provided for @treatmentChooseDrug.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose drug'**
+  String get treatmentChooseDrug;
+
+  /// No description provided for @treatmentChangeDrug.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get treatmentChangeDrug;
+
+  /// No description provided for @treatmentDrugIngredient.
+  ///
+  /// In en, this message translates to:
+  /// **'Active ingredient: {ingredient}'**
+  String treatmentDrugIngredient(String ingredient);
+
+  /// No description provided for @treatmentDrugLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'licence {number}'**
+  String treatmentDrugLicense(String number);
+
+  /// No description provided for @treatmentDrugCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'your drug'**
+  String get treatmentDrugCustom;
+
+  /// No description provided for @treatmentAddDrug.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a new drug'**
+  String get treatmentAddDrug;
+
+  /// No description provided for @treatmentBatchNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch no'**
+  String get treatmentBatchNo;
+
+  /// No description provided for @treatmentStartedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get treatmentStartedOn;
+
+  /// No description provided for @treatmentDose.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose per hive ({unit})'**
+  String treatmentDose(String unit);
+
+  /// No description provided for @treatmentDoseTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total {total} {unit}'**
+  String treatmentDoseTotal(String total, String unit);
+
+  /// No description provided for @treatmentWithdrawalDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal period (days)'**
+  String get treatmentWithdrawalDays;
+
+  /// No description provided for @treatmentRemoval.
+  ///
+  /// In en, this message translates to:
+  /// **'Removal'**
+  String get treatmentRemoval;
+
+  /// No description provided for @treatmentRemovalNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get treatmentRemovalNone;
+
+  /// No description provided for @treatmentRemovalChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change'**
+  String get treatmentRemovalChange;
+
+  /// No description provided for @treatmentRemovalSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'Single application; tap to set'**
+  String get treatmentRemovalSingle;
+
+  /// No description provided for @treatmentRemovalClear.
+  ///
+  /// In en, this message translates to:
+  /// **'No removal (single application)'**
+  String get treatmentRemovalClear;
+
+  /// No description provided for @treatmentNoSuper.
+  ///
+  /// In en, this message translates to:
+  /// **'No honey super'**
+  String get treatmentNoSuper;
+
+  /// No description provided for @treatmentNoSuperUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {date}'**
+  String treatmentNoSuperUntil(String date);
+
+  /// No description provided for @treatmentNoSuperAfterRemoval.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{no withdrawal after removal} =1{removal + 1 day withdrawal} other{removal + {days} days withdrawal}}'**
+  String treatmentNoSuperAfterRemoval(int days);
+
+  /// No description provided for @treatmentNoSuperAfterStart.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{no withdrawal} =1{start + 1 day withdrawal} other{start + {days} days withdrawal}}'**
+  String treatmentNoSuperAfterStart(int days);
+
+  /// No description provided for @treatmentSave.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Save} other{Save to {count} hives}}'**
+  String treatmentSave(int count);
+
+  /// No description provided for @treatmentSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment saved for hive {number}'**
+  String treatmentSaved(String number);
+
+  /// No description provided for @treatmentSavedMany.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Treatment saved for 1 hive} other{Treatment saved for {count} hives}}'**
+  String treatmentSavedMany(int count);
+
+  /// No description provided for @drugFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New drug'**
+  String get drugFormTitle;
+
+  /// No description provided for @drugName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get drugName;
+
+  /// No description provided for @drugActiveIngredient.
+  ///
+  /// In en, this message translates to:
+  /// **'Active ingredient'**
+  String get drugActiveIngredient;
+
+  /// No description provided for @drugDoseUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose unit'**
+  String get drugDoseUnit;
+
+  /// No description provided for @drugWithdrawalDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal period on the label (days)'**
+  String get drugWithdrawalDays;
+
+  /// No description provided for @drugSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Add drug'**
+  String get drugSave;
+
+  /// No description provided for @withdrawalLockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In withdrawal period.'**
+  String get withdrawalLockTitle;
+
+  /// No description provided for @withdrawalLockMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} is being treated with {product}. No honey super should be added before {date}; honey from this period may carry drug residue.'**
+  String withdrawalLockMessage(String number, String product, String date);
+
+  /// No description provided for @withdrawalDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get withdrawalDaysLeft;
+
+  /// No description provided for @withdrawalDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day} other{{days} days}}'**
+  String withdrawalDays(int days);
+
+  /// No description provided for @withdrawalApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied'**
+  String get withdrawalApplied;
+
+  /// No description provided for @withdrawalReasonPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'To save anyway, choose a reason'**
+  String get withdrawalReasonPrompt;
+
+  /// No description provided for @withdrawalReasonRemovedEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug removed early'**
+  String get withdrawalReasonRemovedEarly;
+
+  /// No description provided for @withdrawalReasonNotForSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Super won\'t be sold (own use/feed)'**
+  String get withdrawalReasonNotForSale;
+
+  /// No description provided for @withdrawalCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel, don\'t add super'**
+  String get withdrawalCancel;
+
+  /// No description provided for @withdrawalProceed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save anyway'**
+  String get withdrawalProceed;
+
+  /// No description provided for @inspectionWithdrawalOverride.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey super added during the withdrawal period: {reason}'**
+  String inspectionWithdrawalOverride(String reason);
 }
 
 class _AppLocalizationsDelegate

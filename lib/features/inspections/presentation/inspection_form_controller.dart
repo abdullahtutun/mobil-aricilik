@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -101,8 +102,27 @@ class InspectionFormController extends _$InspectionFormController {
     (values) => values.copyWith(diseaseSuspected: suspected),
   );
 
-  void setActions(Set<InspectionAction> actions) =>
-      _change(null, (values) => values.copyWith(actions: actions));
+  /// Yapılan işlemleri yazar. Bekleme süresindeki kovana bal katı
+  /// eklendiyse gerekçesi [withdrawalOverride]; bal katı işlemi kalkınca
+  /// gerekçe de silinir.
+  void setActions(
+    Set<InspectionAction> actions, {
+    WithdrawalOverride? withdrawalOverride,
+  }) {
+    final form = state.value;
+    if (form == null || form.saving || _saved) return;
+    final draft = form.draft.change(
+      null,
+      form.draft.values.copyWith(actions: actions),
+    );
+    _write(
+      draft.copyWith(
+        withdrawalOverride: actions.contains(InspectionAction.superAdded)
+            ? withdrawalOverride ?? draft.withdrawalOverride
+            : null,
+      ),
+    );
+  }
 
   /// Muayene sırasında çekilen foto ya da sesli notu taslağa ekler;
   /// muayene kaydedilince ona bağlanır. Kaydedildiyse ya da kaydediliyorsa
@@ -144,6 +164,7 @@ class InspectionFormController extends _$InspectionFormController {
             apiaryId: form.hive.apiaryId,
             values: form.draft.values,
             media: form.draft.media,
+            withdrawalOverride: form.draft.withdrawalOverride,
           );
       _saved = true;
       return (inspection: inspection, draft: form.draft);

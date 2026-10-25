@@ -1888,4 +1888,233 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsVarroaHint =>
       'Ölçüm eşiğe ulaşınca uyarı çıkar. Yalnız bu telefonda saklanır.';
+
+  @override
+  String get syncTableRefDrugs => 'İlaç listesi';
+
+  @override
+  String get syncTableDrugs => 'İlaç';
+
+  @override
+  String get syncTableTreatments => 'İlaç uygulaması';
+
+  @override
+  String get drugIngredientAmitraz => 'Amitraz';
+
+  @override
+  String get drugIngredientOxalicAcid => 'Oksalik asit';
+
+  @override
+  String get drugIngredientFormicAcid => 'Formik asit';
+
+  @override
+  String get drugIngredientThymol => 'Timol';
+
+  @override
+  String get drugIngredientFlumethrin => 'Flumetrin';
+
+  @override
+  String get drugIngredientTauFluvalinate => 'Tau-fluvalinat';
+
+  @override
+  String get drugIngredientCoumaphos => 'Kumafos';
+
+  @override
+  String get drugIngredientLacticAcid => 'Laktik asit';
+
+  @override
+  String get drugIngredientOther => 'Diğer';
+
+  @override
+  String get drugUnitStrip => 'şerit';
+
+  @override
+  String get drugUnitMl => 'ml';
+
+  @override
+  String get drugUnitG => 'g';
+
+  @override
+  String get drugUnitDose => 'doz';
+
+  @override
+  String get hiveTreat => 'İlaç uygula';
+
+  @override
+  String get treatmentFormTitle => 'İlaç uygulaması';
+
+  @override
+  String treatmentScopeHive(String number) {
+    return 'Kovan $number';
+  }
+
+  @override
+  String treatmentScopeApiary(int count) {
+    return 'Arılığın tümü · $count';
+  }
+
+  @override
+  String get treatmentChooseDrug => 'İlaç seç';
+
+  @override
+  String get treatmentChangeDrug => 'Değiştir';
+
+  @override
+  String treatmentDrugIngredient(String ingredient) {
+    return 'Etken madde: $ingredient';
+  }
+
+  @override
+  String treatmentDrugLicense(String number) {
+    return 'ruhsat $number';
+  }
+
+  @override
+  String get treatmentDrugCustom => 'işletmenin ilacı';
+
+  @override
+  String get treatmentAddDrug => 'Yeni ilaç ekle';
+
+  @override
+  String get treatmentBatchNo => 'Parti no';
+
+  @override
+  String get treatmentStartedOn => 'Başlangıç';
+
+  @override
+  String treatmentDose(String unit) {
+    return 'Doz / kovan ($unit)';
+  }
+
+  @override
+  String treatmentDoseTotal(String total, String unit) {
+    return 'Toplam $total $unit';
+  }
+
+  @override
+  String get treatmentWithdrawalDays => 'Bekleme süresi (gün)';
+
+  @override
+  String get treatmentRemoval => 'Çıkarma';
+
+  @override
+  String get treatmentRemovalNone => 'Yok';
+
+  @override
+  String get treatmentRemovalChange => 'Değiştirmek için dokun';
+
+  @override
+  String get treatmentRemovalSingle => 'Tek seferlik; tarih için dokun';
+
+  @override
+  String get treatmentRemovalClear => 'Çıkarma yok (tek seferlik)';
+
+  @override
+  String get treatmentNoSuper => 'Bal katı yok';
+
+  @override
+  String treatmentNoSuperUntil(String date) {
+    return '$date tarihine kadar';
+  }
+
+  @override
+  String treatmentNoSuperAfterRemoval(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'çıkarma + $days gün bekleme',
+      zero: 'çıkarmadan sonra bekleme yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String treatmentNoSuperAfterStart(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'uygulama + $days gün bekleme',
+      zero: 'bekleme yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String treatmentSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovana kaydet',
+      one: 'Kaydet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String treatmentSaved(String number) {
+    return 'Kovan $number için ilaç kaydedildi';
+  }
+
+  @override
+  String treatmentSavedMany(int count) {
+    return '$count kovana ilaç kaydedildi';
+  }
+
+  @override
+  String get drugFormTitle => 'Yeni ilaç';
+
+  @override
+  String get drugName => 'Ad';
+
+  @override
+  String get drugActiveIngredient => 'Etken madde';
+
+  @override
+  String get drugDoseUnit => 'Doz birimi';
+
+  @override
+  String get drugWithdrawalDays => 'Etiketteki bekleme süresi (gün)';
+
+  @override
+  String get drugSave => 'İlacı ekle';
+
+  @override
+  String get withdrawalLockTitle => 'Bekleme süresinde.';
+
+  @override
+  String withdrawalLockMessage(String number, String product, String date) {
+    return 'Kovan $number: $product uygulanıyor. $date tarihine kadar bal katı verilmemeli; bu süredeki bal ilaç kalıntısı taşıyabilir.';
+  }
+
+  @override
+  String get withdrawalDaysLeft => 'Kalan';
+
+  @override
+  String withdrawalDays(int days) {
+    return '$days gün';
+  }
+
+  @override
+  String get withdrawalApplied => 'Uygulama';
+
+  @override
+  String get withdrawalReasonPrompt => 'Yine de kaydetmek için neden seç';
+
+  @override
+  String get withdrawalReasonRemovedEarly => 'İlaç erken çıkarıldı';
+
+  @override
+  String get withdrawalReasonNotForSale =>
+      'Kat satılmayacak (kendi kullanım/yem)';
+
+  @override
+  String get withdrawalCancel => 'Vazgeç, kat verme';
+
+  @override
+  String get withdrawalProceed => 'Yine de kaydet';
+
+  @override
+  String inspectionWithdrawalOverride(String reason) {
+    return 'Bekleme süresinde bal katı verildi: $reason';
+  }
 }

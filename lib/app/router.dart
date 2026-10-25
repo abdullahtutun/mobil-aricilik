@@ -19,6 +19,8 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/health/presentation/drug_form_screen.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/varroa_form_screen.dart';
 import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
 import 'package:mobil_arici/features/hives/presentation/assign_label_screen.dart';
@@ -196,6 +198,22 @@ GoRouter router(Ref ref) {
                             builder: (context, state) => VarroaFormScreen(
                               hiveId: state.pathParameters[_hiveId]!,
                             ),
+                          ),
+                          GoRoute(
+                            path: 'treat',
+                            builder: (context, state) => TreatmentFormScreen(
+                              apiaryId: state.pathParameters[_apiaryId]!,
+                              hiveId: state.pathParameters[_hiveId]!,
+                            ),
+                            routes: [
+                              // Eklenen ilaç pop ile uygulamaya döner.
+                              GoRoute(
+                                path: 'drug',
+                                builder: (context, state) => DrugFormScreen(
+                                  hiveId: state.pathParameters[_hiveId]!,
+                                ),
+                              ),
+                            ],
                           ),
                           // Kartın üstünde alttan açılır; kart arkada
                           // görünür kalır, kapatınca karta dönülür.

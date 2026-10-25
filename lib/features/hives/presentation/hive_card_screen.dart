@@ -29,7 +29,8 @@ import 'package:mobil_arici/features/queens/presentation/widgets/queen_labels.da
 
 /// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
 /// puanı; ana arı şeridi (dokununca ana arı kartı), son muayene ve son
-/// varroa oranı; varroa ölçümü, taşıma ve durum değiştirme; en altta zaman
+/// varroa oranı; varroa ölçümü, ilaç uygulaması, taşıma ve durum
+/// değiştirme; en altta zaman
 /// tüneli. Altta sabit foto ve
 /// mikrofon butonları kovana tek dokunuşla foto ya da sesli not ekler;
 /// aktif kovanda yanlarındaki
@@ -100,6 +101,14 @@ class HiveCardScreen extends ConsumerWidget {
                   icon: Icons.bug_report_outlined,
                   onPressed: () =>
                       context.go(AppRoutes.hiveVarroa(apiaryId, hiveId)),
+                ),
+                SizedBox(height: context.touchTargets.gap),
+                BigButton(
+                  variant: BigButtonVariant.secondary,
+                  label: l10n.hiveTreat,
+                  icon: Icons.medication_outlined,
+                  onPressed: () =>
+                      context.go(AppRoutes.hiveTreat(apiaryId, hiveId)),
                 ),
                 SizedBox(height: context.touchTargets.gap),
               ],

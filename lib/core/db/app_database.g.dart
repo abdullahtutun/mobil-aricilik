@@ -7005,6 +7005,1850 @@ extension MiteCountToInsertable on MiteCount {
   }
 }
 
+class $RefDrugsTable extends RefDrugs with TableInfo<$RefDrugsTable, RefDrug> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RefDrugsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _countryCodeMeta = const VerificationMeta(
+    'countryCode',
+  );
+  @override
+  late final GeneratedColumn<String> countryCode = GeneratedColumn<String>(
+    'country_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameTrMeta = const VerificationMeta('nameTr');
+  @override
+  late final GeneratedColumn<String> nameTr = GeneratedColumn<String>(
+    'name_tr',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameEnMeta = const VerificationMeta('nameEn');
+  @override
+  late final GeneratedColumn<String> nameEn = GeneratedColumn<String>(
+    'name_en',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DrugActiveIngredient, String>
+  activeIngredient =
+      GeneratedColumn<String>(
+        'active_ingredient',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DrugActiveIngredient>(
+        $RefDrugsTable.$converteractiveIngredient,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<DrugDoseUnit, String> doseUnit =
+      GeneratedColumn<String>(
+        'dose_unit',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DrugDoseUnit>($RefDrugsTable.$converterdoseUnit);
+  static const VerificationMeta _withdrawalDaysMeta = const VerificationMeta(
+    'withdrawalDays',
+  );
+  @override
+  late final GeneratedColumn<int> withdrawalDays = GeneratedColumn<int>(
+    'withdrawal_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _licenseNoMeta = const VerificationMeta(
+    'licenseNo',
+  );
+  @override
+  late final GeneratedColumn<String> licenseNo = GeneratedColumn<String>(
+    'license_no',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    countryCode,
+    nameTr,
+    nameEn,
+    activeIngredient,
+    doseUnit,
+    withdrawalDays,
+    licenseNo,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ref_drugs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RefDrug> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('country_code')) {
+      context.handle(
+        _countryCodeMeta,
+        countryCode.isAcceptableOrUnknown(
+          data['country_code']!,
+          _countryCodeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_countryCodeMeta);
+    }
+    if (data.containsKey('name_tr')) {
+      context.handle(
+        _nameTrMeta,
+        nameTr.isAcceptableOrUnknown(data['name_tr']!, _nameTrMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameTrMeta);
+    }
+    if (data.containsKey('name_en')) {
+      context.handle(
+        _nameEnMeta,
+        nameEn.isAcceptableOrUnknown(data['name_en']!, _nameEnMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameEnMeta);
+    }
+    if (data.containsKey('withdrawal_days')) {
+      context.handle(
+        _withdrawalDaysMeta,
+        withdrawalDays.isAcceptableOrUnknown(
+          data['withdrawal_days']!,
+          _withdrawalDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('license_no')) {
+      context.handle(
+        _licenseNoMeta,
+        licenseNo.isAcceptableOrUnknown(data['license_no']!, _licenseNoMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RefDrug map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RefDrug(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      countryCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country_code'],
+      )!,
+      nameTr: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name_tr'],
+      )!,
+      nameEn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name_en'],
+      )!,
+      activeIngredient: $RefDrugsTable.$converteractiveIngredient.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}active_ingredient'],
+        )!,
+      ),
+      doseUnit: $RefDrugsTable.$converterdoseUnit.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}dose_unit'],
+        )!,
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      withdrawalDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}withdrawal_days'],
+      ),
+      licenseNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}license_no'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $RefDrugsTable createAlias(String alias) {
+    return $RefDrugsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DrugActiveIngredient, String>
+  $converteractiveIngredient = const ServerEnumConverter(
+    DrugActiveIngredient.values,
+  );
+  static TypeConverter<DrugDoseUnit, String> $converterdoseUnit =
+      const ServerEnumConverter(DrugDoseUnit.values);
+}
+
+class RefDrugsCompanion extends UpdateCompanion<RefDrug> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> countryCode;
+  final Value<String> nameTr;
+  final Value<String> nameEn;
+  final Value<DrugActiveIngredient> activeIngredient;
+  final Value<DrugDoseUnit> doseUnit;
+  final Value<int?> withdrawalDays;
+  final Value<String?> licenseNo;
+  final Value<int> rowid;
+  const RefDrugsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.nameTr = const Value.absent(),
+    this.nameEn = const Value.absent(),
+    this.activeIngredient = const Value.absent(),
+    this.doseUnit = const Value.absent(),
+    this.withdrawalDays = const Value.absent(),
+    this.licenseNo = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RefDrugsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String countryCode,
+    required String nameTr,
+    required String nameEn,
+    required DrugActiveIngredient activeIngredient,
+    required DrugDoseUnit doseUnit,
+    this.withdrawalDays = const Value.absent(),
+    this.licenseNo = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       countryCode = Value(countryCode),
+       nameTr = Value(nameTr),
+       nameEn = Value(nameEn),
+       activeIngredient = Value(activeIngredient),
+       doseUnit = Value(doseUnit);
+  static Insertable<RefDrug> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? countryCode,
+    Expression<String>? nameTr,
+    Expression<String>? nameEn,
+    Expression<String>? activeIngredient,
+    Expression<String>? doseUnit,
+    Expression<int>? withdrawalDays,
+    Expression<String>? licenseNo,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (countryCode != null) 'country_code': countryCode,
+      if (nameTr != null) 'name_tr': nameTr,
+      if (nameEn != null) 'name_en': nameEn,
+      if (activeIngredient != null) 'active_ingredient': activeIngredient,
+      if (doseUnit != null) 'dose_unit': doseUnit,
+      if (withdrawalDays != null) 'withdrawal_days': withdrawalDays,
+      if (licenseNo != null) 'license_no': licenseNo,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RefDrugsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? countryCode,
+    Value<String>? nameTr,
+    Value<String>? nameEn,
+    Value<DrugActiveIngredient>? activeIngredient,
+    Value<DrugDoseUnit>? doseUnit,
+    Value<int?>? withdrawalDays,
+    Value<String?>? licenseNo,
+    Value<int>? rowid,
+  }) {
+    return RefDrugsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      countryCode: countryCode ?? this.countryCode,
+      nameTr: nameTr ?? this.nameTr,
+      nameEn: nameEn ?? this.nameEn,
+      activeIngredient: activeIngredient ?? this.activeIngredient,
+      doseUnit: doseUnit ?? this.doseUnit,
+      withdrawalDays: withdrawalDays ?? this.withdrawalDays,
+      licenseNo: licenseNo ?? this.licenseNo,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (countryCode.present) {
+      map['country_code'] = Variable<String>(countryCode.value);
+    }
+    if (nameTr.present) {
+      map['name_tr'] = Variable<String>(nameTr.value);
+    }
+    if (nameEn.present) {
+      map['name_en'] = Variable<String>(nameEn.value);
+    }
+    if (activeIngredient.present) {
+      map['active_ingredient'] = Variable<String>(
+        $RefDrugsTable.$converteractiveIngredient.toSql(activeIngredient.value),
+      );
+    }
+    if (doseUnit.present) {
+      map['dose_unit'] = Variable<String>(
+        $RefDrugsTable.$converterdoseUnit.toSql(doseUnit.value),
+      );
+    }
+    if (withdrawalDays.present) {
+      map['withdrawal_days'] = Variable<int>(withdrawalDays.value);
+    }
+    if (licenseNo.present) {
+      map['license_no'] = Variable<String>(licenseNo.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RefDrugsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('nameTr: $nameTr, ')
+          ..write('nameEn: $nameEn, ')
+          ..write('activeIngredient: $activeIngredient, ')
+          ..write('doseUnit: $doseUnit, ')
+          ..write('withdrawalDays: $withdrawalDays, ')
+          ..write('licenseNo: $licenseNo, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$RefDrugInsertable implements Insertable<RefDrug> {
+  RefDrug _object;
+  _$RefDrugInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return RefDrugsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      countryCode: Value(_object.countryCode),
+      nameTr: Value(_object.nameTr),
+      nameEn: Value(_object.nameEn),
+      activeIngredient: Value(_object.activeIngredient),
+      doseUnit: Value(_object.doseUnit),
+      withdrawalDays: Value(_object.withdrawalDays),
+      licenseNo: Value(_object.licenseNo),
+    ).toColumns(false);
+  }
+}
+
+extension RefDrugToInsertable on RefDrug {
+  _$RefDrugInsertable toInsertable() {
+    return _$RefDrugInsertable(this);
+  }
+}
+
+class $DrugsTable extends Drugs with TableInfo<$DrugsTable, Drug> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DrugsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DrugActiveIngredient, String>
+  activeIngredient = GeneratedColumn<String>(
+    'active_ingredient',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<DrugActiveIngredient>($DrugsTable.$converteractiveIngredient);
+  @override
+  late final GeneratedColumnWithTypeConverter<DrugDoseUnit, String> doseUnit =
+      GeneratedColumn<String>(
+        'dose_unit',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DrugDoseUnit>($DrugsTable.$converterdoseUnit);
+  static const VerificationMeta _withdrawalDaysMeta = const VerificationMeta(
+    'withdrawalDays',
+  );
+  @override
+  late final GeneratedColumn<int> withdrawalDays = GeneratedColumn<int>(
+    'withdrawal_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _licenseNoMeta = const VerificationMeta(
+    'licenseNo',
+  );
+  @override
+  late final GeneratedColumn<String> licenseNo = GeneratedColumn<String>(
+    'license_no',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    name,
+    activeIngredient,
+    doseUnit,
+    withdrawalDays,
+    licenseNo,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'drugs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Drug> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('withdrawal_days')) {
+      context.handle(
+        _withdrawalDaysMeta,
+        withdrawalDays.isAcceptableOrUnknown(
+          data['withdrawal_days']!,
+          _withdrawalDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('license_no')) {
+      context.handle(
+        _licenseNoMeta,
+        licenseNo.isAcceptableOrUnknown(data['license_no']!, _licenseNoMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Drug map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Drug(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      activeIngredient: $DrugsTable.$converteractiveIngredient.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}active_ingredient'],
+        )!,
+      ),
+      doseUnit: $DrugsTable.$converterdoseUnit.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}dose_unit'],
+        )!,
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      withdrawalDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}withdrawal_days'],
+      ),
+      licenseNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}license_no'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $DrugsTable createAlias(String alias) {
+    return $DrugsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DrugActiveIngredient, String>
+  $converteractiveIngredient = const ServerEnumConverter(
+    DrugActiveIngredient.values,
+  );
+  static TypeConverter<DrugDoseUnit, String> $converterdoseUnit =
+      const ServerEnumConverter(DrugDoseUnit.values);
+}
+
+class DrugsCompanion extends UpdateCompanion<Drug> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> name;
+  final Value<DrugActiveIngredient> activeIngredient;
+  final Value<DrugDoseUnit> doseUnit;
+  final Value<int?> withdrawalDays;
+  final Value<String?> licenseNo;
+  final Value<int> rowid;
+  const DrugsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.activeIngredient = const Value.absent(),
+    this.doseUnit = const Value.absent(),
+    this.withdrawalDays = const Value.absent(),
+    this.licenseNo = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DrugsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String name,
+    required DrugActiveIngredient activeIngredient,
+    required DrugDoseUnit doseUnit,
+    this.withdrawalDays = const Value.absent(),
+    this.licenseNo = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       name = Value(name),
+       activeIngredient = Value(activeIngredient),
+       doseUnit = Value(doseUnit);
+  static Insertable<Drug> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? name,
+    Expression<String>? activeIngredient,
+    Expression<String>? doseUnit,
+    Expression<int>? withdrawalDays,
+    Expression<String>? licenseNo,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (name != null) 'name': name,
+      if (activeIngredient != null) 'active_ingredient': activeIngredient,
+      if (doseUnit != null) 'dose_unit': doseUnit,
+      if (withdrawalDays != null) 'withdrawal_days': withdrawalDays,
+      if (licenseNo != null) 'license_no': licenseNo,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DrugsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? name,
+    Value<DrugActiveIngredient>? activeIngredient,
+    Value<DrugDoseUnit>? doseUnit,
+    Value<int?>? withdrawalDays,
+    Value<String?>? licenseNo,
+    Value<int>? rowid,
+  }) {
+    return DrugsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      name: name ?? this.name,
+      activeIngredient: activeIngredient ?? this.activeIngredient,
+      doseUnit: doseUnit ?? this.doseUnit,
+      withdrawalDays: withdrawalDays ?? this.withdrawalDays,
+      licenseNo: licenseNo ?? this.licenseNo,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (activeIngredient.present) {
+      map['active_ingredient'] = Variable<String>(
+        $DrugsTable.$converteractiveIngredient.toSql(activeIngredient.value),
+      );
+    }
+    if (doseUnit.present) {
+      map['dose_unit'] = Variable<String>(
+        $DrugsTable.$converterdoseUnit.toSql(doseUnit.value),
+      );
+    }
+    if (withdrawalDays.present) {
+      map['withdrawal_days'] = Variable<int>(withdrawalDays.value);
+    }
+    if (licenseNo.present) {
+      map['license_no'] = Variable<String>(licenseNo.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DrugsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('name: $name, ')
+          ..write('activeIngredient: $activeIngredient, ')
+          ..write('doseUnit: $doseUnit, ')
+          ..write('withdrawalDays: $withdrawalDays, ')
+          ..write('licenseNo: $licenseNo, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$DrugInsertable implements Insertable<Drug> {
+  Drug _object;
+  _$DrugInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return DrugsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      name: Value(_object.name),
+      activeIngredient: Value(_object.activeIngredient),
+      doseUnit: Value(_object.doseUnit),
+      withdrawalDays: Value(_object.withdrawalDays),
+      licenseNo: Value(_object.licenseNo),
+    ).toColumns(false);
+  }
+}
+
+extension DrugToInsertable on Drug {
+  _$DrugInsertable toInsertable() {
+    return _$DrugInsertable(this);
+  }
+}
+
+class $TreatmentsTable extends Treatments
+    with TableInfo<$TreatmentsTable, Treatment> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TreatmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _refDrugIdMeta = const VerificationMeta(
+    'refDrugId',
+  );
+  @override
+  late final GeneratedColumn<String> refDrugId = GeneratedColumn<String>(
+    'ref_drug_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _drugIdMeta = const VerificationMeta('drugId');
+  @override
+  late final GeneratedColumn<String> drugId = GeneratedColumn<String>(
+    'drug_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _productNameMeta = const VerificationMeta(
+    'productName',
+  );
+  @override
+  late final GeneratedColumn<String> productName = GeneratedColumn<String>(
+    'product_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DrugActiveIngredient, String>
+  activeIngredient =
+      GeneratedColumn<String>(
+        'active_ingredient',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DrugActiveIngredient>(
+        $TreatmentsTable.$converteractiveIngredient,
+      );
+  static const VerificationMeta _batchNoMeta = const VerificationMeta(
+    'batchNo',
+  );
+  @override
+  late final GeneratedColumn<String> batchNo = GeneratedColumn<String>(
+    'batch_no',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _doseMeta = const VerificationMeta('dose');
+  @override
+  late final GeneratedColumn<double> dose = GeneratedColumn<double>(
+    'dose',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DrugDoseUnit, String> doseUnit =
+      GeneratedColumn<String>(
+        'dose_unit',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DrugDoseUnit>($TreatmentsTable.$converterdoseUnit);
+  static const VerificationMeta _startedAtMeta = const VerificationMeta(
+    'startedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startedAt = GeneratedColumn<DateTime>(
+    'started_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _plannedRemovalAtMeta = const VerificationMeta(
+    'plannedRemovalAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> plannedRemovalAt =
+      GeneratedColumn<DateTime>(
+        'planned_removal_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _withdrawalDaysMeta = const VerificationMeta(
+    'withdrawalDays',
+  );
+  @override
+  late final GeneratedColumn<int> withdrawalDays = GeneratedColumn<int>(
+    'withdrawal_days',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    hiveId,
+    apiaryId,
+    refDrugId,
+    drugId,
+    productName,
+    activeIngredient,
+    batchNo,
+    dose,
+    doseUnit,
+    startedAt,
+    plannedRemovalAt,
+    withdrawalDays,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'treatments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Treatment> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('ref_drug_id')) {
+      context.handle(
+        _refDrugIdMeta,
+        refDrugId.isAcceptableOrUnknown(data['ref_drug_id']!, _refDrugIdMeta),
+      );
+    }
+    if (data.containsKey('drug_id')) {
+      context.handle(
+        _drugIdMeta,
+        drugId.isAcceptableOrUnknown(data['drug_id']!, _drugIdMeta),
+      );
+    }
+    if (data.containsKey('product_name')) {
+      context.handle(
+        _productNameMeta,
+        productName.isAcceptableOrUnknown(
+          data['product_name']!,
+          _productNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_productNameMeta);
+    }
+    if (data.containsKey('batch_no')) {
+      context.handle(
+        _batchNoMeta,
+        batchNo.isAcceptableOrUnknown(data['batch_no']!, _batchNoMeta),
+      );
+    }
+    if (data.containsKey('dose')) {
+      context.handle(
+        _doseMeta,
+        dose.isAcceptableOrUnknown(data['dose']!, _doseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_doseMeta);
+    }
+    if (data.containsKey('started_at')) {
+      context.handle(
+        _startedAtMeta,
+        startedAt.isAcceptableOrUnknown(data['started_at']!, _startedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startedAtMeta);
+    }
+    if (data.containsKey('planned_removal_at')) {
+      context.handle(
+        _plannedRemovalAtMeta,
+        plannedRemovalAt.isAcceptableOrUnknown(
+          data['planned_removal_at']!,
+          _plannedRemovalAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('withdrawal_days')) {
+      context.handle(
+        _withdrawalDaysMeta,
+        withdrawalDays.isAcceptableOrUnknown(
+          data['withdrawal_days']!,
+          _withdrawalDaysMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_withdrawalDaysMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Treatment map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Treatment(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      productName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_name'],
+      )!,
+      activeIngredient: $TreatmentsTable.$converteractiveIngredient.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}active_ingredient'],
+        )!,
+      ),
+      dose: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}dose'],
+      )!,
+      doseUnit: $TreatmentsTable.$converterdoseUnit.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}dose_unit'],
+        )!,
+      ),
+      startedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}started_at'],
+      )!,
+      withdrawalDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}withdrawal_days'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      refDrugId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ref_drug_id'],
+      ),
+      drugId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}drug_id'],
+      ),
+      batchNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}batch_no'],
+      ),
+      plannedRemovalAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}planned_removal_at'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $TreatmentsTable createAlias(String alias) {
+    return $TreatmentsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DrugActiveIngredient, String>
+  $converteractiveIngredient = const ServerEnumConverter(
+    DrugActiveIngredient.values,
+  );
+  static TypeConverter<DrugDoseUnit, String> $converterdoseUnit =
+      const ServerEnumConverter(DrugDoseUnit.values);
+}
+
+class TreatmentsCompanion extends UpdateCompanion<Treatment> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> hiveId;
+  final Value<String> apiaryId;
+  final Value<String?> refDrugId;
+  final Value<String?> drugId;
+  final Value<String> productName;
+  final Value<DrugActiveIngredient> activeIngredient;
+  final Value<String?> batchNo;
+  final Value<double> dose;
+  final Value<DrugDoseUnit> doseUnit;
+  final Value<DateTime> startedAt;
+  final Value<DateTime?> plannedRemovalAt;
+  final Value<int> withdrawalDays;
+  final Value<int> rowid;
+  const TreatmentsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.refDrugId = const Value.absent(),
+    this.drugId = const Value.absent(),
+    this.productName = const Value.absent(),
+    this.activeIngredient = const Value.absent(),
+    this.batchNo = const Value.absent(),
+    this.dose = const Value.absent(),
+    this.doseUnit = const Value.absent(),
+    this.startedAt = const Value.absent(),
+    this.plannedRemovalAt = const Value.absent(),
+    this.withdrawalDays = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TreatmentsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String hiveId,
+    required String apiaryId,
+    this.refDrugId = const Value.absent(),
+    this.drugId = const Value.absent(),
+    required String productName,
+    required DrugActiveIngredient activeIngredient,
+    this.batchNo = const Value.absent(),
+    required double dose,
+    required DrugDoseUnit doseUnit,
+    required DateTime startedAt,
+    this.plannedRemovalAt = const Value.absent(),
+    required int withdrawalDays,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       hiveId = Value(hiveId),
+       apiaryId = Value(apiaryId),
+       productName = Value(productName),
+       activeIngredient = Value(activeIngredient),
+       dose = Value(dose),
+       doseUnit = Value(doseUnit),
+       startedAt = Value(startedAt),
+       withdrawalDays = Value(withdrawalDays);
+  static Insertable<Treatment> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? hiveId,
+    Expression<String>? apiaryId,
+    Expression<String>? refDrugId,
+    Expression<String>? drugId,
+    Expression<String>? productName,
+    Expression<String>? activeIngredient,
+    Expression<String>? batchNo,
+    Expression<double>? dose,
+    Expression<String>? doseUnit,
+    Expression<DateTime>? startedAt,
+    Expression<DateTime>? plannedRemovalAt,
+    Expression<int>? withdrawalDays,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (refDrugId != null) 'ref_drug_id': refDrugId,
+      if (drugId != null) 'drug_id': drugId,
+      if (productName != null) 'product_name': productName,
+      if (activeIngredient != null) 'active_ingredient': activeIngredient,
+      if (batchNo != null) 'batch_no': batchNo,
+      if (dose != null) 'dose': dose,
+      if (doseUnit != null) 'dose_unit': doseUnit,
+      if (startedAt != null) 'started_at': startedAt,
+      if (plannedRemovalAt != null) 'planned_removal_at': plannedRemovalAt,
+      if (withdrawalDays != null) 'withdrawal_days': withdrawalDays,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TreatmentsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? hiveId,
+    Value<String>? apiaryId,
+    Value<String?>? refDrugId,
+    Value<String?>? drugId,
+    Value<String>? productName,
+    Value<DrugActiveIngredient>? activeIngredient,
+    Value<String?>? batchNo,
+    Value<double>? dose,
+    Value<DrugDoseUnit>? doseUnit,
+    Value<DateTime>? startedAt,
+    Value<DateTime?>? plannedRemovalAt,
+    Value<int>? withdrawalDays,
+    Value<int>? rowid,
+  }) {
+    return TreatmentsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      hiveId: hiveId ?? this.hiveId,
+      apiaryId: apiaryId ?? this.apiaryId,
+      refDrugId: refDrugId ?? this.refDrugId,
+      drugId: drugId ?? this.drugId,
+      productName: productName ?? this.productName,
+      activeIngredient: activeIngredient ?? this.activeIngredient,
+      batchNo: batchNo ?? this.batchNo,
+      dose: dose ?? this.dose,
+      doseUnit: doseUnit ?? this.doseUnit,
+      startedAt: startedAt ?? this.startedAt,
+      plannedRemovalAt: plannedRemovalAt ?? this.plannedRemovalAt,
+      withdrawalDays: withdrawalDays ?? this.withdrawalDays,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (refDrugId.present) {
+      map['ref_drug_id'] = Variable<String>(refDrugId.value);
+    }
+    if (drugId.present) {
+      map['drug_id'] = Variable<String>(drugId.value);
+    }
+    if (productName.present) {
+      map['product_name'] = Variable<String>(productName.value);
+    }
+    if (activeIngredient.present) {
+      map['active_ingredient'] = Variable<String>(
+        $TreatmentsTable.$converteractiveIngredient.toSql(
+          activeIngredient.value,
+        ),
+      );
+    }
+    if (batchNo.present) {
+      map['batch_no'] = Variable<String>(batchNo.value);
+    }
+    if (dose.present) {
+      map['dose'] = Variable<double>(dose.value);
+    }
+    if (doseUnit.present) {
+      map['dose_unit'] = Variable<String>(
+        $TreatmentsTable.$converterdoseUnit.toSql(doseUnit.value),
+      );
+    }
+    if (startedAt.present) {
+      map['started_at'] = Variable<DateTime>(startedAt.value);
+    }
+    if (plannedRemovalAt.present) {
+      map['planned_removal_at'] = Variable<DateTime>(plannedRemovalAt.value);
+    }
+    if (withdrawalDays.present) {
+      map['withdrawal_days'] = Variable<int>(withdrawalDays.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TreatmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('refDrugId: $refDrugId, ')
+          ..write('drugId: $drugId, ')
+          ..write('productName: $productName, ')
+          ..write('activeIngredient: $activeIngredient, ')
+          ..write('batchNo: $batchNo, ')
+          ..write('dose: $dose, ')
+          ..write('doseUnit: $doseUnit, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('plannedRemovalAt: $plannedRemovalAt, ')
+          ..write('withdrawalDays: $withdrawalDays, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$TreatmentInsertable implements Insertable<Treatment> {
+  Treatment _object;
+  _$TreatmentInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return TreatmentsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      hiveId: Value(_object.hiveId),
+      apiaryId: Value(_object.apiaryId),
+      refDrugId: Value(_object.refDrugId),
+      drugId: Value(_object.drugId),
+      productName: Value(_object.productName),
+      activeIngredient: Value(_object.activeIngredient),
+      batchNo: Value(_object.batchNo),
+      dose: Value(_object.dose),
+      doseUnit: Value(_object.doseUnit),
+      startedAt: Value(_object.startedAt),
+      plannedRemovalAt: Value(_object.plannedRemovalAt),
+      withdrawalDays: Value(_object.withdrawalDays),
+    ).toColumns(false);
+  }
+}
+
+extension TreatmentToInsertable on Treatment {
+  _$TreatmentInsertable toInsertable() {
+    return _$TreatmentInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -7973,6 +9817,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $MediaTable media = $MediaTable(this);
   late final $MediaUploadsTable mediaUploads = $MediaUploadsTable(this);
   late final $MiteCountsTable miteCounts = $MiteCountsTable(this);
+  late final $RefDrugsTable refDrugs = $RefDrugsTable(this);
+  late final $DrugsTable drugs = $DrugsTable(this);
+  late final $TreatmentsTable treatments = $TreatmentsTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $OutboxTable outbox = $OutboxTable(this);
   late final $SyncStateTable syncState = $SyncStateTable(this);
@@ -8032,6 +9879,22 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'mite_counts_apiary_id_idx',
     'CREATE INDEX mite_counts_apiary_id_idx ON mite_counts (apiary_id)',
   );
+  late final Index drugsOrgIdIdx = Index(
+    'drugs_org_id_idx',
+    'CREATE INDEX drugs_org_id_idx ON drugs (org_id)',
+  );
+  late final Index treatmentsOrgIdIdx = Index(
+    'treatments_org_id_idx',
+    'CREATE INDEX treatments_org_id_idx ON treatments (org_id)',
+  );
+  late final Index treatmentsHiveIdIdx = Index(
+    'treatments_hive_id_idx',
+    'CREATE INDEX treatments_hive_id_idx ON treatments (hive_id)',
+  );
+  late final Index treatmentsApiaryIdIdx = Index(
+    'treatments_apiary_id_idx',
+    'CREATE INDEX treatments_apiary_id_idx ON treatments (apiary_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -8049,6 +9912,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     media,
     mediaUploads,
     miteCounts,
+    refDrugs,
+    drugs,
+    treatments,
     localSettings,
     outbox,
     syncState,
@@ -8066,6 +9932,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     miteCountsOrgIdIdx,
     miteCountsHiveIdIdx,
     miteCountsApiaryIdIdx,
+    drugsOrgIdIdx,
+    treatmentsOrgIdIdx,
+    treatmentsHiveIdIdx,
+    treatmentsApiaryIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -12307,6 +14177,1204 @@ typedef $$MiteCountsTableProcessedTableManager =
       MiteCount,
       PrefetchHooks Function()
     >;
+typedef $$RefDrugsTableCreateCompanionBuilder = RefDrugsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String countryCode,
+  required String nameTr,
+  required String nameEn,
+  required DrugActiveIngredient activeIngredient,
+  required DrugDoseUnit doseUnit,
+  Value<int?> withdrawalDays,
+  Value<String?> licenseNo,
+  Value<int> rowid,
+});
+typedef $$RefDrugsTableUpdateCompanionBuilder = RefDrugsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> countryCode,
+  Value<String> nameTr,
+  Value<String> nameEn,
+  Value<DrugActiveIngredient> activeIngredient,
+  Value<DrugDoseUnit> doseUnit,
+  Value<int?> withdrawalDays,
+  Value<String?> licenseNo,
+  Value<int> rowid,
+});
+
+class $$RefDrugsTableFilterComposer
+    extends Composer<_$AppDatabase, $RefDrugsTable> {
+  $$RefDrugsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get nameTr => $composableBuilder(
+    column: $table.nameTr,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get nameEn => $composableBuilder(
+    column: $table.nameEn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    DrugActiveIngredient,
+    DrugActiveIngredient,
+    String
+  >
+  get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DrugDoseUnit, DrugDoseUnit, String>
+  get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get licenseNo => $composableBuilder(
+    column: $table.licenseNo,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RefDrugsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RefDrugsTable> {
+  $$RefDrugsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get nameTr => $composableBuilder(
+    column: $table.nameTr,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get nameEn => $composableBuilder(
+    column: $table.nameEn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get licenseNo => $composableBuilder(
+    column: $table.licenseNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RefDrugsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RefDrugsTable> {
+  $$RefDrugsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get nameTr =>
+      $composableBuilder(column: $table.nameTr, builder: (column) => column);
+
+  GeneratedColumn<String> get nameEn =>
+      $composableBuilder(column: $table.nameEn, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DrugActiveIngredient, String>
+  get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DrugDoseUnit, String> get doseUnit =>
+      $composableBuilder(column: $table.doseUnit, builder: (column) => column);
+
+  GeneratedColumn<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get licenseNo =>
+      $composableBuilder(column: $table.licenseNo, builder: (column) => column);
+}
+
+class $$RefDrugsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RefDrugsTable,
+          RefDrug,
+          $$RefDrugsTableFilterComposer,
+          $$RefDrugsTableOrderingComposer,
+          $$RefDrugsTableAnnotationComposer,
+          $$RefDrugsTableCreateCompanionBuilder,
+          $$RefDrugsTableUpdateCompanionBuilder,
+          (RefDrug, BaseReferences<_$AppDatabase, $RefDrugsTable, RefDrug>),
+          RefDrug,
+          PrefetchHooks Function()
+        > {
+  $$RefDrugsTableTableManager(_$AppDatabase db, $RefDrugsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RefDrugsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RefDrugsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RefDrugsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> countryCode = const Value.absent(),
+                Value<String> nameTr = const Value.absent(),
+                Value<String> nameEn = const Value.absent(),
+                Value<DrugActiveIngredient> activeIngredient =
+                    const Value.absent(),
+                Value<DrugDoseUnit> doseUnit = const Value.absent(),
+                Value<int?> withdrawalDays = const Value.absent(),
+                Value<String?> licenseNo = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RefDrugsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                countryCode: countryCode,
+                nameTr: nameTr,
+                nameEn: nameEn,
+                activeIngredient: activeIngredient,
+                doseUnit: doseUnit,
+                withdrawalDays: withdrawalDays,
+                licenseNo: licenseNo,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String countryCode,
+                required String nameTr,
+                required String nameEn,
+                required DrugActiveIngredient activeIngredient,
+                required DrugDoseUnit doseUnit,
+                Value<int?> withdrawalDays = const Value.absent(),
+                Value<String?> licenseNo = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RefDrugsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                countryCode: countryCode,
+                nameTr: nameTr,
+                nameEn: nameEn,
+                activeIngredient: activeIngredient,
+                doseUnit: doseUnit,
+                withdrawalDays: withdrawalDays,
+                licenseNo: licenseNo,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RefDrugsTable, RefDrug>(table),
+                  BaseReferences<_$AppDatabase, $RefDrugsTable, RefDrug>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RefDrugsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RefDrugsTable,
+      RefDrug,
+      $$RefDrugsTableFilterComposer,
+      $$RefDrugsTableOrderingComposer,
+      $$RefDrugsTableAnnotationComposer,
+      $$RefDrugsTableCreateCompanionBuilder,
+      $$RefDrugsTableUpdateCompanionBuilder,
+      (RefDrug, BaseReferences<_$AppDatabase, $RefDrugsTable, RefDrug>),
+      RefDrug,
+      PrefetchHooks Function()
+    >;
+typedef $$DrugsTableCreateCompanionBuilder = DrugsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String name,
+  required DrugActiveIngredient activeIngredient,
+  required DrugDoseUnit doseUnit,
+  Value<int?> withdrawalDays,
+  Value<String?> licenseNo,
+  Value<int> rowid,
+});
+typedef $$DrugsTableUpdateCompanionBuilder = DrugsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> name,
+  Value<DrugActiveIngredient> activeIngredient,
+  Value<DrugDoseUnit> doseUnit,
+  Value<int?> withdrawalDays,
+  Value<String?> licenseNo,
+  Value<int> rowid,
+});
+
+class $$DrugsTableFilterComposer extends Composer<_$AppDatabase, $DrugsTable> {
+  $$DrugsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    DrugActiveIngredient,
+    DrugActiveIngredient,
+    String
+  >
+  get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DrugDoseUnit, DrugDoseUnit, String>
+  get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get licenseNo => $composableBuilder(
+    column: $table.licenseNo,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DrugsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DrugsTable> {
+  $$DrugsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get licenseNo => $composableBuilder(
+    column: $table.licenseNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DrugsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DrugsTable> {
+  $$DrugsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DrugActiveIngredient, String>
+  get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DrugDoseUnit, String> get doseUnit =>
+      $composableBuilder(column: $table.doseUnit, builder: (column) => column);
+
+  GeneratedColumn<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get licenseNo =>
+      $composableBuilder(column: $table.licenseNo, builder: (column) => column);
+}
+
+class $$DrugsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DrugsTable,
+          Drug,
+          $$DrugsTableFilterComposer,
+          $$DrugsTableOrderingComposer,
+          $$DrugsTableAnnotationComposer,
+          $$DrugsTableCreateCompanionBuilder,
+          $$DrugsTableUpdateCompanionBuilder,
+          (Drug, BaseReferences<_$AppDatabase, $DrugsTable, Drug>),
+          Drug,
+          PrefetchHooks Function()
+        > {
+  $$DrugsTableTableManager(_$AppDatabase db, $DrugsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DrugsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DrugsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DrugsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<DrugActiveIngredient> activeIngredient =
+                    const Value.absent(),
+                Value<DrugDoseUnit> doseUnit = const Value.absent(),
+                Value<int?> withdrawalDays = const Value.absent(),
+                Value<String?> licenseNo = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DrugsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                name: name,
+                activeIngredient: activeIngredient,
+                doseUnit: doseUnit,
+                withdrawalDays: withdrawalDays,
+                licenseNo: licenseNo,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String name,
+                required DrugActiveIngredient activeIngredient,
+                required DrugDoseUnit doseUnit,
+                Value<int?> withdrawalDays = const Value.absent(),
+                Value<String?> licenseNo = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DrugsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                name: name,
+                activeIngredient: activeIngredient,
+                doseUnit: doseUnit,
+                withdrawalDays: withdrawalDays,
+                licenseNo: licenseNo,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DrugsTable, Drug>(table),
+                  BaseReferences<_$AppDatabase, $DrugsTable, Drug>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DrugsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DrugsTable,
+      Drug,
+      $$DrugsTableFilterComposer,
+      $$DrugsTableOrderingComposer,
+      $$DrugsTableAnnotationComposer,
+      $$DrugsTableCreateCompanionBuilder,
+      $$DrugsTableUpdateCompanionBuilder,
+      (Drug, BaseReferences<_$AppDatabase, $DrugsTable, Drug>),
+      Drug,
+      PrefetchHooks Function()
+    >;
+typedef $$TreatmentsTableCreateCompanionBuilder = TreatmentsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String hiveId,
+  required String apiaryId,
+  Value<String?> refDrugId,
+  Value<String?> drugId,
+  required String productName,
+  required DrugActiveIngredient activeIngredient,
+  Value<String?> batchNo,
+  required double dose,
+  required DrugDoseUnit doseUnit,
+  required DateTime startedAt,
+  Value<DateTime?> plannedRemovalAt,
+  required int withdrawalDays,
+  Value<int> rowid,
+});
+typedef $$TreatmentsTableUpdateCompanionBuilder = TreatmentsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> hiveId,
+  Value<String> apiaryId,
+  Value<String?> refDrugId,
+  Value<String?> drugId,
+  Value<String> productName,
+  Value<DrugActiveIngredient> activeIngredient,
+  Value<String?> batchNo,
+  Value<double> dose,
+  Value<DrugDoseUnit> doseUnit,
+  Value<DateTime> startedAt,
+  Value<DateTime?> plannedRemovalAt,
+  Value<int> withdrawalDays,
+  Value<int> rowid,
+});
+
+class $$TreatmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $TreatmentsTable> {
+  $$TreatmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get refDrugId => $composableBuilder(
+    column: $table.refDrugId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get drugId => $composableBuilder(
+    column: $table.drugId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get productName => $composableBuilder(
+    column: $table.productName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    DrugActiveIngredient,
+    DrugActiveIngredient,
+    String
+  >
+  get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get batchNo => $composableBuilder(
+    column: $table.batchNo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get dose => $composableBuilder(
+    column: $table.dose,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DrugDoseUnit, DrugDoseUnit, String>
+  get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get plannedRemovalAt => $composableBuilder(
+    column: $table.plannedRemovalAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TreatmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TreatmentsTable> {
+  $$TreatmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get refDrugId => $composableBuilder(
+    column: $table.refDrugId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get drugId => $composableBuilder(
+    column: $table.drugId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get productName => $composableBuilder(
+    column: $table.productName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get batchNo => $composableBuilder(
+    column: $table.batchNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get dose => $composableBuilder(
+    column: $table.dose,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get plannedRemovalAt => $composableBuilder(
+    column: $table.plannedRemovalAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TreatmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TreatmentsTable> {
+  $$TreatmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<String> get refDrugId =>
+      $composableBuilder(column: $table.refDrugId, builder: (column) => column);
+
+  GeneratedColumn<String> get drugId =>
+      $composableBuilder(column: $table.drugId, builder: (column) => column);
+
+  GeneratedColumn<String> get productName => $composableBuilder(
+    column: $table.productName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DrugActiveIngredient, String>
+  get activeIngredient => $composableBuilder(
+    column: $table.activeIngredient,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get batchNo =>
+      $composableBuilder(column: $table.batchNo, builder: (column) => column);
+
+  GeneratedColumn<double> get dose =>
+      $composableBuilder(column: $table.dose, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DrugDoseUnit, String> get doseUnit =>
+      $composableBuilder(column: $table.doseUnit, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startedAt =>
+      $composableBuilder(column: $table.startedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get plannedRemovalAt => $composableBuilder(
+    column: $table.plannedRemovalAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get withdrawalDays => $composableBuilder(
+    column: $table.withdrawalDays,
+    builder: (column) => column,
+  );
+}
+
+class $$TreatmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TreatmentsTable,
+          Treatment,
+          $$TreatmentsTableFilterComposer,
+          $$TreatmentsTableOrderingComposer,
+          $$TreatmentsTableAnnotationComposer,
+          $$TreatmentsTableCreateCompanionBuilder,
+          $$TreatmentsTableUpdateCompanionBuilder,
+          (
+            Treatment,
+            BaseReferences<_$AppDatabase, $TreatmentsTable, Treatment>,
+          ),
+          Treatment,
+          PrefetchHooks Function()
+        > {
+  $$TreatmentsTableTableManager(_$AppDatabase db, $TreatmentsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TreatmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TreatmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TreatmentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<String?> refDrugId = const Value.absent(),
+                Value<String?> drugId = const Value.absent(),
+                Value<String> productName = const Value.absent(),
+                Value<DrugActiveIngredient> activeIngredient =
+                    const Value.absent(),
+                Value<String?> batchNo = const Value.absent(),
+                Value<double> dose = const Value.absent(),
+                Value<DrugDoseUnit> doseUnit = const Value.absent(),
+                Value<DateTime> startedAt = const Value.absent(),
+                Value<DateTime?> plannedRemovalAt = const Value.absent(),
+                Value<int> withdrawalDays = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                refDrugId: refDrugId,
+                drugId: drugId,
+                productName: productName,
+                activeIngredient: activeIngredient,
+                batchNo: batchNo,
+                dose: dose,
+                doseUnit: doseUnit,
+                startedAt: startedAt,
+                plannedRemovalAt: plannedRemovalAt,
+                withdrawalDays: withdrawalDays,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String hiveId,
+                required String apiaryId,
+                Value<String?> refDrugId = const Value.absent(),
+                Value<String?> drugId = const Value.absent(),
+                required String productName,
+                required DrugActiveIngredient activeIngredient,
+                Value<String?> batchNo = const Value.absent(),
+                required double dose,
+                required DrugDoseUnit doseUnit,
+                required DateTime startedAt,
+                Value<DateTime?> plannedRemovalAt = const Value.absent(),
+                required int withdrawalDays,
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                refDrugId: refDrugId,
+                drugId: drugId,
+                productName: productName,
+                activeIngredient: activeIngredient,
+                batchNo: batchNo,
+                dose: dose,
+                doseUnit: doseUnit,
+                startedAt: startedAt,
+                plannedRemovalAt: plannedRemovalAt,
+                withdrawalDays: withdrawalDays,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TreatmentsTable, Treatment>(table),
+                  BaseReferences<_$AppDatabase, $TreatmentsTable, Treatment>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TreatmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TreatmentsTable,
+      Treatment,
+      $$TreatmentsTableFilterComposer,
+      $$TreatmentsTableOrderingComposer,
+      $$TreatmentsTableAnnotationComposer,
+      $$TreatmentsTableCreateCompanionBuilder,
+      $$TreatmentsTableUpdateCompanionBuilder,
+      (Treatment, BaseReferences<_$AppDatabase, $TreatmentsTable, Treatment>),
+      Treatment,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -12896,6 +15964,12 @@ class $AppDatabaseManager {
       $$MediaUploadsTableTableManager(_db, _db.mediaUploads);
   $$MiteCountsTableTableManager get miteCounts =>
       $$MiteCountsTableTableManager(_db, _db.miteCounts);
+  $$RefDrugsTableTableManager get refDrugs =>
+      $$RefDrugsTableTableManager(_db, _db.refDrugs);
+  $$DrugsTableTableManager get drugs =>
+      $$DrugsTableTableManager(_db, _db.drugs);
+  $$TreatmentsTableTableManager get treatments =>
+      $$TreatmentsTableTableManager(_db, _db.treatments);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$OutboxTableTableManager get outbox =>

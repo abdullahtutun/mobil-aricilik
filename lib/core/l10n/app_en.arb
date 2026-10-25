@@ -1408,5 +1408,198 @@
   "settingsVarroa": "Varroa",
   "settingsVarroaPercent": "Infestation threshold",
   "settingsVarroaPerDay": "Sticky board threshold",
-  "settingsVarroaHint": "A warning is shown when a count reaches the threshold. Saved on this phone only."
+  "settingsVarroaHint": "A warning is shown when a count reaches the threshold. Saved on this phone only.",
+
+  "syncTableRefDrugs": "Drug list",
+  "syncTableDrugs": "Drug",
+  "syncTableTreatments": "Treatment",
+  "drugIngredientAmitraz": "Amitraz",
+  "drugIngredientOxalicAcid": "Oxalic acid",
+  "drugIngredientFormicAcid": "Formic acid",
+  "drugIngredientThymol": "Thymol",
+  "drugIngredientFlumethrin": "Flumethrin",
+  "drugIngredientTauFluvalinate": "Tau-fluvalinate",
+  "drugIngredientCoumaphos": "Coumaphos",
+  "drugIngredientLacticAcid": "Lactic acid",
+  "drugIngredientOther": "Other",
+  "drugUnitStrip": "strip",
+  "drugUnitMl": "ml",
+  "drugUnitG": "g",
+  "drugUnitDose": "dose",
+  "hiveTreat": "Apply treatment",
+  "treatmentFormTitle": "Treatment",
+  "treatmentScopeHive": "Hive {number}",
+  "@treatmentScopeHive": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "treatmentScopeApiary": "Whole apiary · {count}",
+  "@treatmentScopeApiary": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "treatmentChooseDrug": "Choose drug",
+  "treatmentChangeDrug": "Change",
+  "treatmentDrugIngredient": "Active ingredient: {ingredient}",
+  "@treatmentDrugIngredient": {
+    "placeholders": {
+      "ingredient": {
+        "type": "String",
+        "example": "Amitraz"
+      }
+    }
+  },
+  "treatmentDrugLicense": "licence {number}",
+  "@treatmentDrugLicense": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "TR-123"
+      }
+    }
+  },
+  "treatmentDrugCustom": "your drug",
+  "treatmentAddDrug": "Add a new drug",
+  "treatmentBatchNo": "Batch no",
+  "treatmentStartedOn": "Start",
+  "treatmentDose": "Dose per hive ({unit})",
+  "@treatmentDose": {
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "strip"
+      }
+    }
+  },
+  "treatmentDoseTotal": "Total {total} {unit}",
+  "@treatmentDoseTotal": {
+    "placeholders": {
+      "total": {
+        "type": "String",
+        "example": "80"
+      },
+      "unit": {
+        "type": "String",
+        "example": "strip"
+      }
+    }
+  },
+  "treatmentWithdrawalDays": "Withdrawal period (days)",
+  "treatmentRemoval": "Removal",
+  "treatmentRemovalNone": "None",
+  "treatmentRemovalChange": "Tap to change",
+  "treatmentRemovalSingle": "Single application; tap to set",
+  "treatmentRemovalClear": "No removal (single application)",
+  "treatmentNoSuper": "No honey super",
+  "treatmentNoSuperUntil": "Until {date}",
+  "@treatmentNoSuperUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Dec 5, 2026"
+      }
+    }
+  },
+  "treatmentNoSuperAfterRemoval": "{days, plural, =0{no withdrawal after removal} =1{removal + 1 day withdrawal} other{removal + {days} days withdrawal}}",
+  "@treatmentNoSuperAfterRemoval": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "0"
+      }
+    }
+  },
+  "treatmentNoSuperAfterStart": "{days, plural, =0{no withdrawal} =1{start + 1 day withdrawal} other{start + {days} days withdrawal}}",
+  "@treatmentNoSuperAfterStart": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "14"
+      }
+    }
+  },
+  "treatmentSave": "{count, plural, =1{Save} other{Save to {count} hives}}",
+  "@treatmentSave": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "treatmentSaved": "Treatment saved for hive {number}",
+  "@treatmentSaved": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "treatmentSavedMany": "{count, plural, =1{Treatment saved for 1 hive} other{Treatment saved for {count} hives}}",
+  "@treatmentSavedMany": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "drugFormTitle": "New drug",
+  "drugName": "Name",
+  "drugActiveIngredient": "Active ingredient",
+  "drugDoseUnit": "Dose unit",
+  "drugWithdrawalDays": "Withdrawal period on the label (days)",
+  "drugSave": "Add drug",
+  "withdrawalLockTitle": "In withdrawal period.",
+  "withdrawalLockMessage": "Hive {number} is being treated with {product}. No honey super should be added before {date}; honey from this period may carry drug residue.",
+  "@withdrawalLockMessage": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      },
+      "product": {
+        "type": "String",
+        "example": "Amitraz strip"
+      },
+      "date": {
+        "type": "String",
+        "example": "Dec 5, 2026"
+      }
+    }
+  },
+  "withdrawalDaysLeft": "Remaining",
+  "withdrawalDays": "{days, plural, =1{1 day} other{{days} days}}",
+  "@withdrawalDays": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "withdrawalApplied": "Applied",
+  "withdrawalReasonPrompt": "To save anyway, choose a reason",
+  "withdrawalReasonRemovedEarly": "Drug removed early",
+  "withdrawalReasonNotForSale": "Super won't be sold (own use/feed)",
+  "withdrawalCancel": "Cancel, don't add super",
+  "withdrawalProceed": "Save anyway",
+  "inspectionWithdrawalOverride": "Honey super added during the withdrawal period: {reason}",
+  "@inspectionWithdrawalOverride": {
+    "placeholders": {
+      "reason": {
+        "type": "String",
+        "example": "Drug removed early"
+      }
+    }
+  }
 }

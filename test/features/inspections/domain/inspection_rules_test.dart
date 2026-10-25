@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
@@ -119,6 +120,89 @@ void main() {
 
       expect(inspection.actions, {InspectionAction.fed});
       expect(_inspection(data: const {}).actions, isEmpty);
+    });
+  });
+
+  group('bekleme süresi gerekçesi (data)', () {
+    const override = WithdrawalOverride(
+      treatmentId: 'treatment-1',
+      reason: WithdrawalOverrideReason.removedEarly,
+    );
+
+    test('bal katı eklendiyse uygulama ve gerekçeyle yazılır', () {
+      expect(
+        inspectionData({
+          InspectionAction.superAdded,
+        }, withdrawalOverride: override),
+        {
+          'actions': ['super_added'],
+          'withdrawal_override': {
+            'treatment_id': 'treatment-1',
+            'reason': 'removed_early',
+          },
+        },
+      );
+    });
+
+    test('bal katı yoksa gerekçe yazılmaz; eski gerekçe de silinir', () {
+      final data = {
+        'withdrawal_override': {'treatment_id': 'x', 'reason': 'not_for_sale'},
+      };
+
+      expect(
+        inspectionData(
+          {InspectionAction.fed},
+          data: data,
+          withdrawalOverride: override,
+        ),
+        {
+          'actions': ['fed'],
+        },
+      );
+    });
+
+    test('okunurken gerekçe geri gelir; yoksa ya da tanınmıyorsa null', () {
+      final saved = _inspection(
+        data: inspectionData({
+          InspectionAction.superAdded,
+        }, withdrawalOverride: override),
+      );
+
+      expect(saved.withdrawalOverride, override);
+      expect(_inspection().withdrawalOverride, isNull);
+      expect(
+        _inspection(
+          data: const {
+            'withdrawal_override': {'treatment_id': 'x', 'reason': 'later'},
+          },
+        ).withdrawalOverride,
+        isNull,
+      );
+      expect(
+        _inspection(data: const {'withdrawal_override': 'bozuk'})
+            .withdrawalOverride,
+        isNull,
+      );
+    });
+
+    test('gerekçe taslakla birlikte saklanır', () {
+      const converter = InspectionDraftConverter();
+      const draft = InspectionDraft(
+        values: InspectionValues(actions: {InspectionAction.superAdded}),
+        withdrawalOverride: WithdrawalOverride(
+          treatmentId: 'treatment-1',
+          reason: WithdrawalOverrideReason.notForSale,
+        ),
+      );
+
+      expect(converter.fromSql(converter.toSql(draft)), draft);
+      // Gerekçe alanı olmadan yazılmış eski taslak da okunur.
+      expect(
+        converter.fromSql('{"values": {"actions": ["fed"]}}'),
+        const InspectionDraft(
+          values: InspectionValues(actions: {InspectionAction.fed}),
+        ),
+      );
     });
   });
 

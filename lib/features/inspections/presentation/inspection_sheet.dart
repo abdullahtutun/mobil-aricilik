@@ -8,6 +8,10 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/haptics.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/withdrawal_lock_dialog.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
@@ -88,6 +92,15 @@ class _InspectionForm extends ConsumerWidget {
                       icon: Icons.attach_file_rounded,
                       text: l10n.inspectionMediaAttached(
                         _mediaSummary(l10n, draft.media),
+                      ),
+                    ),
+                    gap,
+                  ],
+                  if (draft.withdrawalOverride case final override?) ...[
+                    _Note(
+                      icon: Icons.lock_open_rounded,
+                      text: l10n.inspectionWithdrawalOverride(
+                        override.reason.label(l10n),
                       ),
                     ),
                     gap,
@@ -214,7 +227,8 @@ class _InspectionForm extends ConsumerWidget {
                           ),
                       ],
                       selected: values.actions,
-                      onChanged: controller.setActions,
+                      onChanged: (actions) =>
+                          _setActions(context, ref, actions),
                     ),
                   ),
                 ],
@@ -254,6 +268,41 @@ class _InspectionForm extends ConsumerWidget {
     ChoiceChipOption(value: false, label: l10n.inspectionAnswerNo),
     ChoiceChipOption(value: true, label: l10n.inspectionAnswerYes),
   ];
+
+  /// İşlemleri yazar. Bekleme süresindeki kovana bal katı eklenirse önce
+  /// kilit açılır: vazgeçilirse bal katı eklenmez, gerekçe seçilirse
+  /// gerekçesiyle eklenir.
+  Future<void> _setActions(
+    BuildContext context,
+    WidgetRef ref,
+    Set<InspectionAction> actions,
+  ) async {
+    final controller = ref.read(
+      inspectionFormControllerProvider(hiveId).notifier,
+    );
+    final addsSuper =
+        actions.contains(InspectionAction.superAdded) &&
+        !form.draft.values.actions.contains(InspectionAction.superAdded);
+    if (!addsSuper) return controller.setActions(actions);
+    final lock = await ref
+        .read(treatmentActionsProvider.notifier)
+        .lockFor(hiveId);
+    if (lock == null) return controller.setActions(actions);
+    if (!context.mounted) return;
+    final reason = await showWithdrawalLockDialog(
+      context,
+      hiveNumber: form.hive.number,
+      lock: lock,
+    );
+    if (reason == null) return;
+    controller.setActions(
+      actions,
+      withdrawalOverride: WithdrawalOverride(
+        treatmentId: lock.treatment.id,
+        reason: reason,
+      ),
+    );
+  }
 
   /// Yazar, titreşir, bildirimi gösterir ve sayfayı kapatır. Bildirim
   /// kovan kartında kalır; Geri al ve hatırlatma sayfa kapandıktan sonra

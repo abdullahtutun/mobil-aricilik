@@ -319,7 +319,8 @@ as Set<InspectionAction>,
 mixin _$Inspection {
 
  String get id; String get orgId; String get hiveId;/// Muayenenin yapıldığı arılık; kovan sonra taşınsa da değişmez.
- String get apiaryId; DateTime get inspectedAt; DateTime get createdAt; DateTime get updatedAt; QueenState? get queenState; int? get beeFrames; int? get broodFrames; int? get honeyFrames; Temperament? get temperament; bool? get swarmSigns; QueenCells? get queenCells; bool? get diseaseSuspected;/// Esnek alanlar (`data jsonb`): şimdilik `actions`. Bu sürümün
+ String get apiaryId; DateTime get inspectedAt; DateTime get createdAt; DateTime get updatedAt; QueenState? get queenState; int? get beeFrames; int? get broodFrames; int? get honeyFrames; Temperament? get temperament; bool? get swarmSigns; QueenCells? get queenCells; bool? get diseaseSuspected;/// Esnek alanlar (`data jsonb`): `actions` ve bekleme süresi geçildiyse
+/// `withdrawal_override` (uygulama ve gerekçe). Bu sürümün
 /// tanımadığı anahtarlar olduğu gibi korunur.
  Map<String, Object?> get data; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
 /// Create a copy of Inspection
@@ -557,10 +558,12 @@ class _Inspection implements Inspection {
 @override final  bool? swarmSigns;
 @override final  QueenCells? queenCells;
 @override final  bool? diseaseSuspected;
-/// Esnek alanlar (`data jsonb`): şimdilik `actions`. Bu sürümün
+/// Esnek alanlar (`data jsonb`): `actions` ve bekleme süresi geçildiyse
+/// `withdrawal_override` (uygulama ve gerekçe). Bu sürümün
 /// tanımadığı anahtarlar olduğu gibi korunur.
  final  Map<String, Object?> _data;
-/// Esnek alanlar (`data jsonb`): şimdilik `actions`. Bu sürümün
+/// Esnek alanlar (`data jsonb`): `actions` ve bekleme süresi geçildiyse
+/// `withdrawal_override` (uygulama ve gerekçe). Bu sürümün
 /// tanımadığı anahtarlar olduğu gibi korunur.
 @override@JsonKey() Map<String, Object?> get data {
   if (_data is EqualUnmodifiableMapView) return _data;

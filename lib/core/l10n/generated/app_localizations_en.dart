@@ -1905,4 +1905,247 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsVarroaHint =>
       'A warning is shown when a count reaches the threshold. Saved on this phone only.';
+
+  @override
+  String get syncTableRefDrugs => 'Drug list';
+
+  @override
+  String get syncTableDrugs => 'Drug';
+
+  @override
+  String get syncTableTreatments => 'Treatment';
+
+  @override
+  String get drugIngredientAmitraz => 'Amitraz';
+
+  @override
+  String get drugIngredientOxalicAcid => 'Oxalic acid';
+
+  @override
+  String get drugIngredientFormicAcid => 'Formic acid';
+
+  @override
+  String get drugIngredientThymol => 'Thymol';
+
+  @override
+  String get drugIngredientFlumethrin => 'Flumethrin';
+
+  @override
+  String get drugIngredientTauFluvalinate => 'Tau-fluvalinate';
+
+  @override
+  String get drugIngredientCoumaphos => 'Coumaphos';
+
+  @override
+  String get drugIngredientLacticAcid => 'Lactic acid';
+
+  @override
+  String get drugIngredientOther => 'Other';
+
+  @override
+  String get drugUnitStrip => 'strip';
+
+  @override
+  String get drugUnitMl => 'ml';
+
+  @override
+  String get drugUnitG => 'g';
+
+  @override
+  String get drugUnitDose => 'dose';
+
+  @override
+  String get hiveTreat => 'Apply treatment';
+
+  @override
+  String get treatmentFormTitle => 'Treatment';
+
+  @override
+  String treatmentScopeHive(String number) {
+    return 'Hive $number';
+  }
+
+  @override
+  String treatmentScopeApiary(int count) {
+    return 'Whole apiary · $count';
+  }
+
+  @override
+  String get treatmentChooseDrug => 'Choose drug';
+
+  @override
+  String get treatmentChangeDrug => 'Change';
+
+  @override
+  String treatmentDrugIngredient(String ingredient) {
+    return 'Active ingredient: $ingredient';
+  }
+
+  @override
+  String treatmentDrugLicense(String number) {
+    return 'licence $number';
+  }
+
+  @override
+  String get treatmentDrugCustom => 'your drug';
+
+  @override
+  String get treatmentAddDrug => 'Add a new drug';
+
+  @override
+  String get treatmentBatchNo => 'Batch no';
+
+  @override
+  String get treatmentStartedOn => 'Start';
+
+  @override
+  String treatmentDose(String unit) {
+    return 'Dose per hive ($unit)';
+  }
+
+  @override
+  String treatmentDoseTotal(String total, String unit) {
+    return 'Total $total $unit';
+  }
+
+  @override
+  String get treatmentWithdrawalDays => 'Withdrawal period (days)';
+
+  @override
+  String get treatmentRemoval => 'Removal';
+
+  @override
+  String get treatmentRemovalNone => 'None';
+
+  @override
+  String get treatmentRemovalChange => 'Tap to change';
+
+  @override
+  String get treatmentRemovalSingle => 'Single application; tap to set';
+
+  @override
+  String get treatmentRemovalClear => 'No removal (single application)';
+
+  @override
+  String get treatmentNoSuper => 'No honey super';
+
+  @override
+  String treatmentNoSuperUntil(String date) {
+    return 'Until $date';
+  }
+
+  @override
+  String treatmentNoSuperAfterRemoval(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'removal + $days days withdrawal',
+      one: 'removal + 1 day withdrawal',
+      zero: 'no withdrawal after removal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String treatmentNoSuperAfterStart(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'start + $days days withdrawal',
+      one: 'start + 1 day withdrawal',
+      zero: 'no withdrawal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String treatmentSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Save to $count hives',
+      one: 'Save',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String treatmentSaved(String number) {
+    return 'Treatment saved for hive $number';
+  }
+
+  @override
+  String treatmentSavedMany(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Treatment saved for $count hives',
+      one: 'Treatment saved for 1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drugFormTitle => 'New drug';
+
+  @override
+  String get drugName => 'Name';
+
+  @override
+  String get drugActiveIngredient => 'Active ingredient';
+
+  @override
+  String get drugDoseUnit => 'Dose unit';
+
+  @override
+  String get drugWithdrawalDays => 'Withdrawal period on the label (days)';
+
+  @override
+  String get drugSave => 'Add drug';
+
+  @override
+  String get withdrawalLockTitle => 'In withdrawal period.';
+
+  @override
+  String withdrawalLockMessage(String number, String product, String date) {
+    return 'Hive $number is being treated with $product. No honey super should be added before $date; honey from this period may carry drug residue.';
+  }
+
+  @override
+  String get withdrawalDaysLeft => 'Remaining';
+
+  @override
+  String withdrawalDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get withdrawalApplied => 'Applied';
+
+  @override
+  String get withdrawalReasonPrompt => 'To save anyway, choose a reason';
+
+  @override
+  String get withdrawalReasonRemovedEarly => 'Drug removed early';
+
+  @override
+  String get withdrawalReasonNotForSale =>
+      'Super won\'t be sold (own use/feed)';
+
+  @override
+  String get withdrawalCancel => 'Cancel, don\'t add super';
+
+  @override
+  String get withdrawalProceed => 'Save anyway';
+
+  @override
+  String inspectionWithdrawalOverride(String reason) {
+    return 'Honey super added during the withdrawal period: $reason';
+  }
 }

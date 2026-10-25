@@ -8,7 +8,9 @@ import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
+import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -44,6 +46,9 @@ part 'app_database.g.dart';
     Media,
     MediaUploads,
     MiteCounts,
+    RefDrugs,
+    Drugs,
+    Treatments,
     LocalSettings,
     Outbox,
     SyncState,
@@ -53,7 +58,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -80,6 +85,16 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.miteCountsOrgIdIdx);
         await m.create(schema.miteCountsHiveIdIdx);
         await m.create(schema.miteCountsApiaryIdIdx);
+      },
+      // İlaçlama: referans liste, işletmenin ilaçları ve uygulamalar.
+      from4To5: (m, schema) async {
+        await m.createTable(schema.refDrugs);
+        await m.createTable(schema.drugs);
+        await m.create(schema.drugsOrgIdIdx);
+        await m.createTable(schema.treatments);
+        await m.create(schema.treatmentsOrgIdIdx);
+        await m.create(schema.treatmentsHiveIdIdx);
+        await m.create(schema.treatmentsApiaryIdIdx);
       },
     ),
   );

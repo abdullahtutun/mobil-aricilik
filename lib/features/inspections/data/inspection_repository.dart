@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_reminder_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -70,13 +71,15 @@ class InspectionRepository
 
   /// Kovanın şimdi [apiaryId] arılığında yapılan muayenesini [values] ile
   /// yazar, muayenede çekilen [media]'yı ona bağlı medya olarak ekler ve
-  /// kovanın taslağını siler; hepsi tek transaction'da.
+  /// kovanın taslağını siler; hepsi tek transaction'da. Bal katı bekleme
+  /// süresine rağmen verildiyse [withdrawalOverride] muayeneyle saklanır.
   Future<Inspection> add({
     required String orgId,
     required String hiveId,
     required String apiaryId,
     required InspectionValues values,
     List<MediaCapture> media = const [],
+    WithdrawalOverride? withdrawalOverride,
   }) => db.transaction(() async {
     final at = now();
     final inspection = await insertRecord(
@@ -94,7 +97,10 @@ class InspectionRepository
         swarmSigns: values.swarmSigns,
         queenCells: values.queenCells,
         diseaseSuspected: values.diseaseSuspected,
-        data: inspectionData(values.actions),
+        data: inspectionData(
+          values.actions,
+          withdrawalOverride: withdrawalOverride,
+        ),
         createdAt: at,
         updatedAt: at,
       ),

@@ -8,6 +8,7 @@ import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
+import 'generated/schema_v5.dart' as v5;
 
 // Dökümler ve `generated/` `dart run drift_dev make-migrations` ile üretilir;
 // her yeni sürümde bu testlere yeni sürümün veri testi eklenir.
@@ -188,6 +189,56 @@ void main() {
         expect(await rows(newDb.localSettings), [setting.toJson()]);
         expect(await rows(newDb.outbox), [pending.toJson()]);
         expect(await rows(newDb.miteCounts), isEmpty);
+      },
+    );
+  });
+  test("v4 → v5 varroa ölçümlerini ve outbox'ı korur; ilaç tabloları boş "
+      'gelir', () async {
+    const count = v4.MiteCountsData(
+      id: 'count-1',
+      createdAt: '2026-10-25T09:00:00.000Z',
+      updatedAt: '2026-10-25T09:00:00.000Z',
+      orgId: 'org-1',
+      hiveId: 'hive-1',
+      apiaryId: 'apiary-1',
+      countedAt: '2026-10-25T09:00:00.000Z',
+      method: 'sugar_roll',
+      mites: 9,
+      sampleBees: 300,
+    );
+    const pending = v4.OutboxData(
+      id: 1,
+      recordTable: 'mite_counts',
+      recordId: 'count-1',
+      operation: 'upsert',
+      payload: '{"id":"count-1"}',
+      createdAt: '2026-10-25T09:00:00.000Z',
+      attempts: 0,
+    );
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 4,
+      newVersion: 5,
+      createOld: v4.DatabaseAtV4.new,
+      createNew: v5.DatabaseAtV5.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(oldDb.miteCounts, count)
+          ..insert(oldDb.outbox, pending);
+      },
+      validateItems: (newDb) async {
+        Future<List<Map<String, dynamic>>> rows(
+          ResultSetImplementation<HasResultSet, DataClass> table,
+        ) async => [
+          for (final row in await newDb.select(table).get()) row.toJson(),
+        ];
+
+        expect(await rows(newDb.miteCounts), [count.toJson()]);
+        expect(await rows(newDb.outbox), [pending.toJson()]);
+        expect(await rows(newDb.refDrugs), isEmpty);
+        expect(await rows(newDb.drugs), isEmpty);
+        expect(await rows(newDb.treatments), isEmpty);
       },
     );
   });

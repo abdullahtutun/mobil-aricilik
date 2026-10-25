@@ -40,6 +40,16 @@ abstract final class AppRoutes {
   static String hiveVarroa(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/varroa';
 
+  /// Kovana ya da arılığının tümüne ilaç uygulaması; geri tuşu kovan
+  /// kartına döner.
+  static String hiveTreat(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/treat';
+
+  /// İlaç uygulamasından işletmeye yeni ilaç ekleme; eklenen ilaç
+  /// uygulamada seçilir.
+  static String hiveTreatDrugNew(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/hives/$hiveId/treat/drug';
+
   /// Okutulan kovan: muayene edilebiliyorsa kartı ve üstünde muayene,
   /// değilse (ör. sönmüş) yalnız kartı.
   static String scannedHive(Hive hive) => canInspect(hive)

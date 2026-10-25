@@ -12,7 +12,10 @@ import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/health/data/drug_repository.dart';
 import 'package:mobil_arici/features/health/data/mite_count_repository.dart';
+import 'package:mobil_arici/features/health/data/treatment_repository.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
@@ -228,6 +231,45 @@ Map<String, Object?> _miteCountRow(int seq) => {
   'mites': 30,
   'sample_bees': null,
   'days': 3,
+};
+
+Map<String, Object?> _refDrugRow(int seq) => {
+  ..._standard('ref-drug-1', seq),
+  'country_code': 'TR',
+  'name_tr': 'Amitraz şerit',
+  'name_en': 'Amitraz strip',
+  'active_ingredient': 'amitraz',
+  'dose_unit': 'strip',
+  'withdrawal_days': null,
+  'license_no': null,
+};
+
+Map<String, Object?> _drugRow(int seq) => {
+  ..._standard('drug-1', seq),
+  'org_id': _org,
+  'name': 'Timol jel',
+  'active_ingredient': 'thymol',
+  'dose_unit': 'g',
+  'withdrawal_days': 14,
+  'license_no': null,
+};
+
+// Postgres numeric'i tam sayıysa JSON'da ondalıksız döner.
+Map<String, Object?> _treatmentRow(int seq) => {
+  ..._standard('treatment-1', seq),
+  'org_id': _org,
+  'hive_id': 'hive-1',
+  'apiary_id': 'apiary-1',
+  'ref_drug_id': 'ref-drug-1',
+  'drug_id': null,
+  'product_name': 'Amitraz şerit',
+  'active_ingredient': 'amitraz',
+  'batch_no': '24-118',
+  'dose': 2,
+  'dose_unit': 'strip',
+  'started_at': '2026-10-24T09:00:00+00:00',
+  'planned_removal_at': '2026-12-05T09:00:00+00:00',
+  'withdrawal_days': 0,
 };
 
 bool _isPull(http.Request request) =>
@@ -722,11 +764,14 @@ void main() {
         'inspections': [_inspectionRow(7)],
         'media': [_mediaRow(8)],
         'mite_counts': [_miteCountRow(9)],
+        'ref_drugs': [_refDrugRow(10)],
+        'drugs': [_drugRow(11)],
+        'treatments': [_treatmentRow(12)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 9),
+        const SyncResult(status: SyncStatus.done, pulled: 12),
       );
 
       expect(requests.map(_pullOf), [
@@ -739,6 +784,9 @@ void main() {
         (table: 'inspections', since: 0),
         (table: 'media', since: 0),
         (table: 'mite_counts', since: 0),
+        (table: 'ref_drugs', since: 0),
+        (table: 'drugs', since: 0),
+        (table: 'treatments', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -804,6 +852,19 @@ void main() {
       expect(count.sampleBees, isNull);
       expect(count.days, 3);
 
+      final refDrug = (await RefDrugRepository(db).watchAll().first).single;
+      expect(refDrug.countryCode, 'TR');
+      expect(refDrug.doseUnit, DrugDoseUnit.strip);
+      expect(refDrug.withdrawalDays, isNull);
+      final drug = (await DrugRepository(db).findById('drug-1'))!;
+      expect(drug.activeIngredient, DrugActiveIngredient.thymol);
+      expect(drug.withdrawalDays, 14);
+      final treatment = (await TreatmentRepository(db)
+          .findById('treatment-1'))!;
+      expect(treatment.dose, 2.0);
+      expect(treatment.batchNo, '24-118');
+      expect(treatment.plannedRemovalAt, DateTime.utc(2026, 12, 5, 9));
+
       expect(await _cursors(db), {
         'organizations': 1,
         'memberships': 2,
@@ -814,6 +875,9 @@ void main() {
         'inspections': 7,
         'media': 8,
         'mite_counts': 9,
+        'ref_drugs': 10,
+        'drugs': 11,
+        'treatments': 12,
         fullPullMarker: 0,
       });
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.

@@ -64,6 +64,9 @@ class SyncService {
     _db.inspections,
     _db.media,
     _db.miteCounts,
+    _db.refDrugs,
+    _db.drugs,
+    _db.treatments,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/core/db/server_enum.dart';
 import 'package:mobil_arici/core/db/synced_record.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 
 part 'inspection.freezed.dart';
 part 'inspection.g.dart';
@@ -109,7 +110,8 @@ abstract class Inspection with _$Inspection implements SyncedRecord {
     QueenCells? queenCells,
     bool? diseaseSuspected,
 
-    /// Esnek alanlar (`data jsonb`): şimdilik `actions`. Bu sürümün
+    /// Esnek alanlar (`data jsonb`): `actions` ve bekleme süresi geçildiyse
+    /// `withdrawal_override` (uygulama ve gerekçe). Bu sürümün
     /// tanımadığı anahtarlar olduğu gibi korunur.
     @Default(<String, Object?>{}) Map<String, Object?> data,
     String? createdBy,
@@ -128,6 +130,19 @@ extension InspectionFields on Inspection {
         if (values.contains(action.value)) action,
   };
 
+  /// Bekleme süresindeki kovana bilerek bal katı verildiyse gerekçesi;
+  /// yoksa ya da bu sürüm tanımıyorsa null.
+  WithdrawalOverride? get withdrawalOverride {
+    if (data['withdrawal_override'] case final Map<String, Object?> json) {
+      try {
+        return WithdrawalOverride.fromJson(json);
+      } on Object {
+        return null;
+      }
+    }
+    return null;
+  }
+
   InspectionValues get values => InspectionValues(
     queenState: queenState,
     beeFrames: beeFrames,
@@ -141,17 +156,22 @@ extension InspectionFields on Inspection {
   );
 }
 
-/// [actions]'ı `data` nesnesine yazar; işlem yoksa anahtar hiç olmaz.
-/// [data]'daki diğer anahtarlar korunur.
+/// [actions]'ı ve bal katı verildiyse [withdrawalOverride]'ı `data`
+/// nesnesine yazar; boş olanın anahtarı hiç olmaz. [data]'daki diğer
+/// anahtarlar korunur.
 Map<String, Object?> inspectionData(
   Set<InspectionAction> actions, {
   Map<String, Object?> data = const {},
+  WithdrawalOverride? withdrawalOverride,
 }) => {
   for (final MapEntry(:key, :value) in data.entries)
-    if (key != 'actions') key: value,
+    if (key != 'actions' && key != 'withdrawal_override') key: value,
   if (actions.isNotEmpty)
     'actions': [
       for (final action in InspectionAction.values)
         if (actions.contains(action)) action.value,
     ],
+  if (withdrawalOverride != null &&
+      actions.contains(InspectionAction.superAdded))
+    'withdrawal_override': withdrawalOverride.toJson(),
 };

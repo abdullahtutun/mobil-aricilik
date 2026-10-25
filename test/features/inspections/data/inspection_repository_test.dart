@@ -1,6 +1,7 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
@@ -91,6 +92,31 @@ void main() {
         'created_by': null,
         'deleted_at': null,
       });
+    });
+
+    test('bekleme süresi geçildiyse gerekçe muayenenin data’sıyla '
+        'outbox’a gider', () async {
+      const override = WithdrawalOverride(
+        treatmentId: 'treatment-1',
+        reason: WithdrawalOverrideReason.notForSale,
+      );
+
+      final inspection = await repository.add(
+        orgId: 'org-1',
+        hiveId: 'hive-1',
+        apiaryId: 'apiary-1',
+        values: _values,
+        withdrawalOverride: override,
+      );
+
+      expect(inspection.withdrawalOverride, override);
+      expect(
+        (await readOutbox(db)).single.payload['data'],
+        containsPair('withdrawal_override', {
+          'treatment_id': 'treatment-1',
+          'reason': 'not_for_sale',
+        }),
+      );
     });
 
     test('bakılmayan alanlar boş kalır', () async {
