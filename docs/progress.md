@@ -245,11 +245,23 @@
 
 ### 2026-10-25 — Varroa ölçümü: mite_counts, eşik uyarısı, kart ve arılık grafiği
 
-- Şema: Migration `20261025120000_mite_counts.sql` olay tablosu `mite_counts`'u ekliyor: kovan, ölçümün yapıldığı arılık, `counted_at`, yöntem enum'u `mite_count_method` (`sugar_roll`, `alcohol_wash`, `sticky_board`), akar, örnek arı ve gün. CHECK'ler alt tablada gün, diğer yöntemlerde örnek arı istiyor. RLS kalıptaki gibi; `sync_push` tabloyu `event` olarak yazıyor ve şema sürümü 4'ü kabul ediyor. 14 pgTAP testi eklendi, yerel Supabase'de toplam 173 geçti. Drift `schemaVersion` 4 (`make-migrations` dökümü ve v3→v4 veri testi var); çekme tabloyu da indiriyor. **Migration uzak projeye uygulanmadı:** v4 uygulama, uzak projede `db push` yapılana kadar her gönderimde `PT426` alır.
+- Şema: Migration `20261025120000_mite_counts.sql` olay tablosu `mite_counts`'u ekliyor: kovan, ölçümün yapıldığı arılık, `counted_at`, yöntem enum'u `mite_count_method` (`sugar_roll`, `alcohol_wash`, `sticky_board`), akar, örnek arı ve gün. CHECK'ler alt tablada gün, diğer yöntemlerde örnek arı istiyor. RLS kalıptaki gibi; `sync_push` tabloyu `event` olarak yazıyor ve şema sürümü 4'ü kabul ediyor. 14 pgTAP testi eklendi, yerel Supabase'de toplam 173 geçti. Drift `schemaVersion` 4 (`make-migrations` dökümü ve v3→v4 veri testi var); çekme tabloyu da indiriyor. Migration `db push` ile uzak projeye uygulandı; MCP ile doğrulandı: RLS açık, 3 politika, enum değerleri, `sync_push` sürüm 4'ü kabul ediyor.
 - Kurallar (`health/domain/varroa_rules.dart`): pudra şekeri ve alkolde bulaşıklık = akar / örnek arı × 100, alt tablada (kullanıcıyla kararlaştırıldı) akar / gün. Sonuç saklanmıyor, okurken hesaplanıyor. Eşiğe eşit sonuç da uyarıyor. Eşikler bu telefonun `local_settings`'inde (kullanıcı kararı), varsayılan %3 ve günde 10 akar; Ayarlar'daki "Varroa" bölümünden alttan açılan sayfayla seçiliyor (%1–5, günde 5–30).
 - Ekranlar: Kovan kartında son muayenenin yanında "Varroa" karosu (sonuç, yöntem, göreli gün); eşiğe ulaştıysa uyarı zemininde, ikonlu ve "Eşiğe ulaştı" yazılı. Aktif kovanda "Varroa ölç" butonu formu (`…/hives/:hiveId/varroa`) açıyor: yöntem chip'leri, örnek arı (300, ±50) ya da tablada gün, akar sayacı; akar girilene kadar Kaydet kapalı, sonuç kartı canlı hesaplanıyor ve eşiğe göre durum yazıyor. Kayıt 6 sn Geri al'lı. Arılık sayfasında kovanların altında fl_chart çubuk grafiği: son 6 günün ortalama bulaşıklığı, kesikli eşik çizgisi, çubuk üstünde değer, eşiğe ulaşan gün uyarı renginde; ekran okuyucu tek cümle okuyor. Aynı grafik formun altında da var. `SummaryTile` durum verilince artık ikonunu da çiziyor (golden yenilendi); yeni token `AppSizes.chart`.
 - Testler: 815 Flutter testi (önceki 782): kurallar, eşik ayarı, repository (payload, geçersiz giriş, outbox hatası, yumuşak silme, akışlar), senkron çekme, migration ve akışlar (form, alt tabla, kart, ayarlar, grafik, Türkçe, 360dp'de 1.5x yazı ve eldiven). Ayarlar listesi uzadığı için medya akış testinde bölüm adı satırdan önce aranıyor.
-- Eksikler: Alt tabla sayımları grafikte yok (birimi farklı). Tasarımdaki "ilaçlama görevi öner" (görev modülü yok), "önceki: 4" ve "½ bardak ≈ 300" alt yazıları ile zaman tünelinde ölçüm satırı yapılmadı. Akar sayacı birer artıyor; alt tablada yüzlerce akar sahada yavaş girilir. Eşik bütün işletmede ortak değil. Cihazda denenmedi.
+- Eksikler: "Sona bırakılanlar" bölümünde. Eşik bütün işletmede ortak değil (kullanıcı kararı).
+
+## Sona bırakılanlar
+
+Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
+
+- Varroa (2026-10-25):
+  - Alt tabla sayımları arılık grafiğinde yok; birimi (akar/gün) yüzdeyle aynı eksende gösterilemez. Ayrı seri ya da sekme olarak nasıl gösterileceği kullanıcıyla kararlaştırılacak.
+  - Tasarımdaki "kayıtla birlikte ilaçlama görevi öner" yok; görev modülü gelince eklenecek.
+  - Formdaki sayaç alt yazıları yok: "önceki: 4" (kovanın son ölçümü) ve "½ bardak ≈ 300". `BigStepper`'a alt yazı yeri eklenmeli.
+  - Varroa ölçümü kovanın zaman tünelinde görünmüyor; `HiveTimelineEvent`'e yeni bir alt sınıf gerekiyor.
+  - Akar sayacı birer artıyor; alt tablada yüzlerce akar sahada yavaş girilir. Büyük adım ya da sayısal giriş kullanıcıyla kararlaştırılacak (tasarım ± sayaç, uygulama klavyesiz).
+  - Form, kart karosu ve grafik cihazda denenmedi.
 
 ## Notlar
 
