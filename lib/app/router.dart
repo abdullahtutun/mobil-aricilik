@@ -42,6 +42,7 @@ import 'package:mobil_arici/features/queens/presentation/queen_card_screen.dart'
 import 'package:mobil_arici/features/queens/presentation/queen_form_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
+import 'package:mobil_arici/features/tasks/presentation/task_form_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -51,6 +52,7 @@ part 'router.g.dart';
 const _apiaryId = 'apiaryId';
 const _hiveId = 'hiveId';
 const _mediaId = 'mediaId';
+const _taskId = 'taskId';
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
@@ -247,6 +249,17 @@ GoRouter router(Ref ref) {
               GoRoute(
                 path: AppRoutes.tasks,
                 builder: (context, state) => const TasksScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'new',
+                    builder: (context, state) => const TaskFormScreen(),
+                  ),
+                  GoRoute(
+                    path: ':$_taskId/edit',
+                    builder: (context, state) =>
+                        TaskFormScreen(taskId: state.pathParameters[_taskId]),
+                  ),
+                ],
               ),
             ],
           ),

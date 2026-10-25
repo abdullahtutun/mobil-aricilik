@@ -11,12 +11,14 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/media/presentation/media_providers.dart';
+import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
 /// ülke), veri ("sadece Wi‑Fi'da yükle" ve bekleyen dosyalar), varroa
-/// eşikleri ve hesap. Görünüm ve dil şimdilik yalnızca bellekte; Wi‑Fi
-/// seçimi ve varroa eşikleri bu telefonun yerel DB'sinde. Ülke burada
-/// seçilmez, yalnız gösterilir.
+/// eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
+/// dokununca sistem ayarı açılır) ve hesap. Görünüm ve dil şimdilik
+/// yalnızca bellekte; Wi‑Fi seçimi ve varroa eşikleri bu telefonun yerel
+/// DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -109,6 +111,29 @@ class SettingsScreen extends ConsumerWidget {
           SectionLabel(l10n.settingsVarroa),
           labelGap,
           const _VarroaThresholds(),
+          if (ref.watch(reminderAccessProvider).value case ReminderAccessState(
+            supportsExact: true,
+            :final exact,
+          )) ...[
+            sectionGap,
+            SectionLabel(l10n.settingsReminders),
+            labelGap,
+            ListGroup(
+              children: [
+                ListRow(
+                  title: l10n.settingsExactAlarms,
+                  value: exact
+                      ? l10n.settingsExactAlarmsOn
+                      : l10n.settingsExactAlarmsOff,
+                  onTap: exact
+                      ? null
+                      : () => ref
+                            .read(reminderAccessProvider.notifier)
+                            .requestExact(),
+                ),
+              ],
+            ),
+          ],
           sectionGap,
           SectionLabel(l10n.settingsAccount),
           labelGap,

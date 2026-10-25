@@ -5,13 +5,13 @@ import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
-import 'package:mobil_arici/features/inspections/data/inspection_reminder_repository.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
-import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 import '../../../helpers/test_database.dart';
 
@@ -37,14 +37,14 @@ void main() {
   late TestClock clock;
   late InspectionRepository repository;
   late InspectionDraftRepository drafts;
-  late InspectionReminderRepository reminders;
+  late TaskRepository tasks;
 
   setUp(() {
     db = openTestDatabase();
     clock = TestClock();
     repository = InspectionRepository(db, clock: clock.call);
     drafts = InspectionDraftRepository(db, clock: clock.call);
-    reminders = InspectionReminderRepository(db, clock: clock.call);
+    tasks = TaskRepository(db, clock: clock.call);
   });
 
   Future<Inspection> add({String hiveId = 'hive-1'}) => repository.add(
@@ -345,25 +345,36 @@ void main() {
   });
 
   group('geri alma', () {
-    test('muayeneyi siler, hatırlatmayı kaldırır, taslağı geri '
+    test('muayeneyi ve "tekrar bak" görevini siler, taslağı geri '
         'yazar', () async {
       final inspection = await add();
-      await reminders.set(inspection, 7);
+      await tasks.remindAfterInspection(inspection, 7);
 
       await repository.undoAdd(inspection, _draft);
 
       expect(await repository.findById(inspection.id), isNull);
-      expect(await reminders.findByInspection(inspection.id), isNull);
+      expect(
+        await tasks.findBySource(TaskSource.inspection, inspection.id),
+        isEmpty,
+      );
       expect(await drafts.find('hive-1'), _draft);
       expect(
-        [for (final entry in await readOutbox(db)) entry.operation],
-        [OutboxOperation.upsert, OutboxOperation.delete],
+        [
+          for (final entry in await readOutbox(db))
+            (entry.recordTable, entry.operation),
+        ],
+        [
+          ('inspections', OutboxOperation.upsert),
+          ('tasks', OutboxOperation.upsert),
+          ('inspections', OutboxOperation.delete),
+          ('tasks', OutboxOperation.delete),
+        ],
       );
     });
 
     test('silme outbox’a yazılamazsa hiçbiri değişmez', () async {
       final inspection = await add();
-      await reminders.set(inspection, 7);
+      await tasks.remindAfterInspection(inspection, 7);
       await breakInsert('outbox');
 
       await expectLater(
@@ -372,7 +383,10 @@ void main() {
       );
 
       expect(await repository.findById(inspection.id), isNotNull);
-      expect(await reminders.findByInspection(inspection.id), isNotNull);
+      expect(
+        await tasks.findBySource(TaskSource.inspection, inspection.id),
+        hasLength(1),
+      );
       expect(await drafts.find('hive-1'), isNull);
     });
   });
@@ -397,27 +411,6 @@ void main() {
 
       expect(await drafts.find('hive-1'), isNull);
       expect(await readOutbox(db), isEmpty);
-    });
-  });
-
-  group('hatırlatma', () {
-    test('gün sayısını ve zamanını saklar; yenisi eskisinin yerini alır, '
-        'kaldırılır', () async {
-      final inspection = await add();
-
-      await reminders.set(inspection, 3);
-      final reminder = await reminders.set(inspection, 7);
-
-      expect(reminder.days, 7);
-      expect(reminder.hiveId, 'hive-1');
-      expect(reminder.orgId, 'org-1');
-      expect(reminder.remindAt, reminderAt(inspection.inspectedAt, 7));
-      expect(await db.select(db.inspectionReminders).get(), [reminder]);
-
-      await reminders.clear(inspection.id);
-      expect(await reminders.findByInspection(inspection.id), isNull);
-      // Yalnız muayenenin kendisi gönderilir.
-      expect(await readOutbox(db), hasLength(1));
     });
   });
 

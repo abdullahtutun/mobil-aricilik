@@ -20,6 +20,15 @@ class LocalSettingsRepository {
   Future<void> setMediaWifiOnly({required bool enabled}) =>
       _write(mediaWifiOnlyKey, '$enabled');
 
+  /// Tam zamanlı alarm izninin neden gerektiği bu telefonda bir kez
+  /// anlatıldı; sonra yalnız Ayarlar'dan istenir.
+  static const exactAlarmPromptedKey = 'exact_alarm_prompted';
+
+  Future<bool> exactAlarmPrompted() async =>
+      await _read(exactAlarmPromptedKey) == 'true';
+
+  Future<void> setExactAlarmPrompted() => _write(exactAlarmPromptedKey, 'true');
+
   /// Varroa uyarı eşikleri; ayar yoksa ya da okunamıyorsa
   /// [defaultVarroaThresholds].
   static const varroaPercentKey = 'varroa_threshold_percent';

@@ -16,6 +16,8 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.honeycomb,
     required this.mediaThumbnail,
     required this.chart,
+    required this.avatar,
+    required this.dayDot,
   });
 
   static const standard = AppSizes(
@@ -30,6 +32,8 @@ class AppSizes extends ThemeExtension<AppSizes> {
     honeycomb: 240,
     mediaThumbnail: 72,
     chart: 160,
+    avatar: 40,
+    dayDot: 6,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -68,6 +72,12 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// yazıları hariç.
   final double chart;
 
+  /// Kişi rozeti (görevin atandığı üyenin baş harfi); daire.
+  final double avatar;
+
+  /// Gün şeridinde o gün görev olduğunu gösteren nokta.
+  final double dayDot;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -81,6 +91,8 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? honeycomb,
     double? mediaThumbnail,
     double? chart,
+    double? avatar,
+    double? dayDot,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -94,6 +106,8 @@ class AppSizes extends ThemeExtension<AppSizes> {
       honeycomb: honeycomb ?? this.honeycomb,
       mediaThumbnail: mediaThumbnail ?? this.mediaThumbnail,
       chart: chart ?? this.chart,
+      avatar: avatar ?? this.avatar,
+      dayDot: dayDot ?? this.dayDot,
     );
   }
 
@@ -116,6 +130,8 @@ class AppSizes extends ThemeExtension<AppSizes> {
       honeycomb: lerpDouble(honeycomb, other.honeycomb, t)!,
       mediaThumbnail: lerpDouble(mediaThumbnail, other.mediaThumbnail, t)!,
       chart: lerpDouble(chart, other.chart, t)!,
+      avatar: lerpDouble(avatar, other.avatar, t)!,
+      dayDot: lerpDouble(dayDot, other.dayDot, t)!,
     );
   }
 }

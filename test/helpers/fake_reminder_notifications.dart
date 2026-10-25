@@ -2,34 +2,54 @@ import 'package:mobil_arici/core/services/reminder_notifications.dart';
 
 /// Cihazsız hatırlatma bildirimi: kurulanları kimliğe göre tutar.
 class FakeReminderNotifications implements ReminderNotifications {
-  /// Bildirim izni; false ise hiçbir şey kurulmaz.
+  /// Bildirim izni; [requestPermission] sorulduğunda [grantOnRequest]
+  /// verilir.
   bool permitted = true;
-
-  final scheduled =
-      <int, ({DateTime at, String title, String body, String channelName})>{};
-  final cancelled = <int>[];
+  bool grantOnRequest = true;
+  int permissionRequests = 0;
 
   @override
-  Future<bool> schedule({
-    required int id,
-    required DateTime at,
-    required String title,
-    required String body,
-    required String channelName,
-  }) async {
-    if (!permitted) return false;
-    scheduled[id] = (
-      at: at,
-      title: title,
-      body: body,
-      channelName: channelName,
-    );
-    return true;
+  bool supportsExactAlarms = true;
+
+  /// Tam zamanlı alarm izni; [requestExactAlarms] [grantExactOnRequest]
+  /// verir. Varsayılan açık: izin diyaloğu yalnız onu deneyen testte çıkar.
+  bool exact = true;
+  bool grantExactOnRequest = true;
+  int exactRequests = 0;
+
+  final scheduled = <int, Reminder>{};
+  String? channelName;
+  int replaceCalls = 0;
+
+  @override
+  Future<bool> hasPermission() async => permitted;
+
+  @override
+  Future<bool> requestPermission() async {
+    permissionRequests++;
+    if (!permitted) permitted = grantOnRequest;
+    return permitted;
   }
 
   @override
-  Future<void> cancel(int id) async {
-    cancelled.add(id);
-    scheduled.remove(id);
+  Future<bool> canScheduleExact() async => exact;
+
+  @override
+  Future<bool> requestExactAlarms() async {
+    exactRequests++;
+    if (!exact) exact = grantExactOnRequest;
+    return exact;
+  }
+
+  @override
+  Future<void> replaceAll(
+    List<Reminder> reminders, {
+    required String channelName,
+  }) async {
+    replaceCalls++;
+    this.channelName = channelName;
+    scheduled
+      ..clear()
+      ..addEntries([for (final r in reminders) MapEntry(r.id, r)]);
   }
 }

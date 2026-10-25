@@ -708,7 +708,7 @@ final class TreatmentActionsProvider
   }
 }
 
-String _$treatmentActionsHash() => r'fe15b99eb8dfdcc2bfe4964600050e323696c7c2';
+String _$treatmentActionsHash() => r'f90d76b52b983793854feb6a24b252771b3e2316';
 
 /// Kaydetme, geri alma ve kilit denetimi. Bildirimin Geri al'ı form
 /// kapandıktan sonra da çalışsın diye sürekli yaşar.

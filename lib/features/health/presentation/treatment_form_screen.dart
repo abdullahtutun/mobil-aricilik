@@ -18,6 +18,7 @@ import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/media/presentation/media_controllers.dart';
 import 'package:mobil_arici/features/media/presentation/widgets/media_action_row.dart';
+import 'package:mobil_arici/features/tasks/presentation/widgets/reminder_access_prompt.dart';
 
 /// Başlangıç tarihinin seçilebileceği en eski gün: bugünden bu kadar önce
 /// (unutulan kaydın sonradan girilmesi).
@@ -27,8 +28,8 @@ const _maxBackdateDays = 60;
 /// ilaç kartı (dokununca liste, sonda "Yeni ilaç ekle"); parti no ve
 /// başlangıç; kovan başına doz ve toplamı; bekleme süresi; çıkarma ve "bal
 /// katı yok" karoları; aynı etken madde uyarısı; reçete / fatura
-/// fotoğrafı. Kaydedince çıkarma gününün sabahına bildirim kurulur, karta
-/// dönülür ve 6 sn geri alınabilir.
+/// fotoğrafı. Kaydedince çıkarma gününün sabahına çıkarma görevi açılır
+/// (bildirimi görevle kurulur), karta dönülür ve 6 sn geri alınabilir.
 class TreatmentFormScreen extends ConsumerWidget {
   const new({required this.apiaryId, required this.hiveId, super.key});
 
@@ -100,12 +101,10 @@ class TreatmentFormScreen extends ConsumerWidget {
     final treatments = await ref.read(_provider.notifier).save();
     // Kovan bu arada silindiyse ekran bunu gösterir.
     if (treatments == null || treatments.isEmpty || !context.mounted) return;
-    final reminder = await actions.scheduleRemovalReminder(
-      treatments,
-      title: l10n.treatmentReminderTitle(treatments.first.productName),
-      body: l10n.treatmentReminderBody(treatments.length, form.hive.number),
-      channelName: l10n.reminderChannelName,
-    );
+    // Çıkarma görevi açıldıysa hatırlatıcı izinleri istenir.
+    final reminder = form.removalOn == null
+        ? null
+        : await requestReminderAccess(context, ref);
     if (!context.mounted) return;
     showUndoSnackBar(
       context,

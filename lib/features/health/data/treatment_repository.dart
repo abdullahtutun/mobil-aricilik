@@ -7,16 +7,20 @@ import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
+import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 
 /// İlaç uygulamaları; olay kaydı: yalnız eklenir, güncelleme yok, yanlış
 /// kayıt silinir (Geri al da silmedir). Bir kayıtta yazılan uygulamalar
 /// ortak `application_id` taşır; toplu uygulama hepsini ya da hiçbirini
-/// yazar. Reçete fotoğrafı aynı transaction'da formun açıldığı kovanın
-/// uygulamasına bağlanır.
+/// yazar. Reçete fotoğrafı ve şeridi çıkarma görevi aynı transaction'da
+/// yazılır; fotoğraf formun açıldığı kovanın uygulamasına bağlanır.
 class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
   new(super.db, {super.clock});
 
   late final _media = MediaRepository(db, clock: clock);
+  late final _tasks = TaskRepository(db, clock: clock);
 
   @override
   $TreatmentsTable get table => db.treatments;
@@ -83,22 +87,32 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
       selectWhere((t) => t.hiveId.equals(hiveId)).get();
 
   /// [plan]'ı [hive]'a, kovanın şimdiki arılığında yazar; [prescription]
-  /// verilirse reçete fotoğrafı olarak uygulamaya bağlanır.
+  /// verilirse reçete fotoğrafı olarak uygulamaya bağlanır. Planlanan
+  /// çıkarma varsa kovana çıkarma görevi açılır ve [assignedTo]'ya atanır.
   Future<Treatment> addToHive(
     Hive hive,
     TreatmentPlan plan, {
     MediaCapture? prescription,
-  }) async => (await _addAll([hive], plan, prescription: prescription)).single;
+    String? assignedTo,
+  }) async => (await _addAll(
+    [hive],
+    plan,
+    prescription: prescription,
+    assignedTo: assignedTo,
+    removalHiveId: hive.id,
+  )).single;
 
   /// [plan]'ı [apiaryId] arılığındaki her aktif kovana tek transaction'da
   /// yazar ve kovan numarası sırasıyla döner. [prescription] verilirse
   /// [photoHiveId] kovanının (yoksa ilk kovanın) uygulamasına bağlanır.
-  /// Aktif kovan yoksa bir şey yazmaz, boş döner.
+  /// Planlanan çıkarma varsa arılığa tek çıkarma görevi açılır ve
+  /// [assignedTo]'ya atanır. Aktif kovan yoksa bir şey yazmaz, boş döner.
   Future<List<Treatment>> addToApiary(
     String apiaryId,
     TreatmentPlan plan, {
     MediaCapture? prescription,
     String? photoHiveId,
+    String? assignedTo,
   }) => db.transaction(() async {
     final hives =
         await (db.select(db.hives)
@@ -115,26 +129,33 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
       plan,
       prescription: prescription,
       photoHiveId: photoHiveId,
+      assignedTo: assignedTo,
     );
   });
 
-  /// Geri al: [treatments]'ı ve reçete fotoğraflarını tek transaction'da
-  /// siler. Fotoğraf dosyası çağıranın.
+  /// Geri al: [treatments]'ı, reçete fotoğraflarını ve çıkarma görevini
+  /// tek transaction'da siler. Fotoğraf dosyası çağıranın.
   Future<void> deleteAll(Iterable<Treatment> treatments) =>
       db.transaction(() async {
         for (final treatment in treatments) {
           await delete(treatment.id);
         }
         await _media.removeByTreatments([for (final t in treatments) t.id]);
+        for (final groupId in {for (final t in treatments) t.groupId}) {
+          await _tasks.deleteBySource(TaskSource.treatment, groupId);
+        }
       });
 
   /// Değerler sunucunun kısıtlarına uymazsa [ArgumentError] atar ve bir
   /// şey yazmaz.
+  /// Çıkarma görevi [removalHiveId] kovanına (boşsa arılığa) bağlanır.
   Future<List<Treatment>> _addAll(
     List<Hive> hives,
     TreatmentPlan plan, {
     MediaCapture? prescription,
     String? photoHiveId,
+    String? assignedTo,
+    String? removalHiveId,
   }) {
     _check(plan);
     final drug = plan.drug;
@@ -176,6 +197,21 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
           hiveId: target.hiveId,
           treatmentId: target.id,
           capture: prescription,
+        );
+      }
+      final removalDueAt = treatmentRemovalDueAt(
+        plan.plannedRemovalAt,
+        now: clock(),
+      );
+      if (removalDueAt != null && treatments.isNotEmpty) {
+        final first = treatments.first;
+        await _tasks.addTreatmentRemoval(
+          orgId: first.orgId,
+          groupId: applicationId,
+          apiaryId: first.apiaryId,
+          hiveId: removalHiveId,
+          dueAt: removalDueAt,
+          assignedTo: assignedTo,
         );
       }
       return treatments;

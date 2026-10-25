@@ -1691,28 +1691,6 @@
   "treatmentPrescriptionAdded": "Prescription photo added",
   "treatmentPrescriptionRemove": "Remove",
   "reminderChannelName": "Reminders",
-  "treatmentReminderTitle": "Removal day: {product}",
-  "@treatmentReminderTitle": {
-    "placeholders": {
-      "product": {
-        "type": "String",
-        "example": "Amitraz strip"
-      }
-    }
-  },
-  "treatmentReminderBody": "{count, plural, =1{Remove it from hive {number} today.} other{Remove it from {count} hives today.}}",
-  "@treatmentReminderBody": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "40"
-      },
-      "number": {
-        "type": "String",
-        "example": "104"
-      }
-    }
-  },
   "treatmentReminderDenied": "Notifications are off; no removal reminder was set.",
   "hiveFeed": "Feed",
   "feedingFormTitle": "Feeding",
@@ -1868,5 +1846,166 @@
     }
   },
   "unitLiter": "L",
-  "unitGallon": "gal"
+  "unitGallon": "gal",
+
+  "syncTableTasks": "Task",
+  "tasksTabToday": "Today",
+  "tasksTabWeek": "This week",
+  "tasksTabApiary": "By apiary",
+  "tasksAdd": "Add task",
+  "tasksOverdue": "Overdue · {count}",
+  "@tasksOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "tasksDayGroup": "{day} · {count}",
+  "@tasksDayGroup": {
+    "placeholders": {
+      "day": {
+        "type": "String",
+        "example": "Monday"
+      },
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "tasksToday": "Today",
+  "tasksTomorrow": "Tomorrow",
+  "tasksNoApiary": "No apiary",
+  "tasksApiaryGroup": "{apiary} · {count}",
+  "@tasksApiaryGroup": {
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Kızılçam"
+      },
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tasksEmptyTodayTitle": "Nothing to do today",
+  "tasksEmptyWeekTitle": "No tasks this week",
+  "tasksEmptyAddHint": "Add a new task with + at the top right.",
+  "tasksLoadError": "Couldn't load tasks.",
+  "tasksWeekDaySemantics": "{day}, {count, plural, =0{no tasks} =1{1 task} other{{count} tasks}}",
+  "@tasksWeekDaySemantics": {
+    "placeholders": {
+      "day": {
+        "type": "String",
+        "example": "Monday 26"
+      },
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "taskOverdueDays": "{days, plural, =1{1 day overdue} other{{days} days overdue}}",
+  "@taskOverdueDays": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "taskSourceInspection": "from inspection",
+  "taskSourceTreatment": "treatment",
+  "taskInspectionTitle": "Hive {number} · check again",
+  "@taskInspectionTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "103"
+      }
+    }
+  },
+  "taskInspectionTitleNoHive": "Check again",
+  "taskTreatmentTitle": "Hive {number} · remove strips",
+  "@taskTreatmentTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "taskTreatmentTitleApiary": "Remove strips",
+  "taskReminderBody": "Your task is due.",
+  "taskAssigneeMe": "Me",
+  "taskAssignedTo": "Assigned to {name}",
+  "@taskAssignedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Me"
+      }
+    }
+  },
+  "taskMemberNumbered": "{role} {index}",
+  "@taskMemberNumbered": {
+    "placeholders": {
+      "role": {
+        "type": "String",
+        "example": "Worker"
+      },
+      "index": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "roleOwner": "Owner",
+  "rolePartner": "Partner",
+  "roleWorker": "Worker",
+  "roleViewer": "Viewer",
+  "taskCompleteAction": "Complete: {title}",
+  "@taskCompleteAction": {
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Varroa count"
+      }
+    }
+  },
+  "taskCompleted": "Task completed",
+  "taskFormNewTitle": "New task",
+  "taskFormEditTitle": "Edit task",
+  "taskFormName": "Task",
+  "taskFormNameHint": "e.g. Visit the upland apiary",
+  "taskFormDue": "Due",
+  "taskFormPickDate": "Other day",
+  "taskFormTime": "Time",
+  "taskFormApiary": "Apiary",
+  "taskFormHive": "Hive",
+  "taskFormNone": "None",
+  "taskFormChooseApiary": "Choose apiary",
+  "taskFormChooseHive": "Choose hive",
+  "taskFormAssignee": "Assigned to",
+  "taskFormUnassigned": "Unassigned",
+  "taskFormCompleted": "Done",
+  "taskFormSave": "Save",
+  "taskFormDelete": "Delete task",
+  "taskDeleteTitle": "Delete this task?",
+  "taskDeleteMessage": "The task is removed from every phone.",
+  "taskDeleteConfirm": "Delete",
+  "taskSaved": "Task saved",
+  "taskDeleted": "Task deleted",
+  "taskNotFound": "Task not found; it may have been deleted.",
+  "taskReminderDenied": "Notifications are off; the reminder won't ring.",
+  "exactAlarmTitle": "Ring reminders right on time?",
+  "exactAlarmMessage": "Android may delay notifications by a few minutes to save battery. Allow Mobil Arıcı in the setting that opens and task reminders ring right on time. No internet needed.",
+  "exactAlarmConfirm": "Open setting",
+  "settingsReminders": "Reminders",
+  "settingsExactAlarms": "Ring right on time",
+  "settingsExactAlarmsOn": "On",
+  "settingsExactAlarmsOff": "Off · may be a few minutes late"
 }

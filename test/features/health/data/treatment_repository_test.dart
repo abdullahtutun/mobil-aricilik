@@ -9,6 +9,8 @@ import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 import '../../../helpers/test_database.dart';
 
@@ -257,6 +259,107 @@ void main() {
           OutboxOperation.delete,
         ],
       );
+    });
+  });
+
+  group('çıkarma görevi', () {
+    Future<List<Task>> liveTasks() async => [
+      for (final task in await db.select(db.tasks).get())
+        if (task.deletedAt == null) task,
+    ];
+
+    test('tek kovanda kovana bağlı görev, çıkarma günü sabah 9 (yerel); '
+        'aynı transaction’da outbox’a ve uygulayana atanır', () async {
+      final hive = await createHive('104');
+
+      final treatment = await repository.addToHive(
+        hive,
+        plan(plannedRemovalAt: DateTime(2026, 12, 5, 12).toUtc()),
+        assignedTo: 'user-1',
+      );
+
+      final task = (await liveTasks()).single;
+      expect(task.source, TaskSource.treatment);
+      expect(task.sourceId, treatment.groupId);
+      expect(task.title, isNull);
+      expect(task.hiveId, hive.id);
+      expect(task.apiaryId, 'apiary-1');
+      expect(task.assignedTo, 'user-1');
+      expect(task.dueAt, DateTime(2026, 12, 5, 9).toUtc());
+      final entry = (await readOutbox(db)).last;
+      expect(entry.recordTable, 'tasks');
+      expect(entry.payload['source'], 'treatment');
+      expect(entry.payload.containsKey('server_seq'), isFalse);
+    });
+
+    test('arılığın tümünde gruba tek görev, kovansız', () async {
+      await createHive('101');
+      await createHive('102');
+
+      final treatments = await repository.addToApiary('apiary-1', plan());
+
+      final task = (await liveTasks()).single;
+      expect(task.sourceId, treatments.first.groupId);
+      expect(task.hiveId, isNull);
+      expect(task.apiaryId, 'apiary-1');
+    });
+
+    test(
+      'tek seferlik uygulamada ve çıkarma günü geçmişse görev yok',
+      () async {
+        final hive = await createHive('104');
+        final oneShot = await TreatmentRepository(db, clock: clock.call)
+            .addToHive(
+              hive,
+              TreatmentPlan(
+                drug: _refDrug,
+                dose: 1,
+                startedAt: DateTime.utc(2026, 10, 22, 9),
+                withdrawalDays: 0,
+              ),
+            );
+        await repository.addToHive(
+          hive,
+          plan(
+            startedAt: DateTime.utc(2026, 9, 1, 9),
+            plannedRemovalAt: DateTime.utc(2026, 10, 10, 9),
+          ),
+        );
+
+        expect(oneShot.plannedRemovalAt, isNull);
+        expect(await liveTasks(), isEmpty);
+      },
+    );
+
+    test('görev yazılamazsa uygulama da yazılmaz', () async {
+      final hive = await createHive('104');
+      await db.customStatement(
+        'CREATE TRIGGER task_fails BEFORE INSERT ON tasks '
+        "BEGIN SELECT RAISE(ABORT, 'kapalı'); END",
+      );
+
+      await expectLater(
+        repository.addToHive(hive, plan()),
+        throwsA(isA<SqliteException>()),
+      );
+
+      expect(await db.select(db.treatments).get(), isEmpty);
+      expect(await treatmentOutbox(), isEmpty);
+    });
+
+    test('geri al görevi de siler; başka grubun görevi kalır', () async {
+      final hive = await createHive('104');
+      final kept = await repository.addToHive(hive, plan());
+      final undone = await repository.addToHive(hive, plan());
+
+      await repository.deleteAll([undone]);
+
+      expect(
+        await TaskRepository(db)
+            .findBySource(TaskSource.treatment, undone.groupId),
+        isEmpty,
+      );
+      expect([for (final t in await liveTasks()) t.sourceId], [kept.groupId]);
     });
   });
 

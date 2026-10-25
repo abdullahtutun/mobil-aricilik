@@ -17,11 +17,13 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
-import 'package:mobil_arici/features/inspections/data/inspection_reminder_repository.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_code_scanner.dart';
@@ -250,18 +252,29 @@ void main() {
     );
     expect(await InspectionDraftRepository(db).find(hive.id), isNull);
 
-    final reminders = InspectionReminderRepository(db);
+    // "Tekrar bak" muayeneyi yapana atanan bir görev; gün değişince aynı
+    // görevin günü değişir, seçim kalkınca görev silinir.
+    final tasks = TaskRepository(db);
+    Future<List<Task>> reminders() =>
+        tasks.findBySource(TaskSource.inspection, saved.id);
     await tester.tap(find.text('7 days'));
     await tester.pumpAndSettle();
-    expect((await reminders.findByInspection(saved.id))!.days, 7);
+    final week = (await reminders()).single;
+    expect(week.dueAt, reminderAt(saved.inspectedAt, 7));
+    expect(week.hiveId, hive.id);
+    expect(week.assignedTo, testUser.id);
 
     await tester.tap(find.text('14 days'));
     await tester.pumpAndSettle();
-    expect((await reminders.findByInspection(saved.id))!.days, 14);
+    expect(await reminders(), [
+      isA<Task>()
+          .having((t) => t.id, 'id', week.id)
+          .having((t) => t.dueAt, 'dueAt', reminderAt(saved.inspectedAt, 14)),
+    ]);
 
     await tester.tap(find.text('14 days'));
     await tester.pumpAndSettle();
-    expect(await reminders.findByInspection(saved.id), isNull);
+    expect(await reminders(), isEmpty);
 
     // Bildirim 6 sn sonra kapanır; muayene kalır.
     await tester.pump(const Duration(seconds: 7));
@@ -434,8 +447,8 @@ void main() {
 
     expect(await latest(), isNull);
     expect(
-      await InspectionReminderRepository(db).findByInspection(saved.id),
-      isNull,
+      await TaskRepository(db).findBySource(TaskSource.inspection, saved.id),
+      isEmpty,
     );
     expect(
       (await InspectionDraftRepository(db).find(hive.id))!.values,

@@ -30,6 +30,8 @@ import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../helpers/test_database.dart';
@@ -285,6 +287,19 @@ Map<String, Object?> _feedingRow(int seq) => {
   'kind': 'syrup_2_1',
   // Sunucunun numeric'i metin değil sayı olarak gelir.
   'amount': 3.785,
+};
+
+Map<String, Object?> _taskRow(int seq) => {
+  ..._standard('task-1', seq),
+  'org_id': _org,
+  'title': null,
+  'due_at': '2026-11-05T09:00:00+00:00',
+  'apiary_id': 'apiary-1',
+  'hive_id': 'hive-1',
+  'assigned_to': 'user-1',
+  'completed_at': null,
+  'source': 'inspection',
+  'source_id': 'inspection-1',
 };
 
 bool _isPull(http.Request request) =>
@@ -783,11 +798,12 @@ void main() {
         'drugs': [_drugRow(11)],
         'treatments': [_treatmentRow(12)],
         'feedings': [_feedingRow(13)],
+        'tasks': [_taskRow(14)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 13),
+        const SyncResult(status: SyncStatus.done, pulled: 14),
       );
 
       expect(requests.map(_pullOf), [
@@ -804,6 +820,7 @@ void main() {
         (table: 'drugs', since: 0),
         (table: 'treatments', since: 0),
         (table: 'feedings', since: 0),
+        (table: 'tasks', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -887,6 +904,12 @@ void main() {
       expect(feeding.amount, 3.785);
       expect(feeding.feedingGroupId, 'feeding-group-1');
       expect(feeding.fedAt, DateTime.utc(2026, 10, 26, 9));
+      final task = (await TaskRepository(db).findById('task-1'))!;
+      expect(task.source, TaskSource.inspection);
+      expect(task.sourceId, 'inspection-1');
+      expect(task.title, isNull);
+      expect(task.dueAt, DateTime.utc(2026, 11, 5, 9));
+      expect(task.assignedTo, 'user-1');
 
       expect(await _cursors(db), {
         'organizations': 1,
@@ -902,6 +925,7 @@ void main() {
         'drugs': 11,
         'treatments': 12,
         'feedings': 13,
+        'tasks': 14,
         fullPullMarker: 0,
       });
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.

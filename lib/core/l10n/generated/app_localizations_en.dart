@@ -2232,22 +2232,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reminderChannelName => 'Reminders';
 
   @override
-  String treatmentReminderTitle(String product) {
-    return 'Removal day: $product';
-  }
-
-  @override
-  String treatmentReminderBody(int count, String number) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Remove it from $count hives today.',
-      one: 'Remove it from hive $number today.',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get treatmentReminderDenied =>
       'Notifications are off; no removal reminder was set.';
 
@@ -2376,4 +2360,231 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unitGallon => 'gal';
+
+  @override
+  String get syncTableTasks => 'Task';
+
+  @override
+  String get tasksTabToday => 'Today';
+
+  @override
+  String get tasksTabWeek => 'This week';
+
+  @override
+  String get tasksTabApiary => 'By apiary';
+
+  @override
+  String get tasksAdd => 'Add task';
+
+  @override
+  String tasksOverdue(int count) {
+    return 'Overdue · $count';
+  }
+
+  @override
+  String tasksDayGroup(String day, int count) {
+    return '$day · $count';
+  }
+
+  @override
+  String get tasksToday => 'Today';
+
+  @override
+  String get tasksTomorrow => 'Tomorrow';
+
+  @override
+  String get tasksNoApiary => 'No apiary';
+
+  @override
+  String tasksApiaryGroup(String apiary, int count) {
+    return '$apiary · $count';
+  }
+
+  @override
+  String get tasksEmptyTodayTitle => 'Nothing to do today';
+
+  @override
+  String get tasksEmptyWeekTitle => 'No tasks this week';
+
+  @override
+  String get tasksEmptyAddHint => 'Add a new task with + at the top right.';
+
+  @override
+  String get tasksLoadError => 'Couldn\'t load tasks.';
+
+  @override
+  String tasksWeekDaySemantics(String day, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks',
+      one: '1 task',
+      zero: 'no tasks',
+    );
+    return '$day, $_temp0';
+  }
+
+  @override
+  String taskOverdueDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days overdue',
+      one: '1 day overdue',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get taskSourceInspection => 'from inspection';
+
+  @override
+  String get taskSourceTreatment => 'treatment';
+
+  @override
+  String taskInspectionTitle(String number) {
+    return 'Hive $number · check again';
+  }
+
+  @override
+  String get taskInspectionTitleNoHive => 'Check again';
+
+  @override
+  String taskTreatmentTitle(String number) {
+    return 'Hive $number · remove strips';
+  }
+
+  @override
+  String get taskTreatmentTitleApiary => 'Remove strips';
+
+  @override
+  String get taskReminderBody => 'Your task is due.';
+
+  @override
+  String get taskAssigneeMe => 'Me';
+
+  @override
+  String taskAssignedTo(String name) {
+    return 'Assigned to $name';
+  }
+
+  @override
+  String taskMemberNumbered(String role, int index) {
+    return '$role $index';
+  }
+
+  @override
+  String get roleOwner => 'Owner';
+
+  @override
+  String get rolePartner => 'Partner';
+
+  @override
+  String get roleWorker => 'Worker';
+
+  @override
+  String get roleViewer => 'Viewer';
+
+  @override
+  String taskCompleteAction(String title) {
+    return 'Complete: $title';
+  }
+
+  @override
+  String get taskCompleted => 'Task completed';
+
+  @override
+  String get taskFormNewTitle => 'New task';
+
+  @override
+  String get taskFormEditTitle => 'Edit task';
+
+  @override
+  String get taskFormName => 'Task';
+
+  @override
+  String get taskFormNameHint => 'e.g. Visit the upland apiary';
+
+  @override
+  String get taskFormDue => 'Due';
+
+  @override
+  String get taskFormPickDate => 'Other day';
+
+  @override
+  String get taskFormTime => 'Time';
+
+  @override
+  String get taskFormApiary => 'Apiary';
+
+  @override
+  String get taskFormHive => 'Hive';
+
+  @override
+  String get taskFormNone => 'None';
+
+  @override
+  String get taskFormChooseApiary => 'Choose apiary';
+
+  @override
+  String get taskFormChooseHive => 'Choose hive';
+
+  @override
+  String get taskFormAssignee => 'Assigned to';
+
+  @override
+  String get taskFormUnassigned => 'Unassigned';
+
+  @override
+  String get taskFormCompleted => 'Done';
+
+  @override
+  String get taskFormSave => 'Save';
+
+  @override
+  String get taskFormDelete => 'Delete task';
+
+  @override
+  String get taskDeleteTitle => 'Delete this task?';
+
+  @override
+  String get taskDeleteMessage => 'The task is removed from every phone.';
+
+  @override
+  String get taskDeleteConfirm => 'Delete';
+
+  @override
+  String get taskSaved => 'Task saved';
+
+  @override
+  String get taskDeleted => 'Task deleted';
+
+  @override
+  String get taskNotFound => 'Task not found; it may have been deleted.';
+
+  @override
+  String get taskReminderDenied =>
+      'Notifications are off; the reminder won\'t ring.';
+
+  @override
+  String get exactAlarmTitle => 'Ring reminders right on time?';
+
+  @override
+  String get exactAlarmMessage =>
+      'Android may delay notifications by a few minutes to save battery. Allow Mobil Arıcı in the setting that opens and task reminders ring right on time. No internet needed.';
+
+  @override
+  String get exactAlarmConfirm => 'Open setting';
+
+  @override
+  String get settingsReminders => 'Reminders';
+
+  @override
+  String get settingsExactAlarms => 'Ring right on time';
+
+  @override
+  String get settingsExactAlarmsOn => 'On';
+
+  @override
+  String get settingsExactAlarmsOff => 'Off · may be a few minutes late';
 }

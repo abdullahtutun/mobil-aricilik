@@ -7,7 +7,6 @@ import 'package:mobil_arici/features/health/data/treatment_repository.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/drug_rules.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
-import 'package:mobil_arici/features/health/domain/treatment_rules.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
@@ -103,41 +102,13 @@ class TreatmentActions extends _$TreatmentActions {
         ),
   );
 
-  /// Çıkarma gününün sabahına bu telefonda bildirim kurar (yalnız bu
-  /// telefon; diğer cihazlara senkronla gitmez). Çıkarma yoksa ya da o an
-  /// geçmişteyse kurmaz ve null döner; izin verilmezse false.
-  Future<bool?> scheduleRemovalReminder(
-    List<Treatment> treatments, {
-    required String title,
-    required String body,
-    required String channelName,
-  }) async {
-    final first = treatments.firstOrNull;
-    final at = removalReminderAt(first?.plannedRemovalAt, now: clock.now());
-    if (first == null || at == null) return null;
-    return await ref
-        .read(reminderNotificationsProvider)
-        .schedule(
-          id: removalReminderId(first.groupId),
-          at: at,
-          title: title,
-          body: body,
-          channelName: channelName,
-        );
-  }
-
-  /// Geri al: uygulamalar ve reçete fotoğrafı silinir, hatırlatıcı
-  /// kaldırılır, fotoğraf dosyası da silinir.
+  /// Geri al: uygulamalar, reçete fotoğrafı ve çıkarma görevi silinir
+  /// (görevin bildirimi de kalkar), fotoğraf dosyası da silinir.
   Future<void> undoAdd(
     List<Treatment> treatments, {
     MediaCapture? prescription,
   }) async {
     await ref.read(treatmentRepositoryProvider).deleteAll(treatments);
-    if (treatments.firstOrNull case final first?) {
-      await ref
-          .read(reminderNotificationsProvider)
-          .cancel(removalReminderId(first.groupId));
-    }
     if (prescription != null) {
       await ref.read(mediaFileStoreProvider).delete(prescription.fileName);
     }

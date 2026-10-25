@@ -15,3 +15,6 @@ enum MembershipRole implements ServerEnum {
   @override
   final String value;
 }
+
+/// İşletmenin bir üyesi: kullanıcı kimliği ve rolü.
+typedef Member = ({String userId, MembershipRole role});

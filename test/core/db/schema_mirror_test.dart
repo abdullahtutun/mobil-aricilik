@@ -12,6 +12,7 @@ import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 import '../../helpers/test_database.dart';
 
@@ -133,6 +134,7 @@ void main() {
       'drug_active_ingredient': values(DrugActiveIngredient.values),
       'drug_dose_unit': values(DrugDoseUnit.values),
       'feeding_kind': values(FeedingKind.values),
+      'task_source': values(TaskSource.values),
     };
 
     expect(local, server.enums);

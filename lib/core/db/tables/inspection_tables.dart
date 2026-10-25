@@ -30,7 +30,7 @@ class Inspections extends Table with SyncColumns, OrgColumns {
       text().map(const JsonMapConverter()).withDefault(const Constant('{}'))();
 }
 
-// Aşağıdaki iki tablo yalnız bu telefonda: sunucuda aynası yok, outbox'a
+// Aşağıdaki tablo yalnız bu telefonda: sunucuda aynası yok, outbox'a
 // yazılmaz ve senkronla çekilmez.
 
 /// Yarım kalan hızlı muayene; kovan başına bir taslak. Formdaki her
@@ -44,21 +44,6 @@ class InspectionDrafts extends Table {
 
   @override
   Set<Column<Object>> get primaryKey => {hiveId};
-}
-
-/// Kaydettikten sonra seçilen "X gün sonra hatırlat". Görev modülü
-/// gelene kadar yalnız değer saklanır; görevler gelince göreve çevrilecek.
-@DataClassName('InspectionReminder')
-class InspectionReminders extends Table {
-  TextColumn get inspectionId => text()();
-  TextColumn get orgId => text()();
-  TextColumn get hiveId => text()();
-  IntColumn get days => integer()();
-  DateTimeColumn get remindAt => dateTime()();
-  DateTimeColumn get createdAt => dateTime()();
-
-  @override
-  Set<Column<Object>> get primaryKey => {inspectionId};
 }
 
 /// Taslağı JSON metni olarak tutar. `jsonEncode` iç içe modeli de

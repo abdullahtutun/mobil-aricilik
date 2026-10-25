@@ -1,30 +1,48 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
-/// Bu telefonda ileri bir zamana kurulan hatırlatma bildirimi (ör. ilaç
-/// şeridini çıkarma günü). İnternet gerekmez; bildirimi işletim sistemi
-/// gösterir, uygulama kapalı olsa da.
+/// Bu telefonda kurulacak bir hatırlatma bildirimi; `at` yerel saat.
+typedef Reminder = ({int id, DateTime at, String title, String body});
+
+/// Bu telefonda ileri bir zamana kurulan hatırlatma bildirimleri (görev
+/// son tarihleri). İnternet gerekmez; bildirimi işletim sistemi gösterir,
+/// uygulama kapalı olsa da.
 abstract interface class ReminderNotifications {
-  /// [id]'li bildirimi [at] (yerel saat) anına kurar; aynı [id]'li eski
-  /// bildirim yerine geçer. İzin verilmezse sessizce kurulmaz ve false
-  /// döner. [channelName] Android ayarlarında bildirim kanalının adı.
-  Future<bool> schedule({
-    required int id,
-    required DateTime at,
-    required String title,
-    required String body,
+  /// Bildirim izni verilmiş mi; sormaz.
+  Future<bool> hasPermission();
+
+  /// Bildirim iznini gerekiyorsa sorar; verildi mi.
+  Future<bool> requestPermission();
+
+  /// Tam zamanlı alarm izni olan bir platform mu (Android). Değilse
+  /// bildirimler zaten tam saatinde çalar.
+  bool get supportsExactAlarms;
+
+  /// Bildirimler tam saatinde çalabilir mi. Android'de tam zamanlı alarm
+  /// izni (`SCHEDULE_EXACT_ALARM`) yoksa birkaç dakika gecikebilir.
+  Future<bool> canScheduleExact();
+
+  /// Sistemin "Alarmlar ve hatırlatıcılar" ayarını açar; dönünce izin
+  /// verildi mi.
+  Future<bool> requestExactAlarms();
+
+  /// Kurulu bildirimleri [reminders] ile eşitler: listede olmayanlar
+  /// kaldırılır, olanlar kurulur ya da yenilenir. İzin yoksa bildirim
+  /// görünmez ama kurulur; izin gelince çalar. [channelName] Android
+  /// ayarlarında bildirim kanalının adı.
+  Future<void> replaceAll(
+    List<Reminder> reminders, {
     required String channelName,
   });
-
-  /// [id]'li kurulu bildirimi kaldırır; yoksa bir şey yapmaz.
-  Future<void> cancel(int id);
 }
 
 /// flutter_local_notifications ile. Eklenti ve saat dilimi ilk kullanımda
-/// hazırlanır. Android'de tam zamanlı alarm izni istenmez; bildirim birkaç
-/// dakika gecikebilir.
+/// hazırlanır. Android'de tam zamanlı alarm izni varsa bildirim tam
+/// saatinde, yoksa pil tasarrufuna uyarak birkaç dakika gecikmeli çalar.
 class DeviceReminderNotifications implements ReminderNotifications {
   new([FlutterLocalNotificationsPlugin? plugin])
     : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
@@ -32,39 +50,93 @@ class DeviceReminderNotifications implements ReminderNotifications {
   final FlutterLocalNotificationsPlugin _plugin;
   Future<void>? _ready;
 
+  AndroidFlutterLocalNotificationsPlugin? get _android => _plugin
+      .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin
+      >();
+
+  IOSFlutterLocalNotificationsPlugin? get _ios => _plugin
+      .resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin
+      >();
+
   @override
-  Future<bool> schedule({
-    required int id,
-    required DateTime at,
-    required String title,
-    required String body,
-    required String channelName,
-  }) async {
+  bool get supportsExactAlarms => Platform.isAndroid;
+
+  @override
+  Future<bool> hasPermission() async {
     await (_ready ??= _init());
-    if (!await _requestPermission()) return false;
-    await _plugin.zonedSchedule(
-      id: id,
-      title: title,
-      body: body,
-      scheduledDate: tz.TZDateTime.from(at, tz.local),
-      notificationDetails: NotificationDetails(
-        android: AndroidNotificationDetails(
-          'reminders',
-          channelName,
-          importance: Importance.high,
-          priority: Priority.high,
-        ),
-        iOS: const DarwinNotificationDetails(),
-      ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-    );
+    if (_android case final android?) {
+      return await android.areNotificationsEnabled() ?? false;
+    }
+    if (_ios case final ios?) {
+      return (await ios.checkPermissions())?.isEnabled ?? false;
+    }
+    return false;
+  }
+
+  @override
+  Future<bool> requestPermission() async {
+    await (_ready ??= _init());
+    if (_android case final android?) {
+      return await android.requestNotificationsPermission() ?? false;
+    }
+    if (_ios case final ios?) {
+      return await ios.requestPermissions(alert: true, sound: true) ?? false;
+    }
+    return false;
+  }
+
+  @override
+  Future<bool> canScheduleExact() async {
+    await (_ready ??= _init());
+    if (_android case final android?) {
+      return await android.canScheduleExactNotifications() ?? false;
+    }
     return true;
   }
 
   @override
-  Future<void> cancel(int id) async {
+  Future<bool> requestExactAlarms() async {
     await (_ready ??= _init());
-    await _plugin.cancel(id: id);
+    if (_android case final android?) {
+      return await android.requestExactAlarmsPermission() ?? false;
+    }
+    return true;
+  }
+
+  @override
+  Future<void> replaceAll(
+    List<Reminder> reminders, {
+    required String channelName,
+  }) async {
+    await (_ready ??= _init());
+    final wanted = {for (final reminder in reminders) reminder.id};
+    for (final pending in await _plugin.pendingNotificationRequests()) {
+      if (!wanted.contains(pending.id)) await _plugin.cancel(id: pending.id);
+    }
+    // İzin yokken tam zamanlı kurmak Android'de hata verir.
+    final mode = await canScheduleExact()
+        ? AndroidScheduleMode.exactAllowWhileIdle
+        : AndroidScheduleMode.inexactAllowWhileIdle;
+    for (final reminder in reminders) {
+      await _plugin.zonedSchedule(
+        id: reminder.id,
+        title: reminder.title,
+        body: reminder.body,
+        scheduledDate: tz.TZDateTime.from(reminder.at, tz.local),
+        notificationDetails: NotificationDetails(
+          android: AndroidNotificationDetails(
+            'reminders',
+            channelName,
+            importance: Importance.high,
+            priority: Priority.high,
+          ),
+          iOS: const DarwinNotificationDetails(),
+        ),
+        androidScheduleMode: mode,
+      );
+    }
   }
 
   Future<void> _init() async {
@@ -82,23 +154,5 @@ class DeviceReminderNotifications implements ReminderNotifications {
         ),
       ),
     );
-  }
-
-  Future<bool> _requestPermission() async {
-    final android = _plugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >();
-    if (android != null) {
-      return await android.requestNotificationsPermission() ?? false;
-    }
-    final ios = _plugin
-        .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin
-        >();
-    if (ios != null) {
-      return await ios.requestPermissions(alert: true, sound: true) ?? false;
-    }
-    return false;
   }
 }

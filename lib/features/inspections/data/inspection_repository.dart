@@ -4,21 +4,23 @@ import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
-import 'package:mobil_arici/features/inspections/data/inspection_reminder_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 /// Muayeneler; olay kaydı: yalnız eklenir, güncelleme yok, yanlış kayıt
 /// silinir. Kaydetme muayenede çekilen medyayı ve kovanın taslağını, geri
-/// alma medyayı, hatırlatmayı ve taslağı aynı transaction'da yazar.
+/// alma medyayı, "tekrar bak" görevini ve taslağı aynı transaction'da
+/// yazar.
 class InspectionRepository
     extends BaseRepository<$InspectionsTable, Inspection> {
   new(super.db, {super.clock});
 
   late final _drafts = InspectionDraftRepository(db, clock: clock);
-  late final _reminders = InspectionReminderRepository(db, clock: clock);
+  late final _tasks = TaskRepository(db, clock: clock);
   late final _media = MediaRepository(db, clock: clock);
 
   @override
@@ -146,14 +148,14 @@ class InspectionRepository
     return inspection;
   });
 
-  /// Kaydı geri alır: muayene ve medyası silinir, hatırlatması kalkar ve
+  /// Kaydı geri alır: muayene, medyası ve "tekrar bak" görevi silinir ve
   /// [draft] kovanın taslağı olarak geri yazılır; form, çekimleriyle
   /// birlikte kaldığı yerden açılır. Hepsi tek transaction'da.
   Future<void> undoAdd(Inspection inspection, InspectionDraft draft) =>
       db.transaction(() async {
         await delete(inspection.id);
         await _media.removeByInspection(inspection.id);
-        await _reminders.clear(inspection.id);
+        await _tasks.deleteBySource(TaskSource.inspection, inspection.id);
         await _drafts.save(
           orgId: inspection.orgId,
           hiveId: inspection.hiveId,

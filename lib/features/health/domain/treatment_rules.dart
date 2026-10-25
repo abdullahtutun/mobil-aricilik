@@ -6,9 +6,6 @@ import 'package:mobil_arici/features/health/domain/treatment.dart';
 /// uygulama da amitraz").
 const rotationWarningStreak = 2;
 
-/// Çıkarma hatırlatıcısının saati (yerel).
-const removalReminderHour = 9;
-
 /// [treatments] (bir arılıkta yapılanlar) içinde en son uygulamalardan
 /// kaçının üst üste [ingredient] olduğu. Toplu uygulama tek uygulama
 /// sayılır (`groupId`); silinmişler sayılmaz. "Diğer" etken madde
@@ -41,27 +38,3 @@ int sameIngredientStreak(
 
 /// Yeni uygulamada direnç uyarısı gerekiyor mu ([rotationWarningStreak]).
 bool needsRotationWarning(int streak) => streak >= rotationWarningStreak;
-
-/// Çıkarma hatırlatıcısının zamanı: planlanan çıkarma günü
-/// [removalReminderHour]'da (yerel). Çıkarma yoksa ya da o an [now]'dan
-/// önceyse null; geçmişe bildirim kurulmaz.
-DateTime? removalReminderAt(
-  DateTime? plannedRemovalAt, {
-  required DateTime now,
-}) {
-  if (plannedRemovalAt == null) return null;
-  final day = plannedRemovalAt.toLocal();
-  final at = DateTime(day.year, day.month, day.day, removalReminderHour);
-  return at.isAfter(now) ? at : null;
-}
-
-/// Uygulama grubunun ([groupId]) bildirim kimliği: aynı gruba her zaman
-/// aynı pozitif 31 bit sayı (FNV-1a). Bildirim kurulduktan sonra iptal de
-/// bununla yapılır; uygulama yeniden açılsa da değişmez.
-int removalReminderId(String groupId) {
-  var hash = 0x811c9dc5;
-  for (final unit in groupId.codeUnits) {
-    hash = ((hash ^ unit) * 0x01000193) & 0xffffffff;
-  }
-  return hash & 0x7fffffff;
-}

@@ -10,6 +10,7 @@ import 'package:mobil_arici/features/health/presentation/treatment_providers.dar
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/tasks/presentation/task_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'treatment_form_controller.freezed.dart';
@@ -168,12 +169,15 @@ class TreatmentFormController extends _$TreatmentFormController {
         batchNo: form.batchNo,
       );
       final repository = ref.read(treatmentRepositoryProvider);
+      // Çıkarma görevi uygulamayı yapana atanır.
+      final assignee = ref.read(currentUserIdProvider);
       final saved = switch (form.scope) {
         TreatmentScope.hive => [
           await repository.addToHive(
             hive,
             plan,
             prescription: form.prescription,
+            assignedTo: assignee,
           ),
         ],
         TreatmentScope.apiary => await repository.addToApiary(
@@ -181,6 +185,7 @@ class TreatmentFormController extends _$TreatmentFormController {
           plan,
           prescription: form.prescription,
           photoHiveId: hive.id,
+          assignedTo: assignee,
         ),
       };
       _saved = saved.isNotEmpty;

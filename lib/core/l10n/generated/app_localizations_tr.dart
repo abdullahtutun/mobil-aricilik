@@ -2190,22 +2190,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get reminderChannelName => 'Hatırlatmalar';
 
   @override
-  String treatmentReminderTitle(String product) {
-    return 'Çıkarma günü: $product';
-  }
-
-  @override
-  String treatmentReminderBody(int count, String number) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Bugün çıkarılmalı: $count kovan.',
-      one: 'Bugün çıkarılmalı: Kovan $number.',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get treatmentReminderDenied =>
       'Bildirimler kapalı; çıkarma hatırlatıcısı kurulmadı.';
 
@@ -2332,4 +2316,229 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get unitGallon => 'gal';
+
+  @override
+  String get syncTableTasks => 'Görev';
+
+  @override
+  String get tasksTabToday => 'Bugün';
+
+  @override
+  String get tasksTabWeek => 'Bu hafta';
+
+  @override
+  String get tasksTabApiary => 'Arılığa göre';
+
+  @override
+  String get tasksAdd => 'Görev ekle';
+
+  @override
+  String tasksOverdue(int count) {
+    return 'Gecikmiş · $count';
+  }
+
+  @override
+  String tasksDayGroup(String day, int count) {
+    return '$day · $count';
+  }
+
+  @override
+  String get tasksToday => 'Bugün';
+
+  @override
+  String get tasksTomorrow => 'Yarın';
+
+  @override
+  String get tasksNoApiary => 'Arılıksız';
+
+  @override
+  String tasksApiaryGroup(String apiary, int count) {
+    return '$apiary · $count';
+  }
+
+  @override
+  String get tasksEmptyTodayTitle => 'Bugün yapılacak görev yok';
+
+  @override
+  String get tasksEmptyWeekTitle => 'Bu hafta görev yok';
+
+  @override
+  String get tasksEmptyAddHint => 'Yeni görevi sağ üstteki + ile ekle.';
+
+  @override
+  String get tasksLoadError => 'Görevler açılamadı.';
+
+  @override
+  String tasksWeekDaySemantics(String day, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count görev',
+      zero: 'görev yok',
+    );
+    return '$day, $_temp0';
+  }
+
+  @override
+  String taskOverdueDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days gün gecikti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get taskSourceInspection => 'muayeneden';
+
+  @override
+  String get taskSourceTreatment => 'ilaç';
+
+  @override
+  String taskInspectionTitle(String number) {
+    return 'Kovan $number · tekrar bak';
+  }
+
+  @override
+  String get taskInspectionTitleNoHive => 'Tekrar bak';
+
+  @override
+  String taskTreatmentTitle(String number) {
+    return 'Kovan $number · şerit çıkar';
+  }
+
+  @override
+  String get taskTreatmentTitleApiary => 'Şeritleri çıkar';
+
+  @override
+  String get taskReminderBody => 'Görevin zamanı geldi.';
+
+  @override
+  String get taskAssigneeMe => 'Ben';
+
+  @override
+  String taskAssignedTo(String name) {
+    return 'Atanan: $name';
+  }
+
+  @override
+  String taskMemberNumbered(String role, int index) {
+    return '$role $index';
+  }
+
+  @override
+  String get roleOwner => 'Sahip';
+
+  @override
+  String get rolePartner => 'Ortak';
+
+  @override
+  String get roleWorker => 'İşçi';
+
+  @override
+  String get roleViewer => 'İzleyici';
+
+  @override
+  String taskCompleteAction(String title) {
+    return 'Tamamla: $title';
+  }
+
+  @override
+  String get taskCompleted => 'Görev tamamlandı';
+
+  @override
+  String get taskFormNewTitle => 'Yeni görev';
+
+  @override
+  String get taskFormEditTitle => 'Görevi düzenle';
+
+  @override
+  String get taskFormName => 'Görev';
+
+  @override
+  String get taskFormNameHint => 'Ör. Yayla arılığını ziyaret et';
+
+  @override
+  String get taskFormDue => 'Son tarih';
+
+  @override
+  String get taskFormPickDate => 'Başka gün';
+
+  @override
+  String get taskFormTime => 'Saat';
+
+  @override
+  String get taskFormApiary => 'Arılık';
+
+  @override
+  String get taskFormHive => 'Kovan';
+
+  @override
+  String get taskFormNone => 'Yok';
+
+  @override
+  String get taskFormChooseApiary => 'Arılık seç';
+
+  @override
+  String get taskFormChooseHive => 'Kovan seç';
+
+  @override
+  String get taskFormAssignee => 'Atanan';
+
+  @override
+  String get taskFormUnassigned => 'Atanmamış';
+
+  @override
+  String get taskFormCompleted => 'Tamamlandı';
+
+  @override
+  String get taskFormSave => 'Kaydet';
+
+  @override
+  String get taskFormDelete => 'Görevi sil';
+
+  @override
+  String get taskDeleteTitle => 'Görev silinsin mi?';
+
+  @override
+  String get taskDeleteMessage => 'Görev bütün telefonlardan kalkar.';
+
+  @override
+  String get taskDeleteConfirm => 'Sil';
+
+  @override
+  String get taskSaved => 'Görev kaydedildi';
+
+  @override
+  String get taskDeleted => 'Görev silindi';
+
+  @override
+  String get taskNotFound => 'Görev bulunamadı; silinmiş olabilir.';
+
+  @override
+  String get taskReminderDenied =>
+      'Bildirimler kapalı; hatırlatıcı çalmayacak.';
+
+  @override
+  String get exactAlarmTitle => 'Hatırlatıcılar tam saatinde çalsın mı?';
+
+  @override
+  String get exactAlarmMessage =>
+      'Android pil tasarrufu için bildirimleri birkaç dakika geciktirebilir. Açılan ayarda Mobil Arıcı\'ya izin verirsen görev hatırlatıcıları tam saatinde çalar. İnternet gerekmez.';
+
+  @override
+  String get exactAlarmConfirm => 'Ayarı aç';
+
+  @override
+  String get settingsReminders => 'Hatırlatıcılar';
+
+  @override
+  String get settingsExactAlarms => 'Tam saatinde çalsın';
+
+  @override
+  String get settingsExactAlarmsOn => 'Açık';
+
+  @override
+  String get settingsExactAlarmsOff => 'Kapalı · birkaç dakika gecikebilir';
 }

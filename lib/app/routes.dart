@@ -76,6 +76,10 @@ abstract final class AppRoutes {
     queryParameters: {labelCodeParameter: code},
   ).toString();
 
+  /// Görev ekleme ve düzenleme; Görevler sekmesinin içinde.
+  static const taskNew = '/tasks/new';
+  static String taskEdit(String id) => '/tasks/$id/edit';
+
   static const settings = '/more/settings';
 
   /// Aktif kovanlardaki değiştirilmesi gereken analar.

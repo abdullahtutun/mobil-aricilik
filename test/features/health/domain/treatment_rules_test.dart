@@ -119,44 +119,4 @@ void main() {
     expect(needsRotationWarning(rotationWarningStreak), isTrue);
     expect(needsRotationWarning(rotationWarningStreak + 3), isTrue);
   });
-
-  group('removalReminderAt', () {
-    final now = DateTime(2026, 10, 25, 14);
-
-    test('çıkarma günü sabah 9 (yerel)', () {
-      expect(
-        removalReminderAt(DateTime(2026, 12, 5, 12).toUtc(), now: now),
-        DateTime(2026, 12, 5, removalReminderHour),
-      );
-    });
-
-    test('çıkarma yoksa hatırlatma yok', () {
-      expect(removalReminderAt(null, now: now), isNull);
-    });
-
-    test('saati geçmişse kurulmaz; bugün saatinden önceyse kurulur', () {
-      expect(removalReminderAt(DateTime(2026, 10, 25, 12), now: now), isNull);
-      expect(removalReminderAt(DateTime(2026, 10, 20), now: now), isNull);
-      expect(
-        removalReminderAt(
-          DateTime(2026, 10, 25, 12),
-          now: DateTime(2026, 10, 25, 8),
-        ),
-        DateTime(2026, 10, 25, removalReminderHour),
-      );
-    });
-  });
-
-  test('bildirim kimliği grupla sabit, pozitif 31 bit ve gruplar '
-      'arasında farklı', () {
-    final ids = {
-      for (var i = 0; i < 1000; i++) removalReminderId('0199a3b2-7c1e-$i'),
-    };
-
-    expect(removalReminderId('g1'), removalReminderId('g1'));
-    expect(ids, hasLength(1000));
-    for (final id in ids) {
-      expect(id, inInclusiveRange(0, 0x7fffffff));
-    }
-  });
 }

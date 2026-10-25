@@ -27,6 +27,8 @@ import 'package:mobil_arici/features/inspections/data/inspection_draft_repositor
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/presentation/widgets/media_strip.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
+import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_media.dart';
@@ -661,8 +663,8 @@ void main() {
       expect(await db.select(db.media).get(), isEmpty);
     });
 
-    testWidgets('çıkarma günü sabahına bildirim kurulur; Geri al kaldırır; '
-        'tek seferlikte kurulmaz', (tester) async {
+    testWidgets('çıkarma günü sabahına görev açılır ve bildirimi kurulur; '
+        'Geri al ikisini de kaldırır; tek seferlikte açılmaz', (tester) async {
       final reminders = FakeReminderNotifications();
       await _open(
         tester,
@@ -674,15 +676,23 @@ void main() {
       await _tap(tester, _inSheet('Amitraz strip'));
       await _tap(tester, _button('Save'));
 
+      final task = (await db.select(db.tasks).get()).single;
+      final treatment = (await liveTreatments()).single;
+      expect(task.source, TaskSource.treatment);
+      expect(task.sourceId, treatment.groupId);
+      expect(task.hiveId, hive.id);
+      expect(task.apiaryId, yayla.id);
+      expect(task.assignedTo, testUser.id);
       final reminder = reminders.scheduled.values.single;
+      expect(reminder.id, reminderNotificationId(task.id));
       expect(reminder.at, _today(42).add(const Duration(hours: 9)));
-      expect(reminder.title, 'Removal day: Amitraz strip');
-      expect(reminder.body, 'Remove it from hive 101 today.');
-      expect(reminder.channelName, 'Reminders');
+      expect(reminder.title, 'Hive 101 · remove strips');
+      expect(reminder.body, 'Yayla · treatment');
+      expect(reminders.channelName, 'Reminders');
 
       await _tap(tester, find.text('Undo'));
       expect(reminders.scheduled, isEmpty);
-      expect(reminders.cancelled, hasLength(1));
+      expect((await db.select(db.tasks).getSingle()).deletedAt, isNotNull);
 
       _container(tester)
           .read(routerProvider)
@@ -692,12 +702,15 @@ void main() {
       await _tap(tester, _inSheet('Oxalic acid'));
       await _tap(tester, _button('Save'));
       expect(reminders.scheduled, isEmpty);
+      expect(await db.select(db.tasks).get(), hasLength(1));
     });
 
     testWidgets('bildirim izni yoksa kayıt yine yazılır ve nedeni söylenir', (
       tester,
     ) async {
-      final reminders = FakeReminderNotifications()..permitted = false;
+      final reminders = FakeReminderNotifications()
+        ..permitted = false
+        ..grantOnRequest = false;
       await _open(
         tester,
         db: db,
@@ -888,10 +901,13 @@ void main() {
     expect(find.text('Kaldır'), findsOneWidget);
 
     await _tap(tester, _button('Kaydet'));
-    final reminder = reminders.scheduled.values.single;
-    expect(reminder.title, 'Çıkarma günü: Amitraz şerit');
-    expect(reminder.body, 'Bugün çıkarılmalı: Kovan 101.');
-    expect(reminder.channelName, 'Hatırlatmalar');
+    // Önceki uygulamanın çıkarma görevinin hatırlatması da kurulu.
+    expect(reminders.scheduled, hasLength(2));
+    expect(
+      {for (final r in reminders.scheduled.values) (r.title, r.body)},
+      {('Kovan 101 · şerit çıkar', 'Yayla · ilaç')},
+    );
+    expect(reminders.channelName, 'Hatırlatmalar');
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle kart, uyarı ve reçete '

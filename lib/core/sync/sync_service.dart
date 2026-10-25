@@ -68,6 +68,7 @@ class SyncService {
     _db.drugs,
     _db.treatments,
     _db.feedings,
+    _db.tasks,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

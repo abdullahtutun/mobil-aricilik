@@ -227,3 +227,96 @@ final class CurrentOrgIdProvider
 }
 
 String _$currentOrgIdHash() => r'42b911b32ed632dce9ac43e1724ffd3789ec3635';
+
+@ProviderFor(membershipRepository)
+final membershipRepositoryProvider = MembershipRepositoryProvider._();
+
+final class MembershipRepositoryProvider
+    extends
+        $FunctionalProvider<
+          MembershipRepository,
+          MembershipRepository,
+          MembershipRepository
+        >
+    with $Provider<MembershipRepository> {
+  MembershipRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'membershipRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$membershipRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<MembershipRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  MembershipRepository create(Ref ref) {
+    return membershipRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MembershipRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MembershipRepository>(value),
+    );
+  }
+}
+
+String _$membershipRepositoryHash() =>
+    r'6e035224bba38334ffb356a8cfb29fdea350752f';
+
+/// Oturumdaki işletmenin üyeleri (görev atama); işletme yoksa boş.
+
+@ProviderFor(organizationMembers)
+final organizationMembersProvider = OrganizationMembersProvider._();
+
+/// Oturumdaki işletmenin üyeleri (görev atama); işletme yoksa boş.
+
+final class OrganizationMembersProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Member>>,
+          List<Member>,
+          Stream<List<Member>>
+        >
+    with $FutureModifier<List<Member>>, $StreamProvider<List<Member>> {
+  /// Oturumdaki işletmenin üyeleri (görev atama); işletme yoksa boş.
+  OrganizationMembersProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'organizationMembersProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$organizationMembersHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Member>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Member>> create(Ref ref) {
+    return organizationMembers(ref);
+  }
+}
+
+String _$organizationMembersHash() =>
+    r'77e5778ea204331acf745325426e7a1a6720b1e2';

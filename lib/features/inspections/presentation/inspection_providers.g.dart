@@ -105,70 +105,21 @@ final class InspectionDraftRepositoryProvider
 String _$inspectionDraftRepositoryHash() =>
     r'8389852dd6334e466844511ec78745225ea8a7c6';
 
-@ProviderFor(inspectionReminderRepository)
-final inspectionReminderRepositoryProvider =
-    InspectionReminderRepositoryProvider._();
-
-final class InspectionReminderRepositoryProvider
-    extends
-        $FunctionalProvider<
-          InspectionReminderRepository,
-          InspectionReminderRepository,
-          InspectionReminderRepository
-        >
-    with $Provider<InspectionReminderRepository> {
-  InspectionReminderRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'inspectionReminderRepositoryProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$inspectionReminderRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<InspectionReminderRepository> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
-
-  @override
-  InspectionReminderRepository create(Ref ref) {
-    return inspectionReminderRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(InspectionReminderRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<InspectionReminderRepository>(value),
-    );
-  }
-}
-
-String _$inspectionReminderRepositoryHash() =>
-    r'53115b34f485b7b1ba1bfd48a329e8b960d1b096';
-
-/// Kaydettikten sonraki eylemler: geri alma ve hatırlatma. Bildirim, muayene
-/// sayfası kapandıktan sonra da çalışsın diye sürekli yaşar. Her şey yerel
-/// DB'ye yazılır.
+/// Kaydettikten sonraki eylemler: geri alma ve "tekrar bak" görevi.
+/// Bildirim, muayene sayfası kapandıktan sonra da çalışsın diye sürekli
+/// yaşar. Her şey yerel DB'ye yazılır.
 
 @ProviderFor(InspectionActions)
 final inspectionActionsProvider = InspectionActionsProvider._();
 
-/// Kaydettikten sonraki eylemler: geri alma ve hatırlatma. Bildirim, muayene
-/// sayfası kapandıktan sonra da çalışsın diye sürekli yaşar. Her şey yerel
-/// DB'ye yazılır.
+/// Kaydettikten sonraki eylemler: geri alma ve "tekrar bak" görevi.
+/// Bildirim, muayene sayfası kapandıktan sonra da çalışsın diye sürekli
+/// yaşar. Her şey yerel DB'ye yazılır.
 final class InspectionActionsProvider
     extends $NotifierProvider<InspectionActions, void> {
-  /// Kaydettikten sonraki eylemler: geri alma ve hatırlatma. Bildirim, muayene
-  /// sayfası kapandıktan sonra da çalışsın diye sürekli yaşar. Her şey yerel
-  /// DB'ye yazılır.
+  /// Kaydettikten sonraki eylemler: geri alma ve "tekrar bak" görevi.
+  /// Bildirim, muayene sayfası kapandıktan sonra da çalışsın diye sürekli
+  /// yaşar. Her şey yerel DB'ye yazılır.
   InspectionActionsProvider._()
     : super(
         from: null,
@@ -196,11 +147,11 @@ final class InspectionActionsProvider
   }
 }
 
-String _$inspectionActionsHash() => r'c9d3f4d459c48ce80ff071c26345e1058f654697';
+String _$inspectionActionsHash() => r'6b7763340a7181047f746604abe73d6f0ecac41d';
 
-/// Kaydettikten sonraki eylemler: geri alma ve hatırlatma. Bildirim, muayene
-/// sayfası kapandıktan sonra da çalışsın diye sürekli yaşar. Her şey yerel
-/// DB'ye yazılır.
+/// Kaydettikten sonraki eylemler: geri alma ve "tekrar bak" görevi.
+/// Bildirim, muayene sayfası kapandıktan sonra da çalışsın diye sürekli
+/// yaşar. Her şey yerel DB'ye yazılır.
 
 abstract class _$InspectionActions extends $Notifier<void> {
   void build();

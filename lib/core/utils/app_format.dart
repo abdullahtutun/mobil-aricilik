@@ -26,6 +26,15 @@ class AppFormat {
   /// Yılsız gün ve ay; grafik eksenleri için. `9 Eki`, `Oct 9`
   String dayMonth(DateTime value) => DateFormat.MMMd(locale).format(value);
 
+  /// Haftanın günü. `Pazartesi`, `Monday`
+  String weekday(DateTime value) => DateFormat.EEEE(locale).format(value);
+
+  /// Kısa gün adı; gün şeridi için. `Pzt`, `Mon`
+  String weekdayShort(DateTime value) => DateFormat.E(locale).format(value);
+
+  /// Ayın günü. `26`
+  String dayOfMonth(DateTime value) => DateFormat.d(locale).format(value);
+
   /// Yerelin saat düzeni. `14:05`, `2:05 PM`
   String time(DateTime value) => DateFormat.jm(locale).format(value);
 

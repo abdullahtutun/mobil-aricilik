@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
+import 'package:mobil_arici/core/db/tables/task_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
@@ -21,6 +22,7 @@ import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
+import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 export 'tables/media_tables.dart' show MediaUploadStatus;
 export 'tables/sync_tables.dart' show OutboxOperation, fullPullMarker;
@@ -44,7 +46,6 @@ part 'app_database.g.dart';
     HiveLocationHistory,
     Inspections,
     InspectionDrafts,
-    InspectionReminders,
     Media,
     MediaUploads,
     MiteCounts,
@@ -52,6 +53,7 @@ part 'app_database.g.dart';
     Drugs,
     Treatments,
     Feedings,
+    Tasks,
     LocalSettings,
     Outbox,
     SyncState,
@@ -61,7 +63,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -112,6 +114,15 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.feedingsHiveIdIdx);
         await m.create(schema.feedingsApiaryIdIdx);
         await m.create(schema.feedingsFeedingGroupIdIdx);
+      },
+      // Görevler. Muayenenin yalnız bu telefondaki "X gün sonra" seçimi
+      // artık görev; eski tablo kalkar (seçimler bildirim kurmuyordu).
+      from7To8: (m, schema) async {
+        await m.createTable(schema.tasks);
+        await m.create(schema.tasksOrgIdIdx);
+        await m.create(schema.tasksApiaryIdIdx);
+        await m.create(schema.tasksSourceIdIdx);
+        await m.deleteTable('inspection_reminders');
       },
     ),
   );

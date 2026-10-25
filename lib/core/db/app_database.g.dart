@@ -4879,421 +4879,6 @@ class InspectionDraftsCompanion extends UpdateCompanion<InspectionDraftRow> {
   }
 }
 
-class $InspectionRemindersTable extends InspectionReminders
-    with TableInfo<$InspectionRemindersTable, InspectionReminder> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $InspectionRemindersTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _inspectionIdMeta = const VerificationMeta(
-    'inspectionId',
-  );
-  @override
-  late final GeneratedColumn<String> inspectionId = GeneratedColumn<String>(
-    'inspection_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
-  @override
-  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
-    'org_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
-  @override
-  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
-    'hive_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _daysMeta = const VerificationMeta('days');
-  @override
-  late final GeneratedColumn<int> days = GeneratedColumn<int>(
-    'days',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _remindAtMeta = const VerificationMeta(
-    'remindAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> remindAt = GeneratedColumn<DateTime>(
-    'remind_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta(
-    'createdAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-    'created_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    inspectionId,
-    orgId,
-    hiveId,
-    days,
-    remindAt,
-    createdAt,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'inspection_reminders';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<InspectionReminder> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('inspection_id')) {
-      context.handle(
-        _inspectionIdMeta,
-        inspectionId.isAcceptableOrUnknown(
-          data['inspection_id']!,
-          _inspectionIdMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_inspectionIdMeta);
-    }
-    if (data.containsKey('org_id')) {
-      context.handle(
-        _orgIdMeta,
-        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_orgIdMeta);
-    }
-    if (data.containsKey('hive_id')) {
-      context.handle(
-        _hiveIdMeta,
-        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_hiveIdMeta);
-    }
-    if (data.containsKey('days')) {
-      context.handle(
-        _daysMeta,
-        days.isAcceptableOrUnknown(data['days']!, _daysMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_daysMeta);
-    }
-    if (data.containsKey('remind_at')) {
-      context.handle(
-        _remindAtMeta,
-        remindAt.isAcceptableOrUnknown(data['remind_at']!, _remindAtMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_remindAtMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(
-        _createdAtMeta,
-        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {inspectionId};
-  @override
-  InspectionReminder map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return InspectionReminder(
-      inspectionId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}inspection_id'],
-      )!,
-      orgId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}org_id'],
-      )!,
-      hiveId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}hive_id'],
-      )!,
-      days: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}days'],
-      )!,
-      remindAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}remind_at'],
-      )!,
-      createdAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}created_at'],
-      )!,
-    );
-  }
-
-  @override
-  $InspectionRemindersTable createAlias(String alias) {
-    return $InspectionRemindersTable(attachedDatabase, alias);
-  }
-}
-
-class InspectionReminder extends DataClass
-    implements Insertable<InspectionReminder> {
-  final String inspectionId;
-  final String orgId;
-  final String hiveId;
-  final int days;
-  final DateTime remindAt;
-  final DateTime createdAt;
-  const InspectionReminder({
-    required this.inspectionId,
-    required this.orgId,
-    required this.hiveId,
-    required this.days,
-    required this.remindAt,
-    required this.createdAt,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['inspection_id'] = Variable<String>(inspectionId);
-    map['org_id'] = Variable<String>(orgId);
-    map['hive_id'] = Variable<String>(hiveId);
-    map['days'] = Variable<int>(days);
-    map['remind_at'] = Variable<DateTime>(remindAt);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    return map;
-  }
-
-  InspectionRemindersCompanion toCompanion(bool nullToAbsent) {
-    return InspectionRemindersCompanion(
-      inspectionId: Value(inspectionId),
-      orgId: Value(orgId),
-      hiveId: Value(hiveId),
-      days: Value(days),
-      remindAt: Value(remindAt),
-      createdAt: Value(createdAt),
-    );
-  }
-
-  factory InspectionReminder.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return InspectionReminder(
-      inspectionId: serializer.fromJson<String>(json['inspectionId']),
-      orgId: serializer.fromJson<String>(json['orgId']),
-      hiveId: serializer.fromJson<String>(json['hiveId']),
-      days: serializer.fromJson<int>(json['days']),
-      remindAt: serializer.fromJson<DateTime>(json['remindAt']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'inspectionId': serializer.toJson<String>(inspectionId),
-      'orgId': serializer.toJson<String>(orgId),
-      'hiveId': serializer.toJson<String>(hiveId),
-      'days': serializer.toJson<int>(days),
-      'remindAt': serializer.toJson<DateTime>(remindAt),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-    };
-  }
-
-  InspectionReminder copyWith({
-    String? inspectionId,
-    String? orgId,
-    String? hiveId,
-    int? days,
-    DateTime? remindAt,
-    DateTime? createdAt,
-  }) => InspectionReminder(
-    inspectionId: inspectionId ?? this.inspectionId,
-    orgId: orgId ?? this.orgId,
-    hiveId: hiveId ?? this.hiveId,
-    days: days ?? this.days,
-    remindAt: remindAt ?? this.remindAt,
-    createdAt: createdAt ?? this.createdAt,
-  );
-  InspectionReminder copyWithCompanion(InspectionRemindersCompanion data) {
-    return InspectionReminder(
-      inspectionId: data.inspectionId.present
-          ? data.inspectionId.value
-          : this.inspectionId,
-      orgId: data.orgId.present ? data.orgId.value : this.orgId,
-      hiveId: data.hiveId.present ? data.hiveId.value : this.hiveId,
-      days: data.days.present ? data.days.value : this.days,
-      remindAt: data.remindAt.present ? data.remindAt.value : this.remindAt,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('InspectionReminder(')
-          ..write('inspectionId: $inspectionId, ')
-          ..write('orgId: $orgId, ')
-          ..write('hiveId: $hiveId, ')
-          ..write('days: $days, ')
-          ..write('remindAt: $remindAt, ')
-          ..write('createdAt: $createdAt')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(inspectionId, orgId, hiveId, days, remindAt, createdAt);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is InspectionReminder &&
-          other.inspectionId == this.inspectionId &&
-          other.orgId == this.orgId &&
-          other.hiveId == this.hiveId &&
-          other.days == this.days &&
-          other.remindAt == this.remindAt &&
-          other.createdAt == this.createdAt);
-}
-
-class InspectionRemindersCompanion extends UpdateCompanion<InspectionReminder> {
-  final Value<String> inspectionId;
-  final Value<String> orgId;
-  final Value<String> hiveId;
-  final Value<int> days;
-  final Value<DateTime> remindAt;
-  final Value<DateTime> createdAt;
-  final Value<int> rowid;
-  const InspectionRemindersCompanion({
-    this.inspectionId = const Value.absent(),
-    this.orgId = const Value.absent(),
-    this.hiveId = const Value.absent(),
-    this.days = const Value.absent(),
-    this.remindAt = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  InspectionRemindersCompanion.insert({
-    required String inspectionId,
-    required String orgId,
-    required String hiveId,
-    required int days,
-    required DateTime remindAt,
-    required DateTime createdAt,
-    this.rowid = const Value.absent(),
-  }) : inspectionId = Value(inspectionId),
-       orgId = Value(orgId),
-       hiveId = Value(hiveId),
-       days = Value(days),
-       remindAt = Value(remindAt),
-       createdAt = Value(createdAt);
-  static Insertable<InspectionReminder> custom({
-    Expression<String>? inspectionId,
-    Expression<String>? orgId,
-    Expression<String>? hiveId,
-    Expression<int>? days,
-    Expression<DateTime>? remindAt,
-    Expression<DateTime>? createdAt,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (inspectionId != null) 'inspection_id': inspectionId,
-      if (orgId != null) 'org_id': orgId,
-      if (hiveId != null) 'hive_id': hiveId,
-      if (days != null) 'days': days,
-      if (remindAt != null) 'remind_at': remindAt,
-      if (createdAt != null) 'created_at': createdAt,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  InspectionRemindersCompanion copyWith({
-    Value<String>? inspectionId,
-    Value<String>? orgId,
-    Value<String>? hiveId,
-    Value<int>? days,
-    Value<DateTime>? remindAt,
-    Value<DateTime>? createdAt,
-    Value<int>? rowid,
-  }) {
-    return InspectionRemindersCompanion(
-      inspectionId: inspectionId ?? this.inspectionId,
-      orgId: orgId ?? this.orgId,
-      hiveId: hiveId ?? this.hiveId,
-      days: days ?? this.days,
-      remindAt: remindAt ?? this.remindAt,
-      createdAt: createdAt ?? this.createdAt,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (inspectionId.present) {
-      map['inspection_id'] = Variable<String>(inspectionId.value);
-    }
-    if (orgId.present) {
-      map['org_id'] = Variable<String>(orgId.value);
-    }
-    if (hiveId.present) {
-      map['hive_id'] = Variable<String>(hiveId.value);
-    }
-    if (days.present) {
-      map['days'] = Variable<int>(days.value);
-    }
-    if (remindAt.present) {
-      map['remind_at'] = Variable<DateTime>(remindAt.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('InspectionRemindersCompanion(')
-          ..write('inspectionId: $inspectionId, ')
-          ..write('orgId: $orgId, ')
-          ..write('hiveId: $hiveId, ')
-          ..write('days: $days, ')
-          ..write('remindAt: $remindAt, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $MediaTable extends Media with TableInfo<$MediaTable, MediaItem> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -9477,6 +9062,616 @@ extension FeedingToInsertable on Feeding {
   }
 }
 
+class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TasksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dueAtMeta = const VerificationMeta('dueAt');
+  @override
+  late final GeneratedColumn<DateTime> dueAt = GeneratedColumn<DateTime>(
+    'due_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _assignedToMeta = const VerificationMeta(
+    'assignedTo',
+  );
+  @override
+  late final GeneratedColumn<String> assignedTo = GeneratedColumn<String>(
+    'assigned_to',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<TaskSource, String> source =
+      GeneratedColumn<String>(
+        'source',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<TaskSource>($TasksTable.$convertersource);
+  static const VerificationMeta _sourceIdMeta = const VerificationMeta(
+    'sourceId',
+  );
+  @override
+  late final GeneratedColumn<String> sourceId = GeneratedColumn<String>(
+    'source_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    title,
+    dueAt,
+    apiaryId,
+    hiveId,
+    assignedTo,
+    completedAt,
+    source,
+    sourceId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tasks';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Task> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    }
+    if (data.containsKey('due_at')) {
+      context.handle(
+        _dueAtMeta,
+        dueAt.isAcceptableOrUnknown(data['due_at']!, _dueAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dueAtMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    }
+    if (data.containsKey('assigned_to')) {
+      context.handle(
+        _assignedToMeta,
+        assignedTo.isAcceptableOrUnknown(data['assigned_to']!, _assignedToMeta),
+      );
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source_id')) {
+      context.handle(
+        _sourceIdMeta,
+        sourceId.isAcceptableOrUnknown(data['source_id']!, _sourceIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Task map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Task(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      dueAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}due_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      source: $TasksTable.$convertersource.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}source'],
+        )!,
+      ),
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      ),
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      ),
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      ),
+      assignedTo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}assigned_to'],
+      ),
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      ),
+      sourceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_id'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $TasksTable createAlias(String alias) {
+    return $TasksTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<TaskSource, String> $convertersource =
+      const ServerEnumConverter(TaskSource.values);
+}
+
+class TasksCompanion extends UpdateCompanion<Task> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String?> title;
+  final Value<DateTime> dueAt;
+  final Value<String?> apiaryId;
+  final Value<String?> hiveId;
+  final Value<String?> assignedTo;
+  final Value<DateTime?> completedAt;
+  final Value<TaskSource> source;
+  final Value<String?> sourceId;
+  final Value<int> rowid;
+  const TasksCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.title = const Value.absent(),
+    this.dueAt = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.assignedTo = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.source = const Value.absent(),
+    this.sourceId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TasksCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    this.title = const Value.absent(),
+    required DateTime dueAt,
+    this.apiaryId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.assignedTo = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    required TaskSource source,
+    this.sourceId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       dueAt = Value(dueAt),
+       source = Value(source);
+  static Insertable<Task> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? title,
+    Expression<DateTime>? dueAt,
+    Expression<String>? apiaryId,
+    Expression<String>? hiveId,
+    Expression<String>? assignedTo,
+    Expression<DateTime>? completedAt,
+    Expression<String>? source,
+    Expression<String>? sourceId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (title != null) 'title': title,
+      if (dueAt != null) 'due_at': dueAt,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (assignedTo != null) 'assigned_to': assignedTo,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (source != null) 'source': source,
+      if (sourceId != null) 'source_id': sourceId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TasksCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String?>? title,
+    Value<DateTime>? dueAt,
+    Value<String?>? apiaryId,
+    Value<String?>? hiveId,
+    Value<String?>? assignedTo,
+    Value<DateTime?>? completedAt,
+    Value<TaskSource>? source,
+    Value<String?>? sourceId,
+    Value<int>? rowid,
+  }) {
+    return TasksCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      title: title ?? this.title,
+      dueAt: dueAt ?? this.dueAt,
+      apiaryId: apiaryId ?? this.apiaryId,
+      hiveId: hiveId ?? this.hiveId,
+      assignedTo: assignedTo ?? this.assignedTo,
+      completedAt: completedAt ?? this.completedAt,
+      source: source ?? this.source,
+      sourceId: sourceId ?? this.sourceId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (dueAt.present) {
+      map['due_at'] = Variable<DateTime>(dueAt.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (assignedTo.present) {
+      map['assigned_to'] = Variable<String>(assignedTo.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(
+        $TasksTable.$convertersource.toSql(source.value),
+      );
+    }
+    if (sourceId.present) {
+      map['source_id'] = Variable<String>(sourceId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TasksCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('title: $title, ')
+          ..write('dueAt: $dueAt, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('assignedTo: $assignedTo, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('source: $source, ')
+          ..write('sourceId: $sourceId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$TaskInsertable implements Insertable<Task> {
+  Task _object;
+  _$TaskInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return TasksCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      title: Value(_object.title),
+      dueAt: Value(_object.dueAt),
+      apiaryId: Value(_object.apiaryId),
+      hiveId: Value(_object.hiveId),
+      assignedTo: Value(_object.assignedTo),
+      completedAt: Value(_object.completedAt),
+      source: Value(_object.source),
+      sourceId: Value(_object.sourceId),
+    ).toColumns(false);
+  }
+}
+
+extension TaskToInsertable on Task {
+  _$TaskInsertable toInsertable() {
+    return _$TaskInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -10440,8 +10635,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $InspectionDraftsTable inspectionDrafts = $InspectionDraftsTable(
     this,
   );
-  late final $InspectionRemindersTable inspectionReminders =
-      $InspectionRemindersTable(this);
   late final $MediaTable media = $MediaTable(this);
   late final $MediaUploadsTable mediaUploads = $MediaUploadsTable(this);
   late final $MiteCountsTable miteCounts = $MiteCountsTable(this);
@@ -10449,6 +10642,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DrugsTable drugs = $DrugsTable(this);
   late final $TreatmentsTable treatments = $TreatmentsTable(this);
   late final $FeedingsTable feedings = $FeedingsTable(this);
+  late final $TasksTable tasks = $TasksTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $OutboxTable outbox = $OutboxTable(this);
   late final $SyncStateTable syncState = $SyncStateTable(this);
@@ -10544,6 +10738,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'feedings_feeding_group_id_idx',
     'CREATE INDEX feedings_feeding_group_id_idx ON feedings (feeding_group_id)',
   );
+  late final Index tasksOrgIdIdx = Index(
+    'tasks_org_id_idx',
+    'CREATE INDEX tasks_org_id_idx ON tasks (org_id)',
+  );
+  late final Index tasksApiaryIdIdx = Index(
+    'tasks_apiary_id_idx',
+    'CREATE INDEX tasks_apiary_id_idx ON tasks (apiary_id)',
+  );
+  late final Index tasksSourceIdIdx = Index(
+    'tasks_source_id_idx',
+    'CREATE INDEX tasks_source_id_idx ON tasks (source_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -10557,7 +10763,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     hiveLocationHistory,
     inspections,
     inspectionDrafts,
-    inspectionReminders,
     media,
     mediaUploads,
     miteCounts,
@@ -10565,6 +10770,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     drugs,
     treatments,
     feedings,
+    tasks,
     localSettings,
     outbox,
     syncState,
@@ -10591,6 +10797,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     feedingsHiveIdIdx,
     feedingsApiaryIdIdx,
     feedingsFeedingGroupIdIdx,
+    tasksOrgIdIdx,
+    tasksApiaryIdIdx,
+    tasksSourceIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -13554,254 +13763,6 @@ typedef $$InspectionDraftsTableProcessedTableManager =
       InspectionDraftRow,
       PrefetchHooks Function()
     >;
-typedef $$InspectionRemindersTableCreateCompanionBuilder =
-    InspectionRemindersCompanion Function({
-      required String inspectionId,
-      required String orgId,
-      required String hiveId,
-      required int days,
-      required DateTime remindAt,
-      required DateTime createdAt,
-      Value<int> rowid,
-    });
-typedef $$InspectionRemindersTableUpdateCompanionBuilder =
-    InspectionRemindersCompanion Function({
-      Value<String> inspectionId,
-      Value<String> orgId,
-      Value<String> hiveId,
-      Value<int> days,
-      Value<DateTime> remindAt,
-      Value<DateTime> createdAt,
-      Value<int> rowid,
-    });
-
-class $$InspectionRemindersTableFilterComposer
-    extends Composer<_$AppDatabase, $InspectionRemindersTable> {
-  $$InspectionRemindersTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<String> get inspectionId => $composableBuilder(
-    column: $table.inspectionId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get orgId => $composableBuilder(
-    column: $table.orgId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get hiveId => $composableBuilder(
-    column: $table.hiveId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get days => $composableBuilder(
-    column: $table.days,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get remindAt => $composableBuilder(
-    column: $table.remindAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnFilters(column),
-  );
-}
-
-class $$InspectionRemindersTableOrderingComposer
-    extends Composer<_$AppDatabase, $InspectionRemindersTable> {
-  $$InspectionRemindersTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<String> get inspectionId => $composableBuilder(
-    column: $table.inspectionId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get orgId => $composableBuilder(
-    column: $table.orgId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get hiveId => $composableBuilder(
-    column: $table.hiveId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get days => $composableBuilder(
-    column: $table.days,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get remindAt => $composableBuilder(
-    column: $table.remindAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-}
-
-class $$InspectionRemindersTableAnnotationComposer
-    extends Composer<_$AppDatabase, $InspectionRemindersTable> {
-  $$InspectionRemindersTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<String> get inspectionId => $composableBuilder(
-    column: $table.inspectionId,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get orgId =>
-      $composableBuilder(column: $table.orgId, builder: (column) => column);
-
-  GeneratedColumn<String> get hiveId =>
-      $composableBuilder(column: $table.hiveId, builder: (column) => column);
-
-  GeneratedColumn<int> get days =>
-      $composableBuilder(column: $table.days, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get remindAt =>
-      $composableBuilder(column: $table.remindAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
-}
-
-class $$InspectionRemindersTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $InspectionRemindersTable,
-          InspectionReminder,
-          $$InspectionRemindersTableFilterComposer,
-          $$InspectionRemindersTableOrderingComposer,
-          $$InspectionRemindersTableAnnotationComposer,
-          $$InspectionRemindersTableCreateCompanionBuilder,
-          $$InspectionRemindersTableUpdateCompanionBuilder,
-          (
-            InspectionReminder,
-            BaseReferences<
-              _$AppDatabase,
-              $InspectionRemindersTable,
-              InspectionReminder
-            >,
-          ),
-          InspectionReminder,
-          PrefetchHooks Function()
-        > {
-  $$InspectionRemindersTableTableManager(
-    _$AppDatabase db,
-    $InspectionRemindersTable table,
-  ) : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$InspectionRemindersTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$InspectionRemindersTableOrderingComposer(
-                $db: db,
-                $table: table,
-              ),
-          createComputedFieldComposer: () =>
-              $$InspectionRemindersTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
-          updateCompanionCallback:
-              ({
-                Value<String> inspectionId = const Value.absent(),
-                Value<String> orgId = const Value.absent(),
-                Value<String> hiveId = const Value.absent(),
-                Value<int> days = const Value.absent(),
-                Value<DateTime> remindAt = const Value.absent(),
-                Value<DateTime> createdAt = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => InspectionRemindersCompanion(
-                inspectionId: inspectionId,
-                orgId: orgId,
-                hiveId: hiveId,
-                days: days,
-                remindAt: remindAt,
-                createdAt: createdAt,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required String inspectionId,
-                required String orgId,
-                required String hiveId,
-                required int days,
-                required DateTime remindAt,
-                required DateTime createdAt,
-                Value<int> rowid = const Value.absent(),
-              }) => InspectionRemindersCompanion.insert(
-                inspectionId: inspectionId,
-                orgId: orgId,
-                hiveId: hiveId,
-                days: days,
-                remindAt: remindAt,
-                createdAt: createdAt,
-                rowid: rowid,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map(
-                (e) => (
-                  e.readTable<$InspectionRemindersTable, InspectionReminder>(
-                    table,
-                  ),
-                  BaseReferences<
-                    _$AppDatabase,
-                    $InspectionRemindersTable,
-                    InspectionReminder
-                  >(db, table, e),
-                ),
-              )
-              .toList(),
-          prefetchHooksCallback: null,
-        ),
-      );
-}
-
-typedef $$InspectionRemindersTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $InspectionRemindersTable,
-      InspectionReminder,
-      $$InspectionRemindersTableFilterComposer,
-      $$InspectionRemindersTableOrderingComposer,
-      $$InspectionRemindersTableAnnotationComposer,
-      $$InspectionRemindersTableCreateCompanionBuilder,
-      $$InspectionRemindersTableUpdateCompanionBuilder,
-      (
-        InspectionReminder,
-        BaseReferences<
-          _$AppDatabase,
-          $InspectionRemindersTable,
-          InspectionReminder
-        >,
-      ),
-      InspectionReminder,
-      PrefetchHooks Function()
-    >;
 typedef $$MediaTableCreateCompanionBuilder = MediaCompanion Function({
   required String id,
   required DateTime createdAt,
@@ -16428,6 +16389,401 @@ typedef $$FeedingsTableProcessedTableManager =
       Feeding,
       PrefetchHooks Function()
     >;
+typedef $$TasksTableCreateCompanionBuilder = TasksCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  Value<String?> title,
+  required DateTime dueAt,
+  Value<String?> apiaryId,
+  Value<String?> hiveId,
+  Value<String?> assignedTo,
+  Value<DateTime?> completedAt,
+  required TaskSource source,
+  Value<String?> sourceId,
+  Value<int> rowid,
+});
+typedef $$TasksTableUpdateCompanionBuilder = TasksCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String?> title,
+  Value<DateTime> dueAt,
+  Value<String?> apiaryId,
+  Value<String?> hiveId,
+  Value<String?> assignedTo,
+  Value<DateTime?> completedAt,
+  Value<TaskSource> source,
+  Value<String?> sourceId,
+  Value<int> rowid,
+});
+
+class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
+  $$TasksTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get dueAt => $composableBuilder(
+    column: $table.dueAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get assignedTo => $composableBuilder(
+    column: $table.assignedTo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<TaskSource, TaskSource, String> get source =>
+      $composableBuilder(
+        column: $table.source,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get sourceId => $composableBuilder(
+    column: $table.sourceId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TasksTableOrderingComposer
+    extends Composer<_$AppDatabase, $TasksTable> {
+  $$TasksTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get dueAt => $composableBuilder(
+    column: $table.dueAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get assignedTo => $composableBuilder(
+    column: $table.assignedTo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceId => $composableBuilder(
+    column: $table.sourceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TasksTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TasksTable> {
+  $$TasksTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get dueAt =>
+      $composableBuilder(column: $table.dueAt, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get assignedTo => $composableBuilder(
+    column: $table.assignedTo,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<TaskSource, String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceId =>
+      $composableBuilder(column: $table.sourceId, builder: (column) => column);
+}
+
+class $$TasksTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TasksTable,
+          Task,
+          $$TasksTableFilterComposer,
+          $$TasksTableOrderingComposer,
+          $$TasksTableAnnotationComposer,
+          $$TasksTableCreateCompanionBuilder,
+          $$TasksTableUpdateCompanionBuilder,
+          (Task, BaseReferences<_$AppDatabase, $TasksTable, Task>),
+          Task,
+          PrefetchHooks Function()
+        > {
+  $$TasksTableTableManager(_$AppDatabase db, $TasksTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TasksTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TasksTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TasksTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String?> title = const Value.absent(),
+                Value<DateTime> dueAt = const Value.absent(),
+                Value<String?> apiaryId = const Value.absent(),
+                Value<String?> hiveId = const Value.absent(),
+                Value<String?> assignedTo = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<TaskSource> source = const Value.absent(),
+                Value<String?> sourceId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TasksCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                title: title,
+                dueAt: dueAt,
+                apiaryId: apiaryId,
+                hiveId: hiveId,
+                assignedTo: assignedTo,
+                completedAt: completedAt,
+                source: source,
+                sourceId: sourceId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                Value<String?> title = const Value.absent(),
+                required DateTime dueAt,
+                Value<String?> apiaryId = const Value.absent(),
+                Value<String?> hiveId = const Value.absent(),
+                Value<String?> assignedTo = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                required TaskSource source,
+                Value<String?> sourceId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TasksCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                title: title,
+                dueAt: dueAt,
+                apiaryId: apiaryId,
+                hiveId: hiveId,
+                assignedTo: assignedTo,
+                completedAt: completedAt,
+                source: source,
+                sourceId: sourceId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TasksTable, Task>(table),
+                  BaseReferences<_$AppDatabase, $TasksTable, Task>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TasksTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TasksTable,
+      Task,
+      $$TasksTableFilterComposer,
+      $$TasksTableOrderingComposer,
+      $$TasksTableAnnotationComposer,
+      $$TasksTableCreateCompanionBuilder,
+      $$TasksTableUpdateCompanionBuilder,
+      (Task, BaseReferences<_$AppDatabase, $TasksTable, Task>),
+      Task,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -17009,8 +17365,6 @@ class $AppDatabaseManager {
       $$InspectionsTableTableManager(_db, _db.inspections);
   $$InspectionDraftsTableTableManager get inspectionDrafts =>
       $$InspectionDraftsTableTableManager(_db, _db.inspectionDrafts);
-  $$InspectionRemindersTableTableManager get inspectionReminders =>
-      $$InspectionRemindersTableTableManager(_db, _db.inspectionReminders);
   $$MediaTableTableManager get media =>
       $$MediaTableTableManager(_db, _db.media);
   $$MediaUploadsTableTableManager get mediaUploads =>
@@ -17025,6 +17379,8 @@ class $AppDatabaseManager {
       $$TreatmentsTableTableManager(_db, _db.treatments);
   $$FeedingsTableTableManager get feedings =>
       $$FeedingsTableTableManager(_db, _db.feedings);
+  $$TasksTableTableManager get tasks =>
+      $$TasksTableTableManager(_db, _db.tasks);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$OutboxTableTableManager get outbox =>

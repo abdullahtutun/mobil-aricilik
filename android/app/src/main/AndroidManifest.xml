@@ -7,11 +7,14 @@
     <!-- Kovana sesli not (record). Kamera izni mobile_scanner'dan gelir;
          image_picker sistem kamerasını açmadan önce onu ister. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <!-- İlaç çıkarma günü hatırlatıcısı (flutter_local_notifications).
-         Telefon yeniden açılınca planlı bildirimler yeniden kurulur. Tam
-         zamanlı alarm izni yok; bildirim birkaç dakika gecikebilir. -->
+    <!-- Görev hatırlatıcıları (flutter_local_notifications). Telefon
+         yeniden açılınca planlı bildirimler yeniden kurulur. Tam zamanlı
+         alarm izni Android 14+'ta kullanıcıdan istenir (ilk görevde ve
+         Ayarlar'da); verilmezse bildirim birkaç dakika gecikebilir.
+         USE_EXACT_ALARM yalnız alarm/takvim uygulamalarına açık (Play). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <application
         android:label="${appName}"
         android:name="${applicationName}"

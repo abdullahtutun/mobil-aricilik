@@ -3626,18 +3626,6 @@ abstract class AppLocalizations {
   /// **'Reminders'**
   String get reminderChannelName;
 
-  /// No description provided for @treatmentReminderTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Removal day: {product}'**
-  String treatmentReminderTitle(String product);
-
-  /// No description provided for @treatmentReminderBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Remove it from hive {number} today.} other{Remove it from {count} hives today.}}'**
-  String treatmentReminderBody(int count, String number);
-
   /// No description provided for @treatmentReminderDenied.
   ///
   /// In en, this message translates to:
@@ -3805,6 +3793,390 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'gal'**
   String get unitGallon;
+
+  /// No description provided for @syncTableTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get syncTableTasks;
+
+  /// No description provided for @tasksTabToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get tasksTabToday;
+
+  /// No description provided for @tasksTabWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get tasksTabWeek;
+
+  /// No description provided for @tasksTabApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'By apiary'**
+  String get tasksTabApiary;
+
+  /// No description provided for @tasksAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add task'**
+  String get tasksAdd;
+
+  /// No description provided for @tasksOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue · {count}'**
+  String tasksOverdue(int count);
+
+  /// No description provided for @tasksDayGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'{day} · {count}'**
+  String tasksDayGroup(String day, int count);
+
+  /// No description provided for @tasksToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get tasksToday;
+
+  /// No description provided for @tasksTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tasksTomorrow;
+
+  /// No description provided for @tasksNoApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'No apiary'**
+  String get tasksNoApiary;
+
+  /// No description provided for @tasksApiaryGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'{apiary} · {count}'**
+  String tasksApiaryGroup(String apiary, int count);
+
+  /// No description provided for @tasksEmptyTodayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to do today'**
+  String get tasksEmptyTodayTitle;
+
+  /// No description provided for @tasksEmptyWeekTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks this week'**
+  String get tasksEmptyWeekTitle;
+
+  /// No description provided for @tasksEmptyAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a new task with + at the top right.'**
+  String get tasksEmptyAddHint;
+
+  /// No description provided for @tasksLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load tasks.'**
+  String get tasksLoadError;
+
+  /// No description provided for @tasksWeekDaySemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{day}, {count, plural, =0{no tasks} =1{1 task} other{{count} tasks}}'**
+  String tasksWeekDaySemantics(String day, int count);
+
+  /// No description provided for @taskOverdueDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day overdue} other{{days} days overdue}}'**
+  String taskOverdueDays(int days);
+
+  /// No description provided for @taskSourceInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'from inspection'**
+  String get taskSourceInspection;
+
+  /// No description provided for @taskSourceTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'treatment'**
+  String get taskSourceTreatment;
+
+  /// No description provided for @taskInspectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} · check again'**
+  String taskInspectionTitle(String number);
+
+  /// No description provided for @taskInspectionTitleNoHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get taskInspectionTitleNoHive;
+
+  /// No description provided for @taskTreatmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} · remove strips'**
+  String taskTreatmentTitle(String number);
+
+  /// No description provided for @taskTreatmentTitleApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove strips'**
+  String get taskTreatmentTitleApiary;
+
+  /// No description provided for @taskReminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your task is due.'**
+  String get taskReminderBody;
+
+  /// No description provided for @taskAssigneeMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get taskAssigneeMe;
+
+  /// No description provided for @taskAssignedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to {name}'**
+  String taskAssignedTo(String name);
+
+  /// No description provided for @taskMemberNumbered.
+  ///
+  /// In en, this message translates to:
+  /// **'{role} {index}'**
+  String taskMemberNumbered(String role, int index);
+
+  /// No description provided for @roleOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get roleOwner;
+
+  /// No description provided for @rolePartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner'**
+  String get rolePartner;
+
+  /// No description provided for @roleWorker.
+  ///
+  /// In en, this message translates to:
+  /// **'Worker'**
+  String get roleWorker;
+
+  /// No description provided for @roleViewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewer'**
+  String get roleViewer;
+
+  /// No description provided for @taskCompleteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete: {title}'**
+  String taskCompleteAction(String title);
+
+  /// No description provided for @taskCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Task completed'**
+  String get taskCompleted;
+
+  /// No description provided for @taskFormNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New task'**
+  String get taskFormNewTitle;
+
+  /// No description provided for @taskFormEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit task'**
+  String get taskFormEditTitle;
+
+  /// No description provided for @taskFormName.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get taskFormName;
+
+  /// No description provided for @taskFormNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Visit the upland apiary'**
+  String get taskFormNameHint;
+
+  /// No description provided for @taskFormDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get taskFormDue;
+
+  /// No description provided for @taskFormPickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Other day'**
+  String get taskFormPickDate;
+
+  /// No description provided for @taskFormTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get taskFormTime;
+
+  /// No description provided for @taskFormApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get taskFormApiary;
+
+  /// No description provided for @taskFormHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive'**
+  String get taskFormHive;
+
+  /// No description provided for @taskFormNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get taskFormNone;
+
+  /// No description provided for @taskFormChooseApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose apiary'**
+  String get taskFormChooseApiary;
+
+  /// No description provided for @taskFormChooseHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose hive'**
+  String get taskFormChooseHive;
+
+  /// No description provided for @taskFormAssignee.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to'**
+  String get taskFormAssignee;
+
+  /// No description provided for @taskFormUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Unassigned'**
+  String get taskFormUnassigned;
+
+  /// No description provided for @taskFormCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get taskFormCompleted;
+
+  /// No description provided for @taskFormSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get taskFormSave;
+
+  /// No description provided for @taskFormDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete task'**
+  String get taskFormDelete;
+
+  /// No description provided for @taskDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this task?'**
+  String get taskDeleteTitle;
+
+  /// No description provided for @taskDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The task is removed from every phone.'**
+  String get taskDeleteMessage;
+
+  /// No description provided for @taskDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get taskDeleteConfirm;
+
+  /// No description provided for @taskSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Task saved'**
+  String get taskSaved;
+
+  /// No description provided for @taskDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Task deleted'**
+  String get taskDeleted;
+
+  /// No description provided for @taskNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Task not found; it may have been deleted.'**
+  String get taskNotFound;
+
+  /// No description provided for @taskReminderDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off; the reminder won\'t ring.'**
+  String get taskReminderDenied;
+
+  /// No description provided for @exactAlarmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ring reminders right on time?'**
+  String get exactAlarmTitle;
+
+  /// No description provided for @exactAlarmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Android may delay notifications by a few minutes to save battery. Allow Mobil Arıcı in the setting that opens and task reminders ring right on time. No internet needed.'**
+  String get exactAlarmMessage;
+
+  /// No description provided for @exactAlarmConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Open setting'**
+  String get exactAlarmConfirm;
+
+  /// No description provided for @settingsReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get settingsReminders;
+
+  /// No description provided for @settingsExactAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Ring right on time'**
+  String get settingsExactAlarms;
+
+  /// No description provided for @settingsExactAlarmsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get settingsExactAlarmsOn;
+
+  /// No description provided for @settingsExactAlarmsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off · may be a few minutes late'**
+  String get settingsExactAlarmsOff;
 }
 
 class _AppLocalizationsDelegate
