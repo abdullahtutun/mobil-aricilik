@@ -1,10 +1,32 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 final _start = DateTime.utc(2026, 10, 1, 9);
+
+Treatment _treatment(String id, {required int day, String? applicationId}) {
+  final at = _start.add(Duration(days: day));
+  return Treatment(
+    id: id,
+    orgId: 'org-1',
+    hiveId: 'hive-1',
+    apiaryId: 'yayla',
+    refDrugId: 'ref-1',
+    applicationId: applicationId,
+    productName: 'Amitraz şerit',
+    activeIngredient: DrugActiveIngredient.amitraz,
+    dose: 2,
+    doseUnit: DrugDoseUnit.strip,
+    startedAt: at,
+    withdrawalDays: 0,
+    createdAt: at,
+    updatedAt: at,
+  );
+}
 
 HiveLocationEntry _entry(String id, String apiaryId, {required int day}) {
   final at = _start.add(Duration(days: day));
@@ -32,13 +54,19 @@ Inspection _inspection(String id, {required int day}) {
   );
 }
 
-MediaItem _media(String id, {required int day, String? inspectionId}) {
+MediaItem _media(
+  String id, {
+  required int day,
+  String? inspectionId,
+  String? treatmentId,
+}) {
   final at = _start.add(Duration(days: day));
   return MediaItem(
     id: id,
     orgId: 'org-1',
     hiveId: 'hive-1',
     inspectionId: inspectionId,
+    treatmentId: treatmentId,
     kind: MediaKind.photo,
     storagePath: 'org-1/hive-1/$id.jpg',
     capturedAt: at,
@@ -160,6 +188,51 @@ void main() {
       final media = [_media('m1', day: 1, inspectionId: 'gone')];
       expect(inspectionEvents(const [], media: media), isEmpty);
       expect(mediaEvents(media).map((e) => e.id), ['m1']);
+    });
+  });
+
+  group('ilaç uygulaması', () {
+    test('grubun reçete fotoğrafları uygulamanın yanında; başlangıç zamanı '
+        'tünel zamanı; fotoğrafsız uygulama boş', () {
+      final treatments = [
+        _treatment('t1', day: 4, applicationId: 'g1'),
+        _treatment('t2', day: 6),
+      ];
+      final prescription = _media('p1', day: 4, treatmentId: 'other-hive');
+
+      final events = treatmentEvents(
+        treatments,
+        prescriptions: {
+          'g1': [prescription],
+        },
+      );
+
+      expect(events[0].media, [prescription]);
+      expect(events[0].at, treatments[0].startedAt);
+      expect(events[1].media, isEmpty);
+    });
+
+    test('grupsuz eski kaydın fotoğrafı kendi kimliğiyle bulunur', () {
+      final prescription = _media('p1', day: 4, treatmentId: 't1');
+
+      final events = treatmentEvents(
+        [_treatment('t1', day: 4)],
+        prescriptions: {
+          't1': [prescription],
+        },
+      );
+
+      expect(events.single.media, [prescription]);
+    });
+
+    test('uygulamanın yanındaki fotoğraf ayrıca medya olayı olmaz; '
+        'uygulaması tünelde yoksa kendi olayı olur', () {
+      final media = [
+        _media('p1', day: 4, treatmentId: 't1'),
+        _media('p2', day: 5, treatmentId: 'gone'),
+      ];
+
+      expect(mediaEvents(media, treatmentIds: {'t1'}).map((e) => e.id), ['p2']);
     });
   });
 }

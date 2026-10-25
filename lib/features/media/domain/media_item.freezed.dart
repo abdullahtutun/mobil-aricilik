@@ -303,7 +303,8 @@ as int?,
 mixin _$MediaItem {
 
  String get id; String get orgId; String get hiveId; MediaKind get kind;/// `media` bucket'ındaki yol (`mediaStoragePath`).
- String get storagePath; DateTime get capturedAt; int get byteSize; DateTime get createdAt; DateTime get updatedAt; String? get inspectionId; int? get durationMs; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
+ String get storagePath; DateTime get capturedAt; int get byteSize; DateTime get createdAt; DateTime get updatedAt; String? get inspectionId;/// Reçete / fatura fotoğrafıysa bağlı olduğu ilaç uygulaması.
+ String? get treatmentId; int? get durationMs; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
 /// Create a copy of MediaItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -317,20 +318,20 @@ $MediaItemCopyWith<MediaItem> get copyWith => _$MediaItemCopyWithImpl<MediaItem>
 @override
 bool operator ==(Object other) {
   final _this = this as MediaItem;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MediaItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.hiveId, _this.hiveId) || other.hiveId == _this.hiveId)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.storagePath, _this.storagePath) || other.storagePath == _this.storagePath)&&(identical(other.capturedAt, _this.capturedAt) || other.capturedAt == _this.capturedAt)&&(identical(other.byteSize, _this.byteSize) || other.byteSize == _this.byteSize)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.inspectionId, _this.inspectionId) || other.inspectionId == _this.inspectionId)&&(identical(other.durationMs, _this.durationMs) || other.durationMs == _this.durationMs)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MediaItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.hiveId, _this.hiveId) || other.hiveId == _this.hiveId)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.storagePath, _this.storagePath) || other.storagePath == _this.storagePath)&&(identical(other.capturedAt, _this.capturedAt) || other.capturedAt == _this.capturedAt)&&(identical(other.byteSize, _this.byteSize) || other.byteSize == _this.byteSize)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.inspectionId, _this.inspectionId) || other.inspectionId == _this.inspectionId)&&(identical(other.treatmentId, _this.treatmentId) || other.treatmentId == _this.treatmentId)&&(identical(other.durationMs, _this.durationMs) || other.durationMs == _this.durationMs)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as MediaItem;
-  return Object.hash(runtimeType,_this.id,_this.orgId,_this.hiveId,_this.kind,_this.storagePath,_this.capturedAt,_this.byteSize,_this.createdAt,_this.updatedAt,_this.inspectionId,_this.durationMs,_this.createdBy,_this.deletedAt,_this.serverSeq);
+  return Object.hash(runtimeType,_this.id,_this.orgId,_this.hiveId,_this.kind,_this.storagePath,_this.capturedAt,_this.byteSize,_this.createdAt,_this.updatedAt,_this.inspectionId,_this.treatmentId,_this.durationMs,_this.createdBy,_this.deletedAt,_this.serverSeq);
 }
 
 @override
 String toString() {
   final _this = this as MediaItem;
-  return 'MediaItem(id: ${_this.id}, orgId: ${_this.orgId}, hiveId: ${_this.hiveId}, kind: ${_this.kind}, storagePath: ${_this.storagePath}, capturedAt: ${_this.capturedAt}, byteSize: ${_this.byteSize}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, inspectionId: ${_this.inspectionId}, durationMs: ${_this.durationMs}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
+  return 'MediaItem(id: ${_this.id}, orgId: ${_this.orgId}, hiveId: ${_this.hiveId}, kind: ${_this.kind}, storagePath: ${_this.storagePath}, capturedAt: ${_this.capturedAt}, byteSize: ${_this.byteSize}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, inspectionId: ${_this.inspectionId}, treatmentId: ${_this.treatmentId}, durationMs: ${_this.durationMs}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
 }
 
 
@@ -341,7 +342,7 @@ abstract mixin class $MediaItemCopyWith<$Res>  {
   factory $MediaItemCopyWith(MediaItem value, $Res Function(MediaItem) _then) = _$MediaItemCopyWithImpl;
 @useResult
 $Res call({
- String id, String orgId, String hiveId, MediaKind kind, String storagePath, DateTime capturedAt, int byteSize, DateTime createdAt, DateTime updatedAt, String? inspectionId, int? durationMs, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String hiveId, MediaKind kind, String storagePath, DateTime capturedAt, int byteSize, DateTime createdAt, DateTime updatedAt, String? inspectionId, String? treatmentId, int? durationMs, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -358,7 +359,7 @@ class _$MediaItemCopyWithImpl<$Res>
 
 /// Create a copy of MediaItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? kind = null,Object? storagePath = null,Object? capturedAt = null,Object? byteSize = null,Object? createdAt = null,Object? updatedAt = null,Object? inspectionId = freezed,Object? durationMs = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? kind = null,Object? storagePath = null,Object? capturedAt = null,Object? byteSize = null,Object? createdAt = null,Object? updatedAt = null,Object? inspectionId = freezed,Object? treatmentId = freezed,Object? durationMs = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(MediaItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -370,6 +371,7 @@ as DateTime,byteSize: null == byteSize ? _self.byteSize : byteSize // ignore: ca
 as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,inspectionId: freezed == inspectionId ? _self.inspectionId : inspectionId // ignore: cast_nullable_to_non_nullable
+as String?,treatmentId: freezed == treatmentId ? _self.treatmentId : treatmentId // ignore: cast_nullable_to_non_nullable
 as String?,durationMs: freezed == durationMs ? _self.durationMs : durationMs // ignore: cast_nullable_to_non_nullable
 as int?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
@@ -459,10 +461,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  MediaKind kind,  String storagePath,  DateTime capturedAt,  int byteSize,  DateTime createdAt,  DateTime updatedAt,  String? inspectionId,  int? durationMs,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  MediaKind kind,  String storagePath,  DateTime capturedAt,  int byteSize,  DateTime createdAt,  DateTime updatedAt,  String? inspectionId,  String? treatmentId,  int? durationMs,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MediaItem() when $default != null:
-return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_that.capturedAt,_that.byteSize,_that.createdAt,_that.updatedAt,_that.inspectionId,_that.durationMs,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_that.capturedAt,_that.byteSize,_that.createdAt,_that.updatedAt,_that.inspectionId,_that.treatmentId,_that.durationMs,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return orElse();
 
 }
@@ -480,10 +482,10 @@ return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  MediaKind kind,  String storagePath,  DateTime capturedAt,  int byteSize,  DateTime createdAt,  DateTime updatedAt,  String? inspectionId,  int? durationMs,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  MediaKind kind,  String storagePath,  DateTime capturedAt,  int byteSize,  DateTime createdAt,  DateTime updatedAt,  String? inspectionId,  String? treatmentId,  int? durationMs,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
 switch (_that) {
 case _MediaItem():
-return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_that.capturedAt,_that.byteSize,_that.createdAt,_that.updatedAt,_that.inspectionId,_that.durationMs,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_that.capturedAt,_that.byteSize,_that.createdAt,_that.updatedAt,_that.inspectionId,_that.treatmentId,_that.durationMs,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -500,10 +502,10 @@ return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String hiveId,  MediaKind kind,  String storagePath,  DateTime capturedAt,  int byteSize,  DateTime createdAt,  DateTime updatedAt,  String? inspectionId,  int? durationMs,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String hiveId,  MediaKind kind,  String storagePath,  DateTime capturedAt,  int byteSize,  DateTime createdAt,  DateTime updatedAt,  String? inspectionId,  String? treatmentId,  int? durationMs,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
 switch (_that) {
 case _MediaItem() when $default != null:
-return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_that.capturedAt,_that.byteSize,_that.createdAt,_that.updatedAt,_that.inspectionId,_that.durationMs,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_that.capturedAt,_that.byteSize,_that.createdAt,_that.updatedAt,_that.inspectionId,_that.treatmentId,_that.durationMs,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return null;
 
 }
@@ -515,7 +517,7 @@ return $default(_that.id,_that.orgId,_that.hiveId,_that.kind,_that.storagePath,_
 @JsonSerializable()
 
 class _MediaItem implements MediaItem {
-  const _MediaItem({required this.id, required this.orgId, required this.hiveId, required this.kind, required this.storagePath, required this.capturedAt, required this.byteSize, required this.createdAt, required this.updatedAt, this.inspectionId, this.durationMs, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
+  const _MediaItem({required this.id, required this.orgId, required this.hiveId, required this.kind, required this.storagePath, required this.capturedAt, required this.byteSize, required this.createdAt, required this.updatedAt, this.inspectionId, this.treatmentId, this.durationMs, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
   factory _MediaItem.fromJson(Map<String, dynamic> json) => _$MediaItemFromJson(json);
 
 @override final  String id;
@@ -529,6 +531,8 @@ class _MediaItem implements MediaItem {
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
 @override final  String? inspectionId;
+/// Reçete / fatura fotoğrafıysa bağlı olduğu ilaç uygulaması.
+@override final  String? treatmentId;
 @override final  int? durationMs;
 @override final  String? createdBy;
 @override final  DateTime? deletedAt;
@@ -547,18 +551,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MediaItem&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.hiveId, hiveId) || other.hiveId == hiveId)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.storagePath, storagePath) || other.storagePath == storagePath)&&(identical(other.capturedAt, capturedAt) || other.capturedAt == capturedAt)&&(identical(other.byteSize, byteSize) || other.byteSize == byteSize)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.inspectionId, inspectionId) || other.inspectionId == inspectionId)&&(identical(other.durationMs, durationMs) || other.durationMs == durationMs)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MediaItem&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.hiveId, hiveId) || other.hiveId == hiveId)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.storagePath, storagePath) || other.storagePath == storagePath)&&(identical(other.capturedAt, capturedAt) || other.capturedAt == capturedAt)&&(identical(other.byteSize, byteSize) || other.byteSize == byteSize)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.inspectionId, inspectionId) || other.inspectionId == inspectionId)&&(identical(other.treatmentId, treatmentId) || other.treatmentId == treatmentId)&&(identical(other.durationMs, durationMs) || other.durationMs == durationMs)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,orgId,hiveId,kind,storagePath,capturedAt,byteSize,createdAt,updatedAt,inspectionId,durationMs,createdBy,deletedAt,serverSeq);
+    return Object.hash(runtimeType,id,orgId,hiveId,kind,storagePath,capturedAt,byteSize,createdAt,updatedAt,inspectionId,treatmentId,durationMs,createdBy,deletedAt,serverSeq);
 }
 
 @override
 String toString() {
-    return 'MediaItem(id: $id, orgId: $orgId, hiveId: $hiveId, kind: $kind, storagePath: $storagePath, capturedAt: $capturedAt, byteSize: $byteSize, createdAt: $createdAt, updatedAt: $updatedAt, inspectionId: $inspectionId, durationMs: $durationMs, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
+    return 'MediaItem(id: $id, orgId: $orgId, hiveId: $hiveId, kind: $kind, storagePath: $storagePath, capturedAt: $capturedAt, byteSize: $byteSize, createdAt: $createdAt, updatedAt: $updatedAt, inspectionId: $inspectionId, treatmentId: $treatmentId, durationMs: $durationMs, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
 }
 
 
@@ -569,7 +573,7 @@ abstract mixin class _$MediaItemCopyWith<$Res> implements $MediaItemCopyWith<$Re
   factory _$MediaItemCopyWith(_MediaItem value, $Res Function(_MediaItem) _then) = __$MediaItemCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String orgId, String hiveId, MediaKind kind, String storagePath, DateTime capturedAt, int byteSize, DateTime createdAt, DateTime updatedAt, String? inspectionId, int? durationMs, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String hiveId, MediaKind kind, String storagePath, DateTime capturedAt, int byteSize, DateTime createdAt, DateTime updatedAt, String? inspectionId, String? treatmentId, int? durationMs, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -586,7 +590,7 @@ class __$MediaItemCopyWithImpl<$Res>
 
 /// Create a copy of MediaItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? kind = null,Object? storagePath = null,Object? capturedAt = null,Object? byteSize = null,Object? createdAt = null,Object? updatedAt = null,Object? inspectionId = freezed,Object? durationMs = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? kind = null,Object? storagePath = null,Object? capturedAt = null,Object? byteSize = null,Object? createdAt = null,Object? updatedAt = null,Object? inspectionId = freezed,Object? treatmentId = freezed,Object? durationMs = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(_MediaItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -598,6 +602,7 @@ as DateTime,byteSize: null == byteSize ? _self.byteSize : byteSize // ignore: ca
 as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,inspectionId: freezed == inspectionId ? _self.inspectionId : inspectionId // ignore: cast_nullable_to_non_nullable
+as String?,treatmentId: freezed == treatmentId ? _self.treatmentId : treatmentId // ignore: cast_nullable_to_non_nullable
 as String?,durationMs: freezed == durationMs ? _self.durationMs : durationMs // ignore: cast_nullable_to_non_nullable
 as int?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable

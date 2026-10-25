@@ -262,6 +262,7 @@ Map<String, Object?> _treatmentRow(int seq) => {
   'apiary_id': 'apiary-1',
   'ref_drug_id': 'ref-drug-1',
   'drug_id': null,
+  'application_id': 'application-1',
   'product_name': 'Amitraz şerit',
   'active_ingredient': 'amitraz',
   'batch_no': '24-118',
@@ -864,6 +865,7 @@ void main() {
       expect(treatment.dose, 2.0);
       expect(treatment.batchNo, '24-118');
       expect(treatment.plannedRemovalAt, DateTime.utc(2026, 12, 5, 9));
+      expect(treatment.applicationId, 'application-1');
 
       expect(await _cursors(db), {
         'organizations': 1,

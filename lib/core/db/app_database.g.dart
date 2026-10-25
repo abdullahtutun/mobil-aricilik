@@ -5392,6 +5392,17 @@ class $MediaTable extends Media with TableInfo<$MediaTable, MediaItem> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _treatmentIdMeta = const VerificationMeta(
+    'treatmentId',
+  );
+  @override
+  late final GeneratedColumn<String> treatmentId = GeneratedColumn<String>(
+    'treatment_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<MediaKind, String> kind =
       GeneratedColumn<String>(
@@ -5456,6 +5467,7 @@ class $MediaTable extends Media with TableInfo<$MediaTable, MediaItem> {
     orgId,
     hiveId,
     inspectionId,
+    treatmentId,
     kind,
     storagePath,
     capturedAt,
@@ -5535,6 +5547,15 @@ class $MediaTable extends Media with TableInfo<$MediaTable, MediaItem> {
         inspectionId.isAcceptableOrUnknown(
           data['inspection_id']!,
           _inspectionIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('treatment_id')) {
+      context.handle(
+        _treatmentIdMeta,
+        treatmentId.isAcceptableOrUnknown(
+          data['treatment_id']!,
+          _treatmentIdMeta,
         ),
       );
     }
@@ -5622,6 +5643,10 @@ class $MediaTable extends Media with TableInfo<$MediaTable, MediaItem> {
         DriftSqlType.string,
         data['${effectivePrefix}inspection_id'],
       ),
+      treatmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}treatment_id'],
+      ),
       durationMs: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}duration_ms'],
@@ -5660,6 +5685,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
   final Value<String> orgId;
   final Value<String> hiveId;
   final Value<String?> inspectionId;
+  final Value<String?> treatmentId;
   final Value<MediaKind> kind;
   final Value<String> storagePath;
   final Value<DateTime> capturedAt;
@@ -5676,6 +5702,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
     this.orgId = const Value.absent(),
     this.hiveId = const Value.absent(),
     this.inspectionId = const Value.absent(),
+    this.treatmentId = const Value.absent(),
     this.kind = const Value.absent(),
     this.storagePath = const Value.absent(),
     this.capturedAt = const Value.absent(),
@@ -5693,6 +5720,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
     required String orgId,
     required String hiveId,
     this.inspectionId = const Value.absent(),
+    this.treatmentId = const Value.absent(),
     required MediaKind kind,
     required String storagePath,
     required DateTime capturedAt,
@@ -5718,6 +5746,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
     Expression<String>? orgId,
     Expression<String>? hiveId,
     Expression<String>? inspectionId,
+    Expression<String>? treatmentId,
     Expression<String>? kind,
     Expression<String>? storagePath,
     Expression<DateTime>? capturedAt,
@@ -5735,6 +5764,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
       if (orgId != null) 'org_id': orgId,
       if (hiveId != null) 'hive_id': hiveId,
       if (inspectionId != null) 'inspection_id': inspectionId,
+      if (treatmentId != null) 'treatment_id': treatmentId,
       if (kind != null) 'kind': kind,
       if (storagePath != null) 'storage_path': storagePath,
       if (capturedAt != null) 'captured_at': capturedAt,
@@ -5754,6 +5784,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
     Value<String>? orgId,
     Value<String>? hiveId,
     Value<String?>? inspectionId,
+    Value<String?>? treatmentId,
     Value<MediaKind>? kind,
     Value<String>? storagePath,
     Value<DateTime>? capturedAt,
@@ -5771,6 +5802,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
       orgId: orgId ?? this.orgId,
       hiveId: hiveId ?? this.hiveId,
       inspectionId: inspectionId ?? this.inspectionId,
+      treatmentId: treatmentId ?? this.treatmentId,
       kind: kind ?? this.kind,
       storagePath: storagePath ?? this.storagePath,
       capturedAt: capturedAt ?? this.capturedAt,
@@ -5810,6 +5842,9 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
     if (inspectionId.present) {
       map['inspection_id'] = Variable<String>(inspectionId.value);
     }
+    if (treatmentId.present) {
+      map['treatment_id'] = Variable<String>(treatmentId.value);
+    }
     if (kind.present) {
       map['kind'] = Variable<String>(
         $MediaTable.$converterkind.toSql(kind.value),
@@ -5845,6 +5880,7 @@ class MediaCompanion extends UpdateCompanion<MediaItem> {
           ..write('orgId: $orgId, ')
           ..write('hiveId: $hiveId, ')
           ..write('inspectionId: $inspectionId, ')
+          ..write('treatmentId: $treatmentId, ')
           ..write('kind: $kind, ')
           ..write('storagePath: $storagePath, ')
           ..write('capturedAt: $capturedAt, ')
@@ -5871,6 +5907,7 @@ class _$MediaItemInsertable implements Insertable<MediaItem> {
       orgId: Value(_object.orgId),
       hiveId: Value(_object.hiveId),
       inspectionId: Value(_object.inspectionId),
+      treatmentId: Value(_object.treatmentId),
       kind: Value(_object.kind),
       storagePath: Value(_object.storagePath),
       capturedAt: Value(_object.capturedAt),
@@ -8193,6 +8230,17 @@ class $TreatmentsTable extends Treatments
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _applicationIdMeta = const VerificationMeta(
+    'applicationId',
+  );
+  @override
+  late final GeneratedColumn<String> applicationId = GeneratedColumn<String>(
+    'application_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _productNameMeta = const VerificationMeta(
     'productName',
   );
@@ -8292,6 +8340,7 @@ class $TreatmentsTable extends Treatments
     apiaryId,
     refDrugId,
     drugId,
+    applicationId,
     productName,
     activeIngredient,
     batchNo,
@@ -8386,6 +8435,15 @@ class $TreatmentsTable extends Treatments
       context.handle(
         _drugIdMeta,
         drugId.isAcceptableOrUnknown(data['drug_id']!, _drugIdMeta),
+      );
+    }
+    if (data.containsKey('application_id')) {
+      context.handle(
+        _applicationIdMeta,
+        applicationId.isAcceptableOrUnknown(
+          data['application_id']!,
+          _applicationIdMeta,
+        ),
       );
     }
     if (data.containsKey('product_name')) {
@@ -8514,6 +8572,10 @@ class $TreatmentsTable extends Treatments
         DriftSqlType.string,
         data['${effectivePrefix}batch_no'],
       ),
+      applicationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}application_id'],
+      ),
       plannedRemovalAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}planned_removal_at'],
@@ -8558,6 +8620,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
   final Value<String> apiaryId;
   final Value<String?> refDrugId;
   final Value<String?> drugId;
+  final Value<String?> applicationId;
   final Value<String> productName;
   final Value<DrugActiveIngredient> activeIngredient;
   final Value<String?> batchNo;
@@ -8579,6 +8642,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
     this.apiaryId = const Value.absent(),
     this.refDrugId = const Value.absent(),
     this.drugId = const Value.absent(),
+    this.applicationId = const Value.absent(),
     this.productName = const Value.absent(),
     this.activeIngredient = const Value.absent(),
     this.batchNo = const Value.absent(),
@@ -8601,6 +8665,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
     required String apiaryId,
     this.refDrugId = const Value.absent(),
     this.drugId = const Value.absent(),
+    this.applicationId = const Value.absent(),
     required String productName,
     required DrugActiveIngredient activeIngredient,
     this.batchNo = const Value.absent(),
@@ -8634,6 +8699,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
     Expression<String>? apiaryId,
     Expression<String>? refDrugId,
     Expression<String>? drugId,
+    Expression<String>? applicationId,
     Expression<String>? productName,
     Expression<String>? activeIngredient,
     Expression<String>? batchNo,
@@ -8656,6 +8722,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
       if (apiaryId != null) 'apiary_id': apiaryId,
       if (refDrugId != null) 'ref_drug_id': refDrugId,
       if (drugId != null) 'drug_id': drugId,
+      if (applicationId != null) 'application_id': applicationId,
       if (productName != null) 'product_name': productName,
       if (activeIngredient != null) 'active_ingredient': activeIngredient,
       if (batchNo != null) 'batch_no': batchNo,
@@ -8680,6 +8747,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
     Value<String>? apiaryId,
     Value<String?>? refDrugId,
     Value<String?>? drugId,
+    Value<String?>? applicationId,
     Value<String>? productName,
     Value<DrugActiveIngredient>? activeIngredient,
     Value<String?>? batchNo,
@@ -8702,6 +8770,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
       apiaryId: apiaryId ?? this.apiaryId,
       refDrugId: refDrugId ?? this.refDrugId,
       drugId: drugId ?? this.drugId,
+      applicationId: applicationId ?? this.applicationId,
       productName: productName ?? this.productName,
       activeIngredient: activeIngredient ?? this.activeIngredient,
       batchNo: batchNo ?? this.batchNo,
@@ -8749,6 +8818,9 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
     }
     if (drugId.present) {
       map['drug_id'] = Variable<String>(drugId.value);
+    }
+    if (applicationId.present) {
+      map['application_id'] = Variable<String>(applicationId.value);
     }
     if (productName.present) {
       map['product_name'] = Variable<String>(productName.value);
@@ -8800,6 +8872,7 @@ class TreatmentsCompanion extends UpdateCompanion<Treatment> {
           ..write('apiaryId: $apiaryId, ')
           ..write('refDrugId: $refDrugId, ')
           ..write('drugId: $drugId, ')
+          ..write('applicationId: $applicationId, ')
           ..write('productName: $productName, ')
           ..write('activeIngredient: $activeIngredient, ')
           ..write('batchNo: $batchNo, ')
@@ -8831,6 +8904,7 @@ class _$TreatmentInsertable implements Insertable<Treatment> {
       apiaryId: Value(_object.apiaryId),
       refDrugId: Value(_object.refDrugId),
       drugId: Value(_object.drugId),
+      applicationId: Value(_object.applicationId),
       productName: Value(_object.productName),
       activeIngredient: Value(_object.activeIngredient),
       batchNo: Value(_object.batchNo),
@@ -9895,6 +9969,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'treatments_apiary_id_idx',
     'CREATE INDEX treatments_apiary_id_idx ON treatments (apiary_id)',
   );
+  late final Index treatmentsApplicationIdIdx = Index(
+    'treatments_application_id_idx',
+    'CREATE INDEX treatments_application_id_idx ON treatments (application_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -9936,6 +10014,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     treatmentsOrgIdIdx,
     treatmentsHiveIdIdx,
     treatmentsApiaryIdIdx,
+    treatmentsApplicationIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -13157,6 +13236,7 @@ typedef $$MediaTableCreateCompanionBuilder = MediaCompanion Function({
   required String orgId,
   required String hiveId,
   Value<String?> inspectionId,
+  Value<String?> treatmentId,
   required MediaKind kind,
   required String storagePath,
   required DateTime capturedAt,
@@ -13174,6 +13254,7 @@ typedef $$MediaTableUpdateCompanionBuilder = MediaCompanion Function({
   Value<String> orgId,
   Value<String> hiveId,
   Value<String?> inspectionId,
+  Value<String?> treatmentId,
   Value<MediaKind> kind,
   Value<String> storagePath,
   Value<DateTime> capturedAt,
@@ -13232,6 +13313,11 @@ class $$MediaTableFilterComposer extends Composer<_$AppDatabase, $MediaTable> {
 
   ColumnFilters<String> get inspectionId => $composableBuilder(
     column: $table.inspectionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get treatmentId => $composableBuilder(
+    column: $table.treatmentId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -13316,6 +13402,11 @@ class $$MediaTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get treatmentId => $composableBuilder(
+    column: $table.treatmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get kind => $composableBuilder(
     column: $table.kind,
     builder: (column) => ColumnOrderings(column),
@@ -13380,6 +13471,11 @@ class $$MediaTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get treatmentId => $composableBuilder(
+    column: $table.treatmentId,
+    builder: (column) => column,
+  );
+
   GeneratedColumnWithTypeConverter<MediaKind, String> get kind =>
       $composableBuilder(column: $table.kind, builder: (column) => column);
 
@@ -13439,6 +13535,7 @@ class $$MediaTableTableManager
                 Value<String> orgId = const Value.absent(),
                 Value<String> hiveId = const Value.absent(),
                 Value<String?> inspectionId = const Value.absent(),
+                Value<String?> treatmentId = const Value.absent(),
                 Value<MediaKind> kind = const Value.absent(),
                 Value<String> storagePath = const Value.absent(),
                 Value<DateTime> capturedAt = const Value.absent(),
@@ -13455,6 +13552,7 @@ class $$MediaTableTableManager
                 orgId: orgId,
                 hiveId: hiveId,
                 inspectionId: inspectionId,
+                treatmentId: treatmentId,
                 kind: kind,
                 storagePath: storagePath,
                 capturedAt: capturedAt,
@@ -13473,6 +13571,7 @@ class $$MediaTableTableManager
                 required String orgId,
                 required String hiveId,
                 Value<String?> inspectionId = const Value.absent(),
+                Value<String?> treatmentId = const Value.absent(),
                 required MediaKind kind,
                 required String storagePath,
                 required DateTime capturedAt,
@@ -13489,6 +13588,7 @@ class $$MediaTableTableManager
                 orgId: orgId,
                 hiveId: hiveId,
                 inspectionId: inspectionId,
+                treatmentId: treatmentId,
                 kind: kind,
                 storagePath: storagePath,
                 capturedAt: capturedAt,
@@ -14901,6 +15001,7 @@ typedef $$TreatmentsTableCreateCompanionBuilder = TreatmentsCompanion Function({
   required String apiaryId,
   Value<String?> refDrugId,
   Value<String?> drugId,
+  Value<String?> applicationId,
   required String productName,
   required DrugActiveIngredient activeIngredient,
   Value<String?> batchNo,
@@ -14923,6 +15024,7 @@ typedef $$TreatmentsTableUpdateCompanionBuilder = TreatmentsCompanion Function({
   Value<String> apiaryId,
   Value<String?> refDrugId,
   Value<String?> drugId,
+  Value<String?> applicationId,
   Value<String> productName,
   Value<DrugActiveIngredient> activeIngredient,
   Value<String?> batchNo,
@@ -14995,6 +15097,11 @@ class $$TreatmentsTableFilterComposer
 
   ColumnFilters<String> get drugId => $composableBuilder(
     column: $table.drugId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get applicationId => $composableBuilder(
+    column: $table.applicationId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -15109,6 +15216,11 @@ class $$TreatmentsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get applicationId => $composableBuilder(
+    column: $table.applicationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get productName => $composableBuilder(
     column: $table.productName,
     builder: (column) => ColumnOrderings(column),
@@ -15192,6 +15304,11 @@ class $$TreatmentsTableAnnotationComposer
   GeneratedColumn<String> get drugId =>
       $composableBuilder(column: $table.drugId, builder: (column) => column);
 
+  GeneratedColumn<String> get applicationId => $composableBuilder(
+    column: $table.applicationId,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get productName => $composableBuilder(
     column: $table.productName,
     builder: (column) => column,
@@ -15268,6 +15385,7 @@ class $$TreatmentsTableTableManager
                 Value<String> apiaryId = const Value.absent(),
                 Value<String?> refDrugId = const Value.absent(),
                 Value<String?> drugId = const Value.absent(),
+                Value<String?> applicationId = const Value.absent(),
                 Value<String> productName = const Value.absent(),
                 Value<DrugActiveIngredient> activeIngredient =
                     const Value.absent(),
@@ -15290,6 +15408,7 @@ class $$TreatmentsTableTableManager
                 apiaryId: apiaryId,
                 refDrugId: refDrugId,
                 drugId: drugId,
+                applicationId: applicationId,
                 productName: productName,
                 activeIngredient: activeIngredient,
                 batchNo: batchNo,
@@ -15313,6 +15432,7 @@ class $$TreatmentsTableTableManager
                 required String apiaryId,
                 Value<String?> refDrugId = const Value.absent(),
                 Value<String?> drugId = const Value.absent(),
+                Value<String?> applicationId = const Value.absent(),
                 required String productName,
                 required DrugActiveIngredient activeIngredient,
                 Value<String?> batchNo = const Value.absent(),
@@ -15334,6 +15454,7 @@ class $$TreatmentsTableTableManager
                 apiaryId: apiaryId,
                 refDrugId: refDrugId,
                 drugId: drugId,
+                applicationId: applicationId,
                 productName: productName,
                 activeIngredient: activeIngredient,
                 batchNo: batchNo,

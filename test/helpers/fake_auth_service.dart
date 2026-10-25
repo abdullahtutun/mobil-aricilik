@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/misc.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/services/code_scanner_provider.dart';
+import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/services/print_service_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
@@ -14,6 +15,7 @@ import 'fake_code_scanner.dart';
 import 'fake_media.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
+import 'fake_reminder_notifications.dart';
 import 'fake_sync_service.dart';
 import 'test_database.dart';
 
@@ -81,6 +83,7 @@ List<Override> signedIn({
   FakePrintService? printer,
   FakeSyncService? sync,
   FakeMedia? media,
+  FakeReminderNotifications? reminders,
   bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
@@ -92,4 +95,7 @@ List<Override> signedIn({
   printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
   ...syncOverrides(service: sync, fullPullDone: fullPullDone),
   ...(media ?? FakeMedia()).overrides,
+  reminderNotificationsProvider.overrideWithValue(
+    reminders ?? FakeReminderNotifications(),
+  ),
 ];

@@ -227,6 +227,359 @@ final class OrganizationDrugsProvider
 
 String _$organizationDrugsHash() => r'11f37fdbc6f4de2c912e3137849416e767f8257a';
 
+/// Kovanın uygulamaları, en son başlayan önce.
+
+@ProviderFor(hiveTreatments)
+final hiveTreatmentsProvider = HiveTreatmentsFamily._();
+
+/// Kovanın uygulamaları, en son başlayan önce.
+
+final class HiveTreatmentsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Treatment>>,
+          List<Treatment>,
+          Stream<List<Treatment>>
+        >
+    with $FutureModifier<List<Treatment>>, $StreamProvider<List<Treatment>> {
+  /// Kovanın uygulamaları, en son başlayan önce.
+  HiveTreatmentsProvider._({
+    required HiveTreatmentsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'hiveTreatmentsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveTreatmentsHash();
+
+  @override
+  String toString() {
+    return r'hiveTreatmentsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Treatment>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Treatment>> create(Ref ref) {
+    final argument = this.argument as String;
+    return hiveTreatments(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HiveTreatmentsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$hiveTreatmentsHash() => r'0b9c3f600242ac54721bd13bbe4019ee384fb07a';
+
+/// Kovanın uygulamaları, en son başlayan önce.
+
+final class HiveTreatmentsFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<Treatment>>, String> {
+  HiveTreatmentsFamily._()
+    : super(
+        retry: null,
+        name: r'hiveTreatmentsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Kovanın uygulamaları, en son başlayan önce.
+
+  HiveTreatmentsProvider call(String hiveId) =>
+      HiveTreatmentsProvider._(argument: hiveId, from: this);
+
+  @override
+  String toString() => r'hiveTreatmentsProvider';
+}
+
+/// Kovanın uygulama gruplarının reçete fotoğrafları, grup kimliğine göre.
+
+@ProviderFor(hivePrescriptions)
+final hivePrescriptionsProvider = HivePrescriptionsFamily._();
+
+/// Kovanın uygulama gruplarının reçete fotoğrafları, grup kimliğine göre.
+
+final class HivePrescriptionsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<String, List<MediaItem>>>,
+          Map<String, List<MediaItem>>,
+          Stream<Map<String, List<MediaItem>>>
+        >
+    with
+        $FutureModifier<Map<String, List<MediaItem>>>,
+        $StreamProvider<Map<String, List<MediaItem>>> {
+  /// Kovanın uygulama gruplarının reçete fotoğrafları, grup kimliğine göre.
+  HivePrescriptionsProvider._({
+    required HivePrescriptionsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'hivePrescriptionsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$hivePrescriptionsHash();
+
+  @override
+  String toString() {
+    return r'hivePrescriptionsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<Map<String, List<MediaItem>>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<Map<String, List<MediaItem>>> create(Ref ref) {
+    final argument = this.argument as String;
+    return hivePrescriptions(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HivePrescriptionsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$hivePrescriptionsHash() => r'779edbb6150c58b2b6a8cd1c1be88088e664055c';
+
+/// Kovanın uygulama gruplarının reçete fotoğrafları, grup kimliğine göre.
+
+final class HivePrescriptionsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          Stream<Map<String, List<MediaItem>>>,
+          String
+        > {
+  HivePrescriptionsFamily._()
+    : super(
+        retry: null,
+        name: r'hivePrescriptionsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Kovanın uygulama gruplarının reçete fotoğrafları, grup kimliğine göre.
+
+  HivePrescriptionsProvider call(String hiveId) =>
+      HivePrescriptionsProvider._(argument: hiveId, from: this);
+
+  @override
+  String toString() => r'hivePrescriptionsProvider';
+}
+
+/// Arılıkta yapılan uygulamalar, en son başlayan önce (etken madde
+/// rotasyonu).
+
+@ProviderFor(apiaryTreatments)
+final apiaryTreatmentsProvider = ApiaryTreatmentsFamily._();
+
+/// Arılıkta yapılan uygulamalar, en son başlayan önce (etken madde
+/// rotasyonu).
+
+final class ApiaryTreatmentsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Treatment>>,
+          List<Treatment>,
+          Stream<List<Treatment>>
+        >
+    with $FutureModifier<List<Treatment>>, $StreamProvider<List<Treatment>> {
+  /// Arılıkta yapılan uygulamalar, en son başlayan önce (etken madde
+  /// rotasyonu).
+  ApiaryTreatmentsProvider._({
+    required ApiaryTreatmentsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'apiaryTreatmentsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$apiaryTreatmentsHash();
+
+  @override
+  String toString() {
+    return r'apiaryTreatmentsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Treatment>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Treatment>> create(Ref ref) {
+    final argument = this.argument as String;
+    return apiaryTreatments(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ApiaryTreatmentsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$apiaryTreatmentsHash() => r'423511f2ebf2fedce37b535d56dcff66aeb342a1';
+
+/// Arılıkta yapılan uygulamalar, en son başlayan önce (etken madde
+/// rotasyonu).
+
+final class ApiaryTreatmentsFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<Treatment>>, String> {
+  ApiaryTreatmentsFamily._()
+    : super(
+        retry: null,
+        name: r'apiaryTreatmentsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Arılıkta yapılan uygulamalar, en son başlayan önce (etken madde
+  /// rotasyonu).
+
+  ApiaryTreatmentsProvider call(String apiaryId) =>
+      ApiaryTreatmentsProvider._(argument: apiaryId, from: this);
+
+  @override
+  String toString() => r'apiaryTreatmentsProvider';
+}
+
+/// Kovanın şimdiki bekleme süresi kilidi (kovan kartındaki aktif ilaç);
+/// kilit yoksa null. Uygulamalar değişince yeniden hesaplanır.
+
+@ProviderFor(hiveWithdrawalLock)
+final hiveWithdrawalLockProvider = HiveWithdrawalLockFamily._();
+
+/// Kovanın şimdiki bekleme süresi kilidi (kovan kartındaki aktif ilaç);
+/// kilit yoksa null. Uygulamalar değişince yeniden hesaplanır.
+
+final class HiveWithdrawalLockProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<WithdrawalLock?>,
+          WithdrawalLock?,
+          FutureOr<WithdrawalLock?>
+        >
+    with $FutureModifier<WithdrawalLock?>, $FutureProvider<WithdrawalLock?> {
+  /// Kovanın şimdiki bekleme süresi kilidi (kovan kartındaki aktif ilaç);
+  /// kilit yoksa null. Uygulamalar değişince yeniden hesaplanır.
+  HiveWithdrawalLockProvider._({
+    required HiveWithdrawalLockFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'hiveWithdrawalLockProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveWithdrawalLockHash();
+
+  @override
+  String toString() {
+    return r'hiveWithdrawalLockProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<WithdrawalLock?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<WithdrawalLock?> create(Ref ref) {
+    final argument = this.argument as String;
+    return hiveWithdrawalLock(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is HiveWithdrawalLockProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$hiveWithdrawalLockHash() =>
+    r'fd8cc89ab1475a1313bece2036bf5e1423b9e8dd';
+
+/// Kovanın şimdiki bekleme süresi kilidi (kovan kartındaki aktif ilaç);
+/// kilit yoksa null. Uygulamalar değişince yeniden hesaplanır.
+
+final class HiveWithdrawalLockFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<WithdrawalLock?>, String> {
+  HiveWithdrawalLockFamily._()
+    : super(
+        retry: null,
+        name: r'hiveWithdrawalLockProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Kovanın şimdiki bekleme süresi kilidi (kovan kartındaki aktif ilaç);
+  /// kilit yoksa null. Uygulamalar değişince yeniden hesaplanır.
+
+  HiveWithdrawalLockProvider call(String hiveId) =>
+      HiveWithdrawalLockProvider._(argument: hiveId, from: this);
+
+  @override
+  String toString() => r'hiveWithdrawalLockProvider';
+}
+
 /// Formdaki ilaç listesi ([drugCatalog]) [languageCode] dilinde. TR
 /// listesi bölge profilinin `trDrugList` bayrağıyla görünür.
 
@@ -355,7 +708,7 @@ final class TreatmentActionsProvider
   }
 }
 
-String _$treatmentActionsHash() => r'ca63711e06d109506c13f3b498cdb1d7771420af';
+String _$treatmentActionsHash() => r'c34bbeed0bd084af95b282dd43b57f522c9a2416';
 
 /// Kaydetme, geri alma ve kilit denetimi. Bildirimin Geri al'ı form
 /// kapandıktan sonra da çalışsın diye sürekli yaşar.

@@ -25,6 +25,7 @@ _Treatment _$TreatmentFromJson(Map<String, dynamic> json) => _Treatment(
   refDrugId: json['ref_drug_id'] as String?,
   drugId: json['drug_id'] as String?,
   batchNo: json['batch_no'] as String?,
+  applicationId: json['application_id'] as String?,
   plannedRemovalAt: json['planned_removal_at'] == null
       ? null
       : DateTime.parse(json['planned_removal_at'] as String),
@@ -53,6 +54,7 @@ Map<String, dynamic> _$TreatmentToJson(_Treatment instance) =>
       'ref_drug_id': instance.refDrugId,
       'drug_id': instance.drugId,
       'batch_no': instance.batchNo,
+      'application_id': instance.applicationId,
       'planned_removal_at': instance.plannedRemovalAt?.toIso8601String(),
       'created_by': instance.createdBy,
       'deleted_at': instance.deletedAt?.toIso8601String(),

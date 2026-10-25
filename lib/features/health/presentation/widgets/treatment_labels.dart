@@ -1,5 +1,7 @@
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 
 extension DrugActiveIngredientLabel on DrugActiveIngredient {
@@ -38,4 +40,22 @@ String drugChoiceHint(AppLocalizations l10n, DrugChoice drug) => [
   l10n.treatmentDrugIngredient(drug.activeIngredient.label(l10n)),
   if (drug.licenseNo case final number?) l10n.treatmentDrugLicense(number),
   if (drug.drugId != null) l10n.treatmentDrugCustom,
+].join(l10n.titleSeparator);
+
+/// Tünel satırı: "Parti 24-118 · 2 şerit · çıkarma 5 Ara · 14 gün
+/// bekleme"; boş alanlar yazılmaz.
+String treatmentSummary(
+  AppLocalizations l10n,
+  AppFormat format,
+  Treatment treatment,
+) => [
+  if (treatment.batchNo case final batch?) l10n.timelineTreatmentBatch(batch),
+  l10n.treatmentDoseValue(
+    format.number(treatment.dose),
+    treatment.doseUnit.label(l10n),
+  ),
+  if (treatment.plannedRemovalAt case final removal?)
+    l10n.timelineTreatmentRemoval(format.dayMonth(removal.toLocal())),
+  if (treatment.withdrawalDays > 0)
+    l10n.timelineTreatmentWithdrawal(treatment.withdrawalDays),
 ].join(l10n.titleSeparator);

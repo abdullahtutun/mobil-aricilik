@@ -5,12 +5,18 @@ import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/media/data/media_repository.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 /// İlaç uygulamaları; olay kaydı: yalnız eklenir, güncelleme yok, yanlış
-/// kayıt silinir (Geri al da silmedir). Toplu uygulama hepsini ya da
-/// hiçbirini yazar.
+/// kayıt silinir (Geri al da silmedir). Bir kayıtta yazılan uygulamalar
+/// ortak `application_id` taşır; toplu uygulama hepsini ya da hiçbirini
+/// yazar. Reçete fotoğrafı aynı transaction'da formun açıldığı kovanın
+/// uygulamasına bağlanır.
 class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
   new(super.db, {super.clock});
+
+  late final _media = MediaRepository(db, clock: clock);
 
   @override
   $TreatmentsTable get table => db.treatments;
@@ -28,49 +34,115 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
     ],
   );
 
+  /// [apiaryId] arılığında yapılan uygulamalar, en son başlayan önce.
+  Stream<List<Treatment>> watchByApiary(String apiaryId) => watchWhere(
+    (t) => t.apiaryId.equals(apiaryId),
+    orderBy: [
+      (t) => OrderingTerm.desc(t.startedAt),
+      (t) => OrderingTerm.desc(t.id),
+    ],
+  );
+
+  /// Kovanın uygulama gruplarının reçete fotoğrafları, grup kimliğine
+  /// (`groupId`) göre, çekilme sırasıyla. Toplu uygulamada foto başka
+  /// kovanın uygulamasına bağlı olsa da gruptaki her kovanda görünür.
+  Stream<Map<String, List<MediaItem>>> watchPrescriptionsByHive(String hiveId) {
+    final media = db.media;
+    final own = db.alias(table, 'own');
+    final group = coalesce<String>([table.applicationId, table.id]);
+    final hiveGroups = db.selectOnly(own)
+      ..addColumns([
+        coalesce<String>([own.applicationId, own.id]),
+      ])
+      ..where(own.hiveId.equals(hiveId) & own.deletedAt.isNull());
+    final query =
+        db.select(media).join([
+            innerJoin(table, table.id.equalsExp(media.treatmentId)),
+          ])
+          ..addColumns([group])
+          ..where(
+            media.deletedAt.isNull() &
+                table.deletedAt.isNull() &
+                group.isInQuery(hiveGroups),
+          )
+          ..orderBy([
+            OrderingTerm.asc(media.capturedAt),
+            OrderingTerm.asc(media.id),
+          ]);
+    return query.watch().map((rows) {
+      final byGroup = <String, List<MediaItem>>{};
+      for (final row in rows) {
+        (byGroup[row.read<String>(group)!] ??= []).add(row.readTable(media));
+      }
+      return byGroup;
+    });
+  }
+
   /// Kovanın uygulamaları; okuma anında (ör. kilit denetimi).
   Future<List<Treatment>> findByHive(String hiveId) =>
       selectWhere((t) => t.hiveId.equals(hiveId)).get();
 
-  /// [plan]'ı [hive]'a, kovanın şimdiki arılığında yazar.
-  Future<Treatment> addToHive(Hive hive, TreatmentPlan plan) async =>
-      (await _addAll([hive], plan)).single;
+  /// [plan]'ı [hive]'a, kovanın şimdiki arılığında yazar; [prescription]
+  /// verilirse reçete fotoğrafı olarak uygulamaya bağlanır.
+  Future<Treatment> addToHive(
+    Hive hive,
+    TreatmentPlan plan, {
+    MediaCapture? prescription,
+  }) async => (await _addAll([hive], plan, prescription: prescription)).single;
 
   /// [plan]'ı [apiaryId] arılığındaki her aktif kovana tek transaction'da
-  /// yazar ve kovan numarası sırasıyla döner. Aktif kovan yoksa bir şey
-  /// yazmaz, boş döner.
-  Future<List<Treatment>> addToApiary(String apiaryId, TreatmentPlan plan) =>
-      db.transaction(() async {
-        final hives =
-            await (db.select(db.hives)
-                  ..where(
-                    (t) =>
-                        t.apiaryId.equals(apiaryId) &
-                        t.deletedAt.isNull() &
-                        t.status.equalsValue(HiveStatus.active),
-                  )
-                  ..orderBy([(t) => OrderingTerm.asc(t.number)]))
-                .get();
-        return await _addAll(hives, plan);
-      });
+  /// yazar ve kovan numarası sırasıyla döner. [prescription] verilirse
+  /// [photoHiveId] kovanının (yoksa ilk kovanın) uygulamasına bağlanır.
+  /// Aktif kovan yoksa bir şey yazmaz, boş döner.
+  Future<List<Treatment>> addToApiary(
+    String apiaryId,
+    TreatmentPlan plan, {
+    MediaCapture? prescription,
+    String? photoHiveId,
+  }) => db.transaction(() async {
+    final hives =
+        await (db.select(db.hives)
+              ..where(
+                (t) =>
+                    t.apiaryId.equals(apiaryId) &
+                    t.deletedAt.isNull() &
+                    t.status.equalsValue(HiveStatus.active),
+              )
+              ..orderBy([(t) => OrderingTerm.asc(t.number)]))
+            .get();
+    return await _addAll(
+      hives,
+      plan,
+      prescription: prescription,
+      photoHiveId: photoHiveId,
+    );
+  });
 
-  /// Geri al: [treatments]'ı tek transaction'da siler.
+  /// Geri al: [treatments]'ı ve reçete fotoğraflarını tek transaction'da
+  /// siler. Fotoğraf dosyası çağıranın.
   Future<void> deleteAll(Iterable<Treatment> treatments) =>
       db.transaction(() async {
         for (final treatment in treatments) {
           await delete(treatment.id);
         }
+        await _media.removeByTreatments([for (final t in treatments) t.id]);
       });
 
   /// Değerler sunucunun kısıtlarına uymazsa [ArgumentError] atar ve bir
   /// şey yazmaz.
-  Future<List<Treatment>> _addAll(List<Hive> hives, TreatmentPlan plan) {
+  Future<List<Treatment>> _addAll(
+    List<Hive> hives,
+    TreatmentPlan plan, {
+    MediaCapture? prescription,
+    String? photoHiveId,
+  }) {
     _check(plan);
     final drug = plan.drug;
     final batchNo = plan.batchNo?.trim();
+    final applicationId = generateId();
     return db.transaction(() async {
       final at = now();
-      return [
+      final treatments = [
         for (final hive in hives)
           await insertRecord(
             Treatment(
@@ -80,6 +152,7 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
               apiaryId: hive.apiaryId,
               refDrugId: drug.refDrugId,
               drugId: drug.drugId,
+              applicationId: applicationId,
               productName: drug.name,
               activeIngredient: drug.activeIngredient,
               batchNo: batchNo == null || batchNo.isEmpty ? null : batchNo,
@@ -93,6 +166,19 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
             ),
           ),
       ];
+      if (prescription != null && treatments.isNotEmpty) {
+        final target = treatments.firstWhere(
+          (t) => t.hiveId == photoHiveId,
+          orElse: () => treatments.first,
+        );
+        await _media.add(
+          orgId: target.orgId,
+          hiveId: target.hiveId,
+          treatmentId: target.id,
+          capture: prescription,
+        );
+      }
+      return treatments;
     });
   }
 

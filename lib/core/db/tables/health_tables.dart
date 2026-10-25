@@ -55,11 +55,13 @@ class Drugs extends Table with SyncColumns, OrgColumns {
 @TableIndex(name: 'treatments_org_id_idx', columns: {#orgId})
 @TableIndex(name: 'treatments_hive_id_idx', columns: {#hiveId})
 @TableIndex(name: 'treatments_apiary_id_idx', columns: {#apiaryId})
+@TableIndex(name: 'treatments_application_id_idx', columns: {#applicationId})
 class Treatments extends Table with SyncColumns, OrgColumns {
   TextColumn get hiveId => text()();
   TextColumn get apiaryId => text()();
   TextColumn get refDrugId => text().nullable()();
   TextColumn get drugId => text().nullable()();
+  TextColumn get applicationId => text().nullable()();
   TextColumn get productName => text()();
   TextColumn get activeIngredient =>
       text().map(const ServerEnumConverter(DrugActiveIngredient.values))();

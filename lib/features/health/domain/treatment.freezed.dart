@@ -19,7 +19,9 @@ mixin _$Treatment {
  String get id; String get orgId; String get hiveId;/// Uygulamanın yapıldığı arılık; kovan sonra taşınsa da değişmez.
  String get apiaryId; String get productName; DrugActiveIngredient get activeIngredient;/// Kovan başına doz.
  double get dose; DrugDoseUnit get doseUnit; DateTime get startedAt;/// Çıkarmadan (yoksa başlangıçtan) sonra bal katı ve hasat için gün.
- int get withdrawalDays; DateTime get createdAt; DateTime get updatedAt; String? get refDrugId; String? get drugId; String? get batchNo;/// Şeridin çıkarılacağı gün; tek seferlik uygulamada boş.
+ int get withdrawalDays; DateTime get createdAt; DateTime get updatedAt; String? get refDrugId; String? get drugId; String? get batchNo;/// Aynı anda birçok kovana yazılan uygulamanın ortak kimliği; şema
+/// sürümü 5'ten gelen kayıtta boş (`groupId`).
+ String? get applicationId;/// Şeridin çıkarılacağı gün; tek seferlik uygulamada boş.
  DateTime? get plannedRemovalAt; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
 /// Create a copy of Treatment
 /// with the given fields replaced by the non-null parameter values.
@@ -34,20 +36,20 @@ $TreatmentCopyWith<Treatment> get copyWith => _$TreatmentCopyWithImpl<Treatment>
 @override
 bool operator ==(Object other) {
   final _this = this as Treatment;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Treatment&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.hiveId, _this.hiveId) || other.hiveId == _this.hiveId)&&(identical(other.apiaryId, _this.apiaryId) || other.apiaryId == _this.apiaryId)&&(identical(other.productName, _this.productName) || other.productName == _this.productName)&&(identical(other.activeIngredient, _this.activeIngredient) || other.activeIngredient == _this.activeIngredient)&&(identical(other.dose, _this.dose) || other.dose == _this.dose)&&(identical(other.doseUnit, _this.doseUnit) || other.doseUnit == _this.doseUnit)&&(identical(other.startedAt, _this.startedAt) || other.startedAt == _this.startedAt)&&(identical(other.withdrawalDays, _this.withdrawalDays) || other.withdrawalDays == _this.withdrawalDays)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.refDrugId, _this.refDrugId) || other.refDrugId == _this.refDrugId)&&(identical(other.drugId, _this.drugId) || other.drugId == _this.drugId)&&(identical(other.batchNo, _this.batchNo) || other.batchNo == _this.batchNo)&&(identical(other.plannedRemovalAt, _this.plannedRemovalAt) || other.plannedRemovalAt == _this.plannedRemovalAt)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Treatment&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.hiveId, _this.hiveId) || other.hiveId == _this.hiveId)&&(identical(other.apiaryId, _this.apiaryId) || other.apiaryId == _this.apiaryId)&&(identical(other.productName, _this.productName) || other.productName == _this.productName)&&(identical(other.activeIngredient, _this.activeIngredient) || other.activeIngredient == _this.activeIngredient)&&(identical(other.dose, _this.dose) || other.dose == _this.dose)&&(identical(other.doseUnit, _this.doseUnit) || other.doseUnit == _this.doseUnit)&&(identical(other.startedAt, _this.startedAt) || other.startedAt == _this.startedAt)&&(identical(other.withdrawalDays, _this.withdrawalDays) || other.withdrawalDays == _this.withdrawalDays)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.refDrugId, _this.refDrugId) || other.refDrugId == _this.refDrugId)&&(identical(other.drugId, _this.drugId) || other.drugId == _this.drugId)&&(identical(other.batchNo, _this.batchNo) || other.batchNo == _this.batchNo)&&(identical(other.applicationId, _this.applicationId) || other.applicationId == _this.applicationId)&&(identical(other.plannedRemovalAt, _this.plannedRemovalAt) || other.plannedRemovalAt == _this.plannedRemovalAt)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Treatment;
-  return Object.hashAll([runtimeType,_this.id,_this.orgId,_this.hiveId,_this.apiaryId,_this.productName,_this.activeIngredient,_this.dose,_this.doseUnit,_this.startedAt,_this.withdrawalDays,_this.createdAt,_this.updatedAt,_this.refDrugId,_this.drugId,_this.batchNo,_this.plannedRemovalAt,_this.createdBy,_this.deletedAt,_this.serverSeq]);
+  return Object.hashAll([runtimeType,_this.id,_this.orgId,_this.hiveId,_this.apiaryId,_this.productName,_this.activeIngredient,_this.dose,_this.doseUnit,_this.startedAt,_this.withdrawalDays,_this.createdAt,_this.updatedAt,_this.refDrugId,_this.drugId,_this.batchNo,_this.applicationId,_this.plannedRemovalAt,_this.createdBy,_this.deletedAt,_this.serverSeq]);
 }
 
 @override
 String toString() {
   final _this = this as Treatment;
-  return 'Treatment(id: ${_this.id}, orgId: ${_this.orgId}, hiveId: ${_this.hiveId}, apiaryId: ${_this.apiaryId}, productName: ${_this.productName}, activeIngredient: ${_this.activeIngredient}, dose: ${_this.dose}, doseUnit: ${_this.doseUnit}, startedAt: ${_this.startedAt}, withdrawalDays: ${_this.withdrawalDays}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, refDrugId: ${_this.refDrugId}, drugId: ${_this.drugId}, batchNo: ${_this.batchNo}, plannedRemovalAt: ${_this.plannedRemovalAt}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
+  return 'Treatment(id: ${_this.id}, orgId: ${_this.orgId}, hiveId: ${_this.hiveId}, apiaryId: ${_this.apiaryId}, productName: ${_this.productName}, activeIngredient: ${_this.activeIngredient}, dose: ${_this.dose}, doseUnit: ${_this.doseUnit}, startedAt: ${_this.startedAt}, withdrawalDays: ${_this.withdrawalDays}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, refDrugId: ${_this.refDrugId}, drugId: ${_this.drugId}, batchNo: ${_this.batchNo}, applicationId: ${_this.applicationId}, plannedRemovalAt: ${_this.plannedRemovalAt}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
 }
 
 
@@ -58,7 +60,7 @@ abstract mixin class $TreatmentCopyWith<$Res>  {
   factory $TreatmentCopyWith(Treatment value, $Res Function(Treatment) _then) = _$TreatmentCopyWithImpl;
 @useResult
 $Res call({
- String id, String orgId, String hiveId, String apiaryId, String productName, DrugActiveIngredient activeIngredient, double dose, DrugDoseUnit doseUnit, DateTime startedAt, int withdrawalDays, DateTime createdAt, DateTime updatedAt, String? refDrugId, String? drugId, String? batchNo, DateTime? plannedRemovalAt, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String hiveId, String apiaryId, String productName, DrugActiveIngredient activeIngredient, double dose, DrugDoseUnit doseUnit, DateTime startedAt, int withdrawalDays, DateTime createdAt, DateTime updatedAt, String? refDrugId, String? drugId, String? batchNo, String? applicationId, DateTime? plannedRemovalAt, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -75,7 +77,7 @@ class _$TreatmentCopyWithImpl<$Res>
 
 /// Create a copy of Treatment
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? apiaryId = null,Object? productName = null,Object? activeIngredient = null,Object? dose = null,Object? doseUnit = null,Object? startedAt = null,Object? withdrawalDays = null,Object? createdAt = null,Object? updatedAt = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? batchNo = freezed,Object? plannedRemovalAt = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? apiaryId = null,Object? productName = null,Object? activeIngredient = null,Object? dose = null,Object? doseUnit = null,Object? startedAt = null,Object? withdrawalDays = null,Object? createdAt = null,Object? updatedAt = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? batchNo = freezed,Object? applicationId = freezed,Object? plannedRemovalAt = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(Treatment(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -92,6 +94,7 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,refDrugId: freezed == refDrugId ? _self.refDrugId : refDrugId // ignore: cast_nullable_to_non_nullable
 as String?,drugId: freezed == drugId ? _self.drugId : drugId // ignore: cast_nullable_to_non_nullable
 as String?,batchNo: freezed == batchNo ? _self.batchNo : batchNo // ignore: cast_nullable_to_non_nullable
+as String?,applicationId: freezed == applicationId ? _self.applicationId : applicationId // ignore: cast_nullable_to_non_nullable
 as String?,plannedRemovalAt: freezed == plannedRemovalAt ? _self.plannedRemovalAt : plannedRemovalAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
@@ -181,10 +184,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  String apiaryId,  String productName,  DrugActiveIngredient activeIngredient,  double dose,  DrugDoseUnit doseUnit,  DateTime startedAt,  int withdrawalDays,  DateTime createdAt,  DateTime updatedAt,  String? refDrugId,  String? drugId,  String? batchNo,  DateTime? plannedRemovalAt,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  String apiaryId,  String productName,  DrugActiveIngredient activeIngredient,  double dose,  DrugDoseUnit doseUnit,  DateTime startedAt,  int withdrawalDays,  DateTime createdAt,  DateTime updatedAt,  String? refDrugId,  String? drugId,  String? batchNo,  String? applicationId,  DateTime? plannedRemovalAt,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Treatment() when $default != null:
-return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productName,_that.activeIngredient,_that.dose,_that.doseUnit,_that.startedAt,_that.withdrawalDays,_that.createdAt,_that.updatedAt,_that.refDrugId,_that.drugId,_that.batchNo,_that.plannedRemovalAt,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productName,_that.activeIngredient,_that.dose,_that.doseUnit,_that.startedAt,_that.withdrawalDays,_that.createdAt,_that.updatedAt,_that.refDrugId,_that.drugId,_that.batchNo,_that.applicationId,_that.plannedRemovalAt,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return orElse();
 
 }
@@ -202,10 +205,10 @@ return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  String apiaryId,  String productName,  DrugActiveIngredient activeIngredient,  double dose,  DrugDoseUnit doseUnit,  DateTime startedAt,  int withdrawalDays,  DateTime createdAt,  DateTime updatedAt,  String? refDrugId,  String? drugId,  String? batchNo,  DateTime? plannedRemovalAt,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String hiveId,  String apiaryId,  String productName,  DrugActiveIngredient activeIngredient,  double dose,  DrugDoseUnit doseUnit,  DateTime startedAt,  int withdrawalDays,  DateTime createdAt,  DateTime updatedAt,  String? refDrugId,  String? drugId,  String? batchNo,  String? applicationId,  DateTime? plannedRemovalAt,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
 switch (_that) {
 case _Treatment():
-return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productName,_that.activeIngredient,_that.dose,_that.doseUnit,_that.startedAt,_that.withdrawalDays,_that.createdAt,_that.updatedAt,_that.refDrugId,_that.drugId,_that.batchNo,_that.plannedRemovalAt,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productName,_that.activeIngredient,_that.dose,_that.doseUnit,_that.startedAt,_that.withdrawalDays,_that.createdAt,_that.updatedAt,_that.refDrugId,_that.drugId,_that.batchNo,_that.applicationId,_that.plannedRemovalAt,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -222,10 +225,10 @@ return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String hiveId,  String apiaryId,  String productName,  DrugActiveIngredient activeIngredient,  double dose,  DrugDoseUnit doseUnit,  DateTime startedAt,  int withdrawalDays,  DateTime createdAt,  DateTime updatedAt,  String? refDrugId,  String? drugId,  String? batchNo,  DateTime? plannedRemovalAt,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String hiveId,  String apiaryId,  String productName,  DrugActiveIngredient activeIngredient,  double dose,  DrugDoseUnit doseUnit,  DateTime startedAt,  int withdrawalDays,  DateTime createdAt,  DateTime updatedAt,  String? refDrugId,  String? drugId,  String? batchNo,  String? applicationId,  DateTime? plannedRemovalAt,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
 switch (_that) {
 case _Treatment() when $default != null:
-return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productName,_that.activeIngredient,_that.dose,_that.doseUnit,_that.startedAt,_that.withdrawalDays,_that.createdAt,_that.updatedAt,_that.refDrugId,_that.drugId,_that.batchNo,_that.plannedRemovalAt,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productName,_that.activeIngredient,_that.dose,_that.doseUnit,_that.startedAt,_that.withdrawalDays,_that.createdAt,_that.updatedAt,_that.refDrugId,_that.drugId,_that.batchNo,_that.applicationId,_that.plannedRemovalAt,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return null;
 
 }
@@ -237,7 +240,7 @@ return $default(_that.id,_that.orgId,_that.hiveId,_that.apiaryId,_that.productNa
 @JsonSerializable()
 
 class _Treatment implements Treatment {
-  const _Treatment({required this.id, required this.orgId, required this.hiveId, required this.apiaryId, required this.productName, required this.activeIngredient, required this.dose, required this.doseUnit, required this.startedAt, required this.withdrawalDays, required this.createdAt, required this.updatedAt, this.refDrugId, this.drugId, this.batchNo, this.plannedRemovalAt, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
+  const _Treatment({required this.id, required this.orgId, required this.hiveId, required this.apiaryId, required this.productName, required this.activeIngredient, required this.dose, required this.doseUnit, required this.startedAt, required this.withdrawalDays, required this.createdAt, required this.updatedAt, this.refDrugId, this.drugId, this.batchNo, this.applicationId, this.plannedRemovalAt, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
   factory _Treatment.fromJson(Map<String, dynamic> json) => _$TreatmentFromJson(json);
 
 @override final  String id;
@@ -258,6 +261,9 @@ class _Treatment implements Treatment {
 @override final  String? refDrugId;
 @override final  String? drugId;
 @override final  String? batchNo;
+/// Aynı anda birçok kovana yazılan uygulamanın ortak kimliği; şema
+/// sürümü 5'ten gelen kayıtta boş (`groupId`).
+@override final  String? applicationId;
 /// Şeridin çıkarılacağı gün; tek seferlik uygulamada boş.
 @override final  DateTime? plannedRemovalAt;
 @override final  String? createdBy;
@@ -277,18 +283,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Treatment&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.hiveId, hiveId) || other.hiveId == hiveId)&&(identical(other.apiaryId, apiaryId) || other.apiaryId == apiaryId)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.activeIngredient, activeIngredient) || other.activeIngredient == activeIngredient)&&(identical(other.dose, dose) || other.dose == dose)&&(identical(other.doseUnit, doseUnit) || other.doseUnit == doseUnit)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.withdrawalDays, withdrawalDays) || other.withdrawalDays == withdrawalDays)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.refDrugId, refDrugId) || other.refDrugId == refDrugId)&&(identical(other.drugId, drugId) || other.drugId == drugId)&&(identical(other.batchNo, batchNo) || other.batchNo == batchNo)&&(identical(other.plannedRemovalAt, plannedRemovalAt) || other.plannedRemovalAt == plannedRemovalAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Treatment&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.hiveId, hiveId) || other.hiveId == hiveId)&&(identical(other.apiaryId, apiaryId) || other.apiaryId == apiaryId)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.activeIngredient, activeIngredient) || other.activeIngredient == activeIngredient)&&(identical(other.dose, dose) || other.dose == dose)&&(identical(other.doseUnit, doseUnit) || other.doseUnit == doseUnit)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.withdrawalDays, withdrawalDays) || other.withdrawalDays == withdrawalDays)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.refDrugId, refDrugId) || other.refDrugId == refDrugId)&&(identical(other.drugId, drugId) || other.drugId == drugId)&&(identical(other.batchNo, batchNo) || other.batchNo == batchNo)&&(identical(other.applicationId, applicationId) || other.applicationId == applicationId)&&(identical(other.plannedRemovalAt, plannedRemovalAt) || other.plannedRemovalAt == plannedRemovalAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,id,orgId,hiveId,apiaryId,productName,activeIngredient,dose,doseUnit,startedAt,withdrawalDays,createdAt,updatedAt,refDrugId,drugId,batchNo,plannedRemovalAt,createdBy,deletedAt,serverSeq]);
+    return Object.hashAll([runtimeType,id,orgId,hiveId,apiaryId,productName,activeIngredient,dose,doseUnit,startedAt,withdrawalDays,createdAt,updatedAt,refDrugId,drugId,batchNo,applicationId,plannedRemovalAt,createdBy,deletedAt,serverSeq]);
 }
 
 @override
 String toString() {
-    return 'Treatment(id: $id, orgId: $orgId, hiveId: $hiveId, apiaryId: $apiaryId, productName: $productName, activeIngredient: $activeIngredient, dose: $dose, doseUnit: $doseUnit, startedAt: $startedAt, withdrawalDays: $withdrawalDays, createdAt: $createdAt, updatedAt: $updatedAt, refDrugId: $refDrugId, drugId: $drugId, batchNo: $batchNo, plannedRemovalAt: $plannedRemovalAt, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
+    return 'Treatment(id: $id, orgId: $orgId, hiveId: $hiveId, apiaryId: $apiaryId, productName: $productName, activeIngredient: $activeIngredient, dose: $dose, doseUnit: $doseUnit, startedAt: $startedAt, withdrawalDays: $withdrawalDays, createdAt: $createdAt, updatedAt: $updatedAt, refDrugId: $refDrugId, drugId: $drugId, batchNo: $batchNo, applicationId: $applicationId, plannedRemovalAt: $plannedRemovalAt, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
 }
 
 
@@ -299,7 +305,7 @@ abstract mixin class _$TreatmentCopyWith<$Res> implements $TreatmentCopyWith<$Re
   factory _$TreatmentCopyWith(_Treatment value, $Res Function(_Treatment) _then) = __$TreatmentCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String orgId, String hiveId, String apiaryId, String productName, DrugActiveIngredient activeIngredient, double dose, DrugDoseUnit doseUnit, DateTime startedAt, int withdrawalDays, DateTime createdAt, DateTime updatedAt, String? refDrugId, String? drugId, String? batchNo, DateTime? plannedRemovalAt, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String hiveId, String apiaryId, String productName, DrugActiveIngredient activeIngredient, double dose, DrugDoseUnit doseUnit, DateTime startedAt, int withdrawalDays, DateTime createdAt, DateTime updatedAt, String? refDrugId, String? drugId, String? batchNo, String? applicationId, DateTime? plannedRemovalAt, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -316,7 +322,7 @@ class __$TreatmentCopyWithImpl<$Res>
 
 /// Create a copy of Treatment
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? apiaryId = null,Object? productName = null,Object? activeIngredient = null,Object? dose = null,Object? doseUnit = null,Object? startedAt = null,Object? withdrawalDays = null,Object? createdAt = null,Object? updatedAt = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? batchNo = freezed,Object? plannedRemovalAt = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? hiveId = null,Object? apiaryId = null,Object? productName = null,Object? activeIngredient = null,Object? dose = null,Object? doseUnit = null,Object? startedAt = null,Object? withdrawalDays = null,Object? createdAt = null,Object? updatedAt = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? batchNo = freezed,Object? applicationId = freezed,Object? plannedRemovalAt = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(_Treatment(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -333,6 +339,7 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,refDrugId: freezed == refDrugId ? _self.refDrugId : refDrugId // ignore: cast_nullable_to_non_nullable
 as String?,drugId: freezed == drugId ? _self.drugId : drugId // ignore: cast_nullable_to_non_nullable
 as String?,batchNo: freezed == batchNo ? _self.batchNo : batchNo // ignore: cast_nullable_to_non_nullable
+as String?,applicationId: freezed == applicationId ? _self.applicationId : applicationId // ignore: cast_nullable_to_non_nullable
 as String?,plannedRemovalAt: freezed == plannedRemovalAt ? _self.plannedRemovalAt : plannedRemovalAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable

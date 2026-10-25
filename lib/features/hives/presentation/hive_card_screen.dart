@@ -10,7 +10,9 @@ import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/relative_date.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/health/presentation/varroa_providers.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
@@ -28,14 +30,14 @@ import 'package:mobil_arici/features/queens/presentation/queen_providers.dart';
 import 'package:mobil_arici/features/queens/presentation/widgets/queen_labels.dart';
 
 /// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
-/// puanı; ana arı şeridi (dokununca ana arı kartı), son muayene ve son
-/// varroa oranı; varroa ölçümü, ilaç uygulaması, taşıma ve durum
+/// puanı; ana arı şeridi (dokununca ana arı kartı), son muayene, aktif
+/// ilaç ve son varroa oranı; varroa ölçümü, ilaç uygulaması, taşıma ve durum
 /// değiştirme; en altta zaman
 /// tüneli. Altta sabit foto ve
 /// mikrofon butonları kovana tek dokunuşla foto ya da sesli not ekler;
 /// aktif kovanda yanlarındaki
-/// "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Diğer özet
-/// karoları (ilaç, verim) kendi adımlarında gelecek.
+/// "Muayene başlat" hızlı muayeneyi kartın üstünde açar. Verim karosu
+/// hasat adımında gelecek.
 ///
 /// [apiaryId] yoldaki arılık (geri tuşu oraya döner); gösterilen arılık
 /// kovanın kendi arılığıdır.
@@ -82,16 +84,26 @@ class HiveCardScreen extends ConsumerWidget {
               SizedBox(height: spacing.lg),
               _QueenStrip(apiaryId: apiaryId, hiveId: hiveId),
               SizedBox(height: spacing.md),
-              // Uzun yazıda iki karo aynı boyda kalsın.
+              // Uzun yazıda yan yana iki karo aynı boyda kalsın.
               IntrinsicHeight(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(child: _LastInspection(hiveId)),
                     SizedBox(width: context.touchTargets.gap),
-                    Expanded(child: _LastVarroa(hiveId)),
+                    Expanded(child: _ActiveTreatment(hiveId)),
                   ],
                 ),
+              ),
+              SizedBox(height: context.touchTargets.gap),
+              // Verim karosu hasat adımında sağa gelecek.
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: _LastVarroa(hiveId)),
+                  SizedBox(width: context.touchTargets.gap),
+                  const Spacer(),
+                ],
               ),
               SizedBox(height: spacing.lg),
               if (canInspect(hive)) ...[
@@ -438,6 +450,37 @@ class _LastInspection extends ConsumerWidget {
         now: clock.now(),
       ),
       detail: frames.isEmpty ? null : frames.join(l10n.listSeparator),
+    );
+  }
+}
+
+/// Aktif ilaç karosu: bekleme süresindeyse kritik zeminde kalan gün,
+/// etken madde ve "bal katı yok"; değilse "Yok".
+class _ActiveTreatment extends ConsumerWidget {
+  const new(this.hiveId);
+
+  final String hiveId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final lock = ref.watch(hiveWithdrawalLockProvider(hiveId));
+    // Yüklenirken boş kalır; "yok" yanıp sönmesin.
+    if (!lock.hasValue) return const SizedBox.shrink();
+    final active = lock.value;
+    if (active == null) {
+      return SummaryTile(
+        label: l10n.hiveActiveTreatment,
+        value: l10n.hiveActiveTreatmentNone,
+      );
+    }
+    return SummaryTile(
+      label: l10n.hiveActiveTreatment,
+      status: AppStatus.critical,
+      value: l10n.hiveActiveTreatmentLeft(active.daysLeft),
+      detail: l10n.hiveActiveTreatmentDetail(
+        active.treatment.activeIngredient.label(l10n),
+      ),
     );
   }
 }

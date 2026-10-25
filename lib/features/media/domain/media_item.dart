@@ -55,7 +55,8 @@ abstract class MediaCapture with _$MediaCapture {
 }
 
 /// Foto ya da sesli not (`media`); kovana, muayene sırasında çekildiyse o
-/// muayeneye de bağlı. Olay kaydı: yalnız eklenir, yanlış kayıt silinir.
+/// muayeneye, reçete fotoğrafıysa ilaç uygulamasına da bağlı. Olay kaydı:
+/// yalnız eklenir, yanlış kayıt silinir.
 /// Satır yalnız meta veri; dosya Storage'da `storage_path`'te.
 @freezed
 abstract class MediaItem with _$MediaItem implements SyncedRecord {
@@ -72,6 +73,9 @@ abstract class MediaItem with _$MediaItem implements SyncedRecord {
     required DateTime createdAt,
     required DateTime updatedAt,
     String? inspectionId,
+
+    /// Reçete / fatura fotoğrafıysa bağlı olduğu ilaç uygulaması.
+    String? treatmentId,
     int? durationMs,
     String? createdBy,
     DateTime? deletedAt,

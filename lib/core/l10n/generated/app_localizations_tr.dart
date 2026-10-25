@@ -2001,7 +2001,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get treatmentRemovalNone => 'Yok';
 
   @override
-  String get treatmentRemovalChange => 'Değiştirmek için dokun';
+  String get treatmentRemovalChange =>
+      'O sabah hatırlatılır; değiştirmek için dokun';
 
   @override
   String get treatmentRemovalSingle => 'Tek seferlik; tarih için dokun';
@@ -2117,4 +2118,91 @@ class AppLocalizationsTr extends AppLocalizations {
   String inspectionWithdrawalOverride(String reason) {
     return 'Bekleme süresinde bal katı verildi: $reason';
   }
+
+  @override
+  String timelineTreatment(String product) {
+    return 'İlaç · $product';
+  }
+
+  @override
+  String timelineTreatmentBatch(String batch) {
+    return 'Parti $batch';
+  }
+
+  @override
+  String treatmentDoseValue(String dose, String unit) {
+    return '$dose $unit';
+  }
+
+  @override
+  String timelineTreatmentRemoval(String date) {
+    return 'çıkarma $date';
+  }
+
+  @override
+  String timelineTreatmentWithdrawal(int days) {
+    return '$days gün bekleme';
+  }
+
+  @override
+  String get hiveActiveTreatment => 'Aktif ilaç';
+
+  @override
+  String get hiveActiveTreatmentNone => 'Yok';
+
+  @override
+  String hiveActiveTreatmentLeft(int days) {
+    return '$days gün kaldı';
+  }
+
+  @override
+  String hiveActiveTreatmentDetail(String ingredient) {
+    return '$ingredient · bal katı yok';
+  }
+
+  @override
+  String get treatmentRotationTitle => 'Aynı etken madde.';
+
+  @override
+  String treatmentRotationMessage(int count, String ingredient) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Bu arılıkta son $count uygulama da $ingredient. Direnç riskine karşı farklı etken madde düşün.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get treatmentPrescriptionAdd => 'Reçete / fatura fotoğrafı ekle';
+
+  @override
+  String get treatmentPrescriptionAdded => 'Reçete fotoğrafı eklendi';
+
+  @override
+  String get treatmentPrescriptionRemove => 'Kaldır';
+
+  @override
+  String get reminderChannelName => 'Hatırlatmalar';
+
+  @override
+  String treatmentReminderTitle(String product) {
+    return 'Çıkarma günü: $product';
+  }
+
+  @override
+  String treatmentReminderBody(int count, String number) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bugün çıkarılmalı: $count kovan.',
+      one: 'Bugün çıkarılmalı: Kovan $number.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get treatmentReminderDenied =>
+      'Bildirimler kapalı; çıkarma hatırlatıcısı kurulmadı.';
 }

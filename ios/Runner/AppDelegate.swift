@@ -18,6 +18,9 @@ import workmanager_apple
       withIdentifier: "com.abdullahtutun.mobilarici.sync",
       earliestBeginInSeconds: NSNumber(value: 15 * 60)
     )
+    // Çıkarma hatırlatıcısı (flutter_local_notifications) uygulama açıkken
+    // de görünsün.
+    UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 

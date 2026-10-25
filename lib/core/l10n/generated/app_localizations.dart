@@ -3371,7 +3371,7 @@ abstract class AppLocalizations {
   /// No description provided for @treatmentRemovalChange.
   ///
   /// In en, this message translates to:
-  /// **'Tap to change'**
+  /// **'Reminder that morning; tap to change'**
   String get treatmentRemovalChange;
 
   /// No description provided for @treatmentRemovalSingle.
@@ -3529,6 +3529,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Honey super added during the withdrawal period: {reason}'**
   String inspectionWithdrawalOverride(String reason);
+
+  /// No description provided for @timelineTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment · {product}'**
+  String timelineTreatment(String product);
+
+  /// No description provided for @timelineTreatmentBatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch {batch}'**
+  String timelineTreatmentBatch(String batch);
+
+  /// No description provided for @treatmentDoseValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{dose} {unit}'**
+  String treatmentDoseValue(String dose, String unit);
+
+  /// No description provided for @timelineTreatmentRemoval.
+  ///
+  /// In en, this message translates to:
+  /// **'removal {date}'**
+  String timelineTreatmentRemoval(String date);
+
+  /// No description provided for @timelineTreatmentWithdrawal.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day withdrawal} other{{days} days withdrawal}}'**
+  String timelineTreatmentWithdrawal(int days);
+
+  /// No description provided for @hiveActiveTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Active treatment'**
+  String get hiveActiveTreatment;
+
+  /// No description provided for @hiveActiveTreatmentNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get hiveActiveTreatmentNone;
+
+  /// No description provided for @hiveActiveTreatmentLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day left} other{{days} days left}}'**
+  String hiveActiveTreatmentLeft(int days);
+
+  /// No description provided for @hiveActiveTreatmentDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{ingredient} · no honey super'**
+  String hiveActiveTreatmentDetail(String ingredient);
+
+  /// No description provided for @treatmentRotationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Same active ingredient.'**
+  String get treatmentRotationTitle;
+
+  /// No description provided for @treatmentRotationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, other{The last {count} treatments in this apiary were also {ingredient}. Consider a different active ingredient to limit resistance.}}'**
+  String treatmentRotationMessage(int count, String ingredient);
+
+  /// No description provided for @treatmentPrescriptionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add prescription / invoice photo'**
+  String get treatmentPrescriptionAdd;
+
+  /// No description provided for @treatmentPrescriptionAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Prescription photo added'**
+  String get treatmentPrescriptionAdded;
+
+  /// No description provided for @treatmentPrescriptionRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get treatmentPrescriptionRemove;
+
+  /// No description provided for @reminderChannelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminderChannelName;
+
+  /// No description provided for @treatmentReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Removal day: {product}'**
+  String treatmentReminderTitle(String product);
+
+  /// No description provided for @treatmentReminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Remove it from hive {number} today.} other{Remove it from {count} hives today.}}'**
+  String treatmentReminderBody(int count, String number);
+
+  /// No description provided for @treatmentReminderDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off; no removal reminder was set.'**
+  String get treatmentReminderDenied;
 }
 
 class _AppLocalizationsDelegate

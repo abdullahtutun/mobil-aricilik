@@ -8,8 +8,16 @@ import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 import '../../../helpers/test_database.dart';
+
+final _prescription = MediaCapture(
+  fileName: 'recete.jpg',
+  kind: MediaKind.photo,
+  capturedAt: DateTime.utc(2026, 10, 22, 9),
+  byteSize: 1000,
+);
 
 const _refDrug = DrugChoice(
   refDrugId: 'ref-drug-1',
@@ -73,6 +81,7 @@ void main() {
       final treatment = await repository.addToHive(hive, plan());
 
       expect(await repository.findById(treatment.id), treatment);
+      expect(treatment.applicationId, isNotNull);
       final entry = (await treatmentOutbox()).single;
       expect(entry.operation, OutboxOperation.upsert);
       expect(entry.recordId, treatment.id);
@@ -92,6 +101,7 @@ void main() {
         'ref_drug_id': 'ref-drug-1',
         'drug_id': null,
         'batch_no': '24-118',
+        'application_id': treatment.applicationId,
         'planned_removal_at': '2026-12-05T09:00:00.000Z',
         'created_by': null,
         'deleted_at': null,
@@ -361,5 +371,153 @@ void main() {
     final drugs = await RefDrugRepository(db).watchAll().first;
 
     expect([for (final drug in drugs) drug.id], ['ref-1']);
+  });
+
+  group('grup ve reçete fotoğrafı', () {
+    Future<List<MediaItem>> liveMedia() async => [
+      for (final row in await db.select(db.media).get())
+        if (row.deletedAt == null) row,
+    ];
+
+    test('toplu uygulamadaki kayıtlar ortak grup kimliği taşır; her kayıt '
+        'ayrı grup', () async {
+      final first = await createHive('101');
+      await createHive('102');
+
+      final bulk = await repository.addToApiary('apiary-1', plan());
+      final single = await repository.addToHive(first, plan());
+
+      expect({for (final t in bulk) t.applicationId}, hasLength(1));
+      expect(bulk.first.groupId, bulk.first.applicationId);
+      expect(single.applicationId, isNot(bulk.first.applicationId));
+      expect(
+        (await treatmentOutbox()).first.payload['application_id'],
+        bulk.first.applicationId,
+      );
+    });
+
+    test('fotoğraf açılan kovanın uygulamasına, aynı transaction’da ve '
+        'yükleme kuyruğuyla yazılır', () async {
+      await createHive('101');
+      final opened = await createHive('102');
+
+      final treatments = await repository.addToApiary(
+        'apiary-1',
+        plan(),
+        prescription: _prescription,
+        photoHiveId: opened.id,
+      );
+
+      final media = (await liveMedia()).single;
+      final target = treatments.firstWhere((t) => t.hiveId == opened.id);
+      expect(media.treatmentId, target.id);
+      expect(media.hiveId, opened.id);
+      expect(media.inspectionId, isNull);
+      final upload = await db.select(db.mediaUploads).getSingle();
+      expect(upload.mediaId, media.id);
+      expect(upload.fileName, 'recete.jpg');
+    });
+
+    test('kovan bilinmezse fotoğraf ilk kovanınkine; tek kovanda kendi '
+        'uygulamasına', () async {
+      final first = await createHive('101');
+      await createHive('102');
+
+      final bulk = await repository.addToApiary(
+        'apiary-1',
+        plan(),
+        prescription: _prescription,
+      );
+      final single = await repository.addToHive(
+        first,
+        plan(),
+        prescription: _prescription.copyWith(fileName: 'b.jpg'),
+      );
+
+      expect(
+        {for (final m in await liveMedia()) m.treatmentId},
+        {bulk.first.id, single.id},
+      );
+    });
+
+    test('fotoğraf yazılamazsa uygulamalar da yazılmaz', () async {
+      await createHive('101');
+      await db.customStatement(
+        'CREATE TRIGGER media_fails BEFORE INSERT ON media '
+        "BEGIN SELECT RAISE(ABORT, 'kapalı'); END",
+      );
+
+      await expectLater(
+        repository.addToApiary('apiary-1', plan(), prescription: _prescription),
+        throwsA(isA<SqliteException>()),
+      );
+
+      expect(await db.select(db.treatments).get(), isEmpty);
+    });
+
+    test('geri al fotoğrafı ve bekleyen yüklemesini de siler', () async {
+      await createHive('101');
+      final treatments = await repository.addToApiary(
+        'apiary-1',
+        plan(),
+        prescription: _prescription,
+      );
+
+      await repository.deleteAll(treatments);
+
+      expect(await liveMedia(), isEmpty);
+      expect(await db.select(db.mediaUploads).get(), isEmpty);
+    });
+
+    test('grubun fotoğrafı gruptaki her kovanda görünür; başka grubun, '
+        'silinmişin ve başka kovanın fotoğrafı görünmez', () async {
+      final first = await createHive('101');
+      final second = await createHive('102');
+      final other = await createHive('201', apiaryId: 'apiary-2');
+      final bulk = await repository.addToApiary(
+        'apiary-1',
+        plan(),
+        prescription: _prescription,
+        photoHiveId: first.id,
+      );
+      final otherGroup = await repository.addToHive(
+        other,
+        plan(),
+        prescription: _prescription.copyWith(fileName: 'b.jpg'),
+      );
+      final deleted = await repository.addToHive(
+        second,
+        plan(),
+        prescription: _prescription.copyWith(fileName: 'c.jpg'),
+      );
+      await repository.deleteAll([deleted]);
+
+      final onSecond = await repository
+          .watchPrescriptionsByHive(second.id)
+          .first;
+      final photo = (await liveMedia()).firstWhere(
+        (m) => m.treatmentId == bulk.first.id,
+      );
+      expect(onSecond, {
+        bulk.first.groupId: [photo],
+      });
+      expect((await repository.watchPrescriptionsByHive(other.id).first).keys, [
+        otherGroup.groupId,
+      ]);
+    });
+
+    test('arılığın uygulamaları en son başlayan önce; başka arılığınki '
+        'yok', () async {
+      final hive = await createHive('101');
+      final other = await createHive('201', apiaryId: 'apiary-2');
+      final older = await repository.addToHive(
+        hive,
+        plan(startedAt: DateTime.utc(2026, 9)),
+      );
+      final newer = await repository.addToHive(hive, plan());
+      await repository.addToHive(other, plan());
+
+      expect(await repository.watchByApiary('apiary-1').first, [newer, older]);
+    });
   });
 }

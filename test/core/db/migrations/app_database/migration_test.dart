@@ -9,6 +9,7 @@ import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
+import 'generated/schema_v6.dart' as v6;
 
 // Dökümler ve `generated/` `dart run drift_dev make-migrations` ile üretilir;
 // her yeni sürümde bu testlere yeni sürümün veri testi eklenir.
@@ -239,6 +240,57 @@ void main() {
         expect(await rows(newDb.refDrugs), isEmpty);
         expect(await rows(newDb.drugs), isEmpty);
         expect(await rows(newDb.treatments), isEmpty);
+      },
+    );
+  });
+  test('v5 → v6 uygulamaları ve medyayı korur; grup ve reçete bağı boş '
+      'gelir', () async {
+    const treatment = v5.TreatmentsData(
+      id: 'treatment-1',
+      createdAt: '2026-10-25T09:00:00.000Z',
+      updatedAt: '2026-10-25T09:00:00.000Z',
+      orgId: 'org-1',
+      hiveId: 'hive-1',
+      apiaryId: 'apiary-1',
+      refDrugId: 'ref-1',
+      productName: 'Amitraz şerit',
+      activeIngredient: 'amitraz',
+      dose: 2,
+      doseUnit: 'strip',
+      startedAt: '2026-10-25T09:00:00.000Z',
+      withdrawalDays: 0,
+    );
+    const media = v5.MediaData(
+      id: 'media-1',
+      createdAt: '2026-10-25T09:00:00.000Z',
+      updatedAt: '2026-10-25T09:00:00.000Z',
+      orgId: 'org-1',
+      hiveId: 'hive-1',
+      kind: 'photo',
+      storagePath: 'org-1/hive-1/media-1.jpg',
+      capturedAt: '2026-10-25T09:00:00.000Z',
+      byteSize: 1000,
+    );
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 5,
+      newVersion: 6,
+      createOld: v5.DatabaseAtV5.new,
+      createNew: v6.DatabaseAtV6.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(oldDb.treatments, treatment)
+          ..insert(oldDb.media, media);
+      },
+      validateItems: (newDb) async {
+        final treatments = await newDb.select(newDb.treatments).get();
+        expect(treatments.single.toJson(), {
+          ...treatment.toJson(),
+          'applicationId': null,
+        });
+        final rows = await newDb.select(newDb.media).get();
+        expect(rows.single.toJson(), {...media.toJson(), 'treatmentId': null});
       },
     );
   });

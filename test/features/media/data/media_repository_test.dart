@@ -53,6 +53,7 @@ void main() {
       'org_id': 'org-1',
       'hive_id': 'hive-1',
       'inspection_id': null,
+      'treatment_id': null,
       'kind': 'audio',
       'storage_path': 'org-1/hive-1/${media.id}.m4a',
       'captured_at': '2026-10-22T08:59:00.000Z',

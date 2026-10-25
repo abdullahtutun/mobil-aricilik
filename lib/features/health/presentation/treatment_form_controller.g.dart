@@ -10,20 +10,23 @@ part of 'treatment_form_controller.dart';
 // ignore_for_file: type=lint, type=warning
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
-/// arılıktaki her aktif kovana tek transaction'da.
+/// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
+/// formun reçete fotoğrafı dosyası silinir.
 
 @ProviderFor(TreatmentFormController)
 final treatmentFormControllerProvider = TreatmentFormControllerFamily._();
 
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
-/// arılıktaki her aktif kovana tek transaction'da.
+/// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
+/// formun reçete fotoğrafı dosyası silinir.
 final class TreatmentFormControllerProvider
     extends
         $AsyncNotifierProvider<TreatmentFormController, TreatmentFormState?> {
   /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
   /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
-  /// arılıktaki her aktif kovana tek transaction'da.
+  /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
+  /// formun reçete fotoğrafı dosyası silinir.
   TreatmentFormControllerProvider._({
     required TreatmentFormControllerFamily super.from,
     required String super.argument,
@@ -62,11 +65,12 @@ final class TreatmentFormControllerProvider
 }
 
 String _$treatmentFormControllerHash() =>
-    r'ec970c6c6ad0e9b2240362a91a4cf7ea38142c46';
+    r'3e39ef3e957cdb1fa8cbc2ee62bb098d1794211f';
 
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
-/// arılıktaki her aktif kovana tek transaction'da.
+/// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
+/// formun reçete fotoğrafı dosyası silinir.
 
 final class TreatmentFormControllerFamily extends $Family
     with
@@ -88,7 +92,8 @@ final class TreatmentFormControllerFamily extends $Family
 
   /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
   /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
-  /// arılıktaki her aktif kovana tek transaction'da.
+  /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
+  /// formun reçete fotoğrafı dosyası silinir.
 
   TreatmentFormControllerProvider call(String hiveId) =>
       TreatmentFormControllerProvider._(argument: hiveId, from: this);
@@ -99,7 +104,8 @@ final class TreatmentFormControllerFamily extends $Family
 
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
-/// arılıktaki her aktif kovana tek transaction'da.
+/// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
+/// formun reçete fotoğrafı dosyası silinir.
 
 abstract class _$TreatmentFormController
     extends $AsyncNotifier<TreatmentFormState?> {

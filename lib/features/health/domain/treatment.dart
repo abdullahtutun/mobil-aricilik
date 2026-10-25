@@ -34,6 +34,10 @@ abstract class Treatment with _$Treatment implements SyncedRecord {
     String? drugId,
     String? batchNo,
 
+    /// Aynı anda birçok kovana yazılan uygulamanın ortak kimliği; şema
+    /// sürümü 5'ten gelen kayıtta boş (`groupId`).
+    String? applicationId,
+
     /// Şeridin çıkarılacağı gün; tek seferlik uygulamada boş.
     DateTime? plannedRemovalAt,
     String? createdBy,
@@ -42,6 +46,12 @@ abstract class Treatment with _$Treatment implements SyncedRecord {
   }) = _Treatment;
 
   factory fromJson(Map<String, Object?> json) => _$TreatmentFromJson(json);
+}
+
+extension TreatmentGroup on Treatment {
+  /// Uygulamanın grubu: toplu uygulamada ortak kimlik, grupsuz eski
+  /// kayıtta kaydın kendisi.
+  String get groupId => applicationId ?? id;
 }
 
 /// Bir ya da birçok kovana aynı anda yazılan uygulamanın değerleri.

@@ -5,6 +5,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
 import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -79,6 +80,14 @@ class _EventTile extends StatelessWidget {
         title: l10n.timelineInspection,
         time: time,
         details: inspectionSummary(l10n, inspection.values),
+        footer: media.isEmpty ? null : MediaStrip(media),
+        isLast: isLast,
+      ),
+      TreatmentEvent(:final treatment, :final media) => TimelineTile(
+        icon: Icons.medication_rounded,
+        title: l10n.timelineTreatment(treatment.productName),
+        time: time,
+        details: [treatmentSummary(l10n, AppFormat.of(context), treatment)],
         footer: media.isEmpty ? null : MediaStrip(media),
         isLast: isLast,
       ),

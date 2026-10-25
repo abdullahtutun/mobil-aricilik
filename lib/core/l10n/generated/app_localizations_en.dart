@@ -2018,7 +2018,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get treatmentRemovalNone => 'None';
 
   @override
-  String get treatmentRemovalChange => 'Tap to change';
+  String get treatmentRemovalChange => 'Reminder that morning; tap to change';
 
   @override
   String get treatmentRemovalSingle => 'Single application; tap to set';
@@ -2148,4 +2148,103 @@ class AppLocalizationsEn extends AppLocalizations {
   String inspectionWithdrawalOverride(String reason) {
     return 'Honey super added during the withdrawal period: $reason';
   }
+
+  @override
+  String timelineTreatment(String product) {
+    return 'Treatment · $product';
+  }
+
+  @override
+  String timelineTreatmentBatch(String batch) {
+    return 'Batch $batch';
+  }
+
+  @override
+  String treatmentDoseValue(String dose, String unit) {
+    return '$dose $unit';
+  }
+
+  @override
+  String timelineTreatmentRemoval(String date) {
+    return 'removal $date';
+  }
+
+  @override
+  String timelineTreatmentWithdrawal(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days withdrawal',
+      one: '1 day withdrawal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hiveActiveTreatment => 'Active treatment';
+
+  @override
+  String get hiveActiveTreatmentNone => 'None';
+
+  @override
+  String hiveActiveTreatmentLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days left',
+      one: '1 day left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveActiveTreatmentDetail(String ingredient) {
+    return '$ingredient · no honey super';
+  }
+
+  @override
+  String get treatmentRotationTitle => 'Same active ingredient.';
+
+  @override
+  String treatmentRotationMessage(int count, String ingredient) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'The last $count treatments in this apiary were also $ingredient. Consider a different active ingredient to limit resistance.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get treatmentPrescriptionAdd => 'Add prescription / invoice photo';
+
+  @override
+  String get treatmentPrescriptionAdded => 'Prescription photo added';
+
+  @override
+  String get treatmentPrescriptionRemove => 'Remove';
+
+  @override
+  String get reminderChannelName => 'Reminders';
+
+  @override
+  String treatmentReminderTitle(String product) {
+    return 'Removal day: $product';
+  }
+
+  @override
+  String treatmentReminderBody(int count, String number) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Remove it from $count hives today.',
+      one: 'Remove it from hive $number today.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get treatmentReminderDenied =>
+      'Notifications are off; no removal reminder was set.';
 }

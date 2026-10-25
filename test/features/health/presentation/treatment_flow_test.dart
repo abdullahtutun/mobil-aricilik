@@ -26,9 +26,12 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/media/presentation/widgets/media_strip.dart';
 
 import '../../../helpers/fake_auth_service.dart';
+import '../../../helpers/fake_media.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/fake_reminder_notifications.dart';
 import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
@@ -38,10 +41,12 @@ Future<ProviderContainer> _open(
   required AppDatabase db,
   required String location,
   RegionConfig? region,
+  FakeMedia? media,
+  FakeReminderNotifications? reminders,
 }) async {
   final container = ProviderContainer.test(
     overrides: [
-      ...signedIn(db: db),
+      ...signedIn(db: db, media: media, reminders: reminders),
       if (region != null) regionConfigProvider.overrideWithValue(region),
     ],
   );
@@ -533,6 +538,224 @@ void main() {
     });
   });
 
+  group('Rotasyon, reçete, hatırlatıcı, kart ve geçmiş', () {
+    /// Arılıkta [daysAgo] gün önce başlamış, kendi grubunda bir uygulama.
+    Future<void> pastTreatment(
+      DrugActiveIngredient ingredient, {
+      required int daysAgo,
+    }) => TreatmentRepository(db).addToHive(
+      second,
+      TreatmentPlan(
+        drug: DrugChoice(
+          refDrugId: 'g-oxalic',
+          name: 'Eski',
+          activeIngredient: ingredient,
+          doseUnit: DrugDoseUnit.ml,
+        ),
+        dose: 5,
+        startedAt: _today(-daysAgo),
+        withdrawalDays: 0,
+      ),
+    );
+
+    Finder rotationWarning() =>
+        find.textContaining('Same active ingredient.', findRichText: true);
+
+    testWidgets('arılıkta son 2 uygulama aynı etken maddeyse uyarır; farklı '
+        'etken maddede ve tek tekrarda uyarmaz', (tester) async {
+      await pastTreatment(DrugActiveIngredient.oxalicAcid, daysAgo: 90);
+      await pastTreatment(DrugActiveIngredient.amitraz, daysAgo: 60);
+      await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+      );
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      expect(rotationWarning(), findsNothing);
+
+      await pastTreatment(DrugActiveIngredient.amitraz, daysAgo: 30);
+      await tester.pumpAndSettle();
+      await _scrollTo(tester, rotationWarning(), TreatmentFormScreen);
+      expect(
+        find.textContaining(
+          'Same active ingredient. The last 2 treatments in this apiary were '
+          'also Amitraz.',
+          findRichText: true,
+        ),
+        findsOneWidget,
+      );
+
+      await _tap(tester, find.text('Change'));
+      await _tap(tester, _inSheet('Oxalic acid'));
+      expect(rotationWarning(), findsNothing);
+    });
+
+    testWidgets('reçete fotoğrafı arılığın tümünde açılan kovanın '
+        'uygulamasına bağlanır, gruptaki diğer kovanın geçmişinde de '
+        'görünür; Geri al kaydı ve dosyayı siler', (tester) async {
+      final media = FakeMedia();
+      final container = await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+        media: media,
+      );
+      await _tap(tester, find.text('Whole apiary · 2'));
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      await _tap(tester, _button('Add prescription / invoice photo'));
+      expect(media.camera.photoCount, 1);
+      expect(find.text('Prescription photo added'), findsOneWidget);
+      expect(media.fileNames, hasLength(1));
+
+      await _tap(tester, _button('Save to 2 hives'));
+      final treatments = await liveTreatments();
+      final photo = await db.select(db.media).getSingle();
+      expect(
+        photo.treatmentId,
+        treatments.firstWhere((t) => t.hiveId == hive.id).id,
+      );
+      expect(photo.hiveId, hive.id);
+
+      container.read(routerProvider).go(AppRoutes.hive(yayla.id, second.id));
+      await tester.pumpAndSettle();
+      final row = find.text('Treatment · Amitraz strip');
+      await tester.scrollUntilVisible(row, 200);
+      expect(
+        find.descendant(
+          of: find.ancestor(of: row, matching: find.byType(TimelineTile)),
+          matching: find.byType(MediaStrip),
+        ),
+        findsOneWidget,
+      );
+
+      container.read(routerProvider).go(AppRoutes.hive(yayla.id, hive.id));
+      await tester.pumpAndSettle();
+      await _tap(tester, find.text('Undo'));
+      expect(await liveTreatments(), isEmpty);
+      expect((await db.select(db.media).getSingle()).deletedAt, isNotNull);
+      expect(media.fileNames, isEmpty);
+    });
+
+    testWidgets('kaydetmeden çıkılırsa ya da Kaldır’a basılırsa fotoğraf '
+        'dosyası silinir', (tester) async {
+      final media = FakeMedia();
+      final container = await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+        media: media,
+      );
+      await _tap(tester, _button('Add prescription / invoice photo'));
+      expect(media.fileNames, hasLength(1));
+      await _tap(tester, find.text('Remove'));
+      expect(media.fileNames, isEmpty);
+      expect(_button('Add prescription / invoice photo'), findsOneWidget);
+
+      await _tap(tester, _button('Add prescription / invoice photo'));
+      expect(media.fileNames, hasLength(1));
+      container.read(routerProvider).go(AppRoutes.hive(yayla.id, hive.id));
+      await tester.pumpAndSettle();
+      expect(media.fileNames, isEmpty);
+      expect(await db.select(db.media).get(), isEmpty);
+    });
+
+    testWidgets('çıkarma günü sabahına bildirim kurulur; Geri al kaldırır; '
+        'tek seferlikte kurulmaz', (tester) async {
+      final reminders = FakeReminderNotifications();
+      await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+        reminders: reminders,
+      );
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      await _tap(tester, _button('Save'));
+
+      final reminder = reminders.scheduled.values.single;
+      expect(reminder.at, _today(42).add(const Duration(hours: 9)));
+      expect(reminder.title, 'Removal day: Amitraz strip');
+      expect(reminder.body, 'Remove it from hive 101 today.');
+      expect(reminder.channelName, 'Reminders');
+
+      await _tap(tester, find.text('Undo'));
+      expect(reminders.scheduled, isEmpty);
+      expect(reminders.cancelled, hasLength(1));
+
+      _container(tester)
+          .read(routerProvider)
+          .go(AppRoutes.hiveTreat(yayla.id, hive.id));
+      await tester.pumpAndSettle();
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Oxalic acid'));
+      await _tap(tester, _button('Save'));
+      expect(reminders.scheduled, isEmpty);
+    });
+
+    testWidgets('bildirim izni yoksa kayıt yine yazılır ve nedeni söylenir', (
+      tester,
+    ) async {
+      final reminders = FakeReminderNotifications()..permitted = false;
+      await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+        reminders: reminders,
+      );
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      await _tap(tester, _button('Save'));
+
+      expect(await liveTreatments(), hasLength(1));
+      expect(
+        find.text('Notifications are off; no removal reminder was set.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('kovan kartında aktif ilaç karosu ve geçmişte ilaç satırı', (
+      tester,
+    ) async {
+      await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
+      Finder tile() => find.ancestor(
+        of: find.text('ACTIVE TREATMENT'),
+        matching: find.byType(SummaryTile),
+      );
+      expect(
+        find.descendant(of: tile(), matching: find.text('None')),
+        findsOneWidget,
+      );
+
+      await treatHive();
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(of: tile(), matching: find.text('42 days left')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: tile(),
+          matching: find.text('Amitraz · no honey super'),
+        ),
+        findsOneWidget,
+      );
+      expect(tester.widget<SummaryTile>(tile()).status, AppStatus.critical);
+
+      final row = find.text('Treatment · Amitraz şerit');
+      await tester.scrollUntilVisible(row, 200);
+      expect(
+        find.text(
+          'Batch 24-118 · 2 strip · removal '
+          '${DateFormat.MMMd('en').format(_today(42))}',
+        ),
+        findsOneWidget,
+      );
+    });
+  });
+
   testWidgets('Türkçe metinler', (tester) async {
     final container = await _open(
       tester,
@@ -600,6 +823,130 @@ void main() {
       ),
       findsOneWidget,
     );
+  });
+
+  testWidgets('Türkçe metinler: aktif ilaç, geçmiş, rotasyon ve reçete', (
+    tester,
+  ) async {
+    final reminders = FakeReminderNotifications();
+    await treatHive();
+    await TreatmentRepository(db).addToHive(
+      second,
+      TreatmentPlan(
+        drug: const DrugChoice(
+          refDrugId: 'tr-strip',
+          name: 'Amitraz şerit',
+          activeIngredient: DrugActiveIngredient.amitraz,
+          doseUnit: DrugDoseUnit.strip,
+        ),
+        dose: 2,
+        startedAt: _today(-60),
+        withdrawalDays: 0,
+      ),
+    );
+    final container = await _open(
+      tester,
+      db: db,
+      location: AppRoutes.hive(yayla.id, hive.id),
+      reminders: reminders,
+    );
+    container.read(languageProvider.notifier).language = AppLanguage.turkish;
+    await tester.pumpAndSettle();
+
+    expect(find.text('AKTİF İLAÇ'), findsOneWidget);
+    expect(find.text('42 gün kaldı'), findsOneWidget);
+    expect(find.text('Amitraz · bal katı yok'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('İlaç · Amitraz şerit'), 200);
+    expect(
+      find.textContaining('Parti 24-118 · 2 şerit · çıkarma'),
+      findsOneWidget,
+    );
+
+    container.read(routerProvider).go(AppRoutes.hiveTreat(yayla.id, hive.id));
+    await tester.pumpAndSettle();
+    await _tap(tester, _button('İlaç seç'));
+    await _tap(tester, _inSheet('Amitraz şerit'));
+    await _scrollTo(
+      tester,
+      find.textContaining('Aynı etken madde.', findRichText: true),
+      TreatmentFormScreen,
+    );
+    expect(
+      find.textContaining(
+        'Aynı etken madde. Bu arılıkta son 2 uygulama da Amitraz. Direnç '
+        'riskine karşı farklı etken madde düşün.',
+        findRichText: true,
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.text('O sabah hatırlatılır; değiştirmek için dokun'),
+      findsOneWidget,
+    );
+    await _tap(tester, _button('Reçete / fatura fotoğrafı ekle'));
+    expect(find.text('Reçete fotoğrafı eklendi'), findsOneWidget);
+    expect(find.text('Kaldır'), findsOneWidget);
+
+    await _tap(tester, _button('Kaydet'));
+    final reminder = reminders.scheduled.values.single;
+    expect(reminder.title, 'Çıkarma günü: Amitraz şerit');
+    expect(reminder.body, 'Bugün çıkarılmalı: Kovan 101.');
+    expect(reminder.channelName, 'Hatırlatmalar');
+  });
+
+  testWidgets('360dp ekranda 1.5x yazı ve eldivenle kart, uyarı ve reçete '
+      'taşmaz', (tester) async {
+    tester.view
+      ..physicalSize = const Size(360, 640)
+      ..devicePixelRatio = 1;
+    tester.platformDispatcher.textScaleFactorTestValue = 1.5;
+    addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    await treatHive();
+    await TreatmentRepository(db).addToHive(
+      second,
+      TreatmentPlan(
+        drug: const DrugChoice(
+          refDrugId: 'tr-strip',
+          name: 'Amitraz şerit',
+          activeIngredient: DrugActiveIngredient.amitraz,
+          doseUnit: DrugDoseUnit.strip,
+        ),
+        dose: 2,
+        startedAt: _today(-60),
+        withdrawalDays: 0,
+      ),
+    );
+
+    final container = await _open(
+      tester,
+      db: db,
+      location: AppRoutes.hive(yayla.id, hive.id),
+    );
+    container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    await tester.scrollUntilVisible(find.text('ACTIVE TREATMENT'), 200);
+    expect(tester.takeException(), isNull);
+    await tester.scrollUntilVisible(
+      find.text('Treatment · Amitraz şerit'),
+      200,
+    );
+    expect(tester.takeException(), isNull);
+
+    container.read(routerProvider).go(AppRoutes.hiveTreat(yayla.id, hive.id));
+    await tester.pumpAndSettle();
+    await _tap(tester, _button('Choose drug'));
+    await _tap(tester, _inSheet('Amitraz strip'));
+    await _scrollTo(
+      tester,
+      find.textContaining('Same active ingredient.', findRichText: true),
+      TreatmentFormScreen,
+    );
+    expect(tester.takeException(), isNull);
+    await _tap(tester, _button('Add prescription / invoice photo'));
+    expect(find.text('Prescription photo added'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {

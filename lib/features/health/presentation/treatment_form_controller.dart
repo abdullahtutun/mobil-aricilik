@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:clock/clock.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'treatment_form_controller.freezed.dart';
@@ -32,6 +36,9 @@ abstract class TreatmentFormState with _$TreatmentFormState {
     /// Planlanan çıkarma günü; tek seferlik uygulamada boş.
     DateTime? removalOn,
     @Default('') String batchNo,
+
+    /// Reçete / fatura fotoğrafı; kaydedilince uygulamaya bağlanır.
+    MediaCapture? prescription,
     @Default(false) bool saving,
   }) = _TreatmentFormState;
 }
@@ -53,11 +60,25 @@ extension TreatmentFormResult on TreatmentFormState {
 
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
-/// arılıktaki her aktif kovana tek transaction'da.
+/// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
+/// formun reçete fotoğrafı dosyası silinir.
 @riverpod
 class TreatmentFormController extends _$TreatmentFormController {
+  /// Kaydedildi; reçete dosyası artık uygulamanın.
+  var _saved = false;
+
+  /// Formdaki reçete fotoğrafı; kapanırken `state` okunamaz.
+  MediaCapture? _prescription;
+
   @override
   Future<TreatmentFormState?> build(String hiveId) async {
+    // Kapanırken ref kullanılamaz; dosya deposu önceden alınır.
+    final files = ref.read(mediaFileStoreProvider);
+    ref.onDispose(() {
+      if (_prescription case final capture? when !_saved) {
+        unawaited(files.delete(capture.fileName));
+      }
+    });
     final hive = await ref.read(hiveRepositoryProvider).findById(hiveId);
     if (hive == null) return null;
     final now = clock.now();
@@ -106,6 +127,20 @@ class TreatmentFormController extends _$TreatmentFormController {
   void setRemovalOn(DateTime? day) =>
       _update((form) => form.copyWith(removalOn: day));
 
+  /// Reçete fotoğrafını koyar (boşsa kaldırır); öncekinin dosyası silinir.
+  void setPrescription(MediaCapture? capture) {
+    final previous = _prescription;
+    if (previous == capture || state.value == null) return;
+    _prescription = capture;
+    _update((form) => form.copyWith(prescription: capture));
+    _deleteFile(previous);
+  }
+
+  void _deleteFile(MediaCapture? capture) {
+    if (capture == null) return;
+    unawaited(ref.read(mediaFileStoreProvider).delete(capture.fileName));
+  }
+
   /// Uygulamayı yazar ve yazılanları döner; ilaç seçilmemişse ya da kovan
   /// bu arada silindiyse null.
   Future<List<Treatment>?> save() async {
@@ -133,13 +168,23 @@ class TreatmentFormController extends _$TreatmentFormController {
         batchNo: form.batchNo,
       );
       final repository = ref.read(treatmentRepositoryProvider);
-      return switch (form.scope) {
-        TreatmentScope.hive => [await repository.addToHive(hive, plan)],
+      final saved = switch (form.scope) {
+        TreatmentScope.hive => [
+          await repository.addToHive(
+            hive,
+            plan,
+            prescription: form.prescription,
+          ),
+        ],
         TreatmentScope.apiary => await repository.addToApiary(
           hive.apiaryId,
           plan,
+          prescription: form.prescription,
+          photoHiveId: hive.id,
         ),
       };
+      _saved = saved.isNotEmpty;
+      return saved;
     } finally {
       if (ref.mounted) _update((form) => form.copyWith(saving: false));
     }

@@ -1,5 +1,6 @@
 import 'package:mobil_arici/core/services/camera_service.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/services/reminder_notifications.dart';
 import 'package:mobil_arici/core/services/voice_player.dart';
 import 'package:mobil_arici/core/services/voice_recorder.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -21,3 +22,8 @@ VoiceRecorder voiceRecorder(Ref ref) => DeviceVoiceRecorder();
 /// Testler sahte çalarla override eder.
 @Riverpod(keepAlive: true)
 VoicePlayer voicePlayer(Ref ref) => DeviceVoicePlayer();
+
+/// Testler sahte bildirimle override eder.
+@Riverpod(keepAlive: true)
+ReminderNotifications reminderNotifications(Ref ref) =>
+    DeviceReminderNotifications();

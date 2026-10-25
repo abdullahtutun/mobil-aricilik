@@ -1,10 +1,11 @@
+import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 
 /// Kovan kartının zaman tünelindeki bir olay.
 ///
-/// Her kayıt türü (muayene, taşıma, medya; ileride besleme, ilaçlama,
+/// Her kayıt türü (muayene, ilaçlama, taşıma, medya; ileride besleme,
 /// hasat) bir alt sınıf ekler ve kendi kayıtlarını olaya çeviren bir
 /// fonksiyon verir. Tünel hepsini [sortTimeline] ile tek listede sıralar.
 /// Sınıf kapalı (`sealed`); kart olayları `switch` ile çizdiği için yeni
@@ -34,6 +35,23 @@ final class InspectionEvent extends HiveTimelineEvent {
 
   @override
   DateTime get at => inspection.inspectedAt;
+}
+
+/// İlaç uygulaması; grubun reçete fotoğraflarıyla (toplu uygulamada
+/// foto başka kovanın kaydına bağlı olabilir).
+final class TreatmentEvent extends HiveTimelineEvent {
+  const new(this.treatment, {this.media = const []});
+
+  final Treatment treatment;
+
+  /// Çekilme sırasıyla.
+  final List<MediaItem> media;
+
+  @override
+  String get id => treatment.id;
+
+  @override
+  DateTime get at => treatment.startedAt;
 }
 
 /// Kovan [entry]'deki arılığa geldi. [fromApiaryId] bir önceki arılık;
@@ -87,15 +105,32 @@ List<InspectionEvent> inspectionEvents(
   ];
 }
 
-/// Muayenenin yanında gösterilmeyen medya kendi olayı olur: kovan
-/// kartından eklenenler ve muayenesi bu telefonda olmayanlar (silinmiş ya
-/// da henüz inmemiş). [inspectionIds] tünelde gösterilen muayeneler.
+/// Uygulamaları olaylara çevirir; [prescriptions]'tan (grup kimliğine
+/// göre reçete fotoğrafları) her uygulamanın grubununkini yanına koyar.
+List<TreatmentEvent> treatmentEvents(
+  Iterable<Treatment> treatments, {
+  Map<String, List<MediaItem>> prescriptions = const {},
+}) => [
+  for (final treatment in treatments)
+    TreatmentEvent(
+      treatment,
+      media: prescriptions[treatment.groupId] ?? const [],
+    ),
+];
+
+/// Muayenenin ya da uygulamanın yanında gösterilmeyen medya kendi olayı
+/// olur: kovan kartından eklenenler ve kaydı bu telefonda olmayanlar
+/// (silinmiş ya da henüz inmemiş). [inspectionIds] ve [treatmentIds]
+/// tünelde gösterilen kayıtlar.
 List<MediaEvent> mediaEvents(
   Iterable<MediaItem> media, {
   Set<String> inspectionIds = const {},
+  Set<String> treatmentIds = const {},
 }) => [
   for (final item in media)
-    if (!inspectionIds.contains(item.inspectionId)) MediaEvent(item),
+    if (!inspectionIds.contains(item.inspectionId) &&
+        !treatmentIds.contains(item.treatmentId))
+      MediaEvent(item),
 ];
 
 /// Kovanın arılık geçmişini olaylara çevirir. Her kaydın geldiği arılık,

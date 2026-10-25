@@ -82,7 +82,9 @@ class _PhotoButtonState extends ConsumerState<_PhotoButton> {
       final capture = await ref.read(mediaActionsProvider.notifier).takePhoto();
       if (capture != null && mounted) await widget.onCaptured(capture);
     } on MediaCaptureException catch (error) {
-      if (mounted) _showFailure(context, error.failure, MediaKind.photo);
+      if (mounted) {
+        showMediaCaptureFailure(context, error.failure, MediaKind.photo);
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -124,7 +126,9 @@ class _VoiceButtonState extends ConsumerState<_VoiceButton> {
     try {
       await _controller.start();
     } on MediaCaptureException catch (error) {
-      if (mounted) _showFailure(context, error.failure, MediaKind.audio);
+      if (mounted) {
+        showMediaCaptureFailure(context, error.failure, MediaKind.audio);
+      }
     }
   });
 
@@ -132,7 +136,11 @@ class _VoiceButtonState extends ConsumerState<_VoiceButton> {
     final capture = await _controller.stop();
     if (!mounted) return;
     if (capture == null) {
-      _showFailure(context, MediaCaptureFailure.failed, MediaKind.audio);
+      showMediaCaptureFailure(
+        context,
+        MediaCaptureFailure.failed,
+        MediaKind.audio,
+      );
       return;
     }
     await widget.onCaptured(capture);
@@ -148,7 +156,8 @@ class _VoiceButtonState extends ConsumerState<_VoiceButton> {
   }
 }
 
-void _showFailure(
+/// Foto ya da ses alınamadığında nedenini bildirimle söyler.
+void showMediaCaptureFailure(
   BuildContext context,
   MediaCaptureFailure failure,
   MediaKind kind,

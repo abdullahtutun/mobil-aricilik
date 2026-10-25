@@ -42,6 +42,8 @@ Future<ProviderContainer> _open(
 }
 
 Future<void> _tap(WidgetTester tester, Finder finder) async {
+  // Uzun kovan kartında henüz kurulmamış olabilir.
+  if (finder.evaluate().isEmpty) await tester.scrollUntilVisible(finder, 200);
   await tester.ensureVisible(finder);
   await tester.pumpAndSettle();
   await tester.tap(finder);

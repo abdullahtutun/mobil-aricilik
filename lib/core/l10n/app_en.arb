@@ -1495,7 +1495,7 @@
   "treatmentWithdrawalDays": "Withdrawal period (days)",
   "treatmentRemoval": "Removal",
   "treatmentRemovalNone": "None",
-  "treatmentRemovalChange": "Tap to change",
+  "treatmentRemovalChange": "Reminder that morning; tap to change",
   "treatmentRemovalSingle": "Single application; tap to set",
   "treatmentRemovalClear": "No removal (single application)",
   "treatmentNoSuper": "No honey super",
@@ -1601,5 +1601,116 @@
         "example": "Drug removed early"
       }
     }
-  }
+  },
+
+  "timelineTreatment": "Treatment · {product}",
+  "@timelineTreatment": {
+    "placeholders": {
+      "product": {
+        "type": "String",
+        "example": "Amitraz strip"
+      }
+    }
+  },
+  "timelineTreatmentBatch": "Batch {batch}",
+  "@timelineTreatmentBatch": {
+    "placeholders": {
+      "batch": {
+        "type": "String",
+        "example": "24-118"
+      }
+    }
+  },
+  "treatmentDoseValue": "{dose} {unit}",
+  "@treatmentDoseValue": {
+    "placeholders": {
+      "dose": {
+        "type": "String",
+        "example": "2"
+      },
+      "unit": {
+        "type": "String",
+        "example": "strip"
+      }
+    }
+  },
+  "timelineTreatmentRemoval": "removal {date}",
+  "@timelineTreatmentRemoval": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Nov 5"
+      }
+    }
+  },
+  "timelineTreatmentWithdrawal": "{days, plural, =1{1 day withdrawal} other{{days} days withdrawal}}",
+  "@timelineTreatmentWithdrawal": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "14"
+      }
+    }
+  },
+  "hiveActiveTreatment": "Active treatment",
+  "hiveActiveTreatmentNone": "None",
+  "hiveActiveTreatmentLeft": "{days, plural, =1{1 day left} other{{days} days left}}",
+  "@hiveActiveTreatmentLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "hiveActiveTreatmentDetail": "{ingredient} · no honey super",
+  "@hiveActiveTreatmentDetail": {
+    "placeholders": {
+      "ingredient": {
+        "type": "String",
+        "example": "Amitraz"
+      }
+    }
+  },
+  "treatmentRotationTitle": "Same active ingredient.",
+  "treatmentRotationMessage": "{count, plural, other{The last {count} treatments in this apiary were also {ingredient}. Consider a different active ingredient to limit resistance.}}",
+  "@treatmentRotationMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "ingredient": {
+        "type": "String",
+        "example": "amitraz"
+      }
+    }
+  },
+  "treatmentPrescriptionAdd": "Add prescription / invoice photo",
+  "treatmentPrescriptionAdded": "Prescription photo added",
+  "treatmentPrescriptionRemove": "Remove",
+  "reminderChannelName": "Reminders",
+  "treatmentReminderTitle": "Removal day: {product}",
+  "@treatmentReminderTitle": {
+    "placeholders": {
+      "product": {
+        "type": "String",
+        "example": "Amitraz strip"
+      }
+    }
+  },
+  "treatmentReminderBody": "{count, plural, =1{Remove it from hive {number} today.} other{Remove it from {count} hives today.}}",
+  "@treatmentReminderBody": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      },
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "treatmentReminderDenied": "Notifications are off; no removal reminder was set."
 }

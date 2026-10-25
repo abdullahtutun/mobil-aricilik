@@ -29,14 +29,15 @@ class MediaRepository extends BaseRepository<$MediaTable, MediaItem> {
     ],
   );
 
-  /// Bu telefonda çekilen [capture]'ı kovanın (ve verilirse muayenenin)
-  /// medyası olarak yazar ve yükleme kuyruğuna ekler; ikisi tek
-  /// transaction'da.
+  /// Bu telefonda çekilen [capture]'ı kovanın (ve verilirse muayenenin ya
+  /// da ilaç uygulamasının) medyası olarak yazar ve yükleme kuyruğuna
+  /// ekler; ikisi tek transaction'da.
   Future<MediaItem> add({
     required String orgId,
     required String hiveId,
     required MediaCapture capture,
     String? inspectionId,
+    String? treatmentId,
   }) => db.transaction(() async {
     final at = now();
     final id = generateId();
@@ -46,6 +47,7 @@ class MediaRepository extends BaseRepository<$MediaTable, MediaItem> {
         orgId: orgId,
         hiveId: hiveId,
         inspectionId: inspectionId,
+        treatmentId: treatmentId,
         kind: capture.kind,
         storagePath: mediaStoragePath(
           orgId: orgId,
@@ -83,12 +85,17 @@ class MediaRepository extends BaseRepository<$MediaTable, MediaItem> {
 
   /// Muayenenin medyasını siler (muayene geri alınınca); [remove] gibi.
   Future<void> removeByInspection(String inspectionId) =>
+      _removeWhere((t) => t.inspectionId.equals(inspectionId));
+
+  /// İlaç uygulamalarının reçete fotoğraflarını siler (uygulama geri
+  /// alınınca); [remove] gibi.
+  Future<void> removeByTreatments(Iterable<String> treatmentIds) =>
+      _removeWhere((t) => t.treatmentId.isIn(treatmentIds));
+
+  Future<void> _removeWhere(Expression<bool> Function($MediaTable t) filter) =>
       db.transaction(() async {
         final ids = [
-          for (final media in await selectWhere(
-            (t) => t.inspectionId.equals(inspectionId),
-          ).get())
-            media.id,
+          for (final media in await selectWhere(filter).get()) media.id,
         ];
         for (final id in ids) {
           await delete(id);

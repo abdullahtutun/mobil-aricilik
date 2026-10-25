@@ -12,6 +12,7 @@ import 'package:mobil_arici/features/media/domain/media_item.dart';
 class Media extends Table with SyncColumns, OrgColumns {
   TextColumn get hiveId => text()();
   TextColumn get inspectionId => text().nullable()();
+  TextColumn get treatmentId => text().nullable()();
   TextColumn get kind =>
       text().map(const ServerEnumConverter(MediaKind.values))();
   TextColumn get storagePath => text()();

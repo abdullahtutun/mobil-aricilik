@@ -191,3 +191,56 @@ final class VoicePlayerProvider
 }
 
 String _$voicePlayerHash() => r'6cd06b5f23a291427b3b1b03c5a335627171fa8a';
+
+/// Testler sahte bildirimle override eder.
+
+@ProviderFor(reminderNotifications)
+final reminderNotificationsProvider = ReminderNotificationsProvider._();
+
+/// Testler sahte bildirimle override eder.
+
+final class ReminderNotificationsProvider
+    extends
+        $FunctionalProvider<
+          ReminderNotifications,
+          ReminderNotifications,
+          ReminderNotifications
+        >
+    with $Provider<ReminderNotifications> {
+  /// Testler sahte bildirimle override eder.
+  ReminderNotificationsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'reminderNotificationsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$reminderNotificationsHash();
+
+  @$internal
+  @override
+  $ProviderElement<ReminderNotifications> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ReminderNotifications create(Ref ref) {
+    return reminderNotifications(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ReminderNotifications value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ReminderNotifications>(value),
+    );
+  }
+}
+
+String _$reminderNotificationsHash() =>
+    r'b81ecc2ffade9f3d24657df4c64227b1c24d14dc';

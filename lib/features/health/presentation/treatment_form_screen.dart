@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/services/camera_service.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/treatment_rules.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_controller.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
@@ -13,6 +15,9 @@ import 'package:mobil_arici/features/health/presentation/widgets/treatment_label
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/media/presentation/media_controllers.dart';
+import 'package:mobil_arici/features/media/presentation/widgets/media_action_row.dart';
 
 /// Başlangıç tarihinin seçilebileceği en eski gün: bugünden bu kadar önce
 /// (unutulan kaydın sonradan girilmesi).
@@ -21,7 +26,9 @@ const _maxBackdateDays = 60;
 /// İlaç uygulaması (docs/design "İlaç kaydı"): kovan ya da arılığın tümü;
 /// ilaç kartı (dokununca liste, sonda "Yeni ilaç ekle"); parti no ve
 /// başlangıç; kovan başına doz ve toplamı; bekleme süresi; çıkarma ve "bal
-/// katı yok" karoları. Kaydedince karta dönülür ve 6 sn geri alınabilir.
+/// katı yok" karoları; aynı etken madde uyarısı; reçete / fatura
+/// fotoğrafı. Kaydedince çıkarma gününün sabahına bildirim kurulur, karta
+/// dönülür ve 6 sn geri alınabilir.
 class TreatmentFormScreen extends ConsumerWidget {
   const new({required this.apiaryId, required this.hiveId, super.key});
 
@@ -93,12 +100,21 @@ class TreatmentFormScreen extends ConsumerWidget {
     final treatments = await ref.read(_provider.notifier).save();
     // Kovan bu arada silindiyse ekran bunu gösterir.
     if (treatments == null || treatments.isEmpty || !context.mounted) return;
+    final reminder = await actions.scheduleRemovalReminder(
+      treatments,
+      title: l10n.treatmentReminderTitle(treatments.first.productName),
+      body: l10n.treatmentReminderBody(treatments.length, form.hive.number),
+      channelName: l10n.reminderChannelName,
+    );
+    if (!context.mounted) return;
     showUndoSnackBar(
       context,
       message: form.scope == TreatmentScope.hive
           ? l10n.treatmentSaved(form.hive.number)
           : l10n.treatmentSavedMany(treatments.length),
-      onUndo: () => actions.undoAdd(treatments),
+      details: reminder == false ? Text(l10n.treatmentReminderDenied) : null,
+      onUndo: () =>
+          actions.undoAdd(treatments, prescription: form.prescription),
     );
     context.pop();
   }
@@ -316,8 +332,26 @@ class _TreatmentFormFieldsState extends ConsumerState<_TreatmentFormFields> {
               child: Text(l10n.treatmentRemovalClear),
             ),
           ),
+        if (drug != null) _RotationWarning(form: form, drug: drug),
+        SizedBox(height: spacing.lg),
+        _Prescription(
+          capture: form.prescription,
+          onTake: () => _takePrescription(context),
+          onRemove: () => _controller.setPrescription(null),
+        ),
       ],
     );
+  }
+
+  Future<void> _takePrescription(BuildContext context) async {
+    try {
+      final capture = await ref.read(mediaActionsProvider.notifier).takePhoto();
+      if (capture != null) _controller.setPrescription(capture);
+    } on MediaCaptureException catch (error) {
+      if (context.mounted) {
+        showMediaCaptureFailure(context, error.failure, MediaKind.photo);
+      }
+    }
   }
 
   Future<void> _pickStart(BuildContext context) async {
@@ -423,6 +457,122 @@ class _DateField extends StatelessWidget {
           child: Text(text, style: context.typography.body),
         ),
       ),
+    );
+  }
+}
+
+/// Aynı etken madde arılıkta üst üste kullanıldıysa direnç uyarısı
+/// (ozellikler.md "İlaç rotasyonu önerisi"); uyarı zemininde, ikon ve
+/// kalın başlıkla.
+class _RotationWarning extends ConsumerWidget {
+  const new({required this.form, required this.drug});
+
+  final TreatmentFormState form;
+  final DrugChoice drug;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final treatments =
+        ref.watch(apiaryTreatmentsProvider(form.hive.apiaryId)).value ??
+        const [];
+    final streak = sameIngredientStreak(treatments, drug.activeIngredient);
+    if (!needsRotationWarning(streak)) return const SizedBox.shrink();
+    final body = context.typography.body;
+
+    return Padding(
+      padding: EdgeInsets.only(top: spacing.lg),
+      child: MergeSemantics(
+        child: AppCard(
+          status: AppStatus.warning,
+          child: Padding(
+            padding: EdgeInsets.all(spacing.lg),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.warning_amber_rounded,
+                  size: context.sizes.icon,
+                  color: colors.statusWarning,
+                ),
+                SizedBox(width: spacing.md),
+                Expanded(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: l10n.treatmentRotationTitle,
+                          style: body.copyWith(
+                            color: colors.statusWarning,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const TextSpan(text: ' '),
+                        TextSpan(
+                          text: l10n.treatmentRotationMessage(
+                            streak,
+                            drug.activeIngredient.label(l10n),
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: body.copyWith(color: colors.textPrimary),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Reçete / fatura fotoğrafı: yoksa ekleme butonu; varsa onay ikonu,
+/// "eklendi" ve Kaldır.
+class _Prescription extends StatelessWidget {
+  const new({
+    required this.capture,
+    required this.onTake,
+    required this.onRemove,
+  });
+
+  final MediaCapture? capture;
+  final VoidCallback onTake;
+  final VoidCallback onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (capture == null) {
+      return BigButton(
+        variant: BigButtonVariant.secondary,
+        label: l10n.treatmentPrescriptionAdd,
+        icon: Icons.receipt_long_outlined,
+        onPressed: onTake,
+      );
+    }
+    return Row(
+      children: [
+        Icon(
+          Icons.check_circle_rounded,
+          size: context.sizes.icon,
+          color: context.colors.statusGood,
+        ),
+        SizedBox(width: context.spacing.sm),
+        Expanded(
+          child: Text(
+            l10n.treatmentPrescriptionAdded,
+            style: context.typography.body,
+          ),
+        ),
+        TextButton(
+          onPressed: onRemove,
+          child: Text(l10n.treatmentPrescriptionRemove),
+        ),
+      ],
     );
   }
 }

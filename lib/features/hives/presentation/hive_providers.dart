@@ -1,5 +1,6 @@
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/utils/natural_order.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
@@ -86,16 +87,20 @@ Stream<List<HiveLocationEntry>> hiveLocationHistory(Ref ref, String hiveId) =>
 /// yeniden kurulur.
 @riverpod
 Future<List<HiveTimelineEvent>> hiveTimeline(Ref ref, String hiveId) async {
-  final (inspections, media, locations) = await (
+  final (inspections, media, locations, treatments, prescriptions) = await (
     ref.watch(hiveInspectionsProvider(hiveId).future),
     ref.watch(hiveMediaProvider(hiveId).future),
     ref.watch(hiveLocationHistoryProvider(hiveId).future),
+    ref.watch(hiveTreatmentsProvider(hiveId).future),
+    ref.watch(hivePrescriptionsProvider(hiveId).future),
   ).wait;
   return sortTimeline([
     ...inspectionEvents(inspections, media: media),
+    ...treatmentEvents(treatments, prescriptions: prescriptions),
     ...mediaEvents(
       media,
       inspectionIds: {for (final inspection in inspections) inspection.id},
+      treatmentIds: {for (final treatment in treatments) treatment.id},
     ),
     ...locationEvents(locations),
   ]);

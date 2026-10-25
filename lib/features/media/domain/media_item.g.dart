@@ -37,6 +37,7 @@ _MediaItem _$MediaItemFromJson(Map<String, dynamic> json) => _MediaItem(
   createdAt: DateTime.parse(json['created_at'] as String),
   updatedAt: DateTime.parse(json['updated_at'] as String),
   inspectionId: json['inspection_id'] as String?,
+  treatmentId: json['treatment_id'] as String?,
   durationMs: (json['duration_ms'] as num?)?.toInt(),
   createdBy: json['created_by'] as String?,
   deletedAt: json['deleted_at'] == null
@@ -57,6 +58,7 @@ Map<String, dynamic> _$MediaItemToJson(_MediaItem instance) =>
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'inspection_id': instance.inspectionId,
+      'treatment_id': instance.treatmentId,
       'duration_ms': instance.durationMs,
       'created_by': instance.createdBy,
       'deleted_at': instance.deletedAt?.toIso8601String(),

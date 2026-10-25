@@ -58,7 +58,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -95,6 +95,12 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.treatmentsOrgIdIdx);
         await m.create(schema.treatmentsHiveIdIdx);
         await m.create(schema.treatmentsApiaryIdIdx);
+      },
+      // Uygulama grupları ve reçete fotoğrafı.
+      from5To6: (m, schema) async {
+        await m.addColumn(schema.treatments, schema.treatments.applicationId);
+        await m.create(schema.treatmentsApplicationIdIdx);
+        await m.addColumn(schema.media, schema.media.treatmentId);
       },
     ),
   );
