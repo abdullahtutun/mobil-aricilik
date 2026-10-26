@@ -5021,6 +5021,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tasks to suggest.'**
   String get tourNoTasks;
+
+  /// No description provided for @settingsReports.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF reports'**
+  String get settingsReports;
+
+  /// No description provided for @reportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reportsTitle;
+
+  /// No description provided for @reportTreatmentRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment register'**
+  String get reportTreatmentRegister;
+
+  /// No description provided for @reportTreatmentRegisterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For inspections'**
+  String get reportTreatmentRegisterHint;
+
+  /// No description provided for @reportHiveHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive history'**
+  String get reportHiveHistory;
+
+  /// No description provided for @reportHiveHistoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One hive or an apiary'**
+  String get reportHiveHistoryHint;
+
+  /// No description provided for @reportFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get reportFrom;
+
+  /// No description provided for @reportTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get reportTo;
+
+  /// No description provided for @reportApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get reportApiary;
+
+  /// No description provided for @reportAllApiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'All apiaries'**
+  String get reportAllApiaries;
+
+  /// No description provided for @reportHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive'**
+  String get reportHive;
+
+  /// No description provided for @reportAllHives.
+  ///
+  /// In en, this message translates to:
+  /// **'All hives'**
+  String get reportAllHives;
+
+  /// No description provided for @reportLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF language'**
+  String get reportLanguage;
+
+  /// No description provided for @reportLanguageTurkish.
+  ///
+  /// In en, this message translates to:
+  /// **'Türkçe'**
+  String get reportLanguageTurkish;
+
+  /// No description provided for @reportLanguageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get reportLanguageEnglish;
+
+  /// No description provided for @reportRegistrationNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Holding registration no.'**
+  String get reportRegistrationNo;
+
+  /// No description provided for @reportAksNo.
+  ///
+  /// In en, this message translates to:
+  /// **'AKS no.'**
+  String get reportAksNo;
+
+  /// No description provided for @reportRecordNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration number'**
+  String get reportRecordNo;
+
+  /// No description provided for @reportNumbersHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Printed in the PDF header only; not saved.'**
+  String get reportNumbersHelper;
+
+  /// No description provided for @reportShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get reportShare;
+
+  /// No description provided for @reportCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create PDF'**
+  String get reportCreate;
+
+  /// No description provided for @reportPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing the PDF…'**
+  String get reportPreparing;
+
+  /// No description provided for @reportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create the PDF. Try again.'**
+  String get reportError;
+
+  /// No description provided for @reportLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read the records.'**
+  String get reportLoadError;
+
+  /// No description provided for @reportEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No records in this period.'**
+  String get reportEmpty;
+
+  /// No description provided for @reportTreatmentCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 treatment} other{{count} treatments}}'**
+  String reportTreatmentCount(int count);
+
+  /// No description provided for @reportHiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive} other{{count} hives}}'**
+  String reportHiveCount(int count);
+
+  /// No description provided for @reportRecordCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record} other{{count} records}}'**
+  String reportRecordCount(int count);
+
+  /// No description provided for @reportNoValue.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get reportNoValue;
+
+  /// No description provided for @pdfTreatmentRegisterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment Register'**
+  String get pdfTreatmentRegisterTitle;
+
+  /// No description provided for @pdfHiveHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive History'**
+  String get pdfHiveHistoryTitle;
+
+  /// No description provided for @pdfRegistrationNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Holding registration no. {number}'**
+  String pdfRegistrationNo(String number);
+
+  /// No description provided for @pdfAksNo.
+  ///
+  /// In en, this message translates to:
+  /// **'AKS no. {number}'**
+  String pdfAksNo(String number);
+
+  /// No description provided for @pdfRecordNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration no. {number}'**
+  String pdfRecordNo(String number);
+
+  /// No description provided for @pdfPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period: {from} – {to}'**
+  String pdfPeriod(String from, String to);
+
+  /// No description provided for @pdfApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary: {name}'**
+  String pdfApiary(String name);
+
+  /// No description provided for @pdfCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created {date}'**
+  String pdfCreated(String date);
+
+  /// No description provided for @pdfPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {pages}'**
+  String pdfPage(int page, int pages);
+
+  /// No description provided for @pdfColumnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get pdfColumnDate;
+
+  /// No description provided for @pdfColumnApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get pdfColumnApiary;
+
+  /// No description provided for @pdfColumnProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Product / batch'**
+  String get pdfColumnProduct;
+
+  /// No description provided for @pdfColumnHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get pdfColumnHives;
+
+  /// No description provided for @pdfColumnDose.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose per hive'**
+  String get pdfColumnDose;
+
+  /// No description provided for @pdfColumnRemoval.
+  ///
+  /// In en, this message translates to:
+  /// **'Removal'**
+  String get pdfColumnRemoval;
+
+  /// No description provided for @pdfColumnWithdrawalEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal ends'**
+  String get pdfColumnWithdrawalEnd;
+
+  /// No description provided for @pdfColumnEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get pdfColumnEvent;
+
+  /// No description provided for @pdfColumnDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get pdfColumnDetails;
+
+  /// No description provided for @pdfEventFeeding.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding'**
+  String get pdfEventFeeding;
+
+  /// No description provided for @pdfEventVarroa.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa count'**
+  String get pdfEventVarroa;
+
+  /// No description provided for @pdfEventHarvest.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest'**
+  String get pdfEventHarvest;
+
+  /// No description provided for @pdfHarvestTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole harvest: {amount}'**
+  String pdfHarvestTotal(String amount);
+
+  /// No description provided for @pdfDocumentName.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} {from}–{to}'**
+  String pdfDocumentName(String title, String from, String to);
 }
 
 class _AppLocalizationsDelegate

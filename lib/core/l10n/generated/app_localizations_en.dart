@@ -3203,4 +3203,203 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tourNoTasks => 'No tasks to suggest.';
+
+  @override
+  String get settingsReports => 'PDF reports';
+
+  @override
+  String get reportsTitle => 'Reports';
+
+  @override
+  String get reportTreatmentRegister => 'Treatment register';
+
+  @override
+  String get reportTreatmentRegisterHint => 'For inspections';
+
+  @override
+  String get reportHiveHistory => 'Hive history';
+
+  @override
+  String get reportHiveHistoryHint => 'One hive or an apiary';
+
+  @override
+  String get reportFrom => 'From';
+
+  @override
+  String get reportTo => 'To';
+
+  @override
+  String get reportApiary => 'Apiary';
+
+  @override
+  String get reportAllApiaries => 'All apiaries';
+
+  @override
+  String get reportHive => 'Hive';
+
+  @override
+  String get reportAllHives => 'All hives';
+
+  @override
+  String get reportLanguage => 'PDF language';
+
+  @override
+  String get reportLanguageTurkish => 'Türkçe';
+
+  @override
+  String get reportLanguageEnglish => 'English';
+
+  @override
+  String get reportRegistrationNo => 'Holding registration no.';
+
+  @override
+  String get reportAksNo => 'AKS no.';
+
+  @override
+  String get reportRecordNo => 'Registration number';
+
+  @override
+  String get reportNumbersHelper =>
+      'Printed in the PDF header only; not saved.';
+
+  @override
+  String get reportShare => 'Share';
+
+  @override
+  String get reportCreate => 'Create PDF';
+
+  @override
+  String get reportPreparing => 'Preparing the PDF…';
+
+  @override
+  String get reportError => 'Couldn\'t create the PDF. Try again.';
+
+  @override
+  String get reportLoadError => 'Couldn\'t read the records.';
+
+  @override
+  String get reportEmpty => 'No records in this period.';
+
+  @override
+  String reportTreatmentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count treatments',
+      one: '1 treatment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reportHiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives',
+      one: '1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reportRecordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count records',
+      one: '1 record',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reportNoValue => '—';
+
+  @override
+  String get pdfTreatmentRegisterTitle => 'Treatment Register';
+
+  @override
+  String get pdfHiveHistoryTitle => 'Hive History';
+
+  @override
+  String pdfRegistrationNo(String number) {
+    return 'Holding registration no. $number';
+  }
+
+  @override
+  String pdfAksNo(String number) {
+    return 'AKS no. $number';
+  }
+
+  @override
+  String pdfRecordNo(String number) {
+    return 'Registration no. $number';
+  }
+
+  @override
+  String pdfPeriod(String from, String to) {
+    return 'Period: $from – $to';
+  }
+
+  @override
+  String pdfApiary(String name) {
+    return 'Apiary: $name';
+  }
+
+  @override
+  String pdfCreated(String date) {
+    return 'Created $date';
+  }
+
+  @override
+  String pdfPage(int page, int pages) {
+    return 'Page $page of $pages';
+  }
+
+  @override
+  String get pdfColumnDate => 'Date';
+
+  @override
+  String get pdfColumnApiary => 'Apiary';
+
+  @override
+  String get pdfColumnProduct => 'Product / batch';
+
+  @override
+  String get pdfColumnHives => 'Hives';
+
+  @override
+  String get pdfColumnDose => 'Dose per hive';
+
+  @override
+  String get pdfColumnRemoval => 'Removal';
+
+  @override
+  String get pdfColumnWithdrawalEnd => 'Withdrawal ends';
+
+  @override
+  String get pdfColumnEvent => 'Record';
+
+  @override
+  String get pdfColumnDetails => 'Details';
+
+  @override
+  String get pdfEventFeeding => 'Feeding';
+
+  @override
+  String get pdfEventVarroa => 'Varroa count';
+
+  @override
+  String get pdfEventHarvest => 'Harvest';
+
+  @override
+  String pdfHarvestTotal(String amount) {
+    return 'Whole harvest: $amount';
+  }
+
+  @override
+  String pdfDocumentName(String title, String from, String to) {
+    return '$title $from–$to';
+  }
 }

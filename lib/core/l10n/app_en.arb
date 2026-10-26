@@ -2607,5 +2607,165 @@
       }
     }
   },
-  "tourNoTasks": "No tasks to suggest."
+  "tourNoTasks": "No tasks to suggest.",
+
+  "settingsReports": "PDF reports",
+  "reportsTitle": "Reports",
+  "reportTreatmentRegister": "Treatment register",
+  "reportTreatmentRegisterHint": "For inspections",
+  "reportHiveHistory": "Hive history",
+  "reportHiveHistoryHint": "One hive or an apiary",
+  "reportFrom": "From",
+  "reportTo": "To",
+  "reportApiary": "Apiary",
+  "reportAllApiaries": "All apiaries",
+  "reportHive": "Hive",
+  "reportAllHives": "All hives",
+  "reportLanguage": "PDF language",
+  "reportLanguageTurkish": "Türkçe",
+  "reportLanguageEnglish": "English",
+  "reportRegistrationNo": "Holding registration no.",
+  "reportAksNo": "AKS no.",
+  "reportRecordNo": "Registration number",
+  "reportNumbersHelper": "Printed in the PDF header only; not saved.",
+  "reportShare": "Share",
+  "reportCreate": "Create PDF",
+  "reportPreparing": "Preparing the PDF…",
+  "reportError": "Couldn't create the PDF. Try again.",
+  "reportLoadError": "Couldn't read the records.",
+  "reportEmpty": "No records in this period.",
+  "reportTreatmentCount": "{count, plural, =1{1 treatment} other{{count} treatments}}",
+  "@reportTreatmentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reportHiveCount": "{count, plural, =1{1 hive} other{{count} hives}}",
+  "@reportHiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reportRecordCount": "{count, plural, =1{1 record} other{{count} records}}",
+  "@reportRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reportNoValue": "—",
+  "pdfTreatmentRegisterTitle": "Treatment Register",
+  "pdfHiveHistoryTitle": "Hive History",
+  "pdfRegistrationNo": "Holding registration no. {number}",
+  "@pdfRegistrationNo": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "TR-48-0001"
+      }
+    }
+  },
+  "pdfAksNo": "AKS no. {number}",
+  "@pdfAksNo": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "pdfRecordNo": "Registration no. {number}",
+  "@pdfRecordNo": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "UK-123"
+      }
+    }
+  },
+  "pdfPeriod": "Period: {from} – {to}",
+  "@pdfPeriod": {
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "1 Jan 2026"
+      },
+      "to": {
+        "type": "String",
+        "example": "24 Oct 2026"
+      }
+    }
+  },
+  "pdfApiary": "Apiary: {name}",
+  "@pdfApiary": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Yayla"
+      }
+    }
+  },
+  "pdfCreated": "Created {date}",
+  "@pdfCreated": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "26 Oct 2026 14:05"
+      }
+    }
+  },
+  "pdfPage": "Page {page} of {pages}",
+  "@pdfPage": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "pages": {
+        "type": "int"
+      }
+    }
+  },
+  "pdfColumnDate": "Date",
+  "pdfColumnApiary": "Apiary",
+  "pdfColumnProduct": "Product / batch",
+  "pdfColumnHives": "Hives",
+  "pdfColumnDose": "Dose per hive",
+  "pdfColumnRemoval": "Removal",
+  "pdfColumnWithdrawalEnd": "Withdrawal ends",
+  "pdfColumnEvent": "Record",
+  "pdfColumnDetails": "Details",
+  "pdfEventFeeding": "Feeding",
+  "pdfEventVarroa": "Varroa count",
+  "pdfEventHarvest": "Harvest",
+  "pdfHarvestTotal": "Whole harvest: {amount}",
+  "@pdfHarvestTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "3 supers · 26 kg"
+      }
+    }
+  },
+  "pdfDocumentName": "{title} {from}–{to}",
+  "@pdfDocumentName": {
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Treatment Register"
+      },
+      "from": {
+        "type": "String",
+        "example": "1/1/2026"
+      },
+      "to": {
+        "type": "String",
+        "example": "10/24/2026"
+      }
+    }
+  }
 }

@@ -45,6 +45,7 @@ import 'package:mobil_arici/features/organization/presentation/organization_prov
 import 'package:mobil_arici/features/queens/presentation/old_queens_screen.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_card_screen.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_form_screen.dart';
+import 'package:mobil_arici/features/reports/presentation/reports_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_form_screen.dart';
@@ -347,6 +348,12 @@ GoRouter router(Ref ref) {
                   GoRoute(
                     path: 'settings',
                     builder: (context, state) => const SettingsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'reports',
+                        builder: (context, state) => const ReportsScreen(),
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: 'old-queens',

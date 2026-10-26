@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/services/pdf_fonts.dart';
 import 'package:mobil_arici/core/services/print_service_provider.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
@@ -89,7 +90,7 @@ class _HiveLabelsScreenState extends ConsumerState<HiveLabelsScreen> {
         case _Output.print:
           await service.printPdf(bytes, name: title);
         case _Output.share:
-          await service.sharePdf(bytes, filename: '${_fileName(title)}.pdf');
+          await service.sharePdf(bytes, filename: pdfFileName(title));
       }
     } on Exception {
       if (mounted) showMessageSnackBar(context, l10n.hiveLabelsError);
@@ -98,10 +99,6 @@ class _HiveLabelsScreenState extends ConsumerState<HiveLabelsScreen> {
     }
   }
 }
-
-/// Dosya adında sorun çıkaran karakterler tireye döner.
-String _fileName(String title) =>
-    title.replaceAll(RegExp(r'[\\/:*?"<>|]+'), '-').trim();
 
 /// Özet, önizleme ve kovan listesi; altta sabit Paylaş + Yazdır.
 class _Selection extends ConsumerWidget {

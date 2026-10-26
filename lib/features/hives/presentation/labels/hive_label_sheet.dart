@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:mobil_arici/core/services/pdf_fonts.dart';
 import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -45,7 +45,7 @@ Future<Uint8List> buildHiveLabelPdf(
   final document = hiveLabelDocument(
     labels,
     title: title,
-    theme: await _interTheme(),
+    theme: await interPdfTheme(),
   );
   return await document.save();
 }
@@ -144,11 +144,3 @@ pw.Widget _label(HiveLabelData label) {
     ),
   );
 }
-
-/// Uygulamaya gömülü Inter; PDF'in varsayılan yazı tipinde ı, ş, ğ yok.
-Future<pw.ThemeData> _interTheme() async => pw.ThemeData.withFont(
-  base: pw.Font.ttf(
-    await rootBundle.load('assets/fonts/inter/Inter-Regular.ttf'),
-  ),
-  bold: pw.Font.ttf(await rootBundle.load('assets/fonts/inter/Inter-Bold.ttf')),
-);

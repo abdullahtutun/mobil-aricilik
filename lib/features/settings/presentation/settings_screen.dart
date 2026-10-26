@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
@@ -14,7 +16,8 @@ import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
-/// ülke), veri ("sadece Wi‑Fi'da yükle" ve bekleyen dosyalar), varroa
+/// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar ve PDF
+/// raporları), varroa
 /// eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
 /// dokununca sistem ayarı açılır) ve hesap. Görünüm ve dil şimdilik
 /// yalnızca bellekte; Wi‑Fi seçimi ve varroa eşikleri bu telefonun yerel
@@ -106,7 +109,15 @@ class SettingsScreen extends ConsumerWidget {
           sectionGap,
           SectionLabel(l10n.settingsData),
           labelGap,
-          const ListGroup(children: [_MediaWifiOnlyTile()]),
+          ListGroup(
+            children: [
+              const _MediaWifiOnlyTile(),
+              ListRow(
+                title: l10n.settingsReports,
+                onTap: () => context.push(AppRoutes.reports),
+              ),
+            ],
+          ),
           sectionGap,
           SectionLabel(l10n.settingsVarroa),
           labelGap,

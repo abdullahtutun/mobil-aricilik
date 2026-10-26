@@ -3126,4 +3126,200 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get tourNoTasks => 'Önerilecek görev yok.';
+
+  @override
+  String get settingsReports => 'PDF raporları';
+
+  @override
+  String get reportsTitle => 'Raporlar';
+
+  @override
+  String get reportTreatmentRegister => 'İlaç kayıt defteri';
+
+  @override
+  String get reportTreatmentRegisterHint => 'Denetim için';
+
+  @override
+  String get reportHiveHistory => 'Kovan geçmişi';
+
+  @override
+  String get reportHiveHistoryHint => 'Tek kovan ya da arılık';
+
+  @override
+  String get reportFrom => 'Başlangıç';
+
+  @override
+  String get reportTo => 'Bitiş';
+
+  @override
+  String get reportApiary => 'Arılık';
+
+  @override
+  String get reportAllApiaries => 'Tüm arılıklar';
+
+  @override
+  String get reportHive => 'Kovan';
+
+  @override
+  String get reportAllHives => 'Tüm kovanlar';
+
+  @override
+  String get reportLanguage => 'PDF dili';
+
+  @override
+  String get reportLanguageTurkish => 'Türkçe';
+
+  @override
+  String get reportLanguageEnglish => 'English';
+
+  @override
+  String get reportRegistrationNo => 'İşletme tescil no';
+
+  @override
+  String get reportAksNo => 'AKS no';
+
+  @override
+  String get reportRecordNo => 'Kayıt numarası';
+
+  @override
+  String get reportNumbersHelper =>
+      'Yalnız PDF\'in başlığına basılır, kaydedilmez.';
+
+  @override
+  String get reportShare => 'Paylaş';
+
+  @override
+  String get reportCreate => 'PDF oluştur';
+
+  @override
+  String get reportPreparing => 'PDF hazırlanıyor…';
+
+  @override
+  String get reportError => 'PDF oluşturulamadı. Yeniden dene.';
+
+  @override
+  String get reportLoadError => 'Kayıtlar okunamadı.';
+
+  @override
+  String get reportEmpty => 'Bu dönemde kayıt yok.';
+
+  @override
+  String reportTreatmentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count uygulama',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reportHiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reportRecordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kayıt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reportNoValue => '—';
+
+  @override
+  String get pdfTreatmentRegisterTitle => 'İlaç Kayıt Defteri';
+
+  @override
+  String get pdfHiveHistoryTitle => 'Kovan Geçmişi';
+
+  @override
+  String pdfRegistrationNo(String number) {
+    return 'İşletme tescil no $number';
+  }
+
+  @override
+  String pdfAksNo(String number) {
+    return 'AKS no $number';
+  }
+
+  @override
+  String pdfRecordNo(String number) {
+    return 'Kayıt no $number';
+  }
+
+  @override
+  String pdfPeriod(String from, String to) {
+    return 'Dönem: $from – $to';
+  }
+
+  @override
+  String pdfApiary(String name) {
+    return 'Arılık: $name';
+  }
+
+  @override
+  String pdfCreated(String date) {
+    return 'Oluşturulma $date';
+  }
+
+  @override
+  String pdfPage(int page, int pages) {
+    return 'Sayfa $page / $pages';
+  }
+
+  @override
+  String get pdfColumnDate => 'Tarih';
+
+  @override
+  String get pdfColumnApiary => 'Arılık';
+
+  @override
+  String get pdfColumnProduct => 'Ürün / parti';
+
+  @override
+  String get pdfColumnHives => 'Kovan';
+
+  @override
+  String get pdfColumnDose => 'Kovan başına doz';
+
+  @override
+  String get pdfColumnRemoval => 'Çıkarma';
+
+  @override
+  String get pdfColumnWithdrawalEnd => 'Bekleme bitişi';
+
+  @override
+  String get pdfColumnEvent => 'Kayıt';
+
+  @override
+  String get pdfColumnDetails => 'Ayrıntı';
+
+  @override
+  String get pdfEventFeeding => 'Besleme';
+
+  @override
+  String get pdfEventVarroa => 'Varroa ölçümü';
+
+  @override
+  String get pdfEventHarvest => 'Hasat';
+
+  @override
+  String pdfHarvestTotal(String amount) {
+    return 'Hasadın tümü: $amount';
+  }
+
+  @override
+  String pdfDocumentName(String title, String from, String to) {
+    return '$title $from–$to';
+  }
 }
