@@ -155,6 +155,54 @@ final class TodayAttentionProvider
 
 String _$todayAttentionHash() => r'1a77fb261098d6597ca06fe58c26c83214233b97';
 
+/// Arılık başına dikkat isteyen kovan sayısı; harita pinindeki uyarı
+/// rozeti.
+
+@ProviderFor(apiaryAttentionCounts)
+final apiaryAttentionCountsProvider = ApiaryAttentionCountsProvider._();
+
+/// Arılık başına dikkat isteyen kovan sayısı; harita pinindeki uyarı
+/// rozeti.
+
+final class ApiaryAttentionCountsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<String, int>>,
+          Map<String, int>,
+          FutureOr<Map<String, int>>
+        >
+    with $FutureModifier<Map<String, int>>, $FutureProvider<Map<String, int>> {
+  /// Arılık başına dikkat isteyen kovan sayısı; harita pinindeki uyarı
+  /// rozeti.
+  ApiaryAttentionCountsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'apiaryAttentionCountsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$apiaryAttentionCountsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Map<String, int>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Map<String, int>> create(Ref ref) {
+    return apiaryAttentionCounts(ref);
+  }
+}
+
+String _$apiaryAttentionCountsHash() =>
+    r'682051620028674c0d37b8713d2129b5d2601b38';
+
 /// Bugün paneldeki görevler: açık ve günü bugün ya da geçmiş.
 
 @ProviderFor(todayTasks)

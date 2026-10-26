@@ -19,6 +19,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.avatar,
     required this.dayDot,
     required this.weatherCard,
+    required this.mapPin,
   });
 
   static const standard = AppSizes(
@@ -36,6 +37,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     avatar: 40,
     dayDot: 6,
     weatherCard: 176,
+    mapPin: 120,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -84,6 +86,10 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// görünür, kaydırılabildiği anlaşılır.
   final double weatherCard;
 
+  /// Haritadaki arılık pininin kutusu (kare); pin bunun içinde alta
+  /// yaslanır, 1.5x yazıda da sığar. Kutunun boş kısmı haritaya geçer.
+  final double mapPin;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -100,6 +106,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? avatar,
     double? dayDot,
     double? weatherCard,
+    double? mapPin,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -116,6 +123,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       avatar: avatar ?? this.avatar,
       dayDot: dayDot ?? this.dayDot,
       weatherCard: weatherCard ?? this.weatherCard,
+      mapPin: mapPin ?? this.mapPin,
     );
   }
 
@@ -141,6 +149,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       avatar: lerpDouble(avatar, other.avatar, t)!,
       dayDot: lerpDouble(dayDot, other.dayDot, t)!,
       weatherCard: lerpDouble(weatherCard, other.weatherCard, t)!,
+      mapPin: lerpDouble(mapPin, other.mapPin, t)!,
     );
   }
 }

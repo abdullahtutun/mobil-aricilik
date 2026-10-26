@@ -53,6 +53,12 @@ Future<Map<AttentionKind, List<AttentionEntry>>> todayAttention(Ref ref) async {
   );
 }
 
+/// Arılık başına dikkat isteyen kovan sayısı; harita pinindeki uyarı
+/// rozeti.
+@riverpod
+Future<Map<String, int>> apiaryAttentionCounts(Ref ref) async =>
+    attentionHiveCountsByApiary(await ref.watch(todayAttentionProvider.future));
+
 /// Bugün paneldeki görevler: açık ve günü bugün ya da geçmiş.
 @riverpod
 Future<List<TaskView>> todayTasks(Ref ref) async =>

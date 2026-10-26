@@ -70,6 +70,39 @@
   "apiariesAdd": "Add apiary",
   "apiariesAddFirst": "Add your first apiary",
   "apiariesLoadError": "Couldn't read your apiaries.",
+  "apiariesViewList": "List",
+  "apiariesViewMap": "Map",
+  "apiariesMapOfflineTitle": "Map unavailable",
+  "apiariesMapOfflineMessage": "The map needs internet. Your apiaries are listed below.",
+  "apiariesMapNoLocation": "No apiary has a location yet. Edit an apiary at its site to take the location from GPS.",
+  "apiariesMapAttribution": "© OpenFreeMap © OpenMapTiles © OpenStreetMap contributors",
+  "@apiariesMapAttribution": {
+    "description": "Map data credit, always visible on the map. Keep the names as they are."
+  },
+  "apiaryMapPinLabel": "{name}, {hives}",
+  "@apiaryMapPinLabel": {
+    "description": "Screen reader label of an apiary pin on the map.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Hilltop"
+      },
+      "hives": {
+        "type": "String",
+        "example": "40 hives"
+      }
+    }
+  },
+  "apiaryMapPinAttention": "{count, plural, =1{1 hive needs attention} other{{count} hives need attention}}",
+  "@apiaryMapPinAttention": {
+    "description": "Warning on an apiary pin: queenless, weak, swarming or treatment-to-remove hives.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
   "apiaryHiveCount": "{count, plural, =0{No hives} =1{1 hive} other{{count} hives}}",
   "@apiaryHiveCount": {
     "description": "Active hives in an apiary, on the apiary list.",

@@ -80,6 +80,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apiariesLoadError => 'Couldn\'t read your apiaries.';
 
   @override
+  String get apiariesViewList => 'List';
+
+  @override
+  String get apiariesViewMap => 'Map';
+
+  @override
+  String get apiariesMapOfflineTitle => 'Map unavailable';
+
+  @override
+  String get apiariesMapOfflineMessage =>
+      'The map needs internet. Your apiaries are listed below.';
+
+  @override
+  String get apiariesMapNoLocation =>
+      'No apiary has a location yet. Edit an apiary at its site to take the location from GPS.';
+
+  @override
+  String get apiariesMapAttribution =>
+      '© OpenFreeMap © OpenMapTiles © OpenStreetMap contributors';
+
+  @override
+  String apiaryMapPinLabel(String name, String hives) {
+    return '$name, $hives';
+  }
+
+  @override
+  String apiaryMapPinAttention(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives need attention',
+      one: '1 hive needs attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String apiaryHiveCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

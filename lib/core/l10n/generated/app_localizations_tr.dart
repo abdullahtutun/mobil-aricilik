@@ -80,6 +80,42 @@ class AppLocalizationsTr extends AppLocalizations {
   String get apiariesLoadError => 'Arılıklar okunamadı.';
 
   @override
+  String get apiariesViewList => 'Liste';
+
+  @override
+  String get apiariesViewMap => 'Harita';
+
+  @override
+  String get apiariesMapOfflineTitle => 'Harita açılamadı';
+
+  @override
+  String get apiariesMapOfflineMessage =>
+      'Harita için internet gerekiyor. Arılıklarınız aşağıda.';
+
+  @override
+  String get apiariesMapNoLocation =>
+      'Henüz konumu olan arılık yok. Arılıktayken arılığı düzenleyip konumu GPS\'ten alın.';
+
+  @override
+  String get apiariesMapAttribution =>
+      '© OpenFreeMap © OpenMapTiles © OpenStreetMap katkıcıları';
+
+  @override
+  String apiaryMapPinLabel(String name, String hives) {
+    return '$name, $hives';
+  }
+
+  @override
+  String apiaryMapPinAttention(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan dikkat istiyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String apiaryHiveCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

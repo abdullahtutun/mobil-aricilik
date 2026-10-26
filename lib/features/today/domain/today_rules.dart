@@ -126,6 +126,25 @@ int attentionHiveCount(Map<AttentionKind, List<AttentionEntry>> groups) => {
     for (final entry in entries) entry.hive.id,
 }.length;
 
+/// Arılık başına dikkat isteyen ayrı kovan sayısı, arılık kimliğine göre;
+/// dikkat isteyen kovanı olmayan arılık haritada yok.
+Map<String, int> attentionHiveCountsByApiary(
+  Map<AttentionKind, List<AttentionEntry>> groups,
+) {
+  final hivesByApiary = <String, Set<String>>{};
+  for (final entries in groups.values) {
+    for (final entry in entries) {
+      hivesByApiary.putIfAbsent(entry.hive.apiaryId, () => {}).add(
+        entry.hive.id,
+      );
+    }
+  }
+  return {
+    for (final MapEntry(:key, :value) in hivesByApiary.entries)
+      key: value.length,
+  };
+}
+
 /// Bugün panelindeki görevler: açık ve günü bugün ya da geçmiş olanlar,
 /// son tarih sırasıyla.
 List<TaskView> tasksDueToday(

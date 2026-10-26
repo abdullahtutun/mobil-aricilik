@@ -11,12 +11,16 @@ final _at = DateTime.utc(2026, 10);
 /// Yerel saatle 26 Ekim 2026 öğle.
 final _now = DateTime(2026, 10, 26, 12);
 
-Hive _hive(String id, {HiveStatus status = HiveStatus.active}) => Hive(
+Hive _hive(
+  String id, {
+  HiveStatus status = HiveStatus.active,
+  String apiaryId = 'apiary-1',
+}) => Hive(
   id: id,
   orgId: 'org-1',
   number: id,
   type: HiveType.langstroth,
-  apiaryId: 'apiary-1',
+  apiaryId: apiaryId,
   status: status,
   createdAt: _at,
   updatedAt: _at,
@@ -261,6 +265,32 @@ void main() {
       expect(groups.keys, AttentionKind.values);
       expect(groups.values.every((entries) => entries.isEmpty), isTrue);
       expect(attentionHiveCount(groups), 0);
+    });
+  });
+
+  group('attentionHiveCountsByApiary', () {
+    test('arılık başına ayrı kovan sayılır; dikkat isteyeni olmayan arılık '
+        'yok', () {
+      final groups = attentionGroups(
+        hives: [
+          _hive('101'),
+          _hive('102'),
+          _hive('201', apiaryId: 'apiary-2'),
+          _hive('301', apiaryId: 'apiary-3'),
+        ],
+        latest: {
+          // Hem anasız hem zayıf: bir kez sayılır.
+          '101': _inspection('101', queenState: QueenState.none, beeFrames: 4),
+          '201': _inspection('201', swarmSigns: true),
+          '301': _inspection('301', beeFrames: 9),
+        },
+        removalDue: {'102': _now},
+      );
+
+      expect(attentionHiveCountsByApiary(groups), {
+        'apiary-1': 2,
+        'apiary-2': 1,
+      });
     });
   });
 

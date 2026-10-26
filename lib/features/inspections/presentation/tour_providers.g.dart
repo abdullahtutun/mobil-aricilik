@@ -467,7 +467,7 @@ final class TourActionsProvider extends $NotifierProvider<TourActions, void> {
   }
 }
 
-String _$tourActionsHash() => r'20c6d842a8503c9e67cace411c945388ae970dc4';
+String _$tourActionsHash() => r'd0ff2dded612bab4dae5a20c3e0af6fbb0bee542';
 
 /// Turun eylemleri; yazmalar verildiği sırayla çalışır. Turda açılan
 /// güneş modunu tur bitince eski moda döndürmek için bellekte iz tutar.

@@ -206,6 +206,54 @@ abstract class AppLocalizations {
   /// **'Couldn\'t read your apiaries.'**
   String get apiariesLoadError;
 
+  /// No description provided for @apiariesViewList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get apiariesViewList;
+
+  /// No description provided for @apiariesViewMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get apiariesViewMap;
+
+  /// No description provided for @apiariesMapOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Map unavailable'**
+  String get apiariesMapOfflineTitle;
+
+  /// No description provided for @apiariesMapOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The map needs internet. Your apiaries are listed below.'**
+  String get apiariesMapOfflineMessage;
+
+  /// No description provided for @apiariesMapNoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'No apiary has a location yet. Edit an apiary at its site to take the location from GPS.'**
+  String get apiariesMapNoLocation;
+
+  /// Map data credit, always visible on the map. Keep the names as they are.
+  ///
+  /// In en, this message translates to:
+  /// **'© OpenFreeMap © OpenMapTiles © OpenStreetMap contributors'**
+  String get apiariesMapAttribution;
+
+  /// Screen reader label of an apiary pin on the map.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {hives}'**
+  String apiaryMapPinLabel(String name, String hives);
+
+  /// Warning on an apiary pin: queenless, weak, swarming or treatment-to-remove hives.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive needs attention} other{{count} hives need attention}}'**
+  String apiaryMapPinAttention(int count);
+
   /// Active hives in an apiary, on the apiary list.
   ///
   /// In en, this message translates to:
