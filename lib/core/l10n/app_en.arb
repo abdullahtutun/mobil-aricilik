@@ -2767,5 +2767,26 @@
         "example": "10/24/2026"
       }
     }
-  }
+  },
+
+  "moreFeedback": "Send feedback",
+  "feedbackTitle": "Send feedback",
+  "feedbackIntro": "We're building this app together with beekeepers. We read every message.",
+  "feedbackKindLabel": "What is it about?",
+  "feedbackKindBug": "Bug",
+  "feedbackKindSuggestion": "Suggestion",
+  "feedbackKindMissingFeature": "Missing feature",
+  "feedbackKindThanks": "Thanks",
+  "feedbackMessageLabel": "Your message",
+  "feedbackMessageHint": "What happened, and what did you expect?",
+  "feedbackAddScreenshot": "Add screenshot",
+  "feedbackScreenshotAttached": "Screenshot attached",
+  "feedbackRemoveScreenshot": "Remove",
+  "feedbackScreenshotDenied": "Photo access wasn't allowed. To attach a screenshot, allow it in Settings.",
+  "feedbackIncludeDeviceInfo": "Include device and version info",
+  "feedbackOfflineHint": "Without internet, the message is queued and sent once you're online.",
+  "feedbackSend": "Send",
+  "feedbackQueued": "Thank you! Your message is queued to be sent.",
+  "settingsAnalytics": "Share usage data",
+  "settingsAnalyticsHint": "Numbers like inspection time, scan results and sync delay; your name, hives and location are never sent."
 }

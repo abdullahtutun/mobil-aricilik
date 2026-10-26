@@ -29,6 +29,19 @@ class LocalSettingsRepository {
 
   Future<void> setExactAlarmPrompted() => _write(exactAlarmPromptedKey, 'true');
 
+  /// "Kullanım verisi paylaş"; varsayılan açık (teknik.md §13: analitik
+  /// ilk sürümden açık). Kapalıyken olay yazılmaz ve gönderilmez.
+  static const analyticsEnabledKey = 'analytics_enabled';
+
+  Stream<bool> watchAnalyticsEnabled() =>
+      _watch(analyticsEnabledKey).map((value) => value != 'false');
+
+  Future<bool> analyticsEnabled() async =>
+      await _read(analyticsEnabledKey) != 'false';
+
+  /// Bu kurulumun analitik kimliği; analitik yeniden açılınca yenilenir.
+  static const analyticsInstallIdKey = 'analytics_install_id';
+
   /// Varroa uyarı eşikleri; ayar yoksa ya da okunamıyorsa
   /// [defaultVarroaThresholds].
   static const varroaPercentKey = 'varroa_threshold_percent';

@@ -10,7 +10,9 @@ import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/core/db/tables/task_tables.dart';
+import 'package:mobil_arici/core/db/tables/telemetry_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
@@ -60,6 +62,8 @@ part 'app_database.g.dart';
     Harvests,
     HarvestHives,
     LocalSettings,
+    FeedbackQueue,
+    AnalyticsQueue,
     Outbox,
     SyncState,
   ],
@@ -68,7 +72,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -138,6 +142,11 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.harvestHivesOrgIdIdx);
         await m.create(schema.harvestHivesHarvestIdIdx);
         await m.create(schema.harvestHivesHiveIdIdx);
+      },
+      // Görüş ve kullanım olayı kuyrukları; yalnız bu telefonda.
+      from9To10: (m, schema) async {
+        await m.createTable(schema.feedbackQueue);
+        await m.createTable(schema.analyticsQueue);
       },
     ),
   );

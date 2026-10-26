@@ -11,6 +11,10 @@ part of 'scan_controller.dart';
 /// Kameradan gelen kodları kovana çevirir. Kamera aynı kodu saniyede
 /// birkaç kez verir; bir kod çözülürken ya da sonuç ekrandayken gelenler
 /// yok sayılır. Ekran açık kaldığı sürece yaşar.
+///
+/// Ekran kapanınca okutma sonucu (analitik) yazılır: kovan bulundu mu,
+/// kaç kod tanınmadı, ne kadar sürdü. Kodun kendisi yazılmaz. Tanınmayan
+/// koddan sonra vazgeçilirse sonuç `unknown`.
 
 @ProviderFor(ScanController)
 final scanControllerProvider = ScanControllerProvider._();
@@ -18,11 +22,19 @@ final scanControllerProvider = ScanControllerProvider._();
 /// Kameradan gelen kodları kovana çevirir. Kamera aynı kodu saniyede
 /// birkaç kez verir; bir kod çözülürken ya da sonuç ekrandayken gelenler
 /// yok sayılır. Ekran açık kaldığı sürece yaşar.
+///
+/// Ekran kapanınca okutma sonucu (analitik) yazılır: kovan bulundu mu,
+/// kaç kod tanınmadı, ne kadar sürdü. Kodun kendisi yazılmaz. Tanınmayan
+/// koddan sonra vazgeçilirse sonuç `unknown`.
 final class ScanControllerProvider
     extends $NotifierProvider<ScanController, ScanState> {
   /// Kameradan gelen kodları kovana çevirir. Kamera aynı kodu saniyede
   /// birkaç kez verir; bir kod çözülürken ya da sonuç ekrandayken gelenler
   /// yok sayılır. Ekran açık kaldığı sürece yaşar.
+  ///
+  /// Ekran kapanınca okutma sonucu (analitik) yazılır: kovan bulundu mu,
+  /// kaç kod tanınmadı, ne kadar sürdü. Kodun kendisi yazılmaz. Tanınmayan
+  /// koddan sonra vazgeçilirse sonuç `unknown`.
   ScanControllerProvider._()
     : super(
         from: null,
@@ -50,11 +62,15 @@ final class ScanControllerProvider
   }
 }
 
-String _$scanControllerHash() => r'e07c2d668b9d27cb6e6b473a986da2f8f23dc08e';
+String _$scanControllerHash() => r'1a665949c7b69b10cff2bbe3a982be9a9840870b';
 
 /// Kameradan gelen kodları kovana çevirir. Kamera aynı kodu saniyede
 /// birkaç kez verir; bir kod çözülürken ya da sonuç ekrandayken gelenler
 /// yok sayılır. Ekran açık kaldığı sürece yaşar.
+///
+/// Ekran kapanınca okutma sonucu (analitik) yazılır: kovan bulundu mu,
+/// kaç kod tanınmadı, ne kadar sürdü. Kodun kendisi yazılmaz. Tanınmayan
+/// koddan sonra vazgeçilirse sonuç `unknown`.
 
 abstract class _$ScanController extends $Notifier<ScanState> {
   ScanState build();

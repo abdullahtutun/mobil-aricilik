@@ -68,7 +68,7 @@ final class InspectionFormControllerProvider
 }
 
 String _$inspectionFormControllerHash() =>
-    r'3dafba61439d5fecc41678168fcad92549b5587f';
+    r'f8fd3d2afb208b86dd02aeaa857c0a4e3bd057ef';
 
 /// Kovanın hızlı muayene formu (teknik.md §9). Taslak varsa ondan, yoksa
 /// önceki muayenenin değerleriyle (öneri olarak) açılır. Her değişiklik

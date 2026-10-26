@@ -5,6 +5,7 @@ import 'package:mobil_arici/core/db/app_database.dart';
 
 import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
+import 'generated/schema_v10.dart' as v10;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -449,4 +450,47 @@ void main() {
       );
     },
   );
+
+  test('v9 → v10 hasatları ve yerel ayarları korur; görüş ve olay kuyrukları '
+      'boş gelir', () async {
+    const harvest = v9.HarvestsData(
+      id: 'harvest-1',
+      createdAt: '2026-10-26T09:00:00.000Z',
+      updatedAt: '2026-10-26T09:00:00.000Z',
+      orgId: 'org-1',
+      apiaryId: 'apiary-1',
+      harvestedAt: '2026-10-26T09:00:00.000Z',
+      honeyKind: 'pine',
+      unit: 'super',
+      unitCount: 4,
+      netKg: 52.5,
+    );
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 9,
+      newVersion: 10,
+      createOld: v9.DatabaseAtV9.new,
+      createNew: v10.DatabaseAtV10.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(oldDb.harvests, harvest)
+          ..insert(
+            oldDb.localSettings,
+            v9.LocalSettingsCompanion.insert(
+              key: 'media_wifi_only',
+              value: 'true',
+            ),
+          );
+      },
+      validateItems: (newDb) async {
+        final harvests = await newDb.select(newDb.harvests).get();
+        expect(harvests.single.toJson(), harvest.toJson());
+        final settings = await newDb.select(newDb.localSettings).get();
+        expect(settings.single.value, 'true');
+        expect(await newDb.select(newDb.feedbackQueue).get(), isEmpty);
+        expect(await newDb.select(newDb.analyticsQueue).get(), isEmpty);
+      },
+    );
+  });
 }

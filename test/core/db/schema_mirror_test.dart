@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/server_enum.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
@@ -146,6 +147,7 @@ void main() {
       'honey_kind': values(HoneyKind.values),
       'harvest_unit': values(HarvestUnit.values),
       'withdrawal_override_reason': values(WithdrawalOverrideReason.values),
+      'feedback_kind': values(FeedbackKind.values),
     };
 
     expect(local, server.enums);

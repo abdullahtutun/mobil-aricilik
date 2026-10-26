@@ -3402,4 +3402,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String pdfDocumentName(String title, String from, String to) {
     return '$title $from–$to';
   }
+
+  @override
+  String get moreFeedback => 'Send feedback';
+
+  @override
+  String get feedbackTitle => 'Send feedback';
+
+  @override
+  String get feedbackIntro =>
+      'We\'re building this app together with beekeepers. We read every message.';
+
+  @override
+  String get feedbackKindLabel => 'What is it about?';
+
+  @override
+  String get feedbackKindBug => 'Bug';
+
+  @override
+  String get feedbackKindSuggestion => 'Suggestion';
+
+  @override
+  String get feedbackKindMissingFeature => 'Missing feature';
+
+  @override
+  String get feedbackKindThanks => 'Thanks';
+
+  @override
+  String get feedbackMessageLabel => 'Your message';
+
+  @override
+  String get feedbackMessageHint => 'What happened, and what did you expect?';
+
+  @override
+  String get feedbackAddScreenshot => 'Add screenshot';
+
+  @override
+  String get feedbackScreenshotAttached => 'Screenshot attached';
+
+  @override
+  String get feedbackRemoveScreenshot => 'Remove';
+
+  @override
+  String get feedbackScreenshotDenied =>
+      'Photo access wasn\'t allowed. To attach a screenshot, allow it in Settings.';
+
+  @override
+  String get feedbackIncludeDeviceInfo => 'Include device and version info';
+
+  @override
+  String get feedbackOfflineHint =>
+      'Without internet, the message is queued and sent once you\'re online.';
+
+  @override
+  String get feedbackSend => 'Send';
+
+  @override
+  String get feedbackQueued => 'Thank you! Your message is queued to be sent.';
+
+  @override
+  String get settingsAnalytics => 'Share usage data';
+
+  @override
+  String get settingsAnalyticsHint =>
+      'Numbers like inspection time, scan results and sync delay; your name, hives and location are never sent.';
 }

@@ -69,6 +69,18 @@ class FakeCameraService implements CameraService {
     File(targetPath).writeAsBytesSync(tinyImage);
     return tinyImage.length;
   }
+
+  int pickCount = 0;
+
+  /// Galeriden seçim; [failure] ve [cancel] çekimdeki gibi.
+  @override
+  Future<int?> pickImage(String targetPath) async {
+    if (failure case final failure?) throw MediaCaptureException(failure);
+    if (cancel) return null;
+    pickCount++;
+    File(targetPath).writeAsBytesSync(tinyImage);
+    return tinyImage.length;
+  }
 }
 
 class FakeVoiceRecorder implements VoiceRecorder {

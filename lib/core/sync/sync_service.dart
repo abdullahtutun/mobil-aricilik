@@ -48,6 +48,11 @@ class SyncService {
   /// Tek isteğin süre sınırı; askıda kalan bağlantı kilidi tutmasın.
   static const requestTimeout = Duration(seconds: 30);
 
+  /// Son gönderimde kabul edilen kayıtların en uzun bekleyeni: yerelde
+  /// yazılmasından sunucunun kabul etmesine kadar geçen süre (senkron
+  /// gecikmesi, analitik). Kayıt kabul edilmediyse null.
+  Duration? lastPushDelay;
+
   Future<SyncResult>? _syncing;
   Future<SyncResult>? _pushing;
   Future<SyncResult>? _pulling;
@@ -104,6 +109,7 @@ class SyncService {
   Future<SyncResult> _push() async {
     var pushed = 0;
     var rejected = 0;
+    lastPushDelay = null;
     SyncResult result(SyncStatus status) =>
         SyncResult(status: status, pushed: pushed, rejected: rejected);
 
@@ -119,6 +125,10 @@ class SyncService {
         final applied = await _apply(batch, response);
         pushed += applied.pushed;
         rejected += applied.rejected;
+        if (applied.maxDelay case final delay?
+            when lastPushDelay == null || delay > lastPushDelay!) {
+          lastPushDelay = delay;
+        }
         // Sonucu gelmeyen kayıt yeniden gönderilirse tur dönüp durur.
         if (!applied.complete) return result(SyncStatus.failed);
       }
@@ -181,10 +191,8 @@ class SyncService {
   /// Yanıttaki sonuçları tek transaction'da işler: `ok` kayıtlar silinir,
   /// `rejected` kayıtlar işaretlenir. Yanıtta sonucu olmayan ya da tanınmayan
   /// kayıt yerinde kalır ve `complete` false döner.
-  Future<({int pushed, int rejected, bool complete})> _apply(
-    List<OutboxEntry> batch,
-    Map<String, dynamic> response,
-  ) async {
+  Future<({int pushed, int rejected, bool complete, Duration? maxDelay})>
+  _apply(List<OutboxEntry> batch, Map<String, dynamic> response) async {
     final results = <int, Map<String, dynamic>>{
       if (response['results'] case final List<dynamic> list)
         for (final result in list)
@@ -212,10 +220,18 @@ class SyncService {
         await _countAttempt([id], error: error);
       }
     });
+    final now = clock().toUtc();
+    Duration? maxDelay;
+    for (final entry in batch) {
+      if (!accepted.contains(entry.id)) continue;
+      final delay = now.difference(entry.createdAt.toUtc());
+      if (maxDelay == null || delay > maxDelay) maxDelay = delay;
+    }
     return (
       pushed: accepted.length,
       rejected: rejections.length,
       complete: accepted.length + rejections.length == batch.length,
+      maxDelay: maxDelay,
     );
   }
 

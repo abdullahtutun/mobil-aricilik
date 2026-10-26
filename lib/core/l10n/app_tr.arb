@@ -901,5 +901,26 @@
   "pdfEventVarroa": "Varroa ölçümü",
   "pdfEventHarvest": "Hasat",
   "pdfHarvestTotal": "Hasadın tümü: {amount}",
-  "pdfDocumentName": "{title} {from}–{to}"
+  "pdfDocumentName": "{title} {from}–{to}",
+
+  "moreFeedback": "Görüş bildir",
+  "feedbackTitle": "Görüş bildir",
+  "feedbackIntro": "Uygulamayı arıcılar için birlikte geliştiriyoruz. Her mesajı okuyoruz.",
+  "feedbackKindLabel": "Ne hakkında?",
+  "feedbackKindBug": "Hata",
+  "feedbackKindSuggestion": "Öneri",
+  "feedbackKindMissingFeature": "Eksik özellik",
+  "feedbackKindThanks": "Teşekkür",
+  "feedbackMessageLabel": "Mesajın",
+  "feedbackMessageHint": "Ne oldu, ne bekliyordun?",
+  "feedbackAddScreenshot": "Ekran görüntüsü ekle",
+  "feedbackScreenshotAttached": "Ekran görüntüsü eklendi",
+  "feedbackRemoveScreenshot": "Kaldır",
+  "feedbackScreenshotDenied": "Fotoğraflara erişim izni verilmedi. Ekran görüntüsü eklemek için Ayarlar'dan izin ver.",
+  "feedbackIncludeDeviceInfo": "Cihaz ve sürüm bilgisini ekle",
+  "feedbackOfflineHint": "İnternet yoksa mesaj sıraya alınır, bağlanınca gider.",
+  "feedbackSend": "Gönder",
+  "feedbackQueued": "Teşekkürler! Mesajın gönderilmek üzere sıraya alındı.",
+  "settingsAnalytics": "Kullanım verisi paylaş",
+  "settingsAnalyticsHint": "Muayene süresi, okutma sonucu ve senkron gecikmesi gibi sayılar; adın, kovanların ve konumun gönderilmez."
 }

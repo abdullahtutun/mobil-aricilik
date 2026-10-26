@@ -3322,4 +3322,69 @@ class AppLocalizationsTr extends AppLocalizations {
   String pdfDocumentName(String title, String from, String to) {
     return '$title $from–$to';
   }
+
+  @override
+  String get moreFeedback => 'Görüş bildir';
+
+  @override
+  String get feedbackTitle => 'Görüş bildir';
+
+  @override
+  String get feedbackIntro =>
+      'Uygulamayı arıcılar için birlikte geliştiriyoruz. Her mesajı okuyoruz.';
+
+  @override
+  String get feedbackKindLabel => 'Ne hakkında?';
+
+  @override
+  String get feedbackKindBug => 'Hata';
+
+  @override
+  String get feedbackKindSuggestion => 'Öneri';
+
+  @override
+  String get feedbackKindMissingFeature => 'Eksik özellik';
+
+  @override
+  String get feedbackKindThanks => 'Teşekkür';
+
+  @override
+  String get feedbackMessageLabel => 'Mesajın';
+
+  @override
+  String get feedbackMessageHint => 'Ne oldu, ne bekliyordun?';
+
+  @override
+  String get feedbackAddScreenshot => 'Ekran görüntüsü ekle';
+
+  @override
+  String get feedbackScreenshotAttached => 'Ekran görüntüsü eklendi';
+
+  @override
+  String get feedbackRemoveScreenshot => 'Kaldır';
+
+  @override
+  String get feedbackScreenshotDenied =>
+      'Fotoğraflara erişim izni verilmedi. Ekran görüntüsü eklemek için Ayarlar\'dan izin ver.';
+
+  @override
+  String get feedbackIncludeDeviceInfo => 'Cihaz ve sürüm bilgisini ekle';
+
+  @override
+  String get feedbackOfflineHint =>
+      'İnternet yoksa mesaj sıraya alınır, bağlanınca gider.';
+
+  @override
+  String get feedbackSend => 'Gönder';
+
+  @override
+  String get feedbackQueued =>
+      'Teşekkürler! Mesajın gönderilmek üzere sıraya alındı.';
+
+  @override
+  String get settingsAnalytics => 'Kullanım verisi paylaş';
+
+  @override
+  String get settingsAnalyticsHint =>
+      'Muayene süresi, okutma sonucu ve senkron gecikmesi gibi sayılar; adın, kovanların ve konumun gönderilmez.';
 }

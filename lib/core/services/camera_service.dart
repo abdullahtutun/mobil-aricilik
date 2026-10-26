@@ -24,12 +24,17 @@ class MediaCaptureException implements Exception {
   String toString() => 'MediaCaptureException(${failure.name})';
 }
 
-/// Cihaz kamerasıyla tek foto. İnternet gerekmez.
+/// Cihaz kamerasıyla tek foto ya da galeriden tek görüntü. İnternet
+/// gerekmez.
 abstract interface class CameraService {
   /// Kamerayı açar; çekilen fotoğrafı uzun kenarı ~1600 px JPEG olarak
   /// [targetPath]'e yazar ve boyutunu (bayt) döner. Kullanıcı vazgeçerse
   /// null. Hata [MediaCaptureException] olarak gelir.
   Future<int?> takePhoto(String targetPath);
+
+  /// Galeriden bir görüntü seçtirir (ör. ekran görüntüsü); [takePhoto]
+  /// gibi küçültüp JPEG olarak [targetPath]'e yazar.
+  Future<int?> pickImage(String targetPath);
 }
 
 /// image_picker sistem kamerasını açar; flutter_image_compress küçültür,
@@ -43,11 +48,18 @@ class DeviceCameraService implements CameraService {
   static const quality = 80;
 
   @override
-  Future<int?> takePhoto(String targetPath) async {
+  Future<int?> takePhoto(String targetPath) =>
+      _capture(ImageSource.camera, targetPath);
+
+  @override
+  Future<int?> pickImage(String targetPath) =>
+      _capture(ImageSource.gallery, targetPath);
+
+  Future<int?> _capture(ImageSource source, String targetPath) async {
     final XFile? shot;
     try {
       shot = await _picker.pickImage(
-        source: ImageSource.camera,
+        source: source,
         requestFullMetadata: false,
       );
     } on PlatformException catch (error) {
@@ -74,6 +86,8 @@ class DeviceCameraService implements CameraService {
       return await compressed.length();
     } finally {
       try {
+        // Galeriden seçilende de image_picker geçici bir kopya verir;
+        // galerideki asıl dosyaya dokunulmaz.
         await File(shot.path).delete();
       } on FileSystemException {
         // image_picker'ın geçici kopyası; silinemezse işletim sistemi

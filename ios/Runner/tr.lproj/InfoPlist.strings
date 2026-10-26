@@ -6,3 +6,6 @@
 
 /* Mikrofon izni sorulurken gösterilir (Info.plist: NSMicrophoneUsageDescription). */
 "NSMicrophoneUsageDescription" = "Mikrofon, kovanlarına sesli not kaydetmek için kullanılır. Kayıtlar yüklenene kadar telefonda kalır.";
+
+/* Fotoğraf arşivi izni sorulurken gösterilir (Info.plist: NSPhotoLibraryUsageDescription). */
+"NSPhotoLibraryUsageDescription" = "Görüşüne fotoğraflarından bir ekran görüntüsü ekleyebilirsin. Yalnız seçtiğin görüntü gönderilir.";

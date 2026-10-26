@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:clock/clock.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ProviderListenableSelect;
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/core/analytics/analytics_providers.dart';
+import 'package:mobil_arici/core/analytics/analytics_rules.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service_provider.dart';
@@ -48,13 +53,29 @@ class SyncController extends _$SyncController {
     if (state.running) return await service.sync();
 
     state = state.copyWith(running: true, progress: null);
+    final startedAt = clock.now();
     SyncResult? result;
     try {
-      return result = await service.sync(
+      result = await service.sync(
         onProgress: (progress) {
           if (ref.mounted) state = state.copyWith(progress: progress);
         },
       );
+      if (service.lastPushDelay case final delay?
+          when result.pushed > 0 && ref.mounted) {
+        unawaited(
+          ref.read(analyticsRepositoryProvider).record(
+            AnalyticsEvent.syncPushed,
+            {
+              'records': result.pushed,
+              'rejected': result.rejected,
+              'max_delay_s': durationSeconds(delay),
+              'turn_s': durationSeconds(clock.now().difference(startedAt)),
+            },
+          ),
+        );
+      }
+      return result;
     } finally {
       // Beklenmeyen hata (ör. yerel DB) da turu bitirir; ikon dönüp kalmaz.
       final finished = result ?? const SyncResult(status: SyncStatus.failed);

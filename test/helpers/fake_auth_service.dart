@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
+import 'package:mobil_arici/core/services/app_info_service_provider.dart';
 import 'package:mobil_arici/core/services/basemap_service_provider.dart';
 import 'package:mobil_arici/core/services/code_scanner_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
@@ -14,6 +15,7 @@ import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
+import 'fake_app_info_service.dart';
 import 'fake_basemap_service.dart';
 import 'fake_code_scanner.dart';
 import 'fake_media.dart';
@@ -94,6 +96,7 @@ List<Override> signedIn({
   FakeWeatherService? weather,
   FakeScreenAwake? screenAwake,
   FakeBasemapService? basemap,
+  FakeAppInfoService? appInfo,
   bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
@@ -111,4 +114,5 @@ List<Override> signedIn({
   weatherServiceProvider.overrideWithValue(weather ?? FakeWeatherService()),
   screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
   basemapServiceProvider.overrideWithValue(basemap ?? FakeBasemapService()),
+  appInfoServiceProvider.overrideWithValue(appInfo ?? FakeAppInfoService()),
 ];

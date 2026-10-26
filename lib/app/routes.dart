@@ -114,6 +114,9 @@ abstract final class AppRoutes {
   /// Aktif kovanlardaki değiştirilmesi gereken analar.
   static const oldQueens = '/more/old-queens';
 
+  /// "Görüş bildir"; Daha fazla'dan açılır.
+  static const feedback = '/more/feedback';
+
   /// Fotoğrafın tam ekranı; sekmelerin üstünde açılır.
   static String mediaPhoto(String mediaId) => '/media/$mediaId';
 

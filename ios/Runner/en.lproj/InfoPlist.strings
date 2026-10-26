@@ -6,3 +6,6 @@
 
 /* Mikrofon izni sorulurken gösterilir (Info.plist: NSMicrophoneUsageDescription). */
 "NSMicrophoneUsageDescription" = "The microphone records voice notes for your hives. Recordings stay on the phone until they upload.";
+
+/* Fotoğraf arşivi izni sorulurken gösterilir (Info.plist: NSPhotoLibraryUsageDescription). */
+"NSPhotoLibraryUsageDescription" = "You can attach a screenshot from your photos to your feedback. Only the image you choose is sent.";

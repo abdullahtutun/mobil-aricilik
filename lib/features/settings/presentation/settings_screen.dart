@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/core/analytics/analytics_providers.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
@@ -16,12 +17,12 @@ import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
-/// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar ve PDF
-/// raporları), varroa
+/// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar, "kullanım
+/// verisi paylaş" ve PDF raporları), varroa
 /// eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
 /// dokununca sistem ayarı açılır) ve hesap. Görünüm ve dil şimdilik
-/// yalnızca bellekte; Wi‑Fi seçimi ve varroa eşikleri bu telefonun yerel
-/// DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
+/// yalnızca bellekte; Wi‑Fi seçimi, analitik ve varroa eşikleri bu
+/// telefonun yerel DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -112,6 +113,7 @@ class SettingsScreen extends ConsumerWidget {
           ListGroup(
             children: [
               const _MediaWifiOnlyTile(),
+              const _AnalyticsTile(),
               ListRow(
                 title: l10n.settingsReports,
                 onTap: () => context.push(AppRoutes.reports),
@@ -247,6 +249,31 @@ class _MediaWifiOnlyTile extends ConsumerWidget {
         pending > 0
             ? l10n.settingsPendingUploads(pending)
             : l10n.settingsMediaWifiOnlyHint,
+        style: context.typography.bodySmall.copyWith(
+          color: context.colors.textSecondary,
+        ),
+      ),
+    );
+  }
+}
+
+/// "Kullanım verisi paylaş"; kapatınca bekleyen olaylar da silinir.
+class _AnalyticsTile extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final enabled = ref.watch(analyticsEnabledProvider).value ?? true;
+
+    return SwitchListTile(
+      value: enabled,
+      onChanged: (enabled) =>
+          ref.read(analyticsRepositoryProvider).setEnabled(enabled: enabled),
+      contentPadding: EdgeInsets.symmetric(horizontal: context.spacing.lg),
+      title: Text(l10n.settingsAnalytics, style: context.typography.body),
+      subtitle: Text(
+        l10n.settingsAnalyticsHint,
         style: context.typography.bodySmall.copyWith(
           color: context.colors.textSecondary,
         ),

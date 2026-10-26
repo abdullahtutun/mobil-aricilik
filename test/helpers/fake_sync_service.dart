@@ -14,6 +14,9 @@ class FakeSyncService implements SyncService {
   /// Sonraki turların sonucu.
   SyncResult result = const SyncResult(status: SyncStatus.done);
 
+  @override
+  Duration? lastPushDelay;
+
   /// Tur başında sırayla bildirilir.
   List<SyncProgress> progress = const [];
 

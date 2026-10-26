@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/core/analytics/analytics_providers.dart';
+import 'package:mobil_arici/core/analytics/analytics_rules.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
@@ -45,8 +48,12 @@ class InspectionFormController extends _$InspectionFormController {
   /// Kaydedildikten sonra gelen değişiklik taslağı yeniden yazmasın.
   var _saved = false;
 
+  /// Formun bu açılışı; muayene süresi (analitik) buradan ölçülür.
+  late DateTime _openedAt;
+
   @override
   Future<InspectionFormState?> build(String hiveId) async {
+    _openedAt = clock.now();
     final hive = await ref.read(hiveRepositoryProvider).findById(hiveId);
     if (hive == null) return null;
     final previous = await ref
@@ -167,6 +174,17 @@ class InspectionFormController extends _$InspectionFormController {
             withdrawalOverride: form.draft.withdrawalOverride,
           );
       _saved = true;
+      unawaited(
+        ref.read(analyticsRepositoryProvider).record(
+          AnalyticsEvent.inspectionSaved,
+          {
+            'duration_s': durationSeconds(clock.now().difference(_openedAt)),
+            'suggested_fields': form.draft.suggested.length,
+            'actions': form.draft.values.actions.length,
+            'media': form.draft.media.length,
+          },
+        ),
+      );
       return (inspection: inspection, draft: form.draft);
     } finally {
       if (ref.mounted) _update((form) => form.copyWith(saving: false));

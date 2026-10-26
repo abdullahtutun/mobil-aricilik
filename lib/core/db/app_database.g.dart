@@ -10934,6 +10934,1002 @@ class LocalSettingsCompanion extends UpdateCompanion<LocalSetting> {
   }
 }
 
+class $FeedbackQueueTable extends FeedbackQueue
+    with TableInfo<$FeedbackQueueTable, QueuedFeedback> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FeedbackQueueTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<FeedbackKind, String> kind =
+      GeneratedColumn<String>(
+        'kind',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<FeedbackKind>($FeedbackQueueTable.$converterkind);
+  static const VerificationMeta _messageMeta = const VerificationMeta(
+    'message',
+  );
+  @override
+  late final GeneratedColumn<String> message = GeneratedColumn<String>(
+    'message',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _screenshotFileNameMeta =
+      const VerificationMeta('screenshotFileName');
+  @override
+  late final GeneratedColumn<String> screenshotFileName =
+      GeneratedColumn<String>(
+        'screenshot_file_name',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _deviceInfoMeta = const VerificationMeta(
+    'deviceInfo',
+  );
+  @override
+  late final GeneratedColumn<String> deviceInfo = GeneratedColumn<String>(
+    'device_info',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _nextAttemptAtMeta = const VerificationMeta(
+    'nextAttemptAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> nextAttemptAt =
+      GeneratedColumn<DateTime>(
+        'next_attempt_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
+  @override
+  late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
+    'last_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _failedMeta = const VerificationMeta('failed');
+  @override
+  late final GeneratedColumn<bool> failed = GeneratedColumn<bool>(
+    'failed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("failed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    orgId,
+    kind,
+    message,
+    screenshotFileName,
+    deviceInfo,
+    createdAt,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    failed,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'feedback_queue';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<QueuedFeedback> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('message')) {
+      context.handle(
+        _messageMeta,
+        message.isAcceptableOrUnknown(data['message']!, _messageMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_messageMeta);
+    }
+    if (data.containsKey('screenshot_file_name')) {
+      context.handle(
+        _screenshotFileNameMeta,
+        screenshotFileName.isAcceptableOrUnknown(
+          data['screenshot_file_name']!,
+          _screenshotFileNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_info')) {
+      context.handle(
+        _deviceInfoMeta,
+        deviceInfo.isAcceptableOrUnknown(data['device_info']!, _deviceInfoMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    }
+    if (data.containsKey('next_attempt_at')) {
+      context.handle(
+        _nextAttemptAtMeta,
+        nextAttemptAt.isAcceptableOrUnknown(
+          data['next_attempt_at']!,
+          _nextAttemptAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_error')) {
+      context.handle(
+        _lastErrorMeta,
+        lastError.isAcceptableOrUnknown(data['last_error']!, _lastErrorMeta),
+      );
+    }
+    if (data.containsKey('failed')) {
+      context.handle(
+        _failedMeta,
+        failed.isAcceptableOrUnknown(data['failed']!, _failedMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  QueuedFeedback map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return QueuedFeedback(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      kind: $FeedbackQueueTable.$converterkind.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}kind'],
+        )!,
+      ),
+      message: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}message'],
+      )!,
+      screenshotFileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}screenshot_file_name'],
+      ),
+      deviceInfo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_info'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      nextAttemptAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}next_attempt_at'],
+      ),
+      lastError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_error'],
+      ),
+      failed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}failed'],
+      )!,
+    );
+  }
+
+  @override
+  $FeedbackQueueTable createAlias(String alias) {
+    return $FeedbackQueueTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<FeedbackKind, String> $converterkind =
+      const ServerEnumConverter(FeedbackKind.values);
+}
+
+class QueuedFeedback extends DataClass implements Insertable<QueuedFeedback> {
+  final String id;
+  final String orgId;
+  final FeedbackKind kind;
+  final String message;
+
+  /// Ekran görüntüsünün medya klasöründeki dosya adı.
+  final String? screenshotFileName;
+
+  /// Cihaz ve sürüm bilgisi (JSON); kullanıcı istemediyse boş.
+  final String? deviceInfo;
+  final DateTime createdAt;
+  final int attempts;
+
+  /// Boşsa hemen denenir.
+  final DateTime? nextAttemptAt;
+  final String? lastError;
+
+  /// Yeniden denemenin işe yaramayacağı hata (yetki, geçersiz mesaj);
+  /// `last_error`'da nedeni.
+  final bool failed;
+  const QueuedFeedback({
+    required this.id,
+    required this.orgId,
+    required this.kind,
+    required this.message,
+    this.screenshotFileName,
+    this.deviceInfo,
+    required this.createdAt,
+    required this.attempts,
+    this.nextAttemptAt,
+    this.lastError,
+    required this.failed,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['org_id'] = Variable<String>(orgId);
+    {
+      map['kind'] = Variable<String>(
+        $FeedbackQueueTable.$converterkind.toSql(kind),
+      );
+    }
+    map['message'] = Variable<String>(message);
+    if (!nullToAbsent || screenshotFileName != null) {
+      map['screenshot_file_name'] = Variable<String>(screenshotFileName);
+    }
+    if (!nullToAbsent || deviceInfo != null) {
+      map['device_info'] = Variable<String>(deviceInfo);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['attempts'] = Variable<int>(attempts);
+    if (!nullToAbsent || nextAttemptAt != null) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt);
+    }
+    if (!nullToAbsent || lastError != null) {
+      map['last_error'] = Variable<String>(lastError);
+    }
+    map['failed'] = Variable<bool>(failed);
+    return map;
+  }
+
+  FeedbackQueueCompanion toCompanion(bool nullToAbsent) {
+    return FeedbackQueueCompanion(
+      id: Value(id),
+      orgId: Value(orgId),
+      kind: Value(kind),
+      message: Value(message),
+      screenshotFileName: screenshotFileName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(screenshotFileName),
+      deviceInfo: deviceInfo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deviceInfo),
+      createdAt: Value(createdAt),
+      attempts: Value(attempts),
+      nextAttemptAt: nextAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextAttemptAt),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+      failed: Value(failed),
+    );
+  }
+
+  factory QueuedFeedback.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return QueuedFeedback(
+      id: serializer.fromJson<String>(json['id']),
+      orgId: serializer.fromJson<String>(json['orgId']),
+      kind: serializer.fromJson<FeedbackKind>(json['kind']),
+      message: serializer.fromJson<String>(json['message']),
+      screenshotFileName: serializer.fromJson<String?>(
+        json['screenshotFileName'],
+      ),
+      deviceInfo: serializer.fromJson<String?>(json['deviceInfo']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      nextAttemptAt: serializer.fromJson<DateTime?>(json['nextAttemptAt']),
+      lastError: serializer.fromJson<String?>(json['lastError']),
+      failed: serializer.fromJson<bool>(json['failed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'orgId': serializer.toJson<String>(orgId),
+      'kind': serializer.toJson<FeedbackKind>(kind),
+      'message': serializer.toJson<String>(message),
+      'screenshotFileName': serializer.toJson<String?>(screenshotFileName),
+      'deviceInfo': serializer.toJson<String?>(deviceInfo),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'attempts': serializer.toJson<int>(attempts),
+      'nextAttemptAt': serializer.toJson<DateTime?>(nextAttemptAt),
+      'lastError': serializer.toJson<String?>(lastError),
+      'failed': serializer.toJson<bool>(failed),
+    };
+  }
+
+  QueuedFeedback copyWith({
+    String? id,
+    String? orgId,
+    FeedbackKind? kind,
+    String? message,
+    Value<String?> screenshotFileName = const Value.absent(),
+    Value<String?> deviceInfo = const Value.absent(),
+    DateTime? createdAt,
+    int? attempts,
+    Value<DateTime?> nextAttemptAt = const Value.absent(),
+    Value<String?> lastError = const Value.absent(),
+    bool? failed,
+  }) => QueuedFeedback(
+    id: id ?? this.id,
+    orgId: orgId ?? this.orgId,
+    kind: kind ?? this.kind,
+    message: message ?? this.message,
+    screenshotFileName: screenshotFileName.present
+        ? screenshotFileName.value
+        : this.screenshotFileName,
+    deviceInfo: deviceInfo.present ? deviceInfo.value : this.deviceInfo,
+    createdAt: createdAt ?? this.createdAt,
+    attempts: attempts ?? this.attempts,
+    nextAttemptAt: nextAttemptAt.present
+        ? nextAttemptAt.value
+        : this.nextAttemptAt,
+    lastError: lastError.present ? lastError.value : this.lastError,
+    failed: failed ?? this.failed,
+  );
+  QueuedFeedback copyWithCompanion(FeedbackQueueCompanion data) {
+    return QueuedFeedback(
+      id: data.id.present ? data.id.value : this.id,
+      orgId: data.orgId.present ? data.orgId.value : this.orgId,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      message: data.message.present ? data.message.value : this.message,
+      screenshotFileName: data.screenshotFileName.present
+          ? data.screenshotFileName.value
+          : this.screenshotFileName,
+      deviceInfo: data.deviceInfo.present
+          ? data.deviceInfo.value
+          : this.deviceInfo,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      nextAttemptAt: data.nextAttemptAt.present
+          ? data.nextAttemptAt.value
+          : this.nextAttemptAt,
+      lastError: data.lastError.present ? data.lastError.value : this.lastError,
+      failed: data.failed.present ? data.failed.value : this.failed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QueuedFeedback(')
+          ..write('id: $id, ')
+          ..write('orgId: $orgId, ')
+          ..write('kind: $kind, ')
+          ..write('message: $message, ')
+          ..write('screenshotFileName: $screenshotFileName, ')
+          ..write('deviceInfo: $deviceInfo, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('failed: $failed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    orgId,
+    kind,
+    message,
+    screenshotFileName,
+    deviceInfo,
+    createdAt,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    failed,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is QueuedFeedback &&
+          other.id == this.id &&
+          other.orgId == this.orgId &&
+          other.kind == this.kind &&
+          other.message == this.message &&
+          other.screenshotFileName == this.screenshotFileName &&
+          other.deviceInfo == this.deviceInfo &&
+          other.createdAt == this.createdAt &&
+          other.attempts == this.attempts &&
+          other.nextAttemptAt == this.nextAttemptAt &&
+          other.lastError == this.lastError &&
+          other.failed == this.failed);
+}
+
+class FeedbackQueueCompanion extends UpdateCompanion<QueuedFeedback> {
+  final Value<String> id;
+  final Value<String> orgId;
+  final Value<FeedbackKind> kind;
+  final Value<String> message;
+  final Value<String?> screenshotFileName;
+  final Value<String?> deviceInfo;
+  final Value<DateTime> createdAt;
+  final Value<int> attempts;
+  final Value<DateTime?> nextAttemptAt;
+  final Value<String?> lastError;
+  final Value<bool> failed;
+  final Value<int> rowid;
+  const FeedbackQueueCompanion({
+    this.id = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.message = const Value.absent(),
+    this.screenshotFileName = const Value.absent(),
+    this.deviceInfo = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.failed = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  FeedbackQueueCompanion.insert({
+    required String id,
+    required String orgId,
+    required FeedbackKind kind,
+    required String message,
+    this.screenshotFileName = const Value.absent(),
+    this.deviceInfo = const Value.absent(),
+    required DateTime createdAt,
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.failed = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       orgId = Value(orgId),
+       kind = Value(kind),
+       message = Value(message),
+       createdAt = Value(createdAt);
+  static Insertable<QueuedFeedback> custom({
+    Expression<String>? id,
+    Expression<String>? orgId,
+    Expression<String>? kind,
+    Expression<String>? message,
+    Expression<String>? screenshotFileName,
+    Expression<String>? deviceInfo,
+    Expression<DateTime>? createdAt,
+    Expression<int>? attempts,
+    Expression<DateTime>? nextAttemptAt,
+    Expression<String>? lastError,
+    Expression<bool>? failed,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (orgId != null) 'org_id': orgId,
+      if (kind != null) 'kind': kind,
+      if (message != null) 'message': message,
+      if (screenshotFileName != null)
+        'screenshot_file_name': screenshotFileName,
+      if (deviceInfo != null) 'device_info': deviceInfo,
+      if (createdAt != null) 'created_at': createdAt,
+      if (attempts != null) 'attempts': attempts,
+      if (nextAttemptAt != null) 'next_attempt_at': nextAttemptAt,
+      if (lastError != null) 'last_error': lastError,
+      if (failed != null) 'failed': failed,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  FeedbackQueueCompanion copyWith({
+    Value<String>? id,
+    Value<String>? orgId,
+    Value<FeedbackKind>? kind,
+    Value<String>? message,
+    Value<String?>? screenshotFileName,
+    Value<String?>? deviceInfo,
+    Value<DateTime>? createdAt,
+    Value<int>? attempts,
+    Value<DateTime?>? nextAttemptAt,
+    Value<String?>? lastError,
+    Value<bool>? failed,
+    Value<int>? rowid,
+  }) {
+    return FeedbackQueueCompanion(
+      id: id ?? this.id,
+      orgId: orgId ?? this.orgId,
+      kind: kind ?? this.kind,
+      message: message ?? this.message,
+      screenshotFileName: screenshotFileName ?? this.screenshotFileName,
+      deviceInfo: deviceInfo ?? this.deviceInfo,
+      createdAt: createdAt ?? this.createdAt,
+      attempts: attempts ?? this.attempts,
+      nextAttemptAt: nextAttemptAt ?? this.nextAttemptAt,
+      lastError: lastError ?? this.lastError,
+      failed: failed ?? this.failed,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(
+        $FeedbackQueueTable.$converterkind.toSql(kind.value),
+      );
+    }
+    if (message.present) {
+      map['message'] = Variable<String>(message.value);
+    }
+    if (screenshotFileName.present) {
+      map['screenshot_file_name'] = Variable<String>(screenshotFileName.value);
+    }
+    if (deviceInfo.present) {
+      map['device_info'] = Variable<String>(deviceInfo.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
+    }
+    if (nextAttemptAt.present) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt.value);
+    }
+    if (lastError.present) {
+      map['last_error'] = Variable<String>(lastError.value);
+    }
+    if (failed.present) {
+      map['failed'] = Variable<bool>(failed.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FeedbackQueueCompanion(')
+          ..write('id: $id, ')
+          ..write('orgId: $orgId, ')
+          ..write('kind: $kind, ')
+          ..write('message: $message, ')
+          ..write('screenshotFileName: $screenshotFileName, ')
+          ..write('deviceInfo: $deviceInfo, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('failed: $failed, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AnalyticsQueueTable extends AnalyticsQueue
+    with TableInfo<$AnalyticsQueueTable, QueuedAnalyticsEvent> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AnalyticsQueueTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _propsMeta = const VerificationMeta('props');
+  @override
+  late final GeneratedColumn<String> props = GeneratedColumn<String>(
+    'props',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _occurredAtMeta = const VerificationMeta(
+    'occurredAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> occurredAt = GeneratedColumn<DateTime>(
+    'occurred_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, props, occurredAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'analytics_queue';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<QueuedAnalyticsEvent> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('props')) {
+      context.handle(
+        _propsMeta,
+        props.isAcceptableOrUnknown(data['props']!, _propsMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_propsMeta);
+    }
+    if (data.containsKey('occurred_at')) {
+      context.handle(
+        _occurredAtMeta,
+        occurredAt.isAcceptableOrUnknown(data['occurred_at']!, _occurredAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_occurredAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  QueuedAnalyticsEvent map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return QueuedAnalyticsEvent(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      props: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}props'],
+      )!,
+      occurredAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}occurred_at'],
+      )!,
+    );
+  }
+
+  @override
+  $AnalyticsQueueTable createAlias(String alias) {
+    return $AnalyticsQueueTable(attachedDatabase, alias);
+  }
+}
+
+class QueuedAnalyticsEvent extends DataClass
+    implements Insertable<QueuedAnalyticsEvent> {
+  final String id;
+  final String name;
+
+  /// Olayın değerleri (JSON nesnesi).
+  final String props;
+  final DateTime occurredAt;
+  const QueuedAnalyticsEvent({
+    required this.id,
+    required this.name,
+    required this.props,
+    required this.occurredAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['props'] = Variable<String>(props);
+    map['occurred_at'] = Variable<DateTime>(occurredAt);
+    return map;
+  }
+
+  AnalyticsQueueCompanion toCompanion(bool nullToAbsent) {
+    return AnalyticsQueueCompanion(
+      id: Value(id),
+      name: Value(name),
+      props: Value(props),
+      occurredAt: Value(occurredAt),
+    );
+  }
+
+  factory QueuedAnalyticsEvent.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return QueuedAnalyticsEvent(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      props: serializer.fromJson<String>(json['props']),
+      occurredAt: serializer.fromJson<DateTime>(json['occurredAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'props': serializer.toJson<String>(props),
+      'occurredAt': serializer.toJson<DateTime>(occurredAt),
+    };
+  }
+
+  QueuedAnalyticsEvent copyWith({
+    String? id,
+    String? name,
+    String? props,
+    DateTime? occurredAt,
+  }) => QueuedAnalyticsEvent(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    props: props ?? this.props,
+    occurredAt: occurredAt ?? this.occurredAt,
+  );
+  QueuedAnalyticsEvent copyWithCompanion(AnalyticsQueueCompanion data) {
+    return QueuedAnalyticsEvent(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      props: data.props.present ? data.props.value : this.props,
+      occurredAt: data.occurredAt.present
+          ? data.occurredAt.value
+          : this.occurredAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QueuedAnalyticsEvent(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('props: $props, ')
+          ..write('occurredAt: $occurredAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, props, occurredAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is QueuedAnalyticsEvent &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.props == this.props &&
+          other.occurredAt == this.occurredAt);
+}
+
+class AnalyticsQueueCompanion extends UpdateCompanion<QueuedAnalyticsEvent> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> props;
+  final Value<DateTime> occurredAt;
+  final Value<int> rowid;
+  const AnalyticsQueueCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.props = const Value.absent(),
+    this.occurredAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AnalyticsQueueCompanion.insert({
+    required String id,
+    required String name,
+    required String props,
+    required DateTime occurredAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       props = Value(props),
+       occurredAt = Value(occurredAt);
+  static Insertable<QueuedAnalyticsEvent> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? props,
+    Expression<DateTime>? occurredAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (props != null) 'props': props,
+      if (occurredAt != null) 'occurred_at': occurredAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AnalyticsQueueCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? props,
+    Value<DateTime>? occurredAt,
+    Value<int>? rowid,
+  }) {
+    return AnalyticsQueueCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      props: props ?? this.props,
+      occurredAt: occurredAt ?? this.occurredAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (props.present) {
+      map['props'] = Variable<String>(props.value);
+    }
+    if (occurredAt.present) {
+      map['occurred_at'] = Variable<DateTime>(occurredAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AnalyticsQueueCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('props: $props, ')
+          ..write('occurredAt: $occurredAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $OutboxTable extends Outbox with TableInfo<$OutboxTable, OutboxEntry> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -11700,6 +12696,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $HarvestsTable harvests = $HarvestsTable(this);
   late final $HarvestHivesTable harvestHives = $HarvestHivesTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
+  late final $FeedbackQueueTable feedbackQueue = $FeedbackQueueTable(this);
+  late final $AnalyticsQueueTable analyticsQueue = $AnalyticsQueueTable(this);
   late final $OutboxTable outbox = $OutboxTable(this);
   late final $SyncStateTable syncState = $SyncStateTable(this);
   late final Index membershipsOrgIdIdx = Index(
@@ -11850,6 +12848,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     harvests,
     harvestHives,
     localSettings,
+    feedbackQueue,
+    analyticsQueue,
     outbox,
     syncState,
     membershipsOrgIdIdx,
@@ -18706,6 +19706,540 @@ typedef $$LocalSettingsTableProcessedTableManager =
       LocalSetting,
       PrefetchHooks Function()
     >;
+typedef $$FeedbackQueueTableCreateCompanionBuilder =
+    FeedbackQueueCompanion Function({
+      required String id,
+      required String orgId,
+      required FeedbackKind kind,
+      required String message,
+      Value<String?> screenshotFileName,
+      Value<String?> deviceInfo,
+      required DateTime createdAt,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      Value<bool> failed,
+      Value<int> rowid,
+    });
+typedef $$FeedbackQueueTableUpdateCompanionBuilder =
+    FeedbackQueueCompanion Function({
+      Value<String> id,
+      Value<String> orgId,
+      Value<FeedbackKind> kind,
+      Value<String> message,
+      Value<String?> screenshotFileName,
+      Value<String?> deviceInfo,
+      Value<DateTime> createdAt,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      Value<bool> failed,
+      Value<int> rowid,
+    });
+
+class $$FeedbackQueueTableFilterComposer
+    extends Composer<_$AppDatabase, $FeedbackQueueTable> {
+  $$FeedbackQueueTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<FeedbackKind, FeedbackKind, String> get kind =>
+      $composableBuilder(
+        column: $table.kind,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get message => $composableBuilder(
+    column: $table.message,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get screenshotFileName => $composableBuilder(
+    column: $table.screenshotFileName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceInfo => $composableBuilder(
+    column: $table.deviceInfo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get failed => $composableBuilder(
+    column: $table.failed,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$FeedbackQueueTableOrderingComposer
+    extends Composer<_$AppDatabase, $FeedbackQueueTable> {
+  $$FeedbackQueueTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get message => $composableBuilder(
+    column: $table.message,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get screenshotFileName => $composableBuilder(
+    column: $table.screenshotFileName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceInfo => $composableBuilder(
+    column: $table.deviceInfo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get failed => $composableBuilder(
+    column: $table.failed,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$FeedbackQueueTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FeedbackQueueTable> {
+  $$FeedbackQueueTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<FeedbackKind, String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<String> get message =>
+      $composableBuilder(column: $table.message, builder: (column) => column);
+
+  GeneratedColumn<String> get screenshotFileName => $composableBuilder(
+    column: $table.screenshotFileName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceInfo => $composableBuilder(
+    column: $table.deviceInfo,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastError =>
+      $composableBuilder(column: $table.lastError, builder: (column) => column);
+
+  GeneratedColumn<bool> get failed =>
+      $composableBuilder(column: $table.failed, builder: (column) => column);
+}
+
+class $$FeedbackQueueTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FeedbackQueueTable,
+          QueuedFeedback,
+          $$FeedbackQueueTableFilterComposer,
+          $$FeedbackQueueTableOrderingComposer,
+          $$FeedbackQueueTableAnnotationComposer,
+          $$FeedbackQueueTableCreateCompanionBuilder,
+          $$FeedbackQueueTableUpdateCompanionBuilder,
+          (
+            QueuedFeedback,
+            BaseReferences<_$AppDatabase, $FeedbackQueueTable, QueuedFeedback>,
+          ),
+          QueuedFeedback,
+          PrefetchHooks Function()
+        > {
+  $$FeedbackQueueTableTableManager(_$AppDatabase db, $FeedbackQueueTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FeedbackQueueTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FeedbackQueueTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FeedbackQueueTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<FeedbackKind> kind = const Value.absent(),
+                Value<String> message = const Value.absent(),
+                Value<String?> screenshotFileName = const Value.absent(),
+                Value<String?> deviceInfo = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<bool> failed = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FeedbackQueueCompanion(
+                id: id,
+                orgId: orgId,
+                kind: kind,
+                message: message,
+                screenshotFileName: screenshotFileName,
+                deviceInfo: deviceInfo,
+                createdAt: createdAt,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                failed: failed,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String orgId,
+                required FeedbackKind kind,
+                required String message,
+                Value<String?> screenshotFileName = const Value.absent(),
+                Value<String?> deviceInfo = const Value.absent(),
+                required DateTime createdAt,
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<bool> failed = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FeedbackQueueCompanion.insert(
+                id: id,
+                orgId: orgId,
+                kind: kind,
+                message: message,
+                screenshotFileName: screenshotFileName,
+                deviceInfo: deviceInfo,
+                createdAt: createdAt,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                failed: failed,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$FeedbackQueueTable, QueuedFeedback>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $FeedbackQueueTable,
+                    QueuedFeedback
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$FeedbackQueueTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FeedbackQueueTable,
+      QueuedFeedback,
+      $$FeedbackQueueTableFilterComposer,
+      $$FeedbackQueueTableOrderingComposer,
+      $$FeedbackQueueTableAnnotationComposer,
+      $$FeedbackQueueTableCreateCompanionBuilder,
+      $$FeedbackQueueTableUpdateCompanionBuilder,
+      (
+        QueuedFeedback,
+        BaseReferences<_$AppDatabase, $FeedbackQueueTable, QueuedFeedback>,
+      ),
+      QueuedFeedback,
+      PrefetchHooks Function()
+    >;
+typedef $$AnalyticsQueueTableCreateCompanionBuilder =
+    AnalyticsQueueCompanion Function({
+      required String id,
+      required String name,
+      required String props,
+      required DateTime occurredAt,
+      Value<int> rowid,
+    });
+typedef $$AnalyticsQueueTableUpdateCompanionBuilder =
+    AnalyticsQueueCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String> props,
+      Value<DateTime> occurredAt,
+      Value<int> rowid,
+    });
+
+class $$AnalyticsQueueTableFilterComposer
+    extends Composer<_$AppDatabase, $AnalyticsQueueTable> {
+  $$AnalyticsQueueTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get props => $composableBuilder(
+    column: $table.props,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get occurredAt => $composableBuilder(
+    column: $table.occurredAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$AnalyticsQueueTableOrderingComposer
+    extends Composer<_$AppDatabase, $AnalyticsQueueTable> {
+  $$AnalyticsQueueTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get props => $composableBuilder(
+    column: $table.props,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get occurredAt => $composableBuilder(
+    column: $table.occurredAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AnalyticsQueueTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AnalyticsQueueTable> {
+  $$AnalyticsQueueTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get props =>
+      $composableBuilder(column: $table.props, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get occurredAt => $composableBuilder(
+    column: $table.occurredAt,
+    builder: (column) => column,
+  );
+}
+
+class $$AnalyticsQueueTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AnalyticsQueueTable,
+          QueuedAnalyticsEvent,
+          $$AnalyticsQueueTableFilterComposer,
+          $$AnalyticsQueueTableOrderingComposer,
+          $$AnalyticsQueueTableAnnotationComposer,
+          $$AnalyticsQueueTableCreateCompanionBuilder,
+          $$AnalyticsQueueTableUpdateCompanionBuilder,
+          (
+            QueuedAnalyticsEvent,
+            BaseReferences<
+              _$AppDatabase,
+              $AnalyticsQueueTable,
+              QueuedAnalyticsEvent
+            >,
+          ),
+          QueuedAnalyticsEvent,
+          PrefetchHooks Function()
+        > {
+  $$AnalyticsQueueTableTableManager(
+    _$AppDatabase db,
+    $AnalyticsQueueTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AnalyticsQueueTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AnalyticsQueueTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AnalyticsQueueTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> props = const Value.absent(),
+                Value<DateTime> occurredAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AnalyticsQueueCompanion(
+                id: id,
+                name: name,
+                props: props,
+                occurredAt: occurredAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                required String props,
+                required DateTime occurredAt,
+                Value<int> rowid = const Value.absent(),
+              }) => AnalyticsQueueCompanion.insert(
+                id: id,
+                name: name,
+                props: props,
+                occurredAt: occurredAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$AnalyticsQueueTable, QueuedAnalyticsEvent>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $AnalyticsQueueTable,
+                    QueuedAnalyticsEvent
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$AnalyticsQueueTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AnalyticsQueueTable,
+      QueuedAnalyticsEvent,
+      $$AnalyticsQueueTableFilterComposer,
+      $$AnalyticsQueueTableOrderingComposer,
+      $$AnalyticsQueueTableAnnotationComposer,
+      $$AnalyticsQueueTableCreateCompanionBuilder,
+      $$AnalyticsQueueTableUpdateCompanionBuilder,
+      (
+        QueuedAnalyticsEvent,
+        BaseReferences<
+          _$AppDatabase,
+          $AnalyticsQueueTable,
+          QueuedAnalyticsEvent
+        >,
+      ),
+      QueuedAnalyticsEvent,
+      PrefetchHooks Function()
+    >;
 typedef $$OutboxTableCreateCompanionBuilder = OutboxCompanion Function({
   Value<int> id,
   required String recordTable,
@@ -19162,6 +20696,10 @@ class $AppDatabaseManager {
       $$HarvestHivesTableTableManager(_db, _db.harvestHives);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
+  $$FeedbackQueueTableTableManager get feedbackQueue =>
+      $$FeedbackQueueTableTableManager(_db, _db.feedbackQueue);
+  $$AnalyticsQueueTableTableManager get analyticsQueue =>
+      $$AnalyticsQueueTableTableManager(_db, _db.analyticsQueue);
   $$OutboxTableTableManager get outbox =>
       $$OutboxTableTableManager(_db, _db.outbox);
   $$SyncStateTableTableManager get syncState =>

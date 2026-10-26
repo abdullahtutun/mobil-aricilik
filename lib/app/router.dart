@@ -19,6 +19,7 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/feedback/presentation/feedback_screen.dart';
 import 'package:mobil_arici/features/feeding/presentation/feeding_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_hives_screen.dart';
@@ -358,6 +359,10 @@ GoRouter router(Ref ref) {
                   GoRoute(
                     path: 'old-queens',
                     builder: (context, state) => const OldQueensScreen(),
+                  ),
+                  GoRoute(
+                    path: 'feedback',
+                    builder: (context, state) => const FeedbackScreen(),
                   ),
                 ],
               ),

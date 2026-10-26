@@ -5333,6 +5333,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{title} {from}–{to}'**
   String pdfDocumentName(String title, String from, String to);
+
+  /// No description provided for @moreFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get moreFeedback;
+
+  /// No description provided for @feedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get feedbackTitle;
+
+  /// No description provided for @feedbackIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re building this app together with beekeepers. We read every message.'**
+  String get feedbackIntro;
+
+  /// No description provided for @feedbackKindLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it about?'**
+  String get feedbackKindLabel;
+
+  /// No description provided for @feedbackKindBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug'**
+  String get feedbackKindBug;
+
+  /// No description provided for @feedbackKindSuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestion'**
+  String get feedbackKindSuggestion;
+
+  /// No description provided for @feedbackKindMissingFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing feature'**
+  String get feedbackKindMissingFeature;
+
+  /// No description provided for @feedbackKindThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks'**
+  String get feedbackKindThanks;
+
+  /// No description provided for @feedbackMessageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your message'**
+  String get feedbackMessageLabel;
+
+  /// No description provided for @feedbackMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened, and what did you expect?'**
+  String get feedbackMessageHint;
+
+  /// No description provided for @feedbackAddScreenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add screenshot'**
+  String get feedbackAddScreenshot;
+
+  /// No description provided for @feedbackScreenshotAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot attached'**
+  String get feedbackScreenshotAttached;
+
+  /// No description provided for @feedbackRemoveScreenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get feedbackRemoveScreenshot;
+
+  /// No description provided for @feedbackScreenshotDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo access wasn\'t allowed. To attach a screenshot, allow it in Settings.'**
+  String get feedbackScreenshotDenied;
+
+  /// No description provided for @feedbackIncludeDeviceInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Include device and version info'**
+  String get feedbackIncludeDeviceInfo;
+
+  /// No description provided for @feedbackOfflineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Without internet, the message is queued and sent once you\'re online.'**
+  String get feedbackOfflineHint;
+
+  /// No description provided for @feedbackSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get feedbackSend;
+
+  /// No description provided for @feedbackQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! Your message is queued to be sent.'**
+  String get feedbackQueued;
+
+  /// No description provided for @settingsAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Share usage data'**
+  String get settingsAnalytics;
+
+  /// No description provided for @settingsAnalyticsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers like inspection time, scan results and sync delay; your name, hives and location are never sent.'**
+  String get settingsAnalyticsHint;
 }
 
 class _AppLocalizationsDelegate
