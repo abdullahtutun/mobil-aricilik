@@ -148,7 +148,9 @@ void main() {
 
     expect(weather.fetchCount, 1);
     expect(find.text(_attribution), findsNothing);
-    expect(find.text('Bugün için bir şey yok'), findsOneWidget);
+    // Arılıklar var, kovan yok: kurulumun sıradaki adımı görünür.
+    expect(find.text('KURULUM 1/3'), findsOneWidget);
+    expect(find.text('Kovanlarını oluştur'), findsOneWidget);
   });
 
   testWidgets('tahmin aralığı geçmiş ve silinmiş arılık gösterilmez', (

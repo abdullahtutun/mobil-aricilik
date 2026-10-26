@@ -29,6 +29,11 @@ class AppFormat {
   /// Haftanın günü. `Pazartesi`, `Monday`
   String weekday(DateTime value) => DateFormat.EEEE(locale).format(value);
 
+  /// Gün adıyla yılsız tarih; Bugün'ün başlığı. `26 Ekim Pazartesi`,
+  /// `Monday, October 26`
+  String weekdayDate(DateTime value) =>
+      DateFormat.MMMMEEEEd(locale).format(value);
+
   /// Kısa gün adı; gün şeridi için. `Pzt`, `Mon`
   String weekdayShort(DateTime value) => DateFormat.E(locale).format(value);
 

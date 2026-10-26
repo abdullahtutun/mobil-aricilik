@@ -167,13 +167,13 @@ abstract class AppLocalizations {
   /// No description provided for @todayEmptyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Nothing for today'**
+  /// **'Start by adding your apiary'**
   String get todayEmptyTitle;
 
   /// No description provided for @todayEmptyMessage.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s tasks, hives that need attention and the weather will gather here.'**
+  /// **'Three steps and you\'re ready: add your apiary, create your hives, do your first inspection.'**
   String get todayEmptyMessage;
 
   /// No description provided for @apiariesEmptyTitle.
@@ -4243,6 +4243,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Too cold'**
   String get hiveOpeningUnsuitableCold;
+
+  /// No description provided for @todayGreetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get todayGreetingMorning;
+
+  /// No description provided for @todayGreetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get todayGreetingAfternoon;
+
+  /// No description provided for @todayGreetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get todayGreetingEvening;
+
+  /// No description provided for @todayAttentionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get todayAttentionTitle;
+
+  /// No description provided for @todayAttentionHiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive} other{{count} hives}}'**
+  String todayAttentionHiveCount(int count);
+
+  /// No description provided for @todayAttentionNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives need attention'**
+  String get todayAttentionNone;
+
+  /// No description provided for @todayTasksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s tasks'**
+  String get todayTasksTitle;
+
+  /// No description provided for @todayTasksCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 task} other{{count} tasks}}'**
+  String todayTasksCount(int count);
+
+  /// No description provided for @todaySetupProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup {done}/{total}'**
+  String todaySetupProgress(int done, int total);
+
+  /// No description provided for @setupStepApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your apiary'**
+  String get setupStepApiary;
+
+  /// No description provided for @setupStepHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your hives'**
+  String get setupStepHives;
+
+  /// No description provided for @setupStepInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Do your first inspection'**
+  String get setupStepInspection;
+
+  /// No description provided for @setupStepDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{step}: done'**
+  String setupStepDone(String step);
+
+  /// No description provided for @attentionQueenless.
+  ///
+  /// In en, this message translates to:
+  /// **'Queenless'**
+  String get attentionQueenless;
+
+  /// No description provided for @attentionWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get attentionWeak;
+
+  /// No description provided for @attentionSwarming.
+  ///
+  /// In en, this message translates to:
+  /// **'Swarm signs'**
+  String get attentionSwarming;
+
+  /// No description provided for @attentionTreatmentRemoval.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment to remove'**
+  String get attentionTreatmentRemoval;
+
+  /// No description provided for @attentionQueenlessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Queenless hives'**
+  String get attentionQueenlessTitle;
+
+  /// No description provided for @attentionWeakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak hives'**
+  String get attentionWeakTitle;
+
+  /// No description provided for @attentionSwarmingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives with swarm signs'**
+  String get attentionSwarmingTitle;
+
+  /// No description provided for @attentionTreatmentRemovalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatments to remove'**
+  String get attentionTreatmentRemovalTitle;
+
+  /// No description provided for @attentionQueenlessIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Active hives whose last inspection found no queen and no eggs.'**
+  String get attentionQueenlessIntro;
+
+  /// No description provided for @attentionWeakIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Active hives with strength {max}/5 or lower at their last inspection.'**
+  String attentionWeakIntro(int max);
+
+  /// No description provided for @attentionSwarmingIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Active hives whose last inspection showed swarm signs or swarm cells.'**
+  String get attentionSwarmingIntro;
+
+  /// No description provided for @attentionTreatmentRemovalIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives whose strip removal is due and the task isn\'t done yet.'**
+  String get attentionTreatmentRemovalIntro;
+
+  /// No description provided for @attentionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives in this group.'**
+  String get attentionEmpty;
+
+  /// No description provided for @attentionLastInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Last inspection: {date}'**
+  String attentionLastInspection(String date);
+
+  /// No description provided for @attentionRemovalDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Removal due: {date}'**
+  String attentionRemovalDue(String date);
 }
 
 class _AppLocalizationsDelegate

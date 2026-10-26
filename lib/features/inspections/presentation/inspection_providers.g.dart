@@ -147,7 +147,7 @@ final class InspectionActionsProvider
   }
 }
 
-String _$inspectionActionsHash() => r'6b7763340a7181047f746604abe73d6f0ecac41d';
+String _$inspectionActionsHash() => r'3257927975d36bfdeb143084f153cb88620d78f4';
 
 /// Kaydettikten sonraki eylemler: geri alma ve "tekrar bak" görevi.
 /// Bildirim, muayene sayfası kapandıktan sonra da çalışsın diye sürekli

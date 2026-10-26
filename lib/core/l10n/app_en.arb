@@ -63,8 +63,8 @@
   "@tabMore": {
     "description": "Bottom navigation tab: less frequently used modules and settings."
   },
-  "todayEmptyTitle": "Nothing for today",
-  "todayEmptyMessage": "Today's tasks, hives that need attention and the weather will gather here.",
+  "todayEmptyTitle": "Start by adding your apiary",
+  "todayEmptyMessage": "Three steps and you're ready: add your apiary, create your hives, do your first inspection.",
   "apiariesEmptyTitle": "No apiaries yet",
   "apiariesEmptyMessage": "An apiary groups your hives by where they stand; add your first one to begin.",
   "apiariesAdd": "Add apiary",
@@ -2050,5 +2050,94 @@
   "hiveOpeningCautionCold": "Cool",
   "hiveOpeningUnsuitableRain": "Raining",
   "hiveOpeningUnsuitableWind": "Strong wind",
-  "hiveOpeningUnsuitableCold": "Too cold"
+  "hiveOpeningUnsuitableCold": "Too cold",
+
+  "todayGreetingMorning": "Good morning",
+  "todayGreetingAfternoon": "Good afternoon",
+  "todayGreetingEvening": "Good evening",
+  "todayAttentionTitle": "Needs attention",
+  "todayAttentionHiveCount": "{count, plural, =1{1 hive} other{{count} hives}}",
+  "@todayAttentionHiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "todayAttentionNone": "No hives need attention",
+  "todayTasksTitle": "Today's tasks",
+  "todayTasksCount": "{count, plural, =1{1 task} other{{count} tasks}}",
+  "@todayTasksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "todaySetupProgress": "Setup {done}/{total}",
+  "@todaySetupProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "setupStepApiary": "Add your apiary",
+  "setupStepHives": "Create your hives",
+  "setupStepInspection": "Do your first inspection",
+  "setupStepDone": "{step}: done",
+  "@setupStepDone": {
+    "placeholders": {
+      "step": {
+        "type": "String",
+        "example": "Add your apiary"
+      }
+    }
+  },
+  "attentionQueenless": "Queenless",
+  "attentionWeak": "Weak",
+  "attentionSwarming": "Swarm signs",
+  "attentionTreatmentRemoval": "Treatment to remove",
+  "attentionQueenlessTitle": "Queenless hives",
+  "attentionWeakTitle": "Weak hives",
+  "attentionSwarmingTitle": "Hives with swarm signs",
+  "attentionTreatmentRemovalTitle": "Treatments to remove",
+  "attentionQueenlessIntro": "Active hives whose last inspection found no queen and no eggs.",
+  "attentionWeakIntro": "Active hives with strength {max}/5 or lower at their last inspection.",
+  "@attentionWeakIntro": {
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "attentionSwarmingIntro": "Active hives whose last inspection showed swarm signs or swarm cells.",
+  "attentionTreatmentRemovalIntro": "Hives whose strip removal is due and the task isn't done yet.",
+  "attentionEmpty": "No hives in this group.",
+  "attentionLastInspection": "Last inspection: {date}",
+  "@attentionLastInspection": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Oct 24, 2026"
+      }
+    }
+  },
+  "attentionRemovalDue": "Removal due: {date}",
+  "@attentionRemovalDue": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Oct 24, 2026"
+      }
+    }
+  }
 }

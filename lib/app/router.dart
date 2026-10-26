@@ -44,6 +44,8 @@ import 'package:mobil_arici/features/settings/presentation/developer_menu_screen
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_form_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
+import 'package:mobil_arici/features/today/domain/today_rules.dart';
+import 'package:mobil_arici/features/today/presentation/attention_screen.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -53,6 +55,11 @@ const _apiaryId = 'apiaryId';
 const _hiveId = 'hiveId';
 const _mediaId = 'mediaId';
 const _taskId = 'taskId';
+const _attentionKind = 'kind';
+
+/// Yoldaki dikkat grubu; bilinmeyen adda null.
+AttentionKind? _attentionKindOf(GoRouterState state) =>
+    AttentionKind.values.asNameMap()[state.pathParameters[_attentionKind]];
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
@@ -101,6 +108,16 @@ GoRouter router(Ref ref) {
                 path: AppRoutes.today,
                 builder: (context, state) => const TodayScreen(),
                 routes: [
+                  GoRoute(
+                    path: 'attention/:$_attentionKind',
+                    // Bilinmeyen grup (eski ya da bozuk link) Bugün'e düşer.
+                    redirect: (context, state) =>
+                        _attentionKindOf(state) == null
+                        ? AppRoutes.today
+                        : null,
+                    builder: (context, state) =>
+                        AttentionScreen(kind: _attentionKindOf(state)!),
+                  ),
                   // Prod'da bu rotalar hiç yok; derin linkle de açılamaz.
                   if (isDev)
                     GoRoute(

@@ -57,11 +57,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabMore => 'More';
 
   @override
-  String get todayEmptyTitle => 'Nothing for today';
+  String get todayEmptyTitle => 'Start by adding your apiary';
 
   @override
   String get todayEmptyMessage =>
-      'Today\'s tasks, hives that need attention and the weather will gather here.';
+      'Three steps and you\'re ready: add your apiary, create your hives, do your first inspection.';
 
   @override
   String get apiariesEmptyTitle => 'No apiaries yet';
@@ -2626,4 +2626,117 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hiveOpeningUnsuitableCold => 'Too cold';
+
+  @override
+  String get todayGreetingMorning => 'Good morning';
+
+  @override
+  String get todayGreetingAfternoon => 'Good afternoon';
+
+  @override
+  String get todayGreetingEvening => 'Good evening';
+
+  @override
+  String get todayAttentionTitle => 'Needs attention';
+
+  @override
+  String todayAttentionHiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives',
+      one: '1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get todayAttentionNone => 'No hives need attention';
+
+  @override
+  String get todayTasksTitle => 'Today\'s tasks';
+
+  @override
+  String todayTasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks',
+      one: '1 task',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String todaySetupProgress(int done, int total) {
+    return 'Setup $done/$total';
+  }
+
+  @override
+  String get setupStepApiary => 'Add your apiary';
+
+  @override
+  String get setupStepHives => 'Create your hives';
+
+  @override
+  String get setupStepInspection => 'Do your first inspection';
+
+  @override
+  String setupStepDone(String step) {
+    return '$step: done';
+  }
+
+  @override
+  String get attentionQueenless => 'Queenless';
+
+  @override
+  String get attentionWeak => 'Weak';
+
+  @override
+  String get attentionSwarming => 'Swarm signs';
+
+  @override
+  String get attentionTreatmentRemoval => 'Treatment to remove';
+
+  @override
+  String get attentionQueenlessTitle => 'Queenless hives';
+
+  @override
+  String get attentionWeakTitle => 'Weak hives';
+
+  @override
+  String get attentionSwarmingTitle => 'Hives with swarm signs';
+
+  @override
+  String get attentionTreatmentRemovalTitle => 'Treatments to remove';
+
+  @override
+  String get attentionQueenlessIntro =>
+      'Active hives whose last inspection found no queen and no eggs.';
+
+  @override
+  String attentionWeakIntro(int max) {
+    return 'Active hives with strength $max/5 or lower at their last inspection.';
+  }
+
+  @override
+  String get attentionSwarmingIntro =>
+      'Active hives whose last inspection showed swarm signs or swarm cells.';
+
+  @override
+  String get attentionTreatmentRemovalIntro =>
+      'Hives whose strip removal is due and the task isn\'t done yet.';
+
+  @override
+  String get attentionEmpty => 'No hives in this group.';
+
+  @override
+  String attentionLastInspection(String date) {
+    return 'Last inspection: $date';
+  }
+
+  @override
+  String attentionRemovalDue(String date) {
+    return 'Removal due: $date';
+  }
 }

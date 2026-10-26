@@ -361,6 +361,46 @@ void main() {
       );
       expect([for (final t in await liveTasks()) t.sourceId], [kept.groupId]);
     });
+
+    test('görevi açık uygulamalar: arılığın tümünde gruptaki her kovan; '
+        'görev tamamlanınca akıştan düşer', () async {
+      await createHive('101');
+      await createHive('102');
+      final single = await repository.addToHive(
+        await createHive('103'),
+        plan(),
+      );
+      final group = await repository.addToApiary('apiary-1', plan());
+      // Görevsiz (tek seferlik) uygulama sayılmaz.
+      await repository.addToHive(
+        await createHive('104'),
+        TreatmentPlan(
+          drug: _refDrug,
+          dose: 1,
+          startedAt: DateTime.utc(2026, 10, 22, 9),
+          withdrawalDays: 0,
+        ),
+      );
+
+      final ids = repository
+          .watchWithOpenRemoval('org-1')
+          .map((treatments) => {for (final t in treatments) t.id});
+      final expectation = expectLater(
+        ids,
+        emitsInOrder([
+          {single.id, for (final t in group) t.id},
+          {single.id},
+        ]),
+      );
+      await pumpEventQueue();
+      final task = (await TaskRepository(
+        db,
+      ).findBySource(TaskSource.treatment, group.first.groupId)).single;
+      await TaskRepository(db).setCompleted(task, completed: true);
+
+      await expectation;
+      expect(await repository.watchWithOpenRemoval('org-2').first, isEmpty);
+    });
   });
 
   test('kovanın uygulamaları en son başlayan önce; başka kovanınki ve '

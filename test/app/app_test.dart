@@ -18,7 +18,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(TodayScreen), findsOneWidget);
-      expect(find.text('Nothing for today'), findsOneWidget);
+      expect(find.text('Start by adding your apiary'), findsOneWidget);
     });
 
     testWidgets('Türkçe yerelde sekmeler Türkçe', (tester) async {
@@ -40,8 +40,8 @@ void main() {
         ),
         findsOneWidget,
       );
-      // Bugün hem sekme etiketi hem ekran başlığı.
-      expect(find.text('Bugün'), findsNWidgets(2));
+      // Bugün'ün başlığı selam; "Bugün" yalnız sekme etiketi.
+      expect(find.text('Bugün'), findsOneWidget);
     });
 
     testWidgets('pencere başlığı uygulama adı', (tester) async {

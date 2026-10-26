@@ -43,11 +43,20 @@ class InspectionRepository
   /// muayenesi, kovan kimliğine göre; muayenesi olmayan kovan haritada
   /// yok. "En son" [latestByHive] ile aynı. Kovan arılığa taşınınca ya da
   /// arılıktan çıkınca da yeniden yayar.
-  Stream<Map<String, Inspection>> watchLatestByApiary(String apiaryId) {
+  Stream<Map<String, Inspection>> watchLatestByApiary(String apiaryId) =>
+      _watchLatest(db.hives.apiaryId.equals(apiaryId));
+
+  /// İşletmenin (silinmemiş) her kovanının en son muayenesi, kovan
+  /// kimliğine göre; [watchLatestByApiary] gibi.
+  Stream<Map<String, Inspection>> watchLatestByOrg(String orgId) =>
+      _watchLatest(db.hives.orgId.equals(orgId));
+
+  /// [hiveFilter]'a uyan (silinmemiş) kovanların en son muayeneleri.
+  Stream<Map<String, Inspection>> _watchLatest(Expression<bool> hiveFilter) {
     final hives = db.hives;
     final hiveIds = db.selectOnly(hives)
       ..addColumns([hives.id])
-      ..where(hives.apiaryId.equals(apiaryId) & hives.deletedAt.isNull());
+      ..where(hiveFilter & hives.deletedAt.isNull());
     final later = db.alias(table, 'later');
     return selectWhere(
       (t) =>

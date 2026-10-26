@@ -328,6 +328,36 @@ void main() {
 
       await expectation;
     });
+
+    test('işletmenin son muayeneleri: her arılıktan, başka işletme ve '
+        'silinen kovan yok', () async {
+      final yayla = await createHive('1');
+      final ova = await createHive('2', apiaryId: 'ova');
+      final deleted = await createHive('3');
+      final foreign = await hives.create(
+        orgId: 'org-2',
+        number: '9',
+        type: HiveType.langstroth,
+        apiaryId: 'başka',
+      );
+      await inspect(yayla, beeFrames: 3);
+      clock.advance(const Duration(days: 1));
+      final yaylaLatest = await inspect(yayla);
+      final ovaLatest = await inspect(ova);
+      await inspect(deleted);
+      await hives.delete(deleted.id);
+      await repository.add(
+        orgId: 'org-2',
+        hiveId: foreign.id,
+        apiaryId: foreign.apiaryId,
+        values: const InspectionValues(beeFrames: 5),
+      );
+
+      expect(await repository.watchLatestByOrg('org-1').first, {
+        yayla.id: yaylaLatest,
+        ova.id: ovaLatest,
+      });
+    });
   });
 
   test('silme yumuşak; outbox’a silme olarak gider', () async {

@@ -47,6 +47,26 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
     ],
   );
 
+  /// İşletmenin, şerit çıkarma görevi hâlâ açık olan uygulama gruplarındaki
+  /// uygulamaları. Görev tamamlanınca ya da silinince düşer; uygulama ya da
+  /// görev değişince yeniden yayar.
+  Stream<List<Treatment>> watchWithOpenRemoval(String orgId) {
+    final tasks = db.tasks;
+    final openGroups = db.selectOnly(tasks)
+      ..addColumns([tasks.sourceId])
+      ..where(
+        tasks.orgId.equals(orgId) &
+            tasks.source.equalsValue(TaskSource.treatment) &
+            tasks.completedAt.isNull() &
+            tasks.deletedAt.isNull(),
+      );
+    return watchWhere(
+      (t) =>
+          t.orgId.equals(orgId) &
+          coalesce<String>([t.applicationId, t.id]).isInQuery(openGroups),
+    );
+  }
+
   /// Kovanın uygulama gruplarının reçete fotoğrafları, grup kimliğine
   /// (`groupId`) göre, çekilme sırasıyla. Toplu uygulamada foto başka
   /// kovanın uygulamasına bağlı olsa da gruptaki her kovanda görünür.

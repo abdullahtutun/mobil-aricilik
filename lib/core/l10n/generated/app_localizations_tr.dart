@@ -57,11 +57,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tabMore => 'Daha fazla';
 
   @override
-  String get todayEmptyTitle => 'Bugün için bir şey yok';
+  String get todayEmptyTitle => 'Arılığını ekleyerek başla';
 
   @override
   String get todayEmptyMessage =>
-      'Bugünkü görevler, dikkat isteyen kovanlar ve hava durumu burada toplanacak.';
+      'Üç adımda hazırsın: arılığını ekle, kovanlarını oluştur, ilk muayeneyi yap.';
 
   @override
   String get apiariesEmptyTitle => 'Henüz arılık yok';
@@ -2580,4 +2580,115 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get hiveOpeningUnsuitableCold => 'Çok soğuk';
+
+  @override
+  String get todayGreetingMorning => 'Günaydın';
+
+  @override
+  String get todayGreetingAfternoon => 'İyi günler';
+
+  @override
+  String get todayGreetingEvening => 'İyi akşamlar';
+
+  @override
+  String get todayAttentionTitle => 'Dikkat isteyenler';
+
+  @override
+  String todayAttentionHiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get todayAttentionNone => 'Dikkat isteyen kovan yok';
+
+  @override
+  String get todayTasksTitle => 'Bugünün görevleri';
+
+  @override
+  String todayTasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count görev',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String todaySetupProgress(int done, int total) {
+    return 'Kurulum $done/$total';
+  }
+
+  @override
+  String get setupStepApiary => 'Arılığını ekle';
+
+  @override
+  String get setupStepHives => 'Kovanlarını oluştur';
+
+  @override
+  String get setupStepInspection => 'İlk muayeneyi yap';
+
+  @override
+  String setupStepDone(String step) {
+    return '$step: tamamlandı';
+  }
+
+  @override
+  String get attentionQueenless => 'Anasız';
+
+  @override
+  String get attentionWeak => 'Zayıf';
+
+  @override
+  String get attentionSwarming => 'Oğul eğilimli';
+
+  @override
+  String get attentionTreatmentRemoval => 'İlacı çıkarılacak';
+
+  @override
+  String get attentionQueenlessTitle => 'Anasız kovanlar';
+
+  @override
+  String get attentionWeakTitle => 'Zayıf kovanlar';
+
+  @override
+  String get attentionSwarmingTitle => 'Oğul eğilimli kovanlar';
+
+  @override
+  String get attentionTreatmentRemovalTitle => 'İlacı çıkarılacak kovanlar';
+
+  @override
+  String get attentionQueenlessIntro =>
+      'Son muayenesinde ana arı ve yumurta görülmeyen aktif kovanlar.';
+
+  @override
+  String attentionWeakIntro(int max) {
+    return 'Son muayenesine göre gücü $max/5 ya da altında olan aktif kovanlar.';
+  }
+
+  @override
+  String get attentionSwarmingIntro =>
+      'Son muayenesinde oğul belirtisi ya da oğul memesi görülen aktif kovanlar.';
+
+  @override
+  String get attentionTreatmentRemovalIntro =>
+      'Şerit çıkarma günü gelmiş, görevi henüz tamamlanmamış kovanlar.';
+
+  @override
+  String get attentionEmpty => 'Bu grupta kovan yok.';
+
+  @override
+  String attentionLastInspection(String date) {
+    return 'Son muayene: $date';
+  }
+
+  @override
+  String attentionRemovalDue(String date) {
+    return 'Çıkarma günü: $date';
+  }
 }

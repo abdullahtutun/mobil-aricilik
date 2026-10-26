@@ -1,5 +1,6 @@
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/today/domain/today_rules.dart';
 
 /// Rota yolları. Geliştirici rotaları yalnızca dev flavor'da kayıtlıdır.
 abstract final class AppRoutes {
@@ -79,6 +80,9 @@ abstract final class AppRoutes {
   /// Görev ekleme ve düzenleme; Görevler sekmesinin içinde.
   static const taskNew = '/tasks/new';
   static String taskEdit(String id) => '/tasks/$id/edit';
+
+  /// Bugün'deki "Dikkat isteyenler"in bir grubu; Bugün sekmesinin içinde.
+  static String attention(AttentionKind kind) => '/attention/${kind.name}';
 
   static const settings = '/more/settings';
 
