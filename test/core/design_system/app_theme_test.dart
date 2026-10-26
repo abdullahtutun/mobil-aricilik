@@ -74,7 +74,7 @@ void main() {
       final textTheme = AppTheme.light(standard).textTheme;
 
       expect(textTheme.bodyMedium!.fontFamily, 'Inter');
-      expect(textTheme.bodyMedium!.fontSize, 16);
+      expect(textTheme.bodyMedium!.fontSize, 15);
       expect(textTheme.bodyMedium!.color, AppColors.light.textPrimary);
       expect(
         textTheme.displayLarge!.fontFeatures,
@@ -116,13 +116,13 @@ void main() {
       );
     });
 
-    test('saha modlarında gövde 18, standartta 16', () {
+    test('saha modlarında gövde 16, standartta 15', () {
       double? body(AppearanceSettings s) =>
           AppTheme.light(s).extension<AppTypography>()!.body.fontSize;
 
-      expect(body(standard), 16);
-      expect(body(sun), 18);
-      expect(body(glove), 18);
+      expect(body(standard), 15);
+      expect(body(sun), 16);
+      expect(body(glove), 16);
     });
 
     test('güneş ve eldiven birlikte açılabilir', () {

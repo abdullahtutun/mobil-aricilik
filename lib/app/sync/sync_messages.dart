@@ -13,8 +13,8 @@ AppStatus syncIndicatorStatus(SyncIndicator indicator) => switch (indicator) {
 
 /// Senkron durumunun bulut ikonu; renk ve kelimeyle birlikte kullanılır.
 IconData syncIndicatorIcon(SyncIndicator indicator) => switch (indicator) {
-  SyncIndicator.synced => Icons.cloud_done_rounded,
-  SyncIndicator.pending => Icons.cloud_upload_rounded,
+  SyncIndicator.synced => Icons.cloud_done_outlined,
+  SyncIndicator.pending => Icons.cloud_upload_outlined,
   SyncIndicator.error => Icons.sync_problem_rounded,
 };
 

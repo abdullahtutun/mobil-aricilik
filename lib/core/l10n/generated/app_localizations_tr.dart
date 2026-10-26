@@ -384,6 +384,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hiveQueenTitle => 'Ana arı';
 
   @override
+  String hiveQueenStripTitle(String queen) {
+    return 'Ana arı · $queen';
+  }
+
+  @override
+  String hiveStrengthBadge(String level, int strength) {
+    return '$level · $strength/5';
+  }
+
+  @override
+  String get hiveStrengthWeak => 'Zayıf';
+
+  @override
+  String get hiveStrengthMedium => 'Orta';
+
+  @override
+  String get hiveStrengthStrong => 'Güçlü';
+
+  @override
   String get hiveStrengthNone => 'Henüz güç puanı yok';
 
   @override
@@ -483,13 +502,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get tasksEmptyMessage =>
       'Hatırlatıcıların ve yapılacakların tarih sırasıyla burada listelenecek.';
-
-  @override
-  String get moreEmptyTitle => 'Diğer modüller yolda';
-
-  @override
-  String get moreEmptyMessage =>
-      'Hasat, stok, finans, belgeler ve bilgi bankası burada olacak.';
 
   @override
   String get scanTitle => 'Okut';
@@ -1456,6 +1468,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String settingsCountryValue(String name, String code) {
     return '$name · $code';
   }
+
+  @override
+  String get moreSectionApiary => 'Arılık';
+
+  @override
+  String get moreSectionBusiness => 'İşletme';
 
   @override
   String get moreSectionHelp => 'Yardım';
@@ -2643,7 +2661,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get todayAttentionNone => 'Dikkat isteyen kovan yok';
 
   @override
-  String get todayTasksTitle => 'Bugünün görevleri';
+  String get todayTasksTitle => 'Bugün';
 
   @override
   String todayTasksCount(int count) {
@@ -2653,6 +2671,16 @@ class AppLocalizationsTr extends AppLocalizations {
       other: '$count görev',
     );
     return '$_temp0';
+  }
+
+  @override
+  String todayTasksApiaryCount(String apiary, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count görev',
+    );
+    return '$apiary · $_temp0';
   }
 
   @override

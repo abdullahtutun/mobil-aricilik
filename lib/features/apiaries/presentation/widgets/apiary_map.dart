@@ -37,10 +37,7 @@ class ApiaryMap extends StatelessWidget {
     final pinBox = context.sizes.mapPin;
     final located = [
       for (final summary in summaries)
-        if (summary.apiary case Apiary(
-          :final latitude?,
-          :final longitude?,
-        ))
+        if (summary.apiary case Apiary(:final latitude?, :final longitude?))
           (summary: summary, point: LatLng(latitude, longitude)),
     ];
 

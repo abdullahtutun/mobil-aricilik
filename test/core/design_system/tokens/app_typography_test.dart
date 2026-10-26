@@ -14,6 +14,7 @@ List<TextStyle> _styles(AppTypography t) => [
   t.label,
   t.labelSmall,
   t.button,
+  t.navLabel,
 ];
 
 void main() {
@@ -33,11 +34,11 @@ void main() {
           }
         });
 
-        test('başlık 22/28, büyük sayılar 32–40 kalın', () {
-          expect(typography.title.fontSize, 22);
-          expect(typography.headline.fontSize, 28);
-          expect(typography.number.fontSize, 32);
-          expect(typography.numberLarge.fontSize, 40);
+        test('başlık 20/26, büyük sayılar 28–36 kalın', () {
+          expect(typography.title.fontSize, 20);
+          expect(typography.headline.fontSize, 26);
+          expect(typography.number.fontSize, 28);
+          expect(typography.numberLarge.fontSize, 36);
           expect(typography.number.fontWeight, FontWeight.w700);
           expect(typography.numberLarge.fontWeight, FontWeight.w700);
           expect(typography.title.fontWeight, FontWeight.w700);
@@ -61,9 +62,14 @@ void main() {
       });
     }
 
-    test('gövde standartta 16, sahada 18', () {
-      expect(AppTypography.standard.body.fontSize, 16);
-      expect(AppTypography.field.body.fontSize, 18);
+    test('gövde standartta 15, sahada 16', () {
+      expect(AppTypography.standard.body.fontSize, 15);
+      expect(AppTypography.field.body.fontSize, 16);
+    });
+
+    test('alt gezinme etiketi iki ölçekte de 12', () {
+      expect(AppTypography.standard.navLabel.fontSize, 12);
+      expect(AppTypography.field.navLabel.fontSize, 12);
     });
 
     test('küçük etiket küçük gövde boyunda ve kalın', () {
@@ -85,8 +91,8 @@ void main() {
       final start = AppTypography.standard.lerp(AppTypography.field, 0);
       final end = AppTypography.standard.lerp(AppTypography.field, 1);
 
-      expect(start.body.fontSize, 16);
-      expect(end.body.fontSize, 18);
+      expect(start.body.fontSize, 15);
+      expect(end.body.fontSize, 16);
     });
 
     test('lerp null ile kendini döndürür', () {

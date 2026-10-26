@@ -18,7 +18,6 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.chart,
     required this.avatar,
     required this.dayDot,
-    required this.weatherCard,
     required this.mapPin,
   });
 
@@ -36,7 +35,6 @@ class AppSizes extends ThemeExtension<AppSizes> {
     chart: 160,
     avatar: 40,
     dayDot: 6,
-    weatherCard: 176,
     mapPin: 120,
   );
 
@@ -82,10 +80,6 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// Gün şeridinde o gün görev olduğunu gösteren nokta.
   final double dayDot;
 
-  /// Bugün'deki arılık hava kartının eni; 360dp ekranda ikinci kart kenardan
-  /// görünür, kaydırılabildiği anlaşılır.
-  final double weatherCard;
-
   /// Haritadaki arılık pininin kutusu (kare); pin bunun içinde alta
   /// yaslanır, 1.5x yazıda da sığar. Kutunun boş kısmı haritaya geçer.
   final double mapPin;
@@ -105,7 +99,6 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? chart,
     double? avatar,
     double? dayDot,
-    double? weatherCard,
     double? mapPin,
   }) {
     return AppSizes(
@@ -122,7 +115,6 @@ class AppSizes extends ThemeExtension<AppSizes> {
       chart: chart ?? this.chart,
       avatar: avatar ?? this.avatar,
       dayDot: dayDot ?? this.dayDot,
-      weatherCard: weatherCard ?? this.weatherCard,
       mapPin: mapPin ?? this.mapPin,
     );
   }
@@ -148,7 +140,6 @@ class AppSizes extends ThemeExtension<AppSizes> {
       chart: lerpDouble(chart, other.chart, t)!,
       avatar: lerpDouble(avatar, other.avatar, t)!,
       dayDot: lerpDouble(dayDot, other.dayDot, t)!,
-      weatherCard: lerpDouble(weatherCard, other.weatherCard, t)!,
       mapPin: lerpDouble(mapPin, other.mapPin, t)!,
     );
   }

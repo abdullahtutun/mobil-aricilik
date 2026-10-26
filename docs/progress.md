@@ -354,6 +354,22 @@
 - Ekranlar: Ayarlar → Veri → "Kullanım verisi paylaş" anahtarı varsayılan açık. Kapatınca kuyruk siliniyor; yeniden açınca kurulum kimliği yenileniyor. Daha fazla → "Görüş bildir" (`/more/feedback`) ekranında konu chip'leri, mesaj, galeriden ekran görüntüsü (sıkıştırılmış JPEG, `CameraService.pickImage`), "Cihaz ve sürüm bilgisini ekle" (`package_info_plus`, `device_info_plus`; sürüm, sistem, model ve dil) ve çevrimdışı notu var. Görüş yerel kuyruğa yazılıyor. Gönderilmeden kapanırsa ekran görüntüsü siliniyor. Tasarımdaki "Sesle anlat" yok (kullanıcı kararı). iOS'a fotoğraf arşivi izin metni eklendi (TR/EN). Metinler TR/EN ARB'de.
 - Testler: 1237 Flutter testi geçiyor (önceki 1181). Kapsananlar: kurallar, iki kuyruk deposu, gönderim servisi (sahte HTTP), tetikleyiciler, üç olayın yazılması ve analitik kapalıyken yazılmaması, Ayarlar anahtarı. Akış testi Türkçe metinlerle, 360dp'de 1.5x yazı ve eldiven modunda çalışıyor. Denendi: kapanışta dosya silme ya da analitik kapalıyken gönderim bozulunca testler kırıldı. Bilinen sınırlar: Sentry DSN'i ve Sentry projesi henüz yok; gerçek gönderim, galeri seçimi ve Sentry'nin çevrimdışı kuyruğu cihazda denenmedi. Kalıcı hata alan görüş kuyrukta kalıyor ve ekranda görünmüyor. Uygulama kapalıyken kuyruk gönderilmiyor. Okutma olayı yalnız ana Okut ekranında var, hasattaki okutmada yok.
 
+### 2026-10-27 — Yazı ölçeği, alt gezinme, hava kartları ve ekranlar docs/design'a göre
+
+- Yazı ölçeği yaklaşık %10 küçüldü. Gövde standartta 15, sahada 16; başlık 20/26; sayılar 28/36; dev numara 64. Alt gezinme etiketleri için yeni `AppTypography.navLabel` tokenı var, iki modda da 12. Bu sayede "Daha fazla" 360dp'de sığıyor. Sekme ikonları çizgi ikon. Okut butonu zemin halkasıyla barın üst çizgisinden taşıyor ve köşeli okutma çerçevesi gösteriyor.
+- Bugün'deki hava kartları tek arılıkta ekranın enini kaplıyor. Birden çok arılıkta her kart yarım genişlikte; ikiden fazlası yana kayıyor. `AppSizes.weatherCard` kaldırıldı. Kartlarda çizgi ikon ve `number` ölçüsü var.
+- Ekranlar tasarıma yaklaştırıldı:
+  - Sekme köklerinde üst çubuk yok. Senkron durumu yalnız Bugün başlığında, hap olarak görünüyor. Tarih "Salı, 27 Ekim" biçiminde. Tek arılıkta görev başlığı "Bugün · Kızılçam · N görev".
+  - Formlar, kovan kartı, ana arı kartı, ayarlar, raporlar ve görüş bildir kök navigator'da tam ekran açılıyor. Alt gezinme yalnız sekme köklerinde, arılık detayında ve dikkat listesinde kalıyor.
+  - Arılık ve kovan kartındaki seyrek eylemler (etiket, düzenle, varroa, ilaç, besle, taşı, durum) ⋮ menüsüne taşındı. Arılık eylemleri tek satırda yana kayıyor.
+  - Kovan kartında aktif ve puanlı kovanın rozeti "Güçlü · 4/5" biçiminde. Kural `strengthLevel` ile birim testli. Ana arı şeridi tek satır. Ana arı kartında 2×2 bilgi ızgarası ve "Düzenle" var. Daha fazla ekranı Arılık / İşletme (Raporlar) / Yardım bölümlerine ayrıldı.
+- Bileşen değişiklikleri:
+  - Chip'te onay ikonu kaldırıldı; seçim dolgu ve ekran okuyucuyla veriliyor. Sütunlu chip'lerde iç boşluk daraltıldı, kelime bölünmesi düzeldi.
+  - Seçenek grubunun adı büyük harfli (`SectionLabel`).
+  - Sayaç ve durum kartları kenarlıksız ya da soluk kenarlıklı; güneş modunda kenarlık durum renginde kalıyor.
+  - `ListRow` değeri sağa yaslı. Alt sayfalar sayfa zemininde. `SegmentedTabs(expanded:)` eklendi.
+- Testler: tüm Flutter testleri ve `flutter analyze` temiz. Goldenlar yeniden üretildi. Akış testleri ⋮ menüsü, büyük harfli grup adları ve tam ekran rotalara göre güncellendi. Bilinçli farklar: verisi olmayan kısımlar yine yok (harita şeridi, arama, finans/stok modülleri, gece modu). Ayarlar'daki saha modu dörtlüsü yapılmadı; tema ve eldiven ayrı kalıyor. Cihazda denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

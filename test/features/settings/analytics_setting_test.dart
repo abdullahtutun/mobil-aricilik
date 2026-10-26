@@ -45,6 +45,8 @@ void main() {
           )
           .first,
     );
+    await tester.ensureVisible(row);
+    await tester.pumpAndSettle();
     await tester.tap(row);
     await tester.pumpAndSettle();
   }

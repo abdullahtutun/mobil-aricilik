@@ -224,7 +224,8 @@ void main() {
       await seedAttention();
       await _open(tester, db: db);
 
-      expect(find.text('Bugünün görevleri'), findsOneWidget);
+      // Başlık "Bugün"; biri de sekme adı.
+      expect(find.text('Bugün'), findsNWidgets(2));
       expect(find.text('Kovan 104 · şerit çıkar'), findsOneWidget);
 
       // Bugün'deki tek görevin kutusu.
@@ -311,7 +312,7 @@ void main() {
       ]) {
         expect(find.text(label), findsOneWidget);
       }
-      expect(find.text("Today's tasks"), findsOneWidget);
+      expect(find.text('Today'), findsNWidgets(2));
 
       await _tap(tester, find.text('Treatment to remove'));
       expect(find.text('Treatments to remove'), findsOneWidget);
@@ -340,7 +341,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
 
-      await _tap(tester, find.text('Bugünün görevleri'));
+      await tester.scrollUntilVisible(
+        find.text('Kovan 104 · şerit çıkar'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(tester.takeException(), isNull);
 
       container

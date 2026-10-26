@@ -102,8 +102,8 @@ void main() {
 
       expect(find.byType(ApiaryFormScreen), findsOneWidget);
       expect(find.text('New apiary'), findsOneWidget);
-      // Form sekmenin içinde; alt gezinme yerinde.
-      expect(find.byType(AppNavigationBar), findsOneWidget);
+      // Form tam ekran (docs/design "Arılık ekle"); alt gezinme yok.
+      expect(find.byType(AppNavigationBar), findsNothing);
       expect(_button(tester, 'Save').onPressed, isNull);
 
       await _enter(tester, 'Apiary name', 'Yayla');
@@ -236,7 +236,8 @@ void main() {
       container.read(routerProvider).go(AppRoutes.apiary(yayla.id));
       await tester.pumpAndSettle();
       expect(find.text('Kovan yok · Henüz ziyaret yok'), findsOneWidget);
-      expect(find.byTooltip('Düzenle'), findsOneWidget);
+      await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+      expect(find.text('Düzenle'), findsOneWidget);
     });
   });
 
@@ -256,7 +257,8 @@ void main() {
       await _tap(tester, find.text('Yayla'));
       expect(find.byType(ApiaryDetailScreen), findsOneWidget);
 
-      await _tap(tester, find.byTooltip('Edit'));
+      await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+      await _tap(tester, find.text('Edit'));
 
       expect(find.text('Edit apiary'), findsOneWidget);
       expect(find.text('40.00000, 29.00000'), findsOneWidget);

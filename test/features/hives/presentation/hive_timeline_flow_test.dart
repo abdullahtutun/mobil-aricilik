@@ -129,7 +129,6 @@ void main() {
     await inspect(hive, const InspectionValues(beeFrames: 5));
 
     await _open(tester, db: db, location: AppRoutes.hive(ova.id, hive.id));
-    expect(find.text('History'), findsNothing);
     await _scrollToEnd(tester);
 
     expect(find.text('History'), findsOneWidget);
@@ -180,6 +179,7 @@ void main() {
       ['Added to apiary', 'Yayla'],
     ]);
 
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
     await _tap(tester, find.text('Move to another apiary'));
     await _tap(tester, find.widgetWithText(OptionTile, 'Ova'));
     await _scrollToEnd(tester);

@@ -91,7 +91,7 @@ Future<void> _tapAndBuild(
 Finder _button(String label) => find.widgetWithText(BigButton, label);
 
 Finder _field(String label) => find.descendant(
-  of: find.widgetWithText(LabeledField, label),
+  of: find.byWidgetPredicate((w) => w is LabeledField && w.label == label),
   matching: find.byType(TextField),
 );
 

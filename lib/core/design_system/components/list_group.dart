@@ -87,7 +87,8 @@ class ListRow extends StatelessWidget {
             ),
             if (value != null) ...[
               SizedBox(width: spacing.md),
-              Flexible(
+              // Değer sağa yaslı; ad ile yer yarı yarıya paylaşılır.
+              Expanded(
                 child: Text(
                   value,
                   textAlign: TextAlign.end,

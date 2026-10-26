@@ -30,22 +30,32 @@ class WeatherStrip extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(horizontal: spacing.lg),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: spacing.md,
-              children: [
-                for (final item in weather)
-                  SizedBox(
-                    width: context.sizes.weatherCard,
-                    child: ApiaryWeatherCard(weather: item),
-                  ),
-              ],
-            ),
-          ),
+        // Tek arılık ekranın enini kaplar; birden çoksa ikisi yan yana
+        // sığar, üçüncüsünden sonrası yana kaydırılır.
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final available = constraints.maxWidth - 2 * spacing.lg;
+            final cardWidth = weather.length == 1
+                ? available
+                : (available - spacing.md) / 2;
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: spacing.lg),
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: spacing.md,
+                  children: [
+                    for (final item in weather)
+                      SizedBox(
+                        width: cardWidth,
+                        child: ApiaryWeatherCard(weather: item),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(spacing.lg, spacing.sm, spacing.lg, 0),

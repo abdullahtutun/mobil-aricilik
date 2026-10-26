@@ -404,7 +404,10 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(HarvestFormScreen),
-          matching: find.text(text),
+          // Grup adları büyük harfle çizilir; ekran okuyucu adı olduğu gibi.
+          matching: find.byWidgetPredicate(
+            (w) => w is Text && (w.data == text || w.semanticsLabel == text),
+          ),
         ),
         findsOneWidget,
         reason: text,

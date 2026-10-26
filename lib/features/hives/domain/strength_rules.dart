@@ -34,6 +34,17 @@ int? strengthScore(InspectionValues values) {
   return (base - penalty).clamp(minStrength, maxStrength);
 }
 
+/// Kovan kartındaki güç rozetinin kelimesi.
+enum StrengthLevel { weak, medium, strong }
+
+/// Güç puanının kelimesi: 1–2 zayıf, 3 orta, 4–5 güçlü (noktaların
+/// renkleriyle aynı aralıklar).
+StrengthLevel strengthLevel(int score) => switch (score) {
+  <= 2 => StrengthLevel.weak,
+  3 => StrengthLevel.medium,
+  _ => StrengthLevel.strong,
+};
+
 /// Zayıflar önce: puanı olan kovanlar 1'den 5'e, puansızlar ([strengths]'te
 /// olmayanlar) en sonda; eşit puanda numara sırası ("9" < "10"), numara da
 /// aynıysa kimlik. [hives] değişmez, yeni liste döner.

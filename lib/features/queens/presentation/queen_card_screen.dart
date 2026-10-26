@@ -31,11 +31,10 @@ class QueenCardScreen extends ConsumerWidget {
           title: Text(l10n.hiveLabel(hive.number)),
           actions: [
             if (ref.watch(hiveQueenProvider(hiveId)).value != null)
-              IconButton(
-                tooltip: l10n.queenEdit,
-                icon: const Icon(Icons.edit_outlined),
+              TextButton(
                 onPressed: () =>
                     context.go(AppRoutes.hiveQueenEdit(apiaryId, hiveId)),
+                child: Text(l10n.queenEdit),
               ),
           ],
         ),
@@ -52,7 +51,6 @@ class QueenCardScreen extends ConsumerWidget {
             ),
             action: BigButton(
               label: l10n.queenReplace,
-              icon: Icons.swap_horiz_rounded,
               onPressed: () =>
                   context.go(AppRoutes.hiveQueenNew(apiaryId, hiveId)),
             ),
@@ -133,7 +131,8 @@ class _Header extends StatelessWidget {
   }
 }
 
-/// Kaynak, hat, kanat ve anne ana; girilmeyen alan "Girilmedi" yazar.
+/// Kaynak, hat, kanat ve anne ana 2×2 ızgarada (docs/design "Ana arı
+/// kartı"); girilmeyen alan "Girilmedi" yazar.
 class _Details extends ConsumerWidget {
   const new(this.queen);
 
@@ -142,25 +141,47 @@ class _Details extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final line = BorderSide(
+      color: context.colors.divider,
+      width: context.strokes.border,
+    );
 
-    return ListGroup(
-      children: [
-        ListRow(
-          title: l10n.queenSource,
-          value: queen.source?.label(l10n) ?? l10n.queenUnknown,
-        ),
-        ListRow(
-          title: l10n.queenBreedLine,
-          value: queen.breedLine ?? l10n.queenUnknown,
-        ),
-        ListRow(
-          title: l10n.queenWing,
-          value: queen.wingClipped
-              ? l10n.queenWingClipped
-              : l10n.queenWingIntact,
-        ),
-        ListRow(title: l10n.queenMother, value: _mother(l10n, ref)),
-      ],
+    Widget row(Widget start, Widget end) => IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(child: start),
+          VerticalDivider(width: line.width, thickness: line.width),
+          Expanded(child: end),
+        ],
+      ),
+    );
+
+    return AppCard(
+      child: Column(
+        children: [
+          row(
+            _DetailCell(
+              label: l10n.queenSource,
+              value: queen.source?.label(l10n) ?? l10n.queenUnknown,
+            ),
+            _DetailCell(label: l10n.queenMother, value: _mother(l10n, ref)),
+          ),
+          Divider(height: line.width, thickness: line.width),
+          row(
+            _DetailCell(
+              label: l10n.queenBreedLine,
+              value: queen.breedLine ?? l10n.queenUnknown,
+            ),
+            _DetailCell(
+              label: l10n.queenWing,
+              value: queen.wingClipped
+                  ? l10n.queenWingClipped
+                  : l10n.queenWingIntact,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -173,5 +194,30 @@ class _Details extends ConsumerWidget {
     if (mother == null) return l10n.queenMotherUnknown;
     final hive = ref.watch(hivesByQueenProvider).value?[motherId];
     return mother.reference(l10n, hive: hive);
+  }
+}
+
+/// Izgaranın hücresi: küçük büyük harfli ad, altında kalın değer; ekran
+/// okuyucu ikisini birlikte okur.
+class _DetailCell extends StatelessWidget {
+  const new({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return MergeSemantics(
+      child: Padding(
+        padding: EdgeInsets.all(context.spacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionLabel(label),
+            Text(value, style: context.typography.label),
+          ],
+        ),
+      ),
+    );
   }
 }

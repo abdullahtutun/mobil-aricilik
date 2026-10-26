@@ -9,7 +9,7 @@ import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/core/sync/sync_indicator.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 
-/// Sekmelerin üst barındaki senkron durumu (teknik.md §3): eşitlendi, X
+/// Bugün'ün başlığındaki senkron hapı (teknik.md §3): eşitlendi, X
 /// bekliyor ya da hata. Bulut ikonu, renk ve kelime birlikte; dokununca
 /// senkron ekranı açılır.
 class SyncStatusButton extends ConsumerWidget {
@@ -30,12 +30,21 @@ class SyncStatusButton extends ConsumerWidget {
     );
     final label = syncIndicatorLabel(l10n, indicator, pending: pending);
 
-    return TextButton.icon(
+    final color = syncIndicatorStatus(indicator).colorIn(context.colors);
+    return OutlinedButton.icon(
       onPressed: () => context.push(AppRoutes.sync),
-      icon: Icon(
-        syncIndicatorIcon(indicator),
-        color: syncIndicatorStatus(indicator).colorIn(context.colors),
+      style: OutlinedButton.styleFrom(
+        backgroundColor: context.colors.tile,
+        foregroundColor: color,
+        side: BorderSide(
+          color: context.colors.divider,
+          width: context.strokes.focus,
+        ),
+        shape: const StadiumBorder(),
+        textStyle: context.typography.label,
+        padding: EdgeInsets.symmetric(horizontal: context.spacing.lg),
       ),
+      icon: Icon(syncIndicatorIcon(indicator), color: color),
       label: Text(label, semanticsLabel: l10n.syncStatusSemantics(label)),
     );
   }

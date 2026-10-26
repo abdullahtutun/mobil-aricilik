@@ -15,6 +15,8 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
+import 'package:mobil_arici/features/today/domain/today_rules.dart';
+import 'package:mobil_arici/features/today/presentation/attention_screen.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
 import '../../helpers/fake_auth_service.dart';
@@ -71,12 +73,13 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(screen), findsOneWidget, reason: label);
+        // Daha fazla'da boş durum yok; modül karoları var.
         expect(
           find.descendant(
             of: find.byType(screen),
             matching: find.byType(EmptyState),
           ),
-          findsOneWidget,
+          screen == MoreScreen ? findsNothing : findsOneWidget,
           reason: label,
         );
       }
@@ -102,26 +105,27 @@ void main() {
     testWidgets('sekme değişince yığın korunur, yeniden dokunmak başa döner', (
       tester,
     ) async {
-      await _pumpApp(tester);
+      final container = await _pumpApp(tester);
+
+      // Dikkat listesi Bugün sekmesinin içinde, alt gezinme görünür.
+      container
+          .read(routerProvider)
+          .go(AppRoutes.attention(AttentionKind.weak));
+      await tester.pumpAndSettle();
+      expect(find.byType(AttentionScreen), findsOneWidget);
 
       await tester.tap(_navItem('More'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Settings'));
-      await tester.pumpAndSettle();
-      expect(find.byType(SettingsScreen), findsOneWidget);
+      expect(find.byType(AttentionScreen), findsNothing);
 
       await tester.tap(_navItem('Today'));
       await tester.pumpAndSettle();
-      expect(find.byType(SettingsScreen), findsNothing);
+      expect(find.byType(AttentionScreen), findsOneWidget);
 
-      await tester.tap(_navItem('More'));
+      await tester.tap(_navItem('Today'));
       await tester.pumpAndSettle();
-      expect(find.byType(SettingsScreen), findsOneWidget);
-
-      await tester.tap(_navItem('More'));
-      await tester.pumpAndSettle();
-      expect(find.byType(SettingsScreen), findsNothing);
-      expect(find.byType(MoreScreen), findsOneWidget);
+      expect(find.byType(AttentionScreen), findsNothing);
+      expect(find.byType(TodayScreen), findsOneWidget);
     });
 
     testWidgets('dokunma hedefleri saha ölçüsünde, eldivende büyür', (
@@ -225,11 +229,11 @@ void main() {
     testWidgets('menüden seçince menü kapanır, yakında bildirimi çıkar', (
       tester,
     ) async {
-      await _pumpApp(tester);
+      final container = await _pumpApp(tester);
       // Menü kök navigator'da; alttaki sekme yığını kapanmamalı.
-      await tester.tap(_navItem('More'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Settings'));
+      container
+          .read(routerProvider)
+          .go(AppRoutes.attention(AttentionKind.weak));
       await tester.pumpAndSettle();
 
       await tester.longPress(_navItem('Scan'));
@@ -239,7 +243,7 @@ void main() {
 
       expect(find.byType(QuickRecordSheet), findsNothing);
       expect(find.text('This record type is coming soon.'), findsOneWidget);
-      expect(find.byType(SettingsScreen), findsOneWidget);
+      expect(find.byType(AttentionScreen), findsOneWidget);
     });
 
     testWidgets('ekran okuyucu dokunma ve basılı tutma eylemlerini okur', (
@@ -269,10 +273,11 @@ void main() {
       await _openDeepLink(tester, 'mobilarici://more/settings');
 
       expect(find.byType(SettingsScreen), findsOneWidget);
-      expect(
-        tester.getSemantics(_navItem('More')),
-        isSemantics(isSelected: true),
-      );
+      // Ayarlar tam ekran (docs/design); geri tuşu Daha fazla'ya döner.
+      expect(find.byType(AppNavigationBar), findsNothing);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+      expect(find.byType(MoreScreen), findsOneWidget);
     });
 
     testWidgets('hedefi olmayan link Bugün sekmesine düşer', (tester) async {

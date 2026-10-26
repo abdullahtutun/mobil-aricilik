@@ -10,6 +10,7 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
 import 'package:mobil_arici/app/sync/initial_sync_screen.dart';
 import 'package:mobil_arici/app/sync/sync_screen.dart';
+import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
@@ -44,8 +45,11 @@ void main() {
     return container;
   }
 
-  Finder inAppBar(String text) =>
-      find.descendant(of: find.byType(AppBar), matching: find.text(text));
+  /// Bugün'ün başlığındaki senkron hapında [text].
+  Finder inAppBar(String text) => find.descendant(
+    of: find.byType(SyncStatusButton),
+    matching: find.text(text),
+  );
 
   Future<void> tap(WidgetTester tester, Finder finder) async {
     await tester.ensureVisible(finder);
@@ -68,9 +72,9 @@ void main() {
   BigButton syncNowButton(WidgetTester tester) =>
       tester.widget<BigButton>(find.byType(BigButton));
 
-  group('Üst bardaki senkron durumu', () {
-    testWidgets('dört sekme kökünde görünür; dokununca ayrıntı açılır, geri '
-        'tuşu sekmeye döner', (tester) async {
+  group("Bugün'deki senkron hapı", () {
+    testWidgets("yalnız Bugün'de görünür (docs/design); dokununca ayrıntı "
+        'açılır, geri tuşu sekmeye döner', (tester) async {
       await open(tester);
 
       for (final tab in ['Apiaries', 'Tasks', 'More', 'Today']) {
@@ -81,7 +85,11 @@ void main() {
             matching: find.text(tab),
           ),
         );
-        expect(inAppBar('Synced'), findsOneWidget, reason: tab);
+        expect(
+          inAppBar('Synced'),
+          tab == 'Today' ? findsOneWidget : findsNothing,
+          reason: tab,
+        );
       }
       expect(find.bySemanticsLabel('Sync: Synced'), findsOneWidget);
 
@@ -325,7 +333,7 @@ void main() {
     await tester.pumpAndSettle();
     for (final glove in [false, true]) {
       container.read(appearanceProvider.notifier).setGloveMode(enabled: glove);
-      container.read(routerProvider).go(AppRoutes.apiaries);
+      container.read(routerProvider).go(AppRoutes.today);
       await tester.pumpAndSettle();
       expect(inAppBar('Error'), findsOneWidget);
       expect(tester.takeException(), isNull);

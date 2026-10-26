@@ -20,8 +20,8 @@ import 'package:mobil_arici/features/today/presentation/widgets/attention_labels
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_strip.dart';
 
-/// Bugün paneli (teknik.md §9, docs/design "Bugün"): tarih ve selam, üst
-/// barda senkron durumu; arılık hava kartları; "Dikkat isteyenler" (anasız,
+/// Bugün paneli (teknik.md §9, docs/design "Bugün"): tarih ve selam, yanında
+/// senkron durumu; arılık hava kartları; "Dikkat isteyenler" (anasız,
 /// zayıf, oğul eğilimli, ilacı çıkarılacak; dokununca filtreli liste) ve
 /// bugünün görevleri arılığa göre. Kurulum bitmediyse adımları; hiç arılık
 /// yoksa yalnız "İlk arılığını ekle". Hepsi yerel DB'deki mevcut veriden
@@ -57,21 +57,29 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
 
     final padded = EdgeInsets.symmetric(horizontal: spacing.lg);
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          if (isDev)
-            IconButton(
-              icon: const Icon(Icons.developer_mode_rounded),
-              tooltip: l10n.devMenuTitle,
-              onPressed: () => context.go(AppRoutes.developerMenu),
-            ),
-          const SyncStatusButton(),
-        ],
-      ),
       body: ListView(
-        padding: EdgeInsets.only(bottom: spacing.xl),
+        padding: EdgeInsets.only(
+          top: MediaQuery.paddingOf(context).top + spacing.lg,
+          bottom: spacing.xl,
+        ),
         children: [
-          Padding(padding: padded, child: const _Header()),
+          Padding(
+            padding: padded,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Büyük yazıda hap selamı ezmesin; en çok 2/5'i alır.
+                const Expanded(flex: 3, child: _Header()),
+                if (isDev)
+                  IconButton(
+                    icon: const Icon(Icons.developer_mode_rounded),
+                    tooltip: l10n.devMenuTitle,
+                    onPressed: () => context.go(AppRoutes.developerMenu),
+                  ),
+                const Flexible(flex: 2, child: SyncStatusButton()),
+              ],
+            ),
+          ),
           SizedBox(height: spacing.lg),
           const WeatherStrip(),
           // Arılık DB'den hemen gelir; gelmeden boş durum yanıp sönmesin.
@@ -363,6 +371,9 @@ class _TodayTasks extends ConsumerWidget {
     final secondary = context.typography.bodySmall.copyWith(
       color: context.colors.textSecondary,
     );
+    final groups = tasksByApiary(tasks);
+    // Tek arılıkta arılığın adı başlığın yanına çıkar, grup başlığı olmaz.
+    final single = groups.length == 1 ? groups.single : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -380,15 +391,28 @@ class _TodayTasks extends ConsumerWidget {
                 ),
               ),
             ),
-            if (tasks.isNotEmpty)
+            if (single != null)
+              Flexible(
+                child: Text(
+                  l10n.todayTasksApiaryCount(
+                    single.apiaryName ?? l10n.tasksNoApiary,
+                    tasks.length,
+                  ),
+                  textAlign: TextAlign.end,
+                  style: secondary,
+                ),
+              )
+            else if (tasks.isNotEmpty)
               Text(l10n.todayTasksCount(tasks.length), style: secondary),
           ],
         ),
         SizedBox(height: spacing.md),
         if (tasks.isEmpty)
           Text(l10n.tasksEmptyTodayTitle, style: secondary)
+        else if (single != null)
+          TaskGroup(single.tasks, withApiary: false, now: now)
         else
-          for (final (i, group) in tasksByApiary(tasks).indexed) ...[
+          for (final (i, group) in groups.indexed) ...[
             if (i > 0) SizedBox(height: spacing.lg),
             SectionLabel(
               l10n.tasksApiaryGroup(

@@ -85,7 +85,7 @@ void main() {
     await _tap(tester, find.text('Send feedback'));
 
     expect(find.byType(FeedbackScreen), findsOneWidget);
-    expect(find.text('What is it about?'), findsOneWidget);
+    expect(find.text('WHAT IS IT ABOUT?'), findsOneWidget);
   });
 
   testWidgets('mesaj yazılınca Gönder açılır; görüş kuyruğa yazılır', (
@@ -203,7 +203,7 @@ void main() {
     for (final text in [
       'Görüş bildir',
       'Uygulamayı arıcılar için birlikte geliştiriyoruz. Her mesajı okuyoruz.',
-      'Ne hakkında?',
+      'NE HAKKINDA?',
       'Hata',
       'Öneri',
       'Eksik özellik',

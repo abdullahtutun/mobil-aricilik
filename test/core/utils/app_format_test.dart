@@ -46,6 +46,11 @@ void main() {
       expect(en.date(moment), 'Oct 21, 2026');
     });
 
+    test('gün adıyla tarih gün adıyla başlar', () {
+      expect(tr.weekdayDate(moment), 'Çarşamba, 21 Ekim');
+      expect(en.weekdayDate(moment), 'Wednesday, October 21');
+    });
+
     test('kısa tarih yerelin gün/ay sırasıyla yazılır', () {
       expect(tr.shortDate(moment), '21.10.2026');
       expect(en.shortDate(moment), '10/21/2026');

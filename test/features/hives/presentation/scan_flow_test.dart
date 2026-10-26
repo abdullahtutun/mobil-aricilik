@@ -299,10 +299,14 @@ void main() {
       expect(find.text('Label assigned: hive 7'), findsOneWidget);
       expect((await hives.findById(seven.id))!.tagCode, 'TAG-X');
 
+      // Kart tam ekran; Okut için arılığa dönülür.
+      await tester.pageBack();
+      await tester.pumpAndSettle();
       await _openScan(tester);
       await _scan(tester, scanner, 'TAG-X');
       expect(find.byType(HiveCardScreen), findsOneWidget);
-      expect(find.text('Ova'), findsOneWidget);
+      // Üst çubukta ve geçmişteki "arılığa eklendi" satırında.
+      expect(find.text('Ova'), findsWidgets);
       expect(haptics, hasLength(1));
     });
 

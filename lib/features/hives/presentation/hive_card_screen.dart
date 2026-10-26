@@ -16,6 +16,7 @@ import 'package:mobil_arici/features/health/presentation/widgets/treatment_label
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
+import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
@@ -57,10 +58,41 @@ class HiveCardScreen extends ConsumerWidget {
         appBar: AppBar(
           title: _ApiaryTitle(hive.apiaryId),
           actions: [
-            IconButton(
-              tooltip: l10n.hiveEdit,
-              icon: const Icon(Icons.edit_outlined),
-              onPressed: () => context.go(AppRoutes.hiveEdit(apiaryId, hiveId)),
+            // Seyrek eylemler ⋮ menüsünde (docs/design "Kovan kartı").
+            PopupMenuButton<VoidCallback>(
+              icon: const Icon(Icons.more_vert_rounded),
+              onSelected: (action) => action(),
+              itemBuilder: (context) => [
+                if (canInspect(hive)) ...[
+                  PopupMenuItem(
+                    value: () =>
+                        context.go(AppRoutes.hiveVarroa(apiaryId, hiveId)),
+                    child: Text(l10n.hiveVarroaCount),
+                  ),
+                  PopupMenuItem(
+                    value: () =>
+                        context.go(AppRoutes.hiveTreat(apiaryId, hiveId)),
+                    child: Text(l10n.hiveTreat),
+                  ),
+                  PopupMenuItem(
+                    value: () =>
+                        context.go(AppRoutes.hiveFeed(apiaryId, hiveId)),
+                    child: Text(l10n.hiveFeed),
+                  ),
+                ],
+                PopupMenuItem(
+                  value: () => _move(context, ref, hive),
+                  child: Text(l10n.hiveMove),
+                ),
+                PopupMenuItem(
+                  value: () => _changeStatus(context, ref, hive),
+                  child: Text(l10n.hiveChangeStatus),
+                ),
+                PopupMenuItem(
+                  value: () => context.go(AppRoutes.hiveEdit(apiaryId, hiveId)),
+                  child: Text(l10n.hiveEdit),
+                ),
+              ],
             ),
           ],
         ),
@@ -105,47 +137,6 @@ class HiveCardScreen extends ConsumerWidget {
                   const Spacer(),
                 ],
               ),
-              SizedBox(height: spacing.lg),
-              if (canInspect(hive)) ...[
-                BigButton(
-                  variant: BigButtonVariant.secondary,
-                  label: l10n.hiveVarroaCount,
-                  icon: Icons.bug_report_outlined,
-                  onPressed: () =>
-                      context.go(AppRoutes.hiveVarroa(apiaryId, hiveId)),
-                ),
-                SizedBox(height: context.touchTargets.gap),
-                BigButton(
-                  variant: BigButtonVariant.secondary,
-                  label: l10n.hiveTreat,
-                  icon: Icons.medication_outlined,
-                  onPressed: () =>
-                      context.go(AppRoutes.hiveTreat(apiaryId, hiveId)),
-                ),
-                SizedBox(height: context.touchTargets.gap),
-                BigButton(
-                  variant: BigButtonVariant.secondary,
-                  label: l10n.hiveFeed,
-                  icon: Icons.local_drink_outlined,
-                  onPressed: () =>
-                      context.go(AppRoutes.hiveFeed(apiaryId, hiveId)),
-                ),
-                SizedBox(height: context.touchTargets.gap),
-              ],
-              BigButton(
-                variant: BigButtonVariant.secondary,
-                label: l10n.hiveMove,
-                icon: Icons.local_shipping_outlined,
-                onPressed: () => _move(context, ref, hive),
-              ),
-              SizedBox(height: context.touchTargets.gap),
-              BigButton(
-                variant: BigButtonVariant.secondary,
-                label: l10n.hiveChangeStatus,
-                icon: Icons.swap_horiz_rounded,
-                onPressed: () => _changeStatus(context, ref, hive),
-              ),
-              // Geçmiş uzadıkça eylemler aşağı itilmesin diye en altta.
               SizedBox(height: spacing.xl),
               HiveTimelineSection(hiveId: hiveId),
             ],
@@ -249,7 +240,9 @@ class _ApiaryTitle extends ConsumerWidget {
   }
 }
 
-/// "KOVAN", altında dev numara; sağda durum rozeti, altında güç puanı.
+/// "KOVAN", altında dev numara; sağda rozet: aktif ve puanlı kovanda güç
+/// ("Güçlü · 4/5"), öbürlerinde durum. Aktif kovanın puanı yoksa nedeni
+/// altta yazar.
 class _Header extends ConsumerWidget {
   const new(this.hive);
 
@@ -260,6 +253,9 @@ class _Header extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final strength = ref.watch(hiveStrengthProvider(hive.id));
+    // Aktif olmayan kovanın eski puanı yanıltır; ızgaradaki gibi
+    // gösterilmez. Puan yüklenirken de boş kalır, "yok" yanıp sönmesin.
+    final score = hive.status.isCounted ? strength.value : null;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -293,62 +289,57 @@ class _Header extends ConsumerWidget {
               ),
             ),
             SizedBox(width: spacing.md),
-            Padding(
-              padding: EdgeInsets.only(bottom: spacing.sm),
-              child: StatusBadge(
-                status: hive.status.appStatus,
-                label: hive.status.label(l10n),
+            // Büyük yazıda rozet numaranın yerini almasın; en çok yarısı.
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: spacing.sm),
+                child: score == null
+                    ? StatusBadge(
+                        status: hive.status.appStatus,
+                        label: hive.status.label(l10n),
+                      )
+                    : _StrengthBadge(score),
               ),
             ),
           ],
         ),
-        // Aktif olmayan kovanın eski puanı yanıltır; ızgaradaki gibi
-        // gösterilmez. Puan yüklenirken de boş kalır, "yok" yanıp sönmesin.
-        if (hive.status.isCounted && strength.hasValue) ...[
+        if (hive.status.isCounted && strength.hasValue && score == null) ...[
           SizedBox(height: spacing.sm),
-          _Strength(strength.value),
+          Text(
+            l10n.hiveStrengthNone,
+            style: context.typography.body.copyWith(
+              color: context.colors.textSecondary,
+            ),
+          ),
         ],
       ],
     );
   }
 }
 
-/// Güç puanı: noktalar ve kelimesi ("Güç 3/5"); puan yoksa nedenini yazar.
-class _Strength extends StatelessWidget {
+/// Güç rozeti: kelime ve puan ("Zayıf · 2/5"), noktalarla aynı renkte.
+class _StrengthBadge extends StatelessWidget {
   const new(this.strength);
 
-  final int? strength;
+  final int strength;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
-    final strength = this.strength;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        StrengthDots(strength: strength),
-        SizedBox(width: context.spacing.sm),
-        Flexible(
-          child: strength == null
-              ? Text(
-                  l10n.hiveStrengthNone,
-                  style: context.typography.body.copyWith(
-                    color: colors.textSecondary,
-                  ),
-                )
-              : Text(
-                  l10n.hiveTileStrength(strength),
-                  style: context.typography.label,
-                ),
-        ),
-      ],
+    final (status, word) = switch (strengthLevel(strength)) {
+      StrengthLevel.weak => (AppStatus.warning, l10n.hiveStrengthWeak),
+      StrengthLevel.medium => (AppStatus.info, l10n.hiveStrengthMedium),
+      StrengthLevel.strong => (AppStatus.good, l10n.hiveStrengthStrong),
+    };
+    return StatusBadge(
+      status: status,
+      label: l10n.hiveStrengthBadge(word, strength),
     );
   }
 }
 
-/// Ana arı şeridi: işaret rengi, "2025 · Mavi" ve "1 yaşında · Kafkas";
+/// Ana arı şeridi: işaret rengi, "Ana arı · 2025 · Mavi" ve "1 yaşında ·
+/// Kafkas";
 /// dokununca ana arı kartı açılır. Kovanda ana yoksa dokunmak yeni ana
 /// verir.
 class _QueenStrip extends ConsumerWidget {
@@ -383,7 +374,7 @@ class _QueenStrip extends ConsumerWidget {
             children: [
               QueenMarkCircle(
                 markColor: value?.markColor,
-                dimension: context.touchTargets.minimum,
+                dimension: context.sizes.avatar,
               ),
               SizedBox(width: spacing.md),
               Expanded(
@@ -391,13 +382,9 @@ class _QueenStrip extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.hiveQueenTitle,
-                      style: context.typography.bodySmall.copyWith(
-                        color: colors.textSecondary,
+                      l10n.hiveQueenStripTitle(
+                        value?.title(l10n) ?? l10n.hiveQueenNone,
                       ),
-                    ),
-                    Text(
-                      value?.title(l10n) ?? l10n.hiveQueenNone,
                       style: context.typography.label,
                     ),
                     if (detail != null)

@@ -224,7 +224,8 @@ void main() {
       final format = DateFormat.yMMMd('en');
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
-      await _tap(tester, _button('Apply treatment'));
+      await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+      await _tap(tester, find.text('Apply treatment'));
       expect(find.byType(TreatmentFormScreen), findsOneWidget);
       expect(find.text('Hive 101'), findsOneWidget);
       expect(find.text('Whole apiary · 2'), findsOneWidget);
@@ -246,7 +247,9 @@ void main() {
 
       await tester.enterText(
         find.descendant(
-          of: find.widgetWithText(LabeledField, 'Batch no'),
+          of: find.byWidgetPredicate(
+            (w) => w is LabeledField && w.label == 'Batch no',
+          ),
           matching: find.byType(TextField),
         ),
         '24-118',
@@ -352,7 +355,9 @@ void main() {
       expect(_enabled(tester, 'Add drug'), isFalse);
       await tester.enterText(
         find.descendant(
-          of: find.widgetWithText(LabeledField, 'Name'),
+          of: find.byWidgetPredicate(
+            (w) => w is LabeledField && w.label == 'Name',
+          ),
           matching: find.byType(TextField),
         ),
         'Thymovar',
@@ -778,7 +783,8 @@ void main() {
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    await _tap(tester, _button('İlaç uygula'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('İlaç uygula'));
     expect(find.text('İlaç uygulaması'), findsOneWidget);
     expect(find.text('Kovan 101'), findsOneWidget);
     expect(find.text('Arılığın tümü · 2'), findsOneWidget);
@@ -823,7 +829,7 @@ void main() {
     expect(find.text('KALAN'), findsOneWidget);
     expect(find.text('42 gün'), findsOneWidget);
     expect(find.text('UYGULAMA'), findsOneWidget);
-    expect(find.text('Yine de kaydetmek için neden seç'), findsOneWidget);
+    expect(find.text('YİNE DE KAYDETMEK İÇİN NEDEN SEÇ'), findsOneWidget);
     expect(find.text('İlaç erken çıkarıldı'), findsOneWidget);
     expect(find.text('Kat satılmayacak (kendi kullanım/yem)'), findsOneWidget);
     expect(_button('Vazgeç, kat verme'), findsOneWidget);

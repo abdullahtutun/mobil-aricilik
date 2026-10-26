@@ -34,72 +34,86 @@ class ApiaryDetailScreen extends ConsumerWidget {
     final hasHives = hives.isNotEmpty;
     final canTour = hives.any(canInspect);
     final touring = ref.watch(currentTourProvider).value?.apiaryId == apiaryId;
+    final padded = EdgeInsets.symmetric(horizontal: spacing.lg);
 
     return switch (ref.watch(apiarySummaryProvider(apiaryId))) {
       AsyncData(value: final summary?) => Scaffold(
         appBar: AppBar(
           actions: [
-            if (hasHives)
-              IconButton(
-                tooltip: l10n.hiveLabelsTitle,
-                icon: const Icon(Icons.qr_code_2_rounded),
-                onPressed: () => context.go(AppRoutes.hiveLabels(apiaryId)),
-              ),
-            IconButton(
-              tooltip: l10n.apiaryEdit,
-              icon: const Icon(Icons.edit_outlined),
-              onPressed: () => context.go(AppRoutes.apiaryEdit(apiaryId)),
+            // Seyrek eylemler ⋮ menüsünde (docs/design "Arılık detayı").
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert_rounded),
+              onSelected: context.go,
+              itemBuilder: (context) => [
+                if (hasHives)
+                  PopupMenuItem(
+                    value: AppRoutes.hiveLabels(apiaryId),
+                    child: Text(l10n.hiveLabelsTitle),
+                  ),
+                PopupMenuItem(
+                  value: AppRoutes.apiaryEdit(apiaryId),
+                  child: Text(l10n.apiaryEdit),
+                ),
+              ],
             ),
           ],
         ),
         body: ListView(
-          padding: EdgeInsets.all(spacing.lg),
+          padding: EdgeInsets.symmetric(vertical: spacing.lg),
           children: [
-            _Header(summary),
+            Padding(padding: padded, child: _Header(summary)),
             // Kovan yokken boş durumun kendi butonu var.
             if (hasHives) ...[
               SizedBox(height: spacing.lg),
-              Wrap(
-                spacing: context.touchTargets.gap,
-                runSpacing: context.touchTargets.gap,
-                children: [
-                  if (canTour)
+              // Eylemler tek satırda; sığmayanlar yana kayar.
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: padded,
+                child: Row(
+                  spacing: context.touchTargets.gap,
+                  children: [
+                    if (canTour)
+                      BigButton(
+                        label: touring
+                            ? l10n.apiaryTourResume
+                            : l10n.apiaryTourStart,
+                        icon: Icons.play_arrow_rounded,
+                        expanded: false,
+                        onPressed: () => openApiaryTour(context, ref, apiaryId),
+                      ),
                     BigButton(
-                      label: touring
-                          ? l10n.apiaryTourResume
-                          : l10n.apiaryTourStart,
-                      icon: Icons.route_rounded,
+                      variant: canTour
+                          ? BigButtonVariant.secondary
+                          : BigButtonVariant.primary,
+                      label: l10n.hivesAdd,
                       expanded: false,
-                      onPressed: () => openApiaryTour(context, ref, apiaryId),
+                      onPressed: () => openAddHives(context, apiaryId),
                     ),
-                  BigButton(
-                    variant: canTour
-                        ? BigButtonVariant.secondary
-                        : BigButtonVariant.primary,
-                    label: l10n.hivesAdd,
-                    icon: Icons.add_rounded,
-                    expanded: false,
-                    onPressed: () => openAddHives(context, apiaryId),
-                  ),
-                  BigButton(
-                    variant: BigButtonVariant.secondary,
-                    label: l10n.apiaryHarvest,
-                    icon: Icons.inventory_2_outlined,
-                    expanded: false,
-                    onPressed: () =>
-                        context.go(AppRoutes.apiaryHarvest(apiaryId)),
-                  ),
-                ],
+                    BigButton(
+                      variant: BigButtonVariant.secondary,
+                      label: l10n.apiaryHarvest,
+                      expanded: false,
+                      onPressed: () =>
+                          context.go(AppRoutes.apiaryHarvest(apiaryId)),
+                    ),
+                  ],
+                ),
               ),
             ],
             SizedBox(height: spacing.xl),
-            ApiaryHivesSection(apiaryId: apiaryId),
+            Padding(
+              padding: padded,
+              child: ApiaryHivesSection(apiaryId: apiaryId),
+            ),
             // Sahada önce kovanlar görünsün; grafik altta.
             if (hasHives) ...[
               SizedBox(height: spacing.xl),
-              ApiaryVarroaCard(
-                apiaryId: apiaryId,
-                title: l10n.varroaChartTitle(l10n.hiveVarroa),
+              Padding(
+                padding: padded,
+                child: ApiaryVarroaCard(
+                  apiaryId: apiaryId,
+                  title: l10n.varroaChartTitle(l10n.hiveVarroa),
+                ),
               ),
             ],
           ],

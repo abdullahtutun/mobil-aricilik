@@ -17,11 +17,15 @@ class SegmentedTabs<T> extends StatelessWidget {
     required this.selected,
     required this.onChanged,
     super.key,
+    this.expanded = false,
   });
 
   final List<SegmentOption<T>> options;
   final T selected;
   final ValueChanged<T> onChanged;
+
+  /// Satırın tamamını kaplar, segmentler eşit genişlikte (Görevler).
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +47,12 @@ class SegmentedTabs<T> extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(spacing.xs),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
           children: [
             // Dar ekranda ve büyük yazıda segment taşmaz, yazısı sarar.
             for (final option in options)
               Flexible(
+                fit: expanded ? FlexFit.tight : FlexFit.loose,
                 child: _Segment(
                   label: option.label,
                   selected: option.value == selected,

@@ -5,7 +5,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Alt gezinme: iki yanda ikişer sekme, ortada başparmağın altında büyük
 /// yuvarlak Okut butonu. Seçili sekmenin ikonu kart zemininde bir hapın
-/// içinde, ikon dolu ve etiket koyu bal; seçim yalnız renkle verilmez.
+/// içinde, etiket koyu bal ve kalın; seçim yalnız renkle verilmez.
 class AppNavigationBar extends StatelessWidget {
   const new({
     required this.currentTab,
@@ -28,6 +28,13 @@ class AppNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final spacing = context.spacing;
+    final halo = spacing.xs;
+    // Okut, çevresindeki zemin halkasıyla barın üst çizgisinden taşar.
+    final overhang =
+        context.touchTargets.fieldLarge +
+        2 * halo -
+        context.touchTargets.field -
+        spacing.sm;
 
     Widget tab(AppTab tab) => Expanded(
       child: _TabItem(
@@ -37,32 +44,43 @@ class AppNavigationBar extends StatelessWidget {
       ),
     );
 
-    return Material(
-      color: colors.surface,
-      shape: Border(
-        top: BorderSide(color: colors.divider, width: context.strokes.border),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: spacing.xs,
-            vertical: spacing.sm,
-          ),
-          child: Row(
-            children: [
-              tab(AppTab.today),
-              tab(AppTab.apiaries),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: spacing.sm),
-                child: _ScanButton(onTap: onScan, onLongPress: onQuickRecord),
+    return Stack(
+      children: [
+        Positioned.fill(
+          top: overhang,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.surface,
+              border: Border(
+                top: BorderSide(
+                  color: colors.divider,
+                  width: context.strokes.border,
+                ),
               ),
-              tab(AppTab.tasks),
-              tab(AppTab.more),
-            ],
+            ),
           ),
         ),
-      ),
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(spacing.xs, 0, spacing.xs, spacing.sm),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                tab(AppTab.today),
+                tab(AppTab.apiaries),
+                _ScanButton(
+                  halo: halo,
+                  onTap: onScan,
+                  onLongPress: onQuickRecord,
+                ),
+                tab(AppTab.tasks),
+                tab(AppTab.more),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -80,8 +98,10 @@ class _TabItem extends StatelessWidget {
     final spacing = context.spacing;
     final foreground = selected ? colors.primary : colors.textSecondary;
     final typography = context.typography;
-    final labelStyle = (selected ? typography.labelSmall : typography.bodySmall)
-        .copyWith(color: foreground);
+    final labelStyle = typography.navLabel.copyWith(
+      color: foreground,
+      fontWeight: selected ? FontWeight.w700 : null,
+    );
 
     return Semantics(
       container: true,
@@ -107,7 +127,7 @@ class _TabItem extends StatelessWidget {
                     vertical: spacing.xs,
                   ),
                   child: Icon(
-                    selected ? tab.selectedIcon : tab.icon,
+                    tab.icon,
                     size: context.sizes.icon,
                     color: foreground,
                   ),
@@ -129,11 +149,17 @@ class _TabItem extends StatelessWidget {
   }
 }
 
-/// Dokun: okut. Basılı tut: hızlı kayıt. Koyu bal daire, içinde okutma
-/// ikonu; adı ekran okuyucuya gider. Tooltip yok; uzun basmayla çakışır.
+/// Dokun: okut. Basılı tut: hızlı kayıt. Zemin halkalı koyu bal daire,
+/// içinde okutma çerçevesi; adı ekran okuyucuya gider. Tooltip yok; uzun
+/// basmayla çakışır.
 class _ScanButton extends StatelessWidget {
-  const new({required this.onTap, required this.onLongPress});
+  const new({
+    required this.halo,
+    required this.onTap,
+    required this.onLongPress,
+  });
 
+  final double halo;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
 
@@ -142,25 +168,52 @@ class _ScanButton extends StatelessWidget {
     final colors = context.colors;
     final l10n = AppLocalizations.of(context);
     final size = context.touchTargets.fieldLarge;
+    final iconSize = context.sizes.icon;
 
-    return Semantics(
-      container: true,
-      button: true,
-      onLongPressHint: l10n.scanLongPressHint,
-      child: Material(
-        color: colors.primary,
-        shape: const CircleBorder(),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          onLongPress: onLongPress,
-          child: SizedBox.square(
-            dimension: size,
-            child: Icon(
-              Icons.qr_code_scanner_rounded,
-              size: context.sizes.icon,
-              color: colors.onPrimary,
-              semanticLabel: l10n.scanTitle,
+    return DecoratedBox(
+      decoration: BoxDecoration(color: colors.surface, shape: BoxShape.circle),
+      child: Padding(
+        padding: EdgeInsets.all(halo),
+        child: Semantics(
+          container: true,
+          button: true,
+          onLongPressHint: l10n.scanLongPressHint,
+          child: Material(
+            color: colors.primary,
+            shape: const CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: onTap,
+              onLongPress: onLongPress,
+              child: SizedBox.square(
+                dimension: size,
+                // Köşeli çerçeve ve ortasında okuma çizgisi.
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Icon(
+                      Icons.crop_free_rounded,
+                      size: iconSize,
+                      color: colors.onPrimary,
+                      semanticLabel: l10n.scanTitle,
+                    ),
+                    IgnorePointer(
+                      child: SizedBox(
+                        width: iconSize / 2,
+                        height: context.strokes.focus,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: colors.onPrimary,
+                            borderRadius: BorderRadius.circular(
+                              context.radii.pill,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

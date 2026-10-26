@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
-import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
@@ -39,7 +38,12 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     final tasks = ref.watch(openTasksProvider);
 
     final header = Padding(
-      padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.md),
+      padding: EdgeInsets.fromLTRB(
+        spacing.lg,
+        spacing.lg,
+        spacing.lg,
+        spacing.md,
+      ),
       child: Row(
         children: [
           Expanded(
@@ -55,7 +59,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
             style: IconButton.styleFrom(
               backgroundColor: context.colors.primary,
               foregroundColor: context.colors.onPrimary,
-              fixedSize: Size.square(context.touchTargets.fieldLarge),
+              fixedSize: Size.square(context.touchTargets.field),
               iconSize: context.sizes.icon,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(context.radii.card),
@@ -67,57 +71,60 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(actions: const [SyncStatusButton()]),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          header,
-          Expanded(
-            child: switch (tasks) {
-              AsyncData(value: []) => EmptyState(
-                icon: Icons.assignment_rounded,
-                title: l10n.tasksEmptyTitle,
-                message: l10n.tasksEmptyMessage,
-                actionLabel: l10n.tasksAdd,
-                onAction: () => context.go(AppRoutes.taskNew),
-                centered: true,
-              ),
-              AsyncData(:final value) => ListView(
-                padding: EdgeInsets.fromLTRB(
-                  spacing.lg,
-                  0,
-                  spacing.lg,
-                  spacing.lg,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            header,
+            Expanded(
+              child: switch (tasks) {
+                AsyncData(value: []) => EmptyState(
+                  icon: Icons.assignment_rounded,
+                  title: l10n.tasksEmptyTitle,
+                  message: l10n.tasksEmptyMessage,
+                  actionLabel: l10n.tasksAdd,
+                  onAction: () => context.go(AppRoutes.taskNew),
+                  centered: true,
                 ),
-                children: [
-                  SegmentedTabs<TasksView>(
-                    options: [
-                      SegmentOption(
-                        value: TasksView.today,
-                        label: l10n.tasksTabToday,
-                      ),
-                      SegmentOption(
-                        value: TasksView.week,
-                        label: l10n.tasksTabWeek,
-                      ),
-                      SegmentOption(
-                        value: TasksView.apiary,
-                        label: l10n.tasksTabApiary,
-                      ),
-                    ],
-                    selected: _view,
-                    onChanged: (view) => setState(() => _view = view),
+                AsyncData(:final value) => ListView(
+                  padding: EdgeInsets.fromLTRB(
+                    spacing.lg,
+                    0,
+                    spacing.lg,
+                    spacing.lg,
                   ),
-                  SizedBox(height: spacing.lg),
-                  ..._content(context, value),
-                ],
-              ),
-              AsyncError() => Center(child: Text(l10n.tasksLoadError)),
-              // Yerel DB'den okunuyor; hemen gelir.
-              AsyncValue() => const SizedBox.shrink(),
-            },
-          ),
-        ],
+                  children: [
+                    SegmentedTabs<TasksView>(
+                      expanded: true,
+                      options: [
+                        SegmentOption(
+                          value: TasksView.today,
+                          label: l10n.tasksTabToday,
+                        ),
+                        SegmentOption(
+                          value: TasksView.week,
+                          label: l10n.tasksTabWeek,
+                        ),
+                        SegmentOption(
+                          value: TasksView.apiary,
+                          label: l10n.tasksTabApiary,
+                        ),
+                      ],
+                      selected: _view,
+                      onChanged: (view) => setState(() => _view = view),
+                    ),
+                    SizedBox(height: spacing.lg),
+                    ..._content(context, value),
+                  ],
+                ),
+                AsyncError() => Center(child: Text(l10n.tasksLoadError)),
+                // Yerel DB'den okunuyor; hemen gelir.
+                AsyncValue() => const SizedBox.shrink(),
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

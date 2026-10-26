@@ -204,6 +204,11 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('TOMORROW · 1'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Remove strips'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('Remove strips'), findsOneWidget);
     expect(find.text('Kızılçam · treatment'), findsOneWidget);
     expect(find.text('Bal kavanozu al'), findsNothing);
@@ -472,6 +477,11 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('YARIN · 1'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Şeritleri çıkar'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('Şeritleri çıkar'), findsOneWidget);
     expect(find.text('Kızılçam · ilaç'), findsOneWidget);
 

@@ -230,20 +230,19 @@ void main() {
   });
 
   group('Kovan kartı', () {
-    /// Kartın başlığındaki güç noktaları.
-    Finder cardDots() => find.descendant(
+    /// Kartın başlığındaki rozet.
+    Finder cardBadge(String label) => find.descendant(
       of: find.byType(HiveCardScreen),
-      matching: find.byType(StrengthDots),
+      matching: find.widgetWithText(StatusBadge, label),
     );
 
-    testWidgets('son muayenenin puanı noktalar ve kelimesiyle; yeni '
+    testWidgets('son muayenenin puanı kelimesi ve puanıyla rozette; yeni '
         'muayenede kendiliğinden güncellenir', (tester) async {
       final hive = await createHive('101');
       await inspect(hive, const InspectionValues(beeFrames: 9));
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
-      expect(find.text('Strength 5 of 5'), findsOneWidget);
-      expect(tester.widget<StrengthDots>(cardDots()).strength, 5);
+      expect(cardBadge('Strong · 5/5'), findsOneWidget);
       expect(find.text('No strength score yet'), findsNothing);
 
       await tester.runAsync(
@@ -254,8 +253,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Strength 1 of 5'), findsOneWidget);
-      expect(tester.widget<StrengthDots>(cardDots()).strength, 1);
+      expect(cardBadge('Weak · 1/5'), findsOneWidget);
+      expect(
+        tester.widget<StatusBadge>(cardBadge('Weak · 1/5')).status,
+        AppStatus.warning,
+      );
     });
 
     testWidgets('muayene ya da arılı çerçeve yoksa "puan yok" yazar', (
@@ -269,7 +271,7 @@ void main() {
       );
 
       expect(find.text('No strength score yet'), findsOneWidget);
-      expect(tester.widget<StrengthDots>(cardDots()).strength, isNull);
+      expect(cardBadge('Active'), findsOneWidget);
 
       await tester.runAsync(
         () => inspect(
@@ -291,8 +293,7 @@ void main() {
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
       expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
-      expect(cardDots(), findsNothing);
-      expect(find.text('Strength 5 of 5'), findsNothing);
+      expect(cardBadge('Strong · 5/5'), findsNothing);
       expect(find.text('No strength score yet'), findsNothing);
     });
   });
@@ -322,7 +323,7 @@ void main() {
     expect(find.bySemanticsLabel(RegExp('Güç 5/5')), findsOneWidget);
 
     await _tap(tester, find.text('2'));
-    expect(find.text('Güç 1/5'), findsOneWidget);
+    expect(find.text('Zayıf · 1/5'), findsOneWidget);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {

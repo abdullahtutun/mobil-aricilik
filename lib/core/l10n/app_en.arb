@@ -283,6 +283,31 @@
     }
   },
   "hiveQueenTitle": "Queen",
+  "hiveQueenStripTitle": "Queen · {queen}",
+  "@hiveQueenStripTitle": {
+    "placeholders": {
+      "queen": {
+        "type": "String",
+        "example": "2025 · Blue"
+      }
+    }
+  },
+  "hiveStrengthBadge": "{level} · {strength}/5",
+  "@hiveStrengthBadge": {
+    "placeholders": {
+      "level": {
+        "type": "String",
+        "example": "Strong"
+      },
+      "strength": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "hiveStrengthWeak": "Weak",
+  "hiveStrengthMedium": "Medium",
+  "hiveStrengthStrong": "Strong",
   "hiveStrengthNone": "No strength score yet",
   "@hiveStrengthNone": {
     "description": "On the hive card when there's no inspection, or the last one has no count of frames with bees."
@@ -424,8 +449,6 @@
   },
   "tasksEmptyTitle": "No tasks yet",
   "tasksEmptyMessage": "Your reminders and to-dos will be listed here by date.",
-  "moreEmptyTitle": "More modules on the way",
-  "moreEmptyMessage": "Harvest, stock, finance, documents and the knowledge base will live here.",
 
   "scanTitle": "Scan",
   "@scanTitle": {
@@ -1066,6 +1089,8 @@
     }
   },
 
+  "moreSectionApiary": "Apiary",
+  "moreSectionBusiness": "Business",
   "moreSectionHelp": "Help",
   "@moreSectionHelp": {
     "description": "Section title on the More tab above Settings and Sync."
@@ -2099,10 +2124,23 @@
     }
   },
   "todayAttentionNone": "No hives need attention",
-  "todayTasksTitle": "Today's tasks",
+  "todayTasksTitle": "Today",
   "todayTasksCount": "{count, plural, =1{1 task} other{{count} tasks}}",
   "@todayTasksCount": {
     "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "todayTasksApiaryCount": "{apiary} · {count, plural, =1{1 task} other{{count} tasks}}",
+  "@todayTasksApiaryCount": {
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Kızılçam"
+      },
       "count": {
         "type": "int",
         "example": "3"

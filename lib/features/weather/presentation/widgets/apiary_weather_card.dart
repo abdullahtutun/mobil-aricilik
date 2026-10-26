@@ -53,13 +53,13 @@ class ApiaryWeatherCard extends ConsumerWidget {
                 children: [
                   Icon(
                     _icon(hour.condition, advice),
-                    size: context.sizes.illustrationIcon,
+                    size: context.sizes.icon,
                     color: colors.primary,
                   ),
                   SizedBox(width: spacing.sm),
                   if (temperature != null)
                     Flexible(
-                      child: Text(temperature, style: typography.numberLarge),
+                      child: Text(temperature, style: typography.number),
                     ),
                 ],
               ),
@@ -95,13 +95,13 @@ class ApiaryWeatherCard extends ConsumerWidget {
   ) {
     if (advice?.concern == WeatherConcern.wind) return Icons.air_rounded;
     return switch (condition) {
-      WeatherCondition.clear => Icons.wb_sunny_rounded,
-      WeatherCondition.partlyCloudy => Icons.wb_cloudy_rounded,
-      WeatherCondition.cloudy => Icons.cloud_rounded,
+      WeatherCondition.clear => Icons.wb_sunny_outlined,
+      WeatherCondition.partlyCloudy => Icons.wb_cloudy_outlined,
+      WeatherCondition.cloudy => Icons.cloud_outlined,
       WeatherCondition.fog => Icons.foggy,
-      WeatherCondition.rain => Icons.water_drop_rounded,
+      WeatherCondition.rain => Icons.water_drop_outlined,
       WeatherCondition.snow => Icons.ac_unit_rounded,
-      WeatherCondition.thunder => Icons.thunderstorm_rounded,
+      WeatherCondition.thunder => Icons.thunderstorm_outlined,
       null => Icons.thermostat_rounded,
     };
   }

@@ -114,12 +114,23 @@ void main() {
       );
     });
 
-    testWidgets('seçili chip renk dışında onay ikonuyla da ayrılır', (
-      tester,
-    ) async {
-      await tapChip(tester, 'A', selected: {'a'}, multiSelect: false);
+    testWidgets('seçili chip dolgulu, onay ikonu yok; ekran okuyucu seçili '
+        'der', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          ChoiceChipGroup(
+            options: options,
+            selected: const {'a'},
+            onChanged: (_) {},
+          ),
+        ),
+      );
 
-      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.check_rounded), findsNothing);
+      expect(
+        tester.getSemantics(find.text('A')),
+        isSemantics(isSelected: true, isButton: true),
+      );
     });
 
     testWidgets('öneri dolu değil, geçmiş ikonuyla çizilir ve ekran '

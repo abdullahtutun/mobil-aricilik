@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
-import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/services/basemap_service_provider.dart';
@@ -50,7 +49,12 @@ class _ApiariesScreenState extends ConsumerState<ApiariesScreen> {
 
     final hasApiaries = apiaries.value?.isNotEmpty ?? false;
     final header = Padding(
-      padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.md),
+      padding: EdgeInsets.fromLTRB(
+        spacing.lg,
+        spacing.lg,
+        spacing.lg,
+        spacing.md,
+      ),
       child: Row(
         children: [
           Expanded(
@@ -68,7 +72,7 @@ class _ApiariesScreenState extends ConsumerState<ApiariesScreen> {
               style: IconButton.styleFrom(
                 backgroundColor: context.colors.primary,
                 foregroundColor: context.colors.onPrimary,
-                fixedSize: Size.square(context.touchTargets.fieldLarge),
+                fixedSize: Size.square(context.touchTargets.field),
                 iconSize: context.sizes.icon,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(context.radii.card),
@@ -80,57 +84,59 @@ class _ApiariesScreenState extends ConsumerState<ApiariesScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(actions: const [SyncStatusButton()]),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          header,
-          if (hasApiaries)
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                spacing.lg,
-                0,
-                spacing.lg,
-                spacing.md,
-              ),
-              child: Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: SegmentedTabs(
-                  options: [
-                    SegmentOption(
-                      value: _ApiariesView.list,
-                      label: l10n.apiariesViewList,
-                    ),
-                    SegmentOption(
-                      value: _ApiariesView.map,
-                      label: l10n.apiariesViewMap,
-                    ),
-                  ],
-                  selected: _view,
-                  onChanged: _select,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            header,
+            if (hasApiaries)
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  spacing.lg,
+                  0,
+                  spacing.lg,
+                  spacing.md,
+                ),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: SegmentedTabs(
+                    options: [
+                      SegmentOption(
+                        value: _ApiariesView.list,
+                        label: l10n.apiariesViewList,
+                      ),
+                      SegmentOption(
+                        value: _ApiariesView.map,
+                        label: l10n.apiariesViewMap,
+                      ),
+                    ],
+                    selected: _view,
+                    onChanged: _select,
+                  ),
                 ),
               ),
-            ),
-          Expanded(
-            child: switch (apiaries) {
-              AsyncData(value: []) => EmptyState(
-                icon: Icons.add_rounded,
-                title: l10n.apiariesEmptyTitle,
-                message: l10n.apiariesEmptyMessage,
-                actionLabel: l10n.apiariesAddFirst,
-                onAction: () => context.go(AppRoutes.apiaryNew),
-                centered: true,
-              ),
-              AsyncData(:final value) => switch (_view) {
-                _ApiariesView.list => _ApiaryList(value),
-                _ApiariesView.map => _ApiaryMapView(value),
+            Expanded(
+              child: switch (apiaries) {
+                AsyncData(value: []) => EmptyState(
+                  icon: Icons.add_rounded,
+                  title: l10n.apiariesEmptyTitle,
+                  message: l10n.apiariesEmptyMessage,
+                  actionLabel: l10n.apiariesAddFirst,
+                  onAction: () => context.go(AppRoutes.apiaryNew),
+                  centered: true,
+                ),
+                AsyncData(:final value) => switch (_view) {
+                  _ApiariesView.list => _ApiaryList(value),
+                  _ApiariesView.map => _ApiaryMapView(value),
+                },
+                AsyncError() => Center(child: Text(l10n.apiariesLoadError)),
+                // Yerel DB'den okunuyor; hemen gelir.
+                AsyncValue() => const SizedBox.shrink(),
               },
-              AsyncError() => Center(child: Text(l10n.apiariesLoadError)),
-              // Yerel DB'den okunuyor; hemen gelir.
-              AsyncValue() => const SizedBox.shrink(),
-            },
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

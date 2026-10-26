@@ -68,13 +68,14 @@ class BigStepper extends StatelessWidget {
       onIncrease: increased == null ? null : () => onChanged(increased),
       onDecrease: decreased == null ? null : () => onChanged(decreased),
       child: DecoratedBox(
+        // Kart zemininde kenarlıksız; güneş paletinde zemin sayfayla bir
+        // olduğu için kenarlık çizilir.
         decoration: BoxDecoration(
           color: colors.surfaceContainer,
           borderRadius: BorderRadius.circular(context.radii.card),
-          border: Border.all(
-            color: colors.divider,
-            width: context.strokes.border,
-          ),
+          border: colors.surfaceContainer == colors.surface
+              ? Border.all(color: colors.divider, width: context.strokes.border)
+              : null,
         ),
         child: Padding(
           padding: EdgeInsetsDirectional.only(
@@ -188,10 +189,9 @@ class _StepButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(context.radii.button),
         ),
-        side: BorderSide(
-          color: filled && onPressed != null ? colors.primary : colors.divider,
-          width: context.strokes.border,
-        ),
+        side: filled || colors.surfaceContainer != colors.surface
+            ? BorderSide.none
+            : BorderSide(color: colors.divider, width: context.strokes.border),
         // Eldiven büyümesi zaten tokenda; yoğunluk bir kez daha eklemesin.
         visualDensity: VisualDensity.standard,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,

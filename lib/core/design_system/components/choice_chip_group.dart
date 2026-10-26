@@ -12,12 +12,13 @@ class ChoiceChipOption<T> {
 /// Klavye yerine büyük, yuvarlak kenarlı chip'lerle seçim (56dp).
 ///
 /// Tek seçimde ([multiSelect] false) en fazla bir değer seçilidir; seçili
-/// chip'e yeniden dokunmak seçimi kaldırır. Seçili chip koyu bal dolgulu;
-/// seçim yalnızca renkle değil, onay ikonuyla da gösterilir.
+/// chip'e yeniden dokunmak seçimi kaldırır. Seçili chip koyu bal dolgulu
+/// (docs/design); seçim ekran okuyucuya "seçili" olarak da iletilir.
 ///
 /// [suggested] seçim bir öneridir (ör. önceki kayıttan): seçili chip dolu
-/// değil çerçeveli çizilir, onay yerine geçmiş ikonu taşır. Öneriye
-/// dokunmak onu onaylar; seçim aynı kalır ve [onChanged] çağrılır.
+/// değil koyu bal çerçeveli çizilir; içeriği kadar genişse geçmiş ikonu da
+/// taşır. Öneriye dokunmak onu onaylar; seçim aynı kalır ve [onChanged]
+/// çağrılır.
 class ChoiceChipGroup<T> extends StatelessWidget {
   const new({
     required this.options,
@@ -154,14 +155,17 @@ class _Chip extends StatelessWidget {
               minWidth: context.touchTargets.field,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: spacing.xl),
+              // Sütunda dar hücreye sığsın; kelime bölünmesin.
+              padding: EdgeInsets.symmetric(
+                horizontal: expand ? spacing.sm : spacing.lg,
+              ),
               child: Row(
                 mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (selected) ...[
+                  if (selected && suggested && !expand) ...[
                     Icon(
-                      suggested ? Icons.history_rounded : Icons.check_rounded,
+                      Icons.history_rounded,
                       size: context.sizes.iconSmall,
                       color: foreground,
                     ),

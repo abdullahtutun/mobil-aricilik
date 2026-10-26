@@ -118,7 +118,8 @@ void main() {
       location: AppRoutes.apiary(yayla.id),
     );
 
-    expect(find.byTooltip('Print labels'), findsNothing);
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    expect(find.text('Print labels'), findsNothing);
   });
 
   testWidgets('arılıktan açılır; aktif kovanlar seçili gelir, yazdırılır', (
@@ -135,7 +136,8 @@ void main() {
       location: AppRoutes.apiary(yayla.id),
     );
 
-    await _tap(tester, find.byTooltip('Print labels'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Print labels'));
 
     expect(find.byType(HiveLabelsScreen), findsOneWidget);
     // Sayı sırasıyla.
@@ -252,7 +254,8 @@ void main() {
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    await _tap(tester, find.byTooltip('Etiket yazdır'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Etiket yazdır'));
     expect(find.text('Etiket yazdır'), findsOneWidget);
     expect(
       find.text(

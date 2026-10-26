@@ -698,6 +698,36 @@ abstract class AppLocalizations {
   /// **'Queen'**
   String get hiveQueenTitle;
 
+  /// No description provided for @hiveQueenStripTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen · {queen}'**
+  String hiveQueenStripTitle(String queen);
+
+  /// No description provided for @hiveStrengthBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{level} · {strength}/5'**
+  String hiveStrengthBadge(String level, int strength);
+
+  /// No description provided for @hiveStrengthWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get hiveStrengthWeak;
+
+  /// No description provided for @hiveStrengthMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get hiveStrengthMedium;
+
+  /// No description provided for @hiveStrengthStrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong'**
+  String get hiveStrengthStrong;
+
   /// On the hive card when there's no inspection, or the last one has no count of frames with bees.
   ///
   /// In en, this message translates to:
@@ -841,18 +871,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your reminders and to-dos will be listed here by date.'**
   String get tasksEmptyMessage;
-
-  /// No description provided for @moreEmptyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'More modules on the way'**
-  String get moreEmptyTitle;
-
-  /// No description provided for @moreEmptyMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Harvest, stock, finance, documents and the knowledge base will live here.'**
-  String get moreEmptyMessage;
 
   /// Label of the big center button in the bottom navigation and title of the scan screen it opens.
   ///
@@ -2509,6 +2527,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} · {code}'**
   String settingsCountryValue(String name, String code);
+
+  /// No description provided for @moreSectionApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get moreSectionApiary;
+
+  /// No description provided for @moreSectionBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get moreSectionBusiness;
 
   /// Section title on the More tab above Settings and Sync.
   ///
@@ -4331,7 +4361,7 @@ abstract class AppLocalizations {
   /// No description provided for @todayTasksTitle.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s tasks'**
+  /// **'Today'**
   String get todayTasksTitle;
 
   /// No description provided for @todayTasksCount.
@@ -4339,6 +4369,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 task} other{{count} tasks}}'**
   String todayTasksCount(int count);
+
+  /// No description provided for @todayTasksApiaryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{apiary} · {count, plural, =1{1 task} other{{count} tasks}}'**
+  String todayTasksApiaryCount(String apiary, int count);
 
   /// No description provided for @todaySetupProgress.
   ///

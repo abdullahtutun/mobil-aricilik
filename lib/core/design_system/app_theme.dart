@@ -144,7 +144,15 @@ abstract final class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
+        // Başlık geri okunun hemen yanında (docs/design).
+        titleSpacing: spacing.xs,
         titleTextStyle: typography.title.copyWith(color: colors.textPrimary),
+      ),
+      // Alt sayfalar sayfa zemininde; tutamaç çizgi renginde (docs/design
+      // "Hızlı muayene").
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: colors.surface,
+        dragHandleColor: colors.divider,
       ),
       actionIconTheme: ActionIconThemeData(
         backButtonIconBuilder: (context) =>

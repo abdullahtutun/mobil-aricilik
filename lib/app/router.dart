@@ -90,6 +90,8 @@ GoRouter router(Ref ref) {
     ..onDispose(session.dispose);
 
   // Sekmelerin ve alt gezinmenin üstünde açılan alt sayfaların navigator'ı.
+  // docs/design'daki gibi alt gezinme yalnız sekme köklerinde, arılık
+  // detayında ve dikkat listesinde görünür; formlar ve kartlar tam ekran.
   final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
   final router = GoRouter(
@@ -151,6 +153,7 @@ GoRouter router(Ref ref) {
                   // `:apiaryId`'den önce; "new" kimlik sanılmasın.
                   GoRoute(
                     path: 'new',
+                    parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const ApiaryFormScreen(),
                   ),
                   GoRoute(
@@ -161,24 +164,28 @@ GoRouter router(Ref ref) {
                     routes: [
                       GoRoute(
                         path: 'edit',
+                        parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => ApiaryFormScreen(
                           apiaryId: state.pathParameters[_apiaryId],
                         ),
                       ),
                       GoRoute(
                         path: 'labels',
+                        parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => HiveLabelsScreen(
                           apiaryId: state.pathParameters[_apiaryId]!,
                         ),
                       ),
                       GoRoute(
                         path: 'harvest',
+                        parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => HarvestFormScreen(
                           apiaryId: state.pathParameters[_apiaryId]!,
                         ),
                         routes: [
                           GoRoute(
                             path: 'hives',
+                            parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => HarvestHivesScreen(
                               apiaryId: state.pathParameters[_apiaryId]!,
                             ),
@@ -227,18 +234,21 @@ GoRouter router(Ref ref) {
                       // `:hiveId`'den önce; "new" ve "bulk" kimlik sanılmasın.
                       GoRoute(
                         path: 'hives/new',
+                        parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => HiveFormScreen(
                           apiaryId: state.pathParameters[_apiaryId]!,
                         ),
                       ),
                       GoRoute(
                         path: 'hives/bulk',
+                        parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => BulkHiveFormScreen(
                           apiaryId: state.pathParameters[_apiaryId]!,
                         ),
                       ),
                       GoRoute(
                         path: 'hives/:$_hiveId',
+                        parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => HiveCardScreen(
                           apiaryId: state.pathParameters[_apiaryId]!,
                           hiveId: state.pathParameters[_hiveId]!,
@@ -246,6 +256,7 @@ GoRouter router(Ref ref) {
                         routes: [
                           GoRoute(
                             path: 'edit',
+                            parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => HiveFormScreen(
                               apiaryId: state.pathParameters[_apiaryId]!,
                               hiveId: state.pathParameters[_hiveId],
@@ -253,6 +264,7 @@ GoRouter router(Ref ref) {
                           ),
                           GoRoute(
                             path: 'queen',
+                            parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => QueenCardScreen(
                               apiaryId: state.pathParameters[_apiaryId]!,
                               hiveId: state.pathParameters[_hiveId]!,
@@ -260,12 +272,14 @@ GoRouter router(Ref ref) {
                             routes: [
                               GoRoute(
                                 path: 'new',
+                                parentNavigatorKey: rootNavigatorKey,
                                 builder: (context, state) => QueenFormScreen(
                                   hiveId: state.pathParameters[_hiveId]!,
                                 ),
                               ),
                               GoRoute(
                                 path: 'edit',
+                                parentNavigatorKey: rootNavigatorKey,
                                 builder: (context, state) => QueenFormScreen(
                                   hiveId: state.pathParameters[_hiveId]!,
                                   editing: true,
@@ -275,12 +289,14 @@ GoRouter router(Ref ref) {
                           ),
                           GoRoute(
                             path: 'varroa',
+                            parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => VarroaFormScreen(
                               hiveId: state.pathParameters[_hiveId]!,
                             ),
                           ),
                           GoRoute(
                             path: 'treat',
+                            parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => TreatmentFormScreen(
                               apiaryId: state.pathParameters[_apiaryId]!,
                               hiveId: state.pathParameters[_hiveId]!,
@@ -289,6 +305,7 @@ GoRouter router(Ref ref) {
                               // Eklenen ilaç pop ile uygulamaya döner.
                               GoRoute(
                                 path: 'drug',
+                                parentNavigatorKey: rootNavigatorKey,
                                 builder: (context, state) => DrugFormScreen(
                                   hiveId: state.pathParameters[_hiveId]!,
                                 ),
@@ -297,6 +314,7 @@ GoRouter router(Ref ref) {
                           ),
                           GoRoute(
                             path: 'feed',
+                            parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => FeedingFormScreen(
                               hiveId: state.pathParameters[_hiveId]!,
                             ),
@@ -329,10 +347,12 @@ GoRouter router(Ref ref) {
                 routes: [
                   GoRoute(
                     path: 'new',
+                    parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const TaskFormScreen(),
                   ),
                   GoRoute(
                     path: ':$_taskId/edit',
+                    parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) =>
                         TaskFormScreen(taskId: state.pathParameters[_taskId]),
                   ),
@@ -348,20 +368,24 @@ GoRouter router(Ref ref) {
                 routes: [
                   GoRoute(
                     path: 'settings',
+                    parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const SettingsScreen(),
                     routes: [
                       GoRoute(
                         path: 'reports',
+                        parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => const ReportsScreen(),
                       ),
                     ],
                   ),
                   GoRoute(
                     path: 'old-queens',
+                    parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const OldQueensScreen(),
                   ),
                   GoRoute(
                     path: 'feedback',
+                    parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const FeedbackScreen(),
                   ),
                 ],

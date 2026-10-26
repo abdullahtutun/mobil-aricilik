@@ -51,6 +51,12 @@ Future<void> _scrollToTop(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+/// Kovan kartının ⋮ menüsünü açıp [label]'lı eyleme dokunur.
+Future<void> _menu(WidgetTester tester, String label) async {
+  await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+  await _tap(tester, find.text(label));
+}
+
 Future<void> _tap(WidgetTester tester, Finder finder) async {
   if (finder.evaluate().isEmpty) {
     await tester.scrollUntilVisible(
@@ -217,10 +223,9 @@ void main() {
 
       expect(find.byType(HiveCardScreen), findsOneWidget);
       expect(find.text('7'), findsOneWidget);
-      expect(find.text('Yayla'), findsOneWidget);
+      expect(_cardApiary('Yayla'), findsOneWidget);
       expect(find.text('Active'), findsOneWidget);
-      expect(find.text('Queen'), findsOneWidget);
-      expect(find.text('Not recorded'), findsOneWidget);
+      expect(find.text('Queen · Not recorded'), findsOneWidget);
 
       await tester.pageBack();
       await tester.pumpAndSettle();
@@ -293,7 +298,7 @@ void main() {
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
       expect(_cardApiary('Yayla'), findsOneWidget);
 
-      await _tap(tester, find.text('Move to another apiary'));
+      await _menu(tester, 'Move to another apiary');
       expect(find.text('Move hive 101 to'), findsOneWidget);
       // Bulunduğu arılık listede yok.
       expect(_inSheet('Yayla'), findsNothing);
@@ -322,7 +327,7 @@ void main() {
       final hive = await createHive('101');
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
-      await _tap(tester, find.text('Move to another apiary'));
+      await _menu(tester, 'Move to another apiary');
 
       expect(
         find.text(
@@ -337,7 +342,7 @@ void main() {
       final hive = await createHive('101');
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
-      await _tap(tester, find.text('Change status'));
+      await _menu(tester, 'Change status');
       expect(find.text('New status for hive 101'), findsOneWidget);
       // Şimdiki durum sayfada yok.
       expect(_inSheet('Active'), findsNothing);
@@ -356,7 +361,7 @@ void main() {
       await _scrollCardToTop(tester);
       expect(find.widgetWithText(StatusBadge, 'Active'), findsOneWidget);
 
-      await _tap(tester, find.text('Change status'));
+      await _menu(tester, 'Change status');
       await _tap(tester, find.text('Dead'));
       await _tap(tester, find.text('Yes, record'));
 
@@ -376,7 +381,7 @@ void main() {
         ('Sold', 'Record hive 101 as sold?'),
         ('Lost', 'Record hive 101 as lost?'),
       ]) {
-        await _tap(tester, find.text('Change status'));
+        await _menu(tester, 'Change status');
         await _tap(tester, find.text(label));
         expect(find.text(question), findsOneWidget);
         await _tap(tester, find.text('Cancel'));
@@ -391,7 +396,7 @@ void main() {
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
       expect(find.widgetWithText(StatusBadge, 'Lost'), findsOneWidget);
 
-      await _tap(tester, find.text('Change status'));
+      await _menu(tester, 'Change status');
       await _tap(tester, find.text('Active'));
 
       expect(find.byType(AlertDialog), findsNothing);
@@ -404,7 +409,7 @@ void main() {
       expect(find.widgetWithText(StatusBadge, 'Lost'), findsOneWidget);
 
       // Aktif olmayandan başka bir aktif olmayana: onay yok, geri al var.
-      await _tap(tester, find.text('Change status'));
+      await _menu(tester, 'Change status');
       await _tap(tester, find.text('Sold'));
       expect(find.byType(AlertDialog), findsNothing);
       expect(find.text('Hive 101: Sold'), findsOneWidget);
@@ -419,7 +424,7 @@ void main() {
       final hive = await createHive('101');
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
-      await _tap(tester, find.byTooltip('Edit'));
+      await _menu(tester, 'Edit');
       expect(find.text('Edit hive'), findsOneWidget);
       expect(
         tester.widget<TextField>(_field('Hive number')).controller?.text,
@@ -447,7 +452,7 @@ void main() {
         location: AppRoutes.hive(yayla.id, 'yok'),
       );
       expect(find.text('Hive not found'), findsOneWidget);
-      expect(find.byTooltip('Edit'), findsNothing);
+      expect(find.byIcon(Icons.more_vert_rounded), findsNothing);
 
       final router = container.read(routerProvider)
         ..go(AppRoutes.hiveEdit(yayla.id, 'yok'));
@@ -483,8 +488,8 @@ void main() {
     container.read(routerProvider).go(AppRoutes.hive(yayla.id, hive.id));
     await tester.pumpAndSettle();
     expect(find.text('Aktif'), findsOneWidget);
-    expect(find.text('Ana arı'), findsOneWidget);
-    await _tap(tester, find.text('Durumu değiştir'));
+    expect(find.text('Ana arı · Kayıt yok'), findsOneWidget);
+    await _menu(tester, 'Durumu değiştir');
     await _tap(tester, find.text('Söndü'));
     expect(find.text('Kovan 101 söndü olarak kaydedilsin mi?'), findsOneWidget);
     await _tap(tester, find.text('Evet, kaydet'));
@@ -546,17 +551,7 @@ void main() {
       ..go(AppRoutes.hive(yayla.id, long.id));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
-    await tester.scrollUntilVisible(
-      find.text('Change status'),
-      200,
-      scrollable: find
-          .descendant(
-            of: find.byType(HiveCardScreen),
-            matching: find.byType(Scrollable),
-          )
-          .first,
-    );
-    await _tap(tester, find.text('Change status'));
+    await _menu(tester, 'Change status');
     expect(tester.takeException(), isNull);
     await tester.tapAt(const Offset(180, 20));
     await tester.pumpAndSettle();

@@ -127,7 +127,8 @@ void main() {
         findsOneWidget,
       );
 
-      await _tap(tester, find.widgetWithText(BigButton, 'Count varroa'));
+      await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+      await _tap(tester, find.text('Count varroa'));
       expect(find.byType(VarroaFormScreen), findsOneWidget);
       expect(find.text('Varroa · Hive 101'), findsOneWidget);
       // Yarım bardak ≈ 300 arı; akar boş, Kaydet kapalı.
@@ -284,7 +285,11 @@ void main() {
       final empty = find.text(
         'No sugar roll or alcohol wash counts yet. Add one from a hive card.',
       );
-      await tester.scrollUntilVisible(empty, 200);
+      await tester.scrollUntilVisible(
+        empty,
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.byType(BarChart), findsNothing);
     });
 
@@ -301,7 +306,11 @@ void main() {
       await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
 
       final chart = find.byType(VarroaBarChart);
-      await tester.scrollUntilVisible(chart, 200);
+      await tester.scrollUntilVisible(
+        chart,
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Varroa · recent counts'), findsOneWidget);
       // Alt tabla günü çubuk değil.
       expect(tester.widget<VarroaBarChart>(chart).bars, hasLength(1));
@@ -368,9 +377,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Ölçüm yok'), findsOneWidget);
-    await _tap(tester, find.widgetWithText(BigButton, 'Varroa ölç'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Varroa ölç'));
     expect(find.text('Varroa · Kovan 101'), findsOneWidget);
-    expect(find.text('Yöntem'), findsOneWidget);
+    expect(find.text('YÖNTEM'), findsOneWidget);
     expect(find.text('Pudra şekeri'), findsOneWidget);
     expect(find.text('Alkol'), findsOneWidget);
     expect(find.text('Alt tabla'), findsOneWidget);
@@ -423,12 +433,20 @@ void main() {
     await tester.pumpAndSettle();
     await _step(tester, 'Mites counted', 'Increase', times: 12);
     expect(tester.takeException(), isNull);
-    await tester.scrollUntilVisible(find.byType(VarroaBarChart), 200);
+    await tester.scrollUntilVisible(
+      find.byType(VarroaBarChart),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(tester.takeException(), isNull);
 
     router.go(AppRoutes.apiary(yayla.id));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.byType(VarroaBarChart), 200);
+    await tester.scrollUntilVisible(
+      find.byType(VarroaBarChart),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(tester.takeException(), isNull);
 
     router.go(AppRoutes.settings);

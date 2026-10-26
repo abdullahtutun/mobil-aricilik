@@ -120,7 +120,7 @@ void main() {
     expect(weather.fetchCount, 1);
     expect(find.text('10°'), findsOneWidget);
     expect(_badge('Yağışlı'), findsOneWidget);
-    expect(find.byIcon(Icons.water_drop_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.water_drop_outlined), findsOneWidget);
     expect(find.textContaining('itibarıyla'), findsOneWidget);
     expect(find.byType(WeatherAttribution), findsOneWidget);
   });

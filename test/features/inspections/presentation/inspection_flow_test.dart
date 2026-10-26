@@ -597,14 +597,15 @@ void main() {
       await _tap(tester, find.widgetWithText(BigButton, 'Save'));
       expect(find.text('7 days'), findsOneWidget);
       expect(tester.takeException(), isNull);
-      // Bildirim ekrana sığar; Geri al ve chip'ler alt gezinmenin üstünde.
+      // Bildirim ekrana sığar; kart tam ekran, Geri al ve chip'ler ekranın
+      // içinde.
       final snackBar = tester.getRect(find.byType(SnackBar));
       expect(snackBar.top, greaterThanOrEqualTo(0));
-      final navigation = tester.getRect(find.byType(AppNavigationBar));
+      final screen = tester.view.physicalSize / tester.view.devicePixelRatio;
       for (final text in ['Undo', '3 days', '7 days', '14 days']) {
         expect(
           tester.getRect(find.text(text)).bottom,
-          lessThanOrEqualTo(navigation.top),
+          lessThanOrEqualTo(screen.height),
           reason: text,
         );
       }

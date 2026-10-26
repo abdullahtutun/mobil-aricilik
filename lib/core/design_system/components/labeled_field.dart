@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_arici/core/design_system/components/section_label.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
-/// Alanın adı üstte, alan altında; altında isteğe bağlı açıklama.
+/// Alanın adı üstte, alan altında; altında isteğe bağlı açıklama. Seçenek
+/// grubunun adı bölüm başlığı gibi büyük harfli ([SectionLabel], docs/design
+/// "TÜR", "YÖNTEM"); metin alanının adı olduğu gibi.
 ///
 /// Tek alanda (metin alanı) ekran okuyucu adı alanla birlikte okur. Altında
 /// birden çok seçenek olan grupta ([group] true: chip'ler, seçim kartları)
@@ -34,10 +37,15 @@ class LabeledField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          label,
-          style: context.typography.label.copyWith(color: colors.textSecondary),
-        ),
+        if (group)
+          SectionLabel(label)
+        else
+          Text(
+            label,
+            style: context.typography.label.copyWith(
+              color: colors.textSecondary,
+            ),
+          ),
         SizedBox(height: spacing.sm),
         child,
         if (helper != null) ...[

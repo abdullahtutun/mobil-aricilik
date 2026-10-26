@@ -5,8 +5,9 @@ import 'package:mobil_arici/core/design_system/theme_context.dart';
 /// Kart yüzeyi: beyaz karo, gölge yerine ince çizgi; güneş modunda kenarlık
 /// kalın ve siyah. [onTap] verilirse kartın tamamı dokunulabilir.
 ///
-/// [status] verilirse kart o durumun açık zemini ve renginde kenarlıkla
-/// çizilir (ör. anasız kovan); kelimesini içerik verir.
+/// [status] verilirse kart o durumun açık zemininde, zemine yakın soluk
+/// kenarlıkla çizilir (ör. anasız kovan; docs/design); güneş modunda
+/// kenarlık durumun kendi rengi. Kelimesini içerik verir.
 class AppCard extends StatelessWidget {
   const new({required this.child, super.key, this.onTap, this.status});
 
@@ -19,15 +20,19 @@ class AppCard extends StatelessWidget {
     final colors = context.colors;
     final onTap = this.onTap;
     final status = this.status;
+    // Güneş paletinde kart zemini sayfa zeminiyle bir; ayrım kenarlıkta.
+    final sun = colors.surfaceContainer == colors.surface;
+    final border = switch (status) {
+      null => colors.divider,
+      _ when sun => status.colorIn(colors),
+      _ => Color.lerp(status.containerIn(colors), status.colorIn(colors), 0.2)!,
+    };
 
     return Material(
       color: status?.containerIn(colors) ?? colors.tile,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(context.radii.card),
-        side: BorderSide(
-          color: status?.colorIn(colors) ?? colors.divider,
-          width: context.strokes.border,
-        ),
+        side: BorderSide(color: border, width: context.strokes.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: onTap == null ? child : InkWell(onTap: onTap, child: child),

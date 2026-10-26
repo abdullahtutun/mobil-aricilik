@@ -30,7 +30,10 @@ Future<ProviderContainer> _openMap(
   List<Override> overrides = const [],
 }) async {
   final container = ProviderContainer.test(
-    overrides: [...signedIn(db: db, basemap: basemap), ...overrides],
+    overrides: [
+      ...signedIn(db: db, basemap: basemap),
+      ...overrides,
+    ],
   );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
@@ -162,9 +165,7 @@ void main() {
     expect(find.textContaining('No apiary has a location'), findsNothing);
 
     // Pin en az saha dokunma hedefi kadar.
-    final pin = tester.getSize(
-      find.bySemanticsLabel('Dere, 1 hive'),
-    );
+    final pin = tester.getSize(find.bySemanticsLabel('Dere, 1 hive'));
     expect(pin.height, greaterThanOrEqualTo(56));
 
     await _tap(tester, find.text('3'));

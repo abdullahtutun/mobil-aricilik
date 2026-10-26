@@ -134,9 +134,9 @@ Map<String, int> attentionHiveCountsByApiary(
   final hivesByApiary = <String, Set<String>>{};
   for (final entries in groups.values) {
     for (final entry in entries) {
-      hivesByApiary.putIfAbsent(entry.hive.apiaryId, () => {}).add(
-        entry.hive.id,
-      );
+      hivesByApiary
+          .putIfAbsent(entry.hive.apiaryId, () => {})
+          .add(entry.hive.id);
     }
   }
   return {

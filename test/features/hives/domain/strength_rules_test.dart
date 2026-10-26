@@ -33,6 +33,22 @@ Iterable<InspectionValues> _combinations(int beeFrames) sync* {
 }
 
 void main() {
+  test('güç kelimesi: 1–2 zayıf, 3 orta, 4–5 güçlü', () {
+    expect(
+      [
+        for (var score = minStrength; score <= maxStrength; score++)
+          strengthLevel(score),
+      ],
+      [
+        StrengthLevel.weak,
+        StrengthLevel.weak,
+        StrengthLevel.medium,
+        StrengthLevel.strong,
+        StrengthLevel.strong,
+      ],
+    );
+  });
+
   group('strengthScore', () {
     group('taban: arılı çerçeve', () {
       test('her eşikte doğru puan; cezasız muayene tabanı aynen alır', () {

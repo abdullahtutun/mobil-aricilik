@@ -124,7 +124,8 @@ void main() {
       'şeker ve su hesaplanır; kayıt yazılır, Geri al siler', (tester) async {
     await _open(tester, db: db, location: AppRoutes.hive(yayla.id, plain.id));
 
-    await _tap(tester, _button('Feed'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Feed'));
     expect(find.byType(FeedingFormScreen), findsOneWidget);
     expect(find.text('Hive 102'), findsOneWidget);
     expect(find.text('Whole apiary · 3'), findsOneWidget);
@@ -209,7 +210,8 @@ void main() {
     await tester.pump(const Duration(seconds: 7));
     await tester.pumpAndSettle();
 
-    await _tap(tester, _button('Feed'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Feed'));
     await _tap(tester, find.text('Whole apiary · 3'));
     await _tap(tester, find.text('Pollen substitute'));
     expect(_rich('honey super'), findsNothing);
@@ -263,7 +265,8 @@ void main() {
     await tester.pump(const Duration(seconds: 7));
     await tester.pumpAndSettle();
 
-    await _tap(tester, _button('Feed'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Feed'));
     await _tap(tester, find.text('Bee cake'));
     await _step(tester, 'Per hive (lb)', 'Increase');
     await _tap(tester, _button('Save'));
@@ -292,11 +295,12 @@ void main() {
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    await _tap(tester, _button('Besle'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Besle'));
     expect(find.text('Besleme'), findsOneWidget);
     expect(find.text('Kovan 101'), findsOneWidget);
     expect(find.text('Arılığın tümü · 3'), findsOneWidget);
-    expect(find.text('Tür'), findsOneWidget);
+    expect(find.text('TÜR'), findsOneWidget);
     expect(find.text('Şurup 1:1 · teşvik'), findsOneWidget);
     expect(find.text('Arı keki'), findsOneWidget);
     expect(find.text('Polen ikamesi'), findsOneWidget);
@@ -324,7 +328,8 @@ void main() {
 
     await tester.pump(const Duration(seconds: 7));
     await tester.pumpAndSettle();
-    await _tap(tester, _button('Besle'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Besle'));
     await _tap(tester, find.text('Arı keki'));
     await _tap(tester, _button('Kaydet'));
     expect(find.text('Kovan 101 için besleme kaydedildi'), findsOneWidget);
@@ -346,7 +351,8 @@ void main() {
     container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
-    await _tap(tester, _button('Besle'));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Besle'));
     expect(tester.takeException(), isNull);
 
     await _tap(tester, find.text('Arılığın tümü · 3'));

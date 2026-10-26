@@ -67,7 +67,9 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
 ChoiceChipGroup<T> _choices<T>(WidgetTester tester, String label) =>
     tester.widget<ChoiceChipGroup<T>>(
       find.descendant(
-        of: find.widgetWithText(LabeledField, label),
+        of: find.byWidgetPredicate(
+          (w) => w is LabeledField && w.label == label,
+        ),
         matching: find.byType(ChoiceChipGroup<T>),
       ),
     );
@@ -129,8 +131,8 @@ void main() {
       final hive = await createHive('101');
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
-      expect(find.text('Not recorded'), findsOneWidget);
-      await _tap(tester, find.text('Not recorded'));
+      expect(find.text('Queen · Not recorded'), findsOneWidget);
+      await _tap(tester, find.text('Queen · Not recorded'));
 
       expect(find.byType(QueenFormScreen), findsOneWidget);
       expect(find.text('New queen · Hive 101'), findsOneWidget);
@@ -146,7 +148,9 @@ void main() {
 
       await tester.enterText(
         find.descendant(
-          of: find.widgetWithText(LabeledField, 'Breed'),
+          of: find.byWidgetPredicate(
+            (w) => w is LabeledField && w.label == 'Breed',
+          ),
           matching: find.byType(TextField),
         ),
         'Kafkas',
@@ -172,7 +176,7 @@ void main() {
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.byType(HiveCardScreen), findsOneWidget);
-      expect(find.text('Not recorded'), findsOneWidget);
+      expect(find.text('Queen · Not recorded'), findsOneWidget);
       expect((await hives.findById(hive.id))!.queenId, isNull);
       expect(await queens.findById(queen.id), isNull);
     });
@@ -184,9 +188,9 @@ void main() {
       final hive = await createHive('104', queenId: queen.id);
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
-      expect(find.text(_title(_year - 1)), findsOneWidget);
+      expect(find.text('Queen · ${_title(_year - 1)}'), findsOneWidget);
       expect(find.text('1 year old · Kafkas'), findsOneWidget);
-      await _tap(tester, find.text(_title(_year - 1)));
+      await _tap(tester, find.text('Queen · ${_title(_year - 1)}'));
 
       expect(find.byType(QueenCardScreen), findsOneWidget);
       expect(find.text('Hive 104'), findsOneWidget);
@@ -280,7 +284,7 @@ void main() {
         location: AppRoutes.hiveQueen(yayla.id, hive.id),
       );
 
-      await _tap(tester, find.byTooltip('Edit queen'));
+      await _tap(tester, find.text('Edit queen'));
       expect(find.text('Edit queen'), findsOneWidget);
       expect(_choices<int>(tester, 'Year').selected, {_year - 1});
 
@@ -333,7 +337,7 @@ void main() {
       expect(queen.motherQueenId, old.id);
       // Eski ananın kaydı kalır; artık kovanda değil.
       expect(await queens.findById(old.id), isNotNull);
-      expect(find.text('Mother queen'), findsOneWidget);
+      expect(find.text('MOTHER QUEEN'), findsOneWidget);
       expect(find.text(_title(_year - 2)), findsOneWidget);
     });
   });
@@ -403,15 +407,15 @@ void main() {
       QueenMarkColor.green: 'Yeşil',
       QueenMarkColor.blue: 'Mavi',
     }[markColorForYear(_year - 2)]!;
-    expect(find.text('${_year - 2} · $color'), findsOneWidget);
+    expect(find.text('Ana arı · ${_year - 2} · $color'), findsOneWidget);
     expect(find.text('2 yaşında · Kafkas'), findsOneWidget);
 
     router.go(AppRoutes.hiveQueen(yayla.id, hive.id));
     await tester.pumpAndSettle();
     expect(find.text('Kovan 104'), findsOneWidget);
-    expect(find.text('Kanat'), findsOneWidget);
+    expect(find.text('KANAT'), findsOneWidget);
     expect(find.text('Kesik değil'), findsOneWidget);
-    expect(find.text('Anne ana'), findsOneWidget);
+    expect(find.text('ANNE ANA'), findsOneWidget);
     expect(find.text('Ana değiştir'), findsOneWidget);
 
     await _tap(tester, find.text('Ana değiştir'));

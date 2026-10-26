@@ -16,6 +16,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     required this.label,
     required this.labelSmall,
     required this.button,
+    required this.navLabel,
   });
 
   factory _scale({
@@ -25,36 +26,37 @@ class AppTypography extends ThemeExtension<AppTypography> {
     required double button,
   }) {
     return AppTypography(
-      display: _style(72, FontWeight.w700, 1),
-      numberLarge: _style(40, FontWeight.w700, 1.1),
-      number: _style(32, FontWeight.w700, 1.15),
-      headline: _style(28, FontWeight.w700, 1.25),
-      title: _style(22, FontWeight.w700, 1.3),
-      subtitle: _style(18, FontWeight.w600, 1.35),
+      display: _style(64, FontWeight.w700, 1),
+      numberLarge: _style(36, FontWeight.w700, 1.1),
+      number: _style(28, FontWeight.w700, 1.15),
+      headline: _style(26, FontWeight.w700, 1.25),
+      title: _style(20, FontWeight.w700, 1.3),
+      subtitle: _style(16, FontWeight.w600, 1.35),
       body: _style(body, FontWeight.w400, 1.5),
       bodySmall: _style(bodySmall, FontWeight.w400, 1.45),
       label: _style(label, FontWeight.w600, 1.25),
       labelSmall: _style(bodySmall, FontWeight.w600, 1.45),
       button: _style(button, FontWeight.w700, 1.25),
+      navLabel: _style(12, FontWeight.w600, 1.3),
     );
   }
 
   static const fontFamily = 'Inter';
 
-  /// Gövde 16.
+  /// Gövde 15.
   static final standard = AppTypography._scale(
+    body: 15,
+    bodySmall: 13,
+    label: 15,
+    button: 17,
+  );
+
+  /// Saha modları (güneş, eldiven): gövde 16.
+  static final field = AppTypography._scale(
     body: 16,
     bodySmall: 14,
     label: 16,
     button: 18,
-  );
-
-  /// Saha modları (güneş, eldiven): gövde 18.
-  static final field = AppTypography._scale(
-    body: 18,
-    bodySmall: 16,
-    label: 18,
-    button: 20,
   );
 
   /// Kovan kartındaki dev numara; ekranın konusu olan tek sayı.
@@ -79,6 +81,10 @@ class AppTypography extends ThemeExtension<AppTypography> {
 
   /// Büyük buton etiketi; [label]'dan bir kademe büyük ve kalın.
   final TextStyle button;
+
+  /// Alt gezinmedeki sekme adları; dört sekme ve Okut 360dp'ye sığsın diye
+  /// iki ölçekte de 12.
+  final TextStyle navLabel;
 
   static TextStyle _style(double size, FontWeight weight, double height) {
     return TextStyle(
@@ -126,6 +132,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     TextStyle? label,
     TextStyle? labelSmall,
     TextStyle? button,
+    TextStyle? navLabel,
   }) {
     return AppTypography(
       display: display ?? this.display,
@@ -139,6 +146,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       label: label ?? this.label,
       labelSmall: labelSmall ?? this.labelSmall,
       button: button ?? this.button,
+      navLabel: navLabel ?? this.navLabel,
     );
   }
 
@@ -157,6 +165,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       label: TextStyle.lerp(label, other.label, t)!,
       labelSmall: TextStyle.lerp(labelSmall, other.labelSmall, t)!,
       button: TextStyle.lerp(button, other.button, t)!,
+      navLabel: TextStyle.lerp(navLabel, other.navLabel, t)!,
     );
   }
 }

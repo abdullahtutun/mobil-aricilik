@@ -388,6 +388,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hiveQueenTitle => 'Queen';
 
   @override
+  String hiveQueenStripTitle(String queen) {
+    return 'Queen · $queen';
+  }
+
+  @override
+  String hiveStrengthBadge(String level, int strength) {
+    return '$level · $strength/5';
+  }
+
+  @override
+  String get hiveStrengthWeak => 'Weak';
+
+  @override
+  String get hiveStrengthMedium => 'Medium';
+
+  @override
+  String get hiveStrengthStrong => 'Strong';
+
+  @override
   String get hiveStrengthNone => 'No strength score yet';
 
   @override
@@ -487,13 +506,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tasksEmptyMessage =>
       'Your reminders and to-dos will be listed here by date.';
-
-  @override
-  String get moreEmptyTitle => 'More modules on the way';
-
-  @override
-  String get moreEmptyMessage =>
-      'Harvest, stock, finance, documents and the knowledge base will live here.';
 
   @override
   String get scanTitle => 'Scan';
@@ -1471,6 +1483,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String settingsCountryValue(String name, String code) {
     return '$name · $code';
   }
+
+  @override
+  String get moreSectionApiary => 'Apiary';
+
+  @override
+  String get moreSectionBusiness => 'Business';
 
   @override
   String get moreSectionHelp => 'Help';
@@ -2691,7 +2709,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get todayAttentionNone => 'No hives need attention';
 
   @override
-  String get todayTasksTitle => 'Today\'s tasks';
+  String get todayTasksTitle => 'Today';
 
   @override
   String todayTasksCount(int count) {
@@ -2702,6 +2720,17 @@ class AppLocalizationsEn extends AppLocalizations {
       one: '1 task',
     );
     return '$_temp0';
+  }
+
+  @override
+  String todayTasksApiaryCount(String apiary, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks',
+      one: '1 task',
+    );
+    return '$apiary · $_temp0';
   }
 
   @override
