@@ -2899,4 +2899,195 @@ class AppLocalizationsTr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get apiaryTourStart => 'Tur başlat';
+
+  @override
+  String get apiaryTourResume => 'Tura devam et';
+
+  @override
+  String get tourReplaceTitle => 'Süren tur bitsin mi?';
+
+  @override
+  String tourReplaceMessage(String apiary) {
+    return '$apiary turu sürüyor. Yeni tur başlarsa o turun ilerlemesi silinir; muayeneler kayıtlı kalır.';
+  }
+
+  @override
+  String get tourReplaceConfirm => 'Yeni tur başlat';
+
+  @override
+  String tourTitle(String apiary) {
+    return '$apiary turu';
+  }
+
+  @override
+  String get tourFinish => 'Turu bitir';
+
+  @override
+  String tourProgress(int done, int total) {
+    return '$done / $total';
+  }
+
+  @override
+  String tourProgressLabel(int done, int total) {
+    return '$total kovandan $done tanesi bitti';
+  }
+
+  @override
+  String tourMinutes(int minutes) {
+    return '$minutes dk';
+  }
+
+  @override
+  String tourHoursMinutes(int hours, int minutes) {
+    return '$hours sa $minutes dk';
+  }
+
+  @override
+  String tourElapsedLabel(String duration) {
+    return 'Geçen süre: $duration';
+  }
+
+  @override
+  String get tourNext => 'Sıradaki';
+
+  @override
+  String tourPreviousVisit(String date) {
+    return 'Geçen sefer · $date';
+  }
+
+  @override
+  String get tourQueue => 'Sıra';
+
+  @override
+  String tourSkippedCount(int count) {
+    return '$count atlandı';
+  }
+
+  @override
+  String get tourStateDone => 'Bitti';
+
+  @override
+  String get tourStateSkipped => 'Atlandı';
+
+  @override
+  String get tourStatePending => 'Bekliyor';
+
+  @override
+  String get tourStateNext => 'Sıradaki';
+
+  @override
+  String tourHiveSemantics(String number, String state) {
+    return 'Kovan $number, $state';
+  }
+
+  @override
+  String get tourSkip => 'Atla';
+
+  @override
+  String tourInspect(String number) {
+    return 'Muayene et · $number';
+  }
+
+  @override
+  String get tourAllDone => 'Bütün kovanlara bakıldı.';
+
+  @override
+  String get tourSunSuggestion =>
+      'Güneşte ekran daha net okunsun diye güneş modu önerilir.';
+
+  @override
+  String get tourSunOn => 'Güneş modunu aç';
+
+  @override
+  String get tourSunMode => 'Güneş modu';
+
+  @override
+  String get tourFinishTitle => 'Tur bitsin mi?';
+
+  @override
+  String tourFinishMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovana bakılmadı; özette atlanmış sayılır.',
+      one: '1 kovana bakılmadı; özette atlanmış sayılır.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tourNotFound => 'Bu arılıkta süren tur yok.';
+
+  @override
+  String get tourCompleteTitle => 'Tur tamamlandı';
+
+  @override
+  String tourInspectedCount(int count) {
+    return '$count kovan muayene';
+  }
+
+  @override
+  String get tourHealthy => 'Güçlü / orta';
+
+  @override
+  String get tourTasksTitle => 'Oluşan görevler';
+
+  @override
+  String tourTaskRequeen(String numbers) {
+    return 'Ana ver: $numbers';
+  }
+
+  @override
+  String tourTaskFeedWeak(String numbers) {
+    return '1:1 şurup ver: $numbers';
+  }
+
+  @override
+  String tourTaskSwarmCheck(String numbers) {
+    return 'Oğul kontrolü: $numbers';
+  }
+
+  @override
+  String tourTaskRevisit(String numbers) {
+    return 'Atlanan kovanlara bak: $numbers';
+  }
+
+  @override
+  String tourTaskMoreNumbers(String numbers, int count) {
+    return '$numbers +$count';
+  }
+
+  @override
+  String tourTaskDue(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days gün sonra',
+      one: 'yarın',
+      zero: 'bugün',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tourSaveTasks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Görevleri kaydet',
+      zero: 'Kapat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tourTasksSaved(int count) {
+    return '$count görev kaydedildi';
+  }
+
+  @override
+  String get tourNoTasks => 'Önerilecek görev yok.';
 }

@@ -13,11 +13,14 @@ import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_fo
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_chart.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/apiary_hives_section.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/inspections/presentation/tour_providers.dart';
+import 'package:mobil_arici/features/inspections/presentation/tour_screen.dart';
 
 /// Arılık detayı: büyük ad, altında aktif kovan sayısı ve son ziyaret;
-/// kovan ekle ve hasat eylemleri, kovan ızgarası/listesi ve altında son
-/// varroa ölçümlerinin grafiği. Harita şeridi ve tur,
-/// toplu besleme gibi eylemler kendi adımlarında gelecek.
+/// tur, kovan ekle ve hasat eylemleri, kovan ızgarası/listesi ve altında
+/// son varroa ölçümlerinin grafiği. Harita şeridi ve toplu besleme gibi
+/// eylemler kendi adımlarında gelecek.
 class ApiaryDetailScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
 
@@ -27,8 +30,10 @@ class ApiaryDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
-    final hasHives =
-        ref.watch(apiaryHivesProvider(apiaryId)).value?.isNotEmpty ?? false;
+    final hives = ref.watch(apiaryHivesProvider(apiaryId)).value ?? const [];
+    final hasHives = hives.isNotEmpty;
+    final canTour = hives.any(canInspect);
+    final touring = ref.watch(currentTourProvider).value?.apiaryId == apiaryId;
 
     return switch (ref.watch(apiarySummaryProvider(apiaryId))) {
       AsyncData(value: final summary?) => Scaffold(
@@ -58,7 +63,19 @@ class ApiaryDetailScreen extends ConsumerWidget {
                 spacing: context.touchTargets.gap,
                 runSpacing: context.touchTargets.gap,
                 children: [
+                  if (canTour)
+                    BigButton(
+                      label: touring
+                          ? l10n.apiaryTourResume
+                          : l10n.apiaryTourStart,
+                      icon: Icons.route_rounded,
+                      expanded: false,
+                      onPressed: () => openApiaryTour(context, ref, apiaryId),
+                    ),
                   BigButton(
+                    variant: canTour
+                        ? BigButtonVariant.secondary
+                        : BigButtonVariant.primary,
                     label: l10n.hivesAdd,
                     icon: Icons.add_rounded,
                     expanded: false,

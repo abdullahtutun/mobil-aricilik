@@ -329,7 +329,7 @@ class _AttentionCard extends ConsumerWidget {
   }
 }
 
-/// Büyük sayı ve altında ikonlu grup adı. Kovan yoksa nötr ve dokunulmaz.
+/// Grubun karosu. Kovan yoksa nötr ve dokunulmaz.
 class _AttentionTile extends StatelessWidget {
   const new({required this.kind, required this.count});
 
@@ -338,54 +338,14 @@ class _AttentionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
-    final spacing = context.spacing;
     final status = count > 0 ? kind.status : null;
-    final color = status?.colorIn(colors) ?? colors.textSecondary;
-
-    return MergeSemantics(
-      child: AppCard(
-        status: status,
-        onTap: status == null
-            ? null
-            : () => context.go(AppRoutes.attention(kind)),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: context.touchTargets.field),
-          child: Padding(
-            padding: EdgeInsets.all(spacing.md),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '$count',
-                  style: context.typography.numberLarge.copyWith(color: color),
-                ),
-                SizedBox(height: spacing.xs),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (status != null) ...[
-                      Icon(
-                        status.icon,
-                        size: context.sizes.iconSmall,
-                        color: color,
-                      ),
-                      SizedBox(width: spacing.xs),
-                    ],
-                    Flexible(
-                      child: Text(
-                        kind.label(l10n),
-                        style: context.typography.subtitle,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+    return CountTile(
+      count: count,
+      label: kind.label(AppLocalizations.of(context)),
+      status: status,
+      onTap: status == null
+          ? null
+          : () => context.go(AppRoutes.attention(kind)),
     );
   }
 }

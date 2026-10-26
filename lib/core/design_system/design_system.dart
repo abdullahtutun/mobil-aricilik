@@ -11,6 +11,7 @@ export 'components/big_stepper.dart';
 export 'components/bottom_action_layout.dart';
 export 'components/choice_chip_group.dart';
 export 'components/confirm_dialog.dart';
+export 'components/count_tile.dart';
 export 'components/critical_lock_card.dart';
 export 'components/empty_state.dart';
 export 'components/hive_tile.dart';

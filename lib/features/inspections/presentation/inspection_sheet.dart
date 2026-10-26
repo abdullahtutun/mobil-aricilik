@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
@@ -18,6 +19,7 @@ import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_form_controller.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_providers.dart';
+import 'package:mobil_arici/features/inspections/presentation/tour_providers.dart';
 import 'package:mobil_arici/features/inspections/presentation/widgets/inspection_labels.dart';
 import 'package:mobil_arici/features/inspections/presentation/widgets/inspection_reminder_choice.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
@@ -29,16 +31,28 @@ import 'package:mobil_arici/features/media/presentation/widgets/media_action_row
 /// taslak olarak saklanır. Kaydet'in yanındaki mikrofon ve kamerayla
 /// çekilenler taslakta bekler, muayeneyle birlikte kaydedilir. Kaydet
 /// titreşir ve sayfayı kapatır; bildirimde Geri al ve "X gün sonra
-/// hatırlat" var.
+/// hatırlat" var. Arılık turunda ([tourApiaryId]) Kaydet muayeneyi tura
+/// yazar ve sıradaki kovanın muayenesini açar.
 class InspectionSheet extends ConsumerWidget {
-  const new({required this.hiveId, super.key});
+  const new({required this.hiveId, super.key, this.tourApiaryId, this.notice});
 
   final String hiveId;
+
+  /// Turdaysa turun arılığı.
+  final String? tourApiaryId;
+
+  /// Formun en üstünde (turda önceki kovanın kaydı ve Geri al'ı).
+  final Widget? notice;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return switch (ref.watch(inspectionFormControllerProvider(hiveId))) {
-      AsyncData(value: final form?) => _InspectionForm(hiveId, form),
+      AsyncData(value: final form?) => _InspectionForm(
+        hiveId,
+        form,
+        tourApiaryId: tourApiaryId,
+        notice: notice,
+      ),
       AsyncData() => const HiveNotFound(),
       AsyncError() => Center(
         child: Text(AppLocalizations.of(context).inspectionLoadError),
@@ -50,10 +64,12 @@ class InspectionSheet extends ConsumerWidget {
 }
 
 class _InspectionForm extends ConsumerWidget {
-  const new(this.hiveId, this.form);
+  const new(this.hiveId, this.form, {this.tourApiaryId, this.notice});
 
   final String hiveId;
   final InspectionFormState form;
+  final String? tourApiaryId;
+  final Widget? notice;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,6 +96,7 @@ class _InspectionForm extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  if (notice case final notice?) ...[notice, gap],
                   if (form.hasSuggestions) ...[
                     _Note(
                       icon: Icons.history_rounded,
@@ -306,25 +323,61 @@ class _InspectionForm extends ConsumerWidget {
 
   /// Yazar, titreşir, bildirimi gösterir ve sayfayı kapatır. Bildirim
   /// kovan kartında kalır; Geri al ve hatırlatma sayfa kapandıktan sonra
-  /// da çalışır.
+  /// da çalışır. Turda muayene tura yazılır ve sıradaki kovanın muayenesi
+  /// açılır; Geri al ve hatırlatma onun en üstünde. Sıradaki yoksa tura
+  /// dönülür.
   Future<void> _save(BuildContext context, WidgetRef ref) async {
-    final l10n = AppLocalizations.of(context);
-    final actions = ref.read(inspectionActionsProvider.notifier);
     final saved = await ref
         .read(inspectionFormControllerProvider(hiveId).notifier)
         .save();
     if (saved == null || !context.mounted) return;
     unawaited(AppHaptics.saved());
-    showUndoSnackBar(
-      context,
-      message: l10n.inspectionSaved(form.hive.number),
-      onUndo: () => actions.undo(saved),
-      details: InspectionReminderChoice(
-        onChanged: (days) => actions.remind(saved.inspection, days),
-      ),
-    );
-    context.pop();
+    final number = form.hive.number;
+    final tourApiaryId = this.tourApiaryId;
+    if (tourApiaryId == null) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(inspectionSavedSnackBar(context, ref, saved, number));
+      context.pop();
+      return;
+    }
+    final next = await ref.read(tourActionsProvider.notifier).record((
+      saved: saved,
+      hiveNumber: number,
+    ));
+    if (!context.mounted) return;
+    if (next == null) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(inspectionSavedSnackBar(context, ref, saved, number));
+      context.pop();
+    } else {
+      context.go(AppRoutes.apiaryTourInspect(tourApiaryId, next.id));
+    }
   }
+}
+
+/// Kaydedilen muayenenin bildirimi: Geri al ve "X gün sonra hatırlat".
+/// Geri al muayeneyi siler; turdaysa kovan turda yeniden bekleyen olur.
+SnackBar inspectionSavedSnackBar(
+  BuildContext context,
+  WidgetRef ref,
+  SavedInspection saved,
+  String hiveNumber,
+) {
+  final actions = ref.read(inspectionActionsProvider.notifier);
+  final tour = ref.read(tourActionsProvider.notifier);
+  return undoSnackBar(
+    context,
+    message: AppLocalizations.of(context).inspectionSaved(hiveNumber),
+    onUndo: () async {
+      await actions.undo(saved);
+      await tour.undo(saved.inspection);
+    },
+    details: InspectionReminderChoice(
+      onChanged: (days) => actions.remind(saved.inspection, days),
+    ),
+  );
 }
 
 /// Başlık: hangi kovan, önceki muayene ne zaman; sağda Kapat.

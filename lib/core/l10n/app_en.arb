@@ -2342,5 +2342,237 @@
         "example": "22"
       }
     }
-  }
+  },
+
+  "apiaryTourStart": "Start tour",
+  "apiaryTourResume": "Resume tour",
+  "tourReplaceTitle": "End the current tour?",
+  "tourReplaceMessage": "The {apiary} tour is still running. Starting a new tour clears its progress; the inspections stay saved.",
+  "@tourReplaceMessage": {
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Kızılçam"
+      }
+    }
+  },
+  "tourReplaceConfirm": "Start new tour",
+  "tourTitle": "{apiary} tour",
+  "@tourTitle": {
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Kızılçam"
+      }
+    }
+  },
+  "tourFinish": "Finish tour",
+  "tourProgress": "{done} / {total}",
+  "@tourProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "14"
+      },
+      "total": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "tourProgressLabel": "{done} of {total} hives done",
+  "@tourProgressLabel": {
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "14"
+      },
+      "total": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "tourMinutes": "{minutes} min",
+  "@tourMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "38"
+      }
+    }
+  },
+  "tourHoursMinutes": "{hours} h {minutes} min",
+  "@tourHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int",
+        "example": "1"
+      },
+      "minutes": {
+        "type": "int",
+        "example": "52"
+      }
+    }
+  },
+  "tourElapsedLabel": "Time elapsed: {duration}",
+  "@tourElapsedLabel": {
+    "placeholders": {
+      "duration": {
+        "type": "String",
+        "example": "38 min"
+      }
+    }
+  },
+  "tourNext": "Next up",
+  "tourPreviousVisit": "Last time · {date}",
+  "@tourPreviousVisit": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Oct 21"
+      }
+    }
+  },
+  "tourQueue": "Order",
+  "tourSkippedCount": "{count} skipped",
+  "@tourSkippedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "tourStateDone": "Done",
+  "tourStateSkipped": "Skipped",
+  "tourStatePending": "Waiting",
+  "tourStateNext": "Next",
+  "tourHiveSemantics": "Hive {number}, {state}",
+  "@tourHiveSemantics": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      },
+      "state": {
+        "type": "String",
+        "example": "skipped"
+      }
+    }
+  },
+  "tourSkip": "Skip",
+  "tourInspect": "Inspect {number}",
+  "@tourInspect": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "115"
+      }
+    }
+  },
+  "tourAllDone": "Every hive has been inspected.",
+  "tourSunSuggestion": "Sun mode makes the screen easier to read in bright light.",
+  "tourSunOn": "Turn on sun mode",
+  "tourSunMode": "Sun mode",
+  "tourFinishTitle": "Finish the tour?",
+  "tourFinishMessage": "{count, plural, =1{1 hive hasn't been inspected; the summary counts it as skipped.} other{{count} hives haven't been inspected; the summary counts them as skipped.}}",
+  "@tourFinishMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "tourNotFound": "There's no tour running in this apiary.",
+  "tourCompleteTitle": "Tour complete",
+  "tourInspectedCount": "{count, plural, =1{1 hive inspected} other{{count} hives inspected}}",
+  "@tourInspectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "38"
+      }
+    }
+  },
+  "tourHealthy": "Strong / fair",
+  "tourTasksTitle": "Tasks",
+  "tourTaskRequeen": "Requeen: {numbers}",
+  "@tourTaskRequeen": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "103, 117"
+      }
+    }
+  },
+  "tourTaskFeedWeak": "Feed 1:1 syrup: {numbers}",
+  "@tourTaskFeedWeak": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "104, 110"
+      }
+    }
+  },
+  "tourTaskSwarmCheck": "Swarm check: {numbers}",
+  "@tourTaskSwarmCheck": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "121"
+      }
+    }
+  },
+  "tourTaskRevisit": "Check skipped hives: {numbers}",
+  "@tourTaskRevisit": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "104, 110"
+      }
+    }
+  },
+  "tourTaskMoreNumbers": "{numbers} +{count}",
+  "@tourTaskMoreNumbers": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "101, 102"
+      },
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tourTaskDue": "{days, plural, =0{today} =1{tomorrow} other{in {days} days}}",
+  "@tourTaskDue": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tourSaveTasks": "{count, plural, =0{Close} =1{Save task} other{Save tasks}}",
+  "@tourSaveTasks": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "tourTasksSaved": "{count, plural, =1{1 task saved} other{{count} tasks saved}}",
+  "@tourTasksSaved": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "tourNoTasks": "No tasks to suggest."
 }

@@ -86,6 +86,48 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
     );
   }
 
+  /// Elle açılan görevleri [create] gibi yazar; hepsi tek transaction'da,
+  /// biri geçersizse ([ArgumentError]) hiçbiri yazılmaz.
+  Future<List<Task>> createMany(
+    String orgId,
+    List<
+      ({
+        String title,
+        DateTime dueAt,
+        String? apiaryId,
+        String? hiveId,
+        String? assignedTo,
+      })
+    >
+    tasks,
+  ) => db.transaction(() async {
+    final created = <Task>[];
+    for (final task in tasks) {
+      created.add(
+        await create(
+          orgId: orgId,
+          title: task.title,
+          dueAt: task.dueAt,
+          apiaryId: task.apiaryId,
+          hiveId: task.hiveId,
+          assignedTo: task.assignedTo,
+        ),
+      );
+    }
+    return created;
+  });
+
+  /// [source] kaynaklı ve kaynağı [sourceIds] içinde olan (silinmemiş)
+  /// görevler, son tarih sırasıyla; arılık turunun özetinde turda açılan
+  /// "tekrar bak" görevleri.
+  Stream<List<Task>> watchBySources(
+    TaskSource source,
+    Iterable<String> sourceIds,
+  ) => watchWhere(
+    (t) => t.source.equalsValue(source) & t.sourceId.isIn(sourceIds),
+    orderBy: [(t) => OrderingTerm.asc(t.dueAt), (t) => OrderingTerm.asc(t.id)],
+  );
+
   /// Görevin alanlarını yazar (son yazan kazanır). Görev yoksa ya da
   /// silinmişse [StateError]; değerler geçersizse [ArgumentError].
   Future<Task> update(Task task) => updateRecord(

@@ -54,6 +54,17 @@ abstract final class AppRoutes {
   /// Arılığın hasadı; geri tuşu arılığa döner.
   static String apiaryHarvest(String apiaryId) => '/apiaries/$apiaryId/harvest';
 
+  /// Arılık turu; sekmelerin üstünde açılır, geri tuşu arılığa döner.
+  static String apiaryTour(String apiaryId) => '/apiaries/$apiaryId/tour';
+
+  /// Turda kovanın muayenesi; turun üstünde alttan açılır.
+  static String apiaryTourInspect(String apiaryId, String hiveId) =>
+      '/apiaries/$apiaryId/tour/hives/$hiveId/inspect';
+
+  /// Tur sonu özeti; turun yerine açılır, geri tuşu arılığa döner.
+  static String apiaryTourSummary(String apiaryId) =>
+      '/apiaries/$apiaryId/tour-summary';
+
   /// Hasada alınacak kovanların seçimi; geri tuşu hasada döner.
   static String apiaryHarvestHives(String apiaryId) =>
       '/apiaries/$apiaryId/harvest/hives';

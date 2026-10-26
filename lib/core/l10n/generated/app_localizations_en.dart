@@ -2961,4 +2961,209 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get apiaryTourStart => 'Start tour';
+
+  @override
+  String get apiaryTourResume => 'Resume tour';
+
+  @override
+  String get tourReplaceTitle => 'End the current tour?';
+
+  @override
+  String tourReplaceMessage(String apiary) {
+    return 'The $apiary tour is still running. Starting a new tour clears its progress; the inspections stay saved.';
+  }
+
+  @override
+  String get tourReplaceConfirm => 'Start new tour';
+
+  @override
+  String tourTitle(String apiary) {
+    return '$apiary tour';
+  }
+
+  @override
+  String get tourFinish => 'Finish tour';
+
+  @override
+  String tourProgress(int done, int total) {
+    return '$done / $total';
+  }
+
+  @override
+  String tourProgressLabel(int done, int total) {
+    return '$done of $total hives done';
+  }
+
+  @override
+  String tourMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String tourHoursMinutes(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String tourElapsedLabel(String duration) {
+    return 'Time elapsed: $duration';
+  }
+
+  @override
+  String get tourNext => 'Next up';
+
+  @override
+  String tourPreviousVisit(String date) {
+    return 'Last time · $date';
+  }
+
+  @override
+  String get tourQueue => 'Order';
+
+  @override
+  String tourSkippedCount(int count) {
+    return '$count skipped';
+  }
+
+  @override
+  String get tourStateDone => 'Done';
+
+  @override
+  String get tourStateSkipped => 'Skipped';
+
+  @override
+  String get tourStatePending => 'Waiting';
+
+  @override
+  String get tourStateNext => 'Next';
+
+  @override
+  String tourHiveSemantics(String number, String state) {
+    return 'Hive $number, $state';
+  }
+
+  @override
+  String get tourSkip => 'Skip';
+
+  @override
+  String tourInspect(String number) {
+    return 'Inspect $number';
+  }
+
+  @override
+  String get tourAllDone => 'Every hive has been inspected.';
+
+  @override
+  String get tourSunSuggestion =>
+      'Sun mode makes the screen easier to read in bright light.';
+
+  @override
+  String get tourSunOn => 'Turn on sun mode';
+
+  @override
+  String get tourSunMode => 'Sun mode';
+
+  @override
+  String get tourFinishTitle => 'Finish the tour?';
+
+  @override
+  String tourFinishMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count hives haven\'t been inspected; the summary counts them as skipped.',
+      one: '1 hive hasn\'t been inspected; the summary counts it as skipped.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tourNotFound => 'There\'s no tour running in this apiary.';
+
+  @override
+  String get tourCompleteTitle => 'Tour complete';
+
+  @override
+  String tourInspectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives inspected',
+      one: '1 hive inspected',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tourHealthy => 'Strong / fair';
+
+  @override
+  String get tourTasksTitle => 'Tasks';
+
+  @override
+  String tourTaskRequeen(String numbers) {
+    return 'Requeen: $numbers';
+  }
+
+  @override
+  String tourTaskFeedWeak(String numbers) {
+    return 'Feed 1:1 syrup: $numbers';
+  }
+
+  @override
+  String tourTaskSwarmCheck(String numbers) {
+    return 'Swarm check: $numbers';
+  }
+
+  @override
+  String tourTaskRevisit(String numbers) {
+    return 'Check skipped hives: $numbers';
+  }
+
+  @override
+  String tourTaskMoreNumbers(String numbers, int count) {
+    return '$numbers +$count';
+  }
+
+  @override
+  String tourTaskDue(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'in $days days',
+      one: 'tomorrow',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tourSaveTasks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Save tasks',
+      one: 'Save task',
+      zero: 'Close',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tourTasksSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks saved',
+      one: '1 task saved',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tourNoTasks => 'No tasks to suggest.';
 }

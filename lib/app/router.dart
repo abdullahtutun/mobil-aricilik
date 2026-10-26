@@ -35,6 +35,8 @@ import 'package:mobil_arici/features/hives/presentation/hive_label_providers.dar
 import 'package:mobil_arici/features/hives/presentation/hive_link_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/labels/hive_labels_screen.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.dart';
+import 'package:mobil_arici/features/inspections/presentation/tour_screen.dart';
+import 'package:mobil_arici/features/inspections/presentation/tour_summary_screen.dart';
 import 'package:mobil_arici/features/media/presentation/media_viewer_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
@@ -188,6 +190,37 @@ GoRouter router(Ref ref) {
                             ),
                           ),
                         ],
+                      ),
+                      // Tur tam ekran (alt gezinme yok); muayene turun
+                      // üstünde alttan açılır, kapatınca tura dönülür.
+                      GoRoute(
+                        path: 'tour',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => TourScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'hives/:$_hiveId/inspect',
+                            parentNavigatorKey: rootNavigatorKey,
+                            // Kovan başına ayrı sayfa: Kaydet sıradaki
+                            // kovana geçince yeni sayfa açılır.
+                            pageBuilder: (context, state) => SheetPage<void>(
+                              key: ValueKey(state.matchedLocation),
+                              child: TourInspectionSheet(
+                                apiaryId: state.pathParameters[_apiaryId]!,
+                                hiveId: state.pathParameters[_hiveId]!,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      GoRoute(
+                        path: 'tour-summary',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => TourSummaryScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                        ),
                       ),
                       // `:hiveId`'den önce; "new" ve "bulk" kimlik sanılmasın.
                       GoRoute(

@@ -39,6 +39,10 @@ class InspectionRepository
   Stream<List<Inspection>> watchByHive(String hiveId) =>
       _byHive(hiveId).watch();
 
+  /// Kimlikleri [ids] olan (silinmemiş) muayeneler; arılık turunun özeti.
+  Stream<List<Inspection>> watchByIds(Iterable<String> ids) =>
+      watchWhere((t) => t.id.isIn(ids));
+
   /// Şimdi [apiaryId] arılığındaki (silinmemiş) her kovanın en son
   /// muayenesi, kovan kimliğine göre; muayenesi olmayan kovan haritada
   /// yok. "En son" [latestByHive] ile aynı. Kovan arılığa taşınınca ya da

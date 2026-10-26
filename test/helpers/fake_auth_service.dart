@@ -6,6 +6,7 @@ import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/services/code_scanner_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/services/print_service_provider.dart';
+import 'package:mobil_arici/core/services/screen_awake.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
@@ -17,6 +18,7 @@ import 'fake_media.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
 import 'fake_reminder_notifications.dart';
+import 'fake_screen_awake.dart';
 import 'fake_sync_service.dart';
 import 'fake_weather_service.dart';
 import 'test_database.dart';
@@ -76,9 +78,9 @@ class FakeAuthService implements AuthService {
 
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
 /// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, senkron, medya
-/// (foto, ses, Storage) ve hava servisi sahte; hava servisi verilmezse
-/// çevrimdışı gibi hata atar. İlk tam çekme bitmiş sayılır ([fullPullDone]
-/// yanlışsa DB'den okunur).
+/// (foto, ses, Storage), hava servisi ve ekranı açık tutma sahte; hava
+/// servisi verilmezse çevrimdışı gibi hata atar. İlk tam çekme bitmiş
+/// sayılır ([fullPullDone] yanlışsa DB'den okunur).
 List<Override> signedIn({
   FakeAuthService? auth,
   AppDatabase? db,
@@ -88,6 +90,7 @@ List<Override> signedIn({
   FakeMedia? media,
   FakeReminderNotifications? reminders,
   FakeWeatherService? weather,
+  FakeScreenAwake? screenAwake,
   bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
@@ -103,4 +106,5 @@ List<Override> signedIn({
     reminders ?? FakeReminderNotifications(),
   ),
   weatherServiceProvider.overrideWithValue(weather ?? FakeWeatherService()),
+  screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
 ];

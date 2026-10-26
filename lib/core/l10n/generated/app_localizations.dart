@@ -4715,6 +4715,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{Done} =1{Done · 1 hive} other{Done · {count} hives}}'**
   String harvestScanDone(int count);
+
+  /// No description provided for @apiaryTourStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start tour'**
+  String get apiaryTourStart;
+
+  /// No description provided for @apiaryTourResume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume tour'**
+  String get apiaryTourResume;
+
+  /// No description provided for @tourReplaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'End the current tour?'**
+  String get tourReplaceTitle;
+
+  /// No description provided for @tourReplaceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The {apiary} tour is still running. Starting a new tour clears its progress; the inspections stay saved.'**
+  String tourReplaceMessage(String apiary);
+
+  /// No description provided for @tourReplaceConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Start new tour'**
+  String get tourReplaceConfirm;
+
+  /// No description provided for @tourTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{apiary} tour'**
+  String tourTitle(String apiary);
+
+  /// No description provided for @tourFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish tour'**
+  String get tourFinish;
+
+  /// No description provided for @tourProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} / {total}'**
+  String tourProgress(int done, int total);
+
+  /// No description provided for @tourProgressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} hives done'**
+  String tourProgressLabel(int done, int total);
+
+  /// No description provided for @tourMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String tourMinutes(int minutes);
+
+  /// No description provided for @tourHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String tourHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @tourElapsedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time elapsed: {duration}'**
+  String tourElapsedLabel(String duration);
+
+  /// No description provided for @tourNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next up'**
+  String get tourNext;
+
+  /// No description provided for @tourPreviousVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Last time · {date}'**
+  String tourPreviousVisit(String date);
+
+  /// No description provided for @tourQueue.
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get tourQueue;
+
+  /// No description provided for @tourSkippedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} skipped'**
+  String tourSkippedCount(int count);
+
+  /// No description provided for @tourStateDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get tourStateDone;
+
+  /// No description provided for @tourStateSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get tourStateSkipped;
+
+  /// No description provided for @tourStatePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get tourStatePending;
+
+  /// No description provided for @tourStateNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get tourStateNext;
+
+  /// No description provided for @tourHiveSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number}, {state}'**
+  String tourHiveSemantics(String number, String state);
+
+  /// No description provided for @tourSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get tourSkip;
+
+  /// No description provided for @tourInspect.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspect {number}'**
+  String tourInspect(String number);
+
+  /// No description provided for @tourAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Every hive has been inspected.'**
+  String get tourAllDone;
+
+  /// No description provided for @tourSunSuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun mode makes the screen easier to read in bright light.'**
+  String get tourSunSuggestion;
+
+  /// No description provided for @tourSunOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on sun mode'**
+  String get tourSunOn;
+
+  /// No description provided for @tourSunMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun mode'**
+  String get tourSunMode;
+
+  /// No description provided for @tourFinishTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish the tour?'**
+  String get tourFinishTitle;
+
+  /// No description provided for @tourFinishMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive hasn\'t been inspected; the summary counts it as skipped.} other{{count} hives haven\'t been inspected; the summary counts them as skipped.}}'**
+  String tourFinishMessage(int count);
+
+  /// No description provided for @tourNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'There\'s no tour running in this apiary.'**
+  String get tourNotFound;
+
+  /// No description provided for @tourCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tour complete'**
+  String get tourCompleteTitle;
+
+  /// No description provided for @tourInspectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive inspected} other{{count} hives inspected}}'**
+  String tourInspectedCount(int count);
+
+  /// No description provided for @tourHealthy.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong / fair'**
+  String get tourHealthy;
+
+  /// No description provided for @tourTasksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get tourTasksTitle;
+
+  /// No description provided for @tourTaskRequeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Requeen: {numbers}'**
+  String tourTaskRequeen(String numbers);
+
+  /// No description provided for @tourTaskFeedWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed 1:1 syrup: {numbers}'**
+  String tourTaskFeedWeak(String numbers);
+
+  /// No description provided for @tourTaskSwarmCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Swarm check: {numbers}'**
+  String tourTaskSwarmCheck(String numbers);
+
+  /// No description provided for @tourTaskRevisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Check skipped hives: {numbers}'**
+  String tourTaskRevisit(String numbers);
+
+  /// No description provided for @tourTaskMoreNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'{numbers} +{count}'**
+  String tourTaskMoreNumbers(String numbers, int count);
+
+  /// No description provided for @tourTaskDue.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{today} =1{tomorrow} other{in {days} days}}'**
+  String tourTaskDue(int days);
+
+  /// No description provided for @tourSaveTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Close} =1{Save task} other{Save tasks}}'**
+  String tourSaveTasks(int count);
+
+  /// No description provided for @tourTasksSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 task saved} other{{count} tasks saved}}'**
+  String tourTasksSaved(int count);
+
+  /// No description provided for @tourNoTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks to suggest.'**
+  String get tourNoTasks;
 }
 
 class _AppLocalizationsDelegate

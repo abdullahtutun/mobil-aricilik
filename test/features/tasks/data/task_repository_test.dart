@@ -287,4 +287,90 @@ void main() {
       expect(await repository.findById(other.id), isNotNull);
     });
   });
+
+  group('arılık turu', () {
+    test('createMany hepsini tek transaction’da yazar', () async {
+      final tasks = await repository.createMany('org-1', [
+        (
+          title: 'Ana ver: 103',
+          dueAt: DateTime.utc(2026, 10, 23, 9),
+          apiaryId: 'apiary-1',
+          hiveId: 'hive-3',
+          assignedTo: 'user-1',
+        ),
+        (
+          title: 'Atlanan kovanlara bak: 104, 110',
+          dueAt: DateTime.utc(2026, 10, 23, 9),
+          apiaryId: 'apiary-1',
+          hiveId: null,
+          assignedTo: 'user-1',
+        ),
+      ]);
+
+      expect(
+        [for (final t in tasks) t.title],
+        ['Ana ver: 103', 'Atlanan kovanlara bak: 104, 110'],
+      );
+      expect(
+        [for (final t in tasks) t.source],
+        [TaskSource.manual, TaskSource.manual],
+      );
+      expect(await readOutbox(db), hasLength(2));
+    });
+
+    test('createMany: biri geçersizse hiçbiri yazılmaz', () async {
+      await expectLater(
+        repository.createMany('org-1', [
+          (
+            title: 'Ana ver: 103',
+            dueAt: DateTime.utc(2026, 10, 23, 9),
+            apiaryId: 'apiary-1',
+            hiveId: null,
+            assignedTo: null,
+          ),
+          (
+            title: '  ',
+            dueAt: DateTime.utc(2026, 10, 23, 9),
+            apiaryId: 'apiary-1',
+            hiveId: null,
+            assignedTo: null,
+          ),
+        ]),
+        throwsArgumentError,
+      );
+
+      expect(await db.select(db.tasks).get(), isEmpty);
+      expect(await readOutbox(db), isEmpty);
+    });
+
+    test('watchBySources yalnız verilen kaynakların silinmemiş görevlerini '
+        'son tarih sırasıyla verir', () async {
+      final inspections = InspectionRepository(db, clock: clock.call);
+      Future<Inspection> inspect(String hiveId) => inspections.add(
+        orgId: 'org-1',
+        hiveId: hiveId,
+        apiaryId: 'apiary-1',
+        values: const InspectionValues(beeFrames: 6),
+      );
+      final a = await inspect('hive-1');
+      final b = await inspect('hive-2');
+      final c = await inspect('hive-3');
+      final late = await repository.remindAfterInspection(a, 14);
+      final soon = await repository.remindAfterInspection(b, 3);
+      await repository.remindAfterInspection(c, 7);
+      final deleted = await repository.remindAfterInspection(
+        await inspect('hive-4'),
+        7,
+      );
+      await repository.delete(deleted.id);
+
+      final tasks = await repository.watchBySources(TaskSource.inspection, [
+        a.id,
+        b.id,
+        deleted.sourceId!,
+      ]).first;
+
+      expect([for (final t in tasks) t.id], [soon.id, late.id]);
+    });
+  });
 }
