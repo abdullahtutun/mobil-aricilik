@@ -706,7 +706,7 @@
   "settingsExactAlarms": "Tam saatinde çalsın",
   "settingsExactAlarmsOn": "Açık",
   "settingsExactAlarmsOff": "Kapalı · birkaç dakika gecikebilir",
-  "weatherAttribution": "Weather data by Open-Meteo.com",
+  "weatherAttribution": "Powered by WeatherAPI.com",
   "weatherTemperature": "{value}°",
   "weatherWind": "Rüzgar {speed} km/s",
   "weatherForecastAsOf": "Tahmin {time} itibarıyla",

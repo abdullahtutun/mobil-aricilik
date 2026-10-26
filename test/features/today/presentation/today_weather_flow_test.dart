@@ -10,6 +10,7 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
+import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 
 import '../../../helpers/fake_auth_service.dart';
@@ -18,7 +19,7 @@ import '../../../helpers/fake_weather_service.dart';
 import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
-const _attribution = 'Weather data by Open-Meteo.com';
+const _attribution = 'Powered by WeatherAPI.com';
 
 Future<ProviderContainer> _open(
   WidgetTester tester, {
@@ -108,7 +109,7 @@ void main() {
             at: now.subtract(const Duration(hours: 3)),
             temperatureC: 10,
             precipitationMm: 1.2,
-            weatherCode: 63,
+            condition: WeatherCondition.rain,
           ),
         },
       ),

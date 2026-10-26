@@ -219,46 +219,55 @@ void main() {
   });
 
   group('WeatherBundle', () {
-    test('Edge Function yanıtını okur; boş değerler null', () {
-      final bundle = WeatherBundle.fromJson({
-        'generated_at': '2026-10-26T08:25:53.663Z',
-        'forecasts': [
-          {
-            'apiary_id': 'a1',
-            'cell': '37.10,28.39',
-            'fetched_at': '2026-10-26T08:25:53.85+00:00',
-            'forecast': {
-              'timezone': 'Europe/Istanbul',
-              'utc_offset_seconds': 10800,
-              'hourly': {
-                'time': [1792962000, 1792965600],
-                'temperature_c': [14, 14.2],
-                'wind_kmh': [3.1, null],
-                'precipitation_mm': [0, 0.3],
-                'precipitation_probability': [null, 40],
-                'weather_code': [0, 61],
-              },
-              'daily': {
-                'time': [1792962000],
-                'weather_code': [61],
-                'temperature_max_c': [22.4],
-                'temperature_min_c': [9.1],
-                'precipitation_mm': [1.2],
-                'precipitation_probability_max': [55],
-                'wind_max_kmh': [14.8],
+    test(
+      'Edge Function yanıtını okur; boş değerler ve bilinmeyen durum null',
+      () {
+        final bundle = WeatherBundle.fromJson({
+          'generated_at': '2026-10-26T08:25:53.663Z',
+          'forecasts': [
+            {
+              'apiary_id': 'a1',
+              'cell': '37.10,28.39',
+              'fetched_at': '2026-10-26T08:25:53.85+00:00',
+              'forecast': {
+                'timezone': 'Europe/Istanbul',
+                'utc_offset_seconds': 10800,
+                'hourly': {
+                  'time': [1792962000, 1792965600],
+                  'temperature_c': [14, 14.2],
+                  'wind_kmh': [3.1, null],
+                  'precipitation_mm': [0, 0.3],
+                  'precipitation_probability': [null, 40],
+                  'condition': ['partly_cloudy', 'hail_storm'],
+                },
+                'daily': {
+                  'time': [1792962000],
+                  'condition': ['rain'],
+                  'temperature_max_c': [22.4],
+                  'temperature_min_c': [9.1],
+                  'precipitation_mm': [1.2],
+                  'precipitation_probability_max': [55],
+                  'wind_max_kmh': [14.8],
+                },
               },
             },
-          },
-        ],
-      });
+          ],
+        });
 
-      final forecast = bundle.forecasts.single;
-      expect(forecast.fetchedAt, DateTime.utc(2026, 10, 26, 8, 25, 53, 850));
-      expect(forecast.forecast.hourly.temperatureC, [14.0, 14.2]);
-      expect(forecast.forecast.hourly.windKmh, [3.1, null]);
-      expect(forecast.forecast.hourly.precipitationProbability, [null, 40.0]);
-      expect(forecast.forecast.daily.temperatureMaxC, [22.4]);
-    });
+        final forecast = bundle.forecasts.single;
+        expect(forecast.fetchedAt, DateTime.utc(2026, 10, 26, 8, 25, 53, 850));
+        expect(forecast.forecast.hourly.temperatureC, [14.0, 14.2]);
+        expect(forecast.forecast.hourly.windKmh, [3.1, null]);
+        expect(forecast.forecast.hourly.precipitationProbability, [null, 40.0]);
+        expect(forecast.forecast.hourly.condition, [
+          WeatherCondition.partlyCloudy,
+          // Uygulamanın bilmediği yeni bir durum.
+          null,
+        ]);
+        expect(forecast.forecast.daily.condition, [WeatherCondition.rain]);
+        expect(forecast.forecast.daily.temperatureMaxC, [22.4]);
+      },
+    );
 
     test('JSON metni üzerinden aynı paketi geri verir', () {
       final bundle = testBundle(

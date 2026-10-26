@@ -140,7 +140,7 @@ Arıcının "unuttum" dediği her şey burada; hatırlatıcılar internetsiz de 
 
 Arıcı havaya ve çiçeğe göre çalışır; uygulama "bugün kovan açılır mı" sorusuna cevap vermeli.
 
-- **Arılık bazında hava:** Open-Meteo verisiyle her arılığın konumu için sıcaklık, rüzgar, yağış; son alınan tahmin offline saklanır.
+- **Arılık bazında hava:** WeatherAPI.com verisiyle her arılığın konumu için sıcaklık, rüzgar, yağış; son alınan tahmin offline saklanır.
 - **"Kovan açma uygunluğu" göstergesi:** Sıcaklık, rüzgar ve yağmura göre yeşil/sarı/kırmızı.
 - **Uyarılar:** Geç don, aşırı sıcak, fırtına, sel riski — özellikle ilkbahar donu ve taşıma günleri için.
 - **Flora takvimi:** Bölgeye göre başlıca nektar kaynaklarının çiçeklenme dönemi; arıcı kendi gözlemini ekleyerek yıldan yıla kişisel takvim oluşturur.

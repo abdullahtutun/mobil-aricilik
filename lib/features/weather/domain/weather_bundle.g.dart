@@ -66,8 +66,14 @@ _HourlySeries _$HourlySeriesFromJson(
   precipitationProbability: (json['precipitation_probability'] as List<dynamic>)
       .map((e) => (e as num?)?.toDouble())
       .toList(),
-  weatherCode: (json['weather_code'] as List<dynamic>)
-      .map((e) => (e as num?)?.toInt())
+  condition: (json['condition'] as List<dynamic>)
+      .map(
+        (e) => $enumDecodeNullable(
+          _$WeatherConditionEnumMap,
+          e,
+          unknownValue: JsonKey.nullForUndefinedEnumValue,
+        ),
+      )
       .toList(),
 );
 
@@ -78,13 +84,31 @@ Map<String, dynamic> _$HourlySeriesToJson(_HourlySeries instance) =>
       'wind_kmh': instance.windKmh,
       'precipitation_mm': instance.precipitationMm,
       'precipitation_probability': instance.precipitationProbability,
-      'weather_code': instance.weatherCode,
+      'condition': instance.condition
+          .map((e) => _$WeatherConditionEnumMap[e])
+          .toList(),
     };
+
+const _$WeatherConditionEnumMap = {
+  WeatherCondition.clear: 'clear',
+  WeatherCondition.partlyCloudy: 'partly_cloudy',
+  WeatherCondition.cloudy: 'cloudy',
+  WeatherCondition.fog: 'fog',
+  WeatherCondition.rain: 'rain',
+  WeatherCondition.snow: 'snow',
+  WeatherCondition.thunder: 'thunder',
+};
 
 _DailySeries _$DailySeriesFromJson(Map<String, dynamic> json) => _DailySeries(
   time: (json['time'] as List<dynamic>).map((e) => (e as num).toInt()).toList(),
-  weatherCode: (json['weather_code'] as List<dynamic>)
-      .map((e) => (e as num?)?.toInt())
+  condition: (json['condition'] as List<dynamic>)
+      .map(
+        (e) => $enumDecodeNullable(
+          _$WeatherConditionEnumMap,
+          e,
+          unknownValue: JsonKey.nullForUndefinedEnumValue,
+        ),
+      )
       .toList(),
   temperatureMaxC: (json['temperature_max_c'] as List<dynamic>)
       .map((e) => (e as num?)?.toDouble())
@@ -107,7 +131,9 @@ _DailySeries _$DailySeriesFromJson(Map<String, dynamic> json) => _DailySeries(
 Map<String, dynamic> _$DailySeriesToJson(_DailySeries instance) =>
     <String, dynamic>{
       'time': instance.time,
-      'weather_code': instance.weatherCode,
+      'condition': instance.condition
+          .map((e) => _$WeatherConditionEnumMap[e])
+          .toList(),
       'temperature_max_c': instance.temperatureMaxC,
       'temperature_min_c': instance.temperatureMinC,
       'precipitation_mm': instance.precipitationMm,

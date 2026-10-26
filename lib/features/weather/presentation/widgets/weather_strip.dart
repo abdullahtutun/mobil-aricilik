@@ -9,7 +9,8 @@ import 'package:mobil_arici/features/weather/presentation/weather_providers.dart
 import 'package:mobil_arici/features/weather/presentation/widgets/apiary_weather_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 
-/// Bugün'ün üstündeki yatay kayan arılık hava kartları ve Open-Meteo atfı.
+/// Bugün'ün üstündeki yatay kayan arılık hava kartları ve WeatherAPI.com
+/// atfı.
 /// Saklanan paket [weatherRefreshInterval]'den eskiyse tahminin zamanı da
 /// yazar (çevrimdışı). Gösterilecek arılık yoksa hiç yer kaplamaz.
 class WeatherStrip extends ConsumerWidget {

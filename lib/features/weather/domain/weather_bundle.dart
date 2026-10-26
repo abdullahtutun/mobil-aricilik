@@ -4,7 +4,8 @@ part 'weather_bundle.freezed.dart';
 part 'weather_bundle.g.dart';
 
 /// `weather-bundle` Edge Function'ının yanıtı: işletmenin konumlu
-/// arılıkları için 7 günlük Open-Meteo tahmini. Telefonda son alınan paket
+/// arılıkları için WeatherAPI.com tahmini (planın verdiği kadar gün; ücretsiz
+/// 3, Starter 7). Telefonda son alınan paket
 /// saklanır; çevrimdışıyken o gösterilir.
 @freezed
 abstract class WeatherBundle with _$WeatherBundle {
@@ -30,9 +31,9 @@ abstract class ApiaryForecast with _$ApiaryForecast {
   factory fromJson(Map<String, Object?> json) => _$ApiaryForecastFromJson(json);
 }
 
-/// Open-Meteo tahmini, sütunlar hâlinde. Saatler Unix saniyesi; günler
-/// arılığın saat dilimindeki gece yarısı. Open-Meteo bazı değerleri boş
-/// verebilir.
+/// Tahmin, sütunlar hâlinde. Saatler Unix saniyesi; günler arılığın saat
+/// dilimindeki gece yarısı. Sağlayıcı bazı değerleri boş verebilir.
+/// Sağlayıcıya özel hiçbir kod taşımaz; sunucu çevirir.
 @freezed
 abstract class Forecast with _$Forecast {
   const factory({
@@ -51,8 +52,13 @@ typedef HourlyWeather = ({
   double? windKmh,
   double? precipitationMm,
   double? precipitationProbability,
-  int? weatherCode,
+  WeatherCondition? condition,
 });
+
+/// Sağlayıcıdan bağımsız gökyüzü durumu; sunucu WeatherAPI kodundan çevirir.
+/// Bilinmeyen değer null okunur.
+@JsonEnum(fieldRename: FieldRename.snake)
+enum WeatherCondition { clear, partlyCloudy, cloudy, fog, rain, snow, thunder }
 
 /// Saatlik sütunlar; hepsi [time] ile aynı uzunlukta.
 @freezed
@@ -66,8 +72,8 @@ abstract class HourlySeries with _$HourlySeries {
     /// Yüzde (0–100).
     required List<double?> precipitationProbability,
 
-    /// WMO hava kodu.
-    required List<int?> weatherCode,
+    @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+    required List<WeatherCondition?> condition,
   }) = _HourlySeries;
 
   factory fromJson(Map<String, Object?> json) => _$HourlySeriesFromJson(json);
@@ -78,7 +84,8 @@ abstract class HourlySeries with _$HourlySeries {
 abstract class DailySeries with _$DailySeries {
   const factory({
     required List<int> time,
-    required List<int?> weatherCode,
+    @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+    required List<WeatherCondition?> condition,
     required List<double?> temperatureMaxC,
     required List<double?> temperatureMinC,
     required List<double?> precipitationMm,

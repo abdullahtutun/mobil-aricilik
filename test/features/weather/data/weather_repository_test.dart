@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
@@ -72,4 +74,33 @@ void main() {
     expect(await repository.readBundle(), isNull);
     expect(await repository.watchBundle().first, isNull);
   });
+
+  test(
+    'Open-Meteo dönemindeki biçim null okunur; paket yeniden alınır',
+    () async {
+      final json = testBundle(
+        generatedAt: at,
+        forecasts: {'a1': testForecast(at: at)},
+      ).toJson();
+      final old = jsonDecode(jsonEncode(json)) as Map<String, Object?>;
+      for (final forecast in old['forecasts']! as List<Object?>) {
+        final series =
+            (forecast! as Map<String, Object?>)['forecast']!
+                as Map<String, Object?>;
+        for (final key in ['hourly', 'daily']) {
+          final columns = series[key]! as Map<String, Object?>;
+          columns['weather_code'] = columns.remove('condition');
+        }
+      }
+      await db
+          .into(db.localSettings)
+          .insert(
+            LocalSettingsCompanion.insert(
+              key: WeatherRepository.bundleKey,
+              value: jsonEncode(old),
+            ),
+          );
+      expect(await repository.readBundle(), isNull);
+    },
+  );
 }

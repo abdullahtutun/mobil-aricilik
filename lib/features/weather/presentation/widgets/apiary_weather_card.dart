@@ -5,6 +5,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/units.dart';
+import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
 import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
@@ -51,7 +52,7 @@ class ApiaryWeatherCard extends ConsumerWidget {
               Row(
                 children: [
                   Icon(
-                    _icon(hour.weatherCode, advice),
+                    _icon(hour.condition, advice),
                     size: context.sizes.illustrationIcon,
                     color: colors.primary,
                   ),
@@ -87,19 +88,21 @@ class ApiaryWeatherCard extends ConsumerWidget {
     );
   }
 
-  /// WMO hava kodundan ikon; rüzgar uygunluğu düşürüyorsa rüzgar ikonu.
-  static IconData _icon(int? code, HiveOpeningAdvice? advice) {
+  /// Gökyüzü durumundan ikon; rüzgar uygunluğu düşürüyorsa rüzgar ikonu.
+  static IconData _icon(
+    WeatherCondition? condition,
+    HiveOpeningAdvice? advice,
+  ) {
     if (advice?.concern == WeatherConcern.wind) return Icons.air_rounded;
-    return switch (code) {
+    return switch (condition) {
+      WeatherCondition.clear => Icons.wb_sunny_rounded,
+      WeatherCondition.partlyCloudy => Icons.wb_cloudy_rounded,
+      WeatherCondition.cloudy => Icons.cloud_rounded,
+      WeatherCondition.fog => Icons.foggy,
+      WeatherCondition.rain => Icons.water_drop_rounded,
+      WeatherCondition.snow => Icons.ac_unit_rounded,
+      WeatherCondition.thunder => Icons.thunderstorm_rounded,
       null => Icons.thermostat_rounded,
-      0 || 1 => Icons.wb_sunny_rounded,
-      2 => Icons.wb_cloudy_rounded,
-      3 => Icons.cloud_rounded,
-      45 || 48 => Icons.foggy,
-      (>= 51 && <= 67) || (>= 80 && <= 82) => Icons.water_drop_rounded,
-      (>= 71 && <= 77) || 85 || 86 => Icons.ac_unit_rounded,
-      >= 95 && <= 99 => Icons.thunderstorm_rounded,
-      _ => Icons.thermostat_rounded,
     };
   }
 }

@@ -29,7 +29,7 @@ Forecast testForecast({
   double? windKmh = 8,
   double? precipitationMm = 0,
   double? precipitationProbability = 0,
-  int? weatherCode = 0,
+  WeatherCondition? condition = WeatherCondition.clear,
   int hours = 24,
 }) {
   const hour = Duration.secondsPerHour;
@@ -44,11 +44,11 @@ Forecast testForecast({
       windKmh: repeat(windKmh),
       precipitationMm: repeat(precipitationMm),
       precipitationProbability: repeat(precipitationProbability),
-      weatherCode: repeat(weatherCode),
+      condition: repeat(condition),
     ),
     daily: DailySeries(
       time: [start],
-      weatherCode: [weatherCode],
+      condition: [condition],
       temperatureMaxC: [temperatureC],
       temperatureMinC: [temperatureC],
       precipitationMm: [precipitationMm],

@@ -2543,7 +2543,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsExactAlarmsOff => 'Kapalı · birkaç dakika gecikebilir';
 
   @override
-  String get weatherAttribution => 'Weather data by Open-Meteo.com';
+  String get weatherAttribution => 'Powered by WeatherAPI.com';
 
   @override
   String weatherTemperature(String value) {

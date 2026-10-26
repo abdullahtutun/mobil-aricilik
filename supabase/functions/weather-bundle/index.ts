@@ -1,18 +1,27 @@
-// weather-bundle: Çağıranın arılıkları için 7 günlük Open-Meteo tahmini tek
-// pakette. Konumlar kullanıcının JWT'siyle (RLS) `weather_locations`'tan
-// gelir; istemci koordinat göndermez. Tahmin 0,01°'lik hücre başına
-// `weather_cache`'te ~1 saat tutulur. Open-Meteo'ya ulaşılamazsa eski
-// önbellek döner; hiç verisi olmayan hücre kalırsa 502 ve istemci kendi
-// sakladığı paketi göstermeye devam eder.
+// weather-bundle: Çağıranın arılıkları için WeatherAPI.com tahmini (planın
+// verdiği kadar gün; ücretsiz 3, Starter 7) tek pakette. Konumlar
+// kullanıcının JWT'siyle (RLS) `weather_locations`'tan gelir; istemci
+// koordinat göndermez. Tahmin 0,01°'lik hücre başına `weather_cache`'te ~1
+// saat tutulur. Bir hücre alınamazsa eski önbelleği döner; hiç verisi
+// olmayan hücre kalırsa 502 ve istemci kendi sakladığı paketi göstermeye
+// devam eder. Anahtar `WEATHERAPI_KEY` secret'ında.
 //
 // Yanıt: { generated_at, forecasts: [{ apiary_id, cell, fetched_at,
-// forecast }] }. Uygulama "Weather data by Open-Meteo.com" atfını gösterir.
+// forecast }] }. Uygulama "Powered by WeatherAPI.com" atfını gösterir.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { cellOf, type Forecast, forecastUrl, parseForecasts } from "./open_meteo.ts";
+import {
+  cellOf,
+  type Forecast,
+  forecastUrl,
+  parseForecast,
+} from "./weather_api.ts";
 
 const cacheTtlMs = 60 * 60 * 1000;
-const cellsPerRequest = 50;
+
+/// WeatherAPI'ye aynı anda giden en çok istek; ücretsiz planda toplu istek
+/// yok, her hücre ayrı çağrı.
+const parallelRequests = 5;
 
 type CacheRow = { cell: string; forecast: Forecast; fetched_at: string };
 
@@ -23,27 +32,50 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-async function fetchForecasts(cells: string[]): Promise<CacheRow[]> {
+/// Hücre başına bir istek. Alınamayan hücre loglanır ve sonuçta yer almaz.
+async function fetchForecasts(
+  cells: string[],
+  key: string,
+): Promise<CacheRow[]> {
   const rows: CacheRow[] = [];
-  for (let i = 0; i < cells.length; i += cellsPerRequest) {
-    const chunk = cells.slice(i, i + cellsPerRequest);
-    const response = await fetch(forecastUrl(chunk), {
-      signal: AbortSignal.timeout(10_000),
-    });
-    if (!response.ok) {
-      throw new Error(`Open-Meteo ${response.status}: ${await response.text()}`);
+  const queue = [...cells];
+  async function worker() {
+    for (let cell = queue.shift(); cell; cell = queue.shift()) {
+      try {
+        const response = await fetch(forecastUrl(cell, key), {
+          signal: AbortSignal.timeout(10_000),
+        });
+        // Adres anahtarı taşır; yalnız durum ve gövde loglanır.
+        if (!response.ok) {
+          throw new Error(
+            `WeatherAPI ${response.status}: ${await response.text()}`,
+          );
+        }
+        rows.push({
+          cell,
+          forecast: parseForecast(await response.json()),
+          fetched_at: new Date().toISOString(),
+        });
+      } catch (error) {
+        console.error(cell, error);
+      }
     }
-    const fetchedAt = new Date().toISOString();
-    parseForecasts(await response.json(), chunk.length).forEach((forecast, j) =>
-      rows.push({ cell: chunk[j], forecast, fetched_at: fetchedAt })
-    );
   }
+  await Promise.all(
+    Array.from({ length: Math.min(parallelRequests, cells.length) }, worker),
+  );
   return rows;
 }
 
 Deno.serve(async (request) => {
   const authorization = request.headers.get("Authorization");
   if (!authorization) return json({ error: "unauthorized" }, 401);
+
+  const key = Deno.env.get("WEATHERAPI_KEY");
+  if (!key) {
+    console.error("WEATHERAPI_KEY tanımlı değil");
+    return json({ error: "config" }, 500);
+  }
 
   const url = Deno.env.get("SUPABASE_URL")!;
   const user = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, {
@@ -89,19 +121,17 @@ Deno.serve(async (request) => {
   });
 
   if (stale.length > 0) {
-    try {
-      const fresh = await fetchForecasts(stale);
-      for (const row of fresh) byCell.set(row.cell, row);
+    const fresh = await fetchForecasts(stale, key);
+    for (const row of fresh) byCell.set(row.cell, row);
+    if (fresh.length > 0) {
       const { error: upsertError } = await admin
         .from("weather_cache")
         .upsert(fresh, { onConflict: "cell" });
       if (upsertError) console.error(upsertError);
-    } catch (error) {
-      console.error(error);
-      // Eski önbellek de yoksa paket eksik kalırdı; istemci elindekini korur.
-      if (stale.some((cell) => !byCell.has(cell))) {
-        return json({ error: "upstream" }, 502);
-      }
+    }
+    // Eski önbellek de yoksa paket eksik kalırdı; istemci elindekini korur.
+    if (stale.some((cell) => !byCell.has(cell))) {
+      return json({ error: "upstream" }, 502);
     }
   }
 

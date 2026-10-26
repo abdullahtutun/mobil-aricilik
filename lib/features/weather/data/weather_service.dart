@@ -1,7 +1,7 @@
 import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Hava paketi alınamadı (ağ yok, sunucu ya da Open-Meteo hatası). Telefonda
+/// Hava paketi alınamadı (ağ yok, sunucu ya da WeatherAPI hatası). Telefonda
 /// saklanan paket gösterilmeye devam eder.
 class WeatherServiceException implements Exception {
   const new(this.cause);

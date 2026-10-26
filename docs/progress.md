@@ -298,6 +298,14 @@
 - Testler: 1033 Flutter testi geçiyor. Kapsananlar: eşik sınırları, etken önceliği, saat seçimi, yenileme kararı, paket JSON'u, repository, `locatedIds`. Akış testleri ilk alma, çevrimdışı saklanan paket, taze pakette sormama, paketsiz ekran, silinmiş arılık ve aralığı geçmiş tahmin için; Türkçe, 360dp'de 1.5x yazı ve eldivenle. `schema_mirror_test` artık yalnız `server_seq` taşıyan sunucu tablolarını aynalıyor. Denendi: rüzgar eşiği değişince testler kırıldı.
 - Bilinen sınırlar: Atıf düz metin, bağlantı değil (`url_launcher` yok). Rüzgar her bölgede km/s; mph birimi yok. Yeni arılığın havası, arılık sunucuya senkronlanana kadar gelmiyor. Open-Meteo'nun ücretsiz API'si ticari olmayan kullanım için; gelir gelmeden abonelik gerekecek (teknik.md §13). Upstream hatası yolu yerelde denenmedi. Fonksiyon gerçek oturumla uzakta, uygulama da cihazda denenmedi.
 
+### 2026-10-26 — Hava sağlayıcısı: Open-Meteo → WeatherAPI.com
+
+- Neden: Open-Meteo'nun ücretsiz API'si ticari kullanıma kapalı. WeatherAPI.com'un ücretsiz planı ticari kullanıma açık: ayda 100 bin çağrı, 3 günlük tahmin (7 gün Starter'da) ve atıf rica ediyor. Fonksiyon 7 gün istiyor, plan kadarı geliyor; yeni anahtar 14 günlük denemede 7 gün veriyor.
+- Sunucu: `weather-bundle` artık `weather_api.ts` ile hücre başına bir `forecast.json` isteği atıyor (ücretsiz planda toplu istek yok, aynı anda en çok 5). Anahtar `WEATHERAPI_KEY` secret'ında, adres loglanmıyor. Günler UTC tarihiyle geliyor, yerel saat farkıyla yerel gece yarısına kaydırılıyor. Yağış olasılığı yağmur ve karın büyüğü. WeatherAPI durum kodları sağlayıcıdan bağımsız `condition`'a (`clear`, `partly_cloudy`, `cloudy`, `fog`, `rain`, `snow`, `thunder`) çevriliyor. Alınamayan hücre artık yalnız kendisini etkiliyor: eski önbelleği dönüyor, o da yoksa 502. Migration `20261026230000_weather_provider.sql` eski biçimdeki önbelleği siliyor.
+- Denendi (yerelde uçtan uca): 3 arılık 2 hücreden geldi, 168 saat ve 7 gün, fark 10800 sn, bilinmeyen durum yok; ikinci çağrı önbellekten. Geçersiz anahtarla eski önbellek 200, önbellek yokken 502 döndü; anahtar loglarda yok. Uzakta sıra: secret, deploy, migration. MCP ile önbelleğin boşaldığı ve fonksiyonun çalıştığı doğrulandı.
+- İstemci: `weatherCode` (WMO) yerine `WeatherCondition` enum'u geldi; bilinmeyen değer null okunuyor. Telefondaki eski biçimdeki paket okunamıyor, bu yüzden ilk açılışta yeniden alınıyor. Atıf "Powered by WeatherAPI.com". teknik.md ve ozellikler.md güncellendi. 1034 Flutter testi ve 238 pgTAP testi geçiyor.
+- Bilinen sınırlar: Atıf hâlâ bağlantı değil, düz metin. Ücretsiz planda 3 gün; 7 günlük görünüm gelirse plan yükseltmek gerekecek. Uzakta gerçek oturumla çağrı denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

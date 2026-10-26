@@ -2589,7 +2589,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsExactAlarmsOff => 'Off · may be a few minutes late';
 
   @override
-  String get weatherAttribution => 'Weather data by Open-Meteo.com';
+  String get weatherAttribution => 'Powered by WeatherAPI.com';
 
   @override
   String weatherTemperature(String value) {

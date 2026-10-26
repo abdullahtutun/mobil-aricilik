@@ -4178,10 +4178,10 @@ abstract class AppLocalizations {
   /// **'Off · may be a few minutes late'**
   String get settingsExactAlarmsOff;
 
-  /// Required Open-Meteo attribution shown wherever weather appears; keep this exact English text in every language.
+  /// WeatherAPI.com attribution shown wherever weather appears; keep this exact English text in every language.
   ///
   /// In en, this message translates to:
-  /// **'Weather data by Open-Meteo.com'**
+  /// **'Powered by WeatherAPI.com'**
   String get weatherAttribution;
 
   /// Temperature in the user's unit, without the unit letter.

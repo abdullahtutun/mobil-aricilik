@@ -87,7 +87,7 @@ HourlyWeather? forecastHourAt(Forecast forecast, DateTime at) {
         precipitationMm: hourly.precipitationMm.elementAtOrNull(i),
         precipitationProbability: hourly.precipitationProbability
             .elementAtOrNull(i),
-        weatherCode: hourly.weatherCode.elementAtOrNull(i),
+        condition: hourly.condition.elementAtOrNull(i),
       );
     }
   }
@@ -101,7 +101,7 @@ HiveOpeningAdvice? hourOpeningAdvice(HourlyWeather hour) {
     windKmh: final wind?,
     precipitationMm: final precipitation?,
     :final precipitationProbability,
-    weatherCode: _,
+    condition: _,
   )) {
     return hiveOpeningAdvice(
       temperatureC: temperature,

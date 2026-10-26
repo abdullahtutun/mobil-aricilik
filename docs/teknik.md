@@ -26,7 +26,7 @@ Temel karar: Uygulama her zaman **yerel SQLite veritabanından** okur ve yazar; 
 | Yerelleştirme | flutter\_localizations + ARB (intl) | Türkçe ve İngilizce ilk sürümden; cihaz diline göre, ayarlardan değiştirilebilir |
 | Güvenli saklama | flutter\_secure\_storage | Oturum token'ları |
 | Hata izleme | sentry\_flutter | Saha hataları offline birikir, ağ gelince gönderilir |
-| Hava durumu | Open-Meteo (Edge Function üzerinden) | Sunucu tarafı önbellek, istemciye arılık bazında paket; ücretsiz API yalnızca ticari olmayan kullanım için (13. bölüm kontrol listesi) |
+| Hava durumu | WeatherAPI.com (Edge Function üzerinden) | Sunucu tarafı önbellek, istemciye arılık bazında paket; ücretsiz plan ticari kullanıma açık, ayda 100 bin çağrı ve 3 günlük tahmin, 7 gün için Starter planı (13. bölüm kontrol listesi) |
 
 Senkronizasyon hazır bir servis yerine kendi motorumuzla yapılır; ayrıntılar 3. bölümde.
 
@@ -141,7 +141,7 @@ Tüm senkronlanan tablolarda: `id uuid`, `org_id`, `created_at`, `updated_at`, `
 
 **Edge Functions**
 
-- `weather-bundle`: Kullanıcının tüm arılıkları için Open-Meteo tahminini tek pakette döner, sunucuda önbellekler (çağrı sayısını düşük tutar); uygulamada "Weather data by Open-Meteo.com" atfı gösterilir.
+- `weather-bundle`: Kullanıcının tüm arılıkları için WeatherAPI.com tahminini tek pakette döner, sunucuda önbellekler (çağrı sayısını düşük tutar). Anahtar `WEATHERAPI_KEY` secret'ında; uygulamada "Powered by WeatherAPI.com" atfı gösterilir.
 - `notify`: Ekip görev ataması, kritik uyarı push'ları (FCM).
 - `lot-page`: Parti QR'ı okutulduğunda herkese açık izlenebilirlik sayfası.
 - `reports`: Denetim/sezon PDF raporları (alternatif: PDF cihazda üretilir, offline çalışır — tercih edilen).
@@ -434,7 +434,7 @@ Kaba tahmin: 1–2 Flutter geliştirici ile **7 sprint (2'şer hafta) ≈ 14 haf
 **Başlamadan önce netleşmesi gerekenler**
 
 - [ ] Hostinger e-postası: gönderim adresi, SPF/DKIM/DMARC kayıtları ve planın günlük limitinin beklenen kayıt sayısına yetip yetmediği.
-- [ ] Open-Meteo lisansı: Ücretsiz API yalnızca ticari olmayan kullanım içindir. Uygulama gelir getirecekse (ücretli plan, reklam) Open-Meteo aboneliği ya da Open-Meteo'nun kendi sunucumuzda kurulumu gerekir.
+- [ ] WeatherAPI.com planı: Ücretsiz plan ticari kullanıma açık; ayda 100 bin çağrı ve 3 günlük tahmin veriyor, atıf rica ediyor. 7 günlük tahmin ya da kullanıcı sayısı artınca daha fazla çağrı için Starter ve üstü plan gerekir.
 - [ ] Offline harita paketleri için bölge kesme ve barındırma (OpenFreeMap MBTiles → bölge paketleri → depolama).
 - [ ] İngilizce mağaza adı ve açıklaması (Mobil Arıcı markası korunarak).
 - [ ] Pilot grup olmadığı için geri bildirim kanalı: Uygulama içi "Görüş bildir", beta yorumları ve kullanım analitiği ilk sürümden itibaren açık.
@@ -443,5 +443,5 @@ Kaba tahmin: 1–2 Flutter geliştirici ile **7 sprint (2'şer hafta) ≈ 14 haf
 ## Kaynaklar
 
 - [OpenFreeMap](https://openfreemap.org)
-- [Open-Meteo kullanım şartları](https://open-meteo.com/en/terms)
+- [WeatherAPI.com planları](https://www.weatherapi.com/pricing.aspx)
 - [Hostinger e-posta limitleri](https://support.hostinger.com/en/articles/4625828-parameters-and-limits-of-hostinger-email)

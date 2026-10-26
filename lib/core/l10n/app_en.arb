@@ -2008,9 +2008,9 @@
   "settingsExactAlarms": "Ring right on time",
   "settingsExactAlarmsOn": "On",
   "settingsExactAlarmsOff": "Off · may be a few minutes late",
-  "weatherAttribution": "Weather data by Open-Meteo.com",
+  "weatherAttribution": "Powered by WeatherAPI.com",
   "@weatherAttribution": {
-    "description": "Required Open-Meteo attribution shown wherever weather appears; keep this exact English text in every language."
+    "description": "WeatherAPI.com attribution shown wherever weather appears; keep this exact English text in every language."
   },
   "weatherTemperature": "{value}°",
   "@weatherTemperature": {
