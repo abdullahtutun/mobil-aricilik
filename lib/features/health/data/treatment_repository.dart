@@ -106,6 +106,22 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
   Future<List<Treatment>> findByHive(String hiveId) =>
       selectWhere((t) => t.hiveId.equals(hiveId)).get();
 
+  /// [hiveIds] kovanlarının uygulamaları; okuma anında (hasatta kilit
+  /// denetimi).
+  Future<List<Treatment>> findByHives(Iterable<String> hiveIds) =>
+      selectWhere((t) => t.hiveId.isIn(hiveIds)).get();
+
+  /// Şu an [apiaryId] arılığında duran (silinmemiş) kovanların uygulamaları;
+  /// uygulama nerede yapılmış olursa olsun. Uygulamalar ya da kovanların
+  /// arılığı değişince yeniden yayar (hasatta kilit).
+  Stream<List<Treatment>> watchByHivesInApiary(String apiaryId) {
+    final hives = db.hives;
+    final inApiary = db.selectOnly(hives)
+      ..addColumns([hives.id])
+      ..where(hives.apiaryId.equals(apiaryId) & hives.deletedAt.isNull());
+    return watchWhere((t) => t.hiveId.isInQuery(inApiary));
+  }
+
   /// [plan]'ı [hive]'a, kovanın şimdiki arılığında yazar; [prescription]
   /// verilirse reçete fotoğrafı olarak uygulamaya bağlanır. Planlanan
   /// çıkarma varsa kovana çıkarma görevi açılır ve [assignedTo]'ya atanır.

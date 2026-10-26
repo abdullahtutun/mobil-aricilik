@@ -35,6 +35,10 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     orderBy: [(t) => OrderingTerm.asc(t.number)],
   );
 
+  /// [apiaryId] arılığının kovanları; okuma anında.
+  Future<List<Hive>> findByApiary(String apiaryId) =>
+      selectWhere((t) => t.apiaryId.equals(apiaryId)).get();
+
   /// İşletmede [tagCode] etiketli kovan; yoksa ya da silinmişse null.
   Future<Hive?> findByTagCode({
     required String orgId,

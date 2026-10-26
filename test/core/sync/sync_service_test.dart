@@ -14,11 +14,14 @@ import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/feeding/data/feeding_repository.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/harvest/data/harvest_repository.dart';
+import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/health/data/drug_repository.dart';
 import 'package:mobil_arici/features/health/data/mite_count_repository.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
@@ -300,6 +303,27 @@ Map<String, Object?> _taskRow(int seq) => {
   'completed_at': null,
   'source': 'inspection',
   'source_id': 'inspection-1',
+};
+
+Map<String, Object?> _harvestRow(int seq) => {
+  ..._standard('harvest-1', seq),
+  'org_id': _org,
+  'apiary_id': 'apiary-1',
+  'harvested_at': '2026-10-26T09:00:00+00:00',
+  'honey_kind': 'pine',
+  'unit': 'super',
+  'unit_count': 24,
+  // Sunucunun numeric'i metin değil sayı olarak gelir.
+  'net_kg': 574.5,
+};
+
+Map<String, Object?> _harvestHiveRow(int seq) => {
+  ..._standard('harvest-hive-1', seq),
+  'org_id': _org,
+  'harvest_id': 'harvest-1',
+  'hive_id': 'hive-1',
+  'withdrawal_treatment_id': 'treatment-1',
+  'withdrawal_override_reason': 'not_for_sale',
 };
 
 bool _isPull(http.Request request) =>
@@ -799,11 +823,13 @@ void main() {
         'treatments': [_treatmentRow(12)],
         'feedings': [_feedingRow(13)],
         'tasks': [_taskRow(14)],
+        'harvests': [_harvestRow(15)],
+        'harvest_hives': [_harvestHiveRow(16)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 14),
+        const SyncResult(status: SyncStatus.done, pulled: 16),
       );
 
       expect(requests.map(_pullOf), [
@@ -821,6 +847,8 @@ void main() {
         (table: 'treatments', since: 0),
         (table: 'feedings', since: 0),
         (table: 'tasks', since: 0),
+        (table: 'harvests', since: 0),
+        (table: 'harvest_hives', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -910,6 +938,22 @@ void main() {
       expect(task.title, isNull);
       expect(task.dueAt, DateTime.utc(2026, 11, 5, 9));
       expect(task.assignedTo, 'user-1');
+      final harvests = HarvestRepository(db);
+      final harvest = (await harvests.findById('harvest-1'))!;
+      expect(harvest.honeyKind, HoneyKind.pine);
+      expect(harvest.unit, HarvestUnit.superBox);
+      expect(harvest.unitCount, 24);
+      expect(harvest.netKg, 574.5);
+      expect(harvest.harvestedAt, DateTime.utc(2026, 10, 26, 9));
+      final harvested = (await harvests.findHives('harvest-1')).single;
+      expect(harvested.hiveId, 'hive-1');
+      expect(
+        harvested.withdrawalOverride,
+        const WithdrawalOverride(
+          treatmentId: 'treatment-1',
+          reason: WithdrawalOverrideReason.notForSale,
+        ),
+      );
 
       expect(await _cursors(db), {
         'organizations': 1,
@@ -926,6 +970,8 @@ void main() {
         'treatments': 12,
         'feedings': 13,
         'tasks': 14,
+        'harvests': 15,
+        'harvest_hives': 16,
         fullPullMarker: 0,
       });
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.

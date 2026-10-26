@@ -15,8 +15,8 @@ import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/apiary_hives_section.dart';
 
 /// Arılık detayı: büyük ad, altında aktif kovan sayısı ve son ziyaret;
-/// kovan ekle eylemi, kovan ızgarası/listesi ve altında son varroa
-/// ölçümlerinin grafiği. Harita şeridi ve tur,
+/// kovan ekle ve hasat eylemleri, kovan ızgarası/listesi ve altında son
+/// varroa ölçümlerinin grafiği. Harita şeridi ve tur,
 /// toplu besleme gibi eylemler kendi adımlarında gelecek.
 class ApiaryDetailScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
@@ -54,14 +54,25 @@ class ApiaryDetailScreen extends ConsumerWidget {
             // Kovan yokken boş durumun kendi butonu var.
             if (hasHives) ...[
               SizedBox(height: spacing.lg),
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: BigButton(
-                  label: l10n.hivesAdd,
-                  icon: Icons.add_rounded,
-                  expanded: false,
-                  onPressed: () => openAddHives(context, apiaryId),
-                ),
+              Wrap(
+                spacing: context.touchTargets.gap,
+                runSpacing: context.touchTargets.gap,
+                children: [
+                  BigButton(
+                    label: l10n.hivesAdd,
+                    icon: Icons.add_rounded,
+                    expanded: false,
+                    onPressed: () => openAddHives(context, apiaryId),
+                  ),
+                  BigButton(
+                    variant: BigButtonVariant.secondary,
+                    label: l10n.apiaryHarvest,
+                    icon: Icons.inventory_2_outlined,
+                    expanded: false,
+                    onPressed: () =>
+                        context.go(AppRoutes.apiaryHarvest(apiaryId)),
+                  ),
+                ],
               ),
             ],
             SizedBox(height: spacing.xl),

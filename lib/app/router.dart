@@ -20,6 +20,9 @@ import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart'
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
 import 'package:mobil_arici/features/feeding/presentation/feeding_form_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/harvest_form_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/harvest_hives_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/harvest_scan_screen.dart';
 import 'package:mobil_arici/features/health/presentation/drug_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/varroa_form_screen.dart';
@@ -163,6 +166,28 @@ GoRouter router(Ref ref) {
                         builder: (context, state) => HiveLabelsScreen(
                           apiaryId: state.pathParameters[_apiaryId]!,
                         ),
+                      ),
+                      GoRoute(
+                        path: 'harvest',
+                        builder: (context, state) => HarvestFormScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'hives',
+                            builder: (context, state) => HarvestHivesScreen(
+                              apiaryId: state.pathParameters[_apiaryId]!,
+                            ),
+                          ),
+                          // Kamera tam ekran; form altta açık kalır.
+                          GoRoute(
+                            path: 'scan',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => HarvestScanScreen(
+                              apiaryId: state.pathParameters[_apiaryId]!,
+                            ),
+                          ),
+                        ],
                       ),
                       // `:hiveId`'den önce; "new" ve "bulk" kimlik sanılmasın.
                       GoRoute(

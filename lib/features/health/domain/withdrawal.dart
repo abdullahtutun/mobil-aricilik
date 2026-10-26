@@ -1,13 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/core/db/server_enum.dart';
 
 part 'withdrawal.freezed.dart';
 part 'withdrawal.g.dart';
 
-/// Bekleme süresindeki kovana bilerek bal katı verilmesinin (ya da hasat
-/// işaretlenmesinin) gerekçesi. Sunucuda enum değil, kaydın `data`
-/// nesnesinde bu değerlerle durur.
+/// Bekleme süresindeki kovana bilerek bal katı verilmesinin ya da kovanın
+/// hasada alınmasının gerekçesi. Muayenede kaydın `data` nesnesinde,
+/// hasatta `public.withdrawal_override_reason` enum'unda bu değerlerle
+/// durur.
 @JsonEnum(valueField: 'value')
-enum WithdrawalOverrideReason {
+enum WithdrawalOverrideReason implements ServerEnum {
   /// İlaç planlanandan erken çıkarıldı.
   removedEarly('removed_early'),
 
@@ -16,6 +18,7 @@ enum WithdrawalOverrideReason {
 
   new(this.value);
 
+  @override
   final String value;
 }
 

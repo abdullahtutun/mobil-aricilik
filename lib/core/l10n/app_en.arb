@@ -2139,5 +2139,208 @@
         "example": "Oct 24, 2026"
       }
     }
+  },
+
+  "syncTableHarvests": "Harvest",
+  "syncTableHarvestHives": "Harvested hive",
+  "withdrawalLockHarvestMessage": "Hive {number} is being treated with {product}. It shouldn't be harvested before {date}; honey from this period may carry drug residue.",
+  "@withdrawalLockHarvestMessage": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      },
+      "product": {
+        "type": "String",
+        "example": "Amitraz strip"
+      },
+      "date": {
+        "type": "String",
+        "example": "Dec 5, 2026"
+      }
+    }
+  },
+  "withdrawalReasonNotForSaleHarvest": "Honey won't be sold (own use/feed)",
+  "withdrawalHarvestCancel": "Cancel, don't harvest",
+  "withdrawalHarvestProceed": "Harvest anyway",
+  "apiaryHarvest": "Harvest",
+  "harvestFormTitle": "Harvest · {apiary}",
+  "@harvestFormTitle": {
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Kızılçam"
+      }
+    }
+  },
+  "harvestSelectedCount": "{count, plural, =0{No hives selected} =1{1 hive selected} other{{count} hives selected}}",
+  "@harvestSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "22"
+      }
+    }
+  },
+  "harvestSelectedHint": "{numbers} · tap to change or scan to add",
+  "@harvestSelectedHint": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "101, 104, 106 …"
+      }
+    }
+  },
+  "harvestSelectedEmptyHint": "Tap to pick hives or scan them",
+  "harvestScan": "Scan",
+  "harvestLockedTitle": "{numbers} in withdrawal period.",
+  "@harvestLockedTitle": {
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "104, 108"
+      }
+    }
+  },
+  "harvestLockedMessage": "Not harvested. To take one anyway, pick it in the hive list.",
+  "harvestDate": "Date",
+  "harvestToday": "Today",
+  "harvestYesterday": "Yesterday",
+  "harvestPickDate": "Other day",
+  "harvestHoneyKind": "Honey type",
+  "honeyKindPine": "Pine",
+  "honeyKindFlower": "Flower",
+  "honeyKindChestnut": "Chestnut",
+  "honeyKindCitrus": "Citrus",
+  "honeyKindOther": "Other",
+  "harvestUnit": "Taken as",
+  "harvestUnitSuper": "Supers",
+  "harvestUnitFrame": "Frames",
+  "harvestTakenSupers": "Supers taken",
+  "harvestTakenFrames": "Frames taken",
+  "harvestWeight": "Extracted honey ({unit})",
+  "@harvestWeight": {
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "harvestWeightInvalid": "Enter a weight like 574 or 574.5",
+  "harvestWeightTooLarge": "At most {max} {unit}",
+  "@harvestWeightTooLarge": {
+    "placeholders": {
+      "max": {
+        "type": "String",
+        "example": "100,000"
+      },
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "harvestPerHive": "Per hive",
+  "harvestWeightValue": "{value} {unit}",
+  "@harvestWeightValue": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "26.1"
+      },
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "harvestSave": "{count, plural, =0{No hives to harvest} other{Save harvest}}",
+  "@harvestSave": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "22"
+      }
+    }
+  },
+  "harvestSaved": "{count, plural, =1{Harvest saved for 1 hive} other{Harvest saved for {count} hives}}",
+  "@harvestSaved": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "22"
+      }
+    }
+  },
+  "harvestHivesTitle": "Hives to harvest",
+  "harvestSelectAll": "Select all",
+  "harvestSelectNone": "Select none",
+  "harvestHiveLocked": "Withdrawal · {days, plural, =1{1 day} other{{days} days}} left",
+  "@harvestHiveLocked": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "harvestHiveOverridden": "Taken anyway: {reason}",
+  "@harvestHiveOverridden": {
+    "placeholders": {
+      "reason": {
+        "type": "String",
+        "example": "Drug removed early"
+      }
+    }
+  },
+  "harvestHivesDone": "Done",
+  "harvestNoActiveHives": "This apiary has no active hives.",
+  "harvestScanTitle": "Scan for harvest",
+  "harvestScanAdded": "Hive {number} added",
+  "@harvestScanAdded": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "harvestScanAlready": "Hive {number} is already selected",
+  "@harvestScanAlready": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "harvestScanOtherApiary": "Hive {number} isn't in this apiary",
+  "@harvestScanOtherApiary": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "harvestScanInactive": "Hive {number} isn't active",
+  "@harvestScanInactive": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "104"
+      }
+    }
+  },
+  "harvestScanUnknown": "This label isn't linked to a hive",
+  "harvestScanDone": "{count, plural, =0{Done} =1{Done · 1 hive} other{Done · {count} hives}}",
+  "@harvestScanDone": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "22"
+      }
+    }
   }
 }

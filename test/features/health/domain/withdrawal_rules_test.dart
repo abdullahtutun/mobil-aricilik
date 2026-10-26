@@ -9,6 +9,7 @@ DateTime _at(int month, int day, [int hour = 9]) =>
 
 Treatment _treatment({
   String id = 'treatment-1',
+  String hiveId = 'hive-1',
   DateTime? startedAt,
   DateTime? plannedRemovalAt,
   int withdrawalDays = 0,
@@ -16,7 +17,7 @@ Treatment _treatment({
 }) => Treatment(
   id: id,
   orgId: 'org-1',
-  hiveId: 'hive-1',
+  hiveId: hiveId,
   apiaryId: 'apiary-1',
   refDrugId: 'ref-drug-1',
   productName: 'Amitraz şerit',
@@ -272,6 +273,31 @@ void main() {
       for (final unit in [DrugDoseUnit.ml, DrugDoseUnit.g, DrugDoseUnit.dose]) {
         expect(defaultPlannedRemoval(unit, DateTime(2026, 10, 24)), isNull);
       }
+    });
+  });
+
+  group('withdrawalLocksByHive', () {
+    test('kovan başına en geç kalkan kilit; kilitsiz kovan haritada yok', () {
+      final locks = withdrawalLocksByHive([
+        _treatment(id: 'early', withdrawalDays: 5),
+        _treatment(id: 'late', withdrawalDays: 20),
+        _treatment(id: 'other', hiveId: 'hive-2', withdrawalDays: 3),
+        _treatment(id: 'done', hiveId: 'hive-3', withdrawalDays: 1),
+      ], now: _at(10, 26));
+
+      expect(locks.keys, unorderedEquals(['hive-1', 'hive-2']));
+      expect(locks['hive-1']!.treatment.id, 'late');
+      expect(locks['hive-1']!.daysLeft, 18);
+      expect(locks['hive-2']!.until, DateTime(2026, 10, 27));
+    });
+
+    test('gün, verilen ana göre: uygulamadan önceki gün kilit yok', () {
+      expect(
+        withdrawalLocksByHive([
+          _treatment(withdrawalDays: 20),
+        ], now: _at(10, 23, 23)),
+        isEmpty,
+      );
     });
   });
 }

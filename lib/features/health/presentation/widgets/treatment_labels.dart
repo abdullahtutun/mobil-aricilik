@@ -32,6 +32,13 @@ extension WithdrawalOverrideReasonLabel on WithdrawalOverrideReason {
     WithdrawalOverrideReason.removedEarly => l10n.withdrawalReasonRemovedEarly,
     WithdrawalOverrideReason.notForSale => l10n.withdrawalReasonNotForSale,
   };
+
+  /// Hasatta: kat değil bal satılmayacak.
+  String harvestLabel(AppLocalizations l10n) => switch (this) {
+    WithdrawalOverrideReason.removedEarly => l10n.withdrawalReasonRemovedEarly,
+    WithdrawalOverrideReason.notForSale =>
+      l10n.withdrawalReasonNotForSaleHarvest,
+  };
 }
 
 /// İlacın ikincil satırı: "Etken madde: Amitraz · ruhsat 123" ya da

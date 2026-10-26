@@ -6,26 +6,42 @@ import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
 
+/// Kilidin engellediği iş.
+enum WithdrawalLockedAction {
+  /// Muayenede bal katı vermek.
+  addSuper,
+
+  /// Kovanı hasada almak.
+  harvest,
+}
+
 /// Bekleme süresi kilidi (docs/design "Bekleme süresi kilidi"): bekleme
-/// süresindeki kovana bal katı verilmek (ya da hasat işaretlenmek)
-/// istenince açılır. Tam genişlikte kırmızı kilit kartı, kalan gün ve
-/// uygulama; öne çıkan eylem vazgeçmek. Yine de kaydetmek için gerekçe
-/// seçilmeli. Seçilen gerekçe döner; vazgeçilir ya da kapatılırsa null.
+/// süresindeki kovana bal katı verilmek ya da kovan hasada alınmak
+/// ([action]) istenince açılır. Tam genişlikte kırmızı kilit kartı, kalan
+/// gün ve uygulama; öne çıkan eylem vazgeçmek. Yine de kaydetmek için
+/// gerekçe seçilmeli. Seçilen gerekçe döner; vazgeçilir ya da kapatılırsa
+/// null.
 Future<WithdrawalOverrideReason?> showWithdrawalLockDialog(
   BuildContext context, {
   required String hiveNumber,
   required WithdrawalLock lock,
+  WithdrawalLockedAction action = WithdrawalLockedAction.addSuper,
 }) => showDialog<WithdrawalOverrideReason>(
   context: context,
   builder: (context) =>
-      _WithdrawalLockDialog(hiveNumber: hiveNumber, lock: lock),
+      _WithdrawalLockDialog(hiveNumber: hiveNumber, lock: lock, action: action),
 );
 
 class _WithdrawalLockDialog extends StatefulWidget {
-  const new({required this.hiveNumber, required this.lock});
+  const new({
+    required this.hiveNumber,
+    required this.lock,
+    required this.action,
+  });
 
   final String hiveNumber;
   final WithdrawalLock lock;
+  final WithdrawalLockedAction action;
 
   @override
   State<_WithdrawalLockDialog> createState() => _WithdrawalLockDialogState();
@@ -42,6 +58,7 @@ class _WithdrawalLockDialogState extends State<_WithdrawalLockDialog> {
     final lock = widget.lock;
     final treatment = lock.treatment;
     final reason = _reason;
+    final harvest = widget.action == WithdrawalLockedAction.harvest;
 
     return Dialog(
       insetPadding: EdgeInsets.all(spacing.lg),
@@ -53,11 +70,14 @@ class _WithdrawalLockDialogState extends State<_WithdrawalLockDialog> {
           children: [
             CriticalLockCard(
               title: l10n.withdrawalLockTitle,
-              message: l10n.withdrawalLockMessage(
-                widget.hiveNumber,
-                treatment.productName,
-                format.date(lock.until),
-              ),
+              message:
+                  (harvest
+                  ? l10n.withdrawalLockHarvestMessage
+                  : l10n.withdrawalLockMessage)(
+                    widget.hiveNumber,
+                    treatment.productName,
+                    format.date(lock.until),
+                  ),
             ),
             SizedBox(height: spacing.lg),
             // Uzun yazıda iki karo aynı boyda kalsın.
@@ -92,7 +112,12 @@ class _WithdrawalLockDialogState extends State<_WithdrawalLockDialog> {
               child: RadioCardGroup<WithdrawalOverrideReason>(
                 options: [
                   for (final reason in WithdrawalOverrideReason.values)
-                    RadioCardOption(value: reason, label: reason.label(l10n)),
+                    RadioCardOption(
+                      value: reason,
+                      label: harvest
+                          ? reason.harvestLabel(l10n)
+                          : reason.label(l10n),
+                    ),
                 ],
                 selected: reason,
                 onChanged: (reason) => setState(() => _reason = reason),
@@ -100,13 +125,17 @@ class _WithdrawalLockDialogState extends State<_WithdrawalLockDialog> {
             ),
             SizedBox(height: spacing.lg),
             BigButton(
-              label: l10n.withdrawalCancel,
+              label: harvest
+                  ? l10n.withdrawalHarvestCancel
+                  : l10n.withdrawalCancel,
               onPressed: () => Navigator.of(context).pop(),
             ),
             SizedBox(height: context.touchTargets.gap),
             BigButton(
               variant: BigButtonVariant.secondary,
-              label: l10n.withdrawalProceed,
+              label: harvest
+                  ? l10n.withdrawalHarvestProceed
+                  : l10n.withdrawalProceed,
               onPressed: reason == null
                   ? null
                   : () => Navigator.of(context).pop(reason),

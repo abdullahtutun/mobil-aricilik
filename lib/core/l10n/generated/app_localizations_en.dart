@@ -2739,4 +2739,226 @@ class AppLocalizationsEn extends AppLocalizations {
   String attentionRemovalDue(String date) {
     return 'Removal due: $date';
   }
+
+  @override
+  String get syncTableHarvests => 'Harvest';
+
+  @override
+  String get syncTableHarvestHives => 'Harvested hive';
+
+  @override
+  String withdrawalLockHarvestMessage(
+    String number,
+    String product,
+    String date,
+  ) {
+    return 'Hive $number is being treated with $product. It shouldn\'t be harvested before $date; honey from this period may carry drug residue.';
+  }
+
+  @override
+  String get withdrawalReasonNotForSaleHarvest =>
+      'Honey won\'t be sold (own use/feed)';
+
+  @override
+  String get withdrawalHarvestCancel => 'Cancel, don\'t harvest';
+
+  @override
+  String get withdrawalHarvestProceed => 'Harvest anyway';
+
+  @override
+  String get apiaryHarvest => 'Harvest';
+
+  @override
+  String harvestFormTitle(String apiary) {
+    return 'Harvest · $apiary';
+  }
+
+  @override
+  String harvestSelectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives selected',
+      one: '1 hive selected',
+      zero: 'No hives selected',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String harvestSelectedHint(String numbers) {
+    return '$numbers · tap to change or scan to add';
+  }
+
+  @override
+  String get harvestSelectedEmptyHint => 'Tap to pick hives or scan them';
+
+  @override
+  String get harvestScan => 'Scan';
+
+  @override
+  String harvestLockedTitle(String numbers) {
+    return '$numbers in withdrawal period.';
+  }
+
+  @override
+  String get harvestLockedMessage =>
+      'Not harvested. To take one anyway, pick it in the hive list.';
+
+  @override
+  String get harvestDate => 'Date';
+
+  @override
+  String get harvestToday => 'Today';
+
+  @override
+  String get harvestYesterday => 'Yesterday';
+
+  @override
+  String get harvestPickDate => 'Other day';
+
+  @override
+  String get harvestHoneyKind => 'Honey type';
+
+  @override
+  String get honeyKindPine => 'Pine';
+
+  @override
+  String get honeyKindFlower => 'Flower';
+
+  @override
+  String get honeyKindChestnut => 'Chestnut';
+
+  @override
+  String get honeyKindCitrus => 'Citrus';
+
+  @override
+  String get honeyKindOther => 'Other';
+
+  @override
+  String get harvestUnit => 'Taken as';
+
+  @override
+  String get harvestUnitSuper => 'Supers';
+
+  @override
+  String get harvestUnitFrame => 'Frames';
+
+  @override
+  String get harvestTakenSupers => 'Supers taken';
+
+  @override
+  String get harvestTakenFrames => 'Frames taken';
+
+  @override
+  String harvestWeight(String unit) {
+    return 'Extracted honey ($unit)';
+  }
+
+  @override
+  String get harvestWeightInvalid => 'Enter a weight like 574 or 574.5';
+
+  @override
+  String harvestWeightTooLarge(String max, String unit) {
+    return 'At most $max $unit';
+  }
+
+  @override
+  String get harvestPerHive => 'Per hive';
+
+  @override
+  String harvestWeightValue(String value, String unit) {
+    return '$value $unit';
+  }
+
+  @override
+  String harvestSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Save harvest',
+      zero: 'No hives to harvest',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String harvestSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Harvest saved for $count hives',
+      one: 'Harvest saved for 1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get harvestHivesTitle => 'Hives to harvest';
+
+  @override
+  String get harvestSelectAll => 'Select all';
+
+  @override
+  String get harvestSelectNone => 'Select none';
+
+  @override
+  String harvestHiveLocked(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return 'Withdrawal · $_temp0 left';
+  }
+
+  @override
+  String harvestHiveOverridden(String reason) {
+    return 'Taken anyway: $reason';
+  }
+
+  @override
+  String get harvestHivesDone => 'Done';
+
+  @override
+  String get harvestNoActiveHives => 'This apiary has no active hives.';
+
+  @override
+  String get harvestScanTitle => 'Scan for harvest';
+
+  @override
+  String harvestScanAdded(String number) {
+    return 'Hive $number added';
+  }
+
+  @override
+  String harvestScanAlready(String number) {
+    return 'Hive $number is already selected';
+  }
+
+  @override
+  String harvestScanOtherApiary(String number) {
+    return 'Hive $number isn\'t in this apiary';
+  }
+
+  @override
+  String harvestScanInactive(String number) {
+    return 'Hive $number isn\'t active';
+  }
+
+  @override
+  String get harvestScanUnknown => 'This label isn\'t linked to a hive';
+
+  @override
+  String harvestScanDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Done · $count hives',
+      one: 'Done · 1 hive',
+      zero: 'Done',
+    );
+    return '$_temp0';
+  }
 }

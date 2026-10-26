@@ -663,4 +663,42 @@ void main() {
       expect(await repository.watchByApiary('apiary-1').first, [newer, older]);
     });
   });
+
+  test('watchByHivesInApiary: arılıkta şu an duran kovanların uygulamaları; '
+      'taşınan kovanın uygulaması yeni arılığa geçer, findByHives kovanlara '
+      'göre süzer', () async {
+    final moved = await createHive('101');
+    final stays = await createHive('102');
+    await createHive('201', apiaryId: 'apiary-2');
+    final movedTreatment = await repository.addToHive(moved, plan());
+    final staysTreatment = await repository.addToHive(stays, plan());
+
+    expect([
+      for (final t in await repository.watchByHivesInApiary('apiary-1').first)
+        t.id,
+    ], unorderedEquals([movedTreatment.id, staysTreatment.id]));
+
+    await hives.move(moved.id, apiaryId: 'apiary-2');
+
+    expect(
+      [
+        for (final t in await repository.watchByHivesInApiary('apiary-1').first)
+          t.id,
+      ],
+      [staysTreatment.id],
+    );
+    expect(
+      [
+        for (final t in await repository.watchByHivesInApiary('apiary-2').first)
+          t.id,
+      ],
+      [movedTreatment.id],
+    );
+    expect(
+      [
+        for (final t in await repository.findByHives([moved.id])) t.id,
+      ],
+      [movedTreatment.id],
+    );
+  });
 }

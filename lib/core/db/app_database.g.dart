@@ -9672,6 +9672,1060 @@ extension TaskToInsertable on Task {
   }
 }
 
+class $HarvestsTable extends Harvests with TableInfo<$HarvestsTable, Harvest> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HarvestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _harvestedAtMeta = const VerificationMeta(
+    'harvestedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> harvestedAt = GeneratedColumn<DateTime>(
+    'harvested_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HoneyKind, String> honeyKind =
+      GeneratedColumn<String>(
+        'honey_kind',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HoneyKind>($HarvestsTable.$converterhoneyKind);
+  @override
+  late final GeneratedColumnWithTypeConverter<HarvestUnit, String> unit =
+      GeneratedColumn<String>(
+        'unit',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HarvestUnit>($HarvestsTable.$converterunit);
+  static const VerificationMeta _unitCountMeta = const VerificationMeta(
+    'unitCount',
+  );
+  @override
+  late final GeneratedColumn<int> unitCount = GeneratedColumn<int>(
+    'unit_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _netKgMeta = const VerificationMeta('netKg');
+  @override
+  late final GeneratedColumn<double> netKg = GeneratedColumn<double>(
+    'net_kg',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    apiaryId,
+    harvestedAt,
+    honeyKind,
+    unit,
+    unitCount,
+    netKg,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'harvests';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Harvest> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('harvested_at')) {
+      context.handle(
+        _harvestedAtMeta,
+        harvestedAt.isAcceptableOrUnknown(
+          data['harvested_at']!,
+          _harvestedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_harvestedAtMeta);
+    }
+    if (data.containsKey('unit_count')) {
+      context.handle(
+        _unitCountMeta,
+        unitCount.isAcceptableOrUnknown(data['unit_count']!, _unitCountMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_unitCountMeta);
+    }
+    if (data.containsKey('net_kg')) {
+      context.handle(
+        _netKgMeta,
+        netKg.isAcceptableOrUnknown(data['net_kg']!, _netKgMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_netKgMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Harvest map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Harvest(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      harvestedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}harvested_at'],
+      )!,
+      honeyKind: $HarvestsTable.$converterhoneyKind.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}honey_kind'],
+        )!,
+      ),
+      unit: $HarvestsTable.$converterunit.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}unit'],
+        )!,
+      ),
+      unitCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_count'],
+      )!,
+      netKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}net_kg'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $HarvestsTable createAlias(String alias) {
+    return $HarvestsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<HoneyKind, String> $converterhoneyKind =
+      const ServerEnumConverter(HoneyKind.values);
+  static TypeConverter<HarvestUnit, String> $converterunit =
+      const ServerEnumConverter(HarvestUnit.values);
+}
+
+class HarvestsCompanion extends UpdateCompanion<Harvest> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> apiaryId;
+  final Value<DateTime> harvestedAt;
+  final Value<HoneyKind> honeyKind;
+  final Value<HarvestUnit> unit;
+  final Value<int> unitCount;
+  final Value<double> netKg;
+  final Value<int> rowid;
+  const HarvestsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.harvestedAt = const Value.absent(),
+    this.honeyKind = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.unitCount = const Value.absent(),
+    this.netKg = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HarvestsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String apiaryId,
+    required DateTime harvestedAt,
+    required HoneyKind honeyKind,
+    required HarvestUnit unit,
+    required int unitCount,
+    required double netKg,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       apiaryId = Value(apiaryId),
+       harvestedAt = Value(harvestedAt),
+       honeyKind = Value(honeyKind),
+       unit = Value(unit),
+       unitCount = Value(unitCount),
+       netKg = Value(netKg);
+  static Insertable<Harvest> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? apiaryId,
+    Expression<DateTime>? harvestedAt,
+    Expression<String>? honeyKind,
+    Expression<String>? unit,
+    Expression<int>? unitCount,
+    Expression<double>? netKg,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (harvestedAt != null) 'harvested_at': harvestedAt,
+      if (honeyKind != null) 'honey_kind': honeyKind,
+      if (unit != null) 'unit': unit,
+      if (unitCount != null) 'unit_count': unitCount,
+      if (netKg != null) 'net_kg': netKg,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HarvestsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? apiaryId,
+    Value<DateTime>? harvestedAt,
+    Value<HoneyKind>? honeyKind,
+    Value<HarvestUnit>? unit,
+    Value<int>? unitCount,
+    Value<double>? netKg,
+    Value<int>? rowid,
+  }) {
+    return HarvestsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      apiaryId: apiaryId ?? this.apiaryId,
+      harvestedAt: harvestedAt ?? this.harvestedAt,
+      honeyKind: honeyKind ?? this.honeyKind,
+      unit: unit ?? this.unit,
+      unitCount: unitCount ?? this.unitCount,
+      netKg: netKg ?? this.netKg,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (harvestedAt.present) {
+      map['harvested_at'] = Variable<DateTime>(harvestedAt.value);
+    }
+    if (honeyKind.present) {
+      map['honey_kind'] = Variable<String>(
+        $HarvestsTable.$converterhoneyKind.toSql(honeyKind.value),
+      );
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(
+        $HarvestsTable.$converterunit.toSql(unit.value),
+      );
+    }
+    if (unitCount.present) {
+      map['unit_count'] = Variable<int>(unitCount.value);
+    }
+    if (netKg.present) {
+      map['net_kg'] = Variable<double>(netKg.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HarvestsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('harvestedAt: $harvestedAt, ')
+          ..write('honeyKind: $honeyKind, ')
+          ..write('unit: $unit, ')
+          ..write('unitCount: $unitCount, ')
+          ..write('netKg: $netKg, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$HarvestInsertable implements Insertable<Harvest> {
+  Harvest _object;
+  _$HarvestInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return HarvestsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      apiaryId: Value(_object.apiaryId),
+      harvestedAt: Value(_object.harvestedAt),
+      honeyKind: Value(_object.honeyKind),
+      unit: Value(_object.unit),
+      unitCount: Value(_object.unitCount),
+      netKg: Value(_object.netKg),
+    ).toColumns(false);
+  }
+}
+
+extension HarvestToInsertable on Harvest {
+  _$HarvestInsertable toInsertable() {
+    return _$HarvestInsertable(this);
+  }
+}
+
+class $HarvestHivesTable extends HarvestHives
+    with TableInfo<$HarvestHivesTable, HarvestHive> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HarvestHivesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _harvestIdMeta = const VerificationMeta(
+    'harvestId',
+  );
+  @override
+  late final GeneratedColumn<String> harvestId = GeneratedColumn<String>(
+    'harvest_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _withdrawalTreatmentIdMeta =
+      const VerificationMeta('withdrawalTreatmentId');
+  @override
+  late final GeneratedColumn<String> withdrawalTreatmentId =
+      GeneratedColumn<String>(
+        'withdrawal_treatment_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<WithdrawalOverrideReason?, String>
+  withdrawalOverrideReason =
+      GeneratedColumn<String>(
+        'withdrawal_override_reason',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<WithdrawalOverrideReason?>(
+        $HarvestHivesTable.$converterwithdrawalOverrideReasonn,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    harvestId,
+    hiveId,
+    withdrawalTreatmentId,
+    withdrawalOverrideReason,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'harvest_hives';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HarvestHive> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('harvest_id')) {
+      context.handle(
+        _harvestIdMeta,
+        harvestId.isAcceptableOrUnknown(data['harvest_id']!, _harvestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_harvestIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('withdrawal_treatment_id')) {
+      context.handle(
+        _withdrawalTreatmentIdMeta,
+        withdrawalTreatmentId.isAcceptableOrUnknown(
+          data['withdrawal_treatment_id']!,
+          _withdrawalTreatmentIdMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HarvestHive map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HarvestHive(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      harvestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}harvest_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      withdrawalTreatmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}withdrawal_treatment_id'],
+      ),
+      withdrawalOverrideReason: $HarvestHivesTable
+          .$converterwithdrawalOverrideReasonn
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}withdrawal_override_reason'],
+            ),
+          ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $HarvestHivesTable createAlias(String alias) {
+    return $HarvestHivesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<WithdrawalOverrideReason, String>
+  $converterwithdrawalOverrideReason = const ServerEnumConverter(
+    WithdrawalOverrideReason.values,
+  );
+  static TypeConverter<WithdrawalOverrideReason?, String?>
+  $converterwithdrawalOverrideReasonn = NullAwareTypeConverter.wrap(
+    $converterwithdrawalOverrideReason,
+  );
+}
+
+class HarvestHivesCompanion extends UpdateCompanion<HarvestHive> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> harvestId;
+  final Value<String> hiveId;
+  final Value<String?> withdrawalTreatmentId;
+  final Value<WithdrawalOverrideReason?> withdrawalOverrideReason;
+  final Value<int> rowid;
+  const HarvestHivesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.harvestId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.withdrawalTreatmentId = const Value.absent(),
+    this.withdrawalOverrideReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HarvestHivesCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String harvestId,
+    required String hiveId,
+    this.withdrawalTreatmentId = const Value.absent(),
+    this.withdrawalOverrideReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       harvestId = Value(harvestId),
+       hiveId = Value(hiveId);
+  static Insertable<HarvestHive> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? harvestId,
+    Expression<String>? hiveId,
+    Expression<String>? withdrawalTreatmentId,
+    Expression<String>? withdrawalOverrideReason,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (harvestId != null) 'harvest_id': harvestId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (withdrawalTreatmentId != null)
+        'withdrawal_treatment_id': withdrawalTreatmentId,
+      if (withdrawalOverrideReason != null)
+        'withdrawal_override_reason': withdrawalOverrideReason,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HarvestHivesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? harvestId,
+    Value<String>? hiveId,
+    Value<String?>? withdrawalTreatmentId,
+    Value<WithdrawalOverrideReason?>? withdrawalOverrideReason,
+    Value<int>? rowid,
+  }) {
+    return HarvestHivesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      harvestId: harvestId ?? this.harvestId,
+      hiveId: hiveId ?? this.hiveId,
+      withdrawalTreatmentId:
+          withdrawalTreatmentId ?? this.withdrawalTreatmentId,
+      withdrawalOverrideReason:
+          withdrawalOverrideReason ?? this.withdrawalOverrideReason,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (harvestId.present) {
+      map['harvest_id'] = Variable<String>(harvestId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (withdrawalTreatmentId.present) {
+      map['withdrawal_treatment_id'] = Variable<String>(
+        withdrawalTreatmentId.value,
+      );
+    }
+    if (withdrawalOverrideReason.present) {
+      map['withdrawal_override_reason'] = Variable<String>(
+        $HarvestHivesTable.$converterwithdrawalOverrideReasonn.toSql(
+          withdrawalOverrideReason.value,
+        ),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HarvestHivesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('harvestId: $harvestId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('withdrawalTreatmentId: $withdrawalTreatmentId, ')
+          ..write('withdrawalOverrideReason: $withdrawalOverrideReason, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$HarvestHiveInsertable implements Insertable<HarvestHive> {
+  HarvestHive _object;
+  _$HarvestHiveInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return HarvestHivesCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      harvestId: Value(_object.harvestId),
+      hiveId: Value(_object.hiveId),
+      withdrawalTreatmentId: Value(_object.withdrawalTreatmentId),
+      withdrawalOverrideReason: Value(_object.withdrawalOverrideReason),
+    ).toColumns(false);
+  }
+}
+
+extension HarvestHiveToInsertable on HarvestHive {
+  _$HarvestHiveInsertable toInsertable() {
+    return _$HarvestHiveInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -10643,6 +11697,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TreatmentsTable treatments = $TreatmentsTable(this);
   late final $FeedingsTable feedings = $FeedingsTable(this);
   late final $TasksTable tasks = $TasksTable(this);
+  late final $HarvestsTable harvests = $HarvestsTable(this);
+  late final $HarvestHivesTable harvestHives = $HarvestHivesTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $OutboxTable outbox = $OutboxTable(this);
   late final $SyncStateTable syncState = $SyncStateTable(this);
@@ -10750,6 +11806,26 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'tasks_source_id_idx',
     'CREATE INDEX tasks_source_id_idx ON tasks (source_id)',
   );
+  late final Index harvestsOrgIdIdx = Index(
+    'harvests_org_id_idx',
+    'CREATE INDEX harvests_org_id_idx ON harvests (org_id)',
+  );
+  late final Index harvestsApiaryIdIdx = Index(
+    'harvests_apiary_id_idx',
+    'CREATE INDEX harvests_apiary_id_idx ON harvests (apiary_id)',
+  );
+  late final Index harvestHivesOrgIdIdx = Index(
+    'harvest_hives_org_id_idx',
+    'CREATE INDEX harvest_hives_org_id_idx ON harvest_hives (org_id)',
+  );
+  late final Index harvestHivesHarvestIdIdx = Index(
+    'harvest_hives_harvest_id_idx',
+    'CREATE INDEX harvest_hives_harvest_id_idx ON harvest_hives (harvest_id)',
+  );
+  late final Index harvestHivesHiveIdIdx = Index(
+    'harvest_hives_hive_id_idx',
+    'CREATE INDEX harvest_hives_hive_id_idx ON harvest_hives (hive_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -10771,6 +11847,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     treatments,
     feedings,
     tasks,
+    harvests,
+    harvestHives,
     localSettings,
     outbox,
     syncState,
@@ -10800,6 +11878,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     tasksOrgIdIdx,
     tasksApiaryIdIdx,
     tasksSourceIdIdx,
+    harvestsOrgIdIdx,
+    harvestsApiaryIdIdx,
+    harvestHivesOrgIdIdx,
+    harvestHivesHarvestIdIdx,
+    harvestHivesHiveIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -16784,6 +17867,698 @@ typedef $$TasksTableProcessedTableManager =
       Task,
       PrefetchHooks Function()
     >;
+typedef $$HarvestsTableCreateCompanionBuilder = HarvestsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String apiaryId,
+  required DateTime harvestedAt,
+  required HoneyKind honeyKind,
+  required HarvestUnit unit,
+  required int unitCount,
+  required double netKg,
+  Value<int> rowid,
+});
+typedef $$HarvestsTableUpdateCompanionBuilder = HarvestsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> apiaryId,
+  Value<DateTime> harvestedAt,
+  Value<HoneyKind> honeyKind,
+  Value<HarvestUnit> unit,
+  Value<int> unitCount,
+  Value<double> netKg,
+  Value<int> rowid,
+});
+
+class $$HarvestsTableFilterComposer
+    extends Composer<_$AppDatabase, $HarvestsTable> {
+  $$HarvestsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get harvestedAt => $composableBuilder(
+    column: $table.harvestedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HoneyKind, HoneyKind, String> get honeyKind =>
+      $composableBuilder(
+        column: $table.honeyKind,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnWithTypeConverterFilters<HarvestUnit, HarvestUnit, String> get unit =>
+      $composableBuilder(
+        column: $table.unit,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<int> get unitCount => $composableBuilder(
+    column: $table.unitCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get netKg => $composableBuilder(
+    column: $table.netKg,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$HarvestsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HarvestsTable> {
+  $$HarvestsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get harvestedAt => $composableBuilder(
+    column: $table.harvestedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get honeyKind => $composableBuilder(
+    column: $table.honeyKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get unitCount => $composableBuilder(
+    column: $table.unitCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get netKg => $composableBuilder(
+    column: $table.netKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HarvestsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HarvestsTable> {
+  $$HarvestsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get harvestedAt => $composableBuilder(
+    column: $table.harvestedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<HoneyKind, String> get honeyKind =>
+      $composableBuilder(column: $table.honeyKind, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HarvestUnit, String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<int> get unitCount =>
+      $composableBuilder(column: $table.unitCount, builder: (column) => column);
+
+  GeneratedColumn<double> get netKg =>
+      $composableBuilder(column: $table.netKg, builder: (column) => column);
+}
+
+class $$HarvestsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HarvestsTable,
+          Harvest,
+          $$HarvestsTableFilterComposer,
+          $$HarvestsTableOrderingComposer,
+          $$HarvestsTableAnnotationComposer,
+          $$HarvestsTableCreateCompanionBuilder,
+          $$HarvestsTableUpdateCompanionBuilder,
+          (Harvest, BaseReferences<_$AppDatabase, $HarvestsTable, Harvest>),
+          Harvest,
+          PrefetchHooks Function()
+        > {
+  $$HarvestsTableTableManager(_$AppDatabase db, $HarvestsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HarvestsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HarvestsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HarvestsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<DateTime> harvestedAt = const Value.absent(),
+                Value<HoneyKind> honeyKind = const Value.absent(),
+                Value<HarvestUnit> unit = const Value.absent(),
+                Value<int> unitCount = const Value.absent(),
+                Value<double> netKg = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HarvestsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                apiaryId: apiaryId,
+                harvestedAt: harvestedAt,
+                honeyKind: honeyKind,
+                unit: unit,
+                unitCount: unitCount,
+                netKg: netKg,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String apiaryId,
+                required DateTime harvestedAt,
+                required HoneyKind honeyKind,
+                required HarvestUnit unit,
+                required int unitCount,
+                required double netKg,
+                Value<int> rowid = const Value.absent(),
+              }) => HarvestsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                apiaryId: apiaryId,
+                harvestedAt: harvestedAt,
+                honeyKind: honeyKind,
+                unit: unit,
+                unitCount: unitCount,
+                netKg: netKg,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HarvestsTable, Harvest>(table),
+                  BaseReferences<_$AppDatabase, $HarvestsTable, Harvest>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HarvestsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HarvestsTable,
+      Harvest,
+      $$HarvestsTableFilterComposer,
+      $$HarvestsTableOrderingComposer,
+      $$HarvestsTableAnnotationComposer,
+      $$HarvestsTableCreateCompanionBuilder,
+      $$HarvestsTableUpdateCompanionBuilder,
+      (Harvest, BaseReferences<_$AppDatabase, $HarvestsTable, Harvest>),
+      Harvest,
+      PrefetchHooks Function()
+    >;
+typedef $$HarvestHivesTableCreateCompanionBuilder =
+    HarvestHivesCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String harvestId,
+      required String hiveId,
+      Value<String?> withdrawalTreatmentId,
+      Value<WithdrawalOverrideReason?> withdrawalOverrideReason,
+      Value<int> rowid,
+    });
+typedef $$HarvestHivesTableUpdateCompanionBuilder =
+    HarvestHivesCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> harvestId,
+      Value<String> hiveId,
+      Value<String?> withdrawalTreatmentId,
+      Value<WithdrawalOverrideReason?> withdrawalOverrideReason,
+      Value<int> rowid,
+    });
+
+class $$HarvestHivesTableFilterComposer
+    extends Composer<_$AppDatabase, $HarvestHivesTable> {
+  $$HarvestHivesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get harvestId => $composableBuilder(
+    column: $table.harvestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get withdrawalTreatmentId => $composableBuilder(
+    column: $table.withdrawalTreatmentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    WithdrawalOverrideReason?,
+    WithdrawalOverrideReason,
+    String
+  >
+  get withdrawalOverrideReason => $composableBuilder(
+    column: $table.withdrawalOverrideReason,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$HarvestHivesTableOrderingComposer
+    extends Composer<_$AppDatabase, $HarvestHivesTable> {
+  $$HarvestHivesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get harvestId => $composableBuilder(
+    column: $table.harvestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get withdrawalTreatmentId => $composableBuilder(
+    column: $table.withdrawalTreatmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get withdrawalOverrideReason => $composableBuilder(
+    column: $table.withdrawalOverrideReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HarvestHivesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HarvestHivesTable> {
+  $$HarvestHivesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get harvestId =>
+      $composableBuilder(column: $table.harvestId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get withdrawalTreatmentId => $composableBuilder(
+    column: $table.withdrawalTreatmentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<WithdrawalOverrideReason?, String>
+  get withdrawalOverrideReason => $composableBuilder(
+    column: $table.withdrawalOverrideReason,
+    builder: (column) => column,
+  );
+}
+
+class $$HarvestHivesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HarvestHivesTable,
+          HarvestHive,
+          $$HarvestHivesTableFilterComposer,
+          $$HarvestHivesTableOrderingComposer,
+          $$HarvestHivesTableAnnotationComposer,
+          $$HarvestHivesTableCreateCompanionBuilder,
+          $$HarvestHivesTableUpdateCompanionBuilder,
+          (
+            HarvestHive,
+            BaseReferences<_$AppDatabase, $HarvestHivesTable, HarvestHive>,
+          ),
+          HarvestHive,
+          PrefetchHooks Function()
+        > {
+  $$HarvestHivesTableTableManager(_$AppDatabase db, $HarvestHivesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HarvestHivesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HarvestHivesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HarvestHivesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> harvestId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String?> withdrawalTreatmentId = const Value.absent(),
+                Value<WithdrawalOverrideReason?> withdrawalOverrideReason =
+                    const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HarvestHivesCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                harvestId: harvestId,
+                hiveId: hiveId,
+                withdrawalTreatmentId: withdrawalTreatmentId,
+                withdrawalOverrideReason: withdrawalOverrideReason,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String harvestId,
+                required String hiveId,
+                Value<String?> withdrawalTreatmentId = const Value.absent(),
+                Value<WithdrawalOverrideReason?> withdrawalOverrideReason =
+                    const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HarvestHivesCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                harvestId: harvestId,
+                hiveId: hiveId,
+                withdrawalTreatmentId: withdrawalTreatmentId,
+                withdrawalOverrideReason: withdrawalOverrideReason,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HarvestHivesTable, HarvestHive>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $HarvestHivesTable,
+                    HarvestHive
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HarvestHivesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HarvestHivesTable,
+      HarvestHive,
+      $$HarvestHivesTableFilterComposer,
+      $$HarvestHivesTableOrderingComposer,
+      $$HarvestHivesTableAnnotationComposer,
+      $$HarvestHivesTableCreateCompanionBuilder,
+      $$HarvestHivesTableUpdateCompanionBuilder,
+      (
+        HarvestHive,
+        BaseReferences<_$AppDatabase, $HarvestHivesTable, HarvestHive>,
+      ),
+      HarvestHive,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -17381,6 +19156,10 @@ class $AppDatabaseManager {
       $$FeedingsTableTableManager(_db, _db.feedings);
   $$TasksTableTableManager get tasks =>
       $$TasksTableTableManager(_db, _db.tasks);
+  $$HarvestsTableTableManager get harvests =>
+      $$HarvestsTableTableManager(_db, _db.harvests);
+  $$HarvestHivesTableTableManager get harvestHives =>
+      $$HarvestHivesTableTableManager(_db, _db.harvestHives);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$OutboxTableTableManager get outbox =>

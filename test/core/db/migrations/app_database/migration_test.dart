@@ -12,6 +12,7 @@ import 'generated/schema_v5.dart' as v5;
 import 'generated/schema_v6.dart' as v6;
 import 'generated/schema_v7.dart' as v7;
 import 'generated/schema_v8.dart' as v8;
+import 'generated/schema_v9.dart' as v9;
 
 // Dökümler ve `generated/` `dart run drift_dev make-migrations` ile üretilir;
 // her yeni sürümde bu testlere yeni sürümün veri testi eklenir.
@@ -348,48 +349,89 @@ void main() {
     },
   );
 
+  test("v7 → v8 beslemeleri ve outbox'ı korur; görev tablosu boş gelir, "
+      'yalnız bu telefondaki muayene hatırlatmaları kalkar', () async {
+    const feeding = v7.FeedingsData(
+      id: 'feeding-1',
+      createdAt: '2026-10-26T09:00:00.000Z',
+      updatedAt: '2026-10-26T09:00:00.000Z',
+      orgId: 'org-1',
+      hiveId: 'hive-1',
+      apiaryId: 'apiary-1',
+      feedingGroupId: 'group-1',
+      fedAt: '2026-10-26T09:00:00.000Z',
+      kind: 'syrup_2_1',
+      amount: 3,
+    );
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 7,
+      newVersion: 8,
+      createOld: v7.DatabaseAtV7.new,
+      createNew: v8.DatabaseAtV8.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(oldDb.feedings, feeding)
+          ..insert(
+            oldDb.inspectionReminders,
+            const v7.InspectionRemindersData(
+              inspectionId: 'inspection-1',
+              orgId: 'org-1',
+              hiveId: 'hive-1',
+              days: 7,
+              remindAt: '2026-11-02T09:00:00.000Z',
+              createdAt: '2026-10-26T09:00:00.000Z',
+            ),
+          )
+          ..insert(
+            oldDb.outbox,
+            v7.OutboxCompanion.insert(
+              recordTable: 'feedings',
+              recordId: 'feeding-1',
+              operation: 'upsert',
+              payload: '{}',
+              createdAt: '2026-10-26T09:00:00.000Z',
+            ),
+          );
+      },
+      validateItems: (newDb) async {
+        final feedings = await newDb.select(newDb.feedings).get();
+        expect(feedings.single.toJson(), feeding.toJson());
+        final outbox = await newDb.select(newDb.outbox).get();
+        expect(outbox.single.recordId, 'feeding-1');
+        expect(await newDb.select(newDb.tasks).get(), isEmpty);
+      },
+    );
+  });
+
   test(
-    "v7 → v8 beslemeleri ve outbox'ı korur; görev tablosu boş gelir, "
-    'yalnız bu telefondaki muayene hatırlatmaları kalkar',
+    "v8 → v9 görevleri ve outbox'ı korur; hasat tabloları boş gelir",
     () async {
-      const feeding = v7.FeedingsData(
-        id: 'feeding-1',
+      const task = v8.TasksData(
+        id: 'task-1',
         createdAt: '2026-10-26T09:00:00.000Z',
         updatedAt: '2026-10-26T09:00:00.000Z',
         orgId: 'org-1',
-        hiveId: 'hive-1',
-        apiaryId: 'apiary-1',
-        feedingGroupId: 'group-1',
-        fedAt: '2026-10-26T09:00:00.000Z',
-        kind: 'syrup_2_1',
-        amount: 3,
+        title: 'Şerit çıkar',
+        dueAt: '2026-11-05T09:00:00.000Z',
+        source: 'manual',
       );
 
       await verifier.testWithDataIntegrity(
-        oldVersion: 7,
-        newVersion: 8,
-        createOld: v7.DatabaseAtV7.new,
-        createNew: v8.DatabaseAtV8.new,
+        oldVersion: 8,
+        newVersion: 9,
+        createOld: v8.DatabaseAtV8.new,
+        createNew: v9.DatabaseAtV9.new,
         openTestedDatabase: AppDatabase.new,
         createItems: (batch, oldDb) {
           batch
-            ..insert(oldDb.feedings, feeding)
-            ..insert(
-              oldDb.inspectionReminders,
-              const v7.InspectionRemindersData(
-                inspectionId: 'inspection-1',
-                orgId: 'org-1',
-                hiveId: 'hive-1',
-                days: 7,
-                remindAt: '2026-11-02T09:00:00.000Z',
-                createdAt: '2026-10-26T09:00:00.000Z',
-              ),
-            )
+            ..insert(oldDb.tasks, task)
             ..insert(
               oldDb.outbox,
-              v7.OutboxCompanion.insert(
-                recordTable: 'feedings',
-                recordId: 'feeding-1',
+              v8.OutboxCompanion.insert(
+                recordTable: 'tasks',
+                recordId: 'task-1',
                 operation: 'upsert',
                 payload: '{}',
                 createdAt: '2026-10-26T09:00:00.000Z',
@@ -397,11 +439,12 @@ void main() {
             );
         },
         validateItems: (newDb) async {
-          final feedings = await newDb.select(newDb.feedings).get();
-          expect(feedings.single.toJson(), feeding.toJson());
+          final tasks = await newDb.select(newDb.tasks).get();
+          expect(tasks.single.toJson(), task.toJson());
           final outbox = await newDb.select(newDb.outbox).get();
-          expect(outbox.single.recordId, 'feeding-1');
-          expect(await newDb.select(newDb.tasks).get(), isEmpty);
+          expect(outbox.single.recordId, 'task-1');
+          expect(await newDb.select(newDb.harvests).get(), isEmpty);
+          expect(await newDb.select(newDb.harvestHives).get(), isEmpty);
         },
       );
     },

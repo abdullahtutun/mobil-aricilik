@@ -4411,6 +4411,310 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Removal due: {date}'**
   String attentionRemovalDue(String date);
+
+  /// No description provided for @syncTableHarvests.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest'**
+  String get syncTableHarvests;
+
+  /// No description provided for @syncTableHarvestHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvested hive'**
+  String get syncTableHarvestHives;
+
+  /// No description provided for @withdrawalLockHarvestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} is being treated with {product}. It shouldn\'t be harvested before {date}; honey from this period may carry drug residue.'**
+  String withdrawalLockHarvestMessage(
+    String number,
+    String product,
+    String date,
+  );
+
+  /// No description provided for @withdrawalReasonNotForSaleHarvest.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey won\'t be sold (own use/feed)'**
+  String get withdrawalReasonNotForSaleHarvest;
+
+  /// No description provided for @withdrawalHarvestCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel, don\'t harvest'**
+  String get withdrawalHarvestCancel;
+
+  /// No description provided for @withdrawalHarvestProceed.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest anyway'**
+  String get withdrawalHarvestProceed;
+
+  /// No description provided for @apiaryHarvest.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest'**
+  String get apiaryHarvest;
+
+  /// No description provided for @harvestFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest · {apiary}'**
+  String harvestFormTitle(String apiary);
+
+  /// No description provided for @harvestSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No hives selected} =1{1 hive selected} other{{count} hives selected}}'**
+  String harvestSelectedCount(int count);
+
+  /// No description provided for @harvestSelectedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{numbers} · tap to change or scan to add'**
+  String harvestSelectedHint(String numbers);
+
+  /// No description provided for @harvestSelectedEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to pick hives or scan them'**
+  String get harvestSelectedEmptyHint;
+
+  /// No description provided for @harvestScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get harvestScan;
+
+  /// No description provided for @harvestLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{numbers} in withdrawal period.'**
+  String harvestLockedTitle(String numbers);
+
+  /// No description provided for @harvestLockedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Not harvested. To take one anyway, pick it in the hive list.'**
+  String get harvestLockedMessage;
+
+  /// No description provided for @harvestDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get harvestDate;
+
+  /// No description provided for @harvestToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get harvestToday;
+
+  /// No description provided for @harvestYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get harvestYesterday;
+
+  /// No description provided for @harvestPickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Other day'**
+  String get harvestPickDate;
+
+  /// No description provided for @harvestHoneyKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey type'**
+  String get harvestHoneyKind;
+
+  /// No description provided for @honeyKindPine.
+  ///
+  /// In en, this message translates to:
+  /// **'Pine'**
+  String get honeyKindPine;
+
+  /// No description provided for @honeyKindFlower.
+  ///
+  /// In en, this message translates to:
+  /// **'Flower'**
+  String get honeyKindFlower;
+
+  /// No description provided for @honeyKindChestnut.
+  ///
+  /// In en, this message translates to:
+  /// **'Chestnut'**
+  String get honeyKindChestnut;
+
+  /// No description provided for @honeyKindCitrus.
+  ///
+  /// In en, this message translates to:
+  /// **'Citrus'**
+  String get honeyKindCitrus;
+
+  /// No description provided for @honeyKindOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get honeyKindOther;
+
+  /// No description provided for @harvestUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken as'**
+  String get harvestUnit;
+
+  /// No description provided for @harvestUnitSuper.
+  ///
+  /// In en, this message translates to:
+  /// **'Supers'**
+  String get harvestUnitSuper;
+
+  /// No description provided for @harvestUnitFrame.
+  ///
+  /// In en, this message translates to:
+  /// **'Frames'**
+  String get harvestUnitFrame;
+
+  /// No description provided for @harvestTakenSupers.
+  ///
+  /// In en, this message translates to:
+  /// **'Supers taken'**
+  String get harvestTakenSupers;
+
+  /// No description provided for @harvestTakenFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Frames taken'**
+  String get harvestTakenFrames;
+
+  /// No description provided for @harvestWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracted honey ({unit})'**
+  String harvestWeight(String unit);
+
+  /// No description provided for @harvestWeightInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a weight like 574 or 574.5'**
+  String get harvestWeightInvalid;
+
+  /// No description provided for @harvestWeightTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'At most {max} {unit}'**
+  String harvestWeightTooLarge(String max, String unit);
+
+  /// No description provided for @harvestPerHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Per hive'**
+  String get harvestPerHive;
+
+  /// No description provided for @harvestWeightValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} {unit}'**
+  String harvestWeightValue(String value, String unit);
+
+  /// No description provided for @harvestSave.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No hives to harvest} other{Save harvest}}'**
+  String harvestSave(int count);
+
+  /// No description provided for @harvestSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Harvest saved for 1 hive} other{Harvest saved for {count} hives}}'**
+  String harvestSaved(int count);
+
+  /// No description provided for @harvestHivesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives to harvest'**
+  String get harvestHivesTitle;
+
+  /// No description provided for @harvestSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get harvestSelectAll;
+
+  /// No description provided for @harvestSelectNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Select none'**
+  String get harvestSelectNone;
+
+  /// No description provided for @harvestHiveLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal · {days, plural, =1{1 day} other{{days} days}} left'**
+  String harvestHiveLocked(int days);
+
+  /// No description provided for @harvestHiveOverridden.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken anyway: {reason}'**
+  String harvestHiveOverridden(String reason);
+
+  /// No description provided for @harvestHivesDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get harvestHivesDone;
+
+  /// No description provided for @harvestNoActiveHives.
+  ///
+  /// In en, this message translates to:
+  /// **'This apiary has no active hives.'**
+  String get harvestNoActiveHives;
+
+  /// No description provided for @harvestScanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan for harvest'**
+  String get harvestScanTitle;
+
+  /// No description provided for @harvestScanAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} added'**
+  String harvestScanAdded(String number);
+
+  /// No description provided for @harvestScanAlready.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} is already selected'**
+  String harvestScanAlready(String number);
+
+  /// No description provided for @harvestScanOtherApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} isn\'t in this apiary'**
+  String harvestScanOtherApiary(String number);
+
+  /// No description provided for @harvestScanInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} isn\'t active'**
+  String harvestScanInactive(String number);
+
+  /// No description provided for @harvestScanUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'This label isn\'t linked to a hive'**
+  String get harvestScanUnknown;
+
+  /// No description provided for @harvestScanDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Done} =1{Done · 1 hive} other{Done · {count} hives}}'**
+  String harvestScanDone(int count);
 }
 
 class _AppLocalizationsDelegate

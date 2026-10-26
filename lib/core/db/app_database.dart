@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.steps.dart';
 import 'package:mobil_arici/core/db/converters.dart';
 import 'package:mobil_arici/core/db/tables/feeding_tables.dart';
+import 'package:mobil_arici/core/db/tables/harvest_tables.dart';
 import 'package:mobil_arici/core/db/tables/health_tables.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
@@ -11,9 +12,11 @@ import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/core/db/tables/task_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -54,6 +57,8 @@ part 'app_database.g.dart';
     Treatments,
     Feedings,
     Tasks,
+    Harvests,
+    HarvestHives,
     LocalSettings,
     Outbox,
     SyncState,
@@ -63,7 +68,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -123,6 +128,16 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.tasksApiaryIdIdx);
         await m.create(schema.tasksSourceIdIdx);
         await m.deleteTable('inspection_reminders');
+      },
+      // Hasatlar ve hasada alınan kovanlar.
+      from8To9: (m, schema) async {
+        await m.createTable(schema.harvests);
+        await m.create(schema.harvestsOrgIdIdx);
+        await m.create(schema.harvestsApiaryIdIdx);
+        await m.createTable(schema.harvestHives);
+        await m.create(schema.harvestHivesOrgIdIdx);
+        await m.create(schema.harvestHivesHarvestIdIdx);
+        await m.create(schema.harvestHivesHiveIdIdx);
       },
     ),
   );

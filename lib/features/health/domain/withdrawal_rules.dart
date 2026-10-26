@@ -71,6 +71,22 @@ WithdrawalLock? withdrawalLock(
   return latest;
 }
 
+/// [treatments]'ın kovanlarından [now] anında kilitli olanlar, kovan
+/// kimliğine göre ([withdrawalLock]). Kilitsiz kovan haritada yok.
+Map<String, WithdrawalLock> withdrawalLocksByHive(
+  Iterable<Treatment> treatments, {
+  required DateTime now,
+}) {
+  final byHive = <String, List<Treatment>>{};
+  for (final treatment in treatments) {
+    (byHive[treatment.hiveId] ??= []).add(treatment);
+  }
+  return {
+    for (final MapEntry(key: hiveId, value: hiveTreatments) in byHive.entries)
+      hiveId: ?withdrawalLock(hiveTreatments, now: now),
+  };
+}
+
 /// Önerilen planlanan çıkarma: şeritte başlangıçtan
 /// [defaultStripTreatmentDays] gün sonra; diğer birimlerde tek seferlik
 /// uygulama, çıkarma yok.

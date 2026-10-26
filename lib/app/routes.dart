@@ -51,6 +51,17 @@ abstract final class AppRoutes {
   static String hiveFeed(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/feed';
 
+  /// Arılığın hasadı; geri tuşu arılığa döner.
+  static String apiaryHarvest(String apiaryId) => '/apiaries/$apiaryId/harvest';
+
+  /// Hasada alınacak kovanların seçimi; geri tuşu hasada döner.
+  static String apiaryHarvestHives(String apiaryId) =>
+      '/apiaries/$apiaryId/harvest/hives';
+
+  /// Hasada kovan okutma; sekmelerin üstünde açılır, hasada döner.
+  static String apiaryHarvestScan(String apiaryId) =>
+      '/apiaries/$apiaryId/harvest/scan';
+
   /// İlaç uygulamasından işletmeye yeni ilaç ekleme; eklenen ilaç
   /// uygulamada seçilir.
   static String hiveTreatDrugNew(String apiaryId, String hiveId) =>

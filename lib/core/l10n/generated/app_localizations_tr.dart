@@ -2691,4 +2691,212 @@ class AppLocalizationsTr extends AppLocalizations {
   String attentionRemovalDue(String date) {
     return 'Çıkarma günü: $date';
   }
+
+  @override
+  String get syncTableHarvests => 'Hasat';
+
+  @override
+  String get syncTableHarvestHives => 'Hasat kovanı';
+
+  @override
+  String withdrawalLockHarvestMessage(
+    String number,
+    String product,
+    String date,
+  ) {
+    return 'Kovan $number: $product uygulanıyor. $date tarihine kadar bu kovandan hasat yapılmamalı; bu süredeki bal ilaç kalıntısı taşıyabilir.';
+  }
+
+  @override
+  String get withdrawalReasonNotForSaleHarvest =>
+      'Bal satılmayacak (kendi kullanım/yem)';
+
+  @override
+  String get withdrawalHarvestCancel => 'Vazgeç, hasada alma';
+
+  @override
+  String get withdrawalHarvestProceed => 'Yine de hasada al';
+
+  @override
+  String get apiaryHarvest => 'Hasat';
+
+  @override
+  String harvestFormTitle(String apiary) {
+    return 'Hasat · $apiary';
+  }
+
+  @override
+  String harvestSelectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan seçildi',
+      zero: 'Kovan seçilmedi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String harvestSelectedHint(String numbers) {
+    return '$numbers · değiştirmek için dokun, okutarak ekle';
+  }
+
+  @override
+  String get harvestSelectedEmptyHint => 'Kovan seçmek için dokun ya da okut';
+
+  @override
+  String get harvestScan => 'Okut';
+
+  @override
+  String harvestLockedTitle(String numbers) {
+    return '$numbers bekleme süresinde.';
+  }
+
+  @override
+  String get harvestLockedMessage =>
+      'Hasada alınmadı. Yine de almak için kovan listesinden seç.';
+
+  @override
+  String get harvestDate => 'Tarih';
+
+  @override
+  String get harvestToday => 'Bugün';
+
+  @override
+  String get harvestYesterday => 'Dün';
+
+  @override
+  String get harvestPickDate => 'Başka gün';
+
+  @override
+  String get harvestHoneyKind => 'Bal türü';
+
+  @override
+  String get honeyKindPine => 'Çam';
+
+  @override
+  String get honeyKindFlower => 'Çiçek';
+
+  @override
+  String get honeyKindChestnut => 'Kestane';
+
+  @override
+  String get honeyKindCitrus => 'Narenciye';
+
+  @override
+  String get honeyKindOther => 'Diğer';
+
+  @override
+  String get harvestUnit => 'Alınan birim';
+
+  @override
+  String get harvestUnitSuper => 'Kat';
+
+  @override
+  String get harvestUnitFrame => 'Çerçeve';
+
+  @override
+  String get harvestTakenSupers => 'Alınan kat';
+
+  @override
+  String get harvestTakenFrames => 'Alınan çerçeve';
+
+  @override
+  String harvestWeight(String unit) {
+    return 'Süzülen bal ($unit)';
+  }
+
+  @override
+  String get harvestWeightInvalid => '574 ya da 574,5 gibi bir ağırlık yaz';
+
+  @override
+  String harvestWeightTooLarge(String max, String unit) {
+    return 'En çok $max $unit';
+  }
+
+  @override
+  String get harvestPerHive => 'Kovan başına';
+
+  @override
+  String harvestWeightValue(String value, String unit) {
+    return '$value $unit';
+  }
+
+  @override
+  String harvestSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hasadı kaydet',
+      zero: 'Hasada alınacak kovan yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String harvestSaved(int count) {
+    return '$count kovanın hasadı kaydedildi';
+  }
+
+  @override
+  String get harvestHivesTitle => 'Hasat kovanları';
+
+  @override
+  String get harvestSelectAll => 'Tümünü seç';
+
+  @override
+  String get harvestSelectNone => 'Hiçbiri';
+
+  @override
+  String harvestHiveLocked(int days) {
+    return 'Bekleme süresinde · $days gün';
+  }
+
+  @override
+  String harvestHiveOverridden(String reason) {
+    return 'Yine de alındı: $reason';
+  }
+
+  @override
+  String get harvestHivesDone => 'Tamam';
+
+  @override
+  String get harvestNoActiveHives => 'Bu arılıkta aktif kovan yok.';
+
+  @override
+  String get harvestScanTitle => 'Hasada okut';
+
+  @override
+  String harvestScanAdded(String number) {
+    return 'Kovan $number eklendi';
+  }
+
+  @override
+  String harvestScanAlready(String number) {
+    return 'Kovan $number zaten seçili';
+  }
+
+  @override
+  String harvestScanOtherApiary(String number) {
+    return 'Kovan $number bu arılıkta değil';
+  }
+
+  @override
+  String harvestScanInactive(String number) {
+    return 'Kovan $number aktif değil';
+  }
+
+  @override
+  String get harvestScanUnknown => 'Bu etiket bir kovana bağlı değil';
+
+  @override
+  String harvestScanDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bitti · $count kovan',
+      zero: 'Bitti',
+    );
+    return '$_temp0';
+  }
 }
