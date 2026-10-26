@@ -22,11 +22,13 @@ import 'package:mobil_arici/features/onboarding/presentation/widgets/language_co
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
+import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_location_service.dart';
 import '../../../helpers/fake_organization_service.dart';
 import '../../../helpers/fake_sync_service.dart';
+import '../../../helpers/fake_weather_service.dart';
 import '../../../helpers/test_database.dart';
 
 /// Giriş yapmış ama işletmesi olmayan kullanıcıyla uygulamayı açar.
@@ -48,6 +50,7 @@ Future<ProviderContainer> _pumpApp(
         location ?? FakeLocationService(),
       ),
       ...syncOverrides(),
+      weatherServiceProvider.overrideWithValue(FakeWeatherService()),
     ],
   );
   await tester.pumpWidget(

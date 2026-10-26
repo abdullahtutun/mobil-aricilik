@@ -18,6 +18,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.chart,
     required this.avatar,
     required this.dayDot,
+    required this.weatherCard,
   });
 
   static const standard = AppSizes(
@@ -34,6 +35,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     chart: 160,
     avatar: 40,
     dayDot: 6,
+    weatherCard: 176,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -78,6 +80,10 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// Gün şeridinde o gün görev olduğunu gösteren nokta.
   final double dayDot;
 
+  /// Bugün'deki arılık hava kartının eni; 360dp ekranda ikinci kart kenardan
+  /// görünür, kaydırılabildiği anlaşılır.
+  final double weatherCard;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -93,6 +99,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? chart,
     double? avatar,
     double? dayDot,
+    double? weatherCard,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -108,6 +115,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       chart: chart ?? this.chart,
       avatar: avatar ?? this.avatar,
       dayDot: dayDot ?? this.dayDot,
+      weatherCard: weatherCard ?? this.weatherCard,
     );
   }
 
@@ -132,6 +140,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       chart: lerpDouble(chart, other.chart, t)!,
       avatar: lerpDouble(avatar, other.avatar, t)!,
       dayDot: lerpDouble(dayDot, other.dayDot, t)!,
+      weatherCard: lerpDouble(weatherCard, other.weatherCard, t)!,
     );
   }
 }

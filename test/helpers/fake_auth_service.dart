@@ -10,6 +10,7 @@ import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
 import 'fake_code_scanner.dart';
 import 'fake_media.dart';
@@ -17,6 +18,7 @@ import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
 import 'fake_reminder_notifications.dart';
 import 'fake_sync_service.dart';
+import 'fake_weather_service.dart';
 import 'test_database.dart';
 
 const testUser = AppUser(id: 'test-user', email: 'ari@example.com');
@@ -73,8 +75,9 @@ class FakeAuthService implements AuthService {
 }
 
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
-/// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, senkron ve medya
-/// (foto, ses, Storage) sahte; ilk tam çekme bitmiş sayılır ([fullPullDone]
+/// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, senkron, medya
+/// (foto, ses, Storage) ve hava servisi sahte; hava servisi verilmezse
+/// çevrimdışı gibi hata atar. İlk tam çekme bitmiş sayılır ([fullPullDone]
 /// yanlışsa DB'den okunur).
 List<Override> signedIn({
   FakeAuthService? auth,
@@ -84,6 +87,7 @@ List<Override> signedIn({
   FakeSyncService? sync,
   FakeMedia? media,
   FakeReminderNotifications? reminders,
+  FakeWeatherService? weather,
   bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
@@ -98,4 +102,5 @@ List<Override> signedIn({
   reminderNotificationsProvider.overrideWithValue(
     reminders ?? FakeReminderNotifications(),
   ),
+  weatherServiceProvider.overrideWithValue(weather ?? FakeWeatherService()),
 ];

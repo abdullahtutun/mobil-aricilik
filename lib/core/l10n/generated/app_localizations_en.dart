@@ -2587,4 +2587,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsExactAlarmsOff => 'Off · may be a few minutes late';
+
+  @override
+  String get weatherAttribution => 'Weather data by Open-Meteo.com';
+
+  @override
+  String weatherTemperature(String value) {
+    return '$value°';
+  }
+
+  @override
+  String weatherWind(String speed) {
+    return 'Wind $speed km/h';
+  }
+
+  @override
+  String weatherForecastAsOf(String time) {
+    return 'Forecast as of $time';
+  }
+
+  @override
+  String get hiveOpeningSuitable => 'Good to open';
+
+  @override
+  String get hiveOpeningCautionRain => 'Rain possible';
+
+  @override
+  String get hiveOpeningCautionWind => 'Windy';
+
+  @override
+  String get hiveOpeningCautionCold => 'Cool';
+
+  @override
+  String get hiveOpeningUnsuitableRain => 'Raining';
+
+  @override
+  String get hiveOpeningUnsuitableWind => 'Strong wind';
+
+  @override
+  String get hiveOpeningUnsuitableCold => 'Too cold';
 }

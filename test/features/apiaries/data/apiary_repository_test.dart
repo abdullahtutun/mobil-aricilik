@@ -29,6 +29,31 @@ void main() {
     expect(await repository.watchAll('org-1').first, [yayla, cam]);
   });
 
+  test('locatedIds yalnız işletmenin silinmemiş, konumlu arılıkları', () async {
+    final yayla = await repository.create(
+      orgId: 'org-1',
+      name: 'Yayla',
+      latitude: 39.93,
+      longitude: 32.86,
+    );
+    await repository.create(orgId: 'org-1', name: 'Konumsuz');
+    final silinen = await repository.create(
+      orgId: 'org-1',
+      name: 'Silinen',
+      latitude: 38,
+      longitude: 30,
+    );
+    await repository.create(
+      orgId: 'org-2',
+      name: 'Başkası',
+      latitude: 37,
+      longitude: 28,
+    );
+    await repository.delete(silinen.id);
+
+    expect(await repository.locatedIds('org-1'), {yayla.id});
+  });
+
   test('tüm alanlar yazılıp aynen okunur', () async {
     final created = await repository.create(
       orgId: 'org-1',

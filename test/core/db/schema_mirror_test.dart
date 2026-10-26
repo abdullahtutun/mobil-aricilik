@@ -99,13 +99,19 @@ void main() {
           },
     };
 
-    // PostGIS noktası yerelde iki kolon.
+    // PostGIS noktası yerelde iki kolon. Yalnız sunucudaki tablolar
+    // (`weather_cache`) da `server_seq` taşımaz ve aynalanmaz.
     final expected = {
       for (final MapEntry(key: table, value: columns) in server.tables.entries)
-        table: {
-          for (final column in columns)
-            if (column == 'location') ...['latitude', 'longitude'] else column,
-        },
+        if (columns.contains('server_seq'))
+          table: {
+            for (final column in columns)
+              if (column == 'location') ...[
+                'latitude',
+                'longitude',
+              ] else
+                column,
+          },
     };
 
     expect(local, expected);

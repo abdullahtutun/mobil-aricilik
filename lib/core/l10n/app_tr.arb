@@ -705,5 +705,16 @@
   "settingsReminders": "Hatırlatıcılar",
   "settingsExactAlarms": "Tam saatinde çalsın",
   "settingsExactAlarmsOn": "Açık",
-  "settingsExactAlarmsOff": "Kapalı · birkaç dakika gecikebilir"
+  "settingsExactAlarmsOff": "Kapalı · birkaç dakika gecikebilir",
+  "weatherAttribution": "Weather data by Open-Meteo.com",
+  "weatherTemperature": "{value}°",
+  "weatherWind": "Rüzgar {speed} km/s",
+  "weatherForecastAsOf": "Tahmin {time} itibarıyla",
+  "hiveOpeningSuitable": "Kovan açılır",
+  "hiveOpeningCautionRain": "Yağış olası",
+  "hiveOpeningCautionWind": "Rüzgarlı",
+  "hiveOpeningCautionCold": "Serin",
+  "hiveOpeningUnsuitableRain": "Yağışlı",
+  "hiveOpeningUnsuitableWind": "Sert rüzgar",
+  "hiveOpeningUnsuitableCold": "Çok soğuk"
 }

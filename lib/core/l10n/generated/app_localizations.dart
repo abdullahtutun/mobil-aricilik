@@ -4177,6 +4177,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Off · may be a few minutes late'**
   String get settingsExactAlarmsOff;
+
+  /// Required Open-Meteo attribution shown wherever weather appears; keep this exact English text in every language.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather data by Open-Meteo.com'**
+  String get weatherAttribution;
+
+  /// Temperature in the user's unit, without the unit letter.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}°'**
+  String weatherTemperature(String value);
+
+  /// No description provided for @weatherWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind {speed} km/h'**
+  String weatherWind(String speed);
+
+  /// Shown when the stored weather bundle is older than an hour (e.g. offline).
+  ///
+  /// In en, this message translates to:
+  /// **'Forecast as of {time}'**
+  String weatherForecastAsOf(String time);
+
+  /// Green badge: weather is fine for opening hives.
+  ///
+  /// In en, this message translates to:
+  /// **'Good to open'**
+  String get hiveOpeningSuitable;
+
+  /// No description provided for @hiveOpeningCautionRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain possible'**
+  String get hiveOpeningCautionRain;
+
+  /// No description provided for @hiveOpeningCautionWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Windy'**
+  String get hiveOpeningCautionWind;
+
+  /// No description provided for @hiveOpeningCautionCold.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool'**
+  String get hiveOpeningCautionCold;
+
+  /// No description provided for @hiveOpeningUnsuitableRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Raining'**
+  String get hiveOpeningUnsuitableRain;
+
+  /// No description provided for @hiveOpeningUnsuitableWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong wind'**
+  String get hiveOpeningUnsuitableWind;
+
+  /// No description provided for @hiveOpeningUnsuitableCold.
+  ///
+  /// In en, this message translates to:
+  /// **'Too cold'**
+  String get hiveOpeningUnsuitableCold;
 }
 
 class _AppLocalizationsDelegate

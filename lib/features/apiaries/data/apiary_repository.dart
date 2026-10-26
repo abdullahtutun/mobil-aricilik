@@ -22,6 +22,18 @@ class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
     orderBy: [(t) => OrderingTerm.asc(t.name)],
   );
 
+  /// İşletmenin konumu olan, silinmemiş arılıklarının kimlikleri.
+  Future<Set<String>> locatedIds(String orgId) async {
+    final query = db.selectOnly(table)
+      ..addColumns([table.id])
+      ..where(
+        table.orgId.equals(orgId) &
+            table.deletedAt.isNull() &
+            table.latitude.isNotNull(),
+      );
+    return {for (final row in await query.get()) row.read(table.id)!};
+  }
+
   /// İşletmenin arılıkları aktif kovan sayılarıyla, ada göre (SQLite
   /// sırası). Kovan eklenince, taşınınca ya da durumu değişince de yayar.
   Stream<List<ApiarySummary>> watchSummaries(String orgId) =>

@@ -2007,5 +2007,48 @@
   "settingsReminders": "Reminders",
   "settingsExactAlarms": "Ring right on time",
   "settingsExactAlarmsOn": "On",
-  "settingsExactAlarmsOff": "Off · may be a few minutes late"
+  "settingsExactAlarmsOff": "Off · may be a few minutes late",
+  "weatherAttribution": "Weather data by Open-Meteo.com",
+  "@weatherAttribution": {
+    "description": "Required Open-Meteo attribution shown wherever weather appears; keep this exact English text in every language."
+  },
+  "weatherTemperature": "{value}°",
+  "@weatherTemperature": {
+    "description": "Temperature in the user's unit, without the unit letter.",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "22"
+      }
+    }
+  },
+  "weatherWind": "Wind {speed} km/h",
+  "@weatherWind": {
+    "placeholders": {
+      "speed": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "weatherForecastAsOf": "Forecast as of {time}",
+  "@weatherForecastAsOf": {
+    "description": "Shown when the stored weather bundle is older than an hour (e.g. offline).",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "Oct 26, 10:42 AM"
+      }
+    }
+  },
+  "hiveOpeningSuitable": "Good to open",
+  "@hiveOpeningSuitable": {
+    "description": "Green badge: weather is fine for opening hives."
+  },
+  "hiveOpeningCautionRain": "Rain possible",
+  "hiveOpeningCautionWind": "Windy",
+  "hiveOpeningCautionCold": "Cool",
+  "hiveOpeningUnsuitableRain": "Raining",
+  "hiveOpeningUnsuitableWind": "Strong wind",
+  "hiveOpeningUnsuitableCold": "Too cold"
 }

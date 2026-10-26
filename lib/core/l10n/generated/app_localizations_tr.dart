@@ -2541,4 +2541,43 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsExactAlarmsOff => 'Kapalı · birkaç dakika gecikebilir';
+
+  @override
+  String get weatherAttribution => 'Weather data by Open-Meteo.com';
+
+  @override
+  String weatherTemperature(String value) {
+    return '$value°';
+  }
+
+  @override
+  String weatherWind(String speed) {
+    return 'Rüzgar $speed km/s';
+  }
+
+  @override
+  String weatherForecastAsOf(String time) {
+    return 'Tahmin $time itibarıyla';
+  }
+
+  @override
+  String get hiveOpeningSuitable => 'Kovan açılır';
+
+  @override
+  String get hiveOpeningCautionRain => 'Yağış olası';
+
+  @override
+  String get hiveOpeningCautionWind => 'Rüzgarlı';
+
+  @override
+  String get hiveOpeningCautionCold => 'Serin';
+
+  @override
+  String get hiveOpeningUnsuitableRain => 'Yağışlı';
+
+  @override
+  String get hiveOpeningUnsuitableWind => 'Sert rüzgar';
+
+  @override
+  String get hiveOpeningUnsuitableCold => 'Çok soğuk';
 }
