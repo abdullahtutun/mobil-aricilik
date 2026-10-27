@@ -130,6 +130,17 @@ abstract final class AppRoutes {
   /// Yol kontrolü: belgeler tam ekran, kaydırarak geçilir.
   static const roadCheck = '/more/documents/road-check';
 
+  /// Göç planları; Daha fazla'dan açılır. Planın zaman çizelgesi, plan ve
+  /// durak formları planların altında.
+  static const migrations = '/more/migrations';
+  static const migrationNew = '/more/migrations/new';
+  static String migration(String id) => '/more/migrations/$id';
+  static String migrationEdit(String id) => '/more/migrations/$id/edit';
+  static String migrationStopNew(String migrationId) =>
+      '/more/migrations/$migrationId/stops/new';
+  static String migrationStopEdit(String migrationId, String stopId) =>
+      '/more/migrations/$migrationId/stops/$stopId/edit';
+
   /// Fotoğrafın tam ekranı; sekmelerin üstünde açılır.
   static String mediaPhoto(String mediaId) => '/media/$mediaId';
 

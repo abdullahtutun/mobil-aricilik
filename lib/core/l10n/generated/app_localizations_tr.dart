@@ -3846,4 +3846,236 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncTableDocuments => 'Belge';
+
+  @override
+  String get migrationsTitle => 'Göç planları';
+
+  @override
+  String get migrationsAdd => 'Yeni plan';
+
+  @override
+  String get migrationsEmptyTitle => 'Henüz göç planı yok';
+
+  @override
+  String get migrationsEmptyMessage =>
+      'Yılın rotasını planla: her durağın tarihleri, kovan sayısı ve hedef arılığı.';
+
+  @override
+  String get migrationsLoadError => 'Göç planları açılamadı';
+
+  @override
+  String migrationStopCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count durak',
+      zero: 'Durak yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String migrationTitle(String name, String year) {
+    return '$name $year';
+  }
+
+  @override
+  String get migrationNotFound => 'Göç planı bulunamadı';
+
+  @override
+  String get migrationDocuments => 'Evrak';
+
+  @override
+  String get migrationEdit => 'Planı düzenle';
+
+  @override
+  String get migrationAddStop => 'Durak ekle';
+
+  @override
+  String get migrationNoStopsTitle => 'Henüz durak yok';
+
+  @override
+  String get migrationNoStopsMessage =>
+      'Rotanın duraklarını sırayla ekle: kaynak, yer, tarihler ve kovan sayısı.';
+
+  @override
+  String migrationNextMoveIn(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days gün',
+      zero: 'bugün',
+    );
+    return 'Sıradaki taşıma · $_temp0';
+  }
+
+  @override
+  String migrationNextMoveLate(int days) {
+    return 'Sıradaki taşıma · $days gün gecikti';
+  }
+
+  @override
+  String migrationRoute(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String migrationDocReady(String document) {
+    return '$document hazır';
+  }
+
+  @override
+  String migrationDocDays(String document, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days gün',
+      zero: 'bugün bitiyor',
+    );
+    return '$document $_temp0';
+  }
+
+  @override
+  String migrationDocBeforeMove(String document) {
+    return '$document taşımadan önce bitiyor';
+  }
+
+  @override
+  String migrationDocExpired(String document) {
+    return '$document süresi doldu';
+  }
+
+  @override
+  String migrationDocMissing(String document) {
+    return '$document yok';
+  }
+
+  @override
+  String get migrationStopPast => 'Geçmiş';
+
+  @override
+  String get migrationStopCurrent => 'Şu an';
+
+  @override
+  String get migrationStopPlanned => 'Plan';
+
+  @override
+  String get migrationStopHere => 'Şu an burada';
+
+  @override
+  String migrationStopDates(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String migrationYield(String year, String kg) {
+    return '$year: $kg kg/kovan';
+  }
+
+  @override
+  String migrationYields(String values) {
+    return 'Geçmiş verim · $values';
+  }
+
+  @override
+  String get migrationNoYield => 'Bu arılıkta geçmiş hasat yok';
+
+  @override
+  String get migrationFormNewTitle => 'Yeni göç planı';
+
+  @override
+  String get migrationFormEditTitle => 'Göç planını düzenle';
+
+  @override
+  String get migrationFormYear => 'Yıl';
+
+  @override
+  String get migrationFormName => 'Ad';
+
+  @override
+  String get migrationFormDefaultName => 'Göç planı';
+
+  @override
+  String get migrationFormSave => 'Kaydet';
+
+  @override
+  String get migrationFormDelete => 'Planı sil';
+
+  @override
+  String get migrationDeleteTitle => 'Göç planı silinsin mi?';
+
+  @override
+  String get migrationDeleteMessage => 'Plan ve bütün durakları silinecek.';
+
+  @override
+  String get migrationDeleteConfirm => 'Sil';
+
+  @override
+  String get migrationSaved => 'Plan kaydedildi';
+
+  @override
+  String get migrationDeleted => 'Plan silindi';
+
+  @override
+  String get stopFormNewTitle => 'Yeni durak';
+
+  @override
+  String get stopFormEditTitle => 'Durağı düzenle';
+
+  @override
+  String get stopFormName => 'Kaynak';
+
+  @override
+  String get stopFormNameHint => 'ör. Narenciye, Çam';
+
+  @override
+  String get stopFormPlace => 'Yer';
+
+  @override
+  String get stopFormPlaceHint => 'ör. Erdemli, Mersin';
+
+  @override
+  String get stopFormStart => 'Planlanan başlangıç';
+
+  @override
+  String get stopFormEnd => 'Planlanan bitiş';
+
+  @override
+  String get stopFormApiary => 'Hedef arılık';
+
+  @override
+  String get stopFormChooseApiary => 'Hedef arılığı seç';
+
+  @override
+  String get stopFormNone => 'Yok';
+
+  @override
+  String get stopFormHiveCount => 'Kovan sayısı';
+
+  @override
+  String get stopFormPosition => 'Rotadaki sıra';
+
+  @override
+  String get stopFormStatus => 'Durum';
+
+  @override
+  String get stopFormDelete => 'Durağı sil';
+
+  @override
+  String get stopDeleteTitle => 'Durak silinsin mi?';
+
+  @override
+  String get stopDeleteMessage => 'Durak plandan kaldırılacak.';
+
+  @override
+  String get stopSaved => 'Durak kaydedildi';
+
+  @override
+  String get stopDeleted => 'Durak silindi';
+
+  @override
+  String get syncTableMigrations => 'Göç planı';
+
+  @override
+  String get syncTableMigrationStops => 'Göç durağı';
 }

@@ -44,10 +44,10 @@ String documentFileSize(AppLocalizations l10n, AppFormat format, int bytes) {
   );
 }
 
-/// Geçerlilik rozeti: durum rengi + ikon + kelime. Süresizde bilgi, uzak
-/// tarihte ay ve yıl ("May 2027"), 90 gün içinde ay, 30 gün içinde gün,
-/// süresi dolunca "Süresi doldu".
-({AppStatus status, String label}) documentExpiryBadge(
+/// Geçerlilik rozeti: durum rengi + ikon + kelime. Süresizde durum yok
+/// (nötr rozet), uzak tarihte ay ve yıl ("May 2027"), 90 gün içinde ay,
+/// 30 gün içinde gün, süresi dolunca "Süresi doldu".
+({AppStatus? status, String label}) documentExpiryBadge(
   AppLocalizations l10n,
   AppFormat format,
   VaultDocument document,
@@ -56,10 +56,7 @@ String documentFileSize(AppLocalizations l10n, AppFormat format, int bytes) {
   final expiry = documentExpiry(document.expiresOn, now);
   final days = expiry.daysLeft;
   return switch (expiry.level) {
-    DocumentExpiryLevel.none => (
-      status: AppStatus.info,
-      label: l10n.documentExpiryNone,
-    ),
+    DocumentExpiryLevel.none => (status: null, label: l10n.documentExpiryNone),
     DocumentExpiryLevel.valid => (
       status: AppStatus.good,
       label: format.monthYear(document.expiresOn!),

@@ -13,6 +13,7 @@ import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
@@ -151,6 +152,7 @@ void main() {
       'feedback_kind': values(FeedbackKind.values),
       'document_type': values(DocumentType.values),
       'document_file_kind': values(DocumentFileKind.values),
+      'migration_stop_status': values(MigrationStopStatus.values),
     };
 
     expect(local, server.enums);

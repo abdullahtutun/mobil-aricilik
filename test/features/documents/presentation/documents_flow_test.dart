@@ -14,6 +14,7 @@ import 'package:mobil_arici/core/services/camera_service.dart';
 import 'package:mobil_arici/features/documents/data/document_repository.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/domain/document_rules.dart';
+import 'package:mobil_arici/features/documents/presentation/widgets/document_expiry_badge.dart';
 import 'package:mobil_arici/features/documents/presentation/widgets/document_file_view.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 
@@ -309,7 +310,21 @@ void main() {
     expect(find.widgetWithText(StatusBadge, '5 days'), findsOneWidget);
     expect(find.widgetWithText(StatusBadge, '2 months'), findsOneWidget);
     expect(find.widgetWithText(StatusBadge, 'Expired'), findsOneWidget);
-    expect(find.widgetWithText(StatusBadge, 'No expiry'), findsOneWidget);
+    // Süresiz belgenin durumu yok: nötr rozet, durum rengi ve ikonu yok.
+    expect(
+      find.widgetWithText(DocumentExpiryBadge, 'No expiry'),
+      findsOneWidget,
+    );
+    expect(find.widgetWithText(StatusBadge, 'No expiry'), findsNothing);
+    // Süresi dolmak üzere belgenin kartı beyaz, yalnız kenarı kritik tonda.
+    final urgentCard = tester.widget<AppCard>(
+      find.ancestor(
+        of: find.text('Sağlık raporu'),
+        matching: find.byType(AppCard),
+      ),
+    );
+    expect(urgentCard.status, AppStatus.critical);
+    expect(urgentCard.filled, isFalse);
     expect(
       find.text('5 documents · 1 file not on this phone yet'),
       findsOneWidget,

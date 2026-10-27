@@ -43,6 +43,10 @@ import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.d
 import 'package:mobil_arici/features/inspections/presentation/tour_screen.dart';
 import 'package:mobil_arici/features/inspections/presentation/tour_summary_screen.dart';
 import 'package:mobil_arici/features/media/presentation/media_viewer_screen.dart';
+import 'package:mobil_arici/features/migration/presentation/migration_form_screen.dart';
+import 'package:mobil_arici/features/migration/presentation/migration_screen.dart';
+import 'package:mobil_arici/features/migration/presentation/migration_stop_form_screen.dart';
+import 'package:mobil_arici/features/migration/presentation/migrations_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -68,6 +72,8 @@ const _hiveId = 'hiveId';
 const _mediaId = 'mediaId';
 const _taskId = 'taskId';
 const _documentId = 'documentId';
+const _migrationId = 'migrationId';
+const _stopId = 'stopId';
 const _attentionKind = 'kind';
 
 /// Yoldaki dikkat grubu; bilinmeyen adda null.
@@ -428,6 +434,55 @@ GoRouter router(Ref ref) {
                             builder: (context, state) => DocumentFormScreen(
                               documentId: state.pathParameters[_documentId],
                             ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'migrations',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const MigrationsScreen(),
+                    routes: [
+                      // Sabit yollar `:id`'den önce.
+                      GoRoute(
+                        path: 'new',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) =>
+                            const MigrationFormScreen(),
+                      ),
+                      GoRoute(
+                        path: ':$_migrationId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => MigrationScreen(
+                          migrationId: state.pathParameters[_migrationId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => MigrationFormScreen(
+                              migrationId: state.pathParameters[_migrationId],
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'stops/new',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) =>
+                                MigrationStopFormScreen(
+                                  migrationId:
+                                      state.pathParameters[_migrationId]!,
+                                ),
+                          ),
+                          GoRoute(
+                            path: 'stops/:$_stopId/edit',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) =>
+                                MigrationStopFormScreen(
+                                  migrationId:
+                                      state.pathParameters[_migrationId]!,
+                                  stopId: state.pathParameters[_stopId],
+                                ),
                           ),
                         ],
                       ),

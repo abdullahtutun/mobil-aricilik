@@ -68,5 +68,7 @@ String syncTableLabel(AppLocalizations l10n, String table) => switch (table) {
   'harvests' => l10n.syncTableHarvests,
   'harvest_hives' => l10n.syncTableHarvestHives,
   'documents' => l10n.syncTableDocuments,
+  'migrations' => l10n.syncTableMigrations,
+  'migration_stops' => l10n.syncTableMigrationStops,
   _ => table,
 };

@@ -3239,5 +3239,351 @@
   "syncTableDocuments": "Document",
   "@syncTableDocuments": {
     "description": "Record type name on the sync screen."
+  },
+  "migrationsTitle": "Migration plans",
+  "@migrationsTitle": {
+    "description": "Migration plans screen title and More tile."
+  },
+  "migrationsAdd": "New plan",
+  "@migrationsAdd": {
+    "description": "Add button tooltip and empty state action on migration plans."
+  },
+  "migrationsEmptyTitle": "No migration plan yet",
+  "@migrationsEmptyTitle": {
+    "description": "Empty migration plans title."
+  },
+  "migrationsEmptyMessage": "Plan the year's route: each stop's dates, hive count and target apiary.",
+  "@migrationsEmptyMessage": {
+    "description": "Empty migration plans message."
+  },
+  "migrationsLoadError": "Couldn't open migration plans",
+  "@migrationsLoadError": {
+    "description": "Error while reading migration plans."
+  },
+  "migrationStopCount": "{count, plural, =0{No stops} =1{1 stop} other{{count} stops}}",
+  "@migrationStopCount": {
+    "description": "Number of stops on a plan row.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "migrationTitle": "{name} {year}",
+  "@migrationTitle": {
+    "description": "Migration plan title: name and year, e.g. 'Migration plan 2026'.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Migration plan"
+      },
+      "year": {
+        "type": "String",
+        "example": "2026"
+      }
+    }
+  },
+  "migrationNotFound": "Migration plan not found",
+  "@migrationNotFound": {
+    "description": "Shown when the plan was deleted."
+  },
+  "migrationDocuments": "Documents",
+  "@migrationDocuments": {
+    "description": "App bar action that opens the document vault."
+  },
+  "migrationEdit": "Edit plan",
+  "@migrationEdit": {
+    "description": "App bar action tooltip."
+  },
+  "migrationAddStop": "Add stop",
+  "@migrationAddStop": {
+    "description": "Bottom button on the migration timeline."
+  },
+  "migrationNoStopsTitle": "No stops yet",
+  "@migrationNoStopsTitle": {
+    "description": "Empty timeline title."
+  },
+  "migrationNoStopsMessage": "Add the route's stops in order: source, place, dates and hive count.",
+  "@migrationNoStopsMessage": {
+    "description": "Empty timeline message."
+  },
+  "migrationNextMoveIn": "Next move · {days, plural, =0{today} =1{1 day} other{{days} days}}",
+  "@migrationNextMoveIn": {
+    "description": "Next move card heading: days until the move.",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "migrationNextMoveLate": "Next move · {days, plural, =1{1 day late} other{{days} days late}}",
+  "@migrationNextMoveLate": {
+    "description": "Next move card heading when the planned start has passed.",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "migrationRoute": "{from} → {to}",
+  "@migrationRoute": {
+    "description": "Route from one stop or place to the next.",
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Pine"
+      },
+      "to": {
+        "type": "String",
+        "example": "Winter yard"
+      }
+    }
+  },
+  "migrationDocReady": "{document} ready",
+  "@migrationDocReady": {
+    "description": "Next move card: the document is valid on the move day.",
+    "placeholders": {
+      "document": {
+        "type": "String",
+        "example": "Transport permit"
+      }
+    }
+  },
+  "migrationDocDays": "{document} {days, plural, =0{expires today} =1{1 day} other{{days} days}}",
+  "@migrationDocDays": {
+    "description": "Next move card: the document expires in less than a week.",
+    "placeholders": {
+      "document": {
+        "type": "String",
+        "example": "Health report"
+      },
+      "days": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "migrationDocBeforeMove": "{document} expires before the move",
+  "@migrationDocBeforeMove": {
+    "description": "Next move card: the document expires before the move day.",
+    "placeholders": {
+      "document": {
+        "type": "String",
+        "example": "Health report"
+      }
+    }
+  },
+  "migrationDocExpired": "{document} expired",
+  "@migrationDocExpired": {
+    "description": "Next move card: the document has expired.",
+    "placeholders": {
+      "document": {
+        "type": "String",
+        "example": "Health report"
+      }
+    }
+  },
+  "migrationDocMissing": "{document} missing",
+  "@migrationDocMissing": {
+    "description": "Next move card: no document of this type in the vault.",
+    "placeholders": {
+      "document": {
+        "type": "String",
+        "example": "Health report"
+      }
+    }
+  },
+  "migrationStopPast": "Past",
+  "@migrationStopPast": {
+    "description": "Stop status choice."
+  },
+  "migrationStopCurrent": "Here now",
+  "@migrationStopCurrent": {
+    "description": "Stop status choice."
+  },
+  "migrationStopPlanned": "Planned",
+  "@migrationStopPlanned": {
+    "description": "Stop status choice."
+  },
+  "migrationStopHere": "You're here",
+  "@migrationStopHere": {
+    "description": "Badge on the current stop."
+  },
+  "migrationStopDates": "{start}–{end}",
+  "@migrationStopDates": {
+    "description": "Planned stay as a month range, e.g. 'Mar–Apr'.",
+    "placeholders": {
+      "start": {
+        "type": "String",
+        "example": "Mar"
+      },
+      "end": {
+        "type": "String",
+        "example": "Apr"
+      }
+    }
+  },
+  "migrationYield": "{year}: {kg} kg/hive",
+  "@migrationYield": {
+    "description": "One past year's yield at the stop's target apiary.",
+    "placeholders": {
+      "year": {
+        "type": "String",
+        "example": "2025"
+      },
+      "kg": {
+        "type": "String",
+        "example": "26"
+      }
+    }
+  },
+  "migrationYields": "Past yield · {values}",
+  "@migrationYields": {
+    "description": "Past years' yields at the stop's target apiary.",
+    "placeholders": {
+      "values": {
+        "type": "String",
+        "example": "2025: 26 kg/hive"
+      }
+    }
+  },
+  "migrationNoYield": "No past harvest at this apiary",
+  "@migrationNoYield": {
+    "description": "Stop row when the target apiary has no harvest before the plan year."
+  },
+  "migrationFormNewTitle": "New migration plan",
+  "@migrationFormNewTitle": {
+    "description": "Plan form title."
+  },
+  "migrationFormEditTitle": "Edit migration plan",
+  "@migrationFormEditTitle": {
+    "description": "Plan form title."
+  },
+  "migrationFormYear": "Year",
+  "@migrationFormYear": {
+    "description": "Plan form field."
+  },
+  "migrationFormName": "Name",
+  "@migrationFormName": {
+    "description": "Plan form field."
+  },
+  "migrationFormDefaultName": "Migration plan",
+  "@migrationFormDefaultName": {
+    "description": "Default name of a new plan."
+  },
+  "migrationFormSave": "Save",
+  "@migrationFormSave": {
+    "description": "Plan and stop form save button."
+  },
+  "migrationFormDelete": "Delete plan",
+  "@migrationFormDelete": {
+    "description": "Plan form delete button."
+  },
+  "migrationDeleteTitle": "Delete migration plan?",
+  "@migrationDeleteTitle": {
+    "description": "Delete plan dialog title."
+  },
+  "migrationDeleteMessage": "The plan and all its stops will be deleted.",
+  "@migrationDeleteMessage": {
+    "description": "Delete plan dialog message."
+  },
+  "migrationDeleteConfirm": "Delete",
+  "@migrationDeleteConfirm": {
+    "description": "Delete dialogs' confirm button."
+  },
+  "migrationSaved": "Plan saved",
+  "@migrationSaved": {
+    "description": "Snack bar after saving a plan."
+  },
+  "migrationDeleted": "Plan deleted",
+  "@migrationDeleted": {
+    "description": "Snack bar after deleting a plan."
+  },
+  "stopFormNewTitle": "New stop",
+  "@stopFormNewTitle": {
+    "description": "Stop form title."
+  },
+  "stopFormEditTitle": "Edit stop",
+  "@stopFormEditTitle": {
+    "description": "Stop form title."
+  },
+  "stopFormName": "Source",
+  "@stopFormName": {
+    "description": "Stop form field: the nectar source, e.g. Citrus."
+  },
+  "stopFormNameHint": "e.g. Citrus, Pine",
+  "@stopFormNameHint": {
+    "description": "Stop form source hint."
+  },
+  "stopFormPlace": "Place",
+  "@stopFormPlace": {
+    "description": "Stop form field."
+  },
+  "stopFormPlaceHint": "e.g. Erdemli, Mersin",
+  "@stopFormPlaceHint": {
+    "description": "Stop form place hint."
+  },
+  "stopFormStart": "Planned start",
+  "@stopFormStart": {
+    "description": "Stop form date row."
+  },
+  "stopFormEnd": "Planned end",
+  "@stopFormEnd": {
+    "description": "Stop form date row."
+  },
+  "stopFormApiary": "Target apiary",
+  "@stopFormApiary": {
+    "description": "Stop form row; past yields come from this apiary's harvests."
+  },
+  "stopFormChooseApiary": "Choose target apiary",
+  "@stopFormChooseApiary": {
+    "description": "Apiary picker title."
+  },
+  "stopFormNone": "None",
+  "@stopFormNone": {
+    "description": "No target apiary."
+  },
+  "stopFormHiveCount": "Hives",
+  "@stopFormHiveCount": {
+    "description": "Stop form stepper."
+  },
+  "stopFormPosition": "Order on the route",
+  "@stopFormPosition": {
+    "description": "Stop form stepper."
+  },
+  "stopFormStatus": "Status",
+  "@stopFormStatus": {
+    "description": "Stop form status choice."
+  },
+  "stopFormDelete": "Delete stop",
+  "@stopFormDelete": {
+    "description": "Stop form delete button."
+  },
+  "stopDeleteTitle": "Delete stop?",
+  "@stopDeleteTitle": {
+    "description": "Delete stop dialog title."
+  },
+  "stopDeleteMessage": "The stop will be removed from the plan.",
+  "@stopDeleteMessage": {
+    "description": "Delete stop dialog message."
+  },
+  "stopSaved": "Stop saved",
+  "@stopSaved": {
+    "description": "Snack bar after saving a stop."
+  },
+  "stopDeleted": "Stop deleted",
+  "@stopDeleted": {
+    "description": "Snack bar after deleting a stop."
+  },
+  "syncTableMigrations": "Migration plan",
+  "@syncTableMigrations": {
+    "description": "Record type name on the sync screen."
+  },
+  "syncTableMigrationStops": "Migration stop",
+  "@syncTableMigrationStops": {
+    "description": "Record type name on the sync screen."
   }
 }

@@ -77,6 +77,8 @@ class SyncService {
     _db.harvests,
     _db.harvestHives,
     _db.documents,
+    _db.migrations,
+    _db.migrationStops,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

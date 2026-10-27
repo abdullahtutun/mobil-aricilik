@@ -16,6 +16,7 @@ void main() {
         standard.hiveTile,
         standard.scanWindow,
         standard.chart,
+        standard.stopDot,
       ]) {
         expect(v % 4, 0, reason: '$v');
       }

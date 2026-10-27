@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
@@ -9,6 +8,7 @@ import 'package:mobil_arici/core/services/screen_awake.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/presentation/document_providers.dart';
+import 'package:mobil_arici/features/documents/presentation/widgets/document_expiry_badge.dart';
 import 'package:mobil_arici/features/documents/presentation/widgets/document_file_view.dart';
 import 'package:mobil_arici/features/documents/presentation/widgets/document_labels.dart';
 
@@ -110,7 +110,6 @@ class _RoadCheckPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final format = AppFormat.of(context);
     final spacing = context.spacing;
-    final badge = documentExpiryBadge(l10n, format, document, clock.now());
     final expiresOn = document.expiresOn;
 
     // Büyük yazıda bilgiler sayfanın en çok %45'ini alır ve kayar; dosyaya
@@ -146,7 +145,7 @@ class _RoadCheckPage extends StatelessWidget {
                     runSpacing: spacing.xs,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      StatusBadge(status: badge.status, label: badge.label),
+                      DocumentExpiryBadge(document),
                       if (expiresOn != null)
                         Text(
                           l10n.documentExpiresOn(format.date(expiresOn)),

@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/db/tables/health_tables.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
+import 'package:mobil_arici/core/db/tables/migration_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/core/db/tables/task_tables.dart';
@@ -26,6 +27,7 @@ import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
@@ -65,6 +67,8 @@ part 'app_database.g.dart';
     HarvestHives,
     Documents,
     DocumentUploads,
+    Migrations,
+    MigrationStops,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -76,7 +80,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 11;
+  int get schemaVersion => 12;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -157,6 +161,15 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(schema.documents);
         await m.create(schema.documentsOrgIdIdx);
         await m.createTable(schema.documentUploads);
+      },
+      // Göç planları ve durakları.
+      from11To12: (m, schema) async {
+        await m.createTable(schema.migrations);
+        await m.create(schema.migrationsOrgIdIdx);
+        await m.createTable(schema.migrationStops);
+        await m.create(schema.migrationStopsOrgIdIdx);
+        await m.create(schema.migrationStopsMigrationIdIdx);
+        await m.create(schema.migrationStopsApiaryIdIdx);
       },
     ),
   );

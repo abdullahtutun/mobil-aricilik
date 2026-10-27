@@ -31,6 +31,8 @@ import 'package:mobil_arici/features/inspections/data/inspection_repository.dart
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
+import 'package:mobil_arici/features/migration/data/migration_repository.dart';
+import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
@@ -340,6 +342,27 @@ Map<String, Object?> _documentRow(int seq) => {
   'file_kind': 'photo',
   'storage_path': '$_org/document-1/file-1.jpg',
   'byte_size': 2048,
+};
+
+Map<String, Object?> _migrationRow(int seq) => {
+  ..._standard('migration-1', seq),
+  'org_id': _org,
+  'year': 2026,
+  'name': 'Göç planı',
+};
+
+Map<String, Object?> _migrationStopRow(int seq) => {
+  ..._standard('stop-1', seq),
+  'org_id': _org,
+  'migration_id': 'migration-1',
+  'position': 4,
+  'name': 'Çam',
+  'place': 'Ula, Muğla',
+  'planned_start_on': '2026-08-01',
+  'planned_end_on': '2026-11-15',
+  'apiary_id': 'apiary-1',
+  'hive_count': 152,
+  'status': 'current',
 };
 
 bool _isPull(http.Request request) =>
@@ -842,11 +865,13 @@ void main() {
         'harvests': [_harvestRow(15)],
         'harvest_hives': [_harvestHiveRow(16)],
         'documents': [_documentRow(17)],
+        'migrations': [_migrationRow(18)],
+        'migration_stops': [_migrationStopRow(19)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 17),
+        const SyncResult(status: SyncStatus.done, pulled: 19),
       );
 
       expect(requests.map(_pullOf), [
@@ -867,6 +892,8 @@ void main() {
         (table: 'harvests', since: 0),
         (table: 'harvest_hives', since: 0),
         (table: 'documents', since: 0),
+        (table: 'migrations', since: 0),
+        (table: 'migration_stops', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -991,6 +1018,8 @@ void main() {
         'harvests': 15,
         'harvest_hives': 16,
         'documents': 17,
+        'migrations': 18,
+        'migration_stops': 19,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -998,6 +1027,13 @@ void main() {
       expect(document.expiresOn, DateTime(2027, 5));
       expect(document.toJson()['expires_on'], '2027-05-01');
       expect(document.fileKind, DocumentFileKind.photo);
+      final migrations = MigrationRepository(db);
+      expect((await migrations.findById('migration-1'))!.year, 2026);
+      final stop = (await migrations.stops.findById('stop-1'))!;
+      expect(stop.status, MigrationStopStatus.current);
+      expect(stop.plannedStartOn, DateTime(2026, 8));
+      expect(stop.toJson()['planned_end_on'], '2026-11-15');
+      expect(stop.hiveCount, 152);
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

@@ -1,4 +1,3 @@
-import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +7,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/presentation/document_providers.dart';
+import 'package:mobil_arici/features/documents/presentation/widgets/document_expiry_badge.dart';
 import 'package:mobil_arici/features/documents/presentation/widgets/document_file_view.dart';
 import 'package:mobil_arici/features/documents/presentation/widgets/document_labels.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
@@ -72,7 +72,6 @@ class _DocumentInfo extends StatelessWidget {
     final secondary = context.typography.body.copyWith(
       color: context.colors.textSecondary,
     );
-    final badge = documentExpiryBadge(l10n, format, document, clock.now());
     final expiresOn = document.expiresOn;
 
     return Padding(
@@ -90,7 +89,7 @@ class _DocumentInfo extends StatelessWidget {
             runSpacing: spacing.xs,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              StatusBadge(status: badge.status, label: badge.label),
+              DocumentExpiryBadge(document),
               if (expiresOn != null)
                 Text(
                   l10n.documentExpiresOn(format.date(expiresOn)),

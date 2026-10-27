@@ -4005,4 +4005,246 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncTableDocuments => 'Document';
+
+  @override
+  String get migrationsTitle => 'Migration plans';
+
+  @override
+  String get migrationsAdd => 'New plan';
+
+  @override
+  String get migrationsEmptyTitle => 'No migration plan yet';
+
+  @override
+  String get migrationsEmptyMessage =>
+      'Plan the year\'s route: each stop\'s dates, hive count and target apiary.';
+
+  @override
+  String get migrationsLoadError => 'Couldn\'t open migration plans';
+
+  @override
+  String migrationStopCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stops',
+      one: '1 stop',
+      zero: 'No stops',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String migrationTitle(String name, String year) {
+    return '$name $year';
+  }
+
+  @override
+  String get migrationNotFound => 'Migration plan not found';
+
+  @override
+  String get migrationDocuments => 'Documents';
+
+  @override
+  String get migrationEdit => 'Edit plan';
+
+  @override
+  String get migrationAddStop => 'Add stop';
+
+  @override
+  String get migrationNoStopsTitle => 'No stops yet';
+
+  @override
+  String get migrationNoStopsMessage =>
+      'Add the route\'s stops in order: source, place, dates and hive count.';
+
+  @override
+  String migrationNextMoveIn(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+      zero: 'today',
+    );
+    return 'Next move · $_temp0';
+  }
+
+  @override
+  String migrationNextMoveLate(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days late',
+      one: '1 day late',
+    );
+    return 'Next move · $_temp0';
+  }
+
+  @override
+  String migrationRoute(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String migrationDocReady(String document) {
+    return '$document ready';
+  }
+
+  @override
+  String migrationDocDays(String document, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+      zero: 'expires today',
+    );
+    return '$document $_temp0';
+  }
+
+  @override
+  String migrationDocBeforeMove(String document) {
+    return '$document expires before the move';
+  }
+
+  @override
+  String migrationDocExpired(String document) {
+    return '$document expired';
+  }
+
+  @override
+  String migrationDocMissing(String document) {
+    return '$document missing';
+  }
+
+  @override
+  String get migrationStopPast => 'Past';
+
+  @override
+  String get migrationStopCurrent => 'Here now';
+
+  @override
+  String get migrationStopPlanned => 'Planned';
+
+  @override
+  String get migrationStopHere => 'You\'re here';
+
+  @override
+  String migrationStopDates(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String migrationYield(String year, String kg) {
+    return '$year: $kg kg/hive';
+  }
+
+  @override
+  String migrationYields(String values) {
+    return 'Past yield · $values';
+  }
+
+  @override
+  String get migrationNoYield => 'No past harvest at this apiary';
+
+  @override
+  String get migrationFormNewTitle => 'New migration plan';
+
+  @override
+  String get migrationFormEditTitle => 'Edit migration plan';
+
+  @override
+  String get migrationFormYear => 'Year';
+
+  @override
+  String get migrationFormName => 'Name';
+
+  @override
+  String get migrationFormDefaultName => 'Migration plan';
+
+  @override
+  String get migrationFormSave => 'Save';
+
+  @override
+  String get migrationFormDelete => 'Delete plan';
+
+  @override
+  String get migrationDeleteTitle => 'Delete migration plan?';
+
+  @override
+  String get migrationDeleteMessage =>
+      'The plan and all its stops will be deleted.';
+
+  @override
+  String get migrationDeleteConfirm => 'Delete';
+
+  @override
+  String get migrationSaved => 'Plan saved';
+
+  @override
+  String get migrationDeleted => 'Plan deleted';
+
+  @override
+  String get stopFormNewTitle => 'New stop';
+
+  @override
+  String get stopFormEditTitle => 'Edit stop';
+
+  @override
+  String get stopFormName => 'Source';
+
+  @override
+  String get stopFormNameHint => 'e.g. Citrus, Pine';
+
+  @override
+  String get stopFormPlace => 'Place';
+
+  @override
+  String get stopFormPlaceHint => 'e.g. Erdemli, Mersin';
+
+  @override
+  String get stopFormStart => 'Planned start';
+
+  @override
+  String get stopFormEnd => 'Planned end';
+
+  @override
+  String get stopFormApiary => 'Target apiary';
+
+  @override
+  String get stopFormChooseApiary => 'Choose target apiary';
+
+  @override
+  String get stopFormNone => 'None';
+
+  @override
+  String get stopFormHiveCount => 'Hives';
+
+  @override
+  String get stopFormPosition => 'Order on the route';
+
+  @override
+  String get stopFormStatus => 'Status';
+
+  @override
+  String get stopFormDelete => 'Delete stop';
+
+  @override
+  String get stopDeleteTitle => 'Delete stop?';
+
+  @override
+  String get stopDeleteMessage => 'The stop will be removed from the plan.';
+
+  @override
+  String get stopSaved => 'Stop saved';
+
+  @override
+  String get stopDeleted => 'Stop deleted';
+
+  @override
+  String get syncTableMigrations => 'Migration plan';
+
+  @override
+  String get syncTableMigrationStops => 'Migration stop';
 }

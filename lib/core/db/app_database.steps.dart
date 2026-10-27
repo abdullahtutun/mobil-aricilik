@@ -7343,6 +7343,960 @@ i1.GeneratedColumn<String> _column_128(String aliasedName) =>
       type: i1.DriftSqlType.string,
       $customConstraints: 'NOT NULL',
     );
+
+final class Schema12 extends i0.VersionedSchema {
+  Schema12({required super.database}) : super(version: 12);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    organizations,
+    memberships,
+    apiaries,
+    queens,
+    hives,
+    hiveLocationHistory,
+    inspections,
+    inspectionDrafts,
+    media,
+    mediaUploads,
+    miteCounts,
+    refDrugs,
+    drugs,
+    treatments,
+    feedings,
+    tasks,
+    harvests,
+    harvestHives,
+    documents,
+    documentUploads,
+    migrations,
+    migrationStops,
+    localSettings,
+    feedbackQueue,
+    analyticsQueue,
+    outbox,
+    syncState,
+    membershipsOrgIdIdx,
+    apiariesOrgIdIdx,
+    queensOrgIdIdx,
+    hivesOrgIdIdx,
+    hivesApiaryIdIdx,
+    hiveLocationHistoryOrgIdIdx,
+    hiveLocationHistoryHiveIdIdx,
+    inspectionsOrgIdIdx,
+    inspectionsHiveIdIdx,
+    mediaOrgIdIdx,
+    mediaHiveIdIdx,
+    miteCountsOrgIdIdx,
+    miteCountsHiveIdIdx,
+    miteCountsApiaryIdIdx,
+    drugsOrgIdIdx,
+    treatmentsOrgIdIdx,
+    treatmentsHiveIdIdx,
+    treatmentsApiaryIdIdx,
+    treatmentsApplicationIdIdx,
+    feedingsOrgIdIdx,
+    feedingsHiveIdIdx,
+    feedingsApiaryIdIdx,
+    feedingsFeedingGroupIdIdx,
+    tasksOrgIdIdx,
+    tasksApiaryIdIdx,
+    tasksSourceIdIdx,
+    harvestsOrgIdIdx,
+    harvestsApiaryIdIdx,
+    harvestHivesOrgIdIdx,
+    harvestHivesHarvestIdIdx,
+    harvestHivesHiveIdIdx,
+    documentsOrgIdIdx,
+    migrationsOrgIdIdx,
+    migrationStopsOrgIdIdx,
+    migrationStopsMigrationIdIdx,
+    migrationStopsApiaryIdIdx,
+  ];
+  late final Shape0 organizations = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'organizations',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+        _column_7,
+        _column_8,
+        _column_9,
+        _column_10,
+        _column_11,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape1 memberships = Shape1(
+    source: i0.VersionedTable(
+      entityName: 'memberships',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_13,
+        _column_14,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 apiaries = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'apiaries',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK((latitude IS NULL)=(longitude IS NULL))',
+      ],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_6,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_18,
+        _column_19,
+        _column_20,
+        _column_21,
+        _column_22,
+        _column_23,
+        _column_24,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 queens = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'queens',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_25,
+        _column_26,
+        _column_27,
+        _column_28,
+        _column_29,
+        _column_30,
+        _column_31,
+        _column_32,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape4 hives = Shape4(
+    source: i0.VersionedTable(
+      entityName: 'hives',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_36,
+        _column_37,
+        _column_38,
+        _column_39,
+        _column_40,
+        _column_29,
+        _column_41,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape5 hiveLocationHistory = Shape5(
+    source: i0.VersionedTable(
+      entityName: 'hive_location_history',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_43,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape6 inspections = Shape6(
+    source: i0.VersionedTable(
+      entityName: 'inspections',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_44,
+        _column_45,
+        _column_46,
+        _column_47,
+        _column_48,
+        _column_49,
+        _column_50,
+        _column_51,
+        _column_52,
+        _column_53,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape7 inspectionDrafts = Shape7(
+    source: i0.VersionedTable(
+      entityName: 'inspection_drafts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(hive_id)'],
+      columns: [_column_42, _column_12, _column_54, _column_2],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape18 media = Shape18(
+    source: i0.VersionedTable(
+      entityName: 'media',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_66,
+        _column_97,
+        _column_67,
+        _column_68,
+        _column_69,
+        _column_70,
+        _column_71,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape12 mediaUploads = Shape12(
+    source: i0.VersionedTable(
+      entityName: 'media_uploads',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(media_id)'],
+      columns: [
+        _column_72,
+        _column_12,
+        _column_73,
+        _column_74,
+        _column_63,
+        _column_75,
+        _column_64,
+        _column_1,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape14 miteCounts = Shape14(
+    source: i0.VersionedTable(
+      entityName: 'mite_counts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_78,
+        _column_79,
+        _column_80,
+        _column_81,
+        _column_82,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape15 refDrugs = Shape15(
+    source: i0.VersionedTable(
+      entityName: 'ref_drugs',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_7,
+        _column_83,
+        _column_84,
+        _column_85,
+        _column_86,
+        _column_87,
+        _column_88,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape16 drugs = Shape16(
+    source: i0.VersionedTable(
+      entityName: 'drugs',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_6,
+        _column_85,
+        _column_86,
+        _column_87,
+        _column_88,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape19 treatments = Shape19(
+    source: i0.VersionedTable(
+      entityName: 'treatments',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_89,
+        _column_90,
+        _column_98,
+        _column_91,
+        _column_85,
+        _column_92,
+        _column_93,
+        _column_86,
+        _column_94,
+        _column_95,
+        _column_96,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape20 feedings = Shape20(
+    source: i0.VersionedTable(
+      entityName: 'feedings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_42,
+        _column_37,
+        _column_99,
+        _column_100,
+        _column_67,
+        _column_101,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape21 tasks = Shape21(
+    source: i0.VersionedTable(
+      entityName: 'tasks',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_102,
+        _column_103,
+        _column_104,
+        _column_105,
+        _column_106,
+        _column_107,
+        _column_108,
+        _column_109,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape22 harvests = Shape22(
+    source: i0.VersionedTable(
+      entityName: 'harvests',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_37,
+        _column_110,
+        _column_111,
+        _column_112,
+        _column_113,
+        _column_114,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape23 harvestHives = Shape23(
+    source: i0.VersionedTable(
+      entityName: 'harvest_hives',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_115,
+        _column_42,
+        _column_116,
+        _column_117,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape26 documents = Shape26(
+    source: i0.VersionedTable(
+      entityName: 'documents',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_35,
+        _column_124,
+        _column_6,
+        _column_125,
+        _column_126,
+        _column_127,
+        _column_68,
+        _column_70,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape27 documentUploads = Shape27(
+    source: i0.VersionedTable(
+      entityName: 'document_uploads',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(storage_path)'],
+      columns: [
+        _column_68,
+        _column_128,
+        _column_12,
+        _column_74,
+        _column_63,
+        _column_75,
+        _column_64,
+        _column_1,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape28 migrations = Shape28(
+    source: i0.VersionedTable(
+      entityName: 'migrations',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_129,
+        _column_6,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape29 migrationStops = Shape29(
+    source: i0.VersionedTable(
+      entityName: 'migration_stops',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_12,
+        _column_130,
+        _column_131,
+        _column_6,
+        _column_132,
+        _column_133,
+        _column_134,
+        _column_104,
+        _column_135,
+        _column_36,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape13 localSettings = Shape13(
+    source: i0.VersionedTable(
+      entityName: 'local_settings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY("key")'],
+      columns: [_column_76, _column_77],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape24 feedbackQueue = Shape24(
+    source: i0.VersionedTable(
+      entityName: 'feedback_queue',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_12,
+        _column_67,
+        _column_118,
+        _column_119,
+        _column_120,
+        _column_1,
+        _column_63,
+        _column_75,
+        _column_64,
+        _column_121,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape25 analyticsQueue = Shape25(
+    source: i0.VersionedTable(
+      entityName: 'analytics_queue',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [_column_0, _column_6, _column_122, _column_123],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape9 outbox = Shape9(
+    source: i0.VersionedTable(
+      entityName: 'outbox',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_58,
+        _column_59,
+        _column_60,
+        _column_61,
+        _column_62,
+        _column_1,
+        _column_63,
+        _column_64,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape10 syncState = Shape10(
+    source: i0.VersionedTable(
+      entityName: 'sync_state',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(record_table)'],
+      columns: [_column_59, _column_65],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  final i1.Index membershipsOrgIdIdx = i1.Index(
+    'memberships_org_id_idx',
+    'CREATE INDEX memberships_org_id_idx ON memberships (org_id)',
+  );
+  final i1.Index apiariesOrgIdIdx = i1.Index(
+    'apiaries_org_id_idx',
+    'CREATE INDEX apiaries_org_id_idx ON apiaries (org_id)',
+  );
+  final i1.Index queensOrgIdIdx = i1.Index(
+    'queens_org_id_idx',
+    'CREATE INDEX queens_org_id_idx ON queens (org_id)',
+  );
+  final i1.Index hivesOrgIdIdx = i1.Index(
+    'hives_org_id_idx',
+    'CREATE INDEX hives_org_id_idx ON hives (org_id)',
+  );
+  final i1.Index hivesApiaryIdIdx = i1.Index(
+    'hives_apiary_id_idx',
+    'CREATE INDEX hives_apiary_id_idx ON hives (apiary_id)',
+  );
+  final i1.Index hiveLocationHistoryOrgIdIdx = i1.Index(
+    'hive_location_history_org_id_idx',
+    'CREATE INDEX hive_location_history_org_id_idx ON hive_location_history (org_id)',
+  );
+  final i1.Index hiveLocationHistoryHiveIdIdx = i1.Index(
+    'hive_location_history_hive_id_idx',
+    'CREATE INDEX hive_location_history_hive_id_idx ON hive_location_history (hive_id)',
+  );
+  final i1.Index inspectionsOrgIdIdx = i1.Index(
+    'inspections_org_id_idx',
+    'CREATE INDEX inspections_org_id_idx ON inspections (org_id)',
+  );
+  final i1.Index inspectionsHiveIdIdx = i1.Index(
+    'inspections_hive_id_idx',
+    'CREATE INDEX inspections_hive_id_idx ON inspections (hive_id)',
+  );
+  final i1.Index mediaOrgIdIdx = i1.Index(
+    'media_org_id_idx',
+    'CREATE INDEX media_org_id_idx ON media (org_id)',
+  );
+  final i1.Index mediaHiveIdIdx = i1.Index(
+    'media_hive_id_idx',
+    'CREATE INDEX media_hive_id_idx ON media (hive_id)',
+  );
+  final i1.Index miteCountsOrgIdIdx = i1.Index(
+    'mite_counts_org_id_idx',
+    'CREATE INDEX mite_counts_org_id_idx ON mite_counts (org_id)',
+  );
+  final i1.Index miteCountsHiveIdIdx = i1.Index(
+    'mite_counts_hive_id_idx',
+    'CREATE INDEX mite_counts_hive_id_idx ON mite_counts (hive_id)',
+  );
+  final i1.Index miteCountsApiaryIdIdx = i1.Index(
+    'mite_counts_apiary_id_idx',
+    'CREATE INDEX mite_counts_apiary_id_idx ON mite_counts (apiary_id)',
+  );
+  final i1.Index drugsOrgIdIdx = i1.Index(
+    'drugs_org_id_idx',
+    'CREATE INDEX drugs_org_id_idx ON drugs (org_id)',
+  );
+  final i1.Index treatmentsOrgIdIdx = i1.Index(
+    'treatments_org_id_idx',
+    'CREATE INDEX treatments_org_id_idx ON treatments (org_id)',
+  );
+  final i1.Index treatmentsHiveIdIdx = i1.Index(
+    'treatments_hive_id_idx',
+    'CREATE INDEX treatments_hive_id_idx ON treatments (hive_id)',
+  );
+  final i1.Index treatmentsApiaryIdIdx = i1.Index(
+    'treatments_apiary_id_idx',
+    'CREATE INDEX treatments_apiary_id_idx ON treatments (apiary_id)',
+  );
+  final i1.Index treatmentsApplicationIdIdx = i1.Index(
+    'treatments_application_id_idx',
+    'CREATE INDEX treatments_application_id_idx ON treatments (application_id)',
+  );
+  final i1.Index feedingsOrgIdIdx = i1.Index(
+    'feedings_org_id_idx',
+    'CREATE INDEX feedings_org_id_idx ON feedings (org_id)',
+  );
+  final i1.Index feedingsHiveIdIdx = i1.Index(
+    'feedings_hive_id_idx',
+    'CREATE INDEX feedings_hive_id_idx ON feedings (hive_id)',
+  );
+  final i1.Index feedingsApiaryIdIdx = i1.Index(
+    'feedings_apiary_id_idx',
+    'CREATE INDEX feedings_apiary_id_idx ON feedings (apiary_id)',
+  );
+  final i1.Index feedingsFeedingGroupIdIdx = i1.Index(
+    'feedings_feeding_group_id_idx',
+    'CREATE INDEX feedings_feeding_group_id_idx ON feedings (feeding_group_id)',
+  );
+  final i1.Index tasksOrgIdIdx = i1.Index(
+    'tasks_org_id_idx',
+    'CREATE INDEX tasks_org_id_idx ON tasks (org_id)',
+  );
+  final i1.Index tasksApiaryIdIdx = i1.Index(
+    'tasks_apiary_id_idx',
+    'CREATE INDEX tasks_apiary_id_idx ON tasks (apiary_id)',
+  );
+  final i1.Index tasksSourceIdIdx = i1.Index(
+    'tasks_source_id_idx',
+    'CREATE INDEX tasks_source_id_idx ON tasks (source_id)',
+  );
+  final i1.Index harvestsOrgIdIdx = i1.Index(
+    'harvests_org_id_idx',
+    'CREATE INDEX harvests_org_id_idx ON harvests (org_id)',
+  );
+  final i1.Index harvestsApiaryIdIdx = i1.Index(
+    'harvests_apiary_id_idx',
+    'CREATE INDEX harvests_apiary_id_idx ON harvests (apiary_id)',
+  );
+  final i1.Index harvestHivesOrgIdIdx = i1.Index(
+    'harvest_hives_org_id_idx',
+    'CREATE INDEX harvest_hives_org_id_idx ON harvest_hives (org_id)',
+  );
+  final i1.Index harvestHivesHarvestIdIdx = i1.Index(
+    'harvest_hives_harvest_id_idx',
+    'CREATE INDEX harvest_hives_harvest_id_idx ON harvest_hives (harvest_id)',
+  );
+  final i1.Index harvestHivesHiveIdIdx = i1.Index(
+    'harvest_hives_hive_id_idx',
+    'CREATE INDEX harvest_hives_hive_id_idx ON harvest_hives (hive_id)',
+  );
+  final i1.Index documentsOrgIdIdx = i1.Index(
+    'documents_org_id_idx',
+    'CREATE INDEX documents_org_id_idx ON documents (org_id)',
+  );
+  final i1.Index migrationsOrgIdIdx = i1.Index(
+    'migrations_org_id_idx',
+    'CREATE INDEX migrations_org_id_idx ON migrations (org_id)',
+  );
+  final i1.Index migrationStopsOrgIdIdx = i1.Index(
+    'migration_stops_org_id_idx',
+    'CREATE INDEX migration_stops_org_id_idx ON migration_stops (org_id)',
+  );
+  final i1.Index migrationStopsMigrationIdIdx = i1.Index(
+    'migration_stops_migration_id_idx',
+    'CREATE INDEX migration_stops_migration_id_idx ON migration_stops (migration_id)',
+  );
+  final i1.Index migrationStopsApiaryIdIdx = i1.Index(
+    'migration_stops_apiary_id_idx',
+    'CREATE INDEX migration_stops_apiary_id_idx ON migration_stops (apiary_id)',
+  );
+}
+
+class Shape28 extends i0.VersionedTable {
+  Shape28({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdAt =>
+      columnsByName['created_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get updatedAt =>
+      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdBy =>
+      columnsByName['created_by']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get deletedAt =>
+      columnsByName['deleted_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get serverSeq =>
+      columnsByName['server_seq']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get orgId =>
+      columnsByName['org_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get year =>
+      columnsByName['year']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get name =>
+      columnsByName['name']! as i1.GeneratedColumn<String>;
+}
+
+i1.GeneratedColumn<int> _column_129(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'year',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NOT NULL',
+    );
+
+class Shape29 extends i0.VersionedTable {
+  Shape29({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdAt =>
+      columnsByName['created_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get updatedAt =>
+      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdBy =>
+      columnsByName['created_by']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get deletedAt =>
+      columnsByName['deleted_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get serverSeq =>
+      columnsByName['server_seq']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get orgId =>
+      columnsByName['org_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get migrationId =>
+      columnsByName['migration_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get position =>
+      columnsByName['position']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get name =>
+      columnsByName['name']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get place =>
+      columnsByName['place']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get plannedStartOn =>
+      columnsByName['planned_start_on']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get plannedEndOn =>
+      columnsByName['planned_end_on']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get apiaryId =>
+      columnsByName['apiary_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get hiveCount =>
+      columnsByName['hive_count']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get status =>
+      columnsByName['status']! as i1.GeneratedColumn<String>;
+}
+
+i1.GeneratedColumn<String> _column_130(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'migration_id',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<int> _column_131(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'position',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<String> _column_132(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'place',
+      aliasedName,
+      true,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NULL',
+    );
+i1.GeneratedColumn<String> _column_133(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'planned_start_on',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<String> _column_134(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'planned_end_on',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<int> _column_135(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'hive_count',
+      aliasedName,
+      true,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NULL',
+    );
 i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
   required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
@@ -7354,6 +8308,7 @@ i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema9 schema) from8To9,
   required Future<void> Function(i1.Migrator m, Schema10 schema) from9To10,
   required Future<void> Function(i1.Migrator m, Schema11 schema) from10To11,
+  required Future<void> Function(i1.Migrator m, Schema12 schema) from11To12,
 }) {
   return (currentVersion, database) async {
     switch (currentVersion) {
@@ -7407,6 +8362,11 @@ i0.MigrationStepWithVersion migrationSteps({
         final migrator = i1.Migrator(database, schema);
         await from10To11(migrator, schema);
         return 11;
+      case 11:
+        final schema = Schema12(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from11To12(migrator, schema);
+        return 12;
       default:
         throw ArgumentError.value('Unknown migration from $currentVersion');
     }
@@ -7424,6 +8384,7 @@ i1.OnUpgrade stepByStep({
   required Future<void> Function(i1.Migrator m, Schema9 schema) from8To9,
   required Future<void> Function(i1.Migrator m, Schema10 schema) from9To10,
   required Future<void> Function(i1.Migrator m, Schema11 schema) from10To11,
+  required Future<void> Function(i1.Migrator m, Schema12 schema) from11To12,
 }) => i0.VersionedSchema.stepByStepHelper(
   step: migrationSteps(
     from1To2: from1To2,
@@ -7436,5 +8397,6 @@ i1.OnUpgrade stepByStep({
     from8To9: from8To9,
     from9To10: from9To10,
     from10To11: from10To11,
+    from11To12: from11To12,
   ),
 );

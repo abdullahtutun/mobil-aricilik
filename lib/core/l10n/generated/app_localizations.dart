@@ -6214,6 +6214,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Document'**
   String get syncTableDocuments;
+
+  /// Migration plans screen title and More tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Migration plans'**
+  String get migrationsTitle;
+
+  /// Add button tooltip and empty state action on migration plans.
+  ///
+  /// In en, this message translates to:
+  /// **'New plan'**
+  String get migrationsAdd;
+
+  /// Empty migration plans title.
+  ///
+  /// In en, this message translates to:
+  /// **'No migration plan yet'**
+  String get migrationsEmptyTitle;
+
+  /// Empty migration plans message.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan the year\'s route: each stop\'s dates, hive count and target apiary.'**
+  String get migrationsEmptyMessage;
+
+  /// Error while reading migration plans.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open migration plans'**
+  String get migrationsLoadError;
+
+  /// Number of stops on a plan row.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No stops} =1{1 stop} other{{count} stops}}'**
+  String migrationStopCount(int count);
+
+  /// Migration plan title: name and year, e.g. 'Migration plan 2026'.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} {year}'**
+  String migrationTitle(String name, String year);
+
+  /// Shown when the plan was deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Migration plan not found'**
+  String get migrationNotFound;
+
+  /// App bar action that opens the document vault.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get migrationDocuments;
+
+  /// App bar action tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit plan'**
+  String get migrationEdit;
+
+  /// Bottom button on the migration timeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Add stop'**
+  String get migrationAddStop;
+
+  /// Empty timeline title.
+  ///
+  /// In en, this message translates to:
+  /// **'No stops yet'**
+  String get migrationNoStopsTitle;
+
+  /// Empty timeline message.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the route\'s stops in order: source, place, dates and hive count.'**
+  String get migrationNoStopsMessage;
+
+  /// Next move card heading: days until the move.
+  ///
+  /// In en, this message translates to:
+  /// **'Next move · {days, plural, =0{today} =1{1 day} other{{days} days}}'**
+  String migrationNextMoveIn(int days);
+
+  /// Next move card heading when the planned start has passed.
+  ///
+  /// In en, this message translates to:
+  /// **'Next move · {days, plural, =1{1 day late} other{{days} days late}}'**
+  String migrationNextMoveLate(int days);
+
+  /// Route from one stop or place to the next.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to}'**
+  String migrationRoute(String from, String to);
+
+  /// Next move card: the document is valid on the move day.
+  ///
+  /// In en, this message translates to:
+  /// **'{document} ready'**
+  String migrationDocReady(String document);
+
+  /// Next move card: the document expires in less than a week.
+  ///
+  /// In en, this message translates to:
+  /// **'{document} {days, plural, =0{expires today} =1{1 day} other{{days} days}}'**
+  String migrationDocDays(String document, int days);
+
+  /// Next move card: the document expires before the move day.
+  ///
+  /// In en, this message translates to:
+  /// **'{document} expires before the move'**
+  String migrationDocBeforeMove(String document);
+
+  /// Next move card: the document has expired.
+  ///
+  /// In en, this message translates to:
+  /// **'{document} expired'**
+  String migrationDocExpired(String document);
+
+  /// Next move card: no document of this type in the vault.
+  ///
+  /// In en, this message translates to:
+  /// **'{document} missing'**
+  String migrationDocMissing(String document);
+
+  /// Stop status choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get migrationStopPast;
+
+  /// Stop status choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Here now'**
+  String get migrationStopCurrent;
+
+  /// Stop status choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get migrationStopPlanned;
+
+  /// Badge on the current stop.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re here'**
+  String get migrationStopHere;
+
+  /// Planned stay as a month range, e.g. 'Mar–Apr'.
+  ///
+  /// In en, this message translates to:
+  /// **'{start}–{end}'**
+  String migrationStopDates(String start, String end);
+
+  /// One past year's yield at the stop's target apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'{year}: {kg} kg/hive'**
+  String migrationYield(String year, String kg);
+
+  /// Past years' yields at the stop's target apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Past yield · {values}'**
+  String migrationYields(String values);
+
+  /// Stop row when the target apiary has no harvest before the plan year.
+  ///
+  /// In en, this message translates to:
+  /// **'No past harvest at this apiary'**
+  String get migrationNoYield;
+
+  /// Plan form title.
+  ///
+  /// In en, this message translates to:
+  /// **'New migration plan'**
+  String get migrationFormNewTitle;
+
+  /// Plan form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit migration plan'**
+  String get migrationFormEditTitle;
+
+  /// Plan form field.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get migrationFormYear;
+
+  /// Plan form field.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get migrationFormName;
+
+  /// Default name of a new plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Migration plan'**
+  String get migrationFormDefaultName;
+
+  /// Plan and stop form save button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get migrationFormSave;
+
+  /// Plan form delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete plan'**
+  String get migrationFormDelete;
+
+  /// Delete plan dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete migration plan?'**
+  String get migrationDeleteTitle;
+
+  /// Delete plan dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'The plan and all its stops will be deleted.'**
+  String get migrationDeleteMessage;
+
+  /// Delete dialogs' confirm button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get migrationDeleteConfirm;
+
+  /// Snack bar after saving a plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan saved'**
+  String get migrationSaved;
+
+  /// Snack bar after deleting a plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan deleted'**
+  String get migrationDeleted;
+
+  /// Stop form title.
+  ///
+  /// In en, this message translates to:
+  /// **'New stop'**
+  String get stopFormNewTitle;
+
+  /// Stop form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit stop'**
+  String get stopFormEditTitle;
+
+  /// Stop form field: the nectar source, e.g. Citrus.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get stopFormName;
+
+  /// Stop form source hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Citrus, Pine'**
+  String get stopFormNameHint;
+
+  /// Stop form field.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get stopFormPlace;
+
+  /// Stop form place hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Erdemli, Mersin'**
+  String get stopFormPlaceHint;
+
+  /// Stop form date row.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned start'**
+  String get stopFormStart;
+
+  /// Stop form date row.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned end'**
+  String get stopFormEnd;
+
+  /// Stop form row; past yields come from this apiary's harvests.
+  ///
+  /// In en, this message translates to:
+  /// **'Target apiary'**
+  String get stopFormApiary;
+
+  /// Apiary picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose target apiary'**
+  String get stopFormChooseApiary;
+
+  /// No target apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get stopFormNone;
+
+  /// Stop form stepper.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get stopFormHiveCount;
+
+  /// Stop form stepper.
+  ///
+  /// In en, this message translates to:
+  /// **'Order on the route'**
+  String get stopFormPosition;
+
+  /// Stop form status choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get stopFormStatus;
+
+  /// Stop form delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete stop'**
+  String get stopFormDelete;
+
+  /// Delete stop dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete stop?'**
+  String get stopDeleteTitle;
+
+  /// Delete stop dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'The stop will be removed from the plan.'**
+  String get stopDeleteMessage;
+
+  /// Snack bar after saving a stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop saved'**
+  String get stopSaved;
+
+  /// Snack bar after deleting a stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop deleted'**
+  String get stopDeleted;
+
+  /// Record type name on the sync screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Migration plan'**
+  String get syncTableMigrations;
+
+  /// Record type name on the sync screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Migration stop'**
+  String get syncTableMigrationStops;
 }
 
 class _AppLocalizationsDelegate

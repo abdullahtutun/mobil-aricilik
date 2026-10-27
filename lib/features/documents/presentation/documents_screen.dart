@@ -6,10 +6,10 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
-import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/domain/document_rules.dart';
 import 'package:mobil_arici/features/documents/presentation/document_providers.dart';
+import 'package:mobil_arici/features/documents/presentation/widgets/document_expiry_badge.dart';
 import 'package:mobil_arici/features/documents/presentation/widgets/document_labels.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
@@ -32,9 +32,7 @@ class DocumentsScreen extends ConsumerWidget {
           if (canWrite)
             Padding(
               padding: EdgeInsetsDirectional.only(end: context.spacing.sm),
-              child: IconButton.filledTonal(
-                tooltip: l10n.documentsAdd,
-                icon: const Icon(Icons.add_rounded),
+              child: _AddButton(
                 onPressed: () => context.go(AppRoutes.documentNew),
               ),
             ),
@@ -130,11 +128,9 @@ class _DocumentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final format = AppFormat.of(context);
     final spacing = context.spacing;
     final colors = context.colors;
     final now = clock.now();
-    final badge = documentExpiryBadge(l10n, format, document, now);
     final level = documentExpiry(document.expiresOn, now).level;
     final urgent =
         level == DocumentExpiryLevel.urgent ||
@@ -147,6 +143,7 @@ class _DocumentCard extends StatelessWidget {
     return MergeSemantics(
       child: AppCard(
         status: urgent ? AppStatus.critical : null,
+        filled: false,
         onTap: () => context.go(AppRoutes.document(document.id)),
         child: Padding(
           padding: EdgeInsets.all(spacing.lg),
@@ -177,11 +174,40 @@ class _DocumentCard extends StatelessWidget {
                   constraints: BoxConstraints(
                     maxWidth: constraints.maxWidth * 0.4,
                   ),
-                  child: StatusBadge(status: badge.status, label: badge.label),
+                  child: DocumentExpiryBadge(document),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Belge ekle: soluk zeminde köşeli kare, birincil renkte "+"
+/// (docs/design "Belge kasası").
+class _AddButton extends StatelessWidget {
+  const new({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final size = context.touchTargets.field;
+    return IconButton(
+      tooltip: AppLocalizations.of(context).documentsAdd,
+      onPressed: onPressed,
+      icon: const Icon(Icons.add_rounded),
+      iconSize: context.sizes.icon,
+      color: colors.primary,
+      style: IconButton.styleFrom(
+        backgroundColor: colors.surfaceContainer,
+        fixedSize: Size.square(size),
+        minimumSize: Size.square(size),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(context.radii.card),
         ),
       ),
     );

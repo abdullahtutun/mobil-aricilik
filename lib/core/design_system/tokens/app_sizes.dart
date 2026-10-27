@@ -19,6 +19,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.avatar,
     required this.dayDot,
     required this.mapPin,
+    required this.stopDot,
   });
 
   static const standard = AppSizes(
@@ -36,6 +37,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     avatar: 40,
     dayDot: 6,
     mapPin: 120,
+    stopDot: 20,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -84,6 +86,9 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// yaslanır, 1.5x yazıda da sığar. Kutunun boş kısmı haritaya geçer.
   final double mapPin;
 
+  /// Göç planı zaman çizelgesinde durağın noktası (daire).
+  final double stopDot;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -100,6 +105,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? avatar,
     double? dayDot,
     double? mapPin,
+    double? stopDot,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -116,6 +122,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       avatar: avatar ?? this.avatar,
       dayDot: dayDot ?? this.dayDot,
       mapPin: mapPin ?? this.mapPin,
+      stopDot: stopDot ?? this.stopDot,
     );
   }
 
@@ -141,6 +148,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       avatar: lerpDouble(avatar, other.avatar, t)!,
       dayDot: lerpDouble(dayDot, other.dayDot, t)!,
       mapPin: lerpDouble(mapPin, other.mapPin, t)!,
+      stopDot: lerpDouble(stopDot, other.stopDot, t)!,
     );
   }
 }

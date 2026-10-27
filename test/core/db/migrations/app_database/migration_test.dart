@@ -7,6 +7,7 @@ import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v10.dart' as v10;
 import 'generated/schema_v11.dart' as v11;
+import 'generated/schema_v12.dart' as v12;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -533,6 +534,39 @@ void main() {
         expect(outbox.single.recordId, 'task-1');
         expect(await newDb.select(newDb.documents).get(), isEmpty);
         expect(await newDb.select(newDb.documentUploads).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v11 → v12 belgeleri korur; göç planı tabloları boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 11,
+      newVersion: 12,
+      createOld: v11.DatabaseAtV11.new,
+      createNew: v12.DatabaseAtV12.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.documents,
+          v11.DocumentsCompanion.insert(
+            id: 'document-1',
+            createdAt: '2026-10-27T09:00:00.000Z',
+            updatedAt: '2026-10-27T09:00:00.000Z',
+            orgId: 'org-1',
+            type: 'health_report',
+            name: 'Sağlık raporu',
+            expiresOn: const Value('2026-11-01'),
+            fileKind: 'pdf',
+            storagePath: 'org-1/document-1/file-1.pdf',
+            byteSize: 1000,
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final documents = await newDb.select(newDb.documents).get();
+        expect(documents.single.expiresOn, '2026-11-01');
+        expect(await newDb.select(newDb.migrations).get(), isEmpty);
+        expect(await newDb.select(newDb.migrationStops).get(), isEmpty);
       },
     );
   });

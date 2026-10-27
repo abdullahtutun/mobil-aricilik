@@ -7,13 +7,22 @@ import 'package:mobil_arici/core/design_system/theme_context.dart';
 ///
 /// [status] verilirse kart o durumun açık zemininde, zemine yakın soluk
 /// kenarlıkla çizilir (ör. anasız kovan; docs/design); güneş modunda
-/// kenarlık durumun kendi rengi. Kelimesini içerik verir.
+/// kenarlık durumun kendi rengi. Kelimesini içerik verir. [filled] false
+/// ise zemin beyaz kalır, yalnız kenarlık durumun tonunda (ör. süresi
+/// dolmak üzere belge; içindeki durum rozeti zeminde kaybolmaz).
 class AppCard extends StatelessWidget {
-  const new({required this.child, super.key, this.onTap, this.status});
+  const new({
+    required this.child,
+    super.key,
+    this.onTap,
+    this.status,
+    this.filled = true,
+  });
 
   final Widget child;
   final VoidCallback? onTap;
   final AppStatus? status;
+  final bool filled;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +38,7 @@ class AppCard extends StatelessWidget {
     };
 
     return Material(
-      color: status?.containerIn(colors) ?? colors.tile,
+      color: filled ? status?.containerIn(colors) ?? colors.tile : colors.tile,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(context.radii.card),
         side: BorderSide(color: border, width: context.strokes.border),

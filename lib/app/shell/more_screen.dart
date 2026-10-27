@@ -67,6 +67,11 @@ class MoreScreen extends ConsumerWidget {
                   label: l10n.documentsTitle,
                   onTap: () => context.go(AppRoutes.documents),
                 ),
+                _ModuleTile(
+                  icon: Icons.local_shipping_outlined,
+                  label: l10n.migrationsTitle,
+                  onTap: () => context.go(AppRoutes.migrations),
+                ),
               ],
             ),
             SizedBox(height: spacing.xl),

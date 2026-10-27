@@ -26,6 +26,9 @@ class AppFormat {
   /// Yılsız gün ve ay; grafik eksenleri için. `9 Eki`, `Oct 9`
   String dayMonth(DateTime value) => DateFormat.MMMd(locale).format(value);
 
+  /// Kısa ay adı; dönem aralıkları için. `Ağu`, `Aug`
+  String shortMonth(DateTime value) => DateFormat.MMM(locale).format(value);
+
   /// Günsüz ay ve yıl; uzak tarihler için. `May 2027`, `May 2027`
   String monthYear(DateTime value) => DateFormat.yMMM(locale).format(value);
 
