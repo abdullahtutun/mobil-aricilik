@@ -271,11 +271,7 @@ class _TourSummaryScreenState extends ConsumerState<TourSummaryScreen> {
     ]);
     if (!mounted) return;
     if (selected.isNotEmpty) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(content: Text(l10n.tourTasksSaved(selected.length))),
-        );
+      showMessageSnackBar(context, l10n.tourTasksSaved(selected.length));
     }
     context.go(AppRoutes.apiary(widget.apiaryId));
   }

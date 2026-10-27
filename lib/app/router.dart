@@ -383,13 +383,11 @@ GoRouter router(Ref ref) {
                     path: 'settings',
                     parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const SettingsScreen(),
-                    routes: [
-                      GoRoute(
-                        path: 'reports',
-                        parentNavigatorKey: rootNavigatorKey,
-                        builder: (context, state) => const ReportsScreen(),
-                      ),
-                    ],
+                  ),
+                  GoRoute(
+                    path: 'reports',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const ReportsScreen(),
                   ),
                   GoRoute(
                     path: 'old-queens',

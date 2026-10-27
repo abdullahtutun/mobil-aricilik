@@ -22,6 +22,9 @@ class App extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
+      // Bildirim açıkken dışına dokunulunca kapanır.
+      builder: (context, child) =>
+          SnackBarDismissArea(child: child ?? const SizedBox.shrink()),
     );
   }
 }

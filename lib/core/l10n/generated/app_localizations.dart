@@ -5058,12 +5058,6 @@ abstract class AppLocalizations {
   /// **'No tasks to suggest.'**
   String get tourNoTasks;
 
-  /// No description provided for @settingsReports.
-  ///
-  /// In en, this message translates to:
-  /// **'PDF reports'**
-  String get settingsReports;
-
   /// No description provided for @reportsTitle.
   ///
   /// In en, this message translates to:

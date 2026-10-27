@@ -124,17 +124,16 @@ class _Timeline extends ConsumerWidget {
       action: Row(
         spacing: context.touchTargets.gap,
         children: [
-          // Taşıma başlat birincil, geniş; büyük yazıda iki etiket de kırılır.
-          Expanded(
-            child: BigButton(
-              label: l10n.migrationAddStop,
-              variant: BigButtonVariant.secondary,
-              onPressed: () =>
-                  context.go(AppRoutes.migrationStopNew(migration.id)),
-            ),
+          // Durak ekle yazısı kadar, tek satır; Taşıma başlat birincil,
+          // kalan genişlikte.
+          BigButton(
+            label: l10n.migrationAddStop,
+            variant: BigButtonVariant.secondary,
+            expanded: false,
+            onPressed: () =>
+                context.go(AppRoutes.migrationStopNew(migration.id)),
           ),
           Expanded(
-            flex: 2,
             child: BigButton(
               label: l10n.moveStart,
               // Sıradaki taşıma yoksa (planlı durak kalmadı) pasif.

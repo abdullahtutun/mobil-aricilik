@@ -70,15 +70,21 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Büyük yazıda hap selamı ezmesin; en çok 2/5'i alır.
-                const Expanded(flex: 3, child: _Header()),
+                const Expanded(child: _Header()),
                 if (isDev)
                   IconButton(
                     icon: const Icon(Icons.developer_mode_rounded),
                     tooltip: l10n.devMenuTitle,
                     onPressed: () => context.go(AppRoutes.developerMenu),
                   ),
-                const Flexible(flex: 2, child: SyncStatusButton()),
+                // Hap yazısı kadar, tek satır; büyük yazıda selamı ezmesin
+                // diye en çok ekranın %60'ı (selam alt satıra kırılır).
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.sizeOf(context).width * 0.6,
+                  ),
+                  child: const SyncStatusButton(),
+                ),
               ],
             ),
           ),

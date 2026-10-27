@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -324,6 +325,44 @@ void main() {
 
       expect(find.byType(AttentionScreen), findsNothing);
       expect(find.byType(TodayScreen), findsOneWidget);
+    });
+
+    testWidgets('360dp ekranda senkron hapı tek satır: "Eşitlendi" alt '
+        'satıra kaymaz ve kesilmez', (tester) async {
+      tester.view
+        ..physicalSize = const Size(360, 640)
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      // Bekleyen kayıt yok: hap "Eşitlendi" der.
+      await db.delete(db.outbox).go();
+
+      final container = await _open(tester, db: db);
+      final label = tester.renderObject<RenderParagraph>(
+        find.descendant(
+          of: find.text('Eşitlendi'),
+          matching: find.byType(RichText),
+        ),
+      );
+      expect(label.didExceedMaxLines, isFalse);
+      expect(label.size.height, lessThan(label.text.style!.fontSize! * 1.5));
+
+      // Eldivende de taşmaz (test yazı tipi Inter'den geniş; sığmazsa sonu
+      // kesilir, alt satıra kaymaz).
+      container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(
+        tester
+            .renderObject<RenderParagraph>(
+              find.descendant(
+                of: find.text('Eşitlendi'),
+                matching: find.byType(RichText),
+              ),
+            )
+            .size
+            .height,
+        lessThan(label.text.style!.fontSize! * 2),
+      );
     });
 
     testWidgets('360dp ekranda 1.5x yazı ve eldivenle panel ve liste '

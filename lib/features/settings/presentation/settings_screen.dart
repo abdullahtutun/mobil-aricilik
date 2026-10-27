@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/analytics/analytics_providers.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
@@ -113,15 +111,11 @@ class SettingsScreen extends ConsumerWidget {
           sectionGap,
           SectionLabel(l10n.settingsData),
           labelGap,
-          ListGroup(
+          const ListGroup(
             children: [
-              const _MediaWifiOnlyTile(),
-              const _PushTile(),
-              const _AnalyticsTile(),
-              ListRow(
-                title: l10n.settingsReports,
-                onTap: () => context.push(AppRoutes.reports),
-              ),
+              _MediaWifiOnlyTile(),
+              _PushTile(),
+              _AnalyticsTile(),
             ],
           ),
           sectionGap,

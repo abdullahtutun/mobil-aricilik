@@ -108,8 +108,8 @@ abstract final class AppRoutes {
 
   static const settings = '/more/settings';
 
-  /// PDF raporları; Ayarlar'dan açılır.
-  static const reports = '/more/settings/reports';
+  /// PDF raporları; Daha fazla'dan açılır.
+  static const reports = '/more/reports';
 
   /// Aktif kovanlardaki değiştirilmesi gereken analar.
   static const oldQueens = '/more/old-queens';

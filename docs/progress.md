@@ -417,6 +417,14 @@
 - Zaman çizelgesinin altında "Durak ekle" ve birincil "Taşıma başlat" var. Planlı durak kalmadıysa "Taşıma başlat" pasif, viewer ikisini de görmüyor. Buton `/more/migrations/:id/move` rotasını açıyor (`MoveScreen`): başlık "Taşıma · Çam → Kışlak", şimdilik "Yükleme yakında" boş durumu. Veri yazılmıyor; "Taşıma · yükleme" tasarımındaki kontrol/yükleme/indirme adımları sonraki adımda bu rotaya kurulacak.
 - Testler güncellendi: elle sayı, arılıktan dolma ve düzenleme; yeri olmayan durak; "Taşıma başlat" açma, pasiflik ve viewer. Toplam 1422 Flutter testi geçti. Bilinen: kayıttan sonra çıkan bildirim, zaman çizelgesinin alt butonlarını 6 sn örtüyor (diğer formlarda da aynı).
 
+### 2026-10-28 — Bildirim kapanması, uygulama ikonu ve küçük ekran düzeltmeleri
+
+- Bildirimler (snackbar) açıkken ekranın bildirim dışındaki bir yerine dokunulunca kapanıyor; dokunuş alttaki butona da gidiyor. Bildirimin kendisine (Geri al, ek seçenekler) dokunmak kapatmıyor. Uygulamanın kökünde `SnackBarDismissArea` var. Bildirimler içeriklerini `SnackBarRegion` ile sarıyor; sayfa geçişinde aynı bildirim iki sayfada çizildiği için anahtar yerine kayıt kullanılıyor. Tur özetindeki bildirim de `showMessageSnackBar`'a geçti.
+- Uygulama ikonu `docs/mobil-arilik-logo.png` (kaynağı `assets/launcher/`, `flutter_launcher_icons` ile üretildi; dev ve prod aynı ikon). Android'de uyarlanabilir ikon: zemin `#9A5B00`, ön plan logonun şeffaf zeminli beyaz işareti. Araç iOS proje dosyasındaki `ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS` ayarını bozuyor; değişiklik geri alındı, yeniden üretilirse yine kontrol edilmeli.
+- Bugün'deki senkron hapı ("Eşitlendi") tek satır: yazısı kadar genişlikte, en çok ekranın %60'ını alıyor; sığmazsa sonu kesiliyor, alt satıra kaymıyor. Göç planındaki "Durak ekle" yazısı kadar genişlikte, "Taşıma başlat" kalan genişlikte.
+- Ayarlar'daki "PDF raporları" satırı kaldırıldı; raporlar Daha fazla'daki "Raporlar" karosundan açılıyor ve rotası `/more/reports` oldu (geri tuşu Daha fazla'ya döner).
+- Yalnız ilgili testler çalıştırıldı (bileşenler, göç planı, Bugün, Ayarlar, raporlar, senkron, tur, görevler: 250 test geçti). Yeni testler: dışarı dokununca kapanma, 360dp'de "Eşitlendi" ve "Durak ekle" tek satır (ikisi düzeltmeden önce kırılıyordu). İkon cihazda ve derlemede denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

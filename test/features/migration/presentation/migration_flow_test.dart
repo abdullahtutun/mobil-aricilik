@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/app/app.dart';
@@ -256,10 +257,12 @@ void main() {
     expect(tester.widget<BigButton>(_button('Start move')).onPressed, isNull);
 
     // Arılıksız durağın kovan sayısı elle; yeri yoksa kartta adı yazar.
-    // "Durak kaydedildi" bildirimi alttaki butonları örtüyor; kapanması
-    // beklenir.
-    await tester.pump(const Duration(seconds: 10));
+    // "Durak kaydedildi" bildirimi alttaki butonları örtüyor; ekranın
+    // başka yerine dokununca kapanır.
+    expect(find.text('Stop saved'), findsOneWidget);
+    await tester.tap(find.text('Migration plan ${today.year}'));
     await tester.pumpAndSettle();
+    expect(find.text('Stop saved'), findsNothing);
     await _tap(tester, _button('Add stop'));
     expect(find.text('2'), findsOneWidget);
     await tester.enterText(_field('Source'), 'Winter yard');
@@ -425,6 +428,26 @@ void main() {
     expect(find.text('Yeni durak'), findsOneWidget);
     expect(find.text('Hedef arılık'), findsOneWidget);
     expect(find.text('Plan'), findsOneWidget);
+  });
+
+  testWidgets('360dp ekranda "Durak ekle" tek satır, alt satıra kaymaz', (
+    tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(360, 640)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final migration = await seedPlan();
+    await open(tester, location: AppRoutes.migration(migration.id));
+
+    final label = tester.renderObject<RenderParagraph>(
+      find.descendant(
+        of: find.text('Add stop'),
+        matching: find.byType(RichText),
+      ),
+    );
+    expect(label.size.height, lessThan(label.text.style!.fontSize! * 1.5));
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {

@@ -158,14 +158,14 @@ void main() {
         );
   }
 
-  testWidgets("Ayarlar'dan açılır; TR başlık numaraları işletmeden dolar, "
+  testWidgets("Daha fazla'dan açılır; TR başlık numaraları işletmeden dolar, "
       'defter yazdırılır', (tester) async {
     _tall(tester);
     await organizationRow();
     await treat();
-    await _open(tester, db: db, printer: printer, location: AppRoutes.settings);
+    await _open(tester, db: db, printer: printer, location: AppRoutes.more);
 
-    await _tap(tester, find.text('PDF reports'));
+    await _tap(tester, find.text('Reports'));
 
     expect(find.byType(ReportsScreen), findsOneWidget);
     expect(_text(tester, 'Holding registration no.'), 'TR-48-0001');

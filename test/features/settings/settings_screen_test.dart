@@ -66,6 +66,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(SettingsScreen), findsOneWidget);
+      // PDF raporları Daha fazla'dan açılır; Ayarlar'da satırı yok.
+      expect(
+        _inSettings(find.text('PDF reports', skipOffstage: false)),
+        findsNothing,
+      );
     });
 
     testWidgets('dil satırı sayfa açar; seçim arayüz dilini değiştirir', (

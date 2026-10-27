@@ -667,6 +667,73 @@ void main() {
     });
   });
 
+  group('SnackBarDismissArea', () {
+    testWidgets('bildirim dışına dokununca kapanır, dokunuş alttaki butona '
+        'gider; bildirimin içine ve Geri al’a dokunmak kapatmaz', (
+      tester,
+    ) async {
+      var other = 0;
+      var undone = 0;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light(const AppearanceSettings()),
+          locale: const Locale('tr'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          builder: (context, child) => SnackBarDismissArea(child: child!),
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => Column(
+                children: [
+                  TextButton(
+                    onPressed: () => showUndoSnackBar(
+                      context,
+                      message: 'Kaydedildi',
+                      onUndo: () => undone++,
+                      details: const Text('Seçenek'),
+                    ),
+                    child: const Text('Göster'),
+                  ),
+                  TextButton(
+                    onPressed: () => other++,
+                    child: const Text('Başka'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Göster'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Seçenek'));
+      await tester.pumpAndSettle();
+      expect(find.text('Kaydedildi'), findsOneWidget);
+
+      await tester.tap(find.text('Başka'));
+      await tester.pumpAndSettle();
+      expect(find.text('Kaydedildi'), findsNothing);
+      expect(other, 1);
+
+      await tester.tap(find.text('Göster'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Geri al'));
+      await tester.pumpAndSettle();
+      expect(undone, 1);
+
+      // Bilgi bildirimi de boş alana dokununca kapanır.
+      showMessageSnackBar(
+        tester.element(find.text('Başka')),
+        'Plan kaydedildi',
+      );
+      await tester.pumpAndSettle();
+      await tester.tapAt(const Offset(200, 300));
+      await tester.pumpAndSettle();
+      expect(find.text('Plan kaydedildi'), findsNothing);
+    });
+  });
+
   group('showUndoSnackBar', () {
     testWidgets('ek içerik mesajın altında; ona dokunmak bildirimi kapatmaz, '
         'Geri al kapatır', (tester) async {

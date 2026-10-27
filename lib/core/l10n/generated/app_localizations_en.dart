@@ -3234,9 +3234,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tourNoTasks => 'No tasks to suggest.';
 
   @override
-  String get settingsReports => 'PDF reports';
-
-  @override
   String get reportsTitle => 'Reports';
 
   @override

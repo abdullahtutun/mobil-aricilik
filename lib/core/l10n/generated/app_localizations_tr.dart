@@ -3156,9 +3156,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tourNoTasks => 'Önerilecek görev yok.';
 
   @override
-  String get settingsReports => 'PDF raporları';
-
-  @override
   String get reportsTitle => 'Raporlar';
 
   @override

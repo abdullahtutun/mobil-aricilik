@@ -45,7 +45,14 @@ class SyncStatusButton extends ConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: context.spacing.lg),
       ),
       icon: Icon(syncIndicatorIcon(indicator), color: color),
-      label: Text(label, semanticsLabel: l10n.syncStatusSemantics(label)),
+      // Tek satır; sığmazsa sonu kesilir, alt satıra kaymaz.
+      label: Text(
+        label,
+        maxLines: 1,
+        softWrap: false,
+        overflow: TextOverflow.ellipsis,
+        semanticsLabel: l10n.syncStatusSemantics(label),
+      ),
     );
   }
 }
