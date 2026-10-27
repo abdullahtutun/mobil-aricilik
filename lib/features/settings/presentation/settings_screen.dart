@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +16,7 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/media/presentation/media_providers.dart';
+import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
@@ -113,6 +116,7 @@ class SettingsScreen extends ConsumerWidget {
           ListGroup(
             children: [
               const _MediaWifiOnlyTile(),
+              const _PushTile(),
               const _AnalyticsTile(),
               ListRow(
                 title: l10n.settingsReports,
@@ -206,7 +210,12 @@ class SettingsScreen extends ConsumerWidget {
       message: l10n.settingsSignOutConfirmMessage,
       confirmLabel: l10n.settingsSignOut,
     );
-    if (confirmed) await ref.read(currentUserProvider.notifier).signOut();
+    if (!confirmed) return;
+    // Oturum kapanınca sunucu çağrısı yetkisiz kalır; önce token silinir.
+    await ref
+        .read(pushRegistrationProvider.notifier)
+        .unregister(deleteDeviceToken: true);
+    await ref.read(currentUserProvider.notifier).signOut();
   }
 
   static String _languageLabel(AppLocalizations l10n, AppLanguage language) {
@@ -249,6 +258,35 @@ class _MediaWifiOnlyTile extends ConsumerWidget {
         pending > 0
             ? l10n.settingsPendingUploads(pending)
             : l10n.settingsMediaWifiOnlyHint,
+        style: context.typography.bodySmall.copyWith(
+          color: context.colors.textSecondary,
+        ),
+      ),
+    );
+  }
+}
+
+/// "Görev bildirimleri": sana görev atanınca push gelir; kapatınca bu
+/// telefonun kaydı sunucudan silinir.
+class _PushTile extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final enabled = ref.watch(pushEnabledProvider).value ?? true;
+
+    return SwitchListTile(
+      value: enabled,
+      onChanged: (enabled) => unawaited(
+        ref
+            .read(pushRegistrationProvider.notifier)
+            .setEnabled(enabled: enabled),
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: context.spacing.lg),
+      title: Text(l10n.settingsPush, style: context.typography.body),
+      subtitle: Text(
+        l10n.settingsPushHint,
         style: context.typography.bodySmall.copyWith(
           color: context.colors.textSecondary,
         ),

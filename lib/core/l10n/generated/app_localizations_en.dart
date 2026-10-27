@@ -3620,4 +3620,122 @@ class AppLocalizationsEn extends AppLocalizations {
   String teamRoleChanged(String name, String role) {
     return '$name is now $role.';
   }
+
+  @override
+  String get teamActivityTitle => 'Recent activity';
+
+  @override
+  String get teamActivityEmpty => 'No activity yet.';
+
+  @override
+  String get teamActivitySelf => 'You';
+
+  @override
+  String teamActivityInspection(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'entered $count inspections',
+      one: 'entered 1 inspection',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamActivityTreatment(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'treated $count hives',
+      one: 'treated 1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamActivityFeeding(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'fed $count hives',
+      one: 'fed 1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamActivityHarvest(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'recorded $count harvests',
+      one: 'recorded 1 harvest',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamActivityMiteCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'entered $count varroa counts',
+      one: 'entered 1 varroa count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamActivityTask(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'added $count tasks',
+      one: 'added 1 task',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get teamActivityJustNow => 'just now';
+
+  @override
+  String teamActivityMinutesAgo(int count) {
+    return '$count min ago';
+  }
+
+  @override
+  String teamActivityHoursAgo(int count) {
+    return '$count h ago';
+  }
+
+  @override
+  String get teamActivityYesterday => 'yesterday';
+
+  @override
+  String teamActivityDaysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String teamActivityLine(String what, String where, String when) {
+    return '$what$where · $when';
+  }
+
+  @override
+  String teamActivitySemantics(
+    String who,
+    String what,
+    String where,
+    String when,
+  ) {
+    return '$who $what$where, $when';
+  }
+
+  @override
+  String get settingsPush => 'Task notifications';
+
+  @override
+  String get settingsPushHint =>
+      'Get a notification when a task is assigned to you. Tap it to open the task.';
 }

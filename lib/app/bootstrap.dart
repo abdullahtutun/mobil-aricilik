@@ -12,6 +12,7 @@ import 'package:mobil_arici/app/supabase_setup.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_triggers.dart';
+import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
 
 /// Uygulamayı verilen flavor ile başlatır.
@@ -40,12 +41,15 @@ Future<void> bootstrap(Flavor flavor) async {
 
     final container =
         ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])
-          // Senkron, medya, görüş ve kullanım olayı gönderimi ile görev
-          // hatırlatmalarının eşitlemesi uygulama açık kaldıkça çalışır.
+          // Senkron, medya, görüş ve kullanım olayı gönderimi, görev
+          // hatırlatmalarının eşitlemesi, push token kaydı ve bildirimden
+          // görev açma uygulama açık kaldıkça çalışır.
           ..listen(syncTriggersProvider, (_, _) {})
           ..listen(mediaUploadTriggersProvider, (_, _) {})
           ..listen(telemetryUploadTriggersProvider, (_, _) {})
-          ..listen(taskRemindersProvider, (_, _) {});
+          ..listen(taskRemindersProvider, (_, _) {})
+          ..listen(pushRegistrationProvider, (_, _) {})
+          ..listen(pushTaskLinksProvider, (_, _) {});
 
     runApp(UncontrolledProviderScope(container: container, child: const App()));
 

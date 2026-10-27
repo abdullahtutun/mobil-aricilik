@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Variable;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +13,7 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 import 'package:mobil_arici/features/team/domain/team_failure.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
@@ -27,6 +29,7 @@ _openTeam(
   WidgetTester tester, {
   MembershipRole? role = MembershipRole.owner,
   bool withOthers = true,
+  Future<void> Function(AppDatabase db)? seed,
 }) async {
   final db = openTestDatabase();
   if (role != null) {
@@ -36,6 +39,7 @@ _openTeam(
     await addMember(db, userId: 'worker-1', role: MembershipRole.worker);
     await addMember(db, userId: 'viewer-1', role: MembershipRole.viewer);
   }
+  if (seed != null) await seed(db);
   final team = FakeTeamService(
     db: db,
     emails: {'worker-1': 'mustafa@example.com', 'viewer-1': 'can@example.com'},
@@ -544,6 +548,57 @@ void main() {
         expect(container.read(canSeeFinanceProvider), visible);
       });
     }
+  });
+
+  group('son işlemler', () {
+    /// Sunucunun senkronla indirdiği gibi, `createdBy` dolu bir görev.
+    Future<void> addTask(
+      AppDatabase db, {
+      required String createdBy,
+      required String title,
+    }) async {
+      final task = await TaskRepository(db).create(
+        orgId: testOrganization.id,
+        title: title,
+        dueAt: DateTime.utc(2026, 11),
+      );
+      await db.customUpdate(
+        'update tasks set created_by = ? where id = ?',
+        variables: [Variable<String>(createdBy), Variable<String>(task.id)],
+        updates: {db.tasks},
+      );
+    }
+
+    testWidgets('kayıt yokken boş metin yazar', (tester) async {
+      await _openTeam(tester);
+      await tester.scrollUntilVisible(find.text('SON İŞLEMLER'), 200);
+
+      expect(find.text('SON İŞLEMLER'), findsOneWidget);
+      expect(find.text('Henüz işlem yok.'), findsOneWidget);
+    });
+
+    testWidgets('kişi adı, işlem ve zaman yazılır; kendin "Sen"', (
+      tester,
+    ) async {
+      await _openTeam(
+        tester,
+        seed: (db) async {
+          await addTask(db, createdBy: 'worker-1', title: 'Şurup');
+          await addTask(db, createdBy: testUser.id, title: 'Ana arı');
+        },
+      );
+      await tester.scrollUntilVisible(find.text('SON İŞLEMLER'), 200);
+
+      expect(find.text('Henüz işlem yok.'), findsNothing);
+      expect(
+        find.textContaining('mustafa 1 görev ekledi', findRichText: true),
+        findsOneWidget,
+      );
+      expect(
+        find.textContaining('Sen 1 görev ekledi', findRichText: true),
+        findsOneWidget,
+      );
+    });
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {

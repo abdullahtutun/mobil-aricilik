@@ -39,6 +39,28 @@ class LocalSettingsRepository {
   Future<bool> analyticsEnabled() async =>
       await _read(analyticsEnabledKey) != 'false';
 
+  /// "Görev bildirimleri" (push); varsayılan açık. Kapalıyken bu telefonun
+  /// token'ı sunucudan silinir, atanan görev için bildirim gelmez.
+  static const pushEnabledKey = 'push_enabled';
+
+  Stream<bool> watchPushEnabled() =>
+      _watch(pushEnabledKey).map((value) => value != 'false');
+
+  Future<bool> pushEnabled() async => await _read(pushEnabledKey) != 'false';
+
+  Future<void> setPushEnabled({required bool enabled}) =>
+      _write(pushEnabledKey, '$enabled');
+
+  /// Bildirim izni bu telefonda bir kez soruldu; sonra yalnız ayardan
+  /// açılınca sorulur.
+  static const pushPermissionAskedKey = 'push_permission_asked';
+
+  Future<bool> pushPermissionAsked() async =>
+      await _read(pushPermissionAskedKey) == 'true';
+
+  Future<void> setPushPermissionAsked() =>
+      _write(pushPermissionAskedKey, 'true');
+
   /// Bu kurulumun analitik kimliği; analitik yeniden açılınca yenilenir.
   static const analyticsInstallIdKey = 'analytics_install_id';
 

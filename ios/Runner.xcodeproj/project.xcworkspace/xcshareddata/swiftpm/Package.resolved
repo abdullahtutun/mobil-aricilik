@@ -26,6 +26,15 @@
         "revision" : "12d83edbcc795fb7b5c0c3cb74d739108d3357d2",
         "version" : "0.15.0"
       }
+    },
+    {
+      "identity" : "sentry-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getsentry/sentry-cocoa",
+      "state" : {
+        "revision" : "2f64c77f77514acd01780d1aac86ae75b7fccd04",
+        "version" : "9.31.0"
+      }
     }
   ],
   "version" : 2

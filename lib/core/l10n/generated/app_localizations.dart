@@ -5705,6 +5705,119 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} is now {role}.'**
   String teamRoleChanged(String name, String role);
+
+  /// No description provided for @teamActivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get teamActivityTitle;
+
+  /// No description provided for @teamActivityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet.'**
+  String get teamActivityEmpty;
+
+  /// No description provided for @teamActivitySelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get teamActivitySelf;
+
+  /// No description provided for @teamActivityInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{entered 1 inspection} other{entered {count} inspections}}'**
+  String teamActivityInspection(int count);
+
+  /// No description provided for @teamActivityTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{treated 1 hive} other{treated {count} hives}}'**
+  String teamActivityTreatment(int count);
+
+  /// No description provided for @teamActivityFeeding.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{fed 1 hive} other{fed {count} hives}}'**
+  String teamActivityFeeding(int count);
+
+  /// No description provided for @teamActivityHarvest.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{recorded 1 harvest} other{recorded {count} harvests}}'**
+  String teamActivityHarvest(int count);
+
+  /// No description provided for @teamActivityMiteCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{entered 1 varroa count} other{entered {count} varroa counts}}'**
+  String teamActivityMiteCount(int count);
+
+  /// No description provided for @teamActivityTask.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{added 1 task} other{added {count} tasks}}'**
+  String teamActivityTask(int count);
+
+  /// No description provided for @teamActivityJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get teamActivityJustNow;
+
+  /// No description provided for @teamActivityMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min ago'**
+  String teamActivityMinutesAgo(int count);
+
+  /// No description provided for @teamActivityHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h ago'**
+  String teamActivityHoursAgo(int count);
+
+  /// No description provided for @teamActivityYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'yesterday'**
+  String get teamActivityYesterday;
+
+  /// No description provided for @teamActivityDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String teamActivityDaysAgo(int count);
+
+  /// No description provided for @teamActivityLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{what}{where} · {when}'**
+  String teamActivityLine(String what, String where, String when);
+
+  /// No description provided for @teamActivitySemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{who} {what}{where}, {when}'**
+  String teamActivitySemantics(
+    String who,
+    String what,
+    String where,
+    String when,
+  );
+
+  /// No description provided for @settingsPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Task notifications'**
+  String get settingsPush;
+
+  /// No description provided for @settingsPushHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a notification when a task is assigned to you. Tap it to open the task.'**
+  String get settingsPushHint;
 }
 
 class _AppLocalizationsDelegate

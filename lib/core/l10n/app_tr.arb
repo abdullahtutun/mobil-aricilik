@@ -965,5 +965,24 @@
   "teamRemoveMessage": "{name} bu işletmenin kayıtlarına erişemez.",
   "teamRemoveConfirm": "Çıkar",
   "teamRemoved": "{name} ekipten çıkarıldı.",
-  "teamRoleChanged": "{name} artık {role}."
+  "teamRoleChanged": "{name} artık {role}.",
+
+  "teamActivityTitle": "Son işlemler",
+  "teamActivityEmpty": "Henüz işlem yok.",
+  "teamActivitySelf": "Sen",
+  "teamActivityInspection": "{count} muayene girdi",
+  "teamActivityTreatment": "{count} kovana ilaç uyguladı",
+  "teamActivityFeeding": "{count} kovanı besledi",
+  "teamActivityHarvest": "{count} hasat kaydetti",
+  "teamActivityMiteCount": "{count} varroa ölçümü girdi",
+  "teamActivityTask": "{count} görev ekledi",
+  "teamActivityJustNow": "şimdi",
+  "teamActivityMinutesAgo": "{count} dk önce",
+  "teamActivityHoursAgo": "{count} sa önce",
+  "teamActivityYesterday": "dün",
+  "teamActivityDaysAgo": "{count} gün önce",
+  "teamActivityLine": "{what}{where} · {when}",
+  "teamActivitySemantics": "{who} {what}{where}, {when}",
+  "settingsPush": "Görev bildirimleri",
+  "settingsPushHint": "Sana bir görev atandığında bildirim gelir. Dokununca görev açılır."
 }

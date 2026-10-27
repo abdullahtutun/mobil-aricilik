@@ -8,11 +8,13 @@ import 'package:mobil_arici/core/services/basemap_service_provider.dart';
 import 'package:mobil_arici/core/services/code_scanner_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/services/print_service_provider.dart';
+import 'package:mobil_arici/core/services/push_service_provider.dart';
 import 'package:mobil_arici/core/services/screen_awake.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
 import 'fake_app_info_service.dart';
@@ -21,6 +23,7 @@ import 'fake_code_scanner.dart';
 import 'fake_media.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
+import 'fake_push_service.dart';
 import 'fake_reminder_notifications.dart';
 import 'fake_screen_awake.dart';
 import 'fake_sync_service.dart';
@@ -97,6 +100,8 @@ List<Override> signedIn({
   FakeScreenAwake? screenAwake,
   FakeBasemapService? basemap,
   FakeAppInfoService? appInfo,
+  FakePushService? push,
+  FakeDeviceTokenService? deviceTokens,
   bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
@@ -115,4 +120,8 @@ List<Override> signedIn({
   screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
   basemapServiceProvider.overrideWithValue(basemap ?? FakeBasemapService()),
   appInfoServiceProvider.overrideWithValue(appInfo ?? FakeAppInfoService()),
+  pushServiceProvider.overrideWithValue(push ?? FakePushService()),
+  deviceTokenServiceProvider.overrideWithValue(
+    deviceTokens ?? FakeDeviceTokenService(),
+  ),
 ];

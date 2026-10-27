@@ -14,6 +14,11 @@ LocalSettingsRepository localSettingsRepository(Ref ref) =>
 Stream<bool> mediaWifiOnly(Ref ref) =>
     ref.watch(localSettingsRepositoryProvider).watchMediaWifiOnly();
 
+/// "Görev bildirimleri" (push).
+@Riverpod(keepAlive: true)
+Stream<bool> pushEnabled(Ref ref) =>
+    ref.watch(localSettingsRepositoryProvider).watchPushEnabled();
+
 /// Varroa uyarı eşikleri (bu telefonun ayarı).
 @Riverpod(keepAlive: true)
 Stream<VarroaThresholds> varroaThresholds(Ref ref) =>

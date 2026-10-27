@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,7 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/team/domain/activity_rules.dart';
 import 'package:mobil_arici/features/team/domain/invite.dart';
 import 'package:mobil_arici/features/team/domain/team_failure.dart';
 import 'package:mobil_arici/features/team/presentation/join_code_sheet.dart';
@@ -17,10 +19,10 @@ import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 import 'package:mobil_arici/features/team/presentation/team_rules.dart';
 
 /// Ekip (docs/design "Ekip"): üye listesi, owner için rol değiştirme ve
-/// çıkarma, owner ve partner için davet kodu, herkes için "Koda sahibim".
-/// Davet ve üyelik işlemleri online çalışır; çevrimdışıyken ne yapılacağı
-/// yazılır. Tasarımdaki "Son işlemler" ve son görülme yok: karşılığı olan
-/// veri henüz yok.
+/// çıkarma, owner ve partner için davet kodu, herkes için "Koda sahibim",
+/// altta "Son işlemler". Davet ve üyelik işlemleri online çalışır;
+/// çevrimdışıyken ne yapılacağı yazılır. Son işlemler yerel DB'den gelir.
+/// Tasarımdaki son görülme yok: karşılığı olan veri henüz yok.
 class TeamScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -92,6 +94,8 @@ class TeamScreen extends ConsumerWidget {
               variant: BigButtonVariant.secondary,
               onPressed: () => _openJoinSheet(context),
             ),
+            SizedBox(height: spacing.xl),
+            const _RecentActivity(),
           ],
         ),
       ),
@@ -510,6 +514,81 @@ class _CardButton extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// "Son işlemler": ekibin son yazdığı kayıtlar, kişi adı kalın. Kişi adı
+/// e-postanın `@`'den önceki kısmı; kendin "Sen".
+class _RecentActivity extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final entries = ref.watch(recentActivityProvider).value ?? const [];
+    final emails = ref.watch(memberEmailsProvider).value ?? const {};
+    final selfId = ref.watch(currentUserProvider.select((user) => user?.id));
+    final now = clock.now();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionLabel(l10n.teamActivityTitle),
+        SizedBox(height: spacing.sm),
+        if (entries.isEmpty)
+          Text(
+            l10n.teamActivityEmpty,
+            style: context.typography.body.copyWith(
+              color: colors.textSecondary,
+            ),
+          )
+        else
+          for (final entry in entries)
+            _ActivityRow(
+              who: entry.userId == selfId
+                  ? l10n.teamActivitySelf
+                  : activityName(emails[entry.userId]) ??
+                        l10n.teamMemberUnknown,
+              entry: entry,
+              now: now,
+            ),
+      ],
+    );
+  }
+}
+
+class _ActivityRow extends StatelessWidget {
+  const new({required this.who, required this.entry, required this.now});
+
+  final String who;
+  final ActivityEntry entry;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final what = activityText(l10n, entry.kind, entry.count);
+    final apiary = entry.apiaryName;
+    final where = apiary == null ? '' : ' \u00b7 $apiary';
+    final when = activityAgeText(l10n, AppFormat.of(context), entry.at, now);
+    return Padding(
+      padding: EdgeInsets.only(bottom: context.spacing.sm),
+      child: Semantics(
+        label: l10n.teamActivitySemantics(who, what, where, when),
+        excludeSemantics: true,
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(text: '$who ', style: context.typography.label),
+              TextSpan(text: l10n.teamActivityLine(what, where, when)),
+            ],
+          ),
+          style: context.typography.body,
         ),
       ),
     );

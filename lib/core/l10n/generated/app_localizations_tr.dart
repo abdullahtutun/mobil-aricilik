@@ -3536,4 +3536,86 @@ class AppLocalizationsTr extends AppLocalizations {
   String teamRoleChanged(String name, String role) {
     return '$name artık $role.';
   }
+
+  @override
+  String get teamActivityTitle => 'Son işlemler';
+
+  @override
+  String get teamActivityEmpty => 'Henüz işlem yok.';
+
+  @override
+  String get teamActivitySelf => 'Sen';
+
+  @override
+  String teamActivityInspection(int count) {
+    return '$count muayene girdi';
+  }
+
+  @override
+  String teamActivityTreatment(int count) {
+    return '$count kovana ilaç uyguladı';
+  }
+
+  @override
+  String teamActivityFeeding(int count) {
+    return '$count kovanı besledi';
+  }
+
+  @override
+  String teamActivityHarvest(int count) {
+    return '$count hasat kaydetti';
+  }
+
+  @override
+  String teamActivityMiteCount(int count) {
+    return '$count varroa ölçümü girdi';
+  }
+
+  @override
+  String teamActivityTask(int count) {
+    return '$count görev ekledi';
+  }
+
+  @override
+  String get teamActivityJustNow => 'şimdi';
+
+  @override
+  String teamActivityMinutesAgo(int count) {
+    return '$count dk önce';
+  }
+
+  @override
+  String teamActivityHoursAgo(int count) {
+    return '$count sa önce';
+  }
+
+  @override
+  String get teamActivityYesterday => 'dün';
+
+  @override
+  String teamActivityDaysAgo(int count) {
+    return '$count gün önce';
+  }
+
+  @override
+  String teamActivityLine(String what, String where, String when) {
+    return '$what$where · $when';
+  }
+
+  @override
+  String teamActivitySemantics(
+    String who,
+    String what,
+    String where,
+    String when,
+  ) {
+    return '$who $what$where, $when';
+  }
+
+  @override
+  String get settingsPush => 'Görev bildirimleri';
+
+  @override
+  String get settingsPushHint =>
+      'Sana bir görev atandığında bildirim gelir. Dokununca görev açılır.';
 }

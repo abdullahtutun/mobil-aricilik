@@ -95,6 +95,44 @@ final class MediaWifiOnlyProvider
 
 String _$mediaWifiOnlyHash() => r'857837556216810395de7759865cba36de9cac47';
 
+/// "Görev bildirimleri" (push).
+
+@ProviderFor(pushEnabled)
+final pushEnabledProvider = PushEnabledProvider._();
+
+/// "Görev bildirimleri" (push).
+
+final class PushEnabledProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  /// "Görev bildirimleri" (push).
+  PushEnabledProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pushEnabledProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pushEnabledHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    return pushEnabled(ref);
+  }
+}
+
+String _$pushEnabledHash() => r'5ea7eb73961aef5e633524ce9399f7811da56c63';
+
 /// Varroa uyarı eşikleri (bu telefonun ayarı).
 
 @ProviderFor(varroaThresholds)

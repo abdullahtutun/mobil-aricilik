@@ -244,6 +244,100 @@ final class MemberEmailsProvider
 
 String _$memberEmailsHash() => r'7c98e1bb45865aea7563589e84a859dee4780803';
 
+@ProviderFor(activityRepository)
+final activityRepositoryProvider = ActivityRepositoryProvider._();
+
+final class ActivityRepositoryProvider
+    extends
+        $FunctionalProvider<
+          ActivityRepository,
+          ActivityRepository,
+          ActivityRepository
+        >
+    with $Provider<ActivityRepository> {
+  ActivityRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activityRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activityRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ActivityRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ActivityRepository create(Ref ref) {
+    return activityRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ActivityRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ActivityRepository>(value),
+    );
+  }
+}
+
+String _$activityRepositoryHash() =>
+    r'3f7b3e6fe17e1df4012b83e24ab332b8f559cafd';
+
+/// Ekibin son işlemleri, yeniden eskiye; yerel DB'den.
+
+@ProviderFor(recentActivity)
+final recentActivityProvider = RecentActivityProvider._();
+
+/// Ekibin son işlemleri, yeniden eskiye; yerel DB'den.
+
+final class RecentActivityProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ActivityEntry>>,
+          List<ActivityEntry>,
+          Stream<List<ActivityEntry>>
+        >
+    with
+        $FutureModifier<List<ActivityEntry>>,
+        $StreamProvider<List<ActivityEntry>> {
+  /// Ekibin son işlemleri, yeniden eskiye; yerel DB'den.
+  RecentActivityProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'recentActivityProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$recentActivityHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<ActivityEntry>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<ActivityEntry>> create(Ref ref) {
+    return recentActivity(ref);
+  }
+}
+
+String _$recentActivityHash() => r'f9c7af7dc1e76f1143e9f4af60df9ee807d10a98';
+
 @ProviderFor(InviteController)
 final inviteControllerProvider = InviteControllerProvider._();
 
