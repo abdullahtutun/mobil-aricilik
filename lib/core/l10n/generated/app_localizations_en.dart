@@ -3495,4 +3495,129 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsAnalyticsHint =>
       'Numbers like inspection time, scan results and sync delay; your name, hives and location are never sent.';
+
+  @override
+  String get teamTitle => 'Team';
+
+  @override
+  String get teamRoleOwner => 'Owner';
+
+  @override
+  String get teamRolePartner => 'Partner';
+
+  @override
+  String get teamRoleWorker => 'Worker';
+
+  @override
+  String get teamRoleViewer => 'Advisor';
+
+  @override
+  String get teamRoleViewerSubtitle => 'Read only';
+
+  @override
+  String get teamRoleHintPartner =>
+      'A partner enters records and sees finance.';
+
+  @override
+  String get teamRoleHintWorker =>
+      'A worker enters records but cannot see finance.';
+
+  @override
+  String get teamRoleHintViewer =>
+      'An advisor can only read and cannot enter records.';
+
+  @override
+  String teamMemberSelf(String name) {
+    return '$name (you)';
+  }
+
+  @override
+  String get teamMemberUnknown => 'Team member';
+
+  @override
+  String get teamMembersEmpty => 'Members appear once sync finishes.';
+
+  @override
+  String get teamInviteTitle => 'Invite to the team';
+
+  @override
+  String get teamInviteHint =>
+      'Tell or send the code. It is valid for 48 hours.';
+
+  @override
+  String get teamInviteGenerate => 'Generate code';
+
+  @override
+  String get teamInviteCopy => 'Copy';
+
+  @override
+  String get teamInviteCopied => 'Code copied.';
+
+  @override
+  String teamInviteCodeSemantics(String code) {
+    return 'Invite code $code';
+  }
+
+  @override
+  String get teamHaveCode => 'I have a code';
+
+  @override
+  String get teamJoinTitle => 'Join with a code';
+
+  @override
+  String get teamJoinHint => 'Enter the 6-character code you were sent.';
+
+  @override
+  String get teamJoinCodeLabel => 'Invite code';
+
+  @override
+  String get teamJoinAction => 'Join';
+
+  @override
+  String get teamJoinDone => 'You joined the team.';
+
+  @override
+  String get teamErrorOffline =>
+      'This needs an internet connection. Try again when you are online.';
+
+  @override
+  String get teamErrorInvalidCode =>
+      'The code is invalid, expired or already used.';
+
+  @override
+  String get teamErrorAlreadyMember => 'You are already a member of this team.';
+
+  @override
+  String get teamErrorForbidden => 'You are not allowed to do this.';
+
+  @override
+  String get teamErrorOwnerLocked =>
+      'The owner\'s role cannot be changed and the owner cannot be removed.';
+
+  @override
+  String get teamErrorUnknown => 'That did not work. Try again in a moment.';
+
+  @override
+  String get teamRemoveAction => 'Remove from the team';
+
+  @override
+  String get teamRemoveTitle => 'Remove from the team?';
+
+  @override
+  String teamRemoveMessage(String name) {
+    return '$name will lose access to this business\'s records.';
+  }
+
+  @override
+  String get teamRemoveConfirm => 'Remove';
+
+  @override
+  String teamRemoved(String name) {
+    return '$name was removed from the team.';
+  }
+
+  @override
+  String teamRoleChanged(String name, String role) {
+    return '$name is now $role.';
+  }
 }

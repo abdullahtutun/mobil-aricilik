@@ -11,6 +11,7 @@ import 'package:mobil_arici/core/utils/relative_date.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_map.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 import 'package:mobil_arici/features/today/presentation/today_providers.dart';
 
 /// Arılıklar sekmesinin görünümü.
@@ -46,6 +47,7 @@ class _ApiariesScreenState extends ConsumerState<ApiariesScreen> {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final apiaries = ref.watch(apiaryListProvider);
+    final canWrite = ref.watch(canWriteRecordsProvider);
 
     final hasApiaries = apiaries.value?.isNotEmpty ?? false;
     final header = Padding(
@@ -64,7 +66,7 @@ class _ApiariesScreenState extends ConsumerState<ApiariesScreen> {
             ),
           ),
           // Boşken boş durumun kendi butonu var.
-          if (hasApiaries)
+          if (hasApiaries && canWrite)
             IconButton.filled(
               tooltip: l10n.apiariesAdd,
               onPressed: () => context.go(AppRoutes.apiaryNew),
@@ -122,8 +124,10 @@ class _ApiariesScreenState extends ConsumerState<ApiariesScreen> {
                   icon: Icons.add_rounded,
                   title: l10n.apiariesEmptyTitle,
                   message: l10n.apiariesEmptyMessage,
-                  actionLabel: l10n.apiariesAddFirst,
-                  onAction: () => context.go(AppRoutes.apiaryNew),
+                  actionLabel: canWrite ? l10n.apiariesAddFirst : null,
+                  onAction: canWrite
+                      ? () => context.go(AppRoutes.apiaryNew)
+                      : null,
                   centered: true,
                 ),
                 AsyncData(:final value) => switch (_view) {

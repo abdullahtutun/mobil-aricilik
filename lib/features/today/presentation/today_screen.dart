@@ -14,6 +14,7 @@ import 'package:mobil_arici/features/organization/presentation/organization_prov
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 import 'package:mobil_arici/features/tasks/presentation/widgets/task_list.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 import 'package:mobil_arici/features/today/domain/today_rules.dart';
 import 'package:mobil_arici/features/today/presentation/today_providers.dart';
 import 'package:mobil_arici/features/today/presentation/widgets/attention_labels.dart';
@@ -51,6 +52,7 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final isDev = ref.watch(flavorProvider) == Flavor.dev;
+    final canWrite = ref.watch(canWriteRecordsProvider);
     final setup = ref.watch(setupProgressProvider).value;
     final completed = setup?.completed ?? const <SetupStep>{};
     final hasApiary = completed.contains(SetupStep.apiary);
@@ -88,10 +90,12 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
               icon: Icons.today_rounded,
               title: l10n.todayEmptyTitle,
               message: l10n.todayEmptyMessage,
-              actionLabel: l10n.apiariesAddFirst,
-              onAction: () => context.go(AppRoutes.apiaryNew),
+              actionLabel: canWrite ? l10n.apiariesAddFirst : null,
+              onAction: canWrite ? () => context.go(AppRoutes.apiaryNew) : null,
             ),
-          if (setup != null && completed.length < SetupStep.values.length) ...[
+          if (canWrite &&
+              setup != null &&
+              completed.length < SetupStep.values.length) ...[
             SizedBox(height: spacing.lg),
             Padding(padding: padded, child: _SetupCard(setup)),
           ],

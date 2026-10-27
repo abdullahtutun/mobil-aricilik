@@ -16,6 +16,7 @@ import 'package:mobil_arici/features/hives/presentation/widgets/apiary_hives_sec
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inspections/presentation/tour_providers.dart';
 import 'package:mobil_arici/features/inspections/presentation/tour_screen.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Arılık detayı: büyük ad, altında aktif kovan sayısı ve son ziyaret;
 /// tur, kovan ekle ve hasat eylemleri, kovan ızgarası/listesi ve altında
@@ -32,7 +33,8 @@ class ApiaryDetailScreen extends ConsumerWidget {
     final spacing = context.spacing;
     final hives = ref.watch(apiaryHivesProvider(apiaryId)).value ?? const [];
     final hasHives = hives.isNotEmpty;
-    final canTour = hives.any(canInspect);
+    final canWrite = ref.watch(canWriteRecordsProvider);
+    final canTour = canWrite && hives.any(canInspect);
     final touring = ref.watch(currentTourProvider).value?.apiaryId == apiaryId;
     final padded = EdgeInsets.symmetric(horizontal: spacing.lg);
 
@@ -50,10 +52,11 @@ class ApiaryDetailScreen extends ConsumerWidget {
                     value: AppRoutes.hiveLabels(apiaryId),
                     child: Text(l10n.hiveLabelsTitle),
                   ),
-                PopupMenuItem(
-                  value: AppRoutes.apiaryEdit(apiaryId),
-                  child: Text(l10n.apiaryEdit),
-                ),
+                if (canWrite)
+                  PopupMenuItem(
+                    value: AppRoutes.apiaryEdit(apiaryId),
+                    child: Text(l10n.apiaryEdit),
+                  ),
               ],
             ),
           ],
@@ -81,21 +84,23 @@ class ApiaryDetailScreen extends ConsumerWidget {
                         expanded: false,
                         onPressed: () => openApiaryTour(context, ref, apiaryId),
                       ),
-                    BigButton(
-                      variant: canTour
-                          ? BigButtonVariant.secondary
-                          : BigButtonVariant.primary,
-                      label: l10n.hivesAdd,
-                      expanded: false,
-                      onPressed: () => openAddHives(context, apiaryId),
-                    ),
-                    BigButton(
-                      variant: BigButtonVariant.secondary,
-                      label: l10n.apiaryHarvest,
-                      expanded: false,
-                      onPressed: () =>
-                          context.go(AppRoutes.apiaryHarvest(apiaryId)),
-                    ),
+                    if (canWrite)
+                      BigButton(
+                        variant: canTour
+                            ? BigButtonVariant.secondary
+                            : BigButtonVariant.primary,
+                        label: l10n.hivesAdd,
+                        expanded: false,
+                        onPressed: () => openAddHives(context, apiaryId),
+                      ),
+                    if (canWrite)
+                      BigButton(
+                        variant: BigButtonVariant.secondary,
+                        label: l10n.apiaryHarvest,
+                        expanded: false,
+                        onPressed: () =>
+                            context.go(AppRoutes.apiaryHarvest(apiaryId)),
+                      ),
                   ],
                 ),
               ),

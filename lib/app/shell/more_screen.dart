@@ -52,6 +52,11 @@ class MoreScreen extends ConsumerWidget {
               tone: (colors.statusGoodContainer, colors.secondary),
               tiles: [
                 _ModuleTile(
+                  icon: Icons.group_outlined,
+                  label: l10n.teamTitle,
+                  onTap: () => context.go(AppRoutes.team),
+                ),
+                _ModuleTile(
                   icon: Icons.picture_as_pdf_outlined,
                   label: l10n.reportsTitle,
                   onTap: () => context.go(AppRoutes.reports),

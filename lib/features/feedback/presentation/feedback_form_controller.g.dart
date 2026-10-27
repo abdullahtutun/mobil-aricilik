@@ -51,7 +51,7 @@ final class FeedbackFormControllerProvider
 }
 
 String _$feedbackFormControllerHash() =>
-    r'3ed614997bcd2b97a18f9a76ad58de0ce21c3bd5';
+    r'7c064e228c821acb435db9e2ffa1b441277de823';
 
 /// "Görüş bildir" formu. Görüş yerel kuyruğa yazılır; internet yoksa
 /// bağlanınca gider. Ekran kapanırken gönderilmemiş görüşün ekran

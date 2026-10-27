@@ -10,6 +10,7 @@ import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.d
 import 'package:mobil_arici/features/queens/domain/queen.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_providers.dart';
 import 'package:mobil_arici/features/queens/presentation/widgets/queen_labels.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Kovandaki ananın kartı: işaret rengi, yıl ve renk, yaş ve ırk; altında
 /// kaynak, hat, kanat ve anne ana. Altta sabit "Ana değiştir" yeni anayı
@@ -24,13 +25,14 @@ class QueenCardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final canWrite = ref.watch(canWriteRecordsProvider);
 
     return switch (ref.watch(hiveProvider(hiveId))) {
       AsyncData(value: final hive?) => Scaffold(
         appBar: AppBar(
           title: Text(l10n.hiveLabel(hive.number)),
           actions: [
-            if (ref.watch(hiveQueenProvider(hiveId)).value != null)
+            if (canWrite && ref.watch(hiveQueenProvider(hiveId)).value != null)
               TextButton(
                 onPressed: () =>
                     context.go(AppRoutes.hiveQueenEdit(apiaryId, hiveId)),
@@ -49,11 +51,13 @@ class QueenCardScreen extends ConsumerWidget {
                 _Details(queen),
               ],
             ),
-            action: BigButton(
-              label: l10n.queenReplace,
-              onPressed: () =>
-                  context.go(AppRoutes.hiveQueenNew(apiaryId, hiveId)),
-            ),
+            action: canWrite
+                ? BigButton(
+                    label: l10n.queenReplace,
+                    onPressed: () =>
+                        context.go(AppRoutes.hiveQueenNew(apiaryId, hiveId)),
+                  )
+                : const SizedBox.shrink(),
           ),
           AsyncData() => ListView(
             padding: EdgeInsets.all(context.spacing.lg),
@@ -62,9 +66,10 @@ class QueenCardScreen extends ConsumerWidget {
                 icon: Icons.workspace_premium_outlined,
                 title: l10n.queenNoneTitle,
                 message: l10n.queenNoneMessage,
-                actionLabel: l10n.queenGive,
-                onAction: () =>
-                    context.go(AppRoutes.hiveQueenNew(apiaryId, hiveId)),
+                actionLabel: canWrite ? l10n.queenGive : null,
+                onAction: canWrite
+                    ? () => context.go(AppRoutes.hiveQueenNew(apiaryId, hiveId))
+                    : null,
               ),
             ],
           ),

@@ -51,6 +51,7 @@ import 'package:mobil_arici/features/settings/presentation/developer_menu_screen
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_form_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
+import 'package:mobil_arici/features/team/presentation/team_screen.dart';
 import 'package:mobil_arici/features/today/domain/today_rules.dart';
 import 'package:mobil_arici/features/today/presentation/attention_screen.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
@@ -382,6 +383,11 @@ GoRouter router(Ref ref) {
                     path: 'old-queens',
                     parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const OldQueensScreen(),
+                  ),
+                  GoRoute(
+                    path: 'team',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const TeamScreen(),
                   ),
                   GoRoute(
                     path: 'feedback',

@@ -29,6 +29,7 @@ import 'package:mobil_arici/features/media/presentation/media_controllers.dart';
 import 'package:mobil_arici/features/media/presentation/widgets/media_action_row.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_providers.dart';
 import 'package:mobil_arici/features/queens/presentation/widgets/queen_labels.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
 /// puanı; ana arı şeridi (dokununca ana arı kartı), son muayene, aktif
@@ -52,48 +53,52 @@ class HiveCardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
+    final canWrite = ref.watch(canWriteRecordsProvider);
 
     return switch (ref.watch(hiveProvider(hiveId))) {
       AsyncData(value: final hive?) => Scaffold(
         appBar: AppBar(
           title: _ApiaryTitle(hive.apiaryId),
           actions: [
-            // Seyrek eylemler ⋮ menüsünde (docs/design "Kovan kartı").
-            PopupMenuButton<VoidCallback>(
-              icon: const Icon(Icons.more_vert_rounded),
-              onSelected: (action) => action(),
-              itemBuilder: (context) => [
-                if (canInspect(hive)) ...[
+            // Seyrek eylemler ⋮ menüsünde (docs/design "Kovan kartı");
+            // menünün hepsi kayıt eylemi, viewer görmez.
+            if (canWrite)
+              PopupMenuButton<VoidCallback>(
+                icon: const Icon(Icons.more_vert_rounded),
+                onSelected: (action) => action(),
+                itemBuilder: (context) => [
+                  if (canInspect(hive)) ...[
+                    PopupMenuItem(
+                      value: () =>
+                          context.go(AppRoutes.hiveVarroa(apiaryId, hiveId)),
+                      child: Text(l10n.hiveVarroaCount),
+                    ),
+                    PopupMenuItem(
+                      value: () =>
+                          context.go(AppRoutes.hiveTreat(apiaryId, hiveId)),
+                      child: Text(l10n.hiveTreat),
+                    ),
+                    PopupMenuItem(
+                      value: () =>
+                          context.go(AppRoutes.hiveFeed(apiaryId, hiveId)),
+                      child: Text(l10n.hiveFeed),
+                    ),
+                  ],
                   PopupMenuItem(
-                    value: () =>
-                        context.go(AppRoutes.hiveVarroa(apiaryId, hiveId)),
-                    child: Text(l10n.hiveVarroaCount),
+                    value: () => _move(context, ref, hive),
+                    child: Text(l10n.hiveMove),
+                  ),
+                  PopupMenuItem(
+                    value: () => _changeStatus(context, ref, hive),
+                    child: Text(l10n.hiveChangeStatus),
                   ),
                   PopupMenuItem(
                     value: () =>
-                        context.go(AppRoutes.hiveTreat(apiaryId, hiveId)),
-                    child: Text(l10n.hiveTreat),
-                  ),
-                  PopupMenuItem(
-                    value: () =>
-                        context.go(AppRoutes.hiveFeed(apiaryId, hiveId)),
-                    child: Text(l10n.hiveFeed),
+                        context.go(AppRoutes.hiveEdit(apiaryId, hiveId)),
+                    child: Text(l10n.hiveEdit),
                   ),
                 ],
-                PopupMenuItem(
-                  value: () => _move(context, ref, hive),
-                  child: Text(l10n.hiveMove),
-                ),
-                PopupMenuItem(
-                  value: () => _changeStatus(context, ref, hive),
-                  child: Text(l10n.hiveChangeStatus),
-                ),
-                PopupMenuItem(
-                  value: () => context.go(AppRoutes.hiveEdit(apiaryId, hiveId)),
-                  child: Text(l10n.hiveEdit),
-                ),
-              ],
-            ),
+              ),
           ],
         ),
         body: BottomActionLayout(
@@ -101,7 +106,7 @@ class HiveCardScreen extends ConsumerWidget {
           action: MediaActionRow(
             target: 'hive:$hiveId',
             onCaptured: (capture) => _addMedia(context, ref, hive, capture),
-            action: canInspect(hive)
+            action: canWrite && canInspect(hive)
                 ? BigButton(
                     label: l10n.hiveStartInspection,
                     onPressed: () =>

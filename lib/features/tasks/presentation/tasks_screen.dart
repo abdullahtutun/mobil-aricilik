@@ -10,6 +10,7 @@ import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_providers.dart';
 import 'package:mobil_arici/features/tasks/presentation/widgets/task_list.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Görevler sekmesinin görünümleri.
 enum TasksView { today, week, apiary }
@@ -36,6 +37,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final tasks = ref.watch(openTasksProvider);
+    final canWrite = ref.watch(canWriteRecordsProvider);
 
     final header = Padding(
       padding: EdgeInsets.fromLTRB(
@@ -52,20 +54,21 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
               child: Text(l10n.tabTasks, style: context.typography.headline),
             ),
           ),
-          IconButton.filled(
-            tooltip: l10n.tasksAdd,
-            onPressed: () => context.go(AppRoutes.taskNew),
-            icon: const Icon(Icons.add_rounded),
-            style: IconButton.styleFrom(
-              backgroundColor: context.colors.primary,
-              foregroundColor: context.colors.onPrimary,
-              fixedSize: Size.square(context.touchTargets.field),
-              iconSize: context.sizes.icon,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(context.radii.card),
+          if (canWrite)
+            IconButton.filled(
+              tooltip: l10n.tasksAdd,
+              onPressed: () => context.go(AppRoutes.taskNew),
+              icon: const Icon(Icons.add_rounded),
+              style: IconButton.styleFrom(
+                backgroundColor: context.colors.primary,
+                foregroundColor: context.colors.onPrimary,
+                fixedSize: Size.square(context.touchTargets.field),
+                iconSize: context.sizes.icon,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(context.radii.card),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -83,8 +86,10 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                   icon: Icons.assignment_rounded,
                   title: l10n.tasksEmptyTitle,
                   message: l10n.tasksEmptyMessage,
-                  actionLabel: l10n.tasksAdd,
-                  onAction: () => context.go(AppRoutes.taskNew),
+                  actionLabel: canWrite ? l10n.tasksAdd : null,
+                  onAction: canWrite
+                      ? () => context.go(AppRoutes.taskNew)
+                      : null,
                   centered: true,
                 ),
                 AsyncData(:final value) => ListView(

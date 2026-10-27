@@ -13,6 +13,7 @@ import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_providers.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Kovan ekle sayfasını açar; seçime göre tek kovan ya da toplu oluşturma
 /// formuna geçer.
@@ -37,14 +38,15 @@ class ApiaryHivesSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final canWrite = ref.watch(canWriteRecordsProvider);
 
     return switch (ref.watch(apiaryHivesProvider(apiaryId))) {
       AsyncData(value: []) => EmptyState(
         icon: Icons.hive_rounded,
         title: l10n.hivesEmptyTitle,
         message: l10n.hivesEmptyMessage,
-        actionLabel: l10n.hivesAdd,
-        onAction: () => openAddHives(context, apiaryId),
+        actionLabel: canWrite ? l10n.hivesAdd : null,
+        onAction: canWrite ? () => openAddHives(context, apiaryId) : null,
       ),
       AsyncData(value: final hives) => _HiveSections(
         apiaryId: apiaryId,

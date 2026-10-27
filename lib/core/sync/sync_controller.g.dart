@@ -50,7 +50,7 @@ final class SyncControllerProvider
   }
 }
 
-String _$syncControllerHash() => r'af8bc391046f4923537a169d44de4998efd50fce';
+String _$syncControllerHash() => r'7655888e567a28cd899f8f78f34e22a650aeb607';
 
 /// Senkron turlarını başlatır ve durumunu ekranlara verir. Tetikleyiciler
 /// (`syncTriggersProvider`) ve ekranlar turu buradan başlatır. Kullanıcı

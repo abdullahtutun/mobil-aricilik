@@ -114,6 +114,9 @@ abstract final class AppRoutes {
   /// Aktif kovanlardaki değiştirilmesi gereken analar.
   static const oldQueens = '/more/old-queens';
 
+  /// Ekip: üyeler ve davet; Daha fazla'dan açılır.
+  static const team = '/more/team';
+
   /// "Görüş bildir"; Daha fazla'dan açılır.
   static const feedback = '/more/feedback';
 

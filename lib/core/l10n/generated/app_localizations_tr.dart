@@ -3415,4 +3415,125 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsAnalyticsHint =>
       'Muayene süresi, okutma sonucu ve senkron gecikmesi gibi sayılar; adın, kovanların ve konumun gönderilmez.';
+
+  @override
+  String get teamTitle => 'Ekip';
+
+  @override
+  String get teamRoleOwner => 'Sahip';
+
+  @override
+  String get teamRolePartner => 'Ortak';
+
+  @override
+  String get teamRoleWorker => 'İşçi';
+
+  @override
+  String get teamRoleViewer => 'Danışman';
+
+  @override
+  String get teamRoleViewerSubtitle => 'Sadece okuma';
+
+  @override
+  String get teamRoleHintPartner => 'Ortak kayıt girer ve finansı görür.';
+
+  @override
+  String get teamRoleHintWorker => 'İşçi kayıt girer, finansı göremez.';
+
+  @override
+  String get teamRoleHintViewer => 'Danışman yalnız okur, kayıt giremez.';
+
+  @override
+  String teamMemberSelf(String name) {
+    return '$name (sen)';
+  }
+
+  @override
+  String get teamMemberUnknown => 'Ekip üyesi';
+
+  @override
+  String get teamMembersEmpty => 'Üyeler eşitleme bitince görünür.';
+
+  @override
+  String get teamInviteTitle => 'Ekibe davet et';
+
+  @override
+  String get teamInviteHint => 'Kodu söyle ya da gönder. 48 saat geçerli.';
+
+  @override
+  String get teamInviteGenerate => 'Kod üret';
+
+  @override
+  String get teamInviteCopy => 'Kopyala';
+
+  @override
+  String get teamInviteCopied => 'Kod kopyalandı.';
+
+  @override
+  String teamInviteCodeSemantics(String code) {
+    return 'Davet kodu $code';
+  }
+
+  @override
+  String get teamHaveCode => 'Koda sahibim';
+
+  @override
+  String get teamJoinTitle => 'Koda katıl';
+
+  @override
+  String get teamJoinHint => 'Sana gönderilen 6 haneli kodu gir.';
+
+  @override
+  String get teamJoinCodeLabel => 'Davet kodu';
+
+  @override
+  String get teamJoinAction => 'Katıl';
+
+  @override
+  String get teamJoinDone => 'Ekibe katıldın.';
+
+  @override
+  String get teamErrorOffline =>
+      'Bu işlem için internet gerekir. Bağlanınca yeniden dene.';
+
+  @override
+  String get teamErrorInvalidCode =>
+      'Kod geçersiz, süresi dolmuş ya da kullanılmış.';
+
+  @override
+  String get teamErrorAlreadyMember => 'Zaten bu ekibin üyesisin.';
+
+  @override
+  String get teamErrorForbidden => 'Bu işlem için yetkin yok.';
+
+  @override
+  String get teamErrorOwnerLocked =>
+      'Sahibin rolü değiştirilemez, sahip ekipten çıkarılamaz.';
+
+  @override
+  String get teamErrorUnknown => 'İşlem yapılamadı. Biraz sonra yeniden dene.';
+
+  @override
+  String get teamRemoveAction => 'Ekipten çıkar';
+
+  @override
+  String get teamRemoveTitle => 'Ekipten çıkarılsın mı?';
+
+  @override
+  String teamRemoveMessage(String name) {
+    return '$name bu işletmenin kayıtlarına erişemez.';
+  }
+
+  @override
+  String get teamRemoveConfirm => 'Çıkar';
+
+  @override
+  String teamRemoved(String name) {
+    return '$name ekipten çıkarıldı.';
+  }
+
+  @override
+  String teamRoleChanged(String name, String role) {
+    return '$name artık $role.';
+  }
 }

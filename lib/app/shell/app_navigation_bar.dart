@@ -21,8 +21,9 @@ class AppNavigationBar extends StatelessWidget {
   /// Ortadaki butona dokunulunca: okutma.
   final VoidCallback onScan;
 
-  /// Ortadaki buton basılı tutulunca: hızlı kayıt menüsü.
-  final VoidCallback onQuickRecord;
+  /// Ortadaki buton basılı tutulunca: hızlı kayıt menüsü. Null ise (viewer
+  /// kayıt giremez) basılı tutmak bir şey yapmaz.
+  final VoidCallback? onQuickRecord;
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +162,7 @@ class _ScanButton extends StatelessWidget {
 
   final double halo;
   final VoidCallback onTap;
-  final VoidCallback onLongPress;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +178,7 @@ class _ScanButton extends StatelessWidget {
         child: Semantics(
           container: true,
           button: true,
-          onLongPressHint: l10n.scanLongPressHint,
+          onLongPressHint: onLongPress == null ? null : l10n.scanLongPressHint,
           child: Material(
             color: colors.primary,
             shape: const CircleBorder(),

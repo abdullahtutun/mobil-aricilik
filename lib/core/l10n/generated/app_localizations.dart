@@ -5489,6 +5489,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Numbers like inspection time, scan results and sync delay; your name, hives and location are never sent.'**
   String get settingsAnalyticsHint;
+
+  /// No description provided for @teamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get teamTitle;
+
+  /// No description provided for @teamRoleOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get teamRoleOwner;
+
+  /// No description provided for @teamRolePartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner'**
+  String get teamRolePartner;
+
+  /// No description provided for @teamRoleWorker.
+  ///
+  /// In en, this message translates to:
+  /// **'Worker'**
+  String get teamRoleWorker;
+
+  /// No description provided for @teamRoleViewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Advisor'**
+  String get teamRoleViewer;
+
+  /// No description provided for @teamRoleViewerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read only'**
+  String get teamRoleViewerSubtitle;
+
+  /// No description provided for @teamRoleHintPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'A partner enters records and sees finance.'**
+  String get teamRoleHintPartner;
+
+  /// No description provided for @teamRoleHintWorker.
+  ///
+  /// In en, this message translates to:
+  /// **'A worker enters records but cannot see finance.'**
+  String get teamRoleHintWorker;
+
+  /// No description provided for @teamRoleHintViewer.
+  ///
+  /// In en, this message translates to:
+  /// **'An advisor can only read and cannot enter records.'**
+  String get teamRoleHintViewer;
+
+  /// No description provided for @teamMemberSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (you)'**
+  String teamMemberSelf(String name);
+
+  /// No description provided for @teamMemberUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Team member'**
+  String get teamMemberUnknown;
+
+  /// No description provided for @teamMembersEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Members appear once sync finishes.'**
+  String get teamMembersEmpty;
+
+  /// No description provided for @teamInviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite to the team'**
+  String get teamInviteTitle;
+
+  /// No description provided for @teamInviteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell or send the code. It is valid for 48 hours.'**
+  String get teamInviteHint;
+
+  /// No description provided for @teamInviteGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate code'**
+  String get teamInviteGenerate;
+
+  /// No description provided for @teamInviteCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get teamInviteCopy;
+
+  /// No description provided for @teamInviteCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied.'**
+  String get teamInviteCopied;
+
+  /// No description provided for @teamInviteCodeSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code {code}'**
+  String teamInviteCodeSemantics(String code);
+
+  /// No description provided for @teamHaveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'I have a code'**
+  String get teamHaveCode;
+
+  /// No description provided for @teamJoinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join with a code'**
+  String get teamJoinTitle;
+
+  /// No description provided for @teamJoinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-character code you were sent.'**
+  String get teamJoinHint;
+
+  /// No description provided for @teamJoinCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code'**
+  String get teamJoinCodeLabel;
+
+  /// No description provided for @teamJoinAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get teamJoinAction;
+
+  /// No description provided for @teamJoinDone.
+  ///
+  /// In en, this message translates to:
+  /// **'You joined the team.'**
+  String get teamJoinDone;
+
+  /// No description provided for @teamErrorOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'This needs an internet connection. Try again when you are online.'**
+  String get teamErrorOffline;
+
+  /// No description provided for @teamErrorInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'The code is invalid, expired or already used.'**
+  String get teamErrorInvalidCode;
+
+  /// No description provided for @teamErrorAlreadyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'You are already a member of this team.'**
+  String get teamErrorAlreadyMember;
+
+  /// No description provided for @teamErrorForbidden.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not allowed to do this.'**
+  String get teamErrorForbidden;
+
+  /// No description provided for @teamErrorOwnerLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'The owner\'s role cannot be changed and the owner cannot be removed.'**
+  String get teamErrorOwnerLocked;
+
+  /// No description provided for @teamErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'That did not work. Try again in a moment.'**
+  String get teamErrorUnknown;
+
+  /// No description provided for @teamRemoveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from the team'**
+  String get teamRemoveAction;
+
+  /// No description provided for @teamRemoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from the team?'**
+  String get teamRemoveTitle;
+
+  /// No description provided for @teamRemoveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} will lose access to this business\'s records.'**
+  String teamRemoveMessage(String name);
+
+  /// No description provided for @teamRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get teamRemoveConfirm;
+
+  /// No description provided for @teamRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was removed from the team.'**
+  String teamRemoved(String name);
+
+  /// No description provided for @teamRoleChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is now {role}.'**
+  String teamRoleChanged(String name, String role);
 }
 
 class _AppLocalizationsDelegate
