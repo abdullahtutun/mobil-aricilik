@@ -10,6 +10,7 @@ import 'package:mobil_arici/features/onboarding/presentation/widgets/onboarding_
 import 'package:mobil_arici/features/onboarding/presentation/widgets/onboarding_stepper.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/team/presentation/join_code_sheet.dart';
 
 /// Girişten sonra işletmesi olmayan kullanıcının ilk kurulumu. İşletme önce
 /// cihazdan, yoksa sunucudan aranır; bulunamazsa akış açılır. İşletme
@@ -77,6 +78,14 @@ class _LoadError extends ConsumerWidget {
 class _OnboardingFlow extends ConsumerWidget {
   const new();
 
+  /// Koda katılınca işletme sunucudan yeniden aranır; bulununca router
+  /// Bugün'e geçer.
+  Future<void> _join(BuildContext context, WidgetRef ref) async {
+    if (await showJoinCodeSheet(context)) {
+      ref.invalidate(currentOrganizationProvider);
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -117,6 +126,16 @@ class _OnboardingFlow extends ConsumerWidget {
             children: [
               if (failure != null) ...[
                 OnboardingFailureMessage(failure),
+                SizedBox(height: spacing.md),
+              ],
+              // Davetle gelen kullanıcı işletme kurmadan ekibe katılır.
+              if (state.isFirstStep) ...[
+                BigButton(
+                  label: l10n.teamHaveCode,
+                  icon: Icons.key_rounded,
+                  variant: BigButtonVariant.secondary,
+                  onPressed: () => _join(context, ref),
+                ),
                 SizedBox(height: spacing.md),
               ],
               if (state.isLastStep)

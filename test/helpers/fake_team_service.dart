@@ -31,9 +31,12 @@ Future<void> addMember(
 /// Ağsız ekip servisi: çağrıları kaydeder, istenen hatayı atar. Rol
 /// değişikliği ve çıkarma, senkron indirmiş gibi [db]'ye yazılır.
 class FakeTeamService implements TeamService {
-  new({required this.db, this.emails = const {}});
+  new({required this.db, this.emails = const {}, this.onRedeem});
 
   final AppDatabase db;
+
+  /// Katılma başarılı olunca çalışır (sunucuda üyelik oluştu).
+  void Function()? onRedeem;
 
   /// Sunucunun verdiği e-postalar; kullanıcı kimliğine göre.
   Map<String, String?> emails;
@@ -71,6 +74,7 @@ class FakeTeamService implements TeamService {
   Future<String> redeem(String code) async {
     redeemed.add(code);
     _maybeFail();
+    onRedeem?.call();
     return testOrganization.id;
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
@@ -21,6 +22,8 @@ import 'package:mobil_arici/features/onboarding/presentation/widgets/country_pic
 import 'package:mobil_arici/features/onboarding/presentation/widgets/language_country_step.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
+import 'package:mobil_arici/features/team/domain/team_failure.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
@@ -28,6 +31,7 @@ import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_location_service.dart';
 import '../../../helpers/fake_organization_service.dart';
 import '../../../helpers/fake_sync_service.dart';
+import '../../../helpers/fake_team_service.dart';
 import '../../../helpers/fake_weather_service.dart';
 import '../../../helpers/test_database.dart';
 
@@ -38,6 +42,7 @@ Future<ProviderContainer> _pumpApp(
   FakeAuthService? auth,
   AppDatabase? db,
   FakeLocationService? location,
+  List<Override> overrides = const [],
 }) async {
   final container = ProviderContainer.test(
     overrides: [
@@ -51,6 +56,7 @@ Future<ProviderContainer> _pumpApp(
       ),
       ...syncOverrides(),
       weatherServiceProvider.overrideWithValue(FakeWeatherService()),
+      ...overrides,
     ],
   );
   await tester.pumpWidget(
@@ -122,6 +128,75 @@ void main() {
       expect(find.byType(AppNavigationBar), findsNothing);
       expect(find.text('STEP 1 OF 3'), findsOneWidget);
       expect(find.text('Language and country'), findsOneWidget);
+    });
+
+    testWidgets('Koda sahibim: katılınca işletme kurmadan Bugün açılır', (
+      tester,
+    ) async {
+      final org = FakeOrganizationService();
+      final db = openTestDatabase();
+      final team = FakeTeamService(db: db)
+        ..onRedeem = () => org.serverOrganization = testOrganization;
+      await _pumpApp(
+        tester,
+        service: org,
+        db: db,
+        overrides: [teamServiceProvider.overrideWithValue(team)],
+      );
+
+      await _tap(tester, find.text('I have a code'));
+      await tester.enterText(
+        find.descendant(
+          of: find.byType(BottomSheet),
+          matching: find.byType(TextField),
+        ),
+        'ar7-k2q',
+      );
+      await tester.pump();
+      await _tap(tester, find.widgetWithText(BigButton, 'Join'));
+
+      expect(team.redeemed, ['AR7K2Q']);
+      expect(org.created, isEmpty);
+      expect(find.byType(OnboardingScreen), findsNothing);
+      expect(find.byType(AppNavigationBar), findsOneWidget);
+    });
+
+    testWidgets('Koda sahibim: geçersiz kodda onboarding açık kalır', (
+      tester,
+    ) async {
+      final db = openTestDatabase();
+      final team = FakeTeamService(db: db)..failure = TeamFailure.invalidCode;
+      await _pumpApp(
+        tester,
+        db: db,
+        overrides: [teamServiceProvider.overrideWithValue(team)],
+      );
+
+      await _tap(tester, find.text('I have a code'));
+      await tester.enterText(
+        find.descendant(
+          of: find.byType(BottomSheet),
+          matching: find.byType(TextField),
+        ),
+        'AR7K2Q',
+      );
+      await tester.pump();
+      await _tap(tester, find.widgetWithText(BigButton, 'Join'));
+
+      expect(
+        find.text('The code is invalid, expired or already used.'),
+        findsOneWidget,
+      );
+      expect(find.byType(OnboardingScreen), findsOneWidget);
+    });
+
+    testWidgets('Koda sahibim yalnız ilk adımda görünür', (tester) async {
+      await _pumpApp(tester);
+      expect(find.text('I have a code'), findsOneWidget);
+
+      await _continue(tester);
+
+      expect(find.text('I have a code'), findsNothing);
     });
 
     testWidgets('iki adım tamamlanınca işletme kurulur, ilk arılık açılır', (
