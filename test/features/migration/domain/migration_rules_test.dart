@@ -213,4 +213,9 @@ void main() {
     expect(shortPlace('Ula, Muğla'), 'Ula');
     expect(shortPlace(' Köyceğiz '), 'Köyceğiz');
   });
+
+  test('stopPlace yerin ilk parçasını, yer yoksa durağın adını verir', () {
+    expect(stopPlace(_stop('cam').copyWith(place: 'Ula, Muğla')), 'Ula');
+    expect(stopPlace(_stop('Kışlak')), 'Kışlak');
+  });
 }

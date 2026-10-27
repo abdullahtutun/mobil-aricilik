@@ -47,6 +47,7 @@ import 'package:mobil_arici/features/migration/presentation/migration_form_scree
 import 'package:mobil_arici/features/migration/presentation/migration_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_stop_form_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migrations_screen.dart';
+import 'package:mobil_arici/features/migration/presentation/move_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -463,6 +464,13 @@ GoRouter router(Ref ref) {
                             parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => MigrationFormScreen(
                               migrationId: state.pathParameters[_migrationId],
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'move',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => MoveScreen(
+                              migrationId: state.pathParameters[_migrationId]!,
                             ),
                           ),
                           GoRoute(

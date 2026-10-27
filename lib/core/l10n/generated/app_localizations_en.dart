@@ -4247,4 +4247,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncTableMigrationStops => 'Migration stop';
+
+  @override
+  String get moveStart => 'Start move';
+
+  @override
+  String moveTitle(String route) {
+    return 'Move · $route';
+  }
+
+  @override
+  String get moveComingTitle => 'Loading is coming soon';
+
+  @override
+  String get moveComingMessage =>
+      'The checklist, loading hives onto trucks by scanning and unloading at the destination will be here.';
+
+  @override
+  String get moveNone => 'No upcoming move';
 }

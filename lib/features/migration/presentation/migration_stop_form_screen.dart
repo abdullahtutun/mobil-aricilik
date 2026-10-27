@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
@@ -109,11 +110,15 @@ class _StopFormFields extends ConsumerStatefulWidget {
 class _StopFormFieldsState extends ConsumerState<_StopFormFields> {
   late final _name = TextEditingController(text: widget.form.name);
   late final _place = TextEditingController(text: widget.form.place);
+  late final _hiveCount = TextEditingController(
+    text: widget.form.hiveCount?.toString() ?? '',
+  );
 
   @override
   void dispose() {
     _name.dispose();
     _place.dispose();
+    _hiveCount.dispose();
     super.dispose();
   }
 
@@ -187,13 +192,24 @@ class _StopFormFieldsState extends ConsumerState<_StopFormFields> {
           ],
         ),
         SizedBox(height: spacing.xl),
-        BigStepper(
+        InlineField(
           label: l10n.stopFormHiveCount,
-          value: form.hiveCount,
-          max: maxStopHiveCount,
-          step: 10,
-          onChanged: (count) =>
-              _controller.setHiveCount(count == 0 ? null : count),
+          field: TextField(
+            controller: _hiveCount,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter('$maxStopHiveCount'.length),
+            ],
+            textAlign: TextAlign.center,
+            style: context.typography.number,
+            onChanged: (text) => _controller.setHiveCount(switch (int.tryParse(
+              text,
+            )) {
+              final count? when count > 0 => count.clamp(1, maxStopHiveCount),
+              _ => null,
+            }),
+          ),
         ),
         SizedBox(height: spacing.xl),
         LabeledField(
@@ -240,8 +256,7 @@ class _StopFormFieldsState extends ConsumerState<_StopFormFields> {
     if (day != null) onPicked(day);
   }
 
-  /// Hedef arılığı seçer; kovan sayısı girilmediyse arılığın aktif kovan
-  /// sayısı önerilir.
+  /// Hedef arılığı seçer.
   Future<void> _pickApiary(
     BuildContext context,
     List<ApiarySummary> apiaries,
@@ -271,11 +286,12 @@ class _StopFormFieldsState extends ConsumerState<_StopFormFields> {
     if (picked == null) return;
     final apiaryId = picked.isEmpty ? null : picked;
     _controller.setApiary(apiaryId);
+    // Arılık seçilince kovan sayısı arılığın aktif kovanlarıyla dolar;
+    // elle değiştirilebilir. Arılık kaldırılınca girilen sayı kalır.
     final summary = apiaries.where((s) => s.apiary.id == apiaryId).firstOrNull;
-    if (widget.form.hiveCount == null &&
-        summary != null &&
-        summary.activeHiveCount > 0) {
+    if (summary != null && summary.activeHiveCount > 0) {
       _controller.setHiveCount(summary.activeHiveCount);
+      _hiveCount.text = '${summary.activeHiveCount}';
     }
   }
 }

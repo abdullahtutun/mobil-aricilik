@@ -1113,5 +1113,10 @@
   "stopSaved": "Durak kaydedildi",
   "stopDeleted": "Durak silindi",
   "syncTableMigrations": "Göç planı",
-  "syncTableMigrationStops": "Göç durağı"
+  "syncTableMigrationStops": "Göç durağı",
+  "moveStart": "Taşıma başlat",
+  "moveTitle": "Taşıma · {route}",
+  "moveComingTitle": "Yükleme yakında",
+  "moveComingMessage": "Kontrol listesi, kovanları okutarak kamyona yükleme ve hedefte indirme burada olacak.",
+  "moveNone": "Sıradaki taşıma yok"
 }

@@ -34,6 +34,15 @@ Finder _field(String label) => find.descendant(
   matching: find.byType(TextField),
 );
 
+/// Kovan sayısı alanı (InlineField).
+Finder get _hiveCount => find.descendant(
+  of: find.byWidgetPredicate((w) => w is InlineField && w.label == 'Hives'),
+  matching: find.byType(TextField),
+);
+
+String _hiveCountText(WidgetTester tester) =>
+    tester.widget<TextField>(_hiveCount).controller!.text;
+
 Future<void> _tap(WidgetTester tester, Finder finder) async {
   // Kaydırılan listede henüz kurulmamış olabilir.
   if (finder.evaluate().isEmpty) {
@@ -220,10 +229,14 @@ void main() {
     expect(tester.widget<BigButton>(_button('Save')).onPressed, isNull);
     await tester.enterText(_field('Source'), 'Pine');
     await tester.enterText(_field('Place'), 'Ula, Muğla');
+    // Arılık yokken kovan sayısı elle girilir.
+    expect(_hiveCountText(tester), isEmpty);
+    await tester.enterText(_hiveCount, '40');
+    // Arılık seçilince arılığın aktif kovan sayısıyla dolar, düzenlenebilir.
     await _tap(tester, find.text('Target apiary'));
     await _tap(tester, find.text('Çam arılığı'));
-    // Kovan sayısı arılıktan önerilir.
-    expect(find.text('3'), findsOneWidget);
+    expect(_hiveCountText(tester), '3');
+    await tester.enterText(_hiveCount, '5');
     await _tap(tester, find.text('Here now'));
     await _tap(tester, _button('Save'));
 
@@ -231,15 +244,34 @@ void main() {
     expect(stop.name, 'Pine');
     expect(stop.place, 'Ula, Muğla');
     expect(stop.apiaryId, apiary.id);
-    expect(stop.hiveCount, 3);
+    expect(stop.hiveCount, 5);
     expect(stop.status, MigrationStopStatus.current);
     expect(stop.position, 1);
 
-    // Zaman çizelgesine döner.
+    // Zaman çizelgesine döner; planlı durak yokken taşıma başlatılamaz.
     expect(find.text('Pine'), findsOneWidget);
-    expect(find.text('Ula, Muğla · 3 hives'), findsOneWidget);
+    expect(find.text('Ula, Muğla · 5 hives'), findsOneWidget);
     expect(find.text("You're here"), findsOneWidget);
     expect(find.text('No past harvest at this apiary'), findsOneWidget);
+    expect(tester.widget<BigButton>(_button('Start move')).onPressed, isNull);
+
+    // Arılıksız durağın kovan sayısı elle; yeri yoksa kartta adı yazar.
+    // "Durak kaydedildi" bildirimi alttaki butonları örtüyor; kapanması
+    // beklenir.
+    await tester.pump(const Duration(seconds: 10));
+    await tester.pumpAndSettle();
+    await _tap(tester, _button('Add stop'));
+    expect(find.text('2'), findsOneWidget);
+    await tester.enterText(_field('Source'), 'Winter yard');
+    await tester.enterText(_hiveCount, '148');
+    await _tap(tester, _button('Save'));
+    final winter = (await db.select(db.migrationStops).get()).firstWhere(
+      (s) => s.name == 'Winter yard',
+    );
+    expect(winter.hiveCount, 148);
+    expect(winter.apiaryId, isNull);
+    expect(find.text('Pine → Winter yard'), findsOneWidget);
+    expect(find.text('Ula → Winter yard · 148 hives'), findsOneWidget);
   });
 
   testWidgets('zaman çizelgesi: sıradaki taşıma kartı, TR belgeleri renk + '
@@ -290,6 +322,13 @@ void main() {
     expect(find.text('Document vault'), findsOneWidget);
     await _tap(tester, find.byTooltip('Back'));
     expect(find.text('Çam → Kışlak'), findsOneWidget);
+
+    // Taşıma başlat sıradaki taşımayı açar.
+    await _tap(tester, _button('Start move'));
+    expect(find.text('Move · Çam → Kışlak'), findsOneWidget);
+    expect(find.text('Loading is coming soon'), findsOneWidget);
+    await _tap(tester, find.byTooltip('Back'));
+    expect(find.text('Çam → Kışlak'), findsOneWidget);
   });
 
   testWidgets('diğer bölgede kartta belge durumu yok', (tester) async {
@@ -328,6 +367,7 @@ void main() {
       'Kışlak': MigrationStopStatus.current,
     });
     expect(find.textContaining('NEXT MOVE'), findsNothing);
+    expect(tester.widget<BigButton>(_button('Start move')).onPressed, isNull);
 
     await _tap(tester, find.text('Yayla'));
     await _tap(tester, _button('Delete stop'));
@@ -346,6 +386,7 @@ void main() {
     expect(find.text('Çam → Kışlak'), findsOneWidget);
     expect(find.byTooltip('Edit plan'), findsNothing);
     expect(_button('Add stop'), findsNothing);
+    expect(_button('Start move'), findsNothing);
     await tester.tap(find.text('Kışlak'));
     await tester.pumpAndSettle();
     expect(find.text('Edit stop'), findsNothing);
@@ -378,6 +419,7 @@ void main() {
     );
     expect(find.text('Evrak'), findsOneWidget);
     expect(_button('Durak ekle'), findsOneWidget);
+    expect(_button('Taşıma başlat'), findsOneWidget);
 
     await _tap(tester, _button('Durak ekle'));
     expect(find.text('Yeni durak'), findsOneWidget);

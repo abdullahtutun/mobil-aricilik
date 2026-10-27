@@ -4078,4 +4078,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncTableMigrationStops => 'Göç durağı';
+
+  @override
+  String get moveStart => 'Taşıma başlat';
+
+  @override
+  String moveTitle(String route) {
+    return 'Taşıma · $route';
+  }
+
+  @override
+  String get moveComingTitle => 'Yükleme yakında';
+
+  @override
+  String get moveComingMessage =>
+      'Kontrol listesi, kovanları okutarak kamyona yükleme ve hedefte indirme burada olacak.';
+
+  @override
+  String get moveNone => 'Sıradaki taşıma yok';
 }

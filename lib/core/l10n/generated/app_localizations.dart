@@ -6586,6 +6586,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Migration stop'**
   String get syncTableMigrationStops;
+
+  /// Timeline button that opens the next move.
+  ///
+  /// In en, this message translates to:
+  /// **'Start move'**
+  String get moveStart;
+
+  /// Move screen title, e.g. 'Move · Pine → Winter yard'.
+  ///
+  /// In en, this message translates to:
+  /// **'Move · {route}'**
+  String moveTitle(String route);
+
+  /// Placeholder title on the move screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading is coming soon'**
+  String get moveComingTitle;
+
+  /// Placeholder message on the move screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The checklist, loading hives onto trucks by scanning and unloading at the destination will be here.'**
+  String get moveComingMessage;
+
+  /// Move screen when the plan has no planned stop left.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming move'**
+  String get moveNone;
 }
 
 class _AppLocalizationsDelegate

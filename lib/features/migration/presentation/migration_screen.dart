@@ -18,7 +18,8 @@ import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 /// Göç planının zaman çizelgesi (docs/design "Gezginci · göç planı"):
 /// üstte "Sıradaki taşıma" kartı, altında duraklar rota sırasıyla; her
 /// durakta ay aralığı, yer, kovan sayısı ve hedef arılığın geçmiş yıl
-/// verimi. Durağa dokununca düzenlenir; altta "Durak ekle". Üst bardaki
+/// verimi. Durağa dokununca düzenlenir; altta "Durak ekle" ve sıradaki
+/// taşımayı açan "Taşıma başlat". Üst bardaki
 /// "Evrak" belge kasasını açar. Viewer durak ekleyemez ve düzenleyemez.
 class MigrationScreen extends ConsumerWidget {
   const new({required this.migrationId, super.key});
@@ -120,11 +121,29 @@ class _Timeline extends ConsumerWidget {
     return BottomActionLayout(
       separated: true,
       body: list,
-      action: BigButton(
-        label: l10n.migrationAddStop,
-        icon: Icons.add_rounded,
-        variant: BigButtonVariant.secondary,
-        onPressed: () => context.go(AppRoutes.migrationStopNew(migration.id)),
+      action: Row(
+        spacing: context.touchTargets.gap,
+        children: [
+          // Taşıma başlat birincil, geniş; büyük yazıda iki etiket de kırılır.
+          Expanded(
+            child: BigButton(
+              label: l10n.migrationAddStop,
+              variant: BigButtonVariant.secondary,
+              onPressed: () =>
+                  context.go(AppRoutes.migrationStopNew(migration.id)),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: BigButton(
+              label: l10n.moveStart,
+              // Sıradaki taşıma yoksa (planlı durak kalmadı) pasif.
+              onPressed: next == null
+                  ? null
+                  : () => context.go(AppRoutes.migrationMove(migration.id)),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -156,11 +175,11 @@ class _NextMoveCard extends ConsumerWidget {
     final title = from == null
         ? to.name
         : l10n.migrationRoute(from.name, to.name);
-    final places = switch ((from?.place, to.place)) {
-      (final a?, final b?) => l10n.migrationRoute(shortPlace(a), shortPlace(b)),
-      (_, final b?) => b,
-      _ => null,
-    };
+    // Kaynak ve hedefin yeri birlikte ("Ula → Köyceğiz"); yeri yazılmamış
+    // durakta adı. İlk taşımada yalnız hedefin yeri.
+    final places = from == null
+        ? to.place
+        : l10n.migrationRoute(stopPlace(from), stopPlace(to));
     final hiveCount = to.hiveCount ?? from?.hiveCount;
     final details = [
       ?places,

@@ -181,3 +181,9 @@ Map<String, List<YearlyYield>> yieldsByApiary(
 
 /// Yerin ilk parçası: "Ula, Muğla" → "Ula".
 String shortPlace(String place) => place.split(',').first.trim();
+
+/// Taşıma kartında durağın yeri: yerin ilk parçası, yer yoksa adı.
+String stopPlace(MigrationStop stop) => switch (stop.place) {
+  final place? => shortPlace(place),
+  null => stop.name,
+};

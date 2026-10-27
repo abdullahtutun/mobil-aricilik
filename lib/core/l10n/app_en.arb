@@ -3585,5 +3585,31 @@
   "syncTableMigrationStops": "Migration stop",
   "@syncTableMigrationStops": {
     "description": "Record type name on the sync screen."
+  },
+  "moveStart": "Start move",
+  "@moveStart": {
+    "description": "Timeline button that opens the next move."
+  },
+  "moveTitle": "Move · {route}",
+  "@moveTitle": {
+    "description": "Move screen title, e.g. 'Move · Pine → Winter yard'.",
+    "placeholders": {
+      "route": {
+        "type": "String",
+        "example": "Pine → Winter yard"
+      }
+    }
+  },
+  "moveComingTitle": "Loading is coming soon",
+  "@moveComingTitle": {
+    "description": "Placeholder title on the move screen."
+  },
+  "moveComingMessage": "The checklist, loading hives onto trucks by scanning and unloading at the destination will be here.",
+  "@moveComingMessage": {
+    "description": "Placeholder message on the move screen."
+  },
+  "moveNone": "No upcoming move",
+  "@moveNone": {
+    "description": "Move screen when the plan has no planned stop left."
   }
 }

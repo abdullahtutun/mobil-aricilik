@@ -141,6 +141,10 @@ abstract final class AppRoutes {
   static String migrationStopEdit(String migrationId, String stopId) =>
       '/more/migrations/$migrationId/stops/$stopId/edit';
 
+  /// Planın sıradaki taşıması (kontrol, yükleme, indirme).
+  static String migrationMove(String migrationId) =>
+      '/more/migrations/$migrationId/move';
+
   /// Fotoğrafın tam ekranı; sekmelerin üstünde açılır.
   static String mediaPhoto(String mediaId) => '/media/$mediaId';
 
