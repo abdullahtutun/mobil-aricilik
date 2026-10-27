@@ -6,6 +6,7 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v10.dart' as v10;
+import 'generated/schema_v11.dart' as v11;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -490,6 +491,48 @@ void main() {
         expect(settings.single.value, 'true');
         expect(await newDb.select(newDb.feedbackQueue).get(), isEmpty);
         expect(await newDb.select(newDb.analyticsQueue).get(), isEmpty);
+      },
+    );
+  });
+
+  test("v10 → v11 görüş kuyruğunu ve outbox'ı korur; belge tabloları boş "
+      'gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 10,
+      newVersion: 11,
+      createOld: v10.DatabaseAtV10.new,
+      createNew: v11.DatabaseAtV11.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(
+            oldDb.feedbackQueue,
+            v10.FeedbackQueueCompanion.insert(
+              id: 'feedback-1',
+              orgId: 'org-1',
+              kind: 'bug',
+              message: 'Harita açılmıyor',
+              createdAt: '2026-10-27T09:00:00.000Z',
+            ),
+          )
+          ..insert(
+            oldDb.outbox,
+            v10.OutboxCompanion.insert(
+              recordTable: 'tasks',
+              recordId: 'task-1',
+              operation: 'upsert',
+              payload: '{"id": "task-1"}',
+              createdAt: '2026-10-27T09:00:00.000Z',
+            ),
+          );
+      },
+      validateItems: (newDb) async {
+        final feedback = await newDb.select(newDb.feedbackQueue).get();
+        expect(feedback.single.message, 'Harita açılmıyor');
+        final outbox = await newDb.select(newDb.outbox).get();
+        expect(outbox.single.recordId, 'task-1');
+        expect(await newDb.select(newDb.documents).get(), isEmpty);
+        expect(await newDb.select(newDb.documentUploads).get(), isEmpty);
       },
     );
   });

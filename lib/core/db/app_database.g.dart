@@ -10726,6 +10726,1177 @@ extension HarvestHiveToInsertable on HarvestHive {
   }
 }
 
+class $DocumentsTable extends Documents
+    with TableInfo<$DocumentsTable, VaultDocument> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DocumentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DocumentType, String> type =
+      GeneratedColumn<String>(
+        'type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DocumentType>($DocumentsTable.$convertertype);
+  static const VerificationMeta _customTypeNameMeta = const VerificationMeta(
+    'customTypeName',
+  );
+  @override
+  late final GeneratedColumn<String> customTypeName = GeneratedColumn<String>(
+    'custom_type_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime?, String> expiresOn =
+      GeneratedColumn<String>(
+        'expires_on',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<DateTime?>($DocumentsTable.$converterexpiresOnn);
+  @override
+  late final GeneratedColumnWithTypeConverter<DocumentFileKind, String>
+  fileKind = GeneratedColumn<String>(
+    'file_kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<DocumentFileKind>($DocumentsTable.$converterfileKind);
+  static const VerificationMeta _storagePathMeta = const VerificationMeta(
+    'storagePath',
+  );
+  @override
+  late final GeneratedColumn<String> storagePath = GeneratedColumn<String>(
+    'storage_path',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _byteSizeMeta = const VerificationMeta(
+    'byteSize',
+  );
+  @override
+  late final GeneratedColumn<int> byteSize = GeneratedColumn<int>(
+    'byte_size',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    type,
+    customTypeName,
+    name,
+    description,
+    expiresOn,
+    fileKind,
+    storagePath,
+    byteSize,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'documents';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<VaultDocument> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('custom_type_name')) {
+      context.handle(
+        _customTypeNameMeta,
+        customTypeName.isAcceptableOrUnknown(
+          data['custom_type_name']!,
+          _customTypeNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('storage_path')) {
+      context.handle(
+        _storagePathMeta,
+        storagePath.isAcceptableOrUnknown(
+          data['storage_path']!,
+          _storagePathMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_storagePathMeta);
+    }
+    if (data.containsKey('byte_size')) {
+      context.handle(
+        _byteSizeMeta,
+        byteSize.isAcceptableOrUnknown(data['byte_size']!, _byteSizeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_byteSizeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  VaultDocument map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VaultDocument(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      type: $DocumentsTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}type'],
+        )!,
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      fileKind: $DocumentsTable.$converterfileKind.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}file_kind'],
+        )!,
+      ),
+      storagePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}storage_path'],
+      )!,
+      byteSize: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}byte_size'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      customTypeName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}custom_type_name'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      expiresOn: $DocumentsTable.$converterexpiresOnn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}expires_on'],
+        ),
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $DocumentsTable createAlias(String alias) {
+    return $DocumentsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DocumentType, String> $convertertype =
+      const ServerEnumConverter(DocumentType.values);
+  static TypeConverter<DateTime, String> $converterexpiresOn =
+      const DateOnlyConverter();
+  static TypeConverter<DateTime?, String?> $converterexpiresOnn =
+      NullAwareTypeConverter.wrap($converterexpiresOn);
+  static TypeConverter<DocumentFileKind, String> $converterfileKind =
+      const ServerEnumConverter(DocumentFileKind.values);
+}
+
+class DocumentsCompanion extends UpdateCompanion<VaultDocument> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<DocumentType> type;
+  final Value<String?> customTypeName;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<DateTime?> expiresOn;
+  final Value<DocumentFileKind> fileKind;
+  final Value<String> storagePath;
+  final Value<int> byteSize;
+  final Value<int> rowid;
+  const DocumentsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.customTypeName = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.expiresOn = const Value.absent(),
+    this.fileKind = const Value.absent(),
+    this.storagePath = const Value.absent(),
+    this.byteSize = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DocumentsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required DocumentType type,
+    this.customTypeName = const Value.absent(),
+    required String name,
+    this.description = const Value.absent(),
+    this.expiresOn = const Value.absent(),
+    required DocumentFileKind fileKind,
+    required String storagePath,
+    required int byteSize,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       type = Value(type),
+       name = Value(name),
+       fileKind = Value(fileKind),
+       storagePath = Value(storagePath),
+       byteSize = Value(byteSize);
+  static Insertable<VaultDocument> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? type,
+    Expression<String>? customTypeName,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? expiresOn,
+    Expression<String>? fileKind,
+    Expression<String>? storagePath,
+    Expression<int>? byteSize,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (type != null) 'type': type,
+      if (customTypeName != null) 'custom_type_name': customTypeName,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (expiresOn != null) 'expires_on': expiresOn,
+      if (fileKind != null) 'file_kind': fileKind,
+      if (storagePath != null) 'storage_path': storagePath,
+      if (byteSize != null) 'byte_size': byteSize,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DocumentsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<DocumentType>? type,
+    Value<String?>? customTypeName,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<DateTime?>? expiresOn,
+    Value<DocumentFileKind>? fileKind,
+    Value<String>? storagePath,
+    Value<int>? byteSize,
+    Value<int>? rowid,
+  }) {
+    return DocumentsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      type: type ?? this.type,
+      customTypeName: customTypeName ?? this.customTypeName,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      expiresOn: expiresOn ?? this.expiresOn,
+      fileKind: fileKind ?? this.fileKind,
+      storagePath: storagePath ?? this.storagePath,
+      byteSize: byteSize ?? this.byteSize,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(
+        $DocumentsTable.$convertertype.toSql(type.value),
+      );
+    }
+    if (customTypeName.present) {
+      map['custom_type_name'] = Variable<String>(customTypeName.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (expiresOn.present) {
+      map['expires_on'] = Variable<String>(
+        $DocumentsTable.$converterexpiresOnn.toSql(expiresOn.value),
+      );
+    }
+    if (fileKind.present) {
+      map['file_kind'] = Variable<String>(
+        $DocumentsTable.$converterfileKind.toSql(fileKind.value),
+      );
+    }
+    if (storagePath.present) {
+      map['storage_path'] = Variable<String>(storagePath.value);
+    }
+    if (byteSize.present) {
+      map['byte_size'] = Variable<int>(byteSize.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DocumentsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('type: $type, ')
+          ..write('customTypeName: $customTypeName, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('expiresOn: $expiresOn, ')
+          ..write('fileKind: $fileKind, ')
+          ..write('storagePath: $storagePath, ')
+          ..write('byteSize: $byteSize, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$VaultDocumentInsertable implements Insertable<VaultDocument> {
+  VaultDocument _object;
+  _$VaultDocumentInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return DocumentsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      type: Value(_object.type),
+      customTypeName: Value(_object.customTypeName),
+      name: Value(_object.name),
+      description: Value(_object.description),
+      expiresOn: Value(_object.expiresOn),
+      fileKind: Value(_object.fileKind),
+      storagePath: Value(_object.storagePath),
+      byteSize: Value(_object.byteSize),
+    ).toColumns(false);
+  }
+}
+
+extension VaultDocumentToInsertable on VaultDocument {
+  _$VaultDocumentInsertable toInsertable() {
+    return _$VaultDocumentInsertable(this);
+  }
+}
+
+class $DocumentUploadsTable extends DocumentUploads
+    with TableInfo<$DocumentUploadsTable, DocumentUpload> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DocumentUploadsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _storagePathMeta = const VerificationMeta(
+    'storagePath',
+  );
+  @override
+  late final GeneratedColumn<String> storagePath = GeneratedColumn<String>(
+    'storage_path',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _documentIdMeta = const VerificationMeta(
+    'documentId',
+  );
+  @override
+  late final GeneratedColumn<String> documentId = GeneratedColumn<String>(
+    'document_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<MediaUploadStatus, String>
+  uploadStatus =
+      GeneratedColumn<String>(
+        'upload_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<MediaUploadStatus>(
+        $DocumentUploadsTable.$converteruploadStatus,
+      );
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _nextAttemptAtMeta = const VerificationMeta(
+    'nextAttemptAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> nextAttemptAt =
+      GeneratedColumn<DateTime>(
+        'next_attempt_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
+  @override
+  late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
+    'last_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    storagePath,
+    documentId,
+    orgId,
+    uploadStatus,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'document_uploads';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DocumentUpload> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('storage_path')) {
+      context.handle(
+        _storagePathMeta,
+        storagePath.isAcceptableOrUnknown(
+          data['storage_path']!,
+          _storagePathMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_storagePathMeta);
+    }
+    if (data.containsKey('document_id')) {
+      context.handle(
+        _documentIdMeta,
+        documentId.isAcceptableOrUnknown(data['document_id']!, _documentIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_documentIdMeta);
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    }
+    if (data.containsKey('next_attempt_at')) {
+      context.handle(
+        _nextAttemptAtMeta,
+        nextAttemptAt.isAcceptableOrUnknown(
+          data['next_attempt_at']!,
+          _nextAttemptAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_error')) {
+      context.handle(
+        _lastErrorMeta,
+        lastError.isAcceptableOrUnknown(data['last_error']!, _lastErrorMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {storagePath};
+  @override
+  DocumentUpload map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DocumentUpload(
+      storagePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}storage_path'],
+      )!,
+      documentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}document_id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      uploadStatus: $DocumentUploadsTable.$converteruploadStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}upload_status'],
+        )!,
+      ),
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      nextAttemptAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}next_attempt_at'],
+      ),
+      lastError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_error'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $DocumentUploadsTable createAlias(String alias) {
+    return $DocumentUploadsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<MediaUploadStatus, String, String>
+  $converteruploadStatus = const EnumNameConverter<MediaUploadStatus>(
+    MediaUploadStatus.values,
+  );
+}
+
+class DocumentUpload extends DataClass implements Insertable<DocumentUpload> {
+  /// Belgenin `storage_path`'i; dosyanın yerel adı bunun son parçası.
+  final String storagePath;
+  final String documentId;
+  final String orgId;
+  final MediaUploadStatus uploadStatus;
+  final int attempts;
+
+  /// Boşsa hemen denenir.
+  final DateTime? nextAttemptAt;
+  final String? lastError;
+  final DateTime createdAt;
+  const DocumentUpload({
+    required this.storagePath,
+    required this.documentId,
+    required this.orgId,
+    required this.uploadStatus,
+    required this.attempts,
+    this.nextAttemptAt,
+    this.lastError,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['storage_path'] = Variable<String>(storagePath);
+    map['document_id'] = Variable<String>(documentId);
+    map['org_id'] = Variable<String>(orgId);
+    {
+      map['upload_status'] = Variable<String>(
+        $DocumentUploadsTable.$converteruploadStatus.toSql(uploadStatus),
+      );
+    }
+    map['attempts'] = Variable<int>(attempts);
+    if (!nullToAbsent || nextAttemptAt != null) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt);
+    }
+    if (!nullToAbsent || lastError != null) {
+      map['last_error'] = Variable<String>(lastError);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  DocumentUploadsCompanion toCompanion(bool nullToAbsent) {
+    return DocumentUploadsCompanion(
+      storagePath: Value(storagePath),
+      documentId: Value(documentId),
+      orgId: Value(orgId),
+      uploadStatus: Value(uploadStatus),
+      attempts: Value(attempts),
+      nextAttemptAt: nextAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextAttemptAt),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory DocumentUpload.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DocumentUpload(
+      storagePath: serializer.fromJson<String>(json['storagePath']),
+      documentId: serializer.fromJson<String>(json['documentId']),
+      orgId: serializer.fromJson<String>(json['orgId']),
+      uploadStatus: $DocumentUploadsTable.$converteruploadStatus.fromJson(
+        serializer.fromJson<String>(json['uploadStatus']),
+      ),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      nextAttemptAt: serializer.fromJson<DateTime?>(json['nextAttemptAt']),
+      lastError: serializer.fromJson<String?>(json['lastError']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'storagePath': serializer.toJson<String>(storagePath),
+      'documentId': serializer.toJson<String>(documentId),
+      'orgId': serializer.toJson<String>(orgId),
+      'uploadStatus': serializer.toJson<String>(
+        $DocumentUploadsTable.$converteruploadStatus.toJson(uploadStatus),
+      ),
+      'attempts': serializer.toJson<int>(attempts),
+      'nextAttemptAt': serializer.toJson<DateTime?>(nextAttemptAt),
+      'lastError': serializer.toJson<String?>(lastError),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  DocumentUpload copyWith({
+    String? storagePath,
+    String? documentId,
+    String? orgId,
+    MediaUploadStatus? uploadStatus,
+    int? attempts,
+    Value<DateTime?> nextAttemptAt = const Value.absent(),
+    Value<String?> lastError = const Value.absent(),
+    DateTime? createdAt,
+  }) => DocumentUpload(
+    storagePath: storagePath ?? this.storagePath,
+    documentId: documentId ?? this.documentId,
+    orgId: orgId ?? this.orgId,
+    uploadStatus: uploadStatus ?? this.uploadStatus,
+    attempts: attempts ?? this.attempts,
+    nextAttemptAt: nextAttemptAt.present
+        ? nextAttemptAt.value
+        : this.nextAttemptAt,
+    lastError: lastError.present ? lastError.value : this.lastError,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  DocumentUpload copyWithCompanion(DocumentUploadsCompanion data) {
+    return DocumentUpload(
+      storagePath: data.storagePath.present
+          ? data.storagePath.value
+          : this.storagePath,
+      documentId: data.documentId.present
+          ? data.documentId.value
+          : this.documentId,
+      orgId: data.orgId.present ? data.orgId.value : this.orgId,
+      uploadStatus: data.uploadStatus.present
+          ? data.uploadStatus.value
+          : this.uploadStatus,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      nextAttemptAt: data.nextAttemptAt.present
+          ? data.nextAttemptAt.value
+          : this.nextAttemptAt,
+      lastError: data.lastError.present ? data.lastError.value : this.lastError,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DocumentUpload(')
+          ..write('storagePath: $storagePath, ')
+          ..write('documentId: $documentId, ')
+          ..write('orgId: $orgId, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    storagePath,
+    documentId,
+    orgId,
+    uploadStatus,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DocumentUpload &&
+          other.storagePath == this.storagePath &&
+          other.documentId == this.documentId &&
+          other.orgId == this.orgId &&
+          other.uploadStatus == this.uploadStatus &&
+          other.attempts == this.attempts &&
+          other.nextAttemptAt == this.nextAttemptAt &&
+          other.lastError == this.lastError &&
+          other.createdAt == this.createdAt);
+}
+
+class DocumentUploadsCompanion extends UpdateCompanion<DocumentUpload> {
+  final Value<String> storagePath;
+  final Value<String> documentId;
+  final Value<String> orgId;
+  final Value<MediaUploadStatus> uploadStatus;
+  final Value<int> attempts;
+  final Value<DateTime?> nextAttemptAt;
+  final Value<String?> lastError;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const DocumentUploadsCompanion({
+    this.storagePath = const Value.absent(),
+    this.documentId = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.uploadStatus = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DocumentUploadsCompanion.insert({
+    required String storagePath,
+    required String documentId,
+    required String orgId,
+    required MediaUploadStatus uploadStatus,
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : storagePath = Value(storagePath),
+       documentId = Value(documentId),
+       orgId = Value(orgId),
+       uploadStatus = Value(uploadStatus),
+       createdAt = Value(createdAt);
+  static Insertable<DocumentUpload> custom({
+    Expression<String>? storagePath,
+    Expression<String>? documentId,
+    Expression<String>? orgId,
+    Expression<String>? uploadStatus,
+    Expression<int>? attempts,
+    Expression<DateTime>? nextAttemptAt,
+    Expression<String>? lastError,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (storagePath != null) 'storage_path': storagePath,
+      if (documentId != null) 'document_id': documentId,
+      if (orgId != null) 'org_id': orgId,
+      if (uploadStatus != null) 'upload_status': uploadStatus,
+      if (attempts != null) 'attempts': attempts,
+      if (nextAttemptAt != null) 'next_attempt_at': nextAttemptAt,
+      if (lastError != null) 'last_error': lastError,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DocumentUploadsCompanion copyWith({
+    Value<String>? storagePath,
+    Value<String>? documentId,
+    Value<String>? orgId,
+    Value<MediaUploadStatus>? uploadStatus,
+    Value<int>? attempts,
+    Value<DateTime?>? nextAttemptAt,
+    Value<String?>? lastError,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return DocumentUploadsCompanion(
+      storagePath: storagePath ?? this.storagePath,
+      documentId: documentId ?? this.documentId,
+      orgId: orgId ?? this.orgId,
+      uploadStatus: uploadStatus ?? this.uploadStatus,
+      attempts: attempts ?? this.attempts,
+      nextAttemptAt: nextAttemptAt ?? this.nextAttemptAt,
+      lastError: lastError ?? this.lastError,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (storagePath.present) {
+      map['storage_path'] = Variable<String>(storagePath.value);
+    }
+    if (documentId.present) {
+      map['document_id'] = Variable<String>(documentId.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (uploadStatus.present) {
+      map['upload_status'] = Variable<String>(
+        $DocumentUploadsTable.$converteruploadStatus.toSql(uploadStatus.value),
+      );
+    }
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
+    }
+    if (nextAttemptAt.present) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt.value);
+    }
+    if (lastError.present) {
+      map['last_error'] = Variable<String>(lastError.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DocumentUploadsCompanion(')
+          ..write('storagePath: $storagePath, ')
+          ..write('documentId: $documentId, ')
+          ..write('orgId: $orgId, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -12695,6 +13866,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TasksTable tasks = $TasksTable(this);
   late final $HarvestsTable harvests = $HarvestsTable(this);
   late final $HarvestHivesTable harvestHives = $HarvestHivesTable(this);
+  late final $DocumentsTable documents = $DocumentsTable(this);
+  late final $DocumentUploadsTable documentUploads = $DocumentUploadsTable(
+    this,
+  );
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $FeedbackQueueTable feedbackQueue = $FeedbackQueueTable(this);
   late final $AnalyticsQueueTable analyticsQueue = $AnalyticsQueueTable(this);
@@ -12824,6 +13999,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'harvest_hives_hive_id_idx',
     'CREATE INDEX harvest_hives_hive_id_idx ON harvest_hives (hive_id)',
   );
+  late final Index documentsOrgIdIdx = Index(
+    'documents_org_id_idx',
+    'CREATE INDEX documents_org_id_idx ON documents (org_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -12847,6 +14026,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     tasks,
     harvests,
     harvestHives,
+    documents,
+    documentUploads,
     localSettings,
     feedbackQueue,
     analyticsQueue,
@@ -12883,6 +14064,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     harvestHivesOrgIdIdx,
     harvestHivesHarvestIdIdx,
     harvestHivesHiveIdIdx,
+    documentsOrgIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -19559,6 +20741,694 @@ typedef $$HarvestHivesTableProcessedTableManager =
       HarvestHive,
       PrefetchHooks Function()
     >;
+typedef $$DocumentsTableCreateCompanionBuilder = DocumentsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required DocumentType type,
+  Value<String?> customTypeName,
+  required String name,
+  Value<String?> description,
+  Value<DateTime?> expiresOn,
+  required DocumentFileKind fileKind,
+  required String storagePath,
+  required int byteSize,
+  Value<int> rowid,
+});
+typedef $$DocumentsTableUpdateCompanionBuilder = DocumentsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<DocumentType> type,
+  Value<String?> customTypeName,
+  Value<String> name,
+  Value<String?> description,
+  Value<DateTime?> expiresOn,
+  Value<DocumentFileKind> fileKind,
+  Value<String> storagePath,
+  Value<int> byteSize,
+  Value<int> rowid,
+});
+
+class $$DocumentsTableFilterComposer
+    extends Composer<_$AppDatabase, $DocumentsTable> {
+  $$DocumentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DocumentType, DocumentType, String> get type =>
+      $composableBuilder(
+        column: $table.type,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get customTypeName => $composableBuilder(
+    column: $table.customTypeName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime?, DateTime, String> get expiresOn =>
+      $composableBuilder(
+        column: $table.expiresOn,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnWithTypeConverterFilters<DocumentFileKind, DocumentFileKind, String>
+  get fileKind => $composableBuilder(
+    column: $table.fileKind,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get byteSize => $composableBuilder(
+    column: $table.byteSize,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DocumentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DocumentsTable> {
+  $$DocumentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get customTypeName => $composableBuilder(
+    column: $table.customTypeName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get expiresOn => $composableBuilder(
+    column: $table.expiresOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fileKind => $composableBuilder(
+    column: $table.fileKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get byteSize => $composableBuilder(
+    column: $table.byteSize,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DocumentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DocumentsTable> {
+  $$DocumentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DocumentType, String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get customTypeName => $composableBuilder(
+    column: $table.customTypeName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DateTime?, String> get expiresOn =>
+      $composableBuilder(column: $table.expiresOn, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DocumentFileKind, String> get fileKind =>
+      $composableBuilder(column: $table.fileKind, builder: (column) => column);
+
+  GeneratedColumn<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get byteSize =>
+      $composableBuilder(column: $table.byteSize, builder: (column) => column);
+}
+
+class $$DocumentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DocumentsTable,
+          VaultDocument,
+          $$DocumentsTableFilterComposer,
+          $$DocumentsTableOrderingComposer,
+          $$DocumentsTableAnnotationComposer,
+          $$DocumentsTableCreateCompanionBuilder,
+          $$DocumentsTableUpdateCompanionBuilder,
+          (
+            VaultDocument,
+            BaseReferences<_$AppDatabase, $DocumentsTable, VaultDocument>,
+          ),
+          VaultDocument,
+          PrefetchHooks Function()
+        > {
+  $$DocumentsTableTableManager(_$AppDatabase db, $DocumentsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DocumentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DocumentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DocumentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<DocumentType> type = const Value.absent(),
+                Value<String?> customTypeName = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<DateTime?> expiresOn = const Value.absent(),
+                Value<DocumentFileKind> fileKind = const Value.absent(),
+                Value<String> storagePath = const Value.absent(),
+                Value<int> byteSize = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DocumentsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                type: type,
+                customTypeName: customTypeName,
+                name: name,
+                description: description,
+                expiresOn: expiresOn,
+                fileKind: fileKind,
+                storagePath: storagePath,
+                byteSize: byteSize,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required DocumentType type,
+                Value<String?> customTypeName = const Value.absent(),
+                required String name,
+                Value<String?> description = const Value.absent(),
+                Value<DateTime?> expiresOn = const Value.absent(),
+                required DocumentFileKind fileKind,
+                required String storagePath,
+                required int byteSize,
+                Value<int> rowid = const Value.absent(),
+              }) => DocumentsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                type: type,
+                customTypeName: customTypeName,
+                name: name,
+                description: description,
+                expiresOn: expiresOn,
+                fileKind: fileKind,
+                storagePath: storagePath,
+                byteSize: byteSize,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DocumentsTable, VaultDocument>(table),
+                  BaseReferences<_$AppDatabase, $DocumentsTable, VaultDocument>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DocumentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DocumentsTable,
+      VaultDocument,
+      $$DocumentsTableFilterComposer,
+      $$DocumentsTableOrderingComposer,
+      $$DocumentsTableAnnotationComposer,
+      $$DocumentsTableCreateCompanionBuilder,
+      $$DocumentsTableUpdateCompanionBuilder,
+      (
+        VaultDocument,
+        BaseReferences<_$AppDatabase, $DocumentsTable, VaultDocument>,
+      ),
+      VaultDocument,
+      PrefetchHooks Function()
+    >;
+typedef $$DocumentUploadsTableCreateCompanionBuilder =
+    DocumentUploadsCompanion Function({
+      required String storagePath,
+      required String documentId,
+      required String orgId,
+      required MediaUploadStatus uploadStatus,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$DocumentUploadsTableUpdateCompanionBuilder =
+    DocumentUploadsCompanion Function({
+      Value<String> storagePath,
+      Value<String> documentId,
+      Value<String> orgId,
+      Value<MediaUploadStatus> uploadStatus,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$DocumentUploadsTableFilterComposer
+    extends Composer<_$AppDatabase, $DocumentUploadsTable> {
+  $$DocumentUploadsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get documentId => $composableBuilder(
+    column: $table.documentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<MediaUploadStatus, MediaUploadStatus, String>
+  get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DocumentUploadsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DocumentUploadsTable> {
+  $$DocumentUploadsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get documentId => $composableBuilder(
+    column: $table.documentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DocumentUploadsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DocumentUploadsTable> {
+  $$DocumentUploadsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get documentId => $composableBuilder(
+    column: $table.documentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<MediaUploadStatus, String>
+  get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastError =>
+      $composableBuilder(column: $table.lastError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$DocumentUploadsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DocumentUploadsTable,
+          DocumentUpload,
+          $$DocumentUploadsTableFilterComposer,
+          $$DocumentUploadsTableOrderingComposer,
+          $$DocumentUploadsTableAnnotationComposer,
+          $$DocumentUploadsTableCreateCompanionBuilder,
+          $$DocumentUploadsTableUpdateCompanionBuilder,
+          (
+            DocumentUpload,
+            BaseReferences<
+              _$AppDatabase,
+              $DocumentUploadsTable,
+              DocumentUpload
+            >,
+          ),
+          DocumentUpload,
+          PrefetchHooks Function()
+        > {
+  $$DocumentUploadsTableTableManager(
+    _$AppDatabase db,
+    $DocumentUploadsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DocumentUploadsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DocumentUploadsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DocumentUploadsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> storagePath = const Value.absent(),
+                Value<String> documentId = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<MediaUploadStatus> uploadStatus = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DocumentUploadsCompanion(
+                storagePath: storagePath,
+                documentId: documentId,
+                orgId: orgId,
+                uploadStatus: uploadStatus,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String storagePath,
+                required String documentId,
+                required String orgId,
+                required MediaUploadStatus uploadStatus,
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => DocumentUploadsCompanion.insert(
+                storagePath: storagePath,
+                documentId: documentId,
+                orgId: orgId,
+                uploadStatus: uploadStatus,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DocumentUploadsTable, DocumentUpload>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $DocumentUploadsTable,
+                    DocumentUpload
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DocumentUploadsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DocumentUploadsTable,
+      DocumentUpload,
+      $$DocumentUploadsTableFilterComposer,
+      $$DocumentUploadsTableOrderingComposer,
+      $$DocumentUploadsTableAnnotationComposer,
+      $$DocumentUploadsTableCreateCompanionBuilder,
+      $$DocumentUploadsTableUpdateCompanionBuilder,
+      (
+        DocumentUpload,
+        BaseReferences<_$AppDatabase, $DocumentUploadsTable, DocumentUpload>,
+      ),
+      DocumentUpload,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -20694,6 +22564,10 @@ class $AppDatabaseManager {
       $$HarvestsTableTableManager(_db, _db.harvests);
   $$HarvestHivesTableTableManager get harvestHives =>
       $$HarvestHivesTableTableManager(_db, _db.harvestHives);
+  $$DocumentsTableTableManager get documents =>
+      $$DocumentsTableTableManager(_db, _db.documents);
+  $$DocumentUploadsTableTableManager get documentUploads =>
+      $$DocumentUploadsTableTableManager(_db, _db.documentUploads);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$FeedbackQueueTableTableManager get feedbackQueue =>

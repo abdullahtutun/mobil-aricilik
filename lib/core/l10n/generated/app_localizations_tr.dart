@@ -3618,4 +3618,232 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsPushHint =>
       'Sana bir görev atandığında bildirim gelir. Dokununca görev açılır.';
+
+  @override
+  String get documentsTitle => 'Belge kasası';
+
+  @override
+  String get documentsAdd => 'Belge ekle';
+
+  @override
+  String documentsSummaryOffline(int count) {
+    return '$count belge · hepsi internetsiz açılır';
+  }
+
+  @override
+  String documentsSummaryMissing(int count, int missing) {
+    return '$count belge · $missing dosya henüz bu telefonda değil';
+  }
+
+  @override
+  String get documentsRegionNoteTr =>
+      'Belge türleri ülkeye göre gelir. Türkiye dışında kendi belge türlerini oluşturursun.';
+
+  @override
+  String get documentsRegionNoteOther =>
+      'Belge türlerini sen belirlersin; yazdığın türler sonraki belgelerde önerilir.';
+
+  @override
+  String get documentsRoadCheck => 'Yol kontrolü · belgeleri göster';
+
+  @override
+  String get documentsEmptyTitle => 'Henüz belge yok';
+
+  @override
+  String get documentsEmptyMessage =>
+      'Sağlık raporu, nakil evrakı gibi belgelerin fotoğrafını ya da PDF\'ini ekle. İnternetsiz açılır, süresi dolmadan hatırlatılır.';
+
+  @override
+  String get documentsLoadError => 'Belgeler açılamadı.';
+
+  @override
+  String get documentFileKindPhoto => 'FOTO';
+
+  @override
+  String get documentFileKindPdf => 'PDF';
+
+  @override
+  String get documentTypeHealthReport => 'Sağlık raporu';
+
+  @override
+  String get documentTypeTransportPermit => 'Nakil evrakı';
+
+  @override
+  String get documentTypeMigratoryCertificate => 'Gezginci arıcı belgesi';
+
+  @override
+  String get documentTypeBusinessRegistration => 'İşletme tescil belgesi';
+
+  @override
+  String get documentTypeLandPermit => 'Arazi izni';
+
+  @override
+  String get documentTypeAnalysisReport => 'Analiz raporu';
+
+  @override
+  String get documentExpiryNone => 'Süresiz';
+
+  @override
+  String get documentExpiryExpired => 'Süresi doldu';
+
+  @override
+  String get documentExpiryToday => 'Bugün bitiyor';
+
+  @override
+  String documentExpiryDays(int days) {
+    return '$days gün';
+  }
+
+  @override
+  String documentExpiryMonths(int months) {
+    return '$months ay';
+  }
+
+  @override
+  String documentExpiresOn(String date) {
+    return 'Son geçerlilik: $date';
+  }
+
+  @override
+  String get documentFormNewTitle => 'Belge ekle';
+
+  @override
+  String get documentFormEditTitle => 'Belgeyi düzenle';
+
+  @override
+  String get documentFormType => 'Belge türü';
+
+  @override
+  String get documentFormCustomTypeHint => 'Örn. Sigorta poliçesi';
+
+  @override
+  String get documentFormName => 'Ad';
+
+  @override
+  String get documentFormNameHint => 'Örn. Sağlık raporu 2026';
+
+  @override
+  String get documentFormDescription => 'Açıklama';
+
+  @override
+  String get documentFormDescriptionHint => 'Örn. Ula İlçe Tarım · 152 kovan';
+
+  @override
+  String get documentFormExpiry => 'Geçerlilik tarihi';
+
+  @override
+  String get documentFormNoExpiry => 'Süresiz';
+
+  @override
+  String get documentFormPickDate => 'Tarih seç';
+
+  @override
+  String get documentFormExpiryHelper =>
+      'Süre dolumundan 30, 7 ve 1 gün önce hatırlatılır.';
+
+  @override
+  String get documentFormFile => 'Dosya';
+
+  @override
+  String get documentFormTakePhoto => 'Fotoğraf çek';
+
+  @override
+  String get documentFormPickImage => 'Galeriden';
+
+  @override
+  String get documentFormPickPdf => 'PDF seç';
+
+  @override
+  String get documentFormNoFile =>
+      'Belgenin fotoğrafını çek ya da PDF\'ini seç.';
+
+  @override
+  String documentFileSizeKb(String size) {
+    return '$size KB';
+  }
+
+  @override
+  String documentFileSizeMb(String size) {
+    return '$size MB';
+  }
+
+  @override
+  String get documentFileTooLarge =>
+      'Dosya 20 MB\'tan büyük; daha küçük bir dosya seç.';
+
+  @override
+  String get documentFileFailed => 'Dosya alınamadı, yeniden dene.';
+
+  @override
+  String get documentFilePermissionDenied =>
+      'İzin verilmedi. Belge eklemek için Ayarlar\'dan bu uygulamaya kamera ya da dosya izni ver.';
+
+  @override
+  String get documentFormSave => 'Kaydet';
+
+  @override
+  String get documentFormDelete => 'Belgeyi sil';
+
+  @override
+  String get documentSaved => 'Belge kaydedildi';
+
+  @override
+  String get documentReminderDenied =>
+      'Belge kaydedildi. Bildirim izni olmadığı için süre dolumu hatırlatması çalmayacak.';
+
+  @override
+  String get documentDeleteTitle => 'Belge silinsin mi?';
+
+  @override
+  String get documentDeleteMessage =>
+      'Belge ve dosyası bütün telefonlardan kalkar.';
+
+  @override
+  String get documentDeleteConfirm => 'Sil';
+
+  @override
+  String get documentDeleted => 'Belge silindi';
+
+  @override
+  String get documentNotFound => 'Belge bulunamadı; silinmiş olabilir.';
+
+  @override
+  String get documentEdit => 'Düzenle';
+
+  @override
+  String get documentFileMissing =>
+      'Dosya bu telefonda henüz yok. İnternet gelince indirilir.';
+
+  @override
+  String get documentPdfFailed => 'PDF açılamadı.';
+
+  @override
+  String documentPdfPage(int page, int count) {
+    return 'Sayfa $page / $count';
+  }
+
+  @override
+  String get roadCheckTitle => 'Yol kontrolü';
+
+  @override
+  String roadCheckPosition(int index, int count) {
+    return '$index / $count';
+  }
+
+  @override
+  String get roadCheckSwipeHint => 'Diğer belge için yana kaydır';
+
+  @override
+  String get roadCheckPrevious => 'Önceki belge';
+
+  @override
+  String get roadCheckNext => 'Sonraki belge';
+
+  @override
+  String documentReminderBody(int days, String date) {
+    return '$days gün sonra süresi doluyor · $date';
+  }
+
+  @override
+  String get syncTableDocuments => 'Belge';
 }

@@ -20,6 +20,7 @@ import 'package:mobil_arici/features/weather/presentation/weather_providers.dart
 import 'fake_app_info_service.dart';
 import 'fake_basemap_service.dart';
 import 'fake_code_scanner.dart';
+import 'fake_documents.dart';
 import 'fake_media.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
@@ -85,7 +86,8 @@ class FakeAuthService implements AuthService {
 
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
 /// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, senkron, medya
-/// (foto, ses, Storage), hava servisi ve ekranı açık tutma sahte; hava
+/// (foto, ses, Storage), belge dosyaları (PDF seçici, çizici, Storage), hava
+/// servisi ve ekranı açık tutma sahte; hava
 /// servisi verilmezse çevrimdışı gibi hata atar. İlk tam çekme bitmiş
 /// sayılır ([fullPullDone] yanlışsa DB'den okunur).
 List<Override> signedIn({
@@ -95,6 +97,7 @@ List<Override> signedIn({
   FakePrintService? printer,
   FakeSyncService? sync,
   FakeMedia? media,
+  FakeDocuments? documents,
   FakeReminderNotifications? reminders,
   FakeWeatherService? weather,
   FakeScreenAwake? screenAwake,
@@ -113,6 +116,7 @@ List<Override> signedIn({
   printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
   ...syncOverrides(service: sync, fullPullDone: fullPullDone),
   ...(media ?? FakeMedia()).overrides,
+  ...(documents ?? FakeDocuments()).overrides,
   reminderNotificationsProvider.overrideWithValue(
     reminders ?? FakeReminderNotifications(),
   ),

@@ -2898,5 +2898,346 @@
   "teamActivitySemantics": "{who} {what}{where}, {when}",
   "@teamActivitySemantics": {"placeholders": {"who": {"type": "String"}, "what": {"type": "String"}, "where": {"type": "String"}, "when": {"type": "String"}}},
   "settingsPush": "Task notifications",
-  "settingsPushHint": "Get a notification when a task is assigned to you. Tap it to open the task."
+  "settingsPushHint": "Get a notification when a task is assigned to you. Tap it to open the task.",
+
+  "documentsTitle": "Document vault",
+  "@documentsTitle": {
+    "description": "Document vault screen title and More tile."
+  },
+  "documentsAdd": "Add document",
+  "@documentsAdd": {
+    "description": "Add button tooltip on the vault."
+  },
+  "documentsSummaryOffline": "{count, plural, one{1 document} other{{count} documents}} · all open offline",
+  "@documentsSummaryOffline": {
+    "description": "Vault header when every file is on the phone.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "documentsSummaryMissing": "{count, plural, one{1 document} other{{count} documents}} · {missing, plural, one{1 file} other{{missing} files}} not on this phone yet",
+  "@documentsSummaryMissing": {
+    "description": "Vault header when some files are not downloaded yet.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "6"
+      },
+      "missing": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "documentsRegionNoteTr": "Document types depend on the country. Outside Türkiye you create your own document types.",
+  "@documentsRegionNoteTr": {
+    "description": "Note under the vault list in the Türkiye profile."
+  },
+  "documentsRegionNoteOther": "You define the document types; the types you enter are suggested next time.",
+  "@documentsRegionNoteOther": {
+    "description": "Note under the vault list outside Türkiye."
+  },
+  "documentsRoadCheck": "Road check · show documents",
+  "@documentsRoadCheck": {
+    "description": "Button that opens the full-screen road check mode."
+  },
+  "documentsEmptyTitle": "No documents yet",
+  "@documentsEmptyTitle": {
+    "description": "Empty vault title."
+  },
+  "documentsEmptyMessage": "Add a photo or PDF of your permits and certificates. They open offline and you're reminded before they expire.",
+  "@documentsEmptyMessage": {
+    "description": "Empty vault message."
+  },
+  "documentsLoadError": "Couldn't open the documents.",
+  "@documentsLoadError": {
+    "description": "Vault load error."
+  },
+  "documentFileKindPhoto": "PHOTO",
+  "@documentFileKindPhoto": {
+    "description": "File kind label on the document thumbnail."
+  },
+  "documentFileKindPdf": "PDF",
+  "@documentFileKindPdf": {
+    "description": "File kind label on the document thumbnail."
+  },
+  "documentTypeHealthReport": "Health report",
+  "@documentTypeHealthReport": {
+    "description": "Document type (Türkiye)."
+  },
+  "documentTypeTransportPermit": "Transport permit",
+  "@documentTypeTransportPermit": {
+    "description": "Document type (Türkiye)."
+  },
+  "documentTypeMigratoryCertificate": "Migratory beekeeper certificate",
+  "@documentTypeMigratoryCertificate": {
+    "description": "Document type (Türkiye)."
+  },
+  "documentTypeBusinessRegistration": "Business registration certificate",
+  "@documentTypeBusinessRegistration": {
+    "description": "Document type (Türkiye)."
+  },
+  "documentTypeLandPermit": "Land permit",
+  "@documentTypeLandPermit": {
+    "description": "Document type (Türkiye)."
+  },
+  "documentTypeAnalysisReport": "Analysis report",
+  "@documentTypeAnalysisReport": {
+    "description": "Document type (Türkiye)."
+  },
+  "documentExpiryNone": "No expiry",
+  "@documentExpiryNone": {
+    "description": "Badge: the document has no expiry date."
+  },
+  "documentExpiryExpired": "Expired",
+  "@documentExpiryExpired": {
+    "description": "Badge: the document has expired."
+  },
+  "documentExpiryToday": "Ends today",
+  "@documentExpiryToday": {
+    "description": "Badge: today is the last valid day."
+  },
+  "documentExpiryDays": "{days, plural, one{1 day} other{{days} days}}",
+  "@documentExpiryDays": {
+    "description": "Badge: days left until the document expires.",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "documentExpiryMonths": "{months, plural, one{1 month} other{{months} months}}",
+  "@documentExpiryMonths": {
+    "description": "Badge: months left until the document expires.",
+    "placeholders": {
+      "months": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "documentExpiresOn": "Valid until {date}",
+  "@documentExpiresOn": {
+    "description": "Last valid day of the document.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "May 1, 2027"
+      }
+    }
+  },
+  "documentFormNewTitle": "Add document",
+  "@documentFormNewTitle": {
+    "description": "Add document form title."
+  },
+  "documentFormEditTitle": "Edit document",
+  "@documentFormEditTitle": {
+    "description": "Edit document form title."
+  },
+  "documentFormType": "Document type",
+  "@documentFormType": {
+    "description": "Form field label."
+  },
+  "documentFormCustomTypeHint": "e.g. Insurance policy",
+  "@documentFormCustomTypeHint": {
+    "description": "Hint for a user-defined document type."
+  },
+  "documentFormName": "Name",
+  "@documentFormName": {
+    "description": "Form field label."
+  },
+  "documentFormNameHint": "e.g. Health report 2026",
+  "@documentFormNameHint": {
+    "description": "Form field hint."
+  },
+  "documentFormDescription": "Description",
+  "@documentFormDescription": {
+    "description": "Form field label."
+  },
+  "documentFormDescriptionHint": "e.g. District office · 152 hives",
+  "@documentFormDescriptionHint": {
+    "description": "Form field hint."
+  },
+  "documentFormExpiry": "Valid until",
+  "@documentFormExpiry": {
+    "description": "Form field label."
+  },
+  "documentFormNoExpiry": "No expiry",
+  "@documentFormNoExpiry": {
+    "description": "Expiry choice: the document doesn't expire."
+  },
+  "documentFormPickDate": "Pick a date",
+  "@documentFormPickDate": {
+    "description": "Expiry choice that opens the date picker."
+  },
+  "documentFormExpiryHelper": "You'll be reminded 30, 7 and 1 day before it expires.",
+  "@documentFormExpiryHelper": {
+    "description": "Helper under the expiry field."
+  },
+  "documentFormFile": "File",
+  "@documentFormFile": {
+    "description": "Form field label."
+  },
+  "documentFormTakePhoto": "Take photo",
+  "@documentFormTakePhoto": {
+    "description": "Button: photograph the document."
+  },
+  "documentFormPickImage": "From gallery",
+  "@documentFormPickImage": {
+    "description": "Button: pick a photo of the document."
+  },
+  "documentFormPickPdf": "Choose PDF",
+  "@documentFormPickPdf": {
+    "description": "Button: pick a PDF file."
+  },
+  "documentFormNoFile": "Take a photo of the document or choose its PDF.",
+  "@documentFormNoFile": {
+    "description": "Shown while no file is chosen."
+  },
+  "documentFileSizeKb": "{size} KB",
+  "@documentFileSizeKb": {
+    "description": "File size in kilobytes.",
+    "placeholders": {
+      "size": {
+        "type": "String",
+        "example": "350"
+      }
+    }
+  },
+  "documentFileSizeMb": "{size} MB",
+  "@documentFileSizeMb": {
+    "description": "File size in megabytes.",
+    "placeholders": {
+      "size": {
+        "type": "String",
+        "example": "2.4"
+      }
+    }
+  },
+  "documentFileTooLarge": "The file is larger than 20 MB; choose a smaller one.",
+  "@documentFileTooLarge": {
+    "description": "Picked file is too large."
+  },
+  "documentFileFailed": "Couldn't get the file, try again.",
+  "@documentFileFailed": {
+    "description": "Picking or copying the file failed."
+  },
+  "documentFilePermissionDenied": "Permission denied. To add a document, allow camera or file access for this app in Settings.",
+  "@documentFilePermissionDenied": {
+    "description": "Camera/gallery/file permission denied."
+  },
+  "documentFormSave": "Save",
+  "@documentFormSave": {
+    "description": "Save button."
+  },
+  "documentFormDelete": "Delete document",
+  "@documentFormDelete": {
+    "description": "Delete button in the edit form."
+  },
+  "documentSaved": "Document saved",
+  "@documentSaved": {
+    "description": "Snack bar after saving."
+  },
+  "documentReminderDenied": "Document saved. Expiry reminders won't ring without notification permission.",
+  "@documentReminderDenied": {
+    "description": "Snack bar when notification permission is denied."
+  },
+  "documentDeleteTitle": "Delete this document?",
+  "@documentDeleteTitle": {
+    "description": "Delete confirmation title."
+  },
+  "documentDeleteMessage": "The document and its file are removed from every phone.",
+  "@documentDeleteMessage": {
+    "description": "Delete confirmation message."
+  },
+  "documentDeleteConfirm": "Delete",
+  "@documentDeleteConfirm": {
+    "description": "Delete confirmation button."
+  },
+  "documentDeleted": "Document deleted",
+  "@documentDeleted": {
+    "description": "Snack bar after deleting."
+  },
+  "documentNotFound": "Document not found; it may have been deleted.",
+  "@documentNotFound": {
+    "description": "Document missing."
+  },
+  "documentEdit": "Edit",
+  "@documentEdit": {
+    "description": "Edit action on the document screen."
+  },
+  "documentFileMissing": "The file isn't on this phone yet. It downloads when you're online.",
+  "@documentFileMissing": {
+    "description": "Shown instead of the file when it hasn't been downloaded."
+  },
+  "documentPdfFailed": "Couldn't open the PDF.",
+  "@documentPdfFailed": {
+    "description": "PDF rendering failed."
+  },
+  "documentPdfPage": "Page {page} of {count}",
+  "@documentPdfPage": {
+    "description": "Screen reader label of a PDF page.",
+    "placeholders": {
+      "page": {
+        "type": "int",
+        "example": "1"
+      },
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "roadCheckTitle": "Road check",
+  "@roadCheckTitle": {
+    "description": "Full-screen road check mode title."
+  },
+  "roadCheckPosition": "{index} / {count}",
+  "@roadCheckPosition": {
+    "description": "Current document position in road check.",
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "example": "2"
+      },
+      "count": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "roadCheckSwipeHint": "Swipe sideways for the next document",
+  "@roadCheckSwipeHint": {
+    "description": "Hint in road check mode."
+  },
+  "roadCheckPrevious": "Previous document",
+  "@roadCheckPrevious": {
+    "description": "Road check button."
+  },
+  "roadCheckNext": "Next document",
+  "@roadCheckNext": {
+    "description": "Road check button."
+  },
+  "documentReminderBody": "Expires in {days, plural, one{1 day} other{{days} days}} · {date}",
+  "@documentReminderBody": {
+    "description": "Expiry reminder notification body.",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "7"
+      },
+      "date": {
+        "type": "String",
+        "example": "May 1, 2027"
+      }
+    }
+  },
+  "syncTableDocuments": "Document",
+  "@syncTableDocuments": {
+    "description": "Record type name on the sync screen."
+  }
 }

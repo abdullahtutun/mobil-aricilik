@@ -19,6 +19,10 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/documents/presentation/document_detail_screen.dart';
+import 'package:mobil_arici/features/documents/presentation/document_form_screen.dart';
+import 'package:mobil_arici/features/documents/presentation/documents_screen.dart';
+import 'package:mobil_arici/features/documents/presentation/road_check_screen.dart';
 import 'package:mobil_arici/features/feedback/presentation/feedback_screen.dart';
 import 'package:mobil_arici/features/feeding/presentation/feeding_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_form_screen.dart';
@@ -63,6 +67,7 @@ const _apiaryId = 'apiaryId';
 const _hiveId = 'hiveId';
 const _mediaId = 'mediaId';
 const _taskId = 'taskId';
+const _documentId = 'documentId';
 const _attentionKind = 'kind';
 
 /// Yoldaki dikkat grubu; bilinmeyen adda null.
@@ -393,6 +398,40 @@ GoRouter router(Ref ref) {
                     path: 'feedback',
                     parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const FeedbackScreen(),
+                  ),
+                  GoRoute(
+                    path: 'documents',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const DocumentsScreen(),
+                    routes: [
+                      // Sabit yollar `:id`'den önce.
+                      GoRoute(
+                        path: 'new',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => const DocumentFormScreen(),
+                      ),
+                      GoRoute(
+                        path: 'road-check',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => const RoadCheckScreen(),
+                      ),
+                      GoRoute(
+                        path: ':$_documentId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => DocumentDetailScreen(
+                          documentId: state.pathParameters[_documentId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => DocumentFormScreen(
+                              documentId: state.pathParameters[_documentId],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),

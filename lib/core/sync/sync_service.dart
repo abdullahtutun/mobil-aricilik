@@ -76,6 +76,7 @@ class SyncService {
     _db.tasks,
     _db.harvests,
     _db.harvestHives,
+    _db.documents,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

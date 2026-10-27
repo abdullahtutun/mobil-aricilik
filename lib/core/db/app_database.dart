@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.steps.dart';
 import 'package:mobil_arici/core/db/converters.dart';
+import 'package:mobil_arici/core/db/tables/document_tables.dart';
 import 'package:mobil_arici/core/db/tables/feeding_tables.dart';
 import 'package:mobil_arici/core/db/tables/harvest_tables.dart';
 import 'package:mobil_arici/core/db/tables/health_tables.dart';
@@ -12,6 +13,7 @@ import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/core/db/tables/task_tables.dart';
 import 'package:mobil_arici/core/db/tables/telemetry_tables.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
@@ -61,6 +63,8 @@ part 'app_database.g.dart';
     Tasks,
     Harvests,
     HarvestHives,
+    Documents,
+    DocumentUploads,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -72,7 +76,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 11;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -147,6 +151,12 @@ class AppDatabase extends _$AppDatabase {
       from9To10: (m, schema) async {
         await m.createTable(schema.feedbackQueue);
         await m.createTable(schema.analyticsQueue);
+      },
+      // Belge kasası; dosya yükleme kuyruğu yalnız bu telefonda.
+      from10To11: (m, schema) async {
+        await m.createTable(schema.documents);
+        await m.create(schema.documentsOrgIdIdx);
+        await m.createTable(schema.documentUploads);
       },
     ),
   );

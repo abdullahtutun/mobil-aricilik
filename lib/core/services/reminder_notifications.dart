@@ -8,9 +8,18 @@ import 'package:timezone/timezone.dart' as tz;
 /// Bu telefonda kurulacak bir hatırlatma bildirimi; `at` yerel saat.
 typedef Reminder = ({int id, DateTime at, String title, String body});
 
+/// Hatırlatma grupları; her grup kendi bildirimlerini ayrı eşitler.
+abstract final class ReminderGroups {
+  /// Görev son tarihleri.
+  static const tasks = 'tasks';
+
+  /// Belge süre dolumları.
+  static const documents = 'documents';
+}
+
 /// Bu telefonda ileri bir zamana kurulan hatırlatma bildirimleri (görev
-/// son tarihleri). İnternet gerekmez; bildirimi işletim sistemi gösterir,
-/// uygulama kapalı olsa da.
+/// son tarihleri, belge süre dolumları). İnternet gerekmez; bildirimi
+/// işletim sistemi gösterir, uygulama kapalı olsa da.
 abstract interface class ReminderNotifications {
   /// Bildirim izni verilmiş mi; sormaz.
   Future<bool> hasPermission();
@@ -30,13 +39,15 @@ abstract interface class ReminderNotifications {
   /// verildi mi.
   Future<bool> requestExactAlarms();
 
-  /// Kurulu bildirimleri [reminders] ile eşitler: listede olmayanlar
-  /// kaldırılır, olanlar kurulur ya da yenilenir. İzin yoksa bildirim
-  /// görünmez ama kurulur; izin gelince çalar. [channelName] Android
-  /// ayarlarında bildirim kanalının adı.
+  /// [group]'un kurulu bildirimlerini [reminders] ile eşitler: listede
+  /// olmayanlar kaldırılır, olanlar kurulur ya da yenilenir; başka grubun
+  /// bildirimlerine dokunulmaz. İzin yoksa bildirim görünmez ama kurulur;
+  /// izin gelince çalar. [channelName] Android ayarlarında bildirim
+  /// kanalının adı.
   Future<void> replaceAll(
     List<Reminder> reminders, {
     required String channelName,
+    required String group,
   });
 }
 
@@ -105,15 +116,22 @@ class DeviceReminderNotifications implements ReminderNotifications {
     return true;
   }
 
+  /// Grup bildirimin `payload`'ında. Gruplardan önce kurulan bildirimlerin
+  /// payload'u yok; ilk eşitleyen grup onları kaldırır, görevler yeniden
+  /// kurulur.
   @override
   Future<void> replaceAll(
     List<Reminder> reminders, {
     required String channelName,
+    required String group,
   }) async {
     await (_ready ??= _init());
     final wanted = {for (final reminder in reminders) reminder.id};
     for (final pending in await _plugin.pendingNotificationRequests()) {
-      if (!wanted.contains(pending.id)) await _plugin.cancel(id: pending.id);
+      if ((pending.payload == null || pending.payload == group) &&
+          !wanted.contains(pending.id)) {
+        await _plugin.cancel(id: pending.id);
+      }
     }
     // İzin yokken tam zamanlı kurmak Android'de hata verir.
     final mode = await canScheduleExact()
@@ -135,6 +153,7 @@ class DeviceReminderNotifications implements ReminderNotifications {
           iOS: const DarwinNotificationDetails(),
         ),
         androidScheduleMode: mode,
+        payload: group,
       );
     }
   }

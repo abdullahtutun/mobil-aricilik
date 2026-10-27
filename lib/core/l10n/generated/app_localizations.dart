@@ -5818,6 +5818,402 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get a notification when a task is assigned to you. Tap it to open the task.'**
   String get settingsPushHint;
+
+  /// Document vault screen title and More tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Document vault'**
+  String get documentsTitle;
+
+  /// Add button tooltip on the vault.
+  ///
+  /// In en, this message translates to:
+  /// **'Add document'**
+  String get documentsAdd;
+
+  /// Vault header when every file is on the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 document} other{{count} documents}} · all open offline'**
+  String documentsSummaryOffline(int count);
+
+  /// Vault header when some files are not downloaded yet.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 document} other{{count} documents}} · {missing, plural, one{1 file} other{{missing} files}} not on this phone yet'**
+  String documentsSummaryMissing(int count, int missing);
+
+  /// Note under the vault list in the Türkiye profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Document types depend on the country. Outside Türkiye you create your own document types.'**
+  String get documentsRegionNoteTr;
+
+  /// Note under the vault list outside Türkiye.
+  ///
+  /// In en, this message translates to:
+  /// **'You define the document types; the types you enter are suggested next time.'**
+  String get documentsRegionNoteOther;
+
+  /// Button that opens the full-screen road check mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Road check · show documents'**
+  String get documentsRoadCheck;
+
+  /// Empty vault title.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet'**
+  String get documentsEmptyTitle;
+
+  /// Empty vault message.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a photo or PDF of your permits and certificates. They open offline and you\'re reminded before they expire.'**
+  String get documentsEmptyMessage;
+
+  /// Vault load error.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the documents.'**
+  String get documentsLoadError;
+
+  /// File kind label on the document thumbnail.
+  ///
+  /// In en, this message translates to:
+  /// **'PHOTO'**
+  String get documentFileKindPhoto;
+
+  /// File kind label on the document thumbnail.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get documentFileKindPdf;
+
+  /// Document type (Türkiye).
+  ///
+  /// In en, this message translates to:
+  /// **'Health report'**
+  String get documentTypeHealthReport;
+
+  /// Document type (Türkiye).
+  ///
+  /// In en, this message translates to:
+  /// **'Transport permit'**
+  String get documentTypeTransportPermit;
+
+  /// Document type (Türkiye).
+  ///
+  /// In en, this message translates to:
+  /// **'Migratory beekeeper certificate'**
+  String get documentTypeMigratoryCertificate;
+
+  /// Document type (Türkiye).
+  ///
+  /// In en, this message translates to:
+  /// **'Business registration certificate'**
+  String get documentTypeBusinessRegistration;
+
+  /// Document type (Türkiye).
+  ///
+  /// In en, this message translates to:
+  /// **'Land permit'**
+  String get documentTypeLandPermit;
+
+  /// Document type (Türkiye).
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis report'**
+  String get documentTypeAnalysisReport;
+
+  /// Badge: the document has no expiry date.
+  ///
+  /// In en, this message translates to:
+  /// **'No expiry'**
+  String get documentExpiryNone;
+
+  /// Badge: the document has expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get documentExpiryExpired;
+
+  /// Badge: today is the last valid day.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends today'**
+  String get documentExpiryToday;
+
+  /// Badge: days left until the document expires.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, one{1 day} other{{days} days}}'**
+  String documentExpiryDays(int days);
+
+  /// Badge: months left until the document expires.
+  ///
+  /// In en, this message translates to:
+  /// **'{months, plural, one{1 month} other{{months} months}}'**
+  String documentExpiryMonths(int months);
+
+  /// Last valid day of the document.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {date}'**
+  String documentExpiresOn(String date);
+
+  /// Add document form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add document'**
+  String get documentFormNewTitle;
+
+  /// Edit document form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit document'**
+  String get documentFormEditTitle;
+
+  /// Form field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Document type'**
+  String get documentFormType;
+
+  /// Hint for a user-defined document type.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Insurance policy'**
+  String get documentFormCustomTypeHint;
+
+  /// Form field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get documentFormName;
+
+  /// Form field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Health report 2026'**
+  String get documentFormNameHint;
+
+  /// Form field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get documentFormDescription;
+
+  /// Form field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. District office · 152 hives'**
+  String get documentFormDescriptionHint;
+
+  /// Form field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until'**
+  String get documentFormExpiry;
+
+  /// Expiry choice: the document doesn't expire.
+  ///
+  /// In en, this message translates to:
+  /// **'No expiry'**
+  String get documentFormNoExpiry;
+
+  /// Expiry choice that opens the date picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a date'**
+  String get documentFormPickDate;
+
+  /// Helper under the expiry field.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll be reminded 30, 7 and 1 day before it expires.'**
+  String get documentFormExpiryHelper;
+
+  /// Form field label.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get documentFormFile;
+
+  /// Button: photograph the document.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get documentFormTakePhoto;
+
+  /// Button: pick a photo of the document.
+  ///
+  /// In en, this message translates to:
+  /// **'From gallery'**
+  String get documentFormPickImage;
+
+  /// Button: pick a PDF file.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose PDF'**
+  String get documentFormPickPdf;
+
+  /// Shown while no file is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo of the document or choose its PDF.'**
+  String get documentFormNoFile;
+
+  /// File size in kilobytes.
+  ///
+  /// In en, this message translates to:
+  /// **'{size} KB'**
+  String documentFileSizeKb(String size);
+
+  /// File size in megabytes.
+  ///
+  /// In en, this message translates to:
+  /// **'{size} MB'**
+  String documentFileSizeMb(String size);
+
+  /// Picked file is too large.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is larger than 20 MB; choose a smaller one.'**
+  String get documentFileTooLarge;
+
+  /// Picking or copying the file failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get the file, try again.'**
+  String get documentFileFailed;
+
+  /// Camera/gallery/file permission denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied. To add a document, allow camera or file access for this app in Settings.'**
+  String get documentFilePermissionDenied;
+
+  /// Save button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get documentFormSave;
+
+  /// Delete button in the edit form.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete document'**
+  String get documentFormDelete;
+
+  /// Snack bar after saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Document saved'**
+  String get documentSaved;
+
+  /// Snack bar when notification permission is denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Document saved. Expiry reminders won\'t ring without notification permission.'**
+  String get documentReminderDenied;
+
+  /// Delete confirmation title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this document?'**
+  String get documentDeleteTitle;
+
+  /// Delete confirmation message.
+  ///
+  /// In en, this message translates to:
+  /// **'The document and its file are removed from every phone.'**
+  String get documentDeleteMessage;
+
+  /// Delete confirmation button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get documentDeleteConfirm;
+
+  /// Snack bar after deleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Document deleted'**
+  String get documentDeleted;
+
+  /// Document missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Document not found; it may have been deleted.'**
+  String get documentNotFound;
+
+  /// Edit action on the document screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get documentEdit;
+
+  /// Shown instead of the file when it hasn't been downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'The file isn\'t on this phone yet. It downloads when you\'re online.'**
+  String get documentFileMissing;
+
+  /// PDF rendering failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the PDF.'**
+  String get documentPdfFailed;
+
+  /// Screen reader label of a PDF page.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {count}'**
+  String documentPdfPage(int page, int count);
+
+  /// Full-screen road check mode title.
+  ///
+  /// In en, this message translates to:
+  /// **'Road check'**
+  String get roadCheckTitle;
+
+  /// Current document position in road check.
+  ///
+  /// In en, this message translates to:
+  /// **'{index} / {count}'**
+  String roadCheckPosition(int index, int count);
+
+  /// Hint in road check mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe sideways for the next document'**
+  String get roadCheckSwipeHint;
+
+  /// Road check button.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous document'**
+  String get roadCheckPrevious;
+
+  /// Road check button.
+  ///
+  /// In en, this message translates to:
+  /// **'Next document'**
+  String get roadCheckNext;
+
+  /// Expiry reminder notification body.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in {days, plural, one{1 day} other{{days} days}} · {date}'**
+  String documentReminderBody(int days, String date);
+
+  /// Record type name on the sync screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Document'**
+  String get syncTableDocuments;
 }
 
 class _AppLocalizationsDelegate

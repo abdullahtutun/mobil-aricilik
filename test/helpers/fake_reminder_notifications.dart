@@ -17,7 +17,13 @@ class FakeReminderNotifications implements ReminderNotifications {
   bool grantExactOnRequest = true;
   int exactRequests = 0;
 
-  final scheduled = <int, Reminder>{};
+  /// Bütün grupların kurulu bildirimleri.
+  Map<int, Reminder> get scheduled => {
+    for (final group in groups.values) ...group,
+  };
+
+  /// Grup → kurulu bildirimler.
+  final groups = <String, Map<int, Reminder>>{};
   String? channelName;
   int replaceCalls = 0;
 
@@ -45,11 +51,10 @@ class FakeReminderNotifications implements ReminderNotifications {
   Future<void> replaceAll(
     List<Reminder> reminders, {
     required String channelName,
+    required String group,
   }) async {
     replaceCalls++;
     this.channelName = channelName;
-    scheduled
-      ..clear()
-      ..addEntries([for (final r in reminders) MapEntry(r.id, r)]);
+    groups[group] = {for (final r in reminders) r.id: r};
   }
 }

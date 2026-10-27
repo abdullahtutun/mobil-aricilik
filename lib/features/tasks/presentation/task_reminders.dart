@@ -7,6 +7,7 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
+import 'package:mobil_arici/core/services/reminder_notifications.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
@@ -131,15 +132,21 @@ class TaskReminders extends _$TaskReminders {
     while (_dirty) {
       _dirty = false;
       final plan = reminderPlan(_tasks, userId: _userId, now: clock.now());
-      await ref.read(reminderNotificationsProvider).replaceAll([
-        for (final view in plan)
-          (
-            id: reminderNotificationId(view.task.id),
-            at: view.task.dueAt.toLocal(),
-            title: taskTitle(_l10n, view),
-            body: taskNotificationBody(_l10n, view),
-          ),
-      ], channelName: _l10n.reminderChannelName);
+      await ref
+          .read(reminderNotificationsProvider)
+          .replaceAll(
+            [
+              for (final view in plan)
+                (
+                  id: reminderNotificationId(view.task.id),
+                  at: view.task.dueAt.toLocal(),
+                  title: taskTitle(_l10n, view),
+                  body: taskNotificationBody(_l10n, view),
+                ),
+            ],
+            channelName: _l10n.reminderChannelName,
+            group: ReminderGroups.tasks,
+          );
     }
   }
 

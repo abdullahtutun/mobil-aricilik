@@ -12,6 +12,8 @@ import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/documents/data/document_repository.dart';
+import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feeding/data/feeding_repository.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/harvest/data/harvest_repository.dart';
@@ -324,6 +326,20 @@ Map<String, Object?> _harvestHiveRow(int seq) => {
   'hive_id': 'hive-1',
   'withdrawal_treatment_id': 'treatment-1',
   'withdrawal_override_reason': 'not_for_sale',
+};
+
+Map<String, Object?> _documentRow(int seq) => {
+  ..._standard('document-1', seq),
+  'org_id': _org,
+  'type': 'transport_permit',
+  'custom_type_name': null,
+  'name': 'Nakil evrakı',
+  'description': 'Ula → Köyceğiz',
+  // Postgres `date`; saat dilimi yok.
+  'expires_on': '2027-05-01',
+  'file_kind': 'photo',
+  'storage_path': '$_org/document-1/file-1.jpg',
+  'byte_size': 2048,
 };
 
 bool _isPull(http.Request request) =>
@@ -825,11 +841,12 @@ void main() {
         'tasks': [_taskRow(14)],
         'harvests': [_harvestRow(15)],
         'harvest_hives': [_harvestHiveRow(16)],
+        'documents': [_documentRow(17)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 16),
+        const SyncResult(status: SyncStatus.done, pulled: 17),
       );
 
       expect(requests.map(_pullOf), [
@@ -849,6 +866,7 @@ void main() {
         (table: 'tasks', since: 0),
         (table: 'harvests', since: 0),
         (table: 'harvest_hives', since: 0),
+        (table: 'documents', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -972,8 +990,14 @@ void main() {
         'tasks': 14,
         'harvests': 15,
         'harvest_hives': 16,
+        'documents': 17,
         fullPullMarker: 0,
       });
+      final document = (await DocumentRepository(db).findById('document-1'))!;
+      expect(document.type, DocumentType.transportPermit);
+      expect(document.expiresOn, DateTime(2027, 5));
+      expect(document.toJson()['expires_on'], '2027-05-01');
+      expect(document.fileKind, DocumentFileKind.photo);
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

@@ -9,9 +9,11 @@ import 'package:mobil_arici/app/background_sync.dart';
 import 'package:mobil_arici/app/error_reporting.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/supabase_setup.dart';
+import 'package:mobil_arici/core/sync/document_file_triggers.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_triggers.dart';
+import 'package:mobil_arici/features/documents/presentation/document_reminders.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
 
@@ -41,13 +43,16 @@ Future<void> bootstrap(Flavor flavor) async {
 
     final container =
         ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])
-          // Senkron, medya, görüş ve kullanım olayı gönderimi, görev
+          // Senkron, medya, görüş ve kullanım olayı gönderimi, belge
+          // dosyalarının yüklenip indirilmesi, görev ve belge
           // hatırlatmalarının eşitlemesi, push token kaydı ve bildirimden
           // görev açma uygulama açık kaldıkça çalışır.
           ..listen(syncTriggersProvider, (_, _) {})
           ..listen(mediaUploadTriggersProvider, (_, _) {})
           ..listen(telemetryUploadTriggersProvider, (_, _) {})
+          ..listen(documentFileTriggersProvider, (_, _) {})
           ..listen(taskRemindersProvider, (_, _) {})
+          ..listen(documentRemindersProvider, (_, _) {})
           ..listen(pushRegistrationProvider, (_, _) {})
           ..listen(pushTaskLinksProvider, (_, _) {});
 

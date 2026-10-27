@@ -3738,4 +3738,271 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsPushHint =>
       'Get a notification when a task is assigned to you. Tap it to open the task.';
+
+  @override
+  String get documentsTitle => 'Document vault';
+
+  @override
+  String get documentsAdd => 'Add document';
+
+  @override
+  String documentsSummaryOffline(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documents',
+      one: '1 document',
+    );
+    return '$_temp0 · all open offline';
+  }
+
+  @override
+  String documentsSummaryMissing(int count, int missing) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documents',
+      one: '1 document',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      missing,
+      locale: localeName,
+      other: '$missing files',
+      one: '1 file',
+    );
+    return '$_temp0 · $_temp1 not on this phone yet';
+  }
+
+  @override
+  String get documentsRegionNoteTr =>
+      'Document types depend on the country. Outside Türkiye you create your own document types.';
+
+  @override
+  String get documentsRegionNoteOther =>
+      'You define the document types; the types you enter are suggested next time.';
+
+  @override
+  String get documentsRoadCheck => 'Road check · show documents';
+
+  @override
+  String get documentsEmptyTitle => 'No documents yet';
+
+  @override
+  String get documentsEmptyMessage =>
+      'Add a photo or PDF of your permits and certificates. They open offline and you\'re reminded before they expire.';
+
+  @override
+  String get documentsLoadError => 'Couldn\'t open the documents.';
+
+  @override
+  String get documentFileKindPhoto => 'PHOTO';
+
+  @override
+  String get documentFileKindPdf => 'PDF';
+
+  @override
+  String get documentTypeHealthReport => 'Health report';
+
+  @override
+  String get documentTypeTransportPermit => 'Transport permit';
+
+  @override
+  String get documentTypeMigratoryCertificate =>
+      'Migratory beekeeper certificate';
+
+  @override
+  String get documentTypeBusinessRegistration =>
+      'Business registration certificate';
+
+  @override
+  String get documentTypeLandPermit => 'Land permit';
+
+  @override
+  String get documentTypeAnalysisReport => 'Analysis report';
+
+  @override
+  String get documentExpiryNone => 'No expiry';
+
+  @override
+  String get documentExpiryExpired => 'Expired';
+
+  @override
+  String get documentExpiryToday => 'Ends today';
+
+  @override
+  String documentExpiryDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentExpiryMonths(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months months',
+      one: '1 month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentExpiresOn(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String get documentFormNewTitle => 'Add document';
+
+  @override
+  String get documentFormEditTitle => 'Edit document';
+
+  @override
+  String get documentFormType => 'Document type';
+
+  @override
+  String get documentFormCustomTypeHint => 'e.g. Insurance policy';
+
+  @override
+  String get documentFormName => 'Name';
+
+  @override
+  String get documentFormNameHint => 'e.g. Health report 2026';
+
+  @override
+  String get documentFormDescription => 'Description';
+
+  @override
+  String get documentFormDescriptionHint => 'e.g. District office · 152 hives';
+
+  @override
+  String get documentFormExpiry => 'Valid until';
+
+  @override
+  String get documentFormNoExpiry => 'No expiry';
+
+  @override
+  String get documentFormPickDate => 'Pick a date';
+
+  @override
+  String get documentFormExpiryHelper =>
+      'You\'ll be reminded 30, 7 and 1 day before it expires.';
+
+  @override
+  String get documentFormFile => 'File';
+
+  @override
+  String get documentFormTakePhoto => 'Take photo';
+
+  @override
+  String get documentFormPickImage => 'From gallery';
+
+  @override
+  String get documentFormPickPdf => 'Choose PDF';
+
+  @override
+  String get documentFormNoFile =>
+      'Take a photo of the document or choose its PDF.';
+
+  @override
+  String documentFileSizeKb(String size) {
+    return '$size KB';
+  }
+
+  @override
+  String documentFileSizeMb(String size) {
+    return '$size MB';
+  }
+
+  @override
+  String get documentFileTooLarge =>
+      'The file is larger than 20 MB; choose a smaller one.';
+
+  @override
+  String get documentFileFailed => 'Couldn\'t get the file, try again.';
+
+  @override
+  String get documentFilePermissionDenied =>
+      'Permission denied. To add a document, allow camera or file access for this app in Settings.';
+
+  @override
+  String get documentFormSave => 'Save';
+
+  @override
+  String get documentFormDelete => 'Delete document';
+
+  @override
+  String get documentSaved => 'Document saved';
+
+  @override
+  String get documentReminderDenied =>
+      'Document saved. Expiry reminders won\'t ring without notification permission.';
+
+  @override
+  String get documentDeleteTitle => 'Delete this document?';
+
+  @override
+  String get documentDeleteMessage =>
+      'The document and its file are removed from every phone.';
+
+  @override
+  String get documentDeleteConfirm => 'Delete';
+
+  @override
+  String get documentDeleted => 'Document deleted';
+
+  @override
+  String get documentNotFound =>
+      'Document not found; it may have been deleted.';
+
+  @override
+  String get documentEdit => 'Edit';
+
+  @override
+  String get documentFileMissing =>
+      'The file isn\'t on this phone yet. It downloads when you\'re online.';
+
+  @override
+  String get documentPdfFailed => 'Couldn\'t open the PDF.';
+
+  @override
+  String documentPdfPage(int page, int count) {
+    return 'Page $page of $count';
+  }
+
+  @override
+  String get roadCheckTitle => 'Road check';
+
+  @override
+  String roadCheckPosition(int index, int count) {
+    return '$index / $count';
+  }
+
+  @override
+  String get roadCheckSwipeHint => 'Swipe sideways for the next document';
+
+  @override
+  String get roadCheckPrevious => 'Previous document';
+
+  @override
+  String get roadCheckNext => 'Next document';
+
+  @override
+  String documentReminderBody(int days, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return 'Expires in $_temp0 · $date';
+  }
+
+  @override
+  String get syncTableDocuments => 'Document';
 }

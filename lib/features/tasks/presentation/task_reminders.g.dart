@@ -117,7 +117,7 @@ final class TaskRemindersProvider
   }
 }
 
-String _$taskRemindersHash() => r'fe22c1a9f28e24f163f6f05dc8257bf6b400aa70';
+String _$taskRemindersHash() => r'af51d2e01a9ea947745d094628f79087d1fe82e7';
 
 /// Görev hatırlatmalarını yerel DB'den eşitler: bu telefonun kullanıcısına
 /// atanmış ya da atanmamış açık görevlerin ([reminderPlan]) bildirimleri

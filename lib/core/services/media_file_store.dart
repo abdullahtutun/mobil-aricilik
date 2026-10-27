@@ -4,15 +4,16 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 /// Foto ve sesli notların bu telefondaki klasörü (uygulama destek
-/// klasöründe `media/`). Kayıtlarda yalnız dosya adı tutulur; iOS'ta
-/// uygulama klasörünün tam yolu güncellemeyle değişebilir.
+/// klasöründe `media/`; belge kasasının dosyaları `documents/`). Kayıtlarda
+/// yalnız dosya adı tutulur; iOS'ta uygulama klasörünün tam yolu
+/// güncellemeyle değişebilir.
 class MediaFileStore {
   new(this._root);
 
-  /// Uygulamanın kendi klasörü.
-  factory app() => MediaFileStore(
+  /// Uygulamanın kendi klasöründe [folder].
+  factory app([String folder = 'media']) => MediaFileStore(
     getApplicationSupportDirectory().then(
-      (support) => Directory(p.join(support.path, 'media')),
+      (support) => Directory(p.join(support.path, folder)),
     ),
   );
 
@@ -38,6 +39,13 @@ class MediaFileStore {
     final path = await pathOf(fileName);
     final partial = await File('$path.part').writeAsBytes(bytes, flush: true);
     return await partial.rename(path);
+  }
+
+  /// [sourcePath]'teki dosyayı [fileName] olarak kopyalar ve boyutunu
+  /// (bayt) döner. Seçilen PDF gibi tek dosya; eşzamanlı.
+  Future<int> copyFrom(String sourcePath, String fileName) async {
+    final copy = File(sourcePath).copySync(await pathOf(fileName));
+    return copy.lengthSync();
   }
 
   /// Dosyayı siler; yoksa bir şey yapmaz. Küçük tek dosya; eşzamanlı.

@@ -120,6 +120,16 @@ abstract final class AppRoutes {
   /// "Görüş bildir"; Daha fazla'dan açılır.
   static const feedback = '/more/feedback';
 
+  /// Belge kasası; Daha fazla'dan açılır. Belge, ekleme, düzenleme ve yol
+  /// kontrolü kasanın altında.
+  static const documents = '/more/documents';
+  static const documentNew = '/more/documents/new';
+  static String document(String id) => '/more/documents/$id';
+  static String documentEdit(String id) => '/more/documents/$id/edit';
+
+  /// Yol kontrolü: belgeler tam ekran, kaydırarak geçilir.
+  static const roadCheck = '/more/documents/road-check';
+
   /// Fotoğrafın tam ekranı; sekmelerin üstünde açılır.
   static String mediaPhoto(String mediaId) => '/media/$mediaId';
 
