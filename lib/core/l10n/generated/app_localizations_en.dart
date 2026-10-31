@@ -2051,6 +2051,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get treatmentAddDrug => 'Add a new drug';
 
   @override
+  String get drugInfoOpen => 'Drug information';
+
+  @override
+  String get drugInfoSourceTitle =>
+      'Source: Ministry of Agriculture and Forestry of Türkiye';
+
+  @override
+  String get drugInfoSourceMessage =>
+      'This is taken from the Ministry-approved product information and is shown in Turkish as published. Read the product label before use; ask a veterinarian if unsure.';
+
+  @override
+  String get drugInfoActiveIngredient => 'Active ingredient';
+
+  @override
+  String get drugInfoIndications => 'Used for';
+
+  @override
+  String get drugInfoUsage => 'Use and frequency';
+
+  @override
+  String get drugInfoUsageMethod => 'How to apply';
+
+  @override
+  String get drugInfoUsageMethodAndDose => 'How to apply and dose';
+
+  @override
+  String get drugInfoUsageDiagnosis => 'For diagnosis';
+
+  @override
+  String get drugInfoUsageDose => 'Dose';
+
+  @override
+  String get drugInfoUsageFrequency => 'Frequency';
+
+  @override
+  String get drugInfoUsageDuration => 'Duration';
+
+  @override
+  String get drugInfoUsageOther => 'Note';
+
+  @override
+  String get drugInfoSuitablePeriods => 'Suitable periods';
+
+  @override
+  String get drugInfoAvoidPeriods => 'Do not use';
+
+  @override
+  String get drugInfoWithdrawal => 'Withdrawal period';
+
+  @override
+  String get drugInfoWarnings => 'Warnings';
+
+  @override
+  String get drugInfoClose => 'Close';
+
+  @override
   String get treatmentBatchNo => 'Batch no';
 
   @override

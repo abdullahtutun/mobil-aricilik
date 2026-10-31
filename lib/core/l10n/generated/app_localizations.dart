@@ -3410,6 +3410,114 @@ abstract class AppLocalizations {
   /// **'Add a new drug'**
   String get treatmentAddDrug;
 
+  /// No description provided for @drugInfoOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug information'**
+  String get drugInfoOpen;
+
+  /// No description provided for @drugInfoSourceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Source: Ministry of Agriculture and Forestry of Türkiye'**
+  String get drugInfoSourceTitle;
+
+  /// No description provided for @drugInfoSourceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This is taken from the Ministry-approved product information and is shown in Turkish as published. Read the product label before use; ask a veterinarian if unsure.'**
+  String get drugInfoSourceMessage;
+
+  /// No description provided for @drugInfoActiveIngredient.
+  ///
+  /// In en, this message translates to:
+  /// **'Active ingredient'**
+  String get drugInfoActiveIngredient;
+
+  /// No description provided for @drugInfoIndications.
+  ///
+  /// In en, this message translates to:
+  /// **'Used for'**
+  String get drugInfoIndications;
+
+  /// No description provided for @drugInfoUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Use and frequency'**
+  String get drugInfoUsage;
+
+  /// No description provided for @drugInfoUsageMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'How to apply'**
+  String get drugInfoUsageMethod;
+
+  /// No description provided for @drugInfoUsageMethodAndDose.
+  ///
+  /// In en, this message translates to:
+  /// **'How to apply and dose'**
+  String get drugInfoUsageMethodAndDose;
+
+  /// No description provided for @drugInfoUsageDiagnosis.
+  ///
+  /// In en, this message translates to:
+  /// **'For diagnosis'**
+  String get drugInfoUsageDiagnosis;
+
+  /// No description provided for @drugInfoUsageDose.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose'**
+  String get drugInfoUsageDose;
+
+  /// No description provided for @drugInfoUsageFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get drugInfoUsageFrequency;
+
+  /// No description provided for @drugInfoUsageDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get drugInfoUsageDuration;
+
+  /// No description provided for @drugInfoUsageOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get drugInfoUsageOther;
+
+  /// No description provided for @drugInfoSuitablePeriods.
+  ///
+  /// In en, this message translates to:
+  /// **'Suitable periods'**
+  String get drugInfoSuitablePeriods;
+
+  /// No description provided for @drugInfoAvoidPeriods.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not use'**
+  String get drugInfoAvoidPeriods;
+
+  /// No description provided for @drugInfoWithdrawal.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal period'**
+  String get drugInfoWithdrawal;
+
+  /// No description provided for @drugInfoWarnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get drugInfoWarnings;
+
+  /// No description provided for @drugInfoClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get drugInfoClose;
+
   /// No description provided for @treatmentBatchNo.
   ///
   /// In en, this message translates to:

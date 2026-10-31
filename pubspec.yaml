@@ -98,6 +98,7 @@ flutter:
 
   assets:
     - assets/fonts/inter/LICENSE.txt
+    - assets/drugs/ilaclar.json
 
   fonts:
     - family: Inter

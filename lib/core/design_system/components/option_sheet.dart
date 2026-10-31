@@ -22,6 +22,7 @@ class SheetOption<T> {
     this.iconColor,
     this.hint,
     this.selected,
+    this.action,
   });
 
   final T value;
@@ -36,6 +37,19 @@ class SheetOption<T> {
 
   /// Seçim listesinde: ekran okuyucuya seçili olup olmadığı söylenir.
   final bool? selected;
+
+  /// Satırın sağındaki ikincil buton (ör. bilgi); sayfayı kapatmaz.
+  final SheetOptionAction? action;
+}
+
+/// [SheetOption]'ın sağındaki ikon butonu; [label] ipucu ve ekran okuyucu
+/// adı.
+class SheetOptionAction {
+  const new({required this.icon, required this.label, required this.onPressed});
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
 }
 
 /// Seçim sayfası: başlık ve seçenekler. Seçenek yoksa [emptyMessage] yazar.
@@ -89,6 +103,20 @@ class OptionSheet<T> extends StatelessWidget {
                 label: option.label,
                 hint: option.hint,
                 selected: option.selected,
+                trailing: switch (option.action) {
+                  final action? => IconButton(
+                    tooltip: action.label,
+                    onPressed: action.onPressed,
+                    icon: Icon(action.icon),
+                    iconSize: context.sizes.icon,
+                    color: context.colors.primary,
+                    style: IconButton.styleFrom(
+                      minimumSize: Size.square(context.touchTargets.field),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                  ),
+                  null => null,
+                },
                 onTap: () => Navigator.of(context).pop(option.value),
               ),
           ],
@@ -177,6 +205,7 @@ class OptionTile extends StatelessWidget {
     this.hint,
     this.badge,
     this.selected,
+    this.trailing,
   });
 
   final IconData icon;
@@ -198,13 +227,18 @@ class OptionTile extends StatelessWidget {
   /// Seçimi çizmek (ör. onay ikonu) çağırana kalır.
   final bool? selected;
 
+  /// Satırın sağında, dokunma alanının dışında (ör. bilgi butonu); ekran
+  /// okuyucu ayrı buton olarak okur.
+  final Widget? trailing;
+
   @override
   Widget build(BuildContext context) {
     final spacing = context.spacing;
     final hint = this.hint;
     final badge = this.badge;
+    final trailing = this.trailing;
 
-    return Semantics(
+    final tile = Semantics(
       container: true,
       button: true,
       selected: selected,
@@ -250,6 +284,13 @@ class OptionTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+    if (trailing == null) return tile;
+    return Row(
+      children: [
+        Expanded(child: tile),
+        trailing,
+      ],
     );
   }
 }

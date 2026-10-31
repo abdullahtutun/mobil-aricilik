@@ -17,10 +17,13 @@ import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/drug_info.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/health/presentation/drug_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_screen.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/drug_info_sheet.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
@@ -38,6 +41,23 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
+/// TR şeridinin ürün bilgisi; GLOBAL ilacın bilgisi yok.
+const _stripInfo = DrugInfo(
+  refDrugId: 'tr-strip',
+  name: 'Amitraz şerit',
+  activeIngredient: '500 mg Amitraz',
+  indications: 'Varroa mücadelesi',
+  usage: {'uygulama_suresi': '4–6 hafta', 'uygulama_sekli': 'Asılır'},
+  periods: DrugInfoPeriods(
+    suitable: ['Geç sonbahar'],
+    avoid: ['Bal akımı süresince'],
+  ),
+  residue: DrugInfoResidue(
+    withdrawal: '0 gün',
+    warnings: 'Ballara temas ettirilmemeli',
+  ),
+);
+
 Future<ProviderContainer> _open(
   WidgetTester tester, {
   required AppDatabase db,
@@ -49,6 +69,7 @@ Future<ProviderContainer> _open(
   final container = ProviderContainer.test(
     overrides: [
       ...signedIn(db: db, media: media, reminders: reminders),
+      drugInfosProvider.overrideWith((ref) async => {'tr-strip': _stripInfo}),
       if (region != null) regionConfigProvider.overrideWithValue(region),
     ],
   );
@@ -279,6 +300,57 @@ void main() {
 
       await _tap(tester, find.text('Undo'));
       expect(await liveTreatments(), isEmpty);
+    });
+
+    testWidgets('listede bilgisi olan ilacın satırında bilgi butonu; '
+        'Bakanlık kaynağı ve bölümler; kapatınca listeye dönülür', (
+      tester,
+    ) async {
+      await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+      );
+      await _tap(tester, _button('Choose drug'));
+      // Yalnız TR şeridinin bilgisi var.
+      expect(find.byTooltip('Drug information'), findsOneWidget);
+
+      await _tap(tester, find.byTooltip('Drug information'));
+      expect(find.byType(DrugInfoSheet), findsOneWidget);
+      Finder inInfo(String text) => find.descendant(
+        of: find.byType(DrugInfoSheet),
+        matching: find.text(text),
+      );
+      expect(inInfo('Amitraz şerit'), findsOneWidget);
+      expect(
+        inInfo('Source: Ministry of Agriculture and Forestry of Türkiye'),
+        findsOneWidget,
+      );
+      expect(inInfo('500 mg Amitraz'), findsOneWidget);
+      expect(inInfo('Varroa mücadelesi'), findsOneWidget);
+      expect(inInfo('How to apply'), findsOneWidget);
+      expect(inInfo('Asılır'), findsOneWidget);
+      expect(inInfo('Duration'), findsOneWidget);
+      expect(inInfo('SUITABLE PERIODS'), findsOneWidget);
+      expect(inInfo('Geç sonbahar'), findsOneWidget);
+      expect(inInfo('DO NOT USE'), findsOneWidget);
+      expect(inInfo('Bal akımı süresince'), findsOneWidget);
+      expect(inInfo('0 gün'), findsOneWidget);
+      expect(inInfo('Ballara temas ettirilmemeli'), findsOneWidget);
+      // Uygulama şekli süreden önce yazılır.
+      expect(
+        tester.getTopLeft(inInfo('How to apply')).dy,
+        lessThan(tester.getTopLeft(inInfo('Duration')).dy),
+      );
+
+      await _tap(tester, _button('Close'));
+      expect(find.byType(DrugInfoSheet), findsNothing);
+      expect(_inSheet('Amitraz strip'), findsOneWidget);
+      // Bilgi butonu ilacı seçmez.
+      expect(find.text('Change'), findsNothing);
+      await _tap(tester, _inSheet('Amitraz strip'));
+      expect(find.byType(DrugInfoSheet), findsNothing);
+      expect(find.text('Change'), findsOneWidget);
     });
 
     testWidgets('arılığın tümü: aktif kovan sayısı, toplam doz ve "N kovana '
@@ -791,6 +863,18 @@ void main() {
     await _tap(tester, _button('İlaç seç'));
     expect(_inSheet('Oksalik asit'), findsOneWidget);
     expect(_inSheet('Yeni ilaç ekle'), findsOneWidget);
+    await _tap(tester, find.byTooltip('İlaç bilgisi'));
+    expect(find.text('Kaynak: T.C. Tarım ve Orman Bakanlığı'), findsOneWidget);
+    expect(find.text('ETKEN MADDE'), findsOneWidget);
+    expect(find.text('NE İÇİN KULLANILIR'), findsOneWidget);
+    expect(find.text('KULLANIM VE SIKLIK'), findsOneWidget);
+    expect(find.text('Uygulama şekli'), findsOneWidget);
+    expect(find.text('Uygulama süresi'), findsOneWidget);
+    expect(find.text('UYGUN DÖNEMLER'), findsOneWidget);
+    expect(find.text('KULLANILMAMASI GEREKEN DÖNEMLER'), findsOneWidget);
+    expect(find.text('ARINMA SÜRESİ'), findsOneWidget);
+    expect(find.text('UYARILAR'), findsOneWidget);
+    await _tap(tester, _button('Kapat'));
     await _tap(tester, _inSheet('Amitraz şerit'));
     expect(find.text('Etken madde: Amitraz'), findsOneWidget);
     expect(find.text('Değiştir'), findsOneWidget);
@@ -994,6 +1078,10 @@ void main() {
     await tester.pumpAndSettle();
     await _tap(tester, find.text('Whole apiary · 2'));
     await _tap(tester, _button('Choose drug'));
+    expect(tester.takeException(), isNull);
+    await _tap(tester, find.byTooltip('Drug information'));
+    expect(tester.takeException(), isNull);
+    await _tap(tester, _button('Close'));
     expect(tester.takeException(), isNull);
     await _tap(tester, _inSheet('Amitraz strip'));
     await _scrollTo(tester, find.text('NO HONEY SUPER'), TreatmentFormScreen);

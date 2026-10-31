@@ -1,10 +1,13 @@
 import 'package:clock/clock.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
+import 'package:mobil_arici/features/health/data/drug_info_repository.dart';
 import 'package:mobil_arici/features/health/data/drug_repository.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/drug_info.dart';
 import 'package:mobil_arici/features/health/domain/drug_rules.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
@@ -29,6 +32,15 @@ TreatmentRepository treatmentRepository(Ref ref) =>
 @riverpod
 Stream<List<RefDrug>> refDrugs(Ref ref) =>
     ref.watch(refDrugRepositoryProvider).watchAll();
+
+@Riverpod(keepAlive: true)
+DrugInfoRepository drugInfoRepository(Ref ref) =>
+    DrugInfoRepository(rootBundle);
+
+/// Referans ilaçların ürün bilgileri, kimliğe göre; bir kez okunur.
+@Riverpod(keepAlive: true)
+Future<Map<String, DrugInfo>> drugInfos(Ref ref) =>
+    ref.watch(drugInfoRepositoryProvider).loadAll();
 
 /// İşletmenin eklediği ilaçlar; işletme yoksa boş.
 @riverpod

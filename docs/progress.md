@@ -449,6 +449,14 @@
 - Taşıma ekranı açıldığı durağa sabitlendi. Bitirince sıradaki taşıma bir sonraki durağa kayıyor ama ekran özeti göstermeye devam ediyor. Yeniden açılınca yeni sıradaki taşıma geliyor.
 - Testler: repository'ye 2 test eklendi (durak şu an, önceki geçmiş, kovan sayısı; durağı silinmiş taşıma). Akış testinde bitişten sonra durak durumları ve özetin kalması denetleniyor. `flutter analyze` temiz, migration testleri (48) geçiyor. Tam takımda yalnız `tasks_flow_test`'in bilinen 3 testi kırıldı; takım 23:12'de koştu ve bu testler 23:00–24:00 arasında kırılıyor.
 
+### 2026-10-31 — TR ilaç listesi ve Bakanlık ürün bilgisi
+
+- TR referans ilaç listesi gerçek ürünlerle değişti: `20261031200000_tr_ref_drugs.sql` 7 varroa şeridini (Bayvarol, BEERAZ, BEEVARFLU, CheckMite, FUMBEE, PolyVar Yellow, VARODUR) ekliyor, iki örnek TR satırını yumuşak siliyor. Bekleme süresi yalnız bilgide açıkça gün yazan 5 üründe 0, BEERAZ ve FUMBEE'de boş. Drift şeması değişmedi; liste senkronla iniyor. Migration yerel DB'ye uygulandı (pgTAP 344 test geçiyor), **uzak projeye henüz uygulanmadı**.
+- Ürün bilgisi `docs/ilaclar.json`'dan `assets/drugs/ilaclar.json`'a taşındı; her ürüne `ref_drug_id` eklendi. Uygulamayla geliyor, internet istemiyor. `DrugInfo` (freezed) + `DrugInfoRepository` + `drugInfosProvider`; kullanım anahtarları ürüne göre değiştiği için `drugUsageItems` sabit sırayla diziyor.
+- İlaç uygulama formundaki ilaç listesinde bilgisi olan ilacın satırına bilgi butonu (ⓘ) geldi (`SheetOption.action`, `OptionTile.trailing`; satıra dokunmak yine ilacı seçer). Buton listenin üstünde `DrugInfoSheet` açıyor: en üstte "Kaynak: T.C. Tarım ve Orman Bakanlığı" kartı ve etikete/veteriner hekime uyma notu, sonra etken madde, ne için kullanılır, kullanım ve sıklık, uygun ve kullanılmaması gereken dönemler (ikon + başlık), arınma süresi, uyarılar. Kapatınca listeye dönülüyor.
+- Ürün metinleri kaynağındaki gibi yalnız Türkçe; İngilizce arayüzde başlıklar İngilizce, kaynak notu metnin Türkçe olduğunu söylüyor. Liste bilginin yüklenmesini beklemiyor; bilgi yüklenmemişse buton görünmüyor.
+- Testler: `drug_info_test` (ayrıştırma, sıralama, asset'in paketlenmesi, her ürünün migration'da aynı kimlik ve adla bulunması); akış testine bilgi sayfası, Türkçe metinler ve 360dp/1.5x/eldiven denemesi eklendi. `flutter analyze` temiz; tam takımda yalnız `tasks_flow_test`'in bilinen 3 testi kırıldı (23:3x'te koştu).
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

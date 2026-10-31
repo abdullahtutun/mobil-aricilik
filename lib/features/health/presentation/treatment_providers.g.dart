@@ -184,6 +184,100 @@ final class RefDrugsProvider
 
 String _$refDrugsHash() => r'38be510ae19f6873454797a8b1d2bd88d760f0a5';
 
+@ProviderFor(drugInfoRepository)
+final drugInfoRepositoryProvider = DrugInfoRepositoryProvider._();
+
+final class DrugInfoRepositoryProvider
+    extends
+        $FunctionalProvider<
+          DrugInfoRepository,
+          DrugInfoRepository,
+          DrugInfoRepository
+        >
+    with $Provider<DrugInfoRepository> {
+  DrugInfoRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'drugInfoRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$drugInfoRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<DrugInfoRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DrugInfoRepository create(Ref ref) {
+    return drugInfoRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DrugInfoRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DrugInfoRepository>(value),
+    );
+  }
+}
+
+String _$drugInfoRepositoryHash() =>
+    r'01ac36ede1988bbc40ce07c88fa6f0375d62ab4c';
+
+/// Referans ilaçların ürün bilgileri, kimliğe göre; bir kez okunur.
+
+@ProviderFor(drugInfos)
+final drugInfosProvider = DrugInfosProvider._();
+
+/// Referans ilaçların ürün bilgileri, kimliğe göre; bir kez okunur.
+
+final class DrugInfosProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<String, DrugInfo>>,
+          Map<String, DrugInfo>,
+          FutureOr<Map<String, DrugInfo>>
+        >
+    with
+        $FutureModifier<Map<String, DrugInfo>>,
+        $FutureProvider<Map<String, DrugInfo>> {
+  /// Referans ilaçların ürün bilgileri, kimliğe göre; bir kez okunur.
+  DrugInfosProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'drugInfosProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$drugInfosHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Map<String, DrugInfo>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Map<String, DrugInfo>> create(Ref ref) {
+    return drugInfos(ref);
+  }
+}
+
+String _$drugInfosHash() => r'4e66000bf556539e10c386b4f8c5e3870318151a';
+
 /// İşletmenin eklediği ilaçlar; işletme yoksa boş.
 
 @ProviderFor(organizationDrugs)

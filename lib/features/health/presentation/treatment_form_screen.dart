@@ -11,6 +11,7 @@ import 'package:mobil_arici/features/health/domain/treatment_rules.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_controller.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/drug_info_sheet.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
@@ -45,9 +46,11 @@ class TreatmentFormScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     // İlaç listesi ekran açıkken hazır kalsın; seçim sayfası beklemeden
     // açılır.
-    ref.watch(
-      drugCatalogOfProvider(Localizations.localeOf(context).languageCode),
-    );
+    ref
+      ..watch(
+        drugCatalogOfProvider(Localizations.localeOf(context).languageCode),
+      )
+      ..watch(drugInfosProvider);
 
     return switch (ref.watch(_provider)) {
       AsyncData(value: final form?) => Scaffold(
@@ -128,6 +131,8 @@ class TreatmentFormScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     final catalog = await ref.read(drugCatalogOfProvider(languageCode).future);
+    // Ürün bilgisi beklenmez; yüklenmemişse bilgi butonları görünmez.
+    final infos = ref.read(drugInfosProvider).value ?? const {};
     if (!context.mounted) return;
     final picked = await showOptionSheet<Object>(
       context,
@@ -141,6 +146,14 @@ class TreatmentFormScreen extends ConsumerWidget {
               label: drug.name,
               hint: drugChoiceHint(l10n, drug),
               selected: drug == form.drug,
+              action: switch (infos[drug.refDrugId]) {
+                final info? => SheetOptionAction(
+                  icon: Icons.info_outline_rounded,
+                  label: l10n.drugInfoOpen,
+                  onPressed: () => showDrugInfoSheet(context, info),
+                ),
+                null => null,
+              },
             ),
           SheetOption(
             value: const _NewDrug(),

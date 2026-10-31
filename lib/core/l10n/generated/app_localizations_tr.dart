@@ -2033,6 +2033,61 @@ class AppLocalizationsTr extends AppLocalizations {
   String get treatmentAddDrug => 'Yeni ilaç ekle';
 
   @override
+  String get drugInfoOpen => 'İlaç bilgisi';
+
+  @override
+  String get drugInfoSourceTitle => 'Kaynak: T.C. Tarım ve Orman Bakanlığı';
+
+  @override
+  String get drugInfoSourceMessage =>
+      'Bu bilgiler Bakanlık onaylı ürün bilgilerinden alınmıştır. Uygulamadan önce ürün etiketini okuyun; emin değilseniz veteriner hekime danışın.';
+
+  @override
+  String get drugInfoActiveIngredient => 'Etken madde';
+
+  @override
+  String get drugInfoIndications => 'Ne için kullanılır';
+
+  @override
+  String get drugInfoUsage => 'Kullanım ve sıklık';
+
+  @override
+  String get drugInfoUsageMethod => 'Uygulama şekli';
+
+  @override
+  String get drugInfoUsageMethodAndDose => 'Uygulama şekli ve doz';
+
+  @override
+  String get drugInfoUsageDiagnosis => 'Teşhis için';
+
+  @override
+  String get drugInfoUsageDose => 'Doz';
+
+  @override
+  String get drugInfoUsageFrequency => 'Sıklık';
+
+  @override
+  String get drugInfoUsageDuration => 'Uygulama süresi';
+
+  @override
+  String get drugInfoUsageOther => 'Not';
+
+  @override
+  String get drugInfoSuitablePeriods => 'Uygun dönemler';
+
+  @override
+  String get drugInfoAvoidPeriods => 'Kullanılmaması gereken dönemler';
+
+  @override
+  String get drugInfoWithdrawal => 'Arınma süresi';
+
+  @override
+  String get drugInfoWarnings => 'Uyarılar';
+
+  @override
+  String get drugInfoClose => 'Kapat';
+
+  @override
   String get treatmentBatchNo => 'Parti no';
 
   @override
