@@ -27,8 +27,30 @@ void main() {
       expect(info.name, 'İlaç a');
       expect(info.periods.suitable, ['Sonbahar']);
       expect(info.periods.avoid, isEmpty);
-      expect(info.residue.withdrawal, '0 gün');
-      expect(info.residue.warnings, isNull);
+      expect(info.residue!.withdrawal, '0 gün');
+      expect(info.residue!.warnings, isNull);
+      expect(info.defaults, isNull);
+      expect(drugInfoHasDetails(info), isTrue);
+    });
+
+    test('yalnız ad ve etken madde: diğer alanlar boş, ayrıntı yok', () {
+      final info = parseDrugInfos([
+        {'ref_drug_id': 'r', 'ilac_adi': 'Rulamit', 'etken_madde': 'Amitraz'},
+      ])['r']!;
+      expect(info.indications, isNull);
+      expect(info.usage, isEmpty);
+      expect(info.periods.suitable, isEmpty);
+      expect(info.residue, isNull);
+      expect(drugInfoHasDetails(info), isFalse);
+    });
+
+    test('otomatik doldurma değerleri', () {
+      final json = _json('a')
+        ..['otomatik_doldurma'] = {'doz': 2, 'uygulama_gun': 63};
+      expect(
+        parseDrugInfos([json])['a']!.defaults,
+        const DrugInfoDefaults(dose: 2, treatmentDays: 63),
+      );
     });
 
     test('aynı kimlik iki kez geçerse ilki kalır', () {
@@ -61,18 +83,48 @@ void main() {
       jsonDecode(File(DrugInfoRepository.assetPath).readAsStringSync())
           as List<Object?>,
     );
-    final migration = File(
-      'supabase/migrations/20261031200000_tr_ref_drugs.sql',
-    ).readAsStringSync();
+    final migration =
+        [
+              '20261031200000_tr_ref_drugs.sql',
+              '20261101120000_tr_ref_drugs_amitraz.sql',
+            ]
+            .map((name) => File('supabase/migrations/$name').readAsStringSync())
+            .join();
+    final detailed = [
+      for (final info in infos.values)
+        if (drugInfoHasDetails(info)) info,
+    ];
 
-    test('7 ürün; her alanı dolu ve tanınan kullanım anahtarları', () {
-      expect(infos, hasLength(7));
+    test('11 ürün; yalnız ad ve etken maddesi olan 4 amitraz ürünü', () {
+      expect(infos, hasLength(11));
+      expect(
+        [
+          for (final info in infos.values)
+            if (!drugInfoHasDetails(info)) (info.name, info.activeIngredient),
+        ],
+        [
+          ('Rulamit', 'Amitraz'),
+          ('Rulamit-Va', 'Amitraz'),
+          ('Vamitrat-Va', 'Amitraz'),
+          ('Varroset', 'Amitraz'),
+        ],
+      );
       for (final info in infos.values) {
+        if (!drugInfoHasDetails(info)) expect(info.defaults, isNull);
+      }
+    });
+
+    test('ayrıntılı 7 ürün: her alanı dolu, doz ve süre dolu, tanınan '
+        'kullanım anahtarları', () {
+      expect(detailed, hasLength(7));
+      for (final info in detailed) {
         expect(info.name, isNotEmpty);
         expect(info.activeIngredient, isNotEmpty);
         expect(info.indications, isNotEmpty);
-        expect(info.residue.withdrawal, isNotEmpty);
+        expect(info.residue!.withdrawal, isNotEmpty);
         expect(info.periods.suitable, isNotEmpty);
+        expect(info.defaults!.dose, greaterThan(0), reason: info.name);
+        expect(info.defaults!.treatmentDays, greaterThan(0), reason: info.name);
         final usage = drugUsageItems(info.usage);
         expect(usage, isNotEmpty);
         expect(

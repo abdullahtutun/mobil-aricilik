@@ -87,18 +87,21 @@ Map<String, WithdrawalLock> withdrawalLocksByHive(
   };
 }
 
-/// Önerilen planlanan çıkarma: şeritte başlangıçtan
-/// [defaultStripTreatmentDays] gün sonra; diğer birimlerde tek seferlik
-/// uygulama, çıkarma yok.
-DateTime? defaultPlannedRemoval(DrugDoseUnit unit, DateTime startedAt) =>
-    switch (unit) {
-      DrugDoseUnit.strip => DateTime(
-        startedAt.year,
-        startedAt.month,
-        startedAt.day + defaultStripTreatmentDays,
-      ),
-      DrugDoseUnit.ml || DrugDoseUnit.g || DrugDoseUnit.dose => null,
-    };
+/// Önerilen planlanan çıkarma: şeritte başlangıçtan [treatmentDays]
+/// (ürün bilgisinde yoksa [defaultStripTreatmentDays]) gün sonra; diğer
+/// birimlerde tek seferlik uygulama, çıkarma yok.
+DateTime? defaultPlannedRemoval(
+  DrugDoseUnit unit,
+  DateTime startedAt, {
+  int? treatmentDays,
+}) => switch (unit) {
+  DrugDoseUnit.strip => DateTime(
+    startedAt.year,
+    startedAt.month,
+    startedAt.day + (treatmentDays ?? defaultStripTreatmentDays),
+  ),
+  DrugDoseUnit.ml || DrugDoseUnit.g || DrugDoseUnit.dose => null,
+};
 
 /// Yerel takvimde günün başı.
 DateTime _day(DateTime value) {

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/drug_info.dart';
 import 'package:mobil_arici/features/health/domain/drug_rules.dart';
 
 RefDrug _ref(
@@ -71,8 +72,8 @@ void main() {
     for (final choice in choices) choice.refDrugId ?? choice.drugId,
   ];
 
-  test('TR profilinde: işletmenin ilaçları, TR listesi, GLOBAL; '
-      'gruplar kendi içinde ada göre', () {
+  test('TR profilinde: işletmenin ilaçları ve yalnız TR listesi (GLOBAL '
+      'yok); gruplar kendi içinde ada göre', () {
     final catalog = drugCatalog(
       refDrugs: refDrugs,
       drugs: drugs,
@@ -80,13 +81,7 @@ void main() {
       languageCode: 'tr',
     );
 
-    expect(ids(catalog), [
-      'own-a',
-      'own-b',
-      'tr-strip',
-      'g-amitraz',
-      'g-oxalic',
-    ]);
+    expect(ids(catalog), ['own-a', 'own-b', 'tr-strip']);
   });
 
   test('diğer bölgelerde TR listesi görünmez, etken madde bazlı GLOBAL '
@@ -148,5 +143,29 @@ void main() {
         withdrawalDays: 14,
       ),
     );
+  });
+
+  test('ürün bilgisindeki doz ve kovanda kalma süresi seçeneğe geçer; '
+      'bilgisi olmayan ilaçta boş', () {
+    final catalog = drugCatalog(
+      refDrugs: refDrugs,
+      drugs: drugs,
+      trList: true,
+      languageCode: 'tr',
+      infos: {
+        'tr-strip': const DrugInfo(
+          refDrugId: 'tr-strip',
+          name: 'Amitraz şerit',
+          activeIngredient: 'Amitraz',
+          defaults: DrugInfoDefaults(dose: 2, treatmentDays: 63),
+        ),
+      },
+    );
+    final strip = catalog.singleWhere((c) => c.refDrugId == 'tr-strip');
+    expect(strip.defaultDose, 2);
+    expect(strip.treatmentDays, 63);
+    final own = catalog.firstWhere((c) => c.drugId != null);
+    expect(own.defaultDose, isNull);
+    expect(own.treatmentDays, isNull);
   });
 }

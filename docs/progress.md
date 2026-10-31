@@ -457,6 +457,14 @@
 - Ürün metinleri kaynağındaki gibi yalnız Türkçe; İngilizce arayüzde başlıklar İngilizce, kaynak notu metnin Türkçe olduğunu söylüyor. Liste bilginin yüklenmesini beklemiyor; bilgi yüklenmemişse buton görünmüyor.
 - Testler: `drug_info_test` (ayrıştırma, sıralama, asset'in paketlenmesi, her ürünün migration'da aynı kimlik ve adla bulunması); akış testine bilgi sayfası, Türkçe metinler ve 360dp/1.5x/eldiven denemesi eklendi. `flutter analyze` temiz; tam takımda yalnız `tasks_flow_test`'in bilinen 3 testi kırıldı (23:3x'te koştu).
 
+### 2026-10-31 — Amitraz ürünleri, yalnız Bakanlık listesi ve otomatik doldurma
+
+- `ilaclar.json`'a Rulamit, Rulamit-Va, Vamitrat-Va (şerit) ve Varroset (tütsü kağıdı, birimi "doz": tek seferlik, çıkarma önerilmez) eklendi; yalnız ad ve etken madde (amitraz) var. `20261101120000_tr_ref_drugs_amitraz.sql` bunları `ref_drugs`'a ekliyor; yerel DB'ye uygulandı (pgTAP 344 test geçiyor), **uzak projeye henüz uygulanmadı**. Tütsü kağıdı için ayrı birim eklenmedi (sunucu enum'u ve şema sürümü ister).
+- TR profilinde ilaç listesinde yalnız JSON'daki ürünler ve işletmenin "Yeni ilaç ekle" ile eklediği ilaçlar var; etken madde bazlı GLOBAL liste kalktı. Diğer bölgelerde liste değişmedi (işletmenin ilaçları + GLOBAL).
+- JSON'a ayrıntılı 7 ürün için `otomatik_doldurma` (`doz`, `uygulama_gun`) eklendi. Doz küçük/standart koloninin dozu (Bayvarol 2, BEERAZ 1, BEEVARFLU 2, CheckMite 2, FUMBEE 2, PolyVar 2, VARODUR 2); süre "4–6 hafta" gibi aralıklarda üst sınır (42 gün), PolyVar'da "en az 9 hafta" (63 gün). İlaç seçilince doz, planlanan çıkarma ve bekleme süresi (`ref_drugs.withdrawal_days`, yoksa 0) doluyor; başlangıç değişince çıkarma aynı süreyle yeniden öneriliyor. Bilgisi olmayan ilaçta doz olduğu gibi kalıyor, şeritte çıkarma 42 gün.
+- `DrugInfo`'da ad ve etken madde dışındaki alanlar isteğe bağlı oldu; yalnız ad ve etken maddesi olan ilaçta bilgi butonu çıkmıyor (etken madde satırda zaten yazıyor).
+- Testler: `drug_info_test` (11 ürün, 4 sade ürün, otomatik doldurma, iki migration'la tutarlılık), `drug_rules_test` (TR'de GLOBAL yok, doz/süre seçeneğe geçer), `withdrawal_rules_test` (süreli çıkarma), akış testine otomatik doldurma ve bilgi butonu olmayan ilaç. `flutter analyze` temiz; tam takımda yalnız `tasks_flow_test`'in bilinen 3 testi kırıldı (23:5x).
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

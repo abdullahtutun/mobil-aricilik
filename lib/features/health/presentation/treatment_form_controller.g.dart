@@ -65,7 +65,7 @@ final class TreatmentFormControllerProvider
 }
 
 String _$treatmentFormControllerHash() =>
-    r'34df9b7344fd2ed429a6cccb1ba76dc5fb8c340e';
+    r'e16deb834c15b8597f60f7398aeca2af65e1f5c5';
 
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse

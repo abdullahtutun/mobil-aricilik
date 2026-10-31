@@ -737,7 +737,7 @@ final class DrugCatalogOfProvider
   }
 }
 
-String _$drugCatalogOfHash() => r'21e59c0034d420d6efb42f2c25be574a19fc1972';
+String _$drugCatalogOfHash() => r'dfc1b5de9dc9283ef4dea0682132eaa25da8040b';
 
 /// Formdaki ilaç listesi ([drugCatalog]) [languageCode] dilinde. TR
 /// listesi bölge profilinin `trDrugList` bayrağıyla görünür.

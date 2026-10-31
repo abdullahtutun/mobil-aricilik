@@ -86,6 +86,7 @@ Future<List<DrugChoice>> drugCatalogOf(Ref ref, String languageCode) async =>
       drugs: await ref.watch(organizationDrugsProvider.future),
       trList: ref.watch(regionConfigProvider).features.trDrugList,
       languageCode: languageCode,
+      infos: await ref.watch(drugInfosProvider.future),
     );
 
 /// Kaydetme, geri alma ve kilit denetimi. Bildirimin Geri al'ı form

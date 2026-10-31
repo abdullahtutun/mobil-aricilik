@@ -10,14 +10,27 @@ _DrugInfo _$DrugInfoFromJson(Map<String, dynamic> json) => _DrugInfo(
   refDrugId: json['ref_drug_id'] as String,
   name: json['ilac_adi'] as String,
   activeIngredient: json['etken_madde'] as String,
-  indications: json['endikasyonlar'] as String,
-  usage: Map<String, String>.from(json['kullanimi_ve_sikligi'] as Map),
-  periods: DrugInfoPeriods.fromJson(
-    json['uygulandigi_donem'] as Map<String, dynamic>,
-  ),
-  residue: DrugInfoResidue.fromJson(
-    json['kalinti_bilgisi_ikas'] as Map<String, dynamic>,
-  ),
+  indications: json['endikasyonlar'] as String?,
+  usage:
+      (json['kullanimi_ve_sikligi'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ) ??
+      const {},
+  periods: json['uygulandigi_donem'] == null
+      ? const DrugInfoPeriods()
+      : DrugInfoPeriods.fromJson(
+          json['uygulandigi_donem'] as Map<String, dynamic>,
+        ),
+  residue: json['kalinti_bilgisi_ikas'] == null
+      ? null
+      : DrugInfoResidue.fromJson(
+          json['kalinti_bilgisi_ikas'] as Map<String, dynamic>,
+        ),
+  defaults: json['otomatik_doldurma'] == null
+      ? null
+      : DrugInfoDefaults.fromJson(
+          json['otomatik_doldurma'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$DrugInfoToJson(_DrugInfo instance) => <String, dynamic>{
@@ -28,7 +41,20 @@ Map<String, dynamic> _$DrugInfoToJson(_DrugInfo instance) => <String, dynamic>{
   'kullanimi_ve_sikligi': instance.usage,
   'uygulandigi_donem': instance.periods,
   'kalinti_bilgisi_ikas': instance.residue,
+  'otomatik_doldurma': instance.defaults,
 };
+
+_DrugInfoDefaults _$DrugInfoDefaultsFromJson(Map<String, dynamic> json) =>
+    _DrugInfoDefaults(
+      dose: (json['doz'] as num?)?.toInt(),
+      treatmentDays: (json['uygulama_gun'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$DrugInfoDefaultsToJson(_DrugInfoDefaults instance) =>
+    <String, dynamic>{
+      'doz': instance.dose,
+      'uygulama_gun': instance.treatmentDays,
+    };
 
 _DrugInfoPeriods _$DrugInfoPeriodsFromJson(Map<String, dynamic> json) =>
     _DrugInfoPeriods(

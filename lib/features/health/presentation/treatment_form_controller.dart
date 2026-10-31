@@ -93,12 +93,18 @@ class TreatmentFormController extends _$TreatmentFormController {
       _update((form) => form.copyWith(scope: scope));
 
   /// İlacı seçer; bekleme süresi ilacın etiketinden (bilinmiyorsa 0),
-  /// planlanan çıkarma birime göre önerilir.
+  /// doz ürün bilgisinden (yoksa olduğu gibi kalır), planlanan çıkarma
+  /// ürün bilgisindeki süreye ya da birime göre önerilir.
   void selectDrug(DrugChoice drug) => _update(
     (form) => form.copyWith(
       drug: drug,
+      dose: drug.defaultDose ?? form.dose,
       withdrawalDays: drug.withdrawalDays ?? 0,
-      removalOn: defaultPlannedRemoval(drug.doseUnit, form.startedOn),
+      removalOn: defaultPlannedRemoval(
+        drug.doseUnit,
+        form.startedOn,
+        treatmentDays: drug.treatmentDays,
+      ),
     ),
   );
 
@@ -121,7 +127,11 @@ class TreatmentFormController extends _$TreatmentFormController {
           ? removal
           : drug == null
           ? null
-          : defaultPlannedRemoval(drug.doseUnit, day),
+          : defaultPlannedRemoval(
+              drug.doseUnit,
+              day,
+              treatmentDays: drug.treatmentDays,
+            ),
     );
   });
 

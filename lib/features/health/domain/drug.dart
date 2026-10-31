@@ -99,5 +99,12 @@ abstract class DrugChoice with _$DrugChoice {
     String? drugId,
     int? withdrawalDays,
     String? licenseNo,
+
+    /// Ürün bilgisindeki kovan başı doz; seçilince forma yazılır.
+    int? defaultDose,
+
+    /// Ürün bilgisindeki kovanda kalma süresi (gün); planlanan çıkarma
+    /// buna göre önerilir.
+    int? treatmentDays,
   }) = _DrugChoice;
 }

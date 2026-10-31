@@ -7,6 +7,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/services/camera_service.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/drug_info.dart';
 import 'package:mobil_arici/features/health/domain/treatment_rules.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_controller.dart';
@@ -147,12 +148,12 @@ class TreatmentFormScreen extends ConsumerWidget {
               hint: drugChoiceHint(l10n, drug),
               selected: drug == form.drug,
               action: switch (infos[drug.refDrugId]) {
-                final info? => SheetOptionAction(
+                final info? when drugInfoHasDetails(info) => SheetOptionAction(
                   icon: Icons.info_outline_rounded,
                   label: l10n.drugInfoOpen,
                   onPressed: () => showDrugInfoSheet(context, info),
                 ),
-                null => null,
+                _ => null,
               },
             ),
           SheetOption(

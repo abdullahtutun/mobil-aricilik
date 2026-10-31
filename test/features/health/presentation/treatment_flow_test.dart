@@ -41,7 +41,7 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
-/// TR şeridinin ürün bilgisi; GLOBAL ilacın bilgisi yok.
+/// TR şeridinin ürün bilgisi; oksalik asidin bilgisi yok.
 const _stripInfo = DrugInfo(
   refDrugId: 'tr-strip',
   name: 'Amitraz şerit',
@@ -65,11 +65,12 @@ Future<ProviderContainer> _open(
   RegionConfig? region,
   FakeMedia? media,
   FakeReminderNotifications? reminders,
+  DrugInfo stripInfo = _stripInfo,
 }) async {
   final container = ProviderContainer.test(
     overrides: [
       ...signedIn(db: db, media: media, reminders: reminders),
-      drugInfosProvider.overrideWith((ref) async => {'tr-strip': _stripInfo}),
+      drugInfosProvider.overrideWith((ref) async => {'tr-strip': stripInfo}),
       if (region != null) regionConfigProvider.overrideWithValue(region),
     ],
   );
@@ -204,13 +205,22 @@ void main() {
     );
     await _addRefDrug(
       db,
-      'g-oxalic',
-      countryCode: 'GLOBAL',
+      'tr-oxalic',
+      countryCode: 'TR',
       nameTr: 'Oksalik asit',
       nameEn: 'Oxalic acid',
       ingredient: DrugActiveIngredient.oxalicAcid,
       unit: DrugDoseUnit.ml,
       withdrawalDays: 0,
+    );
+    await _addRefDrug(
+      db,
+      'g-thymol',
+      countryCode: 'GLOBAL',
+      nameTr: 'Timol',
+      nameEn: 'Thymol',
+      ingredient: DrugActiveIngredient.thymol,
+      unit: DrugDoseUnit.g,
     );
   });
 
@@ -240,8 +250,8 @@ void main() {
 
   group('İlaç uygulaması', () {
     testWidgets('karttan açılır; ilaç seçilene kadar Kaydet kapalı; TR '
-        'profilinde TR listesi ve GLOBAL liste; şeritte çıkarma 42 gün sonra '
-        'önerilir; kayıt yazılır, Geri al siler', (tester) async {
+        'profilinde yalnız TR listesi (GLOBAL yok); şeritte çıkarma 42 gün '
+        'sonra önerilir; kayıt yazılır, Geri al siler', (tester) async {
       final format = DateFormat.yMMMd('en');
       await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
 
@@ -255,6 +265,7 @@ void main() {
       await _tap(tester, _button('Choose drug'));
       expect(_inSheet('Amitraz strip'), findsOneWidget);
       expect(_inSheet('Oxalic acid'), findsOneWidget);
+      expect(_inSheet('Thymol'), findsNothing);
       expect(_inSheet('Add a new drug'), findsOneWidget);
       await _tap(tester, _inSheet('Amitraz strip'));
 
@@ -420,7 +431,8 @@ void main() {
       );
       await _tap(tester, _button('Choose drug'));
       expect(_inSheet('Amitraz strip'), findsNothing);
-      expect(_inSheet('Oxalic acid'), findsOneWidget);
+      expect(_inSheet('Oxalic acid'), findsNothing);
+      expect(_inSheet('Thymol'), findsOneWidget);
 
       await _tap(tester, _inSheet('Add a new drug'));
       expect(find.byType(DrugFormScreen), findsOneWidget);
@@ -471,8 +483,52 @@ void main() {
       await _tap(tester, _button('Choose drug'));
       expect(
         tester.getTopLeft(_inSheet('Thymovar')).dy,
-        lessThan(tester.getTopLeft(_inSheet('Oxalic acid')).dy),
+        lessThan(tester.getTopLeft(_inSheet('Thymol')).dy),
       );
+    });
+
+    testWidgets('ürün bilgisinde doz ve süre varsa seçilince doz, çıkarma '
+        've bekleme süresi dolar; bilgisi olmayan ilaçta doz kalır', (
+      tester,
+    ) async {
+      final format = DateFormat.yMMMd('en');
+      await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+        stripInfo: _stripInfo.copyWith(
+          defaults: const DrugInfoDefaults(dose: 2, treatmentDays: 63),
+        ),
+      );
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      expect(_stepper(tester, 'Dose per hive (strip)').value, 2);
+      expect(_stepper(tester, 'Withdrawal period (days)').value, 0);
+      expect(find.text(format.format(_today(63))), findsOneWidget);
+
+      // Bilgisi olmayan tek seferlik ilaçta doz olduğu gibi kalır.
+      await _tap(tester, find.text('Change'));
+      await _tap(tester, _inSheet('Oxalic acid'));
+      expect(_stepper(tester, 'Dose per hive (ml)').value, 2);
+      expect(find.text(format.format(_today(63))), findsNothing);
+    });
+
+    testWidgets('yalnız adı ve etken maddesi olan ilaçta bilgi butonu yok', (
+      tester,
+    ) async {
+      await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+        stripInfo: const DrugInfo(
+          refDrugId: 'tr-strip',
+          name: 'Amitraz şerit',
+          activeIngredient: 'Amitraz',
+        ),
+      );
+      await _tap(tester, _button('Choose drug'));
+      expect(_inSheet('Amitraz strip'), findsOneWidget);
+      expect(find.byTooltip('Drug information'), findsNothing);
     });
 
     testWidgets('aktif olmayan kovanda İlaç uygula yok', (tester) async {
@@ -594,7 +650,7 @@ void main() {
         hive,
         TreatmentPlan(
           drug: const DrugChoice(
-            refDrugId: 'g-oxalic',
+            refDrugId: 'tr-oxalic',
             name: 'Oxalic acid',
             activeIngredient: DrugActiveIngredient.oxalicAcid,
             doseUnit: DrugDoseUnit.ml,
@@ -626,7 +682,7 @@ void main() {
       second,
       TreatmentPlan(
         drug: DrugChoice(
-          refDrugId: 'g-oxalic',
+          refDrugId: 'tr-oxalic',
           name: 'Eski',
           activeIngredient: ingredient,
           doseUnit: DrugDoseUnit.ml,

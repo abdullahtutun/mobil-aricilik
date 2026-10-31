@@ -269,9 +269,28 @@ void main() {
       );
     });
 
-    test('ml, g ve dozda çıkarma yok (tek seferlik)', () {
+    test('ürün bilgisinde süre varsa şeritte o kadar gün sonra', () {
+      expect(
+        defaultPlannedRemoval(
+          DrugDoseUnit.strip,
+          DateTime(2026, 10, 24),
+          treatmentDays: 63,
+        ),
+        DateTime(2026, 12, 26),
+      );
+    });
+
+    test('ml, g ve dozda çıkarma yok (tek seferlik), süre verilse de', () {
       for (final unit in [DrugDoseUnit.ml, DrugDoseUnit.g, DrugDoseUnit.dose]) {
         expect(defaultPlannedRemoval(unit, DateTime(2026, 10, 24)), isNull);
+        expect(
+          defaultPlannedRemoval(
+            unit,
+            DateTime(2026, 10, 24),
+            treatmentDays: 42,
+          ),
+          isNull,
+        );
       }
     });
   });

@@ -626,7 +626,10 @@ as int?,
 /// @nodoc
 mixin _$DrugChoice {
 
- String get name; DrugActiveIngredient get activeIngredient; DrugDoseUnit get doseUnit; String? get refDrugId; String? get drugId; int? get withdrawalDays; String? get licenseNo;
+ String get name; DrugActiveIngredient get activeIngredient; DrugDoseUnit get doseUnit; String? get refDrugId; String? get drugId; int? get withdrawalDays; String? get licenseNo;/// Ürün bilgisindeki kovan başı doz; seçilince forma yazılır.
+ int? get defaultDose;/// Ürün bilgisindeki kovanda kalma süresi (gün); planlanan çıkarma
+/// buna göre önerilir.
+ int? get treatmentDays;
 /// Create a copy of DrugChoice
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -638,20 +641,20 @@ $DrugChoiceCopyWith<DrugChoice> get copyWith => _$DrugChoiceCopyWithImpl<DrugCho
 @override
 bool operator ==(Object other) {
   final _this = this as DrugChoice;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DrugChoice&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.activeIngredient, _this.activeIngredient) || other.activeIngredient == _this.activeIngredient)&&(identical(other.doseUnit, _this.doseUnit) || other.doseUnit == _this.doseUnit)&&(identical(other.refDrugId, _this.refDrugId) || other.refDrugId == _this.refDrugId)&&(identical(other.drugId, _this.drugId) || other.drugId == _this.drugId)&&(identical(other.withdrawalDays, _this.withdrawalDays) || other.withdrawalDays == _this.withdrawalDays)&&(identical(other.licenseNo, _this.licenseNo) || other.licenseNo == _this.licenseNo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DrugChoice&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.activeIngredient, _this.activeIngredient) || other.activeIngredient == _this.activeIngredient)&&(identical(other.doseUnit, _this.doseUnit) || other.doseUnit == _this.doseUnit)&&(identical(other.refDrugId, _this.refDrugId) || other.refDrugId == _this.refDrugId)&&(identical(other.drugId, _this.drugId) || other.drugId == _this.drugId)&&(identical(other.withdrawalDays, _this.withdrawalDays) || other.withdrawalDays == _this.withdrawalDays)&&(identical(other.licenseNo, _this.licenseNo) || other.licenseNo == _this.licenseNo)&&(identical(other.defaultDose, _this.defaultDose) || other.defaultDose == _this.defaultDose)&&(identical(other.treatmentDays, _this.treatmentDays) || other.treatmentDays == _this.treatmentDays));
 }
 
 
 @override
 int get hashCode {
   final _this = this as DrugChoice;
-  return Object.hash(runtimeType,_this.name,_this.activeIngredient,_this.doseUnit,_this.refDrugId,_this.drugId,_this.withdrawalDays,_this.licenseNo);
+  return Object.hash(runtimeType,_this.name,_this.activeIngredient,_this.doseUnit,_this.refDrugId,_this.drugId,_this.withdrawalDays,_this.licenseNo,_this.defaultDose,_this.treatmentDays);
 }
 
 @override
 String toString() {
   final _this = this as DrugChoice;
-  return 'DrugChoice(name: ${_this.name}, activeIngredient: ${_this.activeIngredient}, doseUnit: ${_this.doseUnit}, refDrugId: ${_this.refDrugId}, drugId: ${_this.drugId}, withdrawalDays: ${_this.withdrawalDays}, licenseNo: ${_this.licenseNo})';
+  return 'DrugChoice(name: ${_this.name}, activeIngredient: ${_this.activeIngredient}, doseUnit: ${_this.doseUnit}, refDrugId: ${_this.refDrugId}, drugId: ${_this.drugId}, withdrawalDays: ${_this.withdrawalDays}, licenseNo: ${_this.licenseNo}, defaultDose: ${_this.defaultDose}, treatmentDays: ${_this.treatmentDays})';
 }
 
 
@@ -662,7 +665,7 @@ abstract mixin class $DrugChoiceCopyWith<$Res>  {
   factory $DrugChoiceCopyWith(DrugChoice value, $Res Function(DrugChoice) _then) = _$DrugChoiceCopyWithImpl;
 @useResult
 $Res call({
- String name, DrugActiveIngredient activeIngredient, DrugDoseUnit doseUnit, String? refDrugId, String? drugId, int? withdrawalDays, String? licenseNo
+ String name, DrugActiveIngredient activeIngredient, DrugDoseUnit doseUnit, String? refDrugId, String? drugId, int? withdrawalDays, String? licenseNo, int? defaultDose, int? treatmentDays
 });
 
 
@@ -679,7 +682,7 @@ class _$DrugChoiceCopyWithImpl<$Res>
 
 /// Create a copy of DrugChoice
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? activeIngredient = null,Object? doseUnit = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? withdrawalDays = freezed,Object? licenseNo = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? activeIngredient = null,Object? doseUnit = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? withdrawalDays = freezed,Object? licenseNo = freezed,Object? defaultDose = freezed,Object? treatmentDays = freezed,}) {
   return _then(DrugChoice(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,activeIngredient: null == activeIngredient ? _self.activeIngredient : activeIngredient // ignore: cast_nullable_to_non_nullable
@@ -688,7 +691,9 @@ as DrugDoseUnit,refDrugId: freezed == refDrugId ? _self.refDrugId : refDrugId //
 as String?,drugId: freezed == drugId ? _self.drugId : drugId // ignore: cast_nullable_to_non_nullable
 as String?,withdrawalDays: freezed == withdrawalDays ? _self.withdrawalDays : withdrawalDays // ignore: cast_nullable_to_non_nullable
 as int?,licenseNo: freezed == licenseNo ? _self.licenseNo : licenseNo // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,defaultDose: freezed == defaultDose ? _self.defaultDose : defaultDose // ignore: cast_nullable_to_non_nullable
+as int?,treatmentDays: freezed == treatmentDays ? _self.treatmentDays : treatmentDays // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -773,10 +778,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  DrugActiveIngredient activeIngredient,  DrugDoseUnit doseUnit,  String? refDrugId,  String? drugId,  int? withdrawalDays,  String? licenseNo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  DrugActiveIngredient activeIngredient,  DrugDoseUnit doseUnit,  String? refDrugId,  String? drugId,  int? withdrawalDays,  String? licenseNo,  int? defaultDose,  int? treatmentDays)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DrugChoice() when $default != null:
-return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId,_that.drugId,_that.withdrawalDays,_that.licenseNo);case _:
+return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId,_that.drugId,_that.withdrawalDays,_that.licenseNo,_that.defaultDose,_that.treatmentDays);case _:
   return orElse();
 
 }
@@ -794,10 +799,10 @@ return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  DrugActiveIngredient activeIngredient,  DrugDoseUnit doseUnit,  String? refDrugId,  String? drugId,  int? withdrawalDays,  String? licenseNo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  DrugActiveIngredient activeIngredient,  DrugDoseUnit doseUnit,  String? refDrugId,  String? drugId,  int? withdrawalDays,  String? licenseNo,  int? defaultDose,  int? treatmentDays)  $default,) {final _that = this;
 switch (_that) {
 case _DrugChoice():
-return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId,_that.drugId,_that.withdrawalDays,_that.licenseNo);case _:
+return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId,_that.drugId,_that.withdrawalDays,_that.licenseNo,_that.defaultDose,_that.treatmentDays);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -814,10 +819,10 @@ return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  DrugActiveIngredient activeIngredient,  DrugDoseUnit doseUnit,  String? refDrugId,  String? drugId,  int? withdrawalDays,  String? licenseNo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  DrugActiveIngredient activeIngredient,  DrugDoseUnit doseUnit,  String? refDrugId,  String? drugId,  int? withdrawalDays,  String? licenseNo,  int? defaultDose,  int? treatmentDays)?  $default,) {final _that = this;
 switch (_that) {
 case _DrugChoice() when $default != null:
-return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId,_that.drugId,_that.withdrawalDays,_that.licenseNo);case _:
+return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId,_that.drugId,_that.withdrawalDays,_that.licenseNo,_that.defaultDose,_that.treatmentDays);case _:
   return null;
 
 }
@@ -829,7 +834,7 @@ return $default(_that.name,_that.activeIngredient,_that.doseUnit,_that.refDrugId
 
 
 class _DrugChoice implements DrugChoice {
-  const _DrugChoice({required this.name, required this.activeIngredient, required this.doseUnit, this.refDrugId, this.drugId, this.withdrawalDays, this.licenseNo});
+  const _DrugChoice({required this.name, required this.activeIngredient, required this.doseUnit, this.refDrugId, this.drugId, this.withdrawalDays, this.licenseNo, this.defaultDose, this.treatmentDays});
   
 
 @override final  String name;
@@ -839,6 +844,11 @@ class _DrugChoice implements DrugChoice {
 @override final  String? drugId;
 @override final  int? withdrawalDays;
 @override final  String? licenseNo;
+/// Ürün bilgisindeki kovan başı doz; seçilince forma yazılır.
+@override final  int? defaultDose;
+/// Ürün bilgisindeki kovanda kalma süresi (gün); planlanan çıkarma
+/// buna göre önerilir.
+@override final  int? treatmentDays;
 
 /// Create a copy of DrugChoice
 /// with the given fields replaced by the non-null parameter values.
@@ -850,18 +860,18 @@ _$DrugChoiceCopyWith<_DrugChoice> get copyWith => __$DrugChoiceCopyWithImpl<_Dru
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DrugChoice&&(identical(other.name, name) || other.name == name)&&(identical(other.activeIngredient, activeIngredient) || other.activeIngredient == activeIngredient)&&(identical(other.doseUnit, doseUnit) || other.doseUnit == doseUnit)&&(identical(other.refDrugId, refDrugId) || other.refDrugId == refDrugId)&&(identical(other.drugId, drugId) || other.drugId == drugId)&&(identical(other.withdrawalDays, withdrawalDays) || other.withdrawalDays == withdrawalDays)&&(identical(other.licenseNo, licenseNo) || other.licenseNo == licenseNo));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DrugChoice&&(identical(other.name, name) || other.name == name)&&(identical(other.activeIngredient, activeIngredient) || other.activeIngredient == activeIngredient)&&(identical(other.doseUnit, doseUnit) || other.doseUnit == doseUnit)&&(identical(other.refDrugId, refDrugId) || other.refDrugId == refDrugId)&&(identical(other.drugId, drugId) || other.drugId == drugId)&&(identical(other.withdrawalDays, withdrawalDays) || other.withdrawalDays == withdrawalDays)&&(identical(other.licenseNo, licenseNo) || other.licenseNo == licenseNo)&&(identical(other.defaultDose, defaultDose) || other.defaultDose == defaultDose)&&(identical(other.treatmentDays, treatmentDays) || other.treatmentDays == treatmentDays));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,name,activeIngredient,doseUnit,refDrugId,drugId,withdrawalDays,licenseNo);
+    return Object.hash(runtimeType,name,activeIngredient,doseUnit,refDrugId,drugId,withdrawalDays,licenseNo,defaultDose,treatmentDays);
 }
 
 @override
 String toString() {
-    return 'DrugChoice(name: $name, activeIngredient: $activeIngredient, doseUnit: $doseUnit, refDrugId: $refDrugId, drugId: $drugId, withdrawalDays: $withdrawalDays, licenseNo: $licenseNo)';
+    return 'DrugChoice(name: $name, activeIngredient: $activeIngredient, doseUnit: $doseUnit, refDrugId: $refDrugId, drugId: $drugId, withdrawalDays: $withdrawalDays, licenseNo: $licenseNo, defaultDose: $defaultDose, treatmentDays: $treatmentDays)';
 }
 
 
@@ -872,7 +882,7 @@ abstract mixin class _$DrugChoiceCopyWith<$Res> implements $DrugChoiceCopyWith<$
   factory _$DrugChoiceCopyWith(_DrugChoice value, $Res Function(_DrugChoice) _then) = __$DrugChoiceCopyWithImpl;
 @override @useResult
 $Res call({
- String name, DrugActiveIngredient activeIngredient, DrugDoseUnit doseUnit, String? refDrugId, String? drugId, int? withdrawalDays, String? licenseNo
+ String name, DrugActiveIngredient activeIngredient, DrugDoseUnit doseUnit, String? refDrugId, String? drugId, int? withdrawalDays, String? licenseNo, int? defaultDose, int? treatmentDays
 });
 
 
@@ -889,7 +899,7 @@ class __$DrugChoiceCopyWithImpl<$Res>
 
 /// Create a copy of DrugChoice
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? activeIngredient = null,Object? doseUnit = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? withdrawalDays = freezed,Object? licenseNo = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? activeIngredient = null,Object? doseUnit = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? withdrawalDays = freezed,Object? licenseNo = freezed,Object? defaultDose = freezed,Object? treatmentDays = freezed,}) {
   return _then(_DrugChoice(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,activeIngredient: null == activeIngredient ? _self.activeIngredient : activeIngredient // ignore: cast_nullable_to_non_nullable
@@ -898,7 +908,9 @@ as DrugDoseUnit,refDrugId: freezed == refDrugId ? _self.refDrugId : refDrugId //
 as String?,drugId: freezed == drugId ? _self.drugId : drugId // ignore: cast_nullable_to_non_nullable
 as String?,withdrawalDays: freezed == withdrawalDays ? _self.withdrawalDays : withdrawalDays // ignore: cast_nullable_to_non_nullable
 as int?,licenseNo: freezed == licenseNo ? _self.licenseNo : licenseNo // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,defaultDose: freezed == defaultDose ? _self.defaultDose : defaultDose // ignore: cast_nullable_to_non_nullable
+as int?,treatmentDays: freezed == treatmentDays ? _self.treatmentDays : treatmentDays // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

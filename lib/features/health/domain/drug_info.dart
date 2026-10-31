@@ -5,23 +5,55 @@ part 'drug_info.g.dart';
 
 /// Referans ilacın Bakanlık onaylı ürün bilgisi
 /// (`assets/drugs/ilaclar.json`). Metinler kaynağındaki gibi Türkçe;
-/// [refDrugId] ile `ref_drugs` satırına bağlı.
+/// [refDrugId] ile `ref_drugs` satırına bağlı. Bazı ürünlerin yalnız adı ve
+/// etken maddesi var; diğer alanlar boş kalır.
 @freezed
 abstract class DrugInfo with _$DrugInfo {
   const factory({
     required String refDrugId,
     @JsonKey(name: 'ilac_adi') required String name,
     @JsonKey(name: 'etken_madde') required String activeIngredient,
-    @JsonKey(name: 'endikasyonlar') required String indications,
+    @JsonKey(name: 'endikasyonlar') String? indications,
 
     /// Kullanım ve sıklık; anahtarlar ürüne göre değişir
     /// ([drugUsageItems] sıralar).
-    @JsonKey(name: 'kullanimi_ve_sikligi') required Map<String, String> usage,
-    @JsonKey(name: 'uygulandigi_donem') required DrugInfoPeriods periods,
-    @JsonKey(name: 'kalinti_bilgisi_ikas') required DrugInfoResidue residue,
+    @JsonKey(name: 'kullanimi_ve_sikligi')
+    @Default({})
+    Map<String, String> usage,
+    @JsonKey(name: 'uygulandigi_donem')
+    @Default(DrugInfoPeriods())
+    DrugInfoPeriods periods,
+    @JsonKey(name: 'kalinti_bilgisi_ikas') DrugInfoResidue? residue,
+
+    /// İlaç seçilince formda dolan değerler.
+    @JsonKey(name: 'otomatik_doldurma') DrugInfoDefaults? defaults,
   }) = _DrugInfo;
 
   factory fromJson(Map<String, Object?> json) => _$DrugInfoFromJson(json);
+}
+
+/// Bilgide ad ve etken maddeden fazlası var mı; yoksa bilgi sayfası
+/// açılmaz (etken madde listede zaten yazıyor).
+bool drugInfoHasDetails(DrugInfo info) =>
+    (info.indications?.trim() ?? '') != '' ||
+    drugUsageItems(info.usage).isNotEmpty ||
+    info.periods.suitable.isNotEmpty ||
+    info.periods.avoid.isNotEmpty ||
+    info.residue != null;
+
+/// Ürün bilgisinden çıkarılan form değerleri: küçük ya da standart
+/// koloninin kovan başı dozu ve ilacın kovanda kalacağı gün (aralıkta üst
+/// sınır, "en az" yazıyorsa alt sınır). Bekleme süresi `ref_drugs`'tan
+/// gelir.
+@freezed
+abstract class DrugInfoDefaults with _$DrugInfoDefaults {
+  const factory({
+    @JsonKey(name: 'doz') int? dose,
+    @JsonKey(name: 'uygulama_gun') int? treatmentDays,
+  }) = _DrugInfoDefaults;
+
+  factory fromJson(Map<String, Object?> json) =>
+      _$DrugInfoDefaultsFromJson(json);
 }
 
 /// Uygun ve kullanılmaması gereken dönemler.

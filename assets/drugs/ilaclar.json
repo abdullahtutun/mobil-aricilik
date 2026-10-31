@@ -25,6 +25,10 @@
     "kalinti_bilgisi_ikas": {
       "arinma_suresi": "0 gün (Bal için arınma süresi gerekli değildir)",
       "uyarilar": "Şeritler insan tüketimine sunulacak ballara doğrudan temas ettirilmemelidir. Tedavi uygulanan kovandaki propolis, kalan şerbetler ve petek balları insan gıdası olarak kullanılmamalıdır."
+    },
+    "otomatik_doldurma": {
+      "doz": 2,
+      "uygulama_gun": 42
     }
   },
   {
@@ -51,6 +55,10 @@
     "kalinti_bilgisi_ikas": {
       "arinma_suresi": "Bal tutumunun başlamasına 6 hafta kala ve bal tutumu süresince kesinlikle uygulanmamalıdır.",
       "uyarilar": "Tedavi süresince elde edilen ballar ve kovanda kalan şerbetler insan tüketimine sunulmamalıdır."
+    },
+    "otomatik_doldurma": {
+      "doz": 1,
+      "uygulama_gun": 42
     }
   },
   {
@@ -78,6 +86,10 @@
     "kalinti_bilgisi_ikas": {
       "arinma_suresi": "0 gün (Ürünün kullanıldığı zamana bakılmaksızın bal için ilaç kalıntı arınma süresi gerekli değildir)",
       "uyarilar": "Şeritler insan tüketimine sunulacak ballara doğrudan temas ettirilmemeli ve şerit kovandayken arıların tüketmediği şerbetler insan gıdası olarak kullanılmamalıdır."
+    },
+    "otomatik_doldurma": {
+      "doz": 2,
+      "uygulama_gun": 42
     }
   },
   {
@@ -103,6 +115,10 @@
     "kalinti_bilgisi_ikas": {
       "arinma_suresi": "0 (sıfır) gündür (Bal için ilaç kalıntı arınma süresi)",
       "uyarilar": "Koumafos balmumunda birikebileceği için tedavi gören kovanlardan alınan balmumu insan tüketiminde kullanılmamalıdır."
+    },
+    "otomatik_doldurma": {
+      "doz": 2,
+      "uygulama_gun": 42
     }
   },
   {
@@ -131,6 +147,10 @@
     "kalinti_bilgisi_ikas": {
       "arinma_suresi": "Bal akımı ve polen toplama döneminde kullanımı yasaktır.",
       "uyarilar": "Tedavi sonrası ilkbahara kadar olan dönemde insan tüketimine sunulmak üzere bal ve diğer arı ürünleri üretimi yapılmamalıdır. İlaçlı şeritlerin insan tüketimine sunulacak çerçeve me ballarla temas etmemesine özen gösterilmelidir."
+    },
+    "otomatik_doldurma": {
+      "doz": 2,
+      "uygulama_gun": 42
     }
   },
   {
@@ -154,6 +174,10 @@
     "kalinti_bilgisi_ikas": {
       "arinma_suresi": "0 (sıfır) gündür (Bal için ilaç kalıntı arınma süresi)",
       "uyarilar": "Tedavi sonrası ilkbahara kadar olan dönemde insan tüketimine sunulmak üzere bal ve diğer arı ürünleri üretimi yapılmamalıdır. Şeritlerin insan tüketimine sunulacak ballara doğrudan temas etmemesine dikkat edilmelidir."
+    },
+    "otomatik_doldurma": {
+      "doz": 2,
+      "uygulama_gun": 63
     }
   },
   {
@@ -181,6 +205,30 @@
     "kalinti_bilgisi_ikas": {
       "arinma_suresi": "0 gün (Ürünün kullanıldığı zamana bakılmaksızın bal için ilaç kalıntı arınma süresi gerekli değildir)",
       "uyarilar": "Tedaviyi takiben ilkbahar başlangıcına kadar balmumu dâhil kovandaki bal dışındaki diğer arı ürünleri insan tüketimi amacıyla kullanılmamalıdır. İnsan tüketimi için ayrılan ballar ürün şeritleriyle doğrudan temas ettirilmemelidir."
+    },
+    "otomatik_doldurma": {
+      "doz": 2,
+      "uygulama_gun": 42
     }
+  },
+  {
+    "ref_drug_id": "01900000-0000-7000-8000-000000000208",
+    "ilac_adi": "Rulamit",
+    "etken_madde": "Amitraz"
+  },
+  {
+    "ref_drug_id": "01900000-0000-7000-8000-000000000209",
+    "ilac_adi": "Rulamit-Va",
+    "etken_madde": "Amitraz"
+  },
+  {
+    "ref_drug_id": "01900000-0000-7000-8000-000000000210",
+    "ilac_adi": "Vamitrat-Va",
+    "etken_madde": "Amitraz"
+  },
+  {
+    "ref_drug_id": "01900000-0000-7000-8000-000000000211",
+    "ilac_adi": "Varroset",
+    "etken_madde": "Amitraz"
   }
 ]

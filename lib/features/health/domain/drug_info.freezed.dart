@@ -16,9 +16,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DrugInfo {
 
- String get refDrugId;@JsonKey(name: 'ilac_adi') String get name;@JsonKey(name: 'etken_madde') String get activeIngredient;@JsonKey(name: 'endikasyonlar') String get indications;/// Kullanım ve sıklık; anahtarlar ürüne göre değişir
+ String get refDrugId;@JsonKey(name: 'ilac_adi') String get name;@JsonKey(name: 'etken_madde') String get activeIngredient;@JsonKey(name: 'endikasyonlar') String? get indications;/// Kullanım ve sıklık; anahtarlar ürüne göre değişir
 /// ([drugUsageItems] sıralar).
-@JsonKey(name: 'kullanimi_ve_sikligi') Map<String, String> get usage;@JsonKey(name: 'uygulandigi_donem') DrugInfoPeriods get periods;@JsonKey(name: 'kalinti_bilgisi_ikas') DrugInfoResidue get residue;
+@JsonKey(name: 'kullanimi_ve_sikligi') Map<String, String> get usage;@JsonKey(name: 'uygulandigi_donem') DrugInfoPeriods get periods;@JsonKey(name: 'kalinti_bilgisi_ikas') DrugInfoResidue? get residue;/// İlaç seçilince formda dolan değerler.
+@JsonKey(name: 'otomatik_doldurma') DrugInfoDefaults? get defaults;
 /// Create a copy of DrugInfo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -32,20 +33,20 @@ $DrugInfoCopyWith<DrugInfo> get copyWith => _$DrugInfoCopyWithImpl<DrugInfo>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as DrugInfo;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DrugInfo&&(identical(other.refDrugId, _this.refDrugId) || other.refDrugId == _this.refDrugId)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.activeIngredient, _this.activeIngredient) || other.activeIngredient == _this.activeIngredient)&&(identical(other.indications, _this.indications) || other.indications == _this.indications)&&const DeepCollectionEquality().equals(other.usage, _this.usage)&&(identical(other.periods, _this.periods) || other.periods == _this.periods)&&(identical(other.residue, _this.residue) || other.residue == _this.residue));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DrugInfo&&(identical(other.refDrugId, _this.refDrugId) || other.refDrugId == _this.refDrugId)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.activeIngredient, _this.activeIngredient) || other.activeIngredient == _this.activeIngredient)&&(identical(other.indications, _this.indications) || other.indications == _this.indications)&&const DeepCollectionEquality().equals(other.usage, _this.usage)&&(identical(other.periods, _this.periods) || other.periods == _this.periods)&&(identical(other.residue, _this.residue) || other.residue == _this.residue)&&(identical(other.defaults, _this.defaults) || other.defaults == _this.defaults));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as DrugInfo;
-  return Object.hash(runtimeType,_this.refDrugId,_this.name,_this.activeIngredient,_this.indications,const DeepCollectionEquality().hash(_this.usage),_this.periods,_this.residue);
+  return Object.hash(runtimeType,_this.refDrugId,_this.name,_this.activeIngredient,_this.indications,const DeepCollectionEquality().hash(_this.usage),_this.periods,_this.residue,_this.defaults);
 }
 
 @override
 String toString() {
   final _this = this as DrugInfo;
-  return 'DrugInfo(refDrugId: ${_this.refDrugId}, name: ${_this.name}, activeIngredient: ${_this.activeIngredient}, indications: ${_this.indications}, usage: ${_this.usage}, periods: ${_this.periods}, residue: ${_this.residue})';
+  return 'DrugInfo(refDrugId: ${_this.refDrugId}, name: ${_this.name}, activeIngredient: ${_this.activeIngredient}, indications: ${_this.indications}, usage: ${_this.usage}, periods: ${_this.periods}, residue: ${_this.residue}, defaults: ${_this.defaults})';
 }
 
 
@@ -56,11 +57,11 @@ abstract mixin class $DrugInfoCopyWith<$Res>  {
   factory $DrugInfoCopyWith(DrugInfo value, $Res Function(DrugInfo) _then) = _$DrugInfoCopyWithImpl;
 @useResult
 $Res call({
- String refDrugId,@JsonKey(name: 'ilac_adi') String name,@JsonKey(name: 'etken_madde') String activeIngredient,@JsonKey(name: 'endikasyonlar') String indications,@JsonKey(name: 'kullanimi_ve_sikligi') Map<String, String> usage,@JsonKey(name: 'uygulandigi_donem') DrugInfoPeriods periods,@JsonKey(name: 'kalinti_bilgisi_ikas') DrugInfoResidue residue
+ String refDrugId,@JsonKey(name: 'ilac_adi') String name,@JsonKey(name: 'etken_madde') String activeIngredient,@JsonKey(name: 'endikasyonlar') String? indications,@JsonKey(name: 'kullanimi_ve_sikligi') Map<String, String> usage,@JsonKey(name: 'uygulandigi_donem') DrugInfoPeriods periods,@JsonKey(name: 'kalinti_bilgisi_ikas') DrugInfoResidue? residue,@JsonKey(name: 'otomatik_doldurma') DrugInfoDefaults? defaults
 });
 
 
-$DrugInfoPeriodsCopyWith<$Res> get periods;$DrugInfoResidueCopyWith<$Res> get residue;
+$DrugInfoPeriodsCopyWith<$Res> get periods;$DrugInfoResidueCopyWith<$Res>? get residue;$DrugInfoDefaultsCopyWith<$Res>? get defaults;
 
 }
 /// @nodoc
@@ -73,16 +74,17 @@ class _$DrugInfoCopyWithImpl<$Res>
 
 /// Create a copy of DrugInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? refDrugId = null,Object? name = null,Object? activeIngredient = null,Object? indications = null,Object? usage = null,Object? periods = null,Object? residue = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? refDrugId = null,Object? name = null,Object? activeIngredient = null,Object? indications = freezed,Object? usage = null,Object? periods = null,Object? residue = freezed,Object? defaults = freezed,}) {
   return _then(DrugInfo(
 refDrugId: null == refDrugId ? _self.refDrugId : refDrugId // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,activeIngredient: null == activeIngredient ? _self.activeIngredient : activeIngredient // ignore: cast_nullable_to_non_nullable
-as String,indications: null == indications ? _self.indications : indications // ignore: cast_nullable_to_non_nullable
-as String,usage: null == usage ? _self.usage : usage // ignore: cast_nullable_to_non_nullable
+as String,indications: freezed == indications ? _self.indications : indications // ignore: cast_nullable_to_non_nullable
+as String?,usage: null == usage ? _self.usage : usage // ignore: cast_nullable_to_non_nullable
 as Map<String, String>,periods: null == periods ? _self.periods : periods // ignore: cast_nullable_to_non_nullable
-as DrugInfoPeriods,residue: null == residue ? _self.residue : residue // ignore: cast_nullable_to_non_nullable
-as DrugInfoResidue,
+as DrugInfoPeriods,residue: freezed == residue ? _self.residue : residue // ignore: cast_nullable_to_non_nullable
+as DrugInfoResidue?,defaults: freezed == defaults ? _self.defaults : defaults // ignore: cast_nullable_to_non_nullable
+as DrugInfoDefaults?,
   ));
 }
 /// Create a copy of DrugInfo
@@ -98,10 +100,25 @@ $DrugInfoPeriodsCopyWith<$Res> get periods {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$DrugInfoResidueCopyWith<$Res> get residue {
-  
-  return $DrugInfoResidueCopyWith<$Res>(_self.residue, (value) {
+$DrugInfoResidueCopyWith<$Res>? get residue {
+    if (_self.residue == null) {
+    return null;
+  }
+
+  return $DrugInfoResidueCopyWith<$Res>(_self.residue!, (value) {
     return _then(_self.copyWith(residue: value));
+  });
+}/// Create a copy of DrugInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$DrugInfoDefaultsCopyWith<$Res>? get defaults {
+    if (_self.defaults == null) {
+    return null;
+  }
+
+  return $DrugInfoDefaultsCopyWith<$Res>(_self.defaults!, (value) {
+    return _then(_self.copyWith(defaults: value));
   });
 }
 }
@@ -185,10 +202,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String refDrugId, @JsonKey(name: 'ilac_adi')  String name, @JsonKey(name: 'etken_madde')  String activeIngredient, @JsonKey(name: 'endikasyonlar')  String indications, @JsonKey(name: 'kullanimi_ve_sikligi')  Map<String, String> usage, @JsonKey(name: 'uygulandigi_donem')  DrugInfoPeriods periods, @JsonKey(name: 'kalinti_bilgisi_ikas')  DrugInfoResidue residue)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String refDrugId, @JsonKey(name: 'ilac_adi')  String name, @JsonKey(name: 'etken_madde')  String activeIngredient, @JsonKey(name: 'endikasyonlar')  String? indications, @JsonKey(name: 'kullanimi_ve_sikligi')  Map<String, String> usage, @JsonKey(name: 'uygulandigi_donem')  DrugInfoPeriods periods, @JsonKey(name: 'kalinti_bilgisi_ikas')  DrugInfoResidue? residue, @JsonKey(name: 'otomatik_doldurma')  DrugInfoDefaults? defaults)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DrugInfo() when $default != null:
-return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indications,_that.usage,_that.periods,_that.residue);case _:
+return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indications,_that.usage,_that.periods,_that.residue,_that.defaults);case _:
   return orElse();
 
 }
@@ -206,10 +223,10 @@ return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indicati
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String refDrugId, @JsonKey(name: 'ilac_adi')  String name, @JsonKey(name: 'etken_madde')  String activeIngredient, @JsonKey(name: 'endikasyonlar')  String indications, @JsonKey(name: 'kullanimi_ve_sikligi')  Map<String, String> usage, @JsonKey(name: 'uygulandigi_donem')  DrugInfoPeriods periods, @JsonKey(name: 'kalinti_bilgisi_ikas')  DrugInfoResidue residue)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String refDrugId, @JsonKey(name: 'ilac_adi')  String name, @JsonKey(name: 'etken_madde')  String activeIngredient, @JsonKey(name: 'endikasyonlar')  String? indications, @JsonKey(name: 'kullanimi_ve_sikligi')  Map<String, String> usage, @JsonKey(name: 'uygulandigi_donem')  DrugInfoPeriods periods, @JsonKey(name: 'kalinti_bilgisi_ikas')  DrugInfoResidue? residue, @JsonKey(name: 'otomatik_doldurma')  DrugInfoDefaults? defaults)  $default,) {final _that = this;
 switch (_that) {
 case _DrugInfo():
-return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indications,_that.usage,_that.periods,_that.residue);case _:
+return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indications,_that.usage,_that.periods,_that.residue,_that.defaults);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -226,10 +243,10 @@ return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indicati
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String refDrugId, @JsonKey(name: 'ilac_adi')  String name, @JsonKey(name: 'etken_madde')  String activeIngredient, @JsonKey(name: 'endikasyonlar')  String indications, @JsonKey(name: 'kullanimi_ve_sikligi')  Map<String, String> usage, @JsonKey(name: 'uygulandigi_donem')  DrugInfoPeriods periods, @JsonKey(name: 'kalinti_bilgisi_ikas')  DrugInfoResidue residue)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String refDrugId, @JsonKey(name: 'ilac_adi')  String name, @JsonKey(name: 'etken_madde')  String activeIngredient, @JsonKey(name: 'endikasyonlar')  String? indications, @JsonKey(name: 'kullanimi_ve_sikligi')  Map<String, String> usage, @JsonKey(name: 'uygulandigi_donem')  DrugInfoPeriods periods, @JsonKey(name: 'kalinti_bilgisi_ikas')  DrugInfoResidue? residue, @JsonKey(name: 'otomatik_doldurma')  DrugInfoDefaults? defaults)?  $default,) {final _that = this;
 switch (_that) {
 case _DrugInfo() when $default != null:
-return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indications,_that.usage,_that.periods,_that.residue);case _:
+return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indications,_that.usage,_that.periods,_that.residue,_that.defaults);case _:
   return null;
 
 }
@@ -241,13 +258,13 @@ return $default(_that.refDrugId,_that.name,_that.activeIngredient,_that.indicati
 @JsonSerializable()
 
 class _DrugInfo implements DrugInfo {
-  const _DrugInfo({required this.refDrugId, @JsonKey(name: 'ilac_adi') required this.name, @JsonKey(name: 'etken_madde') required this.activeIngredient, @JsonKey(name: 'endikasyonlar') required this.indications, @JsonKey(name: 'kullanimi_ve_sikligi') required  Map<String, String> usage, @JsonKey(name: 'uygulandigi_donem') required this.periods, @JsonKey(name: 'kalinti_bilgisi_ikas') required this.residue}): _usage = usage;
+  const _DrugInfo({required this.refDrugId, @JsonKey(name: 'ilac_adi') required this.name, @JsonKey(name: 'etken_madde') required this.activeIngredient, @JsonKey(name: 'endikasyonlar') this.indications, @JsonKey(name: 'kullanimi_ve_sikligi')  Map<String, String> usage = const {}, @JsonKey(name: 'uygulandigi_donem') this.periods = const DrugInfoPeriods(), @JsonKey(name: 'kalinti_bilgisi_ikas') this.residue, @JsonKey(name: 'otomatik_doldurma') this.defaults}): _usage = usage;
   factory _DrugInfo.fromJson(Map<String, dynamic> json) => _$DrugInfoFromJson(json);
 
 @override final  String refDrugId;
 @override@JsonKey(name: 'ilac_adi') final  String name;
 @override@JsonKey(name: 'etken_madde') final  String activeIngredient;
-@override@JsonKey(name: 'endikasyonlar') final  String indications;
+@override@JsonKey(name: 'endikasyonlar') final  String? indications;
 /// Kullanım ve sıklık; anahtarlar ürüne göre değişir
 /// ([drugUsageItems] sıralar).
  final  Map<String, String> _usage;
@@ -260,7 +277,9 @@ class _DrugInfo implements DrugInfo {
 }
 
 @override@JsonKey(name: 'uygulandigi_donem') final  DrugInfoPeriods periods;
-@override@JsonKey(name: 'kalinti_bilgisi_ikas') final  DrugInfoResidue residue;
+@override@JsonKey(name: 'kalinti_bilgisi_ikas') final  DrugInfoResidue? residue;
+/// İlaç seçilince formda dolan değerler.
+@override@JsonKey(name: 'otomatik_doldurma') final  DrugInfoDefaults? defaults;
 
 /// Create a copy of DrugInfo
 /// with the given fields replaced by the non-null parameter values.
@@ -275,18 +294,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DrugInfo&&(identical(other.refDrugId, refDrugId) || other.refDrugId == refDrugId)&&(identical(other.name, name) || other.name == name)&&(identical(other.activeIngredient, activeIngredient) || other.activeIngredient == activeIngredient)&&(identical(other.indications, indications) || other.indications == indications)&&const DeepCollectionEquality().equals(other.usage, _usage)&&(identical(other.periods, periods) || other.periods == periods)&&(identical(other.residue, residue) || other.residue == residue));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DrugInfo&&(identical(other.refDrugId, refDrugId) || other.refDrugId == refDrugId)&&(identical(other.name, name) || other.name == name)&&(identical(other.activeIngredient, activeIngredient) || other.activeIngredient == activeIngredient)&&(identical(other.indications, indications) || other.indications == indications)&&const DeepCollectionEquality().equals(other.usage, _usage)&&(identical(other.periods, periods) || other.periods == periods)&&(identical(other.residue, residue) || other.residue == residue)&&(identical(other.defaults, defaults) || other.defaults == defaults));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,refDrugId,name,activeIngredient,indications,const DeepCollectionEquality().hash(_usage),periods,residue);
+    return Object.hash(runtimeType,refDrugId,name,activeIngredient,indications,const DeepCollectionEquality().hash(_usage),periods,residue,defaults);
 }
 
 @override
 String toString() {
-    return 'DrugInfo(refDrugId: $refDrugId, name: $name, activeIngredient: $activeIngredient, indications: $indications, usage: $usage, periods: $periods, residue: $residue)';
+    return 'DrugInfo(refDrugId: $refDrugId, name: $name, activeIngredient: $activeIngredient, indications: $indications, usage: $usage, periods: $periods, residue: $residue, defaults: $defaults)';
 }
 
 
@@ -297,11 +316,11 @@ abstract mixin class _$DrugInfoCopyWith<$Res> implements $DrugInfoCopyWith<$Res>
   factory _$DrugInfoCopyWith(_DrugInfo value, $Res Function(_DrugInfo) _then) = __$DrugInfoCopyWithImpl;
 @override @useResult
 $Res call({
- String refDrugId,@JsonKey(name: 'ilac_adi') String name,@JsonKey(name: 'etken_madde') String activeIngredient,@JsonKey(name: 'endikasyonlar') String indications,@JsonKey(name: 'kullanimi_ve_sikligi') Map<String, String> usage,@JsonKey(name: 'uygulandigi_donem') DrugInfoPeriods periods,@JsonKey(name: 'kalinti_bilgisi_ikas') DrugInfoResidue residue
+ String refDrugId,@JsonKey(name: 'ilac_adi') String name,@JsonKey(name: 'etken_madde') String activeIngredient,@JsonKey(name: 'endikasyonlar') String? indications,@JsonKey(name: 'kullanimi_ve_sikligi') Map<String, String> usage,@JsonKey(name: 'uygulandigi_donem') DrugInfoPeriods periods,@JsonKey(name: 'kalinti_bilgisi_ikas') DrugInfoResidue? residue,@JsonKey(name: 'otomatik_doldurma') DrugInfoDefaults? defaults
 });
 
 
-@override $DrugInfoPeriodsCopyWith<$Res> get periods;@override $DrugInfoResidueCopyWith<$Res> get residue;
+@override $DrugInfoPeriodsCopyWith<$Res> get periods;@override $DrugInfoResidueCopyWith<$Res>? get residue;@override $DrugInfoDefaultsCopyWith<$Res>? get defaults;
 
 }
 /// @nodoc
@@ -314,16 +333,17 @@ class __$DrugInfoCopyWithImpl<$Res>
 
 /// Create a copy of DrugInfo
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? refDrugId = null,Object? name = null,Object? activeIngredient = null,Object? indications = null,Object? usage = null,Object? periods = null,Object? residue = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? refDrugId = null,Object? name = null,Object? activeIngredient = null,Object? indications = freezed,Object? usage = null,Object? periods = null,Object? residue = freezed,Object? defaults = freezed,}) {
   return _then(_DrugInfo(
 refDrugId: null == refDrugId ? _self.refDrugId : refDrugId // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,activeIngredient: null == activeIngredient ? _self.activeIngredient : activeIngredient // ignore: cast_nullable_to_non_nullable
-as String,indications: null == indications ? _self.indications : indications // ignore: cast_nullable_to_non_nullable
-as String,usage: null == usage ? _self._usage : usage // ignore: cast_nullable_to_non_nullable
+as String,indications: freezed == indications ? _self.indications : indications // ignore: cast_nullable_to_non_nullable
+as String?,usage: null == usage ? _self._usage : usage // ignore: cast_nullable_to_non_nullable
 as Map<String, String>,periods: null == periods ? _self.periods : periods // ignore: cast_nullable_to_non_nullable
-as DrugInfoPeriods,residue: null == residue ? _self.residue : residue // ignore: cast_nullable_to_non_nullable
-as DrugInfoResidue,
+as DrugInfoPeriods,residue: freezed == residue ? _self.residue : residue // ignore: cast_nullable_to_non_nullable
+as DrugInfoResidue?,defaults: freezed == defaults ? _self.defaults : defaults // ignore: cast_nullable_to_non_nullable
+as DrugInfoDefaults?,
   ));
 }
 
@@ -340,12 +360,300 @@ $DrugInfoPeriodsCopyWith<$Res> get periods {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$DrugInfoResidueCopyWith<$Res> get residue {
-  
-  return $DrugInfoResidueCopyWith<$Res>(_self.residue, (value) {
+$DrugInfoResidueCopyWith<$Res>? get residue {
+    if (_self.residue == null) {
+    return null;
+  }
+
+  return $DrugInfoResidueCopyWith<$Res>(_self.residue!, (value) {
     return _then(_self.copyWith(residue: value));
   });
+}/// Create a copy of DrugInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$DrugInfoDefaultsCopyWith<$Res>? get defaults {
+    if (_self.defaults == null) {
+    return null;
+  }
+
+  return $DrugInfoDefaultsCopyWith<$Res>(_self.defaults!, (value) {
+    return _then(_self.copyWith(defaults: value));
+  });
 }
+}
+
+
+/// @nodoc
+mixin _$DrugInfoDefaults {
+
+@JsonKey(name: 'doz') int? get dose;@JsonKey(name: 'uygulama_gun') int? get treatmentDays;
+/// Create a copy of DrugInfoDefaults
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DrugInfoDefaultsCopyWith<DrugInfoDefaults> get copyWith => _$DrugInfoDefaultsCopyWithImpl<DrugInfoDefaults>(this as DrugInfoDefaults, _$identity);
+
+  /// Serializes this DrugInfoDefaults to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as DrugInfoDefaults;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DrugInfoDefaults&&(identical(other.dose, _this.dose) || other.dose == _this.dose)&&(identical(other.treatmentDays, _this.treatmentDays) || other.treatmentDays == _this.treatmentDays));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as DrugInfoDefaults;
+  return Object.hash(runtimeType,_this.dose,_this.treatmentDays);
+}
+
+@override
+String toString() {
+  final _this = this as DrugInfoDefaults;
+  return 'DrugInfoDefaults(dose: ${_this.dose}, treatmentDays: ${_this.treatmentDays})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $DrugInfoDefaultsCopyWith<$Res>  {
+  factory $DrugInfoDefaultsCopyWith(DrugInfoDefaults value, $Res Function(DrugInfoDefaults) _then) = _$DrugInfoDefaultsCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'doz') int? dose,@JsonKey(name: 'uygulama_gun') int? treatmentDays
+});
+
+
+
+
+}
+/// @nodoc
+class _$DrugInfoDefaultsCopyWithImpl<$Res>
+    implements $DrugInfoDefaultsCopyWith<$Res> {
+  _$DrugInfoDefaultsCopyWithImpl(this._self, this._then);
+
+  final DrugInfoDefaults _self;
+  final $Res Function(DrugInfoDefaults) _then;
+
+/// Create a copy of DrugInfoDefaults
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? dose = freezed,Object? treatmentDays = freezed,}) {
+  return _then(DrugInfoDefaults(
+dose: freezed == dose ? _self.dose : dose // ignore: cast_nullable_to_non_nullable
+as int?,treatmentDays: freezed == treatmentDays ? _self.treatmentDays : treatmentDays // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [DrugInfoDefaults].
+extension DrugInfoDefaultsPatterns on DrugInfoDefaults {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DrugInfoDefaults value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _DrugInfoDefaults() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DrugInfoDefaults value)  $default,){
+final _that = this;
+switch (_that) {
+case _DrugInfoDefaults():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DrugInfoDefaults value)?  $default,){
+final _that = this;
+switch (_that) {
+case _DrugInfoDefaults() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'doz')  int? dose, @JsonKey(name: 'uygulama_gun')  int? treatmentDays)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _DrugInfoDefaults() when $default != null:
+return $default(_that.dose,_that.treatmentDays);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'doz')  int? dose, @JsonKey(name: 'uygulama_gun')  int? treatmentDays)  $default,) {final _that = this;
+switch (_that) {
+case _DrugInfoDefaults():
+return $default(_that.dose,_that.treatmentDays);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'doz')  int? dose, @JsonKey(name: 'uygulama_gun')  int? treatmentDays)?  $default,) {final _that = this;
+switch (_that) {
+case _DrugInfoDefaults() when $default != null:
+return $default(_that.dose,_that.treatmentDays);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _DrugInfoDefaults implements DrugInfoDefaults {
+  const _DrugInfoDefaults({@JsonKey(name: 'doz') this.dose, @JsonKey(name: 'uygulama_gun') this.treatmentDays});
+  factory _DrugInfoDefaults.fromJson(Map<String, dynamic> json) => _$DrugInfoDefaultsFromJson(json);
+
+@override@JsonKey(name: 'doz') final  int? dose;
+@override@JsonKey(name: 'uygulama_gun') final  int? treatmentDays;
+
+/// Create a copy of DrugInfoDefaults
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DrugInfoDefaultsCopyWith<_DrugInfoDefaults> get copyWith => __$DrugInfoDefaultsCopyWithImpl<_DrugInfoDefaults>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$DrugInfoDefaultsToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DrugInfoDefaults&&(identical(other.dose, dose) || other.dose == dose)&&(identical(other.treatmentDays, treatmentDays) || other.treatmentDays == treatmentDays));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,dose,treatmentDays);
+}
+
+@override
+String toString() {
+    return 'DrugInfoDefaults(dose: $dose, treatmentDays: $treatmentDays)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DrugInfoDefaultsCopyWith<$Res> implements $DrugInfoDefaultsCopyWith<$Res> {
+  factory _$DrugInfoDefaultsCopyWith(_DrugInfoDefaults value, $Res Function(_DrugInfoDefaults) _then) = __$DrugInfoDefaultsCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'doz') int? dose,@JsonKey(name: 'uygulama_gun') int? treatmentDays
+});
+
+
+
+
+}
+/// @nodoc
+class __$DrugInfoDefaultsCopyWithImpl<$Res>
+    implements _$DrugInfoDefaultsCopyWith<$Res> {
+  __$DrugInfoDefaultsCopyWithImpl(this._self, this._then);
+
+  final _DrugInfoDefaults _self;
+  final $Res Function(_DrugInfoDefaults) _then;
+
+/// Create a copy of DrugInfoDefaults
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? dose = freezed,Object? treatmentDays = freezed,}) {
+  return _then(_DrugInfoDefaults(
+dose: freezed == dose ? _self.dose : dose // ignore: cast_nullable_to_non_nullable
+as int?,treatmentDays: freezed == treatmentDays ? _self.treatmentDays : treatmentDays // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+
 }
 
 

@@ -32,7 +32,10 @@ class DrugInfoSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
-    final warnings = info.residue.warnings;
+    final indications = info.indications;
+    final usage = drugUsageItems(info.usage);
+    final residue = info.residue;
+    final warnings = residue?.warnings;
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -59,23 +62,25 @@ class DrugInfoSheet extends StatelessWidget {
               title: l10n.drugInfoActiveIngredient,
               children: [_Body(info.activeIngredient)],
             ),
-            _Section(
-              title: l10n.drugInfoIndications,
-              children: [_Body(info.indications)],
-            ),
-            _Section(
-              title: l10n.drugInfoUsage,
-              children: [
-                for (final (kind, text) in drugUsageItems(info.usage))
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(kind.label(l10n), style: context.typography.label),
-                      _Body(text),
-                    ],
-                  ),
-              ],
-            ),
+            if (indications != null && indications.trim().isNotEmpty)
+              _Section(
+                title: l10n.drugInfoIndications,
+                children: [_Body(indications)],
+              ),
+            if (usage.isNotEmpty)
+              _Section(
+                title: l10n.drugInfoUsage,
+                children: [
+                  for (final (kind, text) in usage)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(kind.label(l10n), style: context.typography.label),
+                        _Body(text),
+                      ],
+                    ),
+                ],
+              ),
             if (info.periods.suitable.isNotEmpty)
               _Section(
                 title: l10n.drugInfoSuitablePeriods,
@@ -94,10 +99,11 @@ class DrugInfoSheet extends StatelessWidget {
                     _Item(period, status: AppStatus.critical),
                 ],
               ),
-            _Section(
-              title: l10n.drugInfoWithdrawal,
-              children: [_Body(info.residue.withdrawal)],
-            ),
+            if (residue != null)
+              _Section(
+                title: l10n.drugInfoWithdrawal,
+                children: [_Body(residue.withdrawal)],
+              ),
             if (warnings != null && warnings.trim().isNotEmpty)
               _Section(
                 title: l10n.drugInfoWarnings,
