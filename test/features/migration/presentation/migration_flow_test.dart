@@ -212,7 +212,13 @@ void main() {
     );
     await open(tester, location: AppRoutes.more);
 
-    await _tap(tester, find.text('Migration plans'));
+    // Gezginci karosu Arılık bölümünde, İşletme'nin üstünde.
+    expect(
+      tester.getTopLeft(find.text('Migratory')).dy,
+      lessThan(tester.getTopLeft(find.text('Team')).dy),
+    );
+    await _tap(tester, find.text('Migratory'));
+    expect(find.text('Migration plans'), findsOneWidget);
     expect(find.text('No migration plan yet'), findsOneWidget);
     await _tap(tester, _button('New plan'));
 
@@ -329,7 +335,7 @@ void main() {
     // Taşıma başlat sıradaki taşımayı açar.
     await _tap(tester, _button('Start move'));
     expect(find.text('Move · Çam → Kışlak'), findsOneWidget);
-    expect(find.text('Loading is coming soon'), findsOneWidget);
+    expect(find.text('LOADING CHECKLIST'), findsOneWidget);
     await _tap(tester, find.byTooltip('Back'));
     expect(find.text('Çam → Kışlak'), findsOneWidget);
   });

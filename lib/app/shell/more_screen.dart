@@ -45,6 +45,11 @@ class MoreScreen extends ConsumerWidget {
                   label: l10n.oldQueensTitle,
                   onTap: () => context.go(AppRoutes.oldQueens),
                 ),
+                _ModuleTile(
+                  icon: Icons.local_shipping_outlined,
+                  label: l10n.moreMigratory,
+                  onTap: () => context.go(AppRoutes.migrations),
+                ),
               ],
             ),
             SizedBox(height: spacing.xl),
@@ -66,11 +71,6 @@ class MoreScreen extends ConsumerWidget {
                   icon: Icons.folder_copy_outlined,
                   label: l10n.documentsTitle,
                   onTap: () => context.go(AppRoutes.documents),
-                ),
-                _ModuleTile(
-                  icon: Icons.local_shipping_outlined,
-                  label: l10n.migrationsTitle,
-                  onTap: () => context.go(AppRoutes.migrations),
                 ),
               ],
             ),

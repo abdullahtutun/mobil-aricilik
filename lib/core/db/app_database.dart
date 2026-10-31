@@ -28,6 +28,7 @@ import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
+import 'package:mobil_arici/features/migration/domain/transport.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
@@ -69,6 +70,8 @@ part 'app_database.g.dart';
     DocumentUploads,
     Migrations,
     MigrationStops,
+    Transports,
+    TransportItems,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -80,7 +83,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 12;
+  int get schemaVersion => 13;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -170,6 +173,16 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.migrationStopsOrgIdIdx);
         await m.create(schema.migrationStopsMigrationIdIdx);
         await m.create(schema.migrationStopsApiaryIdIdx);
+      },
+      // Taşımalar ve taşınan kovanlar.
+      from12To13: (m, schema) async {
+        await m.createTable(schema.transports);
+        await m.create(schema.transportsOrgIdIdx);
+        await m.create(schema.transportsMigrationStopIdIdx);
+        await m.createTable(schema.transportItems);
+        await m.create(schema.transportItemsOrgIdIdx);
+        await m.create(schema.transportItemsTransportIdIdx);
+        await m.create(schema.transportItemsHiveIdIdx);
       },
     ),
   );

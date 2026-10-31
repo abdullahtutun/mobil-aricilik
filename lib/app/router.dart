@@ -48,6 +48,7 @@ import 'package:mobil_arici/features/migration/presentation/migration_screen.dar
 import 'package:mobil_arici/features/migration/presentation/migration_stop_form_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migrations_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/move_screen.dart';
+import 'package:mobil_arici/features/migration/presentation/transport_scan_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -74,6 +75,7 @@ const _mediaId = 'mediaId';
 const _taskId = 'taskId';
 const _documentId = 'documentId';
 const _migrationId = 'migrationId';
+const _transportId = 'transportId';
 const _stopId = 'stopId';
 const _attentionKind = 'kind';
 
@@ -470,6 +472,17 @@ GoRouter router(Ref ref) {
                             builder: (context, state) => MoveScreen(
                               migrationId: state.pathParameters[_migrationId]!,
                             ),
+                            routes: [
+                              GoRoute(
+                                path: ':$_transportId/scan',
+                                parentNavigatorKey: rootNavigatorKey,
+                                builder: (context, state) =>
+                                    TransportScanScreen(
+                                      transportId:
+                                          state.pathParameters[_transportId]!,
+                                    ),
+                              ),
+                            ],
                           ),
                           GoRoute(
                             path: 'stops/new',

@@ -143,21 +143,24 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
       });
 
   /// Kovanı [apiaryId] arılığına taşır ve geçmişe yazar; tek transaction.
-  /// Kovan zaten oradaysa bir şey yazmaz, null döner. Kovan yoksa ya da
-  /// silinmişse [StateError].
-  Future<HiveMove?> move(String hiveId, {required String apiaryId}) =>
-      db.transaction(() async {
-        final hive = await requireById(hiveId);
-        if (hive.apiaryId == apiaryId) return null;
-        final moved = await updateRecord(hive.copyWith(apiaryId: apiaryId));
-        final entry = await _locations.add(
-          orgId: hive.orgId,
-          hiveId: hiveId,
-          apiaryId: apiaryId,
-          movedAt: moved.updatedAt,
-        );
-        return (hive: moved, fromApiaryId: hive.apiaryId, entry: entry);
-      });
+  /// Geçmişteki taşıma anı [movedAt], boşsa şimdi. Kovan zaten oradaysa bir
+  /// şey yazmaz, null döner. Kovan yoksa ya da silinmişse [StateError].
+  Future<HiveMove?> move(
+    String hiveId, {
+    required String apiaryId,
+    DateTime? movedAt,
+  }) => db.transaction(() async {
+    final hive = await requireById(hiveId);
+    if (hive.apiaryId == apiaryId) return null;
+    final moved = await updateRecord(hive.copyWith(apiaryId: apiaryId));
+    final entry = await _locations.add(
+      orgId: hive.orgId,
+      hiveId: hiveId,
+      apiaryId: apiaryId,
+      movedAt: movedAt ?? moved.updatedAt,
+    );
+    return (hive: moved, fromApiaryId: hive.apiaryId, entry: entry);
+  });
 
   /// Taşımayı geri alır: kovan geldiği arılığa döner, taşımanın geçmiş
   /// kaydı yumuşak silinir; tek transaction. Kovan bu arada başka yere

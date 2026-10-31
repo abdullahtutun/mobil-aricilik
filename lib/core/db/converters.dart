@@ -31,6 +31,19 @@ class DateOnlyConverter extends TypeConverter<DateTime, String> {
   String toSql(DateTime value) => formatDateOnly(value);
 }
 
+/// Metin listesini JSON dizisi olarak metin kolonunda tutar (sunucuda
+/// `jsonb` dizi).
+class JsonStringListConverter extends TypeConverter<List<String>, String> {
+  const new();
+
+  @override
+  List<String> fromSql(String fromDb) =>
+      (jsonDecode(fromDb) as List<Object?>).cast<String>();
+
+  @override
+  String toSql(List<String> value) => jsonEncode(value);
+}
+
 /// JSON nesnesini metin kolonunda tutar.
 class JsonMapConverter extends TypeConverter<Map<String, Object?>, String> {
   const new();

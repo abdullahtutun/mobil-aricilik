@@ -8,6 +8,7 @@ import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v10.dart' as v10;
 import 'generated/schema_v11.dart' as v11;
 import 'generated/schema_v12.dart' as v12;
+import 'generated/schema_v13.dart' as v13;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -567,6 +568,39 @@ void main() {
         expect(documents.single.expiresOn, '2026-11-01');
         expect(await newDb.select(newDb.migrations).get(), isEmpty);
         expect(await newDb.select(newDb.migrationStops).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v12 → v13 göç duraklarını korur; taşıma tabloları boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 12,
+      newVersion: 13,
+      createOld: v12.DatabaseAtV12.new,
+      createNew: v13.DatabaseAtV13.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.migrationStops,
+          v12.MigrationStopsCompanion.insert(
+            id: 'stop-1',
+            createdAt: '2026-10-28T09:00:00.000Z',
+            updatedAt: '2026-10-28T09:00:00.000Z',
+            orgId: 'org-1',
+            migrationId: 'migration-1',
+            position: 1,
+            name: 'Kışlak',
+            plannedStartOn: '2026-11-16',
+            plannedEndOn: '2027-02-28',
+            status: 'planned',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final stops = await newDb.select(newDb.migrationStops).get();
+        expect(stops.single.name, 'Kışlak');
+        expect(await newDb.select(newDb.transports).get(), isEmpty);
+        expect(await newDb.select(newDb.transportItems).get(), isEmpty);
       },
     );
   });

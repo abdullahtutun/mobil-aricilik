@@ -112,11 +112,7 @@ class SettingsScreen extends ConsumerWidget {
           SectionLabel(l10n.settingsData),
           labelGap,
           const ListGroup(
-            children: [
-              _MediaWifiOnlyTile(),
-              _PushTile(),
-              _AnalyticsTile(),
-            ],
+            children: [_MediaWifiOnlyTile(), _PushTile(), _AnalyticsTile()],
           ),
           sectionGap,
           SectionLabel(l10n.settingsVarroa),

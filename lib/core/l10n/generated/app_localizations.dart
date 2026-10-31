@@ -6593,23 +6593,383 @@ abstract class AppLocalizations {
   /// **'Move · {route}'**
   String moveTitle(String route);
 
-  /// Placeholder title on the move screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Loading is coming soon'**
-  String get moveComingTitle;
-
-  /// Placeholder message on the move screen.
-  ///
-  /// In en, this message translates to:
-  /// **'The checklist, loading hives onto trucks by scanning and unloading at the destination will be here.'**
-  String get moveComingMessage;
-
   /// Move screen when the plan has no planned stop left.
   ///
   /// In en, this message translates to:
   /// **'No upcoming move'**
   String get moveNone;
+
+  /// More tab tile that opens the migration plans (migratory beekeeping).
+  ///
+  /// In en, this message translates to:
+  /// **'Migratory'**
+  String get moreMigratory;
+
+  /// Record type name on the sync screen: a hive transport.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get syncTableTransports;
+
+  /// Record type name on the sync screen: a hive on a transport.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved hive'**
+  String get syncTableTransportItems;
+
+  /// Move step 1: pre-loading checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get moveStepCheck;
+
+  /// Move step 2: loading hives onto vehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get moveStepLoad;
+
+  /// Move step 3: unloading hives at the destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Unloading'**
+  String get moveStepUnload;
+
+  /// Screen reader label for a finished move step.
+  ///
+  /// In en, this message translates to:
+  /// **'{step}, done'**
+  String moveStepDone(String step);
+
+  /// Move screen when the next stop has no destination apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'The stop has no apiary'**
+  String get moveNoDestinationTitle;
+
+  /// Explains why the stop needs an apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a destination apiary for the stop so hive locations can update after unloading.'**
+  String get moveNoDestinationMessage;
+
+  /// Button that opens the stop form.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit stop'**
+  String get moveEditStop;
+
+  /// Label of the source apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get moveFrom;
+
+  /// Label of the destination apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get moveTo;
+
+  /// Active hive count of the source apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No active hives} =1{1 active hive} other{{count} active hives}}'**
+  String moveSourceHives(int count);
+
+  /// Section title of the pre-loading checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading checklist'**
+  String get moveChecklist;
+
+  /// Checklist item.
+  ///
+  /// In en, this message translates to:
+  /// **'Entrances closed'**
+  String get moveCheckEntrances;
+
+  /// Checklist item.
+  ///
+  /// In en, this message translates to:
+  /// **'Ventilation open'**
+  String get moveCheckVentilation;
+
+  /// Checklist item.
+  ///
+  /// In en, this message translates to:
+  /// **'Straps tight'**
+  String get moveCheckStraps;
+
+  /// Checklist item.
+  ///
+  /// In en, this message translates to:
+  /// **'Water ready'**
+  String get moveCheckWater;
+
+  /// Section title of the vehicles list.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles'**
+  String get moveVehicles;
+
+  /// Default name of a new vehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Truck {number}'**
+  String moveVehicleDefault(int number);
+
+  /// Button that adds a vehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add vehicle'**
+  String get moveAddVehicle;
+
+  /// Tooltip of the remove button next to a vehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {vehicle}'**
+  String moveRemoveVehicle(String vehicle);
+
+  /// Label of the vehicle name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle name'**
+  String get moveVehicleName;
+
+  /// Error when the vehicle name is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'A vehicle with this name exists'**
+  String get moveVehicleExists;
+
+  /// Button that finishes the checklist and starts loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Start loading'**
+  String get moveStartLoading;
+
+  /// Hint under the checklist while items are unticked.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick everything on the list to start loading.'**
+  String get moveChecklistHint;
+
+  /// Vehicle chip with its loaded hive count, e.g. 'Truck 1 · 72'.
+  ///
+  /// In en, this message translates to:
+  /// **'{vehicle} · {count}'**
+  String moveVehicleCount(String vehicle, int count);
+
+  /// Counter title during loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded'**
+  String get moveLoaded;
+
+  /// Counter title during unloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Unloaded'**
+  String get moveUnloaded;
+
+  /// Total next to the big counter, e.g. '/ 152'.
+  ///
+  /// In en, this message translates to:
+  /// **'/ {total}'**
+  String moveCountTotal(int total);
+
+  /// Screen reader label of the big counter.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} hives'**
+  String moveCountLabel(int count, int total);
+
+  /// Number of the last scanned hive.
+  ///
+  /// In en, this message translates to:
+  /// **'Last scanned: {number}'**
+  String moveLastScanned(String number);
+
+  /// Card with the number of hives still to scan.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive not scanned yet} other{{count} hives not scanned yet}}'**
+  String moveNotScanned(int count);
+
+  /// Card when every expected hive was scanned.
+  ///
+  /// In en, this message translates to:
+  /// **'All scanned'**
+  String get moveAllScanned;
+
+  /// Opens the list of hives not scanned.
+  ///
+  /// In en, this message translates to:
+  /// **'See list'**
+  String get moveShowList;
+
+  /// Title of the list of hives not scanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives not scanned'**
+  String get moveMissingTitle;
+
+  /// Hint on the loading step.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll scan again while unloading at the destination; I\'ll warn you if a hive is missing. Hive locations update after unloading.'**
+  String get moveLoadingHint;
+
+  /// Hint on the unloading step.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan each hive again as you unload. When you finish, unloaded hives move to {destination}.'**
+  String moveUnloadingHint(String destination);
+
+  /// Button that opens manual hive number entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter number'**
+  String get moveEnterNumber;
+
+  /// Label of the manual hive number field.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive number'**
+  String get moveHiveNumber;
+
+  /// Manual entry found no hive.
+  ///
+  /// In en, this message translates to:
+  /// **'No hive numbered {number}'**
+  String moveNumberNotFound(String number);
+
+  /// Opens the continuous scanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Start scanning'**
+  String get moveScanStart;
+
+  /// Opens the continuous scanner after some hives were scanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue scanning'**
+  String get moveScanContinue;
+
+  /// Finishes loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to unloading'**
+  String get moveToUnloading;
+
+  /// Confirm dialog title when finishing loading with hives left.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive not scanned} other{{count} hives not scanned}}'**
+  String moveToUnloadingTitle(int count);
+
+  /// Confirm dialog message when finishing loading with hives left.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives not scanned stay out of this move and remain where they are.'**
+  String get moveToUnloadingMessage;
+
+  /// Finishes unloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish move'**
+  String get moveFinish;
+
+  /// Confirm dialog title when finishing with hives not unloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive not unloaded} other{{count} hives not unloaded}}'**
+  String moveFinishTitle(int count);
+
+  /// Confirm dialog message when finishing with hives not unloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives not unloaded keep their location at {source}. The missing list stays on the move.'**
+  String moveFinishMessage(String source);
+
+  /// Confirm button of the finish dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get moveFinishConfirm;
+
+  /// Title on the finished move.
+  ///
+  /// In en, this message translates to:
+  /// **'Move finished'**
+  String get moveDoneTitle;
+
+  /// Counts on the finished move.
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded {loaded} · Unloaded {unloaded}'**
+  String moveDoneSummary(int loaded, int unloaded);
+
+  /// How many hives moved on the finished move.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No hives moved.} =1{1 hive moved to {destination}.} other{{count} hives moved to {destination}.}}'**
+  String moveDoneMoved(int count, String destination);
+
+  /// Title of the missing list on the finished move.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives not unloaded'**
+  String get moveDoneMissing;
+
+  /// Scan result: hive loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'{number} loaded · {vehicle}'**
+  String moveScanLoaded(String number, String vehicle);
+
+  /// Scan result: loaded a hive from another apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'{number} loaded; this hive wasn\'t at this apiary'**
+  String moveScanLoadedOther(String number);
+
+  /// Scan result: hive already loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'{number} is already loaded'**
+  String moveScanAlreadyLoaded(String number);
+
+  /// Scan result: hive unloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'{number} unloaded'**
+  String moveScanUnloaded(String number);
+
+  /// Scan result: hive already unloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'{number} is already unloaded'**
+  String moveScanAlreadyUnloaded(String number);
+
+  /// Scan result: hive not on this transport.
+  ///
+  /// In en, this message translates to:
+  /// **'{number} wasn\'t loaded on this move'**
+  String moveScanNotLoaded(String number);
+
+  /// Scan result: label matches no hive.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown label'**
+  String get moveScanUnknown;
+
+  /// Closes the continuous scanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get moveScanDone;
 }
 
 class _AppLocalizationsDelegate

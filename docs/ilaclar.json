@@ -175,55 +175,5 @@
 "arinma_suresi": "0 gün (Ürünün kullanıldığı zamana bakılmaksızın bal için ilaç kalıntı arınma süresi gerekli değildir)",
 "uyarilar": "Tedaviyi takiben ilkbahar başlangıcına kadar balmumu dâhil kovandaki bal dışındaki diğer arı ürünleri insan tüketimi amacıyla kullanılmamalıdır. İnsan tüketimi için ayrılan ballar ürün şeritleriyle doğrudan temas ettirilmemelidir."
 }
-},
-{
-"ilac_adi": "Oksalik Asit",
-"etken_madde": "Oksalik Asit Dihidrat",
-"endikasyonlar": "Bal arılarında Varroa destructor (arı canavarı) akarının teşhis, önleme ve tedavisinde kullanılır. Özellikle yavrusuz ve kuluçkanın durduğu dönemlerde yüksek etki gösterir.",
-"kullanimi_ve_sikligi": {
-"uygulama_sekli": "Buharlaştırma (sublimasyon) cihazı ile kovan uçma deliğinden ısıtılarak buhar şeklinde veya ılık şeker şurubu çözeltisi hazırlanılarak petek aralarındaki arıların üzerine damlatma/püskürtme yöntemiyle uygulanır.",
-"dozaj": "Buharlaştırmada kovan başına 1–2 gram; damlatma yönteminde %3.5'lik çözeltiden arılı çıta aralığı başına 5 ml (standart kovan için toplam maks. 35–50 ml) uygulanır.",
-"uygulama_suresi": "Yavrusuz kışlama döneminde tek doz uygulama yeterlidir; yavrulu dönemlerde 5–7 gün arayla 3–4 kez tekrarlanır."
-},
-"uygulandigi_donem": {
-"uygun_donemler": [
-"Geç sonbahar ve kış dönemi (kovanda kapalı yavru bulunmadığı dönemler)",
-"Erken ilkbahar (kuluçka başlamadan hemen önce)",
-"Yapay/doğal oğul oluşturma aşamaları"
-],
-"kullanilmamasi_gereken_donemler": [
-"Bal akımı (nektar toplama) dönemi",
-"Ballıkların kovan üzerinde bulunduğu zamanlar"
-]
-},
-"kalinti_bilgisi_ikas": {
-"arinma_suresi": "0 gün (Organik asit grubunda yer aldığı için doğru zamanlama ile uygulandığında balda kalıntı arınma süresi 0 gündür)",
-"uyarilar": "Uygulayıcı asidik buhar ve sıvıya karşı maske, eldiven ve koruyucu gözlük kullanmalıdır. Yüksek dozajlarda arı ölümlerine ve ana arı kaybına neden olabilir."
-}
-},
-{
-"ilac_adi": "Formik Asit",
-"etken_madde": "Formik Asit (%60 - %85 derişim)",
-"endikasyonlar": "Bal arılarında Varroosis (Varroa destructor) ve Trake Akarı (Acarapis woodi) mücadelesinde kullanılır. Kapalı petek gözlerinin altındaki varroalara nüfuz edebilen tek organik etken maddedir.",
-"kullanimi_ve_sikligi": {
-"uygulama_sekli": "%65'lik formik asidin buharlaştırma aparatları, emici pedler/kâğıtlar vasıtasıyla veya hazır jel/şerit ürün formunda kuluçkalık çerçevelerinin üzerine (arıya doğrudan temas etmeyecek şekilde) yerleştirilerek buharlaşması sağlanır.",
-"dozaj": "Sıvı uygulamada kovan/seans başına 30–40 ml (%65'lik çözelti); hazır yavaş salınımlı ped veya aparat kullanımında kovan büyüklüğüne göre 1–2 ped/aparat uygulanır.",
-"uygulama_suresi": "Hızlı buharlaştırma yönteminde 4–7 gün arayla 3–4 seans; yavaş salınımlı plaklarda/pedlerde 10–14 gün kovanda tutulur."
-},
-"uygulandigi_donem": {
-"uygun_donemler": [
-"Bal hasadı sonrası geç sonbahar dönemi",
-"Bal akımından önceki erken ilkbahar dönemi (Dış ortam sıcaklığının 15°C ile 25°C arasında olduğu günler)"
-],
-"kullanilmamasi_gereken_donemler": [
-"Bal akımı ve bal toplama süresince",
-"Hava sıcaklığının 30°C üzeri veya 12°C altı olduğu dönemler",
-"Arıların çiftleşme uçuşu dönemleri"
-]
-},
-"kalinti_bilgisi_ikas": {
-"arinma_suresi": "0 gün (Doğal organik bileşen olduğundan doğru sezonda kullanımda bal için arınma süresi bulunmamaktadır)",
-"uyarilar": "Buharlaşma hızı hava sıcaklığına direkt bağlıdır; yüksek sıcaklıkta aşırı buharlaşma arı ve ana arı ölümlerine yol açabilir. Uygulama sırasında koruyucu ekipman (maske, aside dayanıklı eldiven, gözlük) zorunludur."
-}
 }
 ]

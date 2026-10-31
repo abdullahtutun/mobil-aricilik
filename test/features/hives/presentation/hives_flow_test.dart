@@ -305,15 +305,16 @@ void main() {
       await _tap(tester, _inSheet('Ova'));
 
       expect(find.text('Hive 101 moved to Ova'), findsOneWidget);
-      await _scrollCardToTop(tester);
-      expect(_cardApiary('Ova'), findsOneWidget);
       expect((await hives.findById(hive.id))!.apiaryId, ova.id);
       expect(
         (await db.select(db.hiveLocationHistory).get()).map((e) => e.apiaryId),
         [yayla.id, ova.id],
       );
 
+      // Kartı kaydırmak bildirim dışına dokunmak sayılır ve Geri al'ı
+      // kapatır; kart kaydırılmadan önce geri alınır.
       await _tap(tester, find.text('Undo'));
+      await _scrollCardToTop(tester);
 
       expect(_cardApiary('Yayla'), findsOneWidget);
       expect((await hives.findById(hive.id))!.apiaryId, yayla.id);

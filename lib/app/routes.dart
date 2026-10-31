@@ -145,6 +145,10 @@ abstract final class AppRoutes {
   static String migrationMove(String migrationId) =>
       '/more/migrations/$migrationId/move';
 
+  /// Taşımanın sürekli okutma ekranı (yükleme ya da indirme).
+  static String migrationMoveScan(String migrationId, String transportId) =>
+      '/more/migrations/$migrationId/move/$transportId/scan';
+
   /// Fotoğrafın tam ekranı; sekmelerin üstünde açılır.
   static String mediaPhoto(String mediaId) => '/media/$mediaId';
 

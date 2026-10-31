@@ -4085,12 +4085,269 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get moveComingTitle => 'Yükleme yakında';
-
-  @override
-  String get moveComingMessage =>
-      'Kontrol listesi, kovanları okutarak kamyona yükleme ve hedefte indirme burada olacak.';
-
-  @override
   String get moveNone => 'Sıradaki taşıma yok';
+
+  @override
+  String get moreMigratory => 'Gezginci';
+
+  @override
+  String get syncTableTransports => 'Taşıma';
+
+  @override
+  String get syncTableTransportItems => 'Taşınan kovan';
+
+  @override
+  String get moveStepCheck => 'Kontrol';
+
+  @override
+  String get moveStepLoad => 'Yükleme';
+
+  @override
+  String get moveStepUnload => 'İndirme';
+
+  @override
+  String moveStepDone(String step) {
+    return '$step, tamam';
+  }
+
+  @override
+  String get moveNoDestinationTitle => 'Durağın arılığı yok';
+
+  @override
+  String get moveNoDestinationMessage =>
+      'Kovanların konumu indirince güncellensin diye durağa bir hedef arılık seç.';
+
+  @override
+  String get moveEditStop => 'Durağı düzenle';
+
+  @override
+  String get moveFrom => 'Nereden';
+
+  @override
+  String get moveTo => 'Nereye';
+
+  @override
+  String moveSourceHives(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aktif kovan',
+      zero: 'Aktif kovan yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveChecklist => 'Yükleme kontrol listesi';
+
+  @override
+  String get moveCheckEntrances => 'Uçuş delikleri kapalı';
+
+  @override
+  String get moveCheckVentilation => 'Havalandırma açık';
+
+  @override
+  String get moveCheckStraps => 'Kayışlar sıkı';
+
+  @override
+  String get moveCheckWater => 'Su hazır';
+
+  @override
+  String get moveVehicles => 'Araçlar';
+
+  @override
+  String moveVehicleDefault(int number) {
+    return 'Kamyon $number';
+  }
+
+  @override
+  String get moveAddVehicle => 'Araç ekle';
+
+  @override
+  String moveRemoveVehicle(String vehicle) {
+    return '$vehicle aracını çıkar';
+  }
+
+  @override
+  String get moveVehicleName => 'Araç adı';
+
+  @override
+  String get moveVehicleExists => 'Bu adda araç var';
+
+  @override
+  String get moveStartLoading => 'Yüklemeye başla';
+
+  @override
+  String get moveChecklistHint =>
+      'Yüklemeye geçmek için listedeki her şeyi işaretle.';
+
+  @override
+  String moveVehicleCount(String vehicle, int count) {
+    return '$vehicle · $count';
+  }
+
+  @override
+  String get moveLoaded => 'Yüklenen';
+
+  @override
+  String get moveUnloaded => 'İndirilen';
+
+  @override
+  String moveCountTotal(int total) {
+    return '/ $total';
+  }
+
+  @override
+  String moveCountLabel(int count, int total) {
+    return '$count / $total kovan';
+  }
+
+  @override
+  String moveLastScanned(String number) {
+    return 'Son okunan: $number';
+  }
+
+  @override
+  String moveNotScanned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan henüz okunmadı',
+      one: '1 kovan henüz okunmadı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveAllScanned => 'Hepsi okundu';
+
+  @override
+  String get moveShowList => 'Listeyi gör';
+
+  @override
+  String get moveMissingTitle => 'Okunmayan kovanlar';
+
+  @override
+  String get moveLoadingHint =>
+      'Hedefte indirirken tekrar okutacaksın; eksik kovan kalırsa uyarırım. Kovanların konumu indirince güncellenir.';
+
+  @override
+  String moveUnloadingHint(String destination) {
+    return 'İndirirken her kovanı tekrar okut. Bitirince indirilen kovanlar $destination arılığına taşınır.';
+  }
+
+  @override
+  String get moveEnterNumber => 'Numara gir';
+
+  @override
+  String get moveHiveNumber => 'Kovan numarası';
+
+  @override
+  String moveNumberNotFound(String number) {
+    return '$number numaralı kovan yok';
+  }
+
+  @override
+  String get moveScanStart => 'Okutmaya başla';
+
+  @override
+  String get moveScanContinue => 'Okutmaya devam';
+
+  @override
+  String get moveToUnloading => 'İndirmeye geç';
+
+  @override
+  String moveToUnloadingTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan okunmadı',
+      one: '1 kovan okunmadı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveToUnloadingMessage =>
+      'Okunmayan kovanlar bu taşımaya girmez ve yerinde kalır.';
+
+  @override
+  String get moveFinish => 'Taşımayı bitir';
+
+  @override
+  String moveFinishTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan indirilmedi',
+      one: '1 kovan indirilmedi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String moveFinishMessage(String source) {
+    return 'İndirilmeyen kovanların konumu değişmez, $source arılığında kalır. Eksik listesi taşımada görünür.';
+  }
+
+  @override
+  String get moveFinishConfirm => 'Bitir';
+
+  @override
+  String get moveDoneTitle => 'Taşıma bitti';
+
+  @override
+  String moveDoneSummary(int loaded, int unloaded) {
+    return 'Yüklenen $loaded · İndirilen $unloaded';
+  }
+
+  @override
+  String moveDoneMoved(int count, String destination) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan $destination arılığına taşındı.',
+      zero: 'Taşınan kovan yok.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveDoneMissing => 'İndirilmeyen kovanlar';
+
+  @override
+  String moveScanLoaded(String number, String vehicle) {
+    return '$number yüklendi · $vehicle';
+  }
+
+  @override
+  String moveScanLoadedOther(String number) {
+    return '$number yüklendi; kovan bu arılıkta değildi';
+  }
+
+  @override
+  String moveScanAlreadyLoaded(String number) {
+    return '$number zaten yüklü';
+  }
+
+  @override
+  String moveScanUnloaded(String number) {
+    return '$number indirildi';
+  }
+
+  @override
+  String moveScanAlreadyUnloaded(String number) {
+    return '$number zaten indirildi';
+  }
+
+  @override
+  String moveScanNotLoaded(String number) {
+    return '$number bu taşımada yüklenmedi';
+  }
+
+  @override
+  String get moveScanUnknown => 'Tanınmayan etiket';
+
+  @override
+  String get moveScanDone => 'Bitti';
 }

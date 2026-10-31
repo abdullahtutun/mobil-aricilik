@@ -12959,6 +12959,1091 @@ extension MigrationStopToInsertable on MigrationStop {
   }
 }
 
+class $TransportsTable extends Transports
+    with TableInfo<$TransportsTable, Transport> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TransportsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _migrationStopIdMeta = const VerificationMeta(
+    'migrationStopId',
+  );
+  @override
+  late final GeneratedColumn<String> migrationStopId = GeneratedColumn<String>(
+    'migration_stop_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceApiaryIdMeta = const VerificationMeta(
+    'sourceApiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> sourceApiaryId = GeneratedColumn<String>(
+    'source_apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _destinationApiaryIdMeta =
+      const VerificationMeta('destinationApiaryId');
+  @override
+  late final GeneratedColumn<String> destinationApiaryId =
+      GeneratedColumn<String>(
+        'destination_apiary_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<List<String>, String> vehicles =
+      GeneratedColumn<String>(
+        'vehicles',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('[]'),
+      ).withConverter<List<String>>($TransportsTable.$convertervehicles);
+  @override
+  late final GeneratedColumnWithTypeConverter<TransportStatus, String> status =
+      GeneratedColumn<String>(
+        'status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<TransportStatus>($TransportsTable.$converterstatus);
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    migrationStopId,
+    sourceApiaryId,
+    destinationApiaryId,
+    vehicles,
+    status,
+    completedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'transports';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Transport> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('migration_stop_id')) {
+      context.handle(
+        _migrationStopIdMeta,
+        migrationStopId.isAcceptableOrUnknown(
+          data['migration_stop_id']!,
+          _migrationStopIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source_apiary_id')) {
+      context.handle(
+        _sourceApiaryIdMeta,
+        sourceApiaryId.isAcceptableOrUnknown(
+          data['source_apiary_id']!,
+          _sourceApiaryIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceApiaryIdMeta);
+    }
+    if (data.containsKey('destination_apiary_id')) {
+      context.handle(
+        _destinationApiaryIdMeta,
+        destinationApiaryId.isAcceptableOrUnknown(
+          data['destination_apiary_id']!,
+          _destinationApiaryIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_destinationApiaryIdMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Transport map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Transport(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      sourceApiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_apiary_id'],
+      )!,
+      destinationApiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}destination_apiary_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      vehicles: $TransportsTable.$convertervehicles.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}vehicles'],
+        )!,
+      ),
+      status: $TransportsTable.$converterstatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}status'],
+        )!,
+      ),
+      migrationStopId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}migration_stop_id'],
+      ),
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $TransportsTable createAlias(String alias) {
+    return $TransportsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<List<String>, String> $convertervehicles =
+      const JsonStringListConverter();
+  static TypeConverter<TransportStatus, String> $converterstatus =
+      const ServerEnumConverter(TransportStatus.values);
+}
+
+class TransportsCompanion extends UpdateCompanion<Transport> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String?> migrationStopId;
+  final Value<String> sourceApiaryId;
+  final Value<String> destinationApiaryId;
+  final Value<List<String>> vehicles;
+  final Value<TransportStatus> status;
+  final Value<DateTime?> completedAt;
+  final Value<int> rowid;
+  const TransportsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.migrationStopId = const Value.absent(),
+    this.sourceApiaryId = const Value.absent(),
+    this.destinationApiaryId = const Value.absent(),
+    this.vehicles = const Value.absent(),
+    this.status = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TransportsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    this.migrationStopId = const Value.absent(),
+    required String sourceApiaryId,
+    required String destinationApiaryId,
+    this.vehicles = const Value.absent(),
+    required TransportStatus status,
+    this.completedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       sourceApiaryId = Value(sourceApiaryId),
+       destinationApiaryId = Value(destinationApiaryId),
+       status = Value(status);
+  static Insertable<Transport> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? migrationStopId,
+    Expression<String>? sourceApiaryId,
+    Expression<String>? destinationApiaryId,
+    Expression<String>? vehicles,
+    Expression<String>? status,
+    Expression<DateTime>? completedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (migrationStopId != null) 'migration_stop_id': migrationStopId,
+      if (sourceApiaryId != null) 'source_apiary_id': sourceApiaryId,
+      if (destinationApiaryId != null)
+        'destination_apiary_id': destinationApiaryId,
+      if (vehicles != null) 'vehicles': vehicles,
+      if (status != null) 'status': status,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TransportsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String?>? migrationStopId,
+    Value<String>? sourceApiaryId,
+    Value<String>? destinationApiaryId,
+    Value<List<String>>? vehicles,
+    Value<TransportStatus>? status,
+    Value<DateTime?>? completedAt,
+    Value<int>? rowid,
+  }) {
+    return TransportsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      migrationStopId: migrationStopId ?? this.migrationStopId,
+      sourceApiaryId: sourceApiaryId ?? this.sourceApiaryId,
+      destinationApiaryId: destinationApiaryId ?? this.destinationApiaryId,
+      vehicles: vehicles ?? this.vehicles,
+      status: status ?? this.status,
+      completedAt: completedAt ?? this.completedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (migrationStopId.present) {
+      map['migration_stop_id'] = Variable<String>(migrationStopId.value);
+    }
+    if (sourceApiaryId.present) {
+      map['source_apiary_id'] = Variable<String>(sourceApiaryId.value);
+    }
+    if (destinationApiaryId.present) {
+      map['destination_apiary_id'] = Variable<String>(
+        destinationApiaryId.value,
+      );
+    }
+    if (vehicles.present) {
+      map['vehicles'] = Variable<String>(
+        $TransportsTable.$convertervehicles.toSql(vehicles.value),
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(
+        $TransportsTable.$converterstatus.toSql(status.value),
+      );
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TransportsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('migrationStopId: $migrationStopId, ')
+          ..write('sourceApiaryId: $sourceApiaryId, ')
+          ..write('destinationApiaryId: $destinationApiaryId, ')
+          ..write('vehicles: $vehicles, ')
+          ..write('status: $status, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$TransportInsertable implements Insertable<Transport> {
+  Transport _object;
+  _$TransportInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return TransportsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      migrationStopId: Value(_object.migrationStopId),
+      sourceApiaryId: Value(_object.sourceApiaryId),
+      destinationApiaryId: Value(_object.destinationApiaryId),
+      vehicles: Value(_object.vehicles),
+      status: Value(_object.status),
+      completedAt: Value(_object.completedAt),
+    ).toColumns(false);
+  }
+}
+
+extension TransportToInsertable on Transport {
+  _$TransportInsertable toInsertable() {
+    return _$TransportInsertable(this);
+  }
+}
+
+class $TransportItemsTable extends TransportItems
+    with TableInfo<$TransportItemsTable, TransportItem> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TransportItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _transportIdMeta = const VerificationMeta(
+    'transportId',
+  );
+  @override
+  late final GeneratedColumn<String> transportId = GeneratedColumn<String>(
+    'transport_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _vehicleMeta = const VerificationMeta(
+    'vehicle',
+  );
+  @override
+  late final GeneratedColumn<String> vehicle = GeneratedColumn<String>(
+    'vehicle',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _loadedAtMeta = const VerificationMeta(
+    'loadedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> loadedAt = GeneratedColumn<DateTime>(
+    'loaded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _unloadedAtMeta = const VerificationMeta(
+    'unloadedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> unloadedAt = GeneratedColumn<DateTime>(
+    'unloaded_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    transportId,
+    hiveId,
+    vehicle,
+    loadedAt,
+    unloadedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'transport_items';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TransportItem> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('transport_id')) {
+      context.handle(
+        _transportIdMeta,
+        transportId.isAcceptableOrUnknown(
+          data['transport_id']!,
+          _transportIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_transportIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('vehicle')) {
+      context.handle(
+        _vehicleMeta,
+        vehicle.isAcceptableOrUnknown(data['vehicle']!, _vehicleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_vehicleMeta);
+    }
+    if (data.containsKey('loaded_at')) {
+      context.handle(
+        _loadedAtMeta,
+        loadedAt.isAcceptableOrUnknown(data['loaded_at']!, _loadedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_loadedAtMeta);
+    }
+    if (data.containsKey('unloaded_at')) {
+      context.handle(
+        _unloadedAtMeta,
+        unloadedAt.isAcceptableOrUnknown(data['unloaded_at']!, _unloadedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TransportItem map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TransportItem(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      transportId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}transport_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      vehicle: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}vehicle'],
+      )!,
+      loadedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}loaded_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      unloadedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}unloaded_at'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $TransportItemsTable createAlias(String alias) {
+    return $TransportItemsTable(attachedDatabase, alias);
+  }
+}
+
+class TransportItemsCompanion extends UpdateCompanion<TransportItem> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> transportId;
+  final Value<String> hiveId;
+  final Value<String> vehicle;
+  final Value<DateTime> loadedAt;
+  final Value<DateTime?> unloadedAt;
+  final Value<int> rowid;
+  const TransportItemsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.transportId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.vehicle = const Value.absent(),
+    this.loadedAt = const Value.absent(),
+    this.unloadedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TransportItemsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String transportId,
+    required String hiveId,
+    required String vehicle,
+    required DateTime loadedAt,
+    this.unloadedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       transportId = Value(transportId),
+       hiveId = Value(hiveId),
+       vehicle = Value(vehicle),
+       loadedAt = Value(loadedAt);
+  static Insertable<TransportItem> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? transportId,
+    Expression<String>? hiveId,
+    Expression<String>? vehicle,
+    Expression<DateTime>? loadedAt,
+    Expression<DateTime>? unloadedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (transportId != null) 'transport_id': transportId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (vehicle != null) 'vehicle': vehicle,
+      if (loadedAt != null) 'loaded_at': loadedAt,
+      if (unloadedAt != null) 'unloaded_at': unloadedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TransportItemsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? transportId,
+    Value<String>? hiveId,
+    Value<String>? vehicle,
+    Value<DateTime>? loadedAt,
+    Value<DateTime?>? unloadedAt,
+    Value<int>? rowid,
+  }) {
+    return TransportItemsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      transportId: transportId ?? this.transportId,
+      hiveId: hiveId ?? this.hiveId,
+      vehicle: vehicle ?? this.vehicle,
+      loadedAt: loadedAt ?? this.loadedAt,
+      unloadedAt: unloadedAt ?? this.unloadedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (transportId.present) {
+      map['transport_id'] = Variable<String>(transportId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (vehicle.present) {
+      map['vehicle'] = Variable<String>(vehicle.value);
+    }
+    if (loadedAt.present) {
+      map['loaded_at'] = Variable<DateTime>(loadedAt.value);
+    }
+    if (unloadedAt.present) {
+      map['unloaded_at'] = Variable<DateTime>(unloadedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TransportItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('transportId: $transportId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('vehicle: $vehicle, ')
+          ..write('loadedAt: $loadedAt, ')
+          ..write('unloadedAt: $unloadedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$TransportItemInsertable implements Insertable<TransportItem> {
+  TransportItem _object;
+  _$TransportItemInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return TransportItemsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      transportId: Value(_object.transportId),
+      hiveId: Value(_object.hiveId),
+      vehicle: Value(_object.vehicle),
+      loadedAt: Value(_object.loadedAt),
+      unloadedAt: Value(_object.unloadedAt),
+    ).toColumns(false);
+  }
+}
+
+extension TransportItemToInsertable on TransportItem {
+  _$TransportItemInsertable toInsertable() {
+    return _$TransportItemInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -14934,6 +16019,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $MigrationsTable migrations = $MigrationsTable(this);
   late final $MigrationStopsTable migrationStops = $MigrationStopsTable(this);
+  late final $TransportsTable transports = $TransportsTable(this);
+  late final $TransportItemsTable transportItems = $TransportItemsTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $FeedbackQueueTable feedbackQueue = $FeedbackQueueTable(this);
   late final $AnalyticsQueueTable analyticsQueue = $AnalyticsQueueTable(this);
@@ -15083,6 +16170,26 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'migration_stops_apiary_id_idx',
     'CREATE INDEX migration_stops_apiary_id_idx ON migration_stops (apiary_id)',
   );
+  late final Index transportsOrgIdIdx = Index(
+    'transports_org_id_idx',
+    'CREATE INDEX transports_org_id_idx ON transports (org_id)',
+  );
+  late final Index transportsMigrationStopIdIdx = Index(
+    'transports_migration_stop_id_idx',
+    'CREATE INDEX transports_migration_stop_id_idx ON transports (migration_stop_id)',
+  );
+  late final Index transportItemsOrgIdIdx = Index(
+    'transport_items_org_id_idx',
+    'CREATE INDEX transport_items_org_id_idx ON transport_items (org_id)',
+  );
+  late final Index transportItemsTransportIdIdx = Index(
+    'transport_items_transport_id_idx',
+    'CREATE INDEX transport_items_transport_id_idx ON transport_items (transport_id)',
+  );
+  late final Index transportItemsHiveIdIdx = Index(
+    'transport_items_hive_id_idx',
+    'CREATE INDEX transport_items_hive_id_idx ON transport_items (hive_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -15110,6 +16217,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     documentUploads,
     migrations,
     migrationStops,
+    transports,
+    transportItems,
     localSettings,
     feedbackQueue,
     analyticsQueue,
@@ -15151,6 +16260,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     migrationStopsOrgIdIdx,
     migrationStopsMigrationIdIdx,
     migrationStopsApiaryIdIdx,
+    transportsOrgIdIdx,
+    transportsMigrationStopIdIdx,
+    transportItemsOrgIdIdx,
+    transportItemsTransportIdIdx,
+    transportItemsHiveIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -23230,6 +24344,720 @@ typedef $$MigrationStopsTableProcessedTableManager =
       MigrationStop,
       PrefetchHooks Function()
     >;
+typedef $$TransportsTableCreateCompanionBuilder = TransportsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  Value<String?> migrationStopId,
+  required String sourceApiaryId,
+  required String destinationApiaryId,
+  Value<List<String>> vehicles,
+  required TransportStatus status,
+  Value<DateTime?> completedAt,
+  Value<int> rowid,
+});
+typedef $$TransportsTableUpdateCompanionBuilder = TransportsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String?> migrationStopId,
+  Value<String> sourceApiaryId,
+  Value<String> destinationApiaryId,
+  Value<List<String>> vehicles,
+  Value<TransportStatus> status,
+  Value<DateTime?> completedAt,
+  Value<int> rowid,
+});
+
+class $$TransportsTableFilterComposer
+    extends Composer<_$AppDatabase, $TransportsTable> {
+  $$TransportsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get migrationStopId => $composableBuilder(
+    column: $table.migrationStopId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceApiaryId => $composableBuilder(
+    column: $table.sourceApiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get destinationApiaryId => $composableBuilder(
+    column: $table.destinationApiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<List<String>, List<String>, String>
+  get vehicles => $composableBuilder(
+    column: $table.vehicles,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<TransportStatus, TransportStatus, String>
+  get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TransportsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TransportsTable> {
+  $$TransportsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get migrationStopId => $composableBuilder(
+    column: $table.migrationStopId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceApiaryId => $composableBuilder(
+    column: $table.sourceApiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get destinationApiaryId => $composableBuilder(
+    column: $table.destinationApiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get vehicles => $composableBuilder(
+    column: $table.vehicles,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TransportsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TransportsTable> {
+  $$TransportsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get migrationStopId => $composableBuilder(
+    column: $table.migrationStopId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceApiaryId => $composableBuilder(
+    column: $table.sourceApiaryId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get destinationApiaryId => $composableBuilder(
+    column: $table.destinationApiaryId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<List<String>, String> get vehicles =>
+      $composableBuilder(column: $table.vehicles, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<TransportStatus, String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+}
+
+class $$TransportsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TransportsTable,
+          Transport,
+          $$TransportsTableFilterComposer,
+          $$TransportsTableOrderingComposer,
+          $$TransportsTableAnnotationComposer,
+          $$TransportsTableCreateCompanionBuilder,
+          $$TransportsTableUpdateCompanionBuilder,
+          (
+            Transport,
+            BaseReferences<_$AppDatabase, $TransportsTable, Transport>,
+          ),
+          Transport,
+          PrefetchHooks Function()
+        > {
+  $$TransportsTableTableManager(_$AppDatabase db, $TransportsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TransportsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TransportsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TransportsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String?> migrationStopId = const Value.absent(),
+                Value<String> sourceApiaryId = const Value.absent(),
+                Value<String> destinationApiaryId = const Value.absent(),
+                Value<List<String>> vehicles = const Value.absent(),
+                Value<TransportStatus> status = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransportsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                migrationStopId: migrationStopId,
+                sourceApiaryId: sourceApiaryId,
+                destinationApiaryId: destinationApiaryId,
+                vehicles: vehicles,
+                status: status,
+                completedAt: completedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                Value<String?> migrationStopId = const Value.absent(),
+                required String sourceApiaryId,
+                required String destinationApiaryId,
+                Value<List<String>> vehicles = const Value.absent(),
+                required TransportStatus status,
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransportsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                migrationStopId: migrationStopId,
+                sourceApiaryId: sourceApiaryId,
+                destinationApiaryId: destinationApiaryId,
+                vehicles: vehicles,
+                status: status,
+                completedAt: completedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TransportsTable, Transport>(table),
+                  BaseReferences<_$AppDatabase, $TransportsTable, Transport>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TransportsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TransportsTable,
+      Transport,
+      $$TransportsTableFilterComposer,
+      $$TransportsTableOrderingComposer,
+      $$TransportsTableAnnotationComposer,
+      $$TransportsTableCreateCompanionBuilder,
+      $$TransportsTableUpdateCompanionBuilder,
+      (Transport, BaseReferences<_$AppDatabase, $TransportsTable, Transport>),
+      Transport,
+      PrefetchHooks Function()
+    >;
+typedef $$TransportItemsTableCreateCompanionBuilder =
+    TransportItemsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String transportId,
+      required String hiveId,
+      required String vehicle,
+      required DateTime loadedAt,
+      Value<DateTime?> unloadedAt,
+      Value<int> rowid,
+    });
+typedef $$TransportItemsTableUpdateCompanionBuilder =
+    TransportItemsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> transportId,
+      Value<String> hiveId,
+      Value<String> vehicle,
+      Value<DateTime> loadedAt,
+      Value<DateTime?> unloadedAt,
+      Value<int> rowid,
+    });
+
+class $$TransportItemsTableFilterComposer
+    extends Composer<_$AppDatabase, $TransportItemsTable> {
+  $$TransportItemsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get transportId => $composableBuilder(
+    column: $table.transportId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get vehicle => $composableBuilder(
+    column: $table.vehicle,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get loadedAt => $composableBuilder(
+    column: $table.loadedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get unloadedAt => $composableBuilder(
+    column: $table.unloadedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TransportItemsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TransportItemsTable> {
+  $$TransportItemsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get transportId => $composableBuilder(
+    column: $table.transportId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get vehicle => $composableBuilder(
+    column: $table.vehicle,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get loadedAt => $composableBuilder(
+    column: $table.loadedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get unloadedAt => $composableBuilder(
+    column: $table.unloadedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TransportItemsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TransportItemsTable> {
+  $$TransportItemsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get transportId => $composableBuilder(
+    column: $table.transportId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get vehicle =>
+      $composableBuilder(column: $table.vehicle, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get loadedAt =>
+      $composableBuilder(column: $table.loadedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get unloadedAt => $composableBuilder(
+    column: $table.unloadedAt,
+    builder: (column) => column,
+  );
+}
+
+class $$TransportItemsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TransportItemsTable,
+          TransportItem,
+          $$TransportItemsTableFilterComposer,
+          $$TransportItemsTableOrderingComposer,
+          $$TransportItemsTableAnnotationComposer,
+          $$TransportItemsTableCreateCompanionBuilder,
+          $$TransportItemsTableUpdateCompanionBuilder,
+          (
+            TransportItem,
+            BaseReferences<_$AppDatabase, $TransportItemsTable, TransportItem>,
+          ),
+          TransportItem,
+          PrefetchHooks Function()
+        > {
+  $$TransportItemsTableTableManager(
+    _$AppDatabase db,
+    $TransportItemsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TransportItemsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TransportItemsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TransportItemsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> transportId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String> vehicle = const Value.absent(),
+                Value<DateTime> loadedAt = const Value.absent(),
+                Value<DateTime?> unloadedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransportItemsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                transportId: transportId,
+                hiveId: hiveId,
+                vehicle: vehicle,
+                loadedAt: loadedAt,
+                unloadedAt: unloadedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String transportId,
+                required String hiveId,
+                required String vehicle,
+                required DateTime loadedAt,
+                Value<DateTime?> unloadedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransportItemsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                transportId: transportId,
+                hiveId: hiveId,
+                vehicle: vehicle,
+                loadedAt: loadedAt,
+                unloadedAt: unloadedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TransportItemsTable, TransportItem>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $TransportItemsTable,
+                    TransportItem
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TransportItemsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TransportItemsTable,
+      TransportItem,
+      $$TransportItemsTableFilterComposer,
+      $$TransportItemsTableOrderingComposer,
+      $$TransportItemsTableAnnotationComposer,
+      $$TransportItemsTableCreateCompanionBuilder,
+      $$TransportItemsTableUpdateCompanionBuilder,
+      (
+        TransportItem,
+        BaseReferences<_$AppDatabase, $TransportItemsTable, TransportItem>,
+      ),
+      TransportItem,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -24373,6 +26201,10 @@ class $AppDatabaseManager {
       $$MigrationsTableTableManager(_db, _db.migrations);
   $$MigrationStopsTableTableManager get migrationStops =>
       $$MigrationStopsTableTableManager(_db, _db.migrationStops);
+  $$TransportsTableTableManager get transports =>
+      $$TransportsTableTableManager(_db, _db.transports);
+  $$TransportItemsTableTableManager get transportItems =>
+      $$TransportItemsTableTableManager(_db, _db.transportItems);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$FeedbackQueueTableTableManager get feedbackQueue =>

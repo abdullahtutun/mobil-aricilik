@@ -79,6 +79,8 @@ class SyncService {
     _db.documents,
     _db.migrations,
     _db.migrationStops,
+    _db.transports,
+    _db.transportItems,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

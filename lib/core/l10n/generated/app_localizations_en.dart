@@ -4254,12 +4254,271 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get moveComingTitle => 'Loading is coming soon';
-
-  @override
-  String get moveComingMessage =>
-      'The checklist, loading hives onto trucks by scanning and unloading at the destination will be here.';
-
-  @override
   String get moveNone => 'No upcoming move';
+
+  @override
+  String get moreMigratory => 'Migratory';
+
+  @override
+  String get syncTableTransports => 'Move';
+
+  @override
+  String get syncTableTransportItems => 'Moved hive';
+
+  @override
+  String get moveStepCheck => 'Check';
+
+  @override
+  String get moveStepLoad => 'Loading';
+
+  @override
+  String get moveStepUnload => 'Unloading';
+
+  @override
+  String moveStepDone(String step) {
+    return '$step, done';
+  }
+
+  @override
+  String get moveNoDestinationTitle => 'The stop has no apiary';
+
+  @override
+  String get moveNoDestinationMessage =>
+      'Pick a destination apiary for the stop so hive locations can update after unloading.';
+
+  @override
+  String get moveEditStop => 'Edit stop';
+
+  @override
+  String get moveFrom => 'From';
+
+  @override
+  String get moveTo => 'To';
+
+  @override
+  String moveSourceHives(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count active hives',
+      one: '1 active hive',
+      zero: 'No active hives',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveChecklist => 'Loading checklist';
+
+  @override
+  String get moveCheckEntrances => 'Entrances closed';
+
+  @override
+  String get moveCheckVentilation => 'Ventilation open';
+
+  @override
+  String get moveCheckStraps => 'Straps tight';
+
+  @override
+  String get moveCheckWater => 'Water ready';
+
+  @override
+  String get moveVehicles => 'Vehicles';
+
+  @override
+  String moveVehicleDefault(int number) {
+    return 'Truck $number';
+  }
+
+  @override
+  String get moveAddVehicle => 'Add vehicle';
+
+  @override
+  String moveRemoveVehicle(String vehicle) {
+    return 'Remove $vehicle';
+  }
+
+  @override
+  String get moveVehicleName => 'Vehicle name';
+
+  @override
+  String get moveVehicleExists => 'A vehicle with this name exists';
+
+  @override
+  String get moveStartLoading => 'Start loading';
+
+  @override
+  String get moveChecklistHint =>
+      'Tick everything on the list to start loading.';
+
+  @override
+  String moveVehicleCount(String vehicle, int count) {
+    return '$vehicle · $count';
+  }
+
+  @override
+  String get moveLoaded => 'Loaded';
+
+  @override
+  String get moveUnloaded => 'Unloaded';
+
+  @override
+  String moveCountTotal(int total) {
+    return '/ $total';
+  }
+
+  @override
+  String moveCountLabel(int count, int total) {
+    return '$count of $total hives';
+  }
+
+  @override
+  String moveLastScanned(String number) {
+    return 'Last scanned: $number';
+  }
+
+  @override
+  String moveNotScanned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives not scanned yet',
+      one: '1 hive not scanned yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveAllScanned => 'All scanned';
+
+  @override
+  String get moveShowList => 'See list';
+
+  @override
+  String get moveMissingTitle => 'Hives not scanned';
+
+  @override
+  String get moveLoadingHint =>
+      'You\'ll scan again while unloading at the destination; I\'ll warn you if a hive is missing. Hive locations update after unloading.';
+
+  @override
+  String moveUnloadingHint(String destination) {
+    return 'Scan each hive again as you unload. When you finish, unloaded hives move to $destination.';
+  }
+
+  @override
+  String get moveEnterNumber => 'Enter number';
+
+  @override
+  String get moveHiveNumber => 'Hive number';
+
+  @override
+  String moveNumberNotFound(String number) {
+    return 'No hive numbered $number';
+  }
+
+  @override
+  String get moveScanStart => 'Start scanning';
+
+  @override
+  String get moveScanContinue => 'Continue scanning';
+
+  @override
+  String get moveToUnloading => 'Go to unloading';
+
+  @override
+  String moveToUnloadingTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives not scanned',
+      one: '1 hive not scanned',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveToUnloadingMessage =>
+      'Hives not scanned stay out of this move and remain where they are.';
+
+  @override
+  String get moveFinish => 'Finish move';
+
+  @override
+  String moveFinishTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives not unloaded',
+      one: '1 hive not unloaded',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String moveFinishMessage(String source) {
+    return 'Hives not unloaded keep their location at $source. The missing list stays on the move.';
+  }
+
+  @override
+  String get moveFinishConfirm => 'Finish';
+
+  @override
+  String get moveDoneTitle => 'Move finished';
+
+  @override
+  String moveDoneSummary(int loaded, int unloaded) {
+    return 'Loaded $loaded · Unloaded $unloaded';
+  }
+
+  @override
+  String moveDoneMoved(int count, String destination) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives moved to $destination.',
+      one: '1 hive moved to $destination.',
+      zero: 'No hives moved.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get moveDoneMissing => 'Hives not unloaded';
+
+  @override
+  String moveScanLoaded(String number, String vehicle) {
+    return '$number loaded · $vehicle';
+  }
+
+  @override
+  String moveScanLoadedOther(String number) {
+    return '$number loaded; this hive wasn\'t at this apiary';
+  }
+
+  @override
+  String moveScanAlreadyLoaded(String number) {
+    return '$number is already loaded';
+  }
+
+  @override
+  String moveScanUnloaded(String number) {
+    return '$number unloaded';
+  }
+
+  @override
+  String moveScanAlreadyUnloaded(String number) {
+    return '$number is already unloaded';
+  }
+
+  @override
+  String moveScanNotLoaded(String number) {
+    return '$number wasn\'t loaded on this move';
+  }
+
+  @override
+  String get moveScanUnknown => 'Unknown label';
+
+  @override
+  String get moveScanDone => 'Done';
 }

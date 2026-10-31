@@ -3599,16 +3599,408 @@
       }
     }
   },
-  "moveComingTitle": "Loading is coming soon",
-  "@moveComingTitle": {
-    "description": "Placeholder title on the move screen."
-  },
-  "moveComingMessage": "The checklist, loading hives onto trucks by scanning and unloading at the destination will be here.",
-  "@moveComingMessage": {
-    "description": "Placeholder message on the move screen."
-  },
   "moveNone": "No upcoming move",
   "@moveNone": {
     "description": "Move screen when the plan has no planned stop left."
+  },
+  "moreMigratory": "Migratory",
+  "@moreMigratory": {
+    "description": "More tab tile that opens the migration plans (migratory beekeeping)."
+  },
+  "syncTableTransports": "Move",
+  "@syncTableTransports": {
+    "description": "Record type name on the sync screen: a hive transport."
+  },
+  "syncTableTransportItems": "Moved hive",
+  "@syncTableTransportItems": {
+    "description": "Record type name on the sync screen: a hive on a transport."
+  },
+  "moveStepCheck": "Check",
+  "@moveStepCheck": {
+    "description": "Move step 1: pre-loading checklist."
+  },
+  "moveStepLoad": "Loading",
+  "@moveStepLoad": {
+    "description": "Move step 2: loading hives onto vehicles."
+  },
+  "moveStepUnload": "Unloading",
+  "@moveStepUnload": {
+    "description": "Move step 3: unloading hives at the destination."
+  },
+  "moveStepDone": "{step}, done",
+  "@moveStepDone": {
+    "description": "Screen reader label for a finished move step.",
+    "placeholders": {
+      "step": {
+        "type": "String",
+        "example": "Check"
+      }
+    }
+  },
+  "moveNoDestinationTitle": "The stop has no apiary",
+  "@moveNoDestinationTitle": {
+    "description": "Move screen when the next stop has no destination apiary."
+  },
+  "moveNoDestinationMessage": "Pick a destination apiary for the stop so hive locations can update after unloading.",
+  "@moveNoDestinationMessage": {
+    "description": "Explains why the stop needs an apiary."
+  },
+  "moveEditStop": "Edit stop",
+  "@moveEditStop": {
+    "description": "Button that opens the stop form."
+  },
+  "moveFrom": "From",
+  "@moveFrom": {
+    "description": "Label of the source apiary."
+  },
+  "moveTo": "To",
+  "@moveTo": {
+    "description": "Label of the destination apiary."
+  },
+  "moveSourceHives": "{count, plural, =0{No active hives} =1{1 active hive} other{{count} active hives}}",
+  "@moveSourceHives": {
+    "description": "Active hive count of the source apiary.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "152"
+      }
+    }
+  },
+  "moveChecklist": "Loading checklist",
+  "@moveChecklist": {
+    "description": "Section title of the pre-loading checklist."
+  },
+  "moveCheckEntrances": "Entrances closed",
+  "@moveCheckEntrances": {
+    "description": "Checklist item."
+  },
+  "moveCheckVentilation": "Ventilation open",
+  "@moveCheckVentilation": {
+    "description": "Checklist item."
+  },
+  "moveCheckStraps": "Straps tight",
+  "@moveCheckStraps": {
+    "description": "Checklist item."
+  },
+  "moveCheckWater": "Water ready",
+  "@moveCheckWater": {
+    "description": "Checklist item."
+  },
+  "moveVehicles": "Vehicles",
+  "@moveVehicles": {
+    "description": "Section title of the vehicles list."
+  },
+  "moveVehicleDefault": "Truck {number}",
+  "@moveVehicleDefault": {
+    "description": "Default name of a new vehicle.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "moveAddVehicle": "Add vehicle",
+  "@moveAddVehicle": {
+    "description": "Button that adds a vehicle."
+  },
+  "moveRemoveVehicle": "Remove {vehicle}",
+  "@moveRemoveVehicle": {
+    "description": "Tooltip of the remove button next to a vehicle.",
+    "placeholders": {
+      "vehicle": {
+        "type": "String",
+        "example": "Truck 2"
+      }
+    }
+  },
+  "moveVehicleName": "Vehicle name",
+  "@moveVehicleName": {
+    "description": "Label of the vehicle name field."
+  },
+  "moveVehicleExists": "A vehicle with this name exists",
+  "@moveVehicleExists": {
+    "description": "Error when the vehicle name is taken."
+  },
+  "moveStartLoading": "Start loading",
+  "@moveStartLoading": {
+    "description": "Button that finishes the checklist and starts loading."
+  },
+  "moveChecklistHint": "Tick everything on the list to start loading.",
+  "@moveChecklistHint": {
+    "description": "Hint under the checklist while items are unticked."
+  },
+  "moveVehicleCount": "{vehicle} · {count}",
+  "@moveVehicleCount": {
+    "description": "Vehicle chip with its loaded hive count, e.g. 'Truck 1 · 72'.",
+    "placeholders": {
+      "vehicle": {
+        "type": "String",
+        "example": "Truck 1"
+      },
+      "count": {
+        "type": "int",
+        "example": "72"
+      }
+    }
+  },
+  "moveLoaded": "Loaded",
+  "@moveLoaded": {
+    "description": "Counter title during loading."
+  },
+  "moveUnloaded": "Unloaded",
+  "@moveUnloaded": {
+    "description": "Counter title during unloading."
+  },
+  "moveCountTotal": "/ {total}",
+  "@moveCountTotal": {
+    "description": "Total next to the big counter, e.g. '/ 152'.",
+    "placeholders": {
+      "total": {
+        "type": "int",
+        "example": "152"
+      }
+    }
+  },
+  "moveCountLabel": "{count} of {total} hives",
+  "@moveCountLabel": {
+    "description": "Screen reader label of the big counter.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "87"
+      },
+      "total": {
+        "type": "int",
+        "example": "152"
+      }
+    }
+  },
+  "moveLastScanned": "Last scanned: {number}",
+  "@moveLastScanned": {
+    "description": "Number of the last scanned hive.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      }
+    }
+  },
+  "moveNotScanned": "{count, plural, =1{1 hive not scanned yet} other{{count} hives not scanned yet}}",
+  "@moveNotScanned": {
+    "description": "Card with the number of hives still to scan.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "65"
+      }
+    }
+  },
+  "moveAllScanned": "All scanned",
+  "@moveAllScanned": {
+    "description": "Card when every expected hive was scanned."
+  },
+  "moveShowList": "See list",
+  "@moveShowList": {
+    "description": "Opens the list of hives not scanned."
+  },
+  "moveMissingTitle": "Hives not scanned",
+  "@moveMissingTitle": {
+    "description": "Title of the list of hives not scanned."
+  },
+  "moveLoadingHint": "You'll scan again while unloading at the destination; I'll warn you if a hive is missing. Hive locations update after unloading.",
+  "@moveLoadingHint": {
+    "description": "Hint on the loading step."
+  },
+  "moveUnloadingHint": "Scan each hive again as you unload. When you finish, unloaded hives move to {destination}.",
+  "@moveUnloadingHint": {
+    "description": "Hint on the unloading step.",
+    "placeholders": {
+      "destination": {
+        "type": "String",
+        "example": "Winter yard"
+      }
+    }
+  },
+  "moveEnterNumber": "Enter number",
+  "@moveEnterNumber": {
+    "description": "Button that opens manual hive number entry."
+  },
+  "moveHiveNumber": "Hive number",
+  "@moveHiveNumber": {
+    "description": "Label of the manual hive number field."
+  },
+  "moveNumberNotFound": "No hive numbered {number}",
+  "@moveNumberNotFound": {
+    "description": "Manual entry found no hive.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      }
+    }
+  },
+  "moveScanStart": "Start scanning",
+  "@moveScanStart": {
+    "description": "Opens the continuous scanner."
+  },
+  "moveScanContinue": "Continue scanning",
+  "@moveScanContinue": {
+    "description": "Opens the continuous scanner after some hives were scanned."
+  },
+  "moveToUnloading": "Go to unloading",
+  "@moveToUnloading": {
+    "description": "Finishes loading."
+  },
+  "moveToUnloadingTitle": "{count, plural, =1{1 hive not scanned} other{{count} hives not scanned}}",
+  "@moveToUnloadingTitle": {
+    "description": "Confirm dialog title when finishing loading with hives left.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "moveToUnloadingMessage": "Hives not scanned stay out of this move and remain where they are.",
+  "@moveToUnloadingMessage": {
+    "description": "Confirm dialog message when finishing loading with hives left."
+  },
+  "moveFinish": "Finish move",
+  "@moveFinish": {
+    "description": "Finishes unloading."
+  },
+  "moveFinishTitle": "{count, plural, =1{1 hive not unloaded} other{{count} hives not unloaded}}",
+  "@moveFinishTitle": {
+    "description": "Confirm dialog title when finishing with hives not unloaded.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "moveFinishMessage": "Hives not unloaded keep their location at {source}. The missing list stays on the move.",
+  "@moveFinishMessage": {
+    "description": "Confirm dialog message when finishing with hives not unloaded.",
+    "placeholders": {
+      "source": {
+        "type": "String",
+        "example": "Pine"
+      }
+    }
+  },
+  "moveFinishConfirm": "Finish",
+  "@moveFinishConfirm": {
+    "description": "Confirm button of the finish dialog."
+  },
+  "moveDoneTitle": "Move finished",
+  "@moveDoneTitle": {
+    "description": "Title on the finished move."
+  },
+  "moveDoneSummary": "Loaded {loaded} · Unloaded {unloaded}",
+  "@moveDoneSummary": {
+    "description": "Counts on the finished move.",
+    "placeholders": {
+      "loaded": {
+        "type": "int",
+        "example": "152"
+      },
+      "unloaded": {
+        "type": "int",
+        "example": "150"
+      }
+    }
+  },
+  "moveDoneMoved": "{count, plural, =0{No hives moved.} =1{1 hive moved to {destination}.} other{{count} hives moved to {destination}.}}",
+  "@moveDoneMoved": {
+    "description": "How many hives moved on the finished move.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "150"
+      },
+      "destination": {
+        "type": "String",
+        "example": "Winter yard"
+      }
+    }
+  },
+  "moveDoneMissing": "Hives not unloaded",
+  "@moveDoneMissing": {
+    "description": "Title of the missing list on the finished move."
+  },
+  "moveScanLoaded": "{number} loaded · {vehicle}",
+  "@moveScanLoaded": {
+    "description": "Scan result: hive loaded.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      },
+      "vehicle": {
+        "type": "String",
+        "example": "Truck 1"
+      }
+    }
+  },
+  "moveScanLoadedOther": "{number} loaded; this hive wasn't at this apiary",
+  "@moveScanLoadedOther": {
+    "description": "Scan result: loaded a hive from another apiary.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      }
+    }
+  },
+  "moveScanAlreadyLoaded": "{number} is already loaded",
+  "@moveScanAlreadyLoaded": {
+    "description": "Scan result: hive already loaded.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      }
+    }
+  },
+  "moveScanUnloaded": "{number} unloaded",
+  "@moveScanUnloaded": {
+    "description": "Scan result: hive unloaded.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      }
+    }
+  },
+  "moveScanAlreadyUnloaded": "{number} is already unloaded",
+  "@moveScanAlreadyUnloaded": {
+    "description": "Scan result: hive already unloaded.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      }
+    }
+  },
+  "moveScanNotLoaded": "{number} wasn't loaded on this move",
+  "@moveScanNotLoaded": {
+    "description": "Scan result: hive not on this transport.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "140"
+      }
+    }
+  },
+  "moveScanUnknown": "Unknown label",
+  "@moveScanUnknown": {
+    "description": "Scan result: label matches no hive."
+  },
+  "moveScanDone": "Done",
+  "@moveScanDone": {
+    "description": "Closes the continuous scanner."
   }
 }

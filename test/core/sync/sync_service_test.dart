@@ -32,7 +32,9 @@ import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/migration/data/migration_repository.dart';
+import 'package:mobil_arici/features/migration/data/transport_repository.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
+import 'package:mobil_arici/features/migration/domain/transport.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
@@ -363,6 +365,28 @@ Map<String, Object?> _migrationStopRow(int seq) => {
   'apiary_id': 'apiary-1',
   'hive_count': 152,
   'status': 'current',
+};
+
+Map<String, Object?> _transportRow(int seq) => {
+  ..._standard('transport-1', seq),
+  'org_id': _org,
+  'migration_stop_id': 'stop-1',
+  'source_apiary_id': 'apiary-1',
+  'destination_apiary_id': 'apiary-2',
+  // `jsonb` dizisi.
+  'vehicles': ['Kamyon 1', 'Kamyon 2'],
+  'status': 'unloading',
+  'completed_at': null,
+};
+
+Map<String, Object?> _transportItemRow(int seq) => {
+  ..._standard('transport-item-1', seq),
+  'org_id': _org,
+  'transport_id': 'transport-1',
+  'hive_id': 'hive-1',
+  'vehicle': 'Kamyon 2',
+  'loaded_at': '2026-11-15T18:05:00+00:00',
+  'unloaded_at': null,
 };
 
 bool _isPull(http.Request request) =>
@@ -867,11 +891,13 @@ void main() {
         'documents': [_documentRow(17)],
         'migrations': [_migrationRow(18)],
         'migration_stops': [_migrationStopRow(19)],
+        'transports': [_transportRow(20)],
+        'transport_items': [_transportItemRow(21)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 19),
+        const SyncResult(status: SyncStatus.done, pulled: 21),
       );
 
       expect(requests.map(_pullOf), [
@@ -894,6 +920,8 @@ void main() {
         (table: 'documents', since: 0),
         (table: 'migrations', since: 0),
         (table: 'migration_stops', since: 0),
+        (table: 'transports', since: 0),
+        (table: 'transport_items', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -1020,6 +1048,8 @@ void main() {
         'documents': 17,
         'migrations': 18,
         'migration_stops': 19,
+        'transports': 20,
+        'transport_items': 21,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -1034,6 +1064,15 @@ void main() {
       expect(stop.plannedStartOn, DateTime(2026, 8));
       expect(stop.toJson()['planned_end_on'], '2026-11-15');
       expect(stop.hiveCount, 152);
+      final transports = TransportRepository(db);
+      final transport = (await transports.findById('transport-1'))!;
+      expect(transport.vehicles, ['Kamyon 1', 'Kamyon 2']);
+      expect(transport.status, TransportStatus.unloading);
+      expect(transport.migrationStopId, 'stop-1');
+      final item = (await transports.items.findById('transport-item-1'))!;
+      expect(item.vehicle, 'Kamyon 2');
+      expect(item.loadedAt, DateTime.utc(2026, 11, 15, 18, 5));
+      expect(item.unloadedAt, isNull);
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

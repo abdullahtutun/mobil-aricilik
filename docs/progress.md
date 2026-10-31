@@ -425,6 +425,25 @@
 - Ayarlar'daki "PDF raporları" satırı kaldırıldı; raporlar Daha fazla'daki "Raporlar" karosundan açılıyor ve rotası `/more/reports` oldu (geri tuşu Daha fazla'ya döner).
 - Yalnız ilgili testler çalıştırıldı (bileşenler, göç planı, Bugün, Ayarlar, raporlar, senkron, tur, görevler: 250 test geçti). Yeni testler: dışarı dokununca kapanma, 360dp'de "Eşitlendi" ve "Durak ekle" tek satır (ikisi düzeltmeden önce kırılıyordu). İkon cihazda ve derlemede denenmedi.
 
+### 2026-10-31 — Taşıma kaydı: kontrol listesi, okutarak yükleme ve indirme (docs/design "Taşıma · yükleme")
+
+- Sunucu: migration `20261031120000_transports.sql` iki tablo ekliyor. `transports` kaynak ve hedef arılığı, isteğe bağlı göç durağını, araç adlarını (`jsonb` dizi), `transport_status` (yükleme/indirme/bitti) ve `completed_at`'i tutuyor. `transport_items` kovanı, aracı, `loaded_at` ve `unloaded_at`'i tutuyor. İkisi de durum kaydı; RLS kalıptaki gibi, kaynak ve hedef aynı arılık olamıyor. `sync_push` sürüm 13'ü kabul ediyor. 18 pgTAP testi (`transports_rls`) eklendi; yerelde 25 dosya, 344 test geçti. `db push` ile uzak projeye uygulandı. MCP ile RLS, 6 politika, enum ve sürüm 13 doğrulandı; denetçide yeni uyarı yok.
+- İstemci: Drift `schemaVersion` 13 (döküm ve v12→v13 veri testi), iki tablo çekme listesinde. `TransportRepository` yükleme, indirme ve bitirme işlerini yapıyor. Aynı kovan bir taşımaya ikinci kez yüklenmiyor. Kaynakta olmayan kovan uyarıyla yükleniyor. İndirme bitince indirilen her kovanın arılığı değişiyor ve `hive_location_history`'ye indirildiği anla yazılıyor. Hepsi tek transaction'da; indirilmeyen kovanlar yerinde kalıyor. Bunun için `HiveRepository.move`'a isteğe bağlı `movedAt` eklendi. Saf kurallar `transport_rules.dart` içinde: araç başına sayı, okunmayan ve indirilmeyen kovanlar, son okunan kovan, numarayla kovan bulma.
+- Ekranlar: `/more/migrations/:id/move` sıradaki durağın taşımasını açıyor. Adımlar kontrol listesi → yükleme → indirme → özet; üstte adım çubuğu var. Kontrol adımı:
+  - Nereden/nereye gösteriliyor; önceki durağın arılığı yoksa kaynak seçiliyor.
+  - Dört madde var: uçuş delikleri, havalandırma, kayış, su.
+  - Araçlar serbest adla ekleniyor ("Kamyon 2").
+  - Hepsi işaretlenmeden yüklemeye geçilmiyor.
+  
+  Yükleme ve indirme adımları: araç chip'leri ("Kamyon 1 · 72"), büyük sayaç ("87 / 152"), "Son okunan", "N kovan henüz okunmadı · Listeyi gör", "Numara gir" ve "Okutmaya başla/devam". Eksik kovanla indirmeye geçmek ve taşımayı bitirmek onay istiyor. Özet ekranında yüklenen ve indirilen sayıları ile indirilmeyen kovanlar listeleniyor. Durağın arılığı yoksa "Durağı düzenle" öneriliyor.
+- Okutma (`/move/:transportId/scan`): kamera açık kalıyor ve kovanlar ard arda okutuluyor. Her başarılı okutmada titreşim oluyor ve sayaç artıyor. Araç bu ekranda da değiştirilebiliyor. Aynı kod art arda gelirse yok sayılıyor. Ekran açıkken kararmıyor. İnternet gerekmiyor. Elle girilen numaranın sonucu bildirimde değil sayacın altında yazıyor, böylece alttaki butonları örtmüyor.
+- Testler: 5 kural, 10 repository, 5 akış testi eklendi (tam akış, numara girme, arılıksız durak, Türkçe, 360dp 1.5x + eldiven). Senkron çekme testi ve göç planı testi güncellendi. `hives_flow_test`'teki taşıma/geri al testi önceki commit'ten beri kırıktı: kartı kaydırmak bildirim dışına dokunmak sayılıyor ve Geri al'ı kapatıyordu. Test, Geri al'a kaydırmadan önce basacak şekilde düzeltildi. Toplam 1458 Flutter testi geçti. Bilinen sorunlar:
+  - Bitiş durağın durumunu "şu an" yapmıyor.
+  - Bir durağa yalnız bir taşıma var ("2 sefer" yok).
+  - Taşıma iptal edilemiyor ve okutma geri alınamıyor.
+  - Kontrol listesinin işaretleri saklanmıyor.
+  - Kamera ve titreşim cihazda denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
