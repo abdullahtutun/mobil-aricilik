@@ -3,7 +3,9 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/migration/data/migration_repository.dart';
 import 'package:mobil_arici/features/migration/data/transport_repository.dart';
+import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/migration/domain/transport.dart';
 import 'package:mobil_arici/features/migration/domain/transport_rules.dart';
 
@@ -246,6 +248,73 @@ void main() {
     expect(done.status, TransportStatus.completed);
     expect(done.completedAt, DateTime.utc(2026, 10, 22, 15, 30));
     expect(() => repository.complete(transport.id), throwsStateError);
+  });
+
+  test('bitirince taşımanın durağı şu an olur, kovan sayısı indirilen '
+      'sayı; plandaki önceki şu an durak geçmiş olur', () async {
+    final migrations = MigrationRepository(db, clock: clock.call);
+    final migration = await migrations.create(
+      orgId: 'org-1',
+      year: 2026,
+      name: 'Göç planı',
+    );
+    Future<MigrationStop> stop(
+      int position,
+      String name,
+      MigrationStopStatus status,
+    ) => migrations.stops.create(
+      orgId: 'org-1',
+      migrationId: migration.id,
+      plan: (
+        position: position,
+        name: name,
+        place: null,
+        plannedStartOn: DateTime(2026, position * 3),
+        plannedEndOn: DateTime(2026, position * 3, 20),
+        apiaryId: null,
+        hiveCount: 152,
+        status: status,
+      ),
+    );
+    final cam = await stop(1, 'Çam', MigrationStopStatus.current);
+    final kislak = await stop(2, 'Kışlak', MigrationStopStatus.planned);
+    final transport = await repository.start(
+      orgId: 'org-1',
+      migrationStopId: kislak.id,
+      sourceApiaryId: 'cam',
+      destinationApiaryId: 'kislak',
+      vehicles: ['Kamyon 1'],
+    );
+    final h101 = await hive('101');
+    final h102 = await hive('102');
+    await repository.load(transport.id, hiveId: h101.id, vehicle: 'Kamyon 1');
+    await repository.load(transport.id, hiveId: h102.id, vehicle: 'Kamyon 1');
+    await repository.startUnloading(transport.id);
+    await repository.unload(transport.id, hiveId: h101.id);
+
+    await repository.complete(transport.id);
+
+    final arrived = (await migrations.stops.findById(kislak.id))!;
+    expect(arrived.status, MigrationStopStatus.current);
+    expect(arrived.hiveCount, 1);
+    expect(arrived.name, 'Kışlak');
+    expect(
+      (await migrations.stops.findById(cam.id))!.status,
+      MigrationStopStatus.past,
+    );
+    final tables = (await readOutbox(db)).map((e) => e.recordTable).toList();
+    expect(tables.where((t) => t == 'migration_stops'), hasLength(4));
+  });
+
+  test('durağı silinmiş taşıma yine biter', () async {
+    final transport = await start();
+    await repository.startUnloading(transport.id);
+
+    expect(await repository.complete(transport.id), 0);
+    expect(
+      (await repository.findById(transport.id))!.status,
+      TransportStatus.completed,
+    );
   });
 
   test('outbox yazılamazsa bitirme hiçbir kovanı taşımaz', () async {

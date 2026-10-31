@@ -438,11 +438,16 @@
   Yükleme ve indirme adımları: araç chip'leri ("Kamyon 1 · 72"), büyük sayaç ("87 / 152"), "Son okunan", "N kovan henüz okunmadı · Listeyi gör", "Numara gir" ve "Okutmaya başla/devam". Eksik kovanla indirmeye geçmek ve taşımayı bitirmek onay istiyor. Özet ekranında yüklenen ve indirilen sayıları ile indirilmeyen kovanlar listeleniyor. Durağın arılığı yoksa "Durağı düzenle" öneriliyor.
 - Okutma (`/move/:transportId/scan`): kamera açık kalıyor ve kovanlar ard arda okutuluyor. Her başarılı okutmada titreşim oluyor ve sayaç artıyor. Araç bu ekranda da değiştirilebiliyor. Aynı kod art arda gelirse yok sayılıyor. Ekran açıkken kararmıyor. İnternet gerekmiyor. Elle girilen numaranın sonucu bildirimde değil sayacın altında yazıyor, böylece alttaki butonları örtmüyor.
 - Testler: 5 kural, 10 repository, 5 akış testi eklendi (tam akış, numara girme, arılıksız durak, Türkçe, 360dp 1.5x + eldiven). Senkron çekme testi ve göç planı testi güncellendi. `hives_flow_test`'teki taşıma/geri al testi önceki commit'ten beri kırıktı: kartı kaydırmak bildirim dışına dokunmak sayılıyor ve Geri al'ı kapatıyordu. Test, Geri al'a kaydırmadan önce basacak şekilde düzeltildi. Toplam 1458 Flutter testi geçti. Bilinen sorunlar:
-  - Bitiş durağın durumunu "şu an" yapmıyor.
   - Bir durağa yalnız bir taşıma var ("2 sefer" yok).
   - Taşıma iptal edilemiyor ve okutma geri alınamıyor.
   - Kontrol listesinin işaretleri saklanmıyor.
   - Kamera ve titreşim cihazda denenmedi.
+
+### 2026-10-31 — Taşıma bitince göç durağı güncellenir
+
+- `TransportRepository.complete` taşımanın göç durağını aynı transaction'da güncelliyor. Durak "şu an" oluyor ve plandaki önceki "şu an" durak geçmiş oluyor (`MigrationStopRepository.update`'in kuralı). Durağın kovan sayısına indirilen kovan sayısı yazılıyor; kolon "götürülecek ya da götürülen" sayı. Durak silinmişse taşıma yine bitiyor.
+- Taşıma ekranı açıldığı durağa sabitlendi. Bitirince sıradaki taşıma bir sonraki durağa kayıyor ama ekran özeti göstermeye devam ediyor. Yeniden açılınca yeni sıradaki taşıma geliyor.
+- Testler: repository'ye 2 test eklendi (durak şu an, önceki geçmiş, kovan sayısı; durağı silinmiş taşıma). Akış testinde bitişten sonra durak durumları ve özetin kalması denetleniyor. `flutter analyze` temiz, migration testleri (48) geçiyor. Tam takımda yalnız `tasks_flow_test`'in bilinen 3 testi kırıldı; takım 23:12'de koştu ve bu testler 23:00–24:00 arasında kırılıyor.
 
 ## Sona bırakılanlar
 

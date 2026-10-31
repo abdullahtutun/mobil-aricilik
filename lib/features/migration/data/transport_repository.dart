@@ -3,12 +3,14 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
+import 'package:mobil_arici/features/migration/data/migration_repository.dart';
+import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/migration/domain/transport.dart';
 import 'package:mobil_arici/features/migration/domain/transport_rules.dart';
 
 /// Taşımalar; durum kaydı, son yazan kazanır. Taşınan kovanları [items].
 /// Kovanlar yüklemede araca okutulur, indirmede yeniden okutulur; indirme
-/// bitince indirilen kovanların arılığı ve konum geçmişi aynı
+/// bitince indirilen kovanların arılığı, konum geçmişi ve göç durağı aynı
 /// transaction'da güncellenir. Hepsi yerel DB'de; yol boyunca ağ gerekmez.
 class TransportRepository extends BaseRepository<$TransportsTable, Transport> {
   new(super.db, {super.clock});
@@ -23,6 +25,8 @@ class TransportRepository extends BaseRepository<$TransportsTable, Transport> {
   late final items = TransportItemRepository(db, clock: clock);
 
   late final _hives = HiveRepository(db, clock: clock);
+
+  late final _stops = MigrationStopRepository(db, clock: clock);
 
   /// Göç durağına giden en son taşıma; yoksa null.
   Stream<Transport?> watchLatestForStop(String migrationStopId) =>
@@ -146,17 +150,21 @@ class TransportRepository extends BaseRepository<$TransportsTable, Transport> {
 
   /// İndirmeyi bitirir: indirilen her kovan hedef arılığa taşınır ve konum
   /// geçmişine indirildiği anla yazılır; taşıma biter. İndirilmeyen kovanlar
-  /// yerinde kalır. Hepsi tek transaction'da. Taşınan kovan sayısını döner.
-  /// Taşıma indirme adımında değilse [StateError].
+  /// yerinde kalır. Taşımanın göç durağı "şu an" olur (plandaki önceki
+  /// "şu an" durak geçmiş) ve kovan sayısı indirilen kovan sayısı olur.
+  /// Hepsi tek transaction'da. Taşınan kovan sayısını döner. Taşıma indirme
+  /// adımında değilse [StateError].
   Future<int> complete(String transportId) => db.transaction(() async {
     final transport = await _requireStatus(
       transportId,
       TransportStatus.unloading,
     );
     var moved = 0;
+    var unloaded = 0;
     for (final item in await items.findByTransport(transportId)) {
       final unloadedAt = item.unloadedAt;
       if (unloadedAt == null) continue;
+      unloaded++;
       // Kovan bu arada silindiyse taşınacak bir şey yok.
       if (await _hives.findById(item.hiveId) == null) continue;
       final move = await _hives.move(
@@ -165,6 +173,21 @@ class TransportRepository extends BaseRepository<$TransportsTable, Transport> {
         movedAt: unloadedAt,
       );
       if (move != null) moved++;
+    }
+    // Durak bu arada silindiyse güncellenecek bir şey yok.
+    if (transport.migrationStopId case final stopId?) {
+      if (await _stops.findById(stopId) case final stop?) {
+        await _stops.update(stop, (
+          position: stop.position,
+          name: stop.name,
+          place: stop.place,
+          plannedStartOn: stop.plannedStartOn,
+          plannedEndOn: stop.plannedEndOn,
+          apiaryId: stop.apiaryId,
+          hiveCount: unloaded,
+          status: MigrationStopStatus.current,
+        ));
+      }
     }
     await updateRecord(
       transport.copyWith(status: TransportStatus.completed, completedAt: now()),

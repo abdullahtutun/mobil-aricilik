@@ -21,17 +21,30 @@ import 'package:mobil_arici/features/migration/presentation/widgets/transport_wi
 /// kovanlar hedef arılığa taşınır ve eksik kovanlar listede kalır. Hepsi
 /// yerel DB'de; yol boyunca internet gerekmez. Planlı durak kalmadıysa
 /// bunu söyler.
-class MoveScreen extends ConsumerWidget {
+///
+/// Ekran açıldığı taşımaya sabitlenir: bitirince hedef durak "şu an" olur
+/// ve sıradaki taşıma bir sonraki durağa kayar, ama ekran özeti göstermeye
+/// devam eder. Yeniden açılınca yeni sıradaki taşıma gelir.
+class MoveScreen extends ConsumerStatefulWidget {
   const new({required this.migrationId, super.key});
 
   final String migrationId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MoveScreen> createState() => _MoveScreenState();
+}
+
+class _MoveScreenState extends ConsumerState<MoveScreen> {
+  /// Ekranın gösterdiği taşımanın kaynak ve hedef durağı; ilk açılışta
+  /// sıradaki taşımadan.
+  ({String? fromId, String toId})? _pinned;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return switch (ref.watch(migrationStopsProvider(migrationId))) {
-      AsyncData(value: final stops) => switch (nextMove(stops)) {
+    return switch (ref.watch(migrationStopsProvider(widget.migrationId))) {
+      AsyncData(value: final stops) => switch (_resolve(stops)) {
         (:final from, :final to) => Scaffold(
           appBar: AppBar(
             title: Text(
@@ -42,7 +55,7 @@ class MoveScreen extends ConsumerWidget {
               ),
             ),
           ),
-          body: _MoveBody(migrationId: migrationId, from: from, to: to),
+          body: _MoveBody(migrationId: widget.migrationId, from: from, to: to),
         ),
         null => Scaffold(
           appBar: AppBar(),
@@ -56,6 +69,19 @@ class MoveScreen extends ConsumerWidget {
       // Yerel DB'den okunuyor; hemen gelir.
       AsyncValue() => Scaffold(appBar: AppBar()),
     };
+  }
+
+  /// Sabitlenen durakların güncel hâli; sabit yoksa sıradaki taşıma (ve onu
+  /// sabitler). Hedef durak silindiyse sıradaki taşımaya döner.
+  NextMove? _resolve(List<MigrationStop> stops) {
+    MigrationStop? byId(String? id) =>
+        id == null ? null : stops.where((s) => s.id == id).firstOrNull;
+    if (_pinned case (:final fromId, :final toId)) {
+      if (byId(toId) case final to?) return (from: byId(fromId), to: to);
+    }
+    final next = nextMove(stops);
+    _pinned = next == null ? null : (fromId: next.from?.id, toId: next.to.id);
+    return next;
   }
 }
 

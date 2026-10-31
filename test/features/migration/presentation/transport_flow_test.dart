@@ -292,6 +292,18 @@ void main() {
     );
     expect(history!.map((e) => e.apiaryId), contains(seeded.kislakId));
     expect((await currentTransport()).status, TransportStatus.completed);
+
+    // Hedef durak şu an, kovan sayısı indirilen; ekran özette kalır.
+    final stops = await db.select(db.migrationStops).get();
+    final arrived = stops.firstWhere((s) => s.name == 'Kışlak');
+    expect(arrived.status, MigrationStopStatus.current);
+    expect(arrived.hiveCount, 2);
+    expect(
+      stops.firstWhere((s) => s.name == 'Çam').status,
+      MigrationStopStatus.past,
+    );
+    expect(find.text('Move · Çam → Kışlak'), findsOneWidget);
+    expect(find.text('Move finished'), findsOneWidget);
   });
 
   testWidgets('numara girerek yükler; bilinmeyen numara söylenir', (
