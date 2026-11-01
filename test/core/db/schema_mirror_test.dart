@@ -7,6 +7,7 @@ import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
+import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
@@ -167,6 +168,8 @@ void main() {
       'inventory_unit': values(InventoryUnit.values),
       'inventory_move_kind': values(InventoryMoveKind.values),
       'mating_nuc_status': values(MatingNucStatus.values),
+      'lot_status': values(LotStatus.values),
+      'residue_result': values(ResidueResult.values),
     };
 
     expect(local, server.enums);

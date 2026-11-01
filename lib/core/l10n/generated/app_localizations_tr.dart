@@ -4942,4 +4942,321 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncTableMatingNucs => 'Çiftleşme kutusu';
+
+  @override
+  String get lotsTitle => 'Hasat ve lotlar';
+
+  @override
+  String get lotsEmptyTitle => 'Henüz lot yok';
+
+  @override
+  String get lotsEmptyMessage =>
+      'Hasadı kaydettikten sonra lota ekleyin; lotlar burada listelenir.';
+
+  @override
+  String get lotsLoadError => 'Lotlar yüklenemedi';
+
+  @override
+  String get lotsInStock => 'Stokta';
+
+  @override
+  String get lotsPerHive => 'Kovan başı';
+
+  @override
+  String lotNumber(String number) {
+    return 'Lot $number';
+  }
+
+  @override
+  String lotHoneyTitle(String kind) {
+    return '$kind balı';
+  }
+
+  @override
+  String get lotStatusOpen => 'Açık';
+
+  @override
+  String get lotStatusClosed => 'Kapalı';
+
+  @override
+  String get lotWithdrawalBadge => 'Bekleme süresinde';
+
+  @override
+  String lotMoistureValue(String value) {
+    return 'Nem %$value';
+  }
+
+  @override
+  String get lotAnalyzed => 'Analiz ✓';
+
+  @override
+  String get lotAnalysisPending => 'Analiz bekliyor';
+
+  @override
+  String lotStockValue(String weight) {
+    return 'Stok $weight';
+  }
+
+  @override
+  String get lotNotFound => 'Lot bulunamadı';
+
+  @override
+  String get lotEdit => 'Lotu düzenle';
+
+  @override
+  String lotWithdrawalTitle(String hives) {
+    return '$hives bekleme süresinde hasat edildi.';
+  }
+
+  @override
+  String get lotWithdrawalMessage =>
+      'Bu lotun balında ilaç kalıntısı olabilir; satıştan önce analiz yaptırın.';
+
+  @override
+  String get lotStock => 'Stok';
+
+  @override
+  String get lotHarvested => 'Hasat';
+
+  @override
+  String get lotSold => 'Satılan';
+
+  @override
+  String get lotInStock => 'Stokta';
+
+  @override
+  String get lotSell => 'Satış düş';
+
+  @override
+  String get lotAnalyses => 'Analizler';
+
+  @override
+  String get lotAnalysesEmpty => 'Henüz analiz yok';
+
+  @override
+  String get lotAddAnalysis => 'Analiz ekle';
+
+  @override
+  String get lotHarvests => 'Hasatlar';
+
+  @override
+  String get lotHarvestsEmpty => 'Bu lotta hasat yok';
+
+  @override
+  String get lotTreatments => 'Kovanların son ilaçlaması';
+
+  @override
+  String get lotTreatmentsEmpty => 'Bu lotun kovanlarında ilaçlama kaydı yok';
+
+  @override
+  String lotTreatmentTitle(String hive, String product) {
+    return 'Kovan $hive · $product';
+  }
+
+  @override
+  String lotTreatmentDetail(String date, String end) {
+    return '$date · bekleme $end günü bitiyor';
+  }
+
+  @override
+  String get lotSales => 'Satışlar';
+
+  @override
+  String get lotSalesEmpty => 'Henüz satış düşülmedi';
+
+  @override
+  String lotSaleValue(String weight) {
+    return '−$weight';
+  }
+
+  @override
+  String lotSaleAmount(String unit) {
+    return 'Satılan bal ($unit)';
+  }
+
+  @override
+  String lotSaleTooMuch(String weight) {
+    return 'Stokta en çok $weight var';
+  }
+
+  @override
+  String get lotSaleSave => 'Stoktan düş';
+
+  @override
+  String lotSaleSaved(String weight) {
+    return '$weight satış düşüldü';
+  }
+
+  @override
+  String get lotOrigin => 'Yöre';
+
+  @override
+  String get lotOriginHint => 'Ör. Kızılçam';
+
+  @override
+  String get lotMoisture => 'Nem %';
+
+  @override
+  String get lotMoistureHelper => 'Refraktömetre değeri; boş bırakılabilir';
+
+  @override
+  String get lotMoistureInvalid =>
+      '10 ile 30 arasında, 17,2 gibi bir değer yaz';
+
+  @override
+  String lotEditTitle(String lot) {
+    return '$lot düzenle';
+  }
+
+  @override
+  String get lotStatus => 'Durum';
+
+  @override
+  String get lotStatusHelper => 'Kapalı lota yeni hasat eklenmez';
+
+  @override
+  String get lotSave => 'Kaydet';
+
+  @override
+  String get lotDelete => 'Lotu sil';
+
+  @override
+  String lotDeleteTitle(String lot) {
+    return '$lot silinsin mi?';
+  }
+
+  @override
+  String get lotDeleteMessage =>
+      'Analizler ve satışlar da silinir; hasatlar kalır.';
+
+  @override
+  String get lotDeleted => 'Lot silindi';
+
+  @override
+  String labTitle(String lot) {
+    return 'Analiz · $lot';
+  }
+
+  @override
+  String get labDate => 'Analiz günü';
+
+  @override
+  String get labHmf => 'HMF (mg/kg)';
+
+  @override
+  String get labDiastase => 'Diastaz sayısı';
+
+  @override
+  String get labProline => 'Prolin (mg/kg)';
+
+  @override
+  String labHmfValue(String value) {
+    return 'HMF $value';
+  }
+
+  @override
+  String labDiastaseValue(String value) {
+    return 'Diastaz $value';
+  }
+
+  @override
+  String labProlineValue(String value) {
+    return 'Prolin $value';
+  }
+
+  @override
+  String labValueInvalid(String min, String max) {
+    return '$min ile $max arasında bir değer yaz';
+  }
+
+  @override
+  String get labResidue => 'Kalıntı';
+
+  @override
+  String get labResidueNone => 'Kalıntı yok';
+
+  @override
+  String get labResidueDetected => 'Kalıntı var';
+
+  @override
+  String get labReport => 'Rapor';
+
+  @override
+  String get labReportNone => 'Rapor yok';
+
+  @override
+  String get labReportEmpty => 'Belge kasasında analiz raporu yok';
+
+  @override
+  String get labReportAdd => 'Belge kasasına rapor ekle';
+
+  @override
+  String get labSave => 'Analizi kaydet';
+
+  @override
+  String get labSaved => 'Analiz kaydedildi';
+
+  @override
+  String get harvestLotTitle => 'Lota ekle';
+
+  @override
+  String harvestLotSaved(String weight, String kind) {
+    return 'Hasat kaydedildi: $weight $kind';
+  }
+
+  @override
+  String get harvestLotIntro =>
+      'Bal bir lota girince kovanların son ilaçlama tarihleri lota bağlanır.';
+
+  @override
+  String get harvestLotNew => 'Yeni lot';
+
+  @override
+  String harvestLotNewHint(String kind) {
+    return '$kind · numara kendiliğinden verilir';
+  }
+
+  @override
+  String get harvestLotCreate => 'Lot oluştur';
+
+  @override
+  String get harvestLotAdd => 'Lota ekle';
+
+  @override
+  String get harvestLotSkip => 'Şimdilik geç';
+
+  @override
+  String harvestLotCreated(String lot) {
+    return '$lot oluşturuldu';
+  }
+
+  @override
+  String harvestLotAdded(String lot) {
+    return 'Hasat $lot lotuna eklendi';
+  }
+
+  @override
+  String get harvestLotGone => 'Hasat geri alındı';
+
+  @override
+  String get harvestLotBack => 'Arılığa dön';
+
+  @override
+  String get syncTableLots => 'Lot';
+
+  @override
+  String get syncTableLotHarvests => 'Lot hasadı';
+
+  @override
+  String get syncTableLotTreatments => 'Lot ilaçlaması';
+
+  @override
+  String get syncTableLabResults => 'Analiz';
+
+  @override
+  String get syncTableLotSales => 'Lot satışı';
+
+  @override
+  String get harvestLotGoneMessage =>
+      'Hasat lota eklenmedi. Arılıktan yeniden kaydedebilirsiniz.';
 }

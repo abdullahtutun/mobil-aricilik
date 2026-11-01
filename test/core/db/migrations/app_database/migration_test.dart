@@ -12,6 +12,7 @@ import 'generated/schema_v13.dart' as v13;
 import 'generated/schema_v14.dart' as v14;
 import 'generated/schema_v15.dart' as v15;
 import 'generated/schema_v16.dart' as v16;
+import 'generated/schema_v17.dart' as v17;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -698,6 +699,42 @@ void main() {
         expect(task.sourceStep, null);
         expect(await newDb.select(newDb.queenRearingBatches).get(), isEmpty);
         expect(await newDb.select(newDb.matingNucs).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v16 → v17 hasatları korur; lot tabloları boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 16,
+      newVersion: 17,
+      createOld: v16.DatabaseAtV16.new,
+      createNew: v17.DatabaseAtV17.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.harvests,
+          v16.HarvestsCompanion.insert(
+            id: 'harvest-1',
+            createdAt: '2026-11-01T09:00:00.000Z',
+            updatedAt: '2026-11-01T09:00:00.000Z',
+            orgId: 'org-1',
+            apiaryId: 'apiary-1',
+            harvestedAt: '2026-11-01T09:00:00.000Z',
+            honeyKind: 'pine',
+            unit: 'super',
+            unitCount: 24,
+            netKg: 574,
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final harvest = (await newDb.select(newDb.harvests).get()).single;
+        expect(harvest.netKg, 574);
+        expect(await newDb.select(newDb.lots).get(), isEmpty);
+        expect(await newDb.select(newDb.lotHarvests).get(), isEmpty);
+        expect(await newDb.select(newDb.lotTreatments).get(), isEmpty);
+        expect(await newDb.select(newDb.labResults).get(), isEmpty);
+        expect(await newDb.select(newDb.lotSales).get(), isEmpty);
       },
     );
   });

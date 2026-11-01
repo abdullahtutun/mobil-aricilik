@@ -27,7 +27,12 @@ import 'package:mobil_arici/features/feedback/presentation/feedback_screen.dart'
 import 'package:mobil_arici/features/feeding/presentation/feeding_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_hives_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/harvest_lot_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_scan_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/lab_result_form_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/lot_form_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/lot_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/lots_screen.dart';
 import 'package:mobil_arici/features/health/presentation/drug_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/varroa_form_screen.dart';
@@ -86,6 +91,8 @@ const _migrationId = 'migrationId';
 const _transportId = 'transportId';
 const _stopId = 'stopId';
 const _inventoryItemId = 'inventoryItemId';
+const _harvestId = 'harvestId';
+const _lotId = 'lotId';
 const _rearingBatchId = 'rearingBatchId';
 const _attentionKind = 'kind';
 
@@ -224,6 +231,15 @@ GoRouter router(Ref ref) {
                             ),
                           ),
                         ],
+                      ),
+                      // Hasadın yerine açılır; geri tuşu arılığa döner.
+                      GoRoute(
+                        path: 'harvest-lot/:$_harvestId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => HarvestLotScreen(
+                          apiaryId: state.pathParameters[_apiaryId]!,
+                          harvestId: state.pathParameters[_harvestId]!,
+                        ),
                       ),
                       // Tur tam ekran (alt gezinme yok); muayene turun
                       // üstünde alttan açılır, kapatınca tura dönülür.
@@ -487,6 +503,35 @@ GoRouter router(Ref ref) {
                             parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => InventoryFormScreen(
                               itemId: state.pathParameters[_inventoryItemId],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'lots',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const LotsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':$_lotId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) =>
+                            LotScreen(lotId: state.pathParameters[_lotId]!),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => LotFormScreen(
+                              lotId: state.pathParameters[_lotId]!,
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'lab',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => LabResultFormScreen(
+                              lotId: state.pathParameters[_lotId]!,
                             ),
                           ),
                         ],

@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
+import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest_rules.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
@@ -75,6 +76,7 @@ class HarvestRepository extends BaseRepository<$HarvestsTable, Harvest> {
 
   late final _hives = HarvestHiveRepository(db, clock: clock);
   late final _treatments = TreatmentRepository(db, clock: clock);
+  late final _lots = LotRepository(db, clock: clock);
 
   @override
   $HarvestsTable get table => db.harvests;
@@ -145,8 +147,10 @@ class HarvestRepository extends BaseRepository<$HarvestsTable, Harvest> {
   Future<List<HarvestHive>> findHives(String harvestId) =>
       _hives.findByHarvest(harvestId);
 
-  /// Geri al: hasadı ve kovanlarını tek transaction'da siler.
+  /// Geri al: hasadı, kovanlarını ve lot bağını (lot hasadı ve ilaçlama
+  /// kopyaları) tek transaction'da siler; lotun kendisi kalır.
   Future<void> deleteHarvest(String harvestId) => db.transaction(() async {
+    await _lots.detachHarvest(harvestId);
     for (final hive in await _hives.findByHarvest(harvestId)) {
       await _hives.delete(hive.id);
     }

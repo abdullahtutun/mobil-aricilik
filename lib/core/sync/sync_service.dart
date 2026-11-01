@@ -85,6 +85,11 @@ class SyncService {
     _db.inventoryMoves,
     _db.queenRearingBatches,
     _db.matingNucs,
+    _db.lots,
+    _db.lotHarvests,
+    _db.lotTreatments,
+    _db.labResults,
+    _db.lotSales,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

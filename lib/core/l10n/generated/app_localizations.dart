@@ -8014,6 +8014,540 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mating nuc'**
   String get syncTableMatingNucs;
+
+  /// Lots list title and More tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest & lots'**
+  String get lotsTitle;
+
+  /// Empty lots list title.
+  ///
+  /// In en, this message translates to:
+  /// **'No lots yet'**
+  String get lotsEmptyTitle;
+
+  /// Empty lots list message.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a harvest to a lot after saving it; lots are listed here.'**
+  String get lotsEmptyMessage;
+
+  /// Lots load error.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load lots'**
+  String get lotsLoadError;
+
+  /// Overview tile: honey in stock.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock'**
+  String get lotsInStock;
+
+  /// Overview tile: this year's yield per hive.
+  ///
+  /// In en, this message translates to:
+  /// **'Per hive'**
+  String get lotsPerHive;
+
+  /// Lot number label.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot {number}'**
+  String lotNumber(String number);
+
+  /// Lot title from honey kind.
+  ///
+  /// In en, this message translates to:
+  /// **'{kind} honey'**
+  String lotHoneyTitle(String kind);
+
+  /// Lot status: harvests can be added.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get lotStatusOpen;
+
+  /// Lot status: no more harvests.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get lotStatusClosed;
+
+  /// Badge: harvested during drug withdrawal period.
+  ///
+  /// In en, this message translates to:
+  /// **'In withdrawal'**
+  String get lotWithdrawalBadge;
+
+  /// Moisture tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Moisture {value}%'**
+  String lotMoistureValue(String value);
+
+  /// Tag: lot has a lab analysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysed ✓'**
+  String get lotAnalyzed;
+
+  /// Tag: lot has no lab analysis yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis pending'**
+  String get lotAnalysisPending;
+
+  /// Stock tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock {weight}'**
+  String lotStockValue(String weight);
+
+  /// Lot missing or deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot not found'**
+  String get lotNotFound;
+
+  /// Edit action tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit lot'**
+  String get lotEdit;
+
+  /// Withdrawal violation card title.
+  ///
+  /// In en, this message translates to:
+  /// **'{hives} harvested during the withdrawal period.'**
+  String lotWithdrawalTitle(String hives);
+
+  /// Withdrawal violation card message.
+  ///
+  /// In en, this message translates to:
+  /// **'This lot may contain drug residue; get it analysed before selling.'**
+  String get lotWithdrawalMessage;
+
+  /// Section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get lotStock;
+
+  /// Stock row: total harvested.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvested'**
+  String get lotHarvested;
+
+  /// Stock row: total sold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold'**
+  String get lotSold;
+
+  /// Stock row: remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock'**
+  String get lotInStock;
+
+  /// Button: subtract sold honey from stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a sale'**
+  String get lotSell;
+
+  /// Section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyses'**
+  String get lotAnalyses;
+
+  /// Empty analyses.
+  ///
+  /// In en, this message translates to:
+  /// **'No analyses yet'**
+  String get lotAnalysesEmpty;
+
+  /// Button: add lab result.
+  ///
+  /// In en, this message translates to:
+  /// **'Add analysis'**
+  String get lotAddAnalysis;
+
+  /// Section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvests'**
+  String get lotHarvests;
+
+  /// Empty harvests.
+  ///
+  /// In en, this message translates to:
+  /// **'No harvests in this lot'**
+  String get lotHarvestsEmpty;
+
+  /// Section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives\' last treatment'**
+  String get lotTreatments;
+
+  /// Empty treatments.
+  ///
+  /// In en, this message translates to:
+  /// **'No treatments recorded for this lot\'s hives'**
+  String get lotTreatmentsEmpty;
+
+  /// Treatment row title.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {hive} · {product}'**
+  String lotTreatmentTitle(String hive, String product);
+
+  /// Treatment row detail.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · withdrawal ends {end}'**
+  String lotTreatmentDetail(String date, String end);
+
+  /// Section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales'**
+  String get lotSales;
+
+  /// Empty sales.
+  ///
+  /// In en, this message translates to:
+  /// **'No sales recorded yet'**
+  String get lotSalesEmpty;
+
+  /// Sale row amount.
+  ///
+  /// In en, this message translates to:
+  /// **'−{weight}'**
+  String lotSaleValue(String weight);
+
+  /// Sale amount field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey sold ({unit})'**
+  String lotSaleAmount(String unit);
+
+  /// Sale exceeds stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Only {weight} in stock'**
+  String lotSaleTooMuch(String weight);
+
+  /// Sale save button.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtract from stock'**
+  String get lotSaleSave;
+
+  /// Message after recording a sale.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} sale recorded'**
+  String lotSaleSaved(String weight);
+
+  /// Lot origin field.
+  ///
+  /// In en, this message translates to:
+  /// **'Origin'**
+  String get lotOrigin;
+
+  /// Origin hint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. Mountain pine'**
+  String get lotOriginHint;
+
+  /// Moisture field.
+  ///
+  /// In en, this message translates to:
+  /// **'Moisture %'**
+  String get lotMoisture;
+
+  /// Moisture helper.
+  ///
+  /// In en, this message translates to:
+  /// **'Refractometer reading; optional'**
+  String get lotMoistureHelper;
+
+  /// Moisture invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a value between 10 and 30, like 17.2'**
+  String get lotMoistureInvalid;
+
+  /// Lot edit title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit {lot}'**
+  String lotEditTitle(String lot);
+
+  /// Lot status field.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get lotStatus;
+
+  /// Status helper.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed lots don\'t take new harvests'**
+  String get lotStatusHelper;
+
+  /// Lot save button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get lotSave;
+
+  /// Delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete lot'**
+  String get lotDelete;
+
+  /// Delete dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {lot}?'**
+  String lotDeleteTitle(String lot);
+
+  /// Delete dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyses and sales are deleted too; harvests stay.'**
+  String get lotDeleteMessage;
+
+  /// Message after deleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot deleted'**
+  String get lotDeleted;
+
+  /// Lab result form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis · {lot}'**
+  String labTitle(String lot);
+
+  /// Date row.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis date'**
+  String get labDate;
+
+  /// HMF field.
+  ///
+  /// In en, this message translates to:
+  /// **'HMF (mg/kg)'**
+  String get labHmf;
+
+  /// Diastase field.
+  ///
+  /// In en, this message translates to:
+  /// **'Diastase number'**
+  String get labDiastase;
+
+  /// Proline field.
+  ///
+  /// In en, this message translates to:
+  /// **'Proline (mg/kg)'**
+  String get labProline;
+
+  /// HMF in result row.
+  ///
+  /// In en, this message translates to:
+  /// **'HMF {value}'**
+  String labHmfValue(String value);
+
+  /// Diastase in result row.
+  ///
+  /// In en, this message translates to:
+  /// **'Diastase {value}'**
+  String labDiastaseValue(String value);
+
+  /// Proline in result row.
+  ///
+  /// In en, this message translates to:
+  /// **'Proline {value}'**
+  String labProlineValue(String value);
+
+  /// Lab value invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a value between {min} and {max}'**
+  String labValueInvalid(String min, String max);
+
+  /// Residue field.
+  ///
+  /// In en, this message translates to:
+  /// **'Residue'**
+  String get labResidue;
+
+  /// Residue: none.
+  ///
+  /// In en, this message translates to:
+  /// **'No residue'**
+  String get labResidueNone;
+
+  /// Residue: detected.
+  ///
+  /// In en, this message translates to:
+  /// **'Residue detected'**
+  String get labResidueDetected;
+
+  /// Report row and icon label.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get labReport;
+
+  /// No report selected.
+  ///
+  /// In en, this message translates to:
+  /// **'No report'**
+  String get labReportNone;
+
+  /// Report picker empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No analysis reports in the document vault'**
+  String get labReportEmpty;
+
+  /// Button to document vault.
+  ///
+  /// In en, this message translates to:
+  /// **'Add report to document vault'**
+  String get labReportAdd;
+
+  /// Save button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save analysis'**
+  String get labSave;
+
+  /// Message after saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis saved'**
+  String get labSaved;
+
+  /// Harvest lot step title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to lot'**
+  String get harvestLotTitle;
+
+  /// Harvest lot step summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest saved: {weight} {kind}'**
+  String harvestLotSaved(String weight, String kind);
+
+  /// Harvest lot step intro.
+  ///
+  /// In en, this message translates to:
+  /// **'When honey goes into a lot, the hives\' last treatment dates are linked to it.'**
+  String get harvestLotIntro;
+
+  /// Option: create a new lot.
+  ///
+  /// In en, this message translates to:
+  /// **'New lot'**
+  String get harvestLotNew;
+
+  /// New lot hint.
+  ///
+  /// In en, this message translates to:
+  /// **'{kind} · number assigned automatically'**
+  String harvestLotNewHint(String kind);
+
+  /// Create lot button.
+  ///
+  /// In en, this message translates to:
+  /// **'Create lot'**
+  String get harvestLotCreate;
+
+  /// Add to existing lot button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to lot'**
+  String get harvestLotAdd;
+
+  /// Skip lot step.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get harvestLotSkip;
+
+  /// Message after creating lot.
+  ///
+  /// In en, this message translates to:
+  /// **'{lot} created'**
+  String harvestLotCreated(String lot);
+
+  /// Message after adding to lot.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest added to {lot}'**
+  String harvestLotAdded(String lot);
+
+  /// Harvest lot step: harvest deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest was undone'**
+  String get harvestLotGone;
+
+  /// Back button.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to apiary'**
+  String get harvestLotBack;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot'**
+  String get syncTableLots;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot harvest'**
+  String get syncTableLotHarvests;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot treatment'**
+  String get syncTableLotTreatments;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Lab result'**
+  String get syncTableLabResults;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot sale'**
+  String get syncTableLotSales;
+
+  /// Harvest lot step: harvest deleted message.
+  ///
+  /// In en, this message translates to:
+  /// **'The harvest wasn\'t added to a lot. You can record it again from the apiary.'**
+  String get harvestLotGoneMessage;
 }
 
 class _AppLocalizationsDelegate

@@ -18,6 +18,7 @@ import 'package:mobil_arici/features/feeding/presentation/widgets/feeding_labels
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest_rules.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_form_controller.dart';
+import 'package:mobil_arici/features/harvest/presentation/harvest_lot_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_providers.dart';
 import 'package:mobil_arici/features/harvest/presentation/widgets/harvest_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
@@ -50,8 +51,8 @@ HarvestTargets watchHarvestTargets(
 /// eklenebilir), bekleme süresindeki kovanların kırmızı kartı, tarih, bal
 /// türü, alınan kat ya da çerçeve, süzülen bal (kullanıcının biriminde) ve
 /// kovan başına ortalama. Bekleme süresindeki kovan kovan listesinden
-/// gerekçeyle alınabilir. Kaydedince arılığa dönülür ve 6 sn geri
-/// alınabilir. Lot, nem ve analiz Faz E'de.
+/// gerekçeyle alınabilir. Kaydedince lota ekleme adımı açılır
+/// ([HarvestLotScreen]) ve kayıt 6 sn geri alınabilir.
 class HarvestFormScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
 
@@ -140,7 +141,7 @@ class _SaveButton extends ConsumerWidget {
       message: l10n.harvestSaved(record.hives.length),
       onUndo: () => actions.undoAdd(record),
     );
-    context.pop();
+    context.go(AppRoutes.apiaryHarvestLot(apiaryId, record.harvest.id));
   }
 }
 

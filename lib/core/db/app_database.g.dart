@@ -16274,6 +16274,2609 @@ extension MatingNucToInsertable on MatingNuc {
   }
 }
 
+class $LotsTable extends Lots with TableInfo<$LotsTable, Lot> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LotsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _yearMeta = const VerificationMeta('year');
+  @override
+  late final GeneratedColumn<int> year = GeneratedColumn<int>(
+    'year',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _seqMeta = const VerificationMeta('seq');
+  @override
+  late final GeneratedColumn<int> seq = GeneratedColumn<int>(
+    'seq',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HoneyKind, String> honeyKind =
+      GeneratedColumn<String>(
+        'honey_kind',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HoneyKind>($LotsTable.$converterhoneyKind);
+  static const VerificationMeta _originMeta = const VerificationMeta('origin');
+  @override
+  late final GeneratedColumn<String> origin = GeneratedColumn<String>(
+    'origin',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _moistureMeta = const VerificationMeta(
+    'moisture',
+  );
+  @override
+  late final GeneratedColumn<double> moisture = GeneratedColumn<double>(
+    'moisture',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<LotStatus, String> status =
+      GeneratedColumn<String>(
+        'status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<LotStatus>($LotsTable.$converterstatus);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    year,
+    seq,
+    honeyKind,
+    origin,
+    moisture,
+    status,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lots';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Lot> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('year')) {
+      context.handle(
+        _yearMeta,
+        year.isAcceptableOrUnknown(data['year']!, _yearMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_yearMeta);
+    }
+    if (data.containsKey('seq')) {
+      context.handle(
+        _seqMeta,
+        seq.isAcceptableOrUnknown(data['seq']!, _seqMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_seqMeta);
+    }
+    if (data.containsKey('origin')) {
+      context.handle(
+        _originMeta,
+        origin.isAcceptableOrUnknown(data['origin']!, _originMeta),
+      );
+    }
+    if (data.containsKey('moisture')) {
+      context.handle(
+        _moistureMeta,
+        moisture.isAcceptableOrUnknown(data['moisture']!, _moistureMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Lot map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Lot(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      year: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}year'],
+      )!,
+      seq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}seq'],
+      )!,
+      honeyKind: $LotsTable.$converterhoneyKind.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}honey_kind'],
+        )!,
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      status: $LotsTable.$converterstatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}status'],
+        )!,
+      ),
+      origin: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}origin'],
+      ),
+      moisture: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}moisture'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $LotsTable createAlias(String alias) {
+    return $LotsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<HoneyKind, String> $converterhoneyKind =
+      const ServerEnumConverter(HoneyKind.values);
+  static TypeConverter<LotStatus, String> $converterstatus =
+      const ServerEnumConverter(LotStatus.values);
+}
+
+class LotsCompanion extends UpdateCompanion<Lot> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<int> year;
+  final Value<int> seq;
+  final Value<HoneyKind> honeyKind;
+  final Value<String?> origin;
+  final Value<double?> moisture;
+  final Value<LotStatus> status;
+  final Value<int> rowid;
+  const LotsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.year = const Value.absent(),
+    this.seq = const Value.absent(),
+    this.honeyKind = const Value.absent(),
+    this.origin = const Value.absent(),
+    this.moisture = const Value.absent(),
+    this.status = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LotsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required int year,
+    required int seq,
+    required HoneyKind honeyKind,
+    this.origin = const Value.absent(),
+    this.moisture = const Value.absent(),
+    required LotStatus status,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       year = Value(year),
+       seq = Value(seq),
+       honeyKind = Value(honeyKind),
+       status = Value(status);
+  static Insertable<Lot> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<int>? year,
+    Expression<int>? seq,
+    Expression<String>? honeyKind,
+    Expression<String>? origin,
+    Expression<double>? moisture,
+    Expression<String>? status,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (year != null) 'year': year,
+      if (seq != null) 'seq': seq,
+      if (honeyKind != null) 'honey_kind': honeyKind,
+      if (origin != null) 'origin': origin,
+      if (moisture != null) 'moisture': moisture,
+      if (status != null) 'status': status,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LotsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<int>? year,
+    Value<int>? seq,
+    Value<HoneyKind>? honeyKind,
+    Value<String?>? origin,
+    Value<double?>? moisture,
+    Value<LotStatus>? status,
+    Value<int>? rowid,
+  }) {
+    return LotsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      year: year ?? this.year,
+      seq: seq ?? this.seq,
+      honeyKind: honeyKind ?? this.honeyKind,
+      origin: origin ?? this.origin,
+      moisture: moisture ?? this.moisture,
+      status: status ?? this.status,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (year.present) {
+      map['year'] = Variable<int>(year.value);
+    }
+    if (seq.present) {
+      map['seq'] = Variable<int>(seq.value);
+    }
+    if (honeyKind.present) {
+      map['honey_kind'] = Variable<String>(
+        $LotsTable.$converterhoneyKind.toSql(honeyKind.value),
+      );
+    }
+    if (origin.present) {
+      map['origin'] = Variable<String>(origin.value);
+    }
+    if (moisture.present) {
+      map['moisture'] = Variable<double>(moisture.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(
+        $LotsTable.$converterstatus.toSql(status.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LotsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('year: $year, ')
+          ..write('seq: $seq, ')
+          ..write('honeyKind: $honeyKind, ')
+          ..write('origin: $origin, ')
+          ..write('moisture: $moisture, ')
+          ..write('status: $status, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$LotInsertable implements Insertable<Lot> {
+  Lot _object;
+  _$LotInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return LotsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      year: Value(_object.year),
+      seq: Value(_object.seq),
+      honeyKind: Value(_object.honeyKind),
+      origin: Value(_object.origin),
+      moisture: Value(_object.moisture),
+      status: Value(_object.status),
+    ).toColumns(false);
+  }
+}
+
+extension LotToInsertable on Lot {
+  _$LotInsertable toInsertable() {
+    return _$LotInsertable(this);
+  }
+}
+
+class $LotHarvestsTable extends LotHarvests
+    with TableInfo<$LotHarvestsTable, LotHarvest> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LotHarvestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lotIdMeta = const VerificationMeta('lotId');
+  @override
+  late final GeneratedColumn<String> lotId = GeneratedColumn<String>(
+    'lot_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _harvestIdMeta = const VerificationMeta(
+    'harvestId',
+  );
+  @override
+  late final GeneratedColumn<String> harvestId = GeneratedColumn<String>(
+    'harvest_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    lotId,
+    harvestId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lot_harvests';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LotHarvest> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('lot_id')) {
+      context.handle(
+        _lotIdMeta,
+        lotId.isAcceptableOrUnknown(data['lot_id']!, _lotIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lotIdMeta);
+    }
+    if (data.containsKey('harvest_id')) {
+      context.handle(
+        _harvestIdMeta,
+        harvestId.isAcceptableOrUnknown(data['harvest_id']!, _harvestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_harvestIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LotHarvest map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LotHarvest(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      lotId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lot_id'],
+      )!,
+      harvestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}harvest_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $LotHarvestsTable createAlias(String alias) {
+    return $LotHarvestsTable(attachedDatabase, alias);
+  }
+}
+
+class LotHarvestsCompanion extends UpdateCompanion<LotHarvest> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> lotId;
+  final Value<String> harvestId;
+  final Value<int> rowid;
+  const LotHarvestsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.lotId = const Value.absent(),
+    this.harvestId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LotHarvestsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String lotId,
+    required String harvestId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       lotId = Value(lotId),
+       harvestId = Value(harvestId);
+  static Insertable<LotHarvest> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? lotId,
+    Expression<String>? harvestId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (lotId != null) 'lot_id': lotId,
+      if (harvestId != null) 'harvest_id': harvestId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LotHarvestsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? lotId,
+    Value<String>? harvestId,
+    Value<int>? rowid,
+  }) {
+    return LotHarvestsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      lotId: lotId ?? this.lotId,
+      harvestId: harvestId ?? this.harvestId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (lotId.present) {
+      map['lot_id'] = Variable<String>(lotId.value);
+    }
+    if (harvestId.present) {
+      map['harvest_id'] = Variable<String>(harvestId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LotHarvestsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('lotId: $lotId, ')
+          ..write('harvestId: $harvestId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$LotHarvestInsertable implements Insertable<LotHarvest> {
+  LotHarvest _object;
+  _$LotHarvestInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return LotHarvestsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      lotId: Value(_object.lotId),
+      harvestId: Value(_object.harvestId),
+    ).toColumns(false);
+  }
+}
+
+extension LotHarvestToInsertable on LotHarvest {
+  _$LotHarvestInsertable toInsertable() {
+    return _$LotHarvestInsertable(this);
+  }
+}
+
+class $LotTreatmentsTable extends LotTreatments
+    with TableInfo<$LotTreatmentsTable, LotTreatment> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LotTreatmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lotIdMeta = const VerificationMeta('lotId');
+  @override
+  late final GeneratedColumn<String> lotId = GeneratedColumn<String>(
+    'lot_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _harvestIdMeta = const VerificationMeta(
+    'harvestId',
+  );
+  @override
+  late final GeneratedColumn<String> harvestId = GeneratedColumn<String>(
+    'harvest_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _treatmentIdMeta = const VerificationMeta(
+    'treatmentId',
+  );
+  @override
+  late final GeneratedColumn<String> treatmentId = GeneratedColumn<String>(
+    'treatment_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _treatedAtMeta = const VerificationMeta(
+    'treatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> treatedAt = GeneratedColumn<DateTime>(
+    'treated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, String>
+  withdrawalEndsOn = GeneratedColumn<String>(
+    'withdrawal_ends_on',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<DateTime>($LotTreatmentsTable.$converterwithdrawalEndsOn);
+  static const VerificationMeta _withdrawalViolationMeta =
+      const VerificationMeta('withdrawalViolation');
+  @override
+  late final GeneratedColumn<bool> withdrawalViolation = GeneratedColumn<bool>(
+    'withdrawal_violation',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("withdrawal_violation" IN (0, 1))',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    lotId,
+    harvestId,
+    hiveId,
+    treatmentId,
+    treatedAt,
+    withdrawalEndsOn,
+    withdrawalViolation,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lot_treatments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LotTreatment> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('lot_id')) {
+      context.handle(
+        _lotIdMeta,
+        lotId.isAcceptableOrUnknown(data['lot_id']!, _lotIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lotIdMeta);
+    }
+    if (data.containsKey('harvest_id')) {
+      context.handle(
+        _harvestIdMeta,
+        harvestId.isAcceptableOrUnknown(data['harvest_id']!, _harvestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_harvestIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('treatment_id')) {
+      context.handle(
+        _treatmentIdMeta,
+        treatmentId.isAcceptableOrUnknown(
+          data['treatment_id']!,
+          _treatmentIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_treatmentIdMeta);
+    }
+    if (data.containsKey('treated_at')) {
+      context.handle(
+        _treatedAtMeta,
+        treatedAt.isAcceptableOrUnknown(data['treated_at']!, _treatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_treatedAtMeta);
+    }
+    if (data.containsKey('withdrawal_violation')) {
+      context.handle(
+        _withdrawalViolationMeta,
+        withdrawalViolation.isAcceptableOrUnknown(
+          data['withdrawal_violation']!,
+          _withdrawalViolationMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_withdrawalViolationMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LotTreatment map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LotTreatment(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      lotId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lot_id'],
+      )!,
+      harvestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}harvest_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      treatmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}treatment_id'],
+      )!,
+      treatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}treated_at'],
+      )!,
+      withdrawalEndsOn: $LotTreatmentsTable.$converterwithdrawalEndsOn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}withdrawal_ends_on'],
+        )!,
+      ),
+      withdrawalViolation: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}withdrawal_violation'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $LotTreatmentsTable createAlias(String alias) {
+    return $LotTreatmentsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, String> $converterwithdrawalEndsOn =
+      const DateOnlyConverter();
+}
+
+class LotTreatmentsCompanion extends UpdateCompanion<LotTreatment> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> lotId;
+  final Value<String> harvestId;
+  final Value<String> hiveId;
+  final Value<String> treatmentId;
+  final Value<DateTime> treatedAt;
+  final Value<DateTime> withdrawalEndsOn;
+  final Value<bool> withdrawalViolation;
+  final Value<int> rowid;
+  const LotTreatmentsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.lotId = const Value.absent(),
+    this.harvestId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.treatmentId = const Value.absent(),
+    this.treatedAt = const Value.absent(),
+    this.withdrawalEndsOn = const Value.absent(),
+    this.withdrawalViolation = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LotTreatmentsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String lotId,
+    required String harvestId,
+    required String hiveId,
+    required String treatmentId,
+    required DateTime treatedAt,
+    required DateTime withdrawalEndsOn,
+    required bool withdrawalViolation,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       lotId = Value(lotId),
+       harvestId = Value(harvestId),
+       hiveId = Value(hiveId),
+       treatmentId = Value(treatmentId),
+       treatedAt = Value(treatedAt),
+       withdrawalEndsOn = Value(withdrawalEndsOn),
+       withdrawalViolation = Value(withdrawalViolation);
+  static Insertable<LotTreatment> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? lotId,
+    Expression<String>? harvestId,
+    Expression<String>? hiveId,
+    Expression<String>? treatmentId,
+    Expression<DateTime>? treatedAt,
+    Expression<String>? withdrawalEndsOn,
+    Expression<bool>? withdrawalViolation,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (lotId != null) 'lot_id': lotId,
+      if (harvestId != null) 'harvest_id': harvestId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (treatmentId != null) 'treatment_id': treatmentId,
+      if (treatedAt != null) 'treated_at': treatedAt,
+      if (withdrawalEndsOn != null) 'withdrawal_ends_on': withdrawalEndsOn,
+      if (withdrawalViolation != null)
+        'withdrawal_violation': withdrawalViolation,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LotTreatmentsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? lotId,
+    Value<String>? harvestId,
+    Value<String>? hiveId,
+    Value<String>? treatmentId,
+    Value<DateTime>? treatedAt,
+    Value<DateTime>? withdrawalEndsOn,
+    Value<bool>? withdrawalViolation,
+    Value<int>? rowid,
+  }) {
+    return LotTreatmentsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      lotId: lotId ?? this.lotId,
+      harvestId: harvestId ?? this.harvestId,
+      hiveId: hiveId ?? this.hiveId,
+      treatmentId: treatmentId ?? this.treatmentId,
+      treatedAt: treatedAt ?? this.treatedAt,
+      withdrawalEndsOn: withdrawalEndsOn ?? this.withdrawalEndsOn,
+      withdrawalViolation: withdrawalViolation ?? this.withdrawalViolation,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (lotId.present) {
+      map['lot_id'] = Variable<String>(lotId.value);
+    }
+    if (harvestId.present) {
+      map['harvest_id'] = Variable<String>(harvestId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (treatmentId.present) {
+      map['treatment_id'] = Variable<String>(treatmentId.value);
+    }
+    if (treatedAt.present) {
+      map['treated_at'] = Variable<DateTime>(treatedAt.value);
+    }
+    if (withdrawalEndsOn.present) {
+      map['withdrawal_ends_on'] = Variable<String>(
+        $LotTreatmentsTable.$converterwithdrawalEndsOn.toSql(
+          withdrawalEndsOn.value,
+        ),
+      );
+    }
+    if (withdrawalViolation.present) {
+      map['withdrawal_violation'] = Variable<bool>(withdrawalViolation.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LotTreatmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('lotId: $lotId, ')
+          ..write('harvestId: $harvestId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('treatmentId: $treatmentId, ')
+          ..write('treatedAt: $treatedAt, ')
+          ..write('withdrawalEndsOn: $withdrawalEndsOn, ')
+          ..write('withdrawalViolation: $withdrawalViolation, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$LotTreatmentInsertable implements Insertable<LotTreatment> {
+  LotTreatment _object;
+  _$LotTreatmentInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return LotTreatmentsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      lotId: Value(_object.lotId),
+      harvestId: Value(_object.harvestId),
+      hiveId: Value(_object.hiveId),
+      treatmentId: Value(_object.treatmentId),
+      treatedAt: Value(_object.treatedAt),
+      withdrawalEndsOn: Value(_object.withdrawalEndsOn),
+      withdrawalViolation: Value(_object.withdrawalViolation),
+    ).toColumns(false);
+  }
+}
+
+extension LotTreatmentToInsertable on LotTreatment {
+  _$LotTreatmentInsertable toInsertable() {
+    return _$LotTreatmentInsertable(this);
+  }
+}
+
+class $LabResultsTable extends LabResults
+    with TableInfo<$LabResultsTable, LabResult> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LabResultsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lotIdMeta = const VerificationMeta('lotId');
+  @override
+  late final GeneratedColumn<String> lotId = GeneratedColumn<String>(
+    'lot_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, String> testedOn =
+      GeneratedColumn<String>(
+        'tested_on',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($LabResultsTable.$convertertestedOn);
+  static const VerificationMeta _hmfMeta = const VerificationMeta('hmf');
+  @override
+  late final GeneratedColumn<double> hmf = GeneratedColumn<double>(
+    'hmf',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _diastaseMeta = const VerificationMeta(
+    'diastase',
+  );
+  @override
+  late final GeneratedColumn<double> diastase = GeneratedColumn<double>(
+    'diastase',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _prolineMeta = const VerificationMeta(
+    'proline',
+  );
+  @override
+  late final GeneratedColumn<double> proline = GeneratedColumn<double>(
+    'proline',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _moistureMeta = const VerificationMeta(
+    'moisture',
+  );
+  @override
+  late final GeneratedColumn<double> moisture = GeneratedColumn<double>(
+    'moisture',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<ResidueResult?, String> residue =
+      GeneratedColumn<String>(
+        'residue',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<ResidueResult?>($LabResultsTable.$converterresiduen);
+  static const VerificationMeta _documentIdMeta = const VerificationMeta(
+    'documentId',
+  );
+  @override
+  late final GeneratedColumn<String> documentId = GeneratedColumn<String>(
+    'document_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    lotId,
+    testedOn,
+    hmf,
+    diastase,
+    proline,
+    moisture,
+    residue,
+    documentId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lab_results';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LabResult> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('lot_id')) {
+      context.handle(
+        _lotIdMeta,
+        lotId.isAcceptableOrUnknown(data['lot_id']!, _lotIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lotIdMeta);
+    }
+    if (data.containsKey('hmf')) {
+      context.handle(
+        _hmfMeta,
+        hmf.isAcceptableOrUnknown(data['hmf']!, _hmfMeta),
+      );
+    }
+    if (data.containsKey('diastase')) {
+      context.handle(
+        _diastaseMeta,
+        diastase.isAcceptableOrUnknown(data['diastase']!, _diastaseMeta),
+      );
+    }
+    if (data.containsKey('proline')) {
+      context.handle(
+        _prolineMeta,
+        proline.isAcceptableOrUnknown(data['proline']!, _prolineMeta),
+      );
+    }
+    if (data.containsKey('moisture')) {
+      context.handle(
+        _moistureMeta,
+        moisture.isAcceptableOrUnknown(data['moisture']!, _moistureMeta),
+      );
+    }
+    if (data.containsKey('document_id')) {
+      context.handle(
+        _documentIdMeta,
+        documentId.isAcceptableOrUnknown(data['document_id']!, _documentIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LabResult map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LabResult(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      lotId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lot_id'],
+      )!,
+      testedOn: $LabResultsTable.$convertertestedOn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}tested_on'],
+        )!,
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      hmf: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}hmf'],
+      ),
+      diastase: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}diastase'],
+      ),
+      proline: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}proline'],
+      ),
+      moisture: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}moisture'],
+      ),
+      residue: $LabResultsTable.$converterresiduen.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}residue'],
+        ),
+      ),
+      documentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}document_id'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $LabResultsTable createAlias(String alias) {
+    return $LabResultsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, String> $convertertestedOn =
+      const DateOnlyConverter();
+  static TypeConverter<ResidueResult, String> $converterresidue =
+      const ServerEnumConverter(ResidueResult.values);
+  static TypeConverter<ResidueResult?, String?> $converterresiduen =
+      NullAwareTypeConverter.wrap($converterresidue);
+}
+
+class LabResultsCompanion extends UpdateCompanion<LabResult> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> lotId;
+  final Value<DateTime> testedOn;
+  final Value<double?> hmf;
+  final Value<double?> diastase;
+  final Value<double?> proline;
+  final Value<double?> moisture;
+  final Value<ResidueResult?> residue;
+  final Value<String?> documentId;
+  final Value<int> rowid;
+  const LabResultsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.lotId = const Value.absent(),
+    this.testedOn = const Value.absent(),
+    this.hmf = const Value.absent(),
+    this.diastase = const Value.absent(),
+    this.proline = const Value.absent(),
+    this.moisture = const Value.absent(),
+    this.residue = const Value.absent(),
+    this.documentId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LabResultsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String lotId,
+    required DateTime testedOn,
+    this.hmf = const Value.absent(),
+    this.diastase = const Value.absent(),
+    this.proline = const Value.absent(),
+    this.moisture = const Value.absent(),
+    this.residue = const Value.absent(),
+    this.documentId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       lotId = Value(lotId),
+       testedOn = Value(testedOn);
+  static Insertable<LabResult> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? lotId,
+    Expression<String>? testedOn,
+    Expression<double>? hmf,
+    Expression<double>? diastase,
+    Expression<double>? proline,
+    Expression<double>? moisture,
+    Expression<String>? residue,
+    Expression<String>? documentId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (lotId != null) 'lot_id': lotId,
+      if (testedOn != null) 'tested_on': testedOn,
+      if (hmf != null) 'hmf': hmf,
+      if (diastase != null) 'diastase': diastase,
+      if (proline != null) 'proline': proline,
+      if (moisture != null) 'moisture': moisture,
+      if (residue != null) 'residue': residue,
+      if (documentId != null) 'document_id': documentId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LabResultsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? lotId,
+    Value<DateTime>? testedOn,
+    Value<double?>? hmf,
+    Value<double?>? diastase,
+    Value<double?>? proline,
+    Value<double?>? moisture,
+    Value<ResidueResult?>? residue,
+    Value<String?>? documentId,
+    Value<int>? rowid,
+  }) {
+    return LabResultsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      lotId: lotId ?? this.lotId,
+      testedOn: testedOn ?? this.testedOn,
+      hmf: hmf ?? this.hmf,
+      diastase: diastase ?? this.diastase,
+      proline: proline ?? this.proline,
+      moisture: moisture ?? this.moisture,
+      residue: residue ?? this.residue,
+      documentId: documentId ?? this.documentId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (lotId.present) {
+      map['lot_id'] = Variable<String>(lotId.value);
+    }
+    if (testedOn.present) {
+      map['tested_on'] = Variable<String>(
+        $LabResultsTable.$convertertestedOn.toSql(testedOn.value),
+      );
+    }
+    if (hmf.present) {
+      map['hmf'] = Variable<double>(hmf.value);
+    }
+    if (diastase.present) {
+      map['diastase'] = Variable<double>(diastase.value);
+    }
+    if (proline.present) {
+      map['proline'] = Variable<double>(proline.value);
+    }
+    if (moisture.present) {
+      map['moisture'] = Variable<double>(moisture.value);
+    }
+    if (residue.present) {
+      map['residue'] = Variable<String>(
+        $LabResultsTable.$converterresiduen.toSql(residue.value),
+      );
+    }
+    if (documentId.present) {
+      map['document_id'] = Variable<String>(documentId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LabResultsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('lotId: $lotId, ')
+          ..write('testedOn: $testedOn, ')
+          ..write('hmf: $hmf, ')
+          ..write('diastase: $diastase, ')
+          ..write('proline: $proline, ')
+          ..write('moisture: $moisture, ')
+          ..write('residue: $residue, ')
+          ..write('documentId: $documentId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$LabResultInsertable implements Insertable<LabResult> {
+  LabResult _object;
+  _$LabResultInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return LabResultsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      lotId: Value(_object.lotId),
+      testedOn: Value(_object.testedOn),
+      hmf: Value(_object.hmf),
+      diastase: Value(_object.diastase),
+      proline: Value(_object.proline),
+      moisture: Value(_object.moisture),
+      residue: Value(_object.residue),
+      documentId: Value(_object.documentId),
+    ).toColumns(false);
+  }
+}
+
+extension LabResultToInsertable on LabResult {
+  _$LabResultInsertable toInsertable() {
+    return _$LabResultInsertable(this);
+  }
+}
+
+class $LotSalesTable extends LotSales with TableInfo<$LotSalesTable, LotSale> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LotSalesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lotIdMeta = const VerificationMeta('lotId');
+  @override
+  late final GeneratedColumn<String> lotId = GeneratedColumn<String>(
+    'lot_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, String> soldOn =
+      GeneratedColumn<String>(
+        'sold_on',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($LotSalesTable.$convertersoldOn);
+  static const VerificationMeta _kgMeta = const VerificationMeta('kg');
+  @override
+  late final GeneratedColumn<double> kg = GeneratedColumn<double>(
+    'kg',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    lotId,
+    soldOn,
+    kg,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lot_sales';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LotSale> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('lot_id')) {
+      context.handle(
+        _lotIdMeta,
+        lotId.isAcceptableOrUnknown(data['lot_id']!, _lotIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lotIdMeta);
+    }
+    if (data.containsKey('kg')) {
+      context.handle(_kgMeta, kg.isAcceptableOrUnknown(data['kg']!, _kgMeta));
+    } else if (isInserting) {
+      context.missing(_kgMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LotSale map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LotSale(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      lotId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lot_id'],
+      )!,
+      soldOn: $LotSalesTable.$convertersoldOn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sold_on'],
+        )!,
+      ),
+      kg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}kg'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $LotSalesTable createAlias(String alias) {
+    return $LotSalesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, String> $convertersoldOn =
+      const DateOnlyConverter();
+}
+
+class LotSalesCompanion extends UpdateCompanion<LotSale> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> lotId;
+  final Value<DateTime> soldOn;
+  final Value<double> kg;
+  final Value<int> rowid;
+  const LotSalesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.lotId = const Value.absent(),
+    this.soldOn = const Value.absent(),
+    this.kg = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LotSalesCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String lotId,
+    required DateTime soldOn,
+    required double kg,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       lotId = Value(lotId),
+       soldOn = Value(soldOn),
+       kg = Value(kg);
+  static Insertable<LotSale> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? lotId,
+    Expression<String>? soldOn,
+    Expression<double>? kg,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (lotId != null) 'lot_id': lotId,
+      if (soldOn != null) 'sold_on': soldOn,
+      if (kg != null) 'kg': kg,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LotSalesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? lotId,
+    Value<DateTime>? soldOn,
+    Value<double>? kg,
+    Value<int>? rowid,
+  }) {
+    return LotSalesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      lotId: lotId ?? this.lotId,
+      soldOn: soldOn ?? this.soldOn,
+      kg: kg ?? this.kg,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (lotId.present) {
+      map['lot_id'] = Variable<String>(lotId.value);
+    }
+    if (soldOn.present) {
+      map['sold_on'] = Variable<String>(
+        $LotSalesTable.$convertersoldOn.toSql(soldOn.value),
+      );
+    }
+    if (kg.present) {
+      map['kg'] = Variable<double>(kg.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LotSalesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('lotId: $lotId, ')
+          ..write('soldOn: $soldOn, ')
+          ..write('kg: $kg, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$LotSaleInsertable implements Insertable<LotSale> {
+  LotSale _object;
+  _$LotSaleInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return LotSalesCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      lotId: Value(_object.lotId),
+      soldOn: Value(_object.soldOn),
+      kg: Value(_object.kg),
+    ).toColumns(false);
+  }
+}
+
+extension LotSaleToInsertable on LotSale {
+  _$LotSaleInsertable toInsertable() {
+    return _$LotSaleInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -18256,6 +20859,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $QueenRearingBatchesTable queenRearingBatches =
       $QueenRearingBatchesTable(this);
   late final $MatingNucsTable matingNucs = $MatingNucsTable(this);
+  late final $LotsTable lots = $LotsTable(this);
+  late final $LotHarvestsTable lotHarvests = $LotHarvestsTable(this);
+  late final $LotTreatmentsTable lotTreatments = $LotTreatmentsTable(this);
+  late final $LabResultsTable labResults = $LabResultsTable(this);
+  late final $LotSalesTable lotSales = $LotSalesTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $FeedbackQueueTable feedbackQueue = $FeedbackQueueTable(this);
   late final $AnalyticsQueueTable analyticsQueue = $AnalyticsQueueTable(this);
@@ -18469,6 +21077,62 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'mating_nucs_queen_id_idx',
     'CREATE INDEX mating_nucs_queen_id_idx ON mating_nucs (queen_id)',
   );
+  late final Index lotsOrgIdIdx = Index(
+    'lots_org_id_idx',
+    'CREATE INDEX lots_org_id_idx ON lots (org_id)',
+  );
+  late final Index lotHarvestsOrgIdIdx = Index(
+    'lot_harvests_org_id_idx',
+    'CREATE INDEX lot_harvests_org_id_idx ON lot_harvests (org_id)',
+  );
+  late final Index lotHarvestsLotIdIdx = Index(
+    'lot_harvests_lot_id_idx',
+    'CREATE INDEX lot_harvests_lot_id_idx ON lot_harvests (lot_id)',
+  );
+  late final Index lotHarvestsHarvestIdIdx = Index(
+    'lot_harvests_harvest_id_idx',
+    'CREATE INDEX lot_harvests_harvest_id_idx ON lot_harvests (harvest_id)',
+  );
+  late final Index lotTreatmentsOrgIdIdx = Index(
+    'lot_treatments_org_id_idx',
+    'CREATE INDEX lot_treatments_org_id_idx ON lot_treatments (org_id)',
+  );
+  late final Index lotTreatmentsLotIdIdx = Index(
+    'lot_treatments_lot_id_idx',
+    'CREATE INDEX lot_treatments_lot_id_idx ON lot_treatments (lot_id)',
+  );
+  late final Index lotTreatmentsHarvestIdIdx = Index(
+    'lot_treatments_harvest_id_idx',
+    'CREATE INDEX lot_treatments_harvest_id_idx ON lot_treatments (harvest_id)',
+  );
+  late final Index lotTreatmentsHiveIdIdx = Index(
+    'lot_treatments_hive_id_idx',
+    'CREATE INDEX lot_treatments_hive_id_idx ON lot_treatments (hive_id)',
+  );
+  late final Index lotTreatmentsTreatmentIdIdx = Index(
+    'lot_treatments_treatment_id_idx',
+    'CREATE INDEX lot_treatments_treatment_id_idx ON lot_treatments (treatment_id)',
+  );
+  late final Index labResultsOrgIdIdx = Index(
+    'lab_results_org_id_idx',
+    'CREATE INDEX lab_results_org_id_idx ON lab_results (org_id)',
+  );
+  late final Index labResultsLotIdIdx = Index(
+    'lab_results_lot_id_idx',
+    'CREATE INDEX lab_results_lot_id_idx ON lab_results (lot_id)',
+  );
+  late final Index labResultsDocumentIdIdx = Index(
+    'lab_results_document_id_idx',
+    'CREATE INDEX lab_results_document_id_idx ON lab_results (document_id)',
+  );
+  late final Index lotSalesOrgIdIdx = Index(
+    'lot_sales_org_id_idx',
+    'CREATE INDEX lot_sales_org_id_idx ON lot_sales (org_id)',
+  );
+  late final Index lotSalesLotIdIdx = Index(
+    'lot_sales_lot_id_idx',
+    'CREATE INDEX lot_sales_lot_id_idx ON lot_sales (lot_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -18502,6 +21166,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     inventoryMoves,
     queenRearingBatches,
     matingNucs,
+    lots,
+    lotHarvests,
+    lotTreatments,
+    labResults,
+    lotSales,
     localSettings,
     feedbackQueue,
     analyticsQueue,
@@ -18559,6 +21228,20 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     matingNucsApiaryIdIdx,
     matingNucsRearingBatchIdIdx,
     matingNucsQueenIdIdx,
+    lotsOrgIdIdx,
+    lotHarvestsOrgIdIdx,
+    lotHarvestsLotIdIdx,
+    lotHarvestsHarvestIdIdx,
+    lotTreatmentsOrgIdIdx,
+    lotTreatmentsLotIdIdx,
+    lotTreatmentsHarvestIdIdx,
+    lotTreatmentsHiveIdIdx,
+    lotTreatmentsTreatmentIdIdx,
+    labResultsOrgIdIdx,
+    labResultsLotIdIdx,
+    labResultsDocumentIdIdx,
+    lotSalesOrgIdIdx,
+    lotSalesLotIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -28849,6 +31532,1723 @@ typedef $$MatingNucsTableProcessedTableManager =
       MatingNuc,
       PrefetchHooks Function()
     >;
+typedef $$LotsTableCreateCompanionBuilder = LotsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required int year,
+  required int seq,
+  required HoneyKind honeyKind,
+  Value<String?> origin,
+  Value<double?> moisture,
+  required LotStatus status,
+  Value<int> rowid,
+});
+typedef $$LotsTableUpdateCompanionBuilder = LotsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<int> year,
+  Value<int> seq,
+  Value<HoneyKind> honeyKind,
+  Value<String?> origin,
+  Value<double?> moisture,
+  Value<LotStatus> status,
+  Value<int> rowid,
+});
+
+class $$LotsTableFilterComposer extends Composer<_$AppDatabase, $LotsTable> {
+  $$LotsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get year => $composableBuilder(
+    column: $table.year,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get seq => $composableBuilder(
+    column: $table.seq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HoneyKind, HoneyKind, String> get honeyKind =>
+      $composableBuilder(
+        column: $table.honeyKind,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get origin => $composableBuilder(
+    column: $table.origin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get moisture => $composableBuilder(
+    column: $table.moisture,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<LotStatus, LotStatus, String> get status =>
+      $composableBuilder(
+        column: $table.status,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+}
+
+class $$LotsTableOrderingComposer extends Composer<_$AppDatabase, $LotsTable> {
+  $$LotsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get year => $composableBuilder(
+    column: $table.year,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get seq => $composableBuilder(
+    column: $table.seq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get honeyKind => $composableBuilder(
+    column: $table.honeyKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get origin => $composableBuilder(
+    column: $table.origin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get moisture => $composableBuilder(
+    column: $table.moisture,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LotsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LotsTable> {
+  $$LotsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<int> get year =>
+      $composableBuilder(column: $table.year, builder: (column) => column);
+
+  GeneratedColumn<int> get seq =>
+      $composableBuilder(column: $table.seq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HoneyKind, String> get honeyKind =>
+      $composableBuilder(column: $table.honeyKind, builder: (column) => column);
+
+  GeneratedColumn<String> get origin =>
+      $composableBuilder(column: $table.origin, builder: (column) => column);
+
+  GeneratedColumn<double> get moisture =>
+      $composableBuilder(column: $table.moisture, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<LotStatus, String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+}
+
+class $$LotsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LotsTable,
+          Lot,
+          $$LotsTableFilterComposer,
+          $$LotsTableOrderingComposer,
+          $$LotsTableAnnotationComposer,
+          $$LotsTableCreateCompanionBuilder,
+          $$LotsTableUpdateCompanionBuilder,
+          (Lot, BaseReferences<_$AppDatabase, $LotsTable, Lot>),
+          Lot,
+          PrefetchHooks Function()
+        > {
+  $$LotsTableTableManager(_$AppDatabase db, $LotsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LotsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LotsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LotsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<int> year = const Value.absent(),
+                Value<int> seq = const Value.absent(),
+                Value<HoneyKind> honeyKind = const Value.absent(),
+                Value<String?> origin = const Value.absent(),
+                Value<double?> moisture = const Value.absent(),
+                Value<LotStatus> status = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LotsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                year: year,
+                seq: seq,
+                honeyKind: honeyKind,
+                origin: origin,
+                moisture: moisture,
+                status: status,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required int year,
+                required int seq,
+                required HoneyKind honeyKind,
+                Value<String?> origin = const Value.absent(),
+                Value<double?> moisture = const Value.absent(),
+                required LotStatus status,
+                Value<int> rowid = const Value.absent(),
+              }) => LotsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                year: year,
+                seq: seq,
+                honeyKind: honeyKind,
+                origin: origin,
+                moisture: moisture,
+                status: status,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LotsTable, Lot>(table),
+                  BaseReferences<_$AppDatabase, $LotsTable, Lot>(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LotsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LotsTable,
+      Lot,
+      $$LotsTableFilterComposer,
+      $$LotsTableOrderingComposer,
+      $$LotsTableAnnotationComposer,
+      $$LotsTableCreateCompanionBuilder,
+      $$LotsTableUpdateCompanionBuilder,
+      (Lot, BaseReferences<_$AppDatabase, $LotsTable, Lot>),
+      Lot,
+      PrefetchHooks Function()
+    >;
+typedef $$LotHarvestsTableCreateCompanionBuilder =
+    LotHarvestsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String lotId,
+      required String harvestId,
+      Value<int> rowid,
+    });
+typedef $$LotHarvestsTableUpdateCompanionBuilder =
+    LotHarvestsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> lotId,
+      Value<String> harvestId,
+      Value<int> rowid,
+    });
+
+class $$LotHarvestsTableFilterComposer
+    extends Composer<_$AppDatabase, $LotHarvestsTable> {
+  $$LotHarvestsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get harvestId => $composableBuilder(
+    column: $table.harvestId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LotHarvestsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LotHarvestsTable> {
+  $$LotHarvestsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get harvestId => $composableBuilder(
+    column: $table.harvestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LotHarvestsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LotHarvestsTable> {
+  $$LotHarvestsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get lotId =>
+      $composableBuilder(column: $table.lotId, builder: (column) => column);
+
+  GeneratedColumn<String> get harvestId =>
+      $composableBuilder(column: $table.harvestId, builder: (column) => column);
+}
+
+class $$LotHarvestsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LotHarvestsTable,
+          LotHarvest,
+          $$LotHarvestsTableFilterComposer,
+          $$LotHarvestsTableOrderingComposer,
+          $$LotHarvestsTableAnnotationComposer,
+          $$LotHarvestsTableCreateCompanionBuilder,
+          $$LotHarvestsTableUpdateCompanionBuilder,
+          (
+            LotHarvest,
+            BaseReferences<_$AppDatabase, $LotHarvestsTable, LotHarvest>,
+          ),
+          LotHarvest,
+          PrefetchHooks Function()
+        > {
+  $$LotHarvestsTableTableManager(_$AppDatabase db, $LotHarvestsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LotHarvestsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LotHarvestsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LotHarvestsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> lotId = const Value.absent(),
+                Value<String> harvestId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LotHarvestsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                harvestId: harvestId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String lotId,
+                required String harvestId,
+                Value<int> rowid = const Value.absent(),
+              }) => LotHarvestsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                harvestId: harvestId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LotHarvestsTable, LotHarvest>(table),
+                  BaseReferences<_$AppDatabase, $LotHarvestsTable, LotHarvest>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LotHarvestsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LotHarvestsTable,
+      LotHarvest,
+      $$LotHarvestsTableFilterComposer,
+      $$LotHarvestsTableOrderingComposer,
+      $$LotHarvestsTableAnnotationComposer,
+      $$LotHarvestsTableCreateCompanionBuilder,
+      $$LotHarvestsTableUpdateCompanionBuilder,
+      (
+        LotHarvest,
+        BaseReferences<_$AppDatabase, $LotHarvestsTable, LotHarvest>,
+      ),
+      LotHarvest,
+      PrefetchHooks Function()
+    >;
+typedef $$LotTreatmentsTableCreateCompanionBuilder =
+    LotTreatmentsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String lotId,
+      required String harvestId,
+      required String hiveId,
+      required String treatmentId,
+      required DateTime treatedAt,
+      required DateTime withdrawalEndsOn,
+      required bool withdrawalViolation,
+      Value<int> rowid,
+    });
+typedef $$LotTreatmentsTableUpdateCompanionBuilder =
+    LotTreatmentsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> lotId,
+      Value<String> harvestId,
+      Value<String> hiveId,
+      Value<String> treatmentId,
+      Value<DateTime> treatedAt,
+      Value<DateTime> withdrawalEndsOn,
+      Value<bool> withdrawalViolation,
+      Value<int> rowid,
+    });
+
+class $$LotTreatmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $LotTreatmentsTable> {
+  $$LotTreatmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get harvestId => $composableBuilder(
+    column: $table.harvestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get treatmentId => $composableBuilder(
+    column: $table.treatmentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get treatedAt => $composableBuilder(
+    column: $table.treatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, String>
+  get withdrawalEndsOn => $composableBuilder(
+    column: $table.withdrawalEndsOn,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get withdrawalViolation => $composableBuilder(
+    column: $table.withdrawalViolation,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LotTreatmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LotTreatmentsTable> {
+  $$LotTreatmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get harvestId => $composableBuilder(
+    column: $table.harvestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get treatmentId => $composableBuilder(
+    column: $table.treatmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get treatedAt => $composableBuilder(
+    column: $table.treatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get withdrawalEndsOn => $composableBuilder(
+    column: $table.withdrawalEndsOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get withdrawalViolation => $composableBuilder(
+    column: $table.withdrawalViolation,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LotTreatmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LotTreatmentsTable> {
+  $$LotTreatmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get lotId =>
+      $composableBuilder(column: $table.lotId, builder: (column) => column);
+
+  GeneratedColumn<String> get harvestId =>
+      $composableBuilder(column: $table.harvestId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get treatmentId => $composableBuilder(
+    column: $table.treatmentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get treatedAt =>
+      $composableBuilder(column: $table.treatedAt, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, String> get withdrawalEndsOn =>
+      $composableBuilder(
+        column: $table.withdrawalEndsOn,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<bool> get withdrawalViolation => $composableBuilder(
+    column: $table.withdrawalViolation,
+    builder: (column) => column,
+  );
+}
+
+class $$LotTreatmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LotTreatmentsTable,
+          LotTreatment,
+          $$LotTreatmentsTableFilterComposer,
+          $$LotTreatmentsTableOrderingComposer,
+          $$LotTreatmentsTableAnnotationComposer,
+          $$LotTreatmentsTableCreateCompanionBuilder,
+          $$LotTreatmentsTableUpdateCompanionBuilder,
+          (
+            LotTreatment,
+            BaseReferences<_$AppDatabase, $LotTreatmentsTable, LotTreatment>,
+          ),
+          LotTreatment,
+          PrefetchHooks Function()
+        > {
+  $$LotTreatmentsTableTableManager(_$AppDatabase db, $LotTreatmentsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LotTreatmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LotTreatmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LotTreatmentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> lotId = const Value.absent(),
+                Value<String> harvestId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String> treatmentId = const Value.absent(),
+                Value<DateTime> treatedAt = const Value.absent(),
+                Value<DateTime> withdrawalEndsOn = const Value.absent(),
+                Value<bool> withdrawalViolation = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LotTreatmentsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                harvestId: harvestId,
+                hiveId: hiveId,
+                treatmentId: treatmentId,
+                treatedAt: treatedAt,
+                withdrawalEndsOn: withdrawalEndsOn,
+                withdrawalViolation: withdrawalViolation,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String lotId,
+                required String harvestId,
+                required String hiveId,
+                required String treatmentId,
+                required DateTime treatedAt,
+                required DateTime withdrawalEndsOn,
+                required bool withdrawalViolation,
+                Value<int> rowid = const Value.absent(),
+              }) => LotTreatmentsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                harvestId: harvestId,
+                hiveId: hiveId,
+                treatmentId: treatmentId,
+                treatedAt: treatedAt,
+                withdrawalEndsOn: withdrawalEndsOn,
+                withdrawalViolation: withdrawalViolation,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LotTreatmentsTable, LotTreatment>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $LotTreatmentsTable,
+                    LotTreatment
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LotTreatmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LotTreatmentsTable,
+      LotTreatment,
+      $$LotTreatmentsTableFilterComposer,
+      $$LotTreatmentsTableOrderingComposer,
+      $$LotTreatmentsTableAnnotationComposer,
+      $$LotTreatmentsTableCreateCompanionBuilder,
+      $$LotTreatmentsTableUpdateCompanionBuilder,
+      (
+        LotTreatment,
+        BaseReferences<_$AppDatabase, $LotTreatmentsTable, LotTreatment>,
+      ),
+      LotTreatment,
+      PrefetchHooks Function()
+    >;
+typedef $$LabResultsTableCreateCompanionBuilder = LabResultsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String lotId,
+  required DateTime testedOn,
+  Value<double?> hmf,
+  Value<double?> diastase,
+  Value<double?> proline,
+  Value<double?> moisture,
+  Value<ResidueResult?> residue,
+  Value<String?> documentId,
+  Value<int> rowid,
+});
+typedef $$LabResultsTableUpdateCompanionBuilder = LabResultsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> lotId,
+  Value<DateTime> testedOn,
+  Value<double?> hmf,
+  Value<double?> diastase,
+  Value<double?> proline,
+  Value<double?> moisture,
+  Value<ResidueResult?> residue,
+  Value<String?> documentId,
+  Value<int> rowid,
+});
+
+class $$LabResultsTableFilterComposer
+    extends Composer<_$AppDatabase, $LabResultsTable> {
+  $$LabResultsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, String> get testedOn =>
+      $composableBuilder(
+        column: $table.testedOn,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<double> get hmf => $composableBuilder(
+    column: $table.hmf,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get diastase => $composableBuilder(
+    column: $table.diastase,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get proline => $composableBuilder(
+    column: $table.proline,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get moisture => $composableBuilder(
+    column: $table.moisture,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<ResidueResult?, ResidueResult, String>
+  get residue => $composableBuilder(
+    column: $table.residue,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get documentId => $composableBuilder(
+    column: $table.documentId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LabResultsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LabResultsTable> {
+  $$LabResultsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get testedOn => $composableBuilder(
+    column: $table.testedOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get hmf => $composableBuilder(
+    column: $table.hmf,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get diastase => $composableBuilder(
+    column: $table.diastase,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get proline => $composableBuilder(
+    column: $table.proline,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get moisture => $composableBuilder(
+    column: $table.moisture,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get residue => $composableBuilder(
+    column: $table.residue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get documentId => $composableBuilder(
+    column: $table.documentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LabResultsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LabResultsTable> {
+  $$LabResultsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get lotId =>
+      $composableBuilder(column: $table.lotId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, String> get testedOn =>
+      $composableBuilder(column: $table.testedOn, builder: (column) => column);
+
+  GeneratedColumn<double> get hmf =>
+      $composableBuilder(column: $table.hmf, builder: (column) => column);
+
+  GeneratedColumn<double> get diastase =>
+      $composableBuilder(column: $table.diastase, builder: (column) => column);
+
+  GeneratedColumn<double> get proline =>
+      $composableBuilder(column: $table.proline, builder: (column) => column);
+
+  GeneratedColumn<double> get moisture =>
+      $composableBuilder(column: $table.moisture, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ResidueResult?, String> get residue =>
+      $composableBuilder(column: $table.residue, builder: (column) => column);
+
+  GeneratedColumn<String> get documentId => $composableBuilder(
+    column: $table.documentId,
+    builder: (column) => column,
+  );
+}
+
+class $$LabResultsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LabResultsTable,
+          LabResult,
+          $$LabResultsTableFilterComposer,
+          $$LabResultsTableOrderingComposer,
+          $$LabResultsTableAnnotationComposer,
+          $$LabResultsTableCreateCompanionBuilder,
+          $$LabResultsTableUpdateCompanionBuilder,
+          (
+            LabResult,
+            BaseReferences<_$AppDatabase, $LabResultsTable, LabResult>,
+          ),
+          LabResult,
+          PrefetchHooks Function()
+        > {
+  $$LabResultsTableTableManager(_$AppDatabase db, $LabResultsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LabResultsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LabResultsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LabResultsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> lotId = const Value.absent(),
+                Value<DateTime> testedOn = const Value.absent(),
+                Value<double?> hmf = const Value.absent(),
+                Value<double?> diastase = const Value.absent(),
+                Value<double?> proline = const Value.absent(),
+                Value<double?> moisture = const Value.absent(),
+                Value<ResidueResult?> residue = const Value.absent(),
+                Value<String?> documentId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LabResultsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                testedOn: testedOn,
+                hmf: hmf,
+                diastase: diastase,
+                proline: proline,
+                moisture: moisture,
+                residue: residue,
+                documentId: documentId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String lotId,
+                required DateTime testedOn,
+                Value<double?> hmf = const Value.absent(),
+                Value<double?> diastase = const Value.absent(),
+                Value<double?> proline = const Value.absent(),
+                Value<double?> moisture = const Value.absent(),
+                Value<ResidueResult?> residue = const Value.absent(),
+                Value<String?> documentId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LabResultsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                testedOn: testedOn,
+                hmf: hmf,
+                diastase: diastase,
+                proline: proline,
+                moisture: moisture,
+                residue: residue,
+                documentId: documentId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LabResultsTable, LabResult>(table),
+                  BaseReferences<_$AppDatabase, $LabResultsTable, LabResult>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LabResultsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LabResultsTable,
+      LabResult,
+      $$LabResultsTableFilterComposer,
+      $$LabResultsTableOrderingComposer,
+      $$LabResultsTableAnnotationComposer,
+      $$LabResultsTableCreateCompanionBuilder,
+      $$LabResultsTableUpdateCompanionBuilder,
+      (LabResult, BaseReferences<_$AppDatabase, $LabResultsTable, LabResult>),
+      LabResult,
+      PrefetchHooks Function()
+    >;
+typedef $$LotSalesTableCreateCompanionBuilder = LotSalesCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String lotId,
+  required DateTime soldOn,
+  required double kg,
+  Value<int> rowid,
+});
+typedef $$LotSalesTableUpdateCompanionBuilder = LotSalesCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> lotId,
+  Value<DateTime> soldOn,
+  Value<double> kg,
+  Value<int> rowid,
+});
+
+class $$LotSalesTableFilterComposer
+    extends Composer<_$AppDatabase, $LotSalesTable> {
+  $$LotSalesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, String> get soldOn =>
+      $composableBuilder(
+        column: $table.soldOn,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<double> get kg => $composableBuilder(
+    column: $table.kg,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LotSalesTableOrderingComposer
+    extends Composer<_$AppDatabase, $LotSalesTable> {
+  $$LotSalesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get soldOn => $composableBuilder(
+    column: $table.soldOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get kg => $composableBuilder(
+    column: $table.kg,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LotSalesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LotSalesTable> {
+  $$LotSalesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get lotId =>
+      $composableBuilder(column: $table.lotId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, String> get soldOn =>
+      $composableBuilder(column: $table.soldOn, builder: (column) => column);
+
+  GeneratedColumn<double> get kg =>
+      $composableBuilder(column: $table.kg, builder: (column) => column);
+}
+
+class $$LotSalesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LotSalesTable,
+          LotSale,
+          $$LotSalesTableFilterComposer,
+          $$LotSalesTableOrderingComposer,
+          $$LotSalesTableAnnotationComposer,
+          $$LotSalesTableCreateCompanionBuilder,
+          $$LotSalesTableUpdateCompanionBuilder,
+          (LotSale, BaseReferences<_$AppDatabase, $LotSalesTable, LotSale>),
+          LotSale,
+          PrefetchHooks Function()
+        > {
+  $$LotSalesTableTableManager(_$AppDatabase db, $LotSalesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LotSalesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LotSalesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LotSalesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> lotId = const Value.absent(),
+                Value<DateTime> soldOn = const Value.absent(),
+                Value<double> kg = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LotSalesCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                soldOn: soldOn,
+                kg: kg,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String lotId,
+                required DateTime soldOn,
+                required double kg,
+                Value<int> rowid = const Value.absent(),
+              }) => LotSalesCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                lotId: lotId,
+                soldOn: soldOn,
+                kg: kg,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LotSalesTable, LotSale>(table),
+                  BaseReferences<_$AppDatabase, $LotSalesTable, LotSale>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LotSalesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LotSalesTable,
+      LotSale,
+      $$LotSalesTableFilterComposer,
+      $$LotSalesTableOrderingComposer,
+      $$LotSalesTableAnnotationComposer,
+      $$LotSalesTableCreateCompanionBuilder,
+      $$LotSalesTableUpdateCompanionBuilder,
+      (LotSale, BaseReferences<_$AppDatabase, $LotSalesTable, LotSale>),
+      LotSale,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -30004,6 +34404,15 @@ class $AppDatabaseManager {
       $$QueenRearingBatchesTableTableManager(_db, _db.queenRearingBatches);
   $$MatingNucsTableTableManager get matingNucs =>
       $$MatingNucsTableTableManager(_db, _db.matingNucs);
+  $$LotsTableTableManager get lots => $$LotsTableTableManager(_db, _db.lots);
+  $$LotHarvestsTableTableManager get lotHarvests =>
+      $$LotHarvestsTableTableManager(_db, _db.lotHarvests);
+  $$LotTreatmentsTableTableManager get lotTreatments =>
+      $$LotTreatmentsTableTableManager(_db, _db.lotTreatments);
+  $$LabResultsTableTableManager get labResults =>
+      $$LabResultsTableTableManager(_db, _db.labResults);
+  $$LotSalesTableTableManager get lotSales =>
+      $$LotSalesTableTableManager(_db, _db.lotSales);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$FeedbackQueueTableTableManager get feedbackQueue =>

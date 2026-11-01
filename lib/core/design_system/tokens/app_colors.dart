@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_arici/features/harvest/domain/harvest.dart'
+    show HoneyKind;
 import 'package:mobil_arici/features/queens/domain/queen.dart'
     show QueenMarkColor;
 
@@ -40,6 +42,11 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.queenRed,
     required this.queenGreen,
     required this.queenBlue,
+    required this.honeyPine,
+    required this.honeyFlower,
+    required this.honeyChestnut,
+    required this.honeyCitrus,
+    required this.honeyOther,
   });
 
   /// Standart açık tema (tasarım sistemi v1). Durum yazısı kendi zemininde
@@ -75,6 +82,11 @@ class AppColors extends ThemeExtension<AppColors> {
     queenRed: Color(0xFFE53935),
     queenGreen: Color(0xFF43A047),
     queenBlue: Color(0xFF1E88E5),
+    honeyPine: Color(0xFF6E4A1E),
+    honeyFlower: Color(0xFFC98A1E),
+    honeyChestnut: Color(0xFF4A2F14),
+    honeyCitrus: Color(0xFFE8B84A),
+    honeyOther: Color(0xFFA8803F),
   );
 
   /// Standart koyu tema.
@@ -109,6 +121,11 @@ class AppColors extends ThemeExtension<AppColors> {
     queenRed: Color(0xFFE53935),
     queenGreen: Color(0xFF43A047),
     queenBlue: Color(0xFF1E88E5),
+    honeyPine: Color(0xFF6E4A1E),
+    honeyFlower: Color(0xFFC98A1E),
+    honeyChestnut: Color(0xFF4A2F14),
+    honeyCitrus: Color(0xFFE8B84A),
+    honeyOther: Color(0xFFA8803F),
   );
 
   /// Güneş modu: saf beyaz zemin, siyah metin ve siyah birincil eylem
@@ -145,6 +162,11 @@ class AppColors extends ThemeExtension<AppColors> {
     queenRed: Color(0xFFE53935),
     queenGreen: Color(0xFF43A047),
     queenBlue: Color(0xFF1E88E5),
+    honeyPine: Color(0xFF6E4A1E),
+    honeyFlower: Color(0xFFC98A1E),
+    honeyChestnut: Color(0xFF4A2F14),
+    honeyCitrus: Color(0xFFE8B84A),
+    honeyOther: Color(0xFFA8803F),
   );
 
   final Color primary;
@@ -202,6 +224,22 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color queenGreen;
   final Color queenBlue;
 
+  /// Bal türünün kavanoz rengi (lot kartı). Balın kendi rengi olduğundan
+  /// her palette aynı; anlamı yanındaki bal türü adı taşır.
+  final Color honeyPine;
+  final Color honeyFlower;
+  final Color honeyChestnut;
+  final Color honeyCitrus;
+  final Color honeyOther;
+
+  Color honeySwatch(HoneyKind kind) => switch (kind) {
+    HoneyKind.pine => honeyPine,
+    HoneyKind.flower => honeyFlower,
+    HoneyKind.chestnut => honeyChestnut,
+    HoneyKind.citrus => honeyCitrus,
+    HoneyKind.other => honeyOther,
+  };
+
   Color queenMark(QueenMarkColor mark) {
     return switch (mark) {
       QueenMarkColor.white => queenWhite,
@@ -244,6 +282,11 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? queenRed,
     Color? queenGreen,
     Color? queenBlue,
+    Color? honeyPine,
+    Color? honeyFlower,
+    Color? honeyChestnut,
+    Color? honeyCitrus,
+    Color? honeyOther,
   }) {
     return AppColors(
       primary: primary ?? this.primary,
@@ -278,6 +321,11 @@ class AppColors extends ThemeExtension<AppColors> {
       queenRed: queenRed ?? this.queenRed,
       queenGreen: queenGreen ?? this.queenGreen,
       queenBlue: queenBlue ?? this.queenBlue,
+      honeyPine: honeyPine ?? this.honeyPine,
+      honeyFlower: honeyFlower ?? this.honeyFlower,
+      honeyChestnut: honeyChestnut ?? this.honeyChestnut,
+      honeyCitrus: honeyCitrus ?? this.honeyCitrus,
+      honeyOther: honeyOther ?? this.honeyOther,
     );
   }
 
@@ -339,6 +387,11 @@ class AppColors extends ThemeExtension<AppColors> {
       queenRed: Color.lerp(queenRed, other.queenRed, t)!,
       queenGreen: Color.lerp(queenGreen, other.queenGreen, t)!,
       queenBlue: Color.lerp(queenBlue, other.queenBlue, t)!,
+      honeyPine: Color.lerp(honeyPine, other.honeyPine, t)!,
+      honeyFlower: Color.lerp(honeyFlower, other.honeyFlower, t)!,
+      honeyChestnut: Color.lerp(honeyChestnut, other.honeyChestnut, t)!,
+      honeyCitrus: Color.lerp(honeyCitrus, other.honeyCitrus, t)!,
+      honeyOther: Color.lerp(honeyOther, other.honeyOther, t)!,
     );
   }
 }

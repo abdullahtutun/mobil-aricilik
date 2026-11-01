@@ -17,7 +17,9 @@ import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feeding/data/feeding_repository.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/harvest/data/harvest_repository.dart';
+import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
+import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/health/data/drug_repository.dart';
 import 'package:mobil_arici/features/health/data/mite_count_repository.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
@@ -432,6 +434,57 @@ Map<String, Object?> _matingNucRow(int seq) => {
   'rearing_batch_id': 'rearing-batch-1',
   'status': 'laying',
   'queen_id': null,
+};
+
+Map<String, Object?> _lotRow(int seq) => {
+  ..._standard('lot-1', seq),
+  'org_id': _org,
+  'year': 2026,
+  'seq': 7,
+  'honey_kind': 'pine',
+  'origin': 'Kızılçam',
+  'moisture': 17.2,
+  'status': 'open',
+};
+
+Map<String, Object?> _lotHarvestRow(int seq) => {
+  ..._standard('lot-harvest-1', seq),
+  'org_id': _org,
+  'lot_id': 'lot-1',
+  'harvest_id': 'harvest-1',
+};
+
+Map<String, Object?> _lotTreatmentRow(int seq) => {
+  ..._standard('lot-treatment-1', seq),
+  'org_id': _org,
+  'lot_id': 'lot-1',
+  'harvest_id': 'harvest-1',
+  'hive_id': 'hive-1',
+  'treatment_id': 'treatment-1',
+  'treated_at': '2026-09-01T09:00:00Z',
+  'withdrawal_ends_on': '2026-11-10',
+  'withdrawal_violation': true,
+};
+
+Map<String, Object?> _labResultRow(int seq) => {
+  ..._standard('lab-result-1', seq),
+  'org_id': _org,
+  'lot_id': 'lot-1',
+  'tested_on': '2026-10-28',
+  'hmf': 12.4,
+  'diastase': null,
+  'proline': 420,
+  'moisture': null,
+  'residue': 'none',
+  'document_id': null,
+};
+
+Map<String, Object?> _lotSaleRow(int seq) => {
+  ..._standard('lot-sale-1', seq),
+  'org_id': _org,
+  'lot_id': 'lot-1',
+  'sold_on': '2026-10-29',
+  'kg': 100.5,
 };
 
 bool _isPull(http.Request request) =>
@@ -942,11 +995,16 @@ void main() {
         'inventory_moves': [_inventoryMoveRow(23)],
         'queen_rearing_batches': [_rearingBatchRow(24)],
         'mating_nucs': [_matingNucRow(25)],
+        'lots': [_lotRow(26)],
+        'lot_harvests': [_lotHarvestRow(27)],
+        'lot_treatments': [_lotTreatmentRow(28)],
+        'lab_results': [_labResultRow(29)],
+        'lot_sales': [_lotSaleRow(30)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 25),
+        const SyncResult(status: SyncStatus.done, pulled: 30),
       );
 
       expect(requests.map(_pullOf), [
@@ -975,6 +1033,11 @@ void main() {
         (table: 'inventory_moves', since: 0),
         (table: 'queen_rearing_batches', since: 0),
         (table: 'mating_nucs', since: 0),
+        (table: 'lots', since: 0),
+        (table: 'lot_harvests', since: 0),
+        (table: 'lot_treatments', since: 0),
+        (table: 'lab_results', since: 0),
+        (table: 'lot_sales', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -1107,6 +1170,11 @@ void main() {
         'inventory_moves': 23,
         'queen_rearing_batches': 24,
         'mating_nucs': 25,
+        'lots': 26,
+        'lot_harvests': 27,
+        'lot_treatments': 28,
+        'lab_results': 29,
+        'lot_sales': 30,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -1148,6 +1216,19 @@ void main() {
       final nuc = (await rearing.nucs.findById('mating-nuc-1'))!;
       expect(nuc.status, MatingNucStatus.laying);
       expect(nuc.rearingBatchId, 'rearing-batch-1');
+      final lots = LotRepository(db);
+      final lot = (await lots.findById('lot-1'))!;
+      expect(lot.honeyKind, HoneyKind.pine);
+      expect(lot.moisture, 17.2);
+      expect(lot.status, LotStatus.open);
+      expect((await lots.findByHarvest('harvest-1'))?.id, 'lot-1');
+      final lotTreatment = (await lots.treatments.findById('lot-treatment-1'))!;
+      expect(lotTreatment.withdrawalEndsOn, DateTime(2026, 11, 10));
+      expect(lotTreatment.withdrawalViolation, isTrue);
+      final labResult = (await lots.labResults.findById('lab-result-1'))!;
+      expect(labResult.residue, ResidueResult.none);
+      expect(labResult.toJson()['tested_on'], '2026-10-28');
+      expect((await lots.sales.findById('lot-sale-1'))!.kg, 100.5);
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

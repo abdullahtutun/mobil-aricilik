@@ -16,6 +16,7 @@ import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_hives_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/harvest_lot_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_scan_screen.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
@@ -177,6 +178,7 @@ void main() {
     await _tap(tester, _button('Save harvest'));
     expect(find.text('Harvest saved for 2 hives'), findsOneWidget);
     expect(find.byType(HarvestFormScreen), findsNothing);
+    expect(find.byType(HarvestLotScreen), findsOneWidget);
     final harvest = (await liveHarvests()).single;
     expect(harvest.apiaryId, yayla.id);
     expect(harvest.honeyKind, HoneyKind.pine);
@@ -190,6 +192,10 @@ void main() {
     await _tap(tester, find.text('Undo'));
     expect(await liveHarvests(), isEmpty);
     expect(await liveHarvestHives(), isEmpty);
+    // Geri alınan hasat lota eklenemez; arılığa dönülür.
+    expect(find.text('Harvest was undone'), findsOneWidget);
+    await _tap(tester, _button('Back to apiary'));
+    expect(find.byType(HarvestLotScreen), findsNothing);
   });
 
   testWidgets('kovan listesinde seçim değişir; kilitli kovan kilit '
@@ -424,6 +430,18 @@ void main() {
 
     await tester.pump(const Duration(seconds: 7));
     await tester.pumpAndSettle();
+    expect(find.text('Lota ekle'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      _button('Şimdilik geç'),
+      200,
+      scrollable: find
+          .descendant(
+            of: find.byType(HarvestLotScreen),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+    await _tap(tester, _button('Şimdilik geç'));
     await _tap(tester, _button('Hasat'));
     await _tap(tester, find.text('2 kovan seçildi'));
     expect(find.text('Hasat kovanları'), findsOneWidget);

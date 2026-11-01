@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/db/tables/health_tables.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
 import 'package:mobil_arici/core/db/tables/inventory_tables.dart';
+import 'package:mobil_arici/core/db/tables/lot_tables.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/migration_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
@@ -20,6 +21,7 @@ import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
+import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
@@ -80,6 +82,11 @@ part 'app_database.g.dart';
     InventoryMoves,
     QueenRearingBatches,
     MatingNucs,
+    Lots,
+    LotHarvests,
+    LotTreatments,
+    LabResults,
+    LotSales,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -91,7 +98,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 16;
+  int get schemaVersion => 17;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -219,6 +226,29 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.matingNucsApiaryIdIdx);
         await m.create(schema.matingNucsRearingBatchIdIdx);
         await m.create(schema.matingNucsQueenIdIdx);
+      },
+      // Hasat lotları, lot hasatları, lot ilaçlamaları, analizler ve
+      // satışlar.
+      from16To17: (m, schema) async {
+        await m.createTable(schema.lots);
+        await m.create(schema.lotsOrgIdIdx);
+        await m.createTable(schema.lotHarvests);
+        await m.create(schema.lotHarvestsOrgIdIdx);
+        await m.create(schema.lotHarvestsLotIdIdx);
+        await m.create(schema.lotHarvestsHarvestIdIdx);
+        await m.createTable(schema.lotTreatments);
+        await m.create(schema.lotTreatmentsOrgIdIdx);
+        await m.create(schema.lotTreatmentsLotIdIdx);
+        await m.create(schema.lotTreatmentsHarvestIdIdx);
+        await m.create(schema.lotTreatmentsHiveIdIdx);
+        await m.create(schema.lotTreatmentsTreatmentIdIdx);
+        await m.createTable(schema.labResults);
+        await m.create(schema.labResultsOrgIdIdx);
+        await m.create(schema.labResultsLotIdIdx);
+        await m.create(schema.labResultsDocumentIdIdx);
+        await m.createTable(schema.lotSales);
+        await m.create(schema.lotSalesOrgIdIdx);
+        await m.create(schema.lotSalesLotIdIdx);
       },
     ),
   );

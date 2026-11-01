@@ -5114,4 +5114,321 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncTableMatingNucs => 'Mating nuc';
+
+  @override
+  String get lotsTitle => 'Harvest & lots';
+
+  @override
+  String get lotsEmptyTitle => 'No lots yet';
+
+  @override
+  String get lotsEmptyMessage =>
+      'Add a harvest to a lot after saving it; lots are listed here.';
+
+  @override
+  String get lotsLoadError => 'Couldn\'t load lots';
+
+  @override
+  String get lotsInStock => 'In stock';
+
+  @override
+  String get lotsPerHive => 'Per hive';
+
+  @override
+  String lotNumber(String number) {
+    return 'Lot $number';
+  }
+
+  @override
+  String lotHoneyTitle(String kind) {
+    return '$kind honey';
+  }
+
+  @override
+  String get lotStatusOpen => 'Open';
+
+  @override
+  String get lotStatusClosed => 'Closed';
+
+  @override
+  String get lotWithdrawalBadge => 'In withdrawal';
+
+  @override
+  String lotMoistureValue(String value) {
+    return 'Moisture $value%';
+  }
+
+  @override
+  String get lotAnalyzed => 'Analysed ✓';
+
+  @override
+  String get lotAnalysisPending => 'Analysis pending';
+
+  @override
+  String lotStockValue(String weight) {
+    return 'Stock $weight';
+  }
+
+  @override
+  String get lotNotFound => 'Lot not found';
+
+  @override
+  String get lotEdit => 'Edit lot';
+
+  @override
+  String lotWithdrawalTitle(String hives) {
+    return '$hives harvested during the withdrawal period.';
+  }
+
+  @override
+  String get lotWithdrawalMessage =>
+      'This lot may contain drug residue; get it analysed before selling.';
+
+  @override
+  String get lotStock => 'Stock';
+
+  @override
+  String get lotHarvested => 'Harvested';
+
+  @override
+  String get lotSold => 'Sold';
+
+  @override
+  String get lotInStock => 'In stock';
+
+  @override
+  String get lotSell => 'Record a sale';
+
+  @override
+  String get lotAnalyses => 'Analyses';
+
+  @override
+  String get lotAnalysesEmpty => 'No analyses yet';
+
+  @override
+  String get lotAddAnalysis => 'Add analysis';
+
+  @override
+  String get lotHarvests => 'Harvests';
+
+  @override
+  String get lotHarvestsEmpty => 'No harvests in this lot';
+
+  @override
+  String get lotTreatments => 'Hives\' last treatment';
+
+  @override
+  String get lotTreatmentsEmpty =>
+      'No treatments recorded for this lot\'s hives';
+
+  @override
+  String lotTreatmentTitle(String hive, String product) {
+    return 'Hive $hive · $product';
+  }
+
+  @override
+  String lotTreatmentDetail(String date, String end) {
+    return '$date · withdrawal ends $end';
+  }
+
+  @override
+  String get lotSales => 'Sales';
+
+  @override
+  String get lotSalesEmpty => 'No sales recorded yet';
+
+  @override
+  String lotSaleValue(String weight) {
+    return '−$weight';
+  }
+
+  @override
+  String lotSaleAmount(String unit) {
+    return 'Honey sold ($unit)';
+  }
+
+  @override
+  String lotSaleTooMuch(String weight) {
+    return 'Only $weight in stock';
+  }
+
+  @override
+  String get lotSaleSave => 'Subtract from stock';
+
+  @override
+  String lotSaleSaved(String weight) {
+    return '$weight sale recorded';
+  }
+
+  @override
+  String get lotOrigin => 'Origin';
+
+  @override
+  String get lotOriginHint => 'E.g. Mountain pine';
+
+  @override
+  String get lotMoisture => 'Moisture %';
+
+  @override
+  String get lotMoistureHelper => 'Refractometer reading; optional';
+
+  @override
+  String get lotMoistureInvalid => 'Enter a value between 10 and 30, like 17.2';
+
+  @override
+  String lotEditTitle(String lot) {
+    return 'Edit $lot';
+  }
+
+  @override
+  String get lotStatus => 'Status';
+
+  @override
+  String get lotStatusHelper => 'Closed lots don\'t take new harvests';
+
+  @override
+  String get lotSave => 'Save';
+
+  @override
+  String get lotDelete => 'Delete lot';
+
+  @override
+  String lotDeleteTitle(String lot) {
+    return 'Delete $lot?';
+  }
+
+  @override
+  String get lotDeleteMessage =>
+      'Analyses and sales are deleted too; harvests stay.';
+
+  @override
+  String get lotDeleted => 'Lot deleted';
+
+  @override
+  String labTitle(String lot) {
+    return 'Analysis · $lot';
+  }
+
+  @override
+  String get labDate => 'Analysis date';
+
+  @override
+  String get labHmf => 'HMF (mg/kg)';
+
+  @override
+  String get labDiastase => 'Diastase number';
+
+  @override
+  String get labProline => 'Proline (mg/kg)';
+
+  @override
+  String labHmfValue(String value) {
+    return 'HMF $value';
+  }
+
+  @override
+  String labDiastaseValue(String value) {
+    return 'Diastase $value';
+  }
+
+  @override
+  String labProlineValue(String value) {
+    return 'Proline $value';
+  }
+
+  @override
+  String labValueInvalid(String min, String max) {
+    return 'Enter a value between $min and $max';
+  }
+
+  @override
+  String get labResidue => 'Residue';
+
+  @override
+  String get labResidueNone => 'No residue';
+
+  @override
+  String get labResidueDetected => 'Residue detected';
+
+  @override
+  String get labReport => 'Report';
+
+  @override
+  String get labReportNone => 'No report';
+
+  @override
+  String get labReportEmpty => 'No analysis reports in the document vault';
+
+  @override
+  String get labReportAdd => 'Add report to document vault';
+
+  @override
+  String get labSave => 'Save analysis';
+
+  @override
+  String get labSaved => 'Analysis saved';
+
+  @override
+  String get harvestLotTitle => 'Add to lot';
+
+  @override
+  String harvestLotSaved(String weight, String kind) {
+    return 'Harvest saved: $weight $kind';
+  }
+
+  @override
+  String get harvestLotIntro =>
+      'When honey goes into a lot, the hives\' last treatment dates are linked to it.';
+
+  @override
+  String get harvestLotNew => 'New lot';
+
+  @override
+  String harvestLotNewHint(String kind) {
+    return '$kind · number assigned automatically';
+  }
+
+  @override
+  String get harvestLotCreate => 'Create lot';
+
+  @override
+  String get harvestLotAdd => 'Add to lot';
+
+  @override
+  String get harvestLotSkip => 'Skip for now';
+
+  @override
+  String harvestLotCreated(String lot) {
+    return '$lot created';
+  }
+
+  @override
+  String harvestLotAdded(String lot) {
+    return 'Harvest added to $lot';
+  }
+
+  @override
+  String get harvestLotGone => 'Harvest was undone';
+
+  @override
+  String get harvestLotBack => 'Back to apiary';
+
+  @override
+  String get syncTableLots => 'Lot';
+
+  @override
+  String get syncTableLotHarvests => 'Lot harvest';
+
+  @override
+  String get syncTableLotTreatments => 'Lot treatment';
+
+  @override
+  String get syncTableLabResults => 'Lab result';
+
+  @override
+  String get syncTableLotSales => 'Lot sale';
+
+  @override
+  String get harvestLotGoneMessage =>
+      'The harvest wasn\'t added to a lot. You can record it again from the apiary.';
 }

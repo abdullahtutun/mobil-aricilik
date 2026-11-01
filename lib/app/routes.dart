@@ -74,6 +74,11 @@ abstract final class AppRoutes {
   static String apiaryHarvestScan(String apiaryId) =>
       '/apiaries/$apiaryId/harvest/scan';
 
+  /// Kaydedilen hasadı lota ekleme adımı; hasadın yerine açılır, geri tuşu
+  /// arılığa döner.
+  static String apiaryHarvestLot(String apiaryId, String harvestId) =>
+      '/apiaries/$apiaryId/harvest-lot/$harvestId';
+
   /// İlaç uygulamasından işletmeye yeni ilaç ekleme; eklenen ilaç
   /// uygulamada seçilir.
   static String hiveTreatDrugNew(String apiaryId, String hiveId) =>
@@ -143,6 +148,13 @@ abstract final class AppRoutes {
   static const inventoryShopping = '/more/inventory/shopping';
   static String inventoryItem(String id) => '/more/inventory/$id';
   static String inventoryItemEdit(String id) => '/more/inventory/$id/edit';
+
+  /// Hasat ve lotlar; Daha fazla'dan açılır. Lot, düzenleme ve analiz
+  /// ekleme listenin altında. Lot hasat kaydından açılır.
+  static const lots = '/more/lots';
+  static String lot(String id) => '/more/lots/$id';
+  static String lotEdit(String id) => '/more/lots/$id/edit';
+  static String lotLabResult(String id) => '/more/lots/$id/lab';
 
   /// Ana yetiştirme serileri; Daha fazla'dan açılır. Serinin takvimi,
   /// ekleme ve düzenleme listenin altında.

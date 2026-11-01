@@ -4855,5 +4855,510 @@
   "syncTableMatingNucs": "Mating nuc",
   "@syncTableMatingNucs": {
     "description": "Sync screen record type."
+  },
+
+  "lotsTitle": "Harvest & lots",
+  "@lotsTitle": {
+    "description": "Lots list title and More tile."
+  },
+  "lotsEmptyTitle": "No lots yet",
+  "@lotsEmptyTitle": {
+    "description": "Empty lots list title."
+  },
+  "lotsEmptyMessage": "Add a harvest to a lot after saving it; lots are listed here.",
+  "@lotsEmptyMessage": {
+    "description": "Empty lots list message."
+  },
+  "lotsLoadError": "Couldn't load lots",
+  "@lotsLoadError": {
+    "description": "Lots load error."
+  },
+  "lotsInStock": "In stock",
+  "@lotsInStock": {
+    "description": "Overview tile: honey in stock."
+  },
+  "lotsPerHive": "Per hive",
+  "@lotsPerHive": {
+    "description": "Overview tile: this year's yield per hive."
+  },
+  "lotNumber": "Lot {number}",
+  "@lotNumber": {
+    "description": "Lot number label.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "2026-07"
+      }
+    }
+  },
+  "lotHoneyTitle": "{kind} honey",
+  "@lotHoneyTitle": {
+    "description": "Lot title from honey kind.",
+    "placeholders": {
+      "kind": {
+        "type": "String",
+        "example": "Pine"
+      }
+    }
+  },
+  "lotStatusOpen": "Open",
+  "@lotStatusOpen": {
+    "description": "Lot status: harvests can be added."
+  },
+  "lotStatusClosed": "Closed",
+  "@lotStatusClosed": {
+    "description": "Lot status: no more harvests."
+  },
+  "lotWithdrawalBadge": "In withdrawal",
+  "@lotWithdrawalBadge": {
+    "description": "Badge: harvested during drug withdrawal period."
+  },
+  "lotMoistureValue": "Moisture {value}%",
+  "@lotMoistureValue": {
+    "description": "Moisture tag.",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "17.2"
+      }
+    }
+  },
+  "lotAnalyzed": "Analysed ✓",
+  "@lotAnalyzed": {
+    "description": "Tag: lot has a lab analysis."
+  },
+  "lotAnalysisPending": "Analysis pending",
+  "@lotAnalysisPending": {
+    "description": "Tag: lot has no lab analysis yet."
+  },
+  "lotStockValue": "Stock {weight}",
+  "@lotStockValue": {
+    "description": "Stock tag.",
+    "placeholders": {
+      "weight": {
+        "type": "String",
+        "example": "410 kg"
+      }
+    }
+  },
+  "lotNotFound": "Lot not found",
+  "@lotNotFound": {
+    "description": "Lot missing or deleted."
+  },
+  "lotEdit": "Edit lot",
+  "@lotEdit": {
+    "description": "Edit action tooltip."
+  },
+  "lotWithdrawalTitle": "{hives} harvested during the withdrawal period.",
+  "@lotWithdrawalTitle": {
+    "description": "Withdrawal violation card title.",
+    "placeholders": {
+      "hives": {
+        "type": "String",
+        "example": "104, 108"
+      }
+    }
+  },
+  "lotWithdrawalMessage": "This lot may contain drug residue; get it analysed before selling.",
+  "@lotWithdrawalMessage": {
+    "description": "Withdrawal violation card message."
+  },
+  "lotStock": "Stock",
+  "@lotStock": {
+    "description": "Section label."
+  },
+  "lotHarvested": "Harvested",
+  "@lotHarvested": {
+    "description": "Stock row: total harvested."
+  },
+  "lotSold": "Sold",
+  "@lotSold": {
+    "description": "Stock row: total sold."
+  },
+  "lotInStock": "In stock",
+  "@lotInStock": {
+    "description": "Stock row: remaining."
+  },
+  "lotSell": "Record a sale",
+  "@lotSell": {
+    "description": "Button: subtract sold honey from stock."
+  },
+  "lotAnalyses": "Analyses",
+  "@lotAnalyses": {
+    "description": "Section label."
+  },
+  "lotAnalysesEmpty": "No analyses yet",
+  "@lotAnalysesEmpty": {
+    "description": "Empty analyses."
+  },
+  "lotAddAnalysis": "Add analysis",
+  "@lotAddAnalysis": {
+    "description": "Button: add lab result."
+  },
+  "lotHarvests": "Harvests",
+  "@lotHarvests": {
+    "description": "Section label."
+  },
+  "lotHarvestsEmpty": "No harvests in this lot",
+  "@lotHarvestsEmpty": {
+    "description": "Empty harvests."
+  },
+  "lotTreatments": "Hives' last treatment",
+  "@lotTreatments": {
+    "description": "Section label."
+  },
+  "lotTreatmentsEmpty": "No treatments recorded for this lot's hives",
+  "@lotTreatmentsEmpty": {
+    "description": "Empty treatments."
+  },
+  "lotTreatmentTitle": "Hive {hive} · {product}",
+  "@lotTreatmentTitle": {
+    "description": "Treatment row title.",
+    "placeholders": {
+      "hive": {
+        "type": "String",
+        "example": "104"
+      },
+      "product": {
+        "type": "String",
+        "example": "Amitraz strip"
+      }
+    }
+  },
+  "lotTreatmentDetail": "{date} · withdrawal ends {end}",
+  "@lotTreatmentDetail": {
+    "description": "Treatment row detail.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "1 Sep 2026"
+      },
+      "end": {
+        "type": "String",
+        "example": "10 Nov 2026"
+      }
+    }
+  },
+  "lotSales": "Sales",
+  "@lotSales": {
+    "description": "Section label."
+  },
+  "lotSalesEmpty": "No sales recorded yet",
+  "@lotSalesEmpty": {
+    "description": "Empty sales."
+  },
+  "lotSaleValue": "−{weight}",
+  "@lotSaleValue": {
+    "description": "Sale row amount.",
+    "placeholders": {
+      "weight": {
+        "type": "String",
+        "example": "100 kg"
+      }
+    }
+  },
+  "lotSaleAmount": "Honey sold ({unit})",
+  "@lotSaleAmount": {
+    "description": "Sale amount field label.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "lotSaleTooMuch": "Only {weight} in stock",
+  "@lotSaleTooMuch": {
+    "description": "Sale exceeds stock.",
+    "placeholders": {
+      "weight": {
+        "type": "String",
+        "example": "410 kg"
+      }
+    }
+  },
+  "lotSaleSave": "Subtract from stock",
+  "@lotSaleSave": {
+    "description": "Sale save button."
+  },
+  "lotSaleSaved": "{weight} sale recorded",
+  "@lotSaleSaved": {
+    "description": "Message after recording a sale.",
+    "placeholders": {
+      "weight": {
+        "type": "String",
+        "example": "100 kg"
+      }
+    }
+  },
+  "lotOrigin": "Origin",
+  "@lotOrigin": {
+    "description": "Lot origin field."
+  },
+  "lotOriginHint": "E.g. Mountain pine",
+  "@lotOriginHint": {
+    "description": "Origin hint."
+  },
+  "lotMoisture": "Moisture %",
+  "@lotMoisture": {
+    "description": "Moisture field."
+  },
+  "lotMoistureHelper": "Refractometer reading; optional",
+  "@lotMoistureHelper": {
+    "description": "Moisture helper."
+  },
+  "lotMoistureInvalid": "Enter a value between 10 and 30, like 17.2",
+  "@lotMoistureInvalid": {
+    "description": "Moisture invalid."
+  },
+  "lotEditTitle": "Edit {lot}",
+  "@lotEditTitle": {
+    "description": "Lot edit title.",
+    "placeholders": {
+      "lot": {
+        "type": "String",
+        "example": "Lot 2026-07"
+      }
+    }
+  },
+  "lotStatus": "Status",
+  "@lotStatus": {
+    "description": "Lot status field."
+  },
+  "lotStatusHelper": "Closed lots don't take new harvests",
+  "@lotStatusHelper": {
+    "description": "Status helper."
+  },
+  "lotSave": "Save",
+  "@lotSave": {
+    "description": "Lot save button."
+  },
+  "lotDelete": "Delete lot",
+  "@lotDelete": {
+    "description": "Delete button."
+  },
+  "lotDeleteTitle": "Delete {lot}?",
+  "@lotDeleteTitle": {
+    "description": "Delete dialog title.",
+    "placeholders": {
+      "lot": {
+        "type": "String",
+        "example": "Lot 2026-07"
+      }
+    }
+  },
+  "lotDeleteMessage": "Analyses and sales are deleted too; harvests stay.",
+  "@lotDeleteMessage": {
+    "description": "Delete dialog message."
+  },
+  "lotDeleted": "Lot deleted",
+  "@lotDeleted": {
+    "description": "Message after deleting."
+  },
+  "labTitle": "Analysis · {lot}",
+  "@labTitle": {
+    "description": "Lab result form title.",
+    "placeholders": {
+      "lot": {
+        "type": "String",
+        "example": "Lot 2026-07"
+      }
+    }
+  },
+  "labDate": "Analysis date",
+  "@labDate": {
+    "description": "Date row."
+  },
+  "labHmf": "HMF (mg/kg)",
+  "@labHmf": {
+    "description": "HMF field."
+  },
+  "labDiastase": "Diastase number",
+  "@labDiastase": {
+    "description": "Diastase field."
+  },
+  "labProline": "Proline (mg/kg)",
+  "@labProline": {
+    "description": "Proline field."
+  },
+  "labHmfValue": "HMF {value}",
+  "@labHmfValue": {
+    "description": "HMF in result row.",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "12.4"
+      }
+    }
+  },
+  "labDiastaseValue": "Diastase {value}",
+  "@labDiastaseValue": {
+    "description": "Diastase in result row.",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "18.2"
+      }
+    }
+  },
+  "labProlineValue": "Proline {value}",
+  "@labProlineValue": {
+    "description": "Proline in result row.",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "420"
+      }
+    }
+  },
+  "labValueInvalid": "Enter a value between {min} and {max}",
+  "@labValueInvalid": {
+    "description": "Lab value invalid.",
+    "placeholders": {
+      "min": {
+        "type": "String",
+        "example": "0"
+      },
+      "max": {
+        "type": "String",
+        "example": "1000"
+      }
+    }
+  },
+  "labResidue": "Residue",
+  "@labResidue": {
+    "description": "Residue field."
+  },
+  "labResidueNone": "No residue",
+  "@labResidueNone": {
+    "description": "Residue: none."
+  },
+  "labResidueDetected": "Residue detected",
+  "@labResidueDetected": {
+    "description": "Residue: detected."
+  },
+  "labReport": "Report",
+  "@labReport": {
+    "description": "Report row and icon label."
+  },
+  "labReportNone": "No report",
+  "@labReportNone": {
+    "description": "No report selected."
+  },
+  "labReportEmpty": "No analysis reports in the document vault",
+  "@labReportEmpty": {
+    "description": "Report picker empty."
+  },
+  "labReportAdd": "Add report to document vault",
+  "@labReportAdd": {
+    "description": "Button to document vault."
+  },
+  "labSave": "Save analysis",
+  "@labSave": {
+    "description": "Save button."
+  },
+  "labSaved": "Analysis saved",
+  "@labSaved": {
+    "description": "Message after saving."
+  },
+  "harvestLotTitle": "Add to lot",
+  "@harvestLotTitle": {
+    "description": "Harvest lot step title."
+  },
+  "harvestLotSaved": "Harvest saved: {weight} {kind}",
+  "@harvestLotSaved": {
+    "description": "Harvest lot step summary.",
+    "placeholders": {
+      "weight": {
+        "type": "String",
+        "example": "574 kg"
+      },
+      "kind": {
+        "type": "String",
+        "example": "Pine"
+      }
+    }
+  },
+  "harvestLotIntro": "When honey goes into a lot, the hives' last treatment dates are linked to it.",
+  "@harvestLotIntro": {
+    "description": "Harvest lot step intro."
+  },
+  "harvestLotNew": "New lot",
+  "@harvestLotNew": {
+    "description": "Option: create a new lot."
+  },
+  "harvestLotNewHint": "{kind} · number assigned automatically",
+  "@harvestLotNewHint": {
+    "description": "New lot hint.",
+    "placeholders": {
+      "kind": {
+        "type": "String",
+        "example": "Pine"
+      }
+    }
+  },
+  "harvestLotCreate": "Create lot",
+  "@harvestLotCreate": {
+    "description": "Create lot button."
+  },
+  "harvestLotAdd": "Add to lot",
+  "@harvestLotAdd": {
+    "description": "Add to existing lot button."
+  },
+  "harvestLotSkip": "Skip for now",
+  "@harvestLotSkip": {
+    "description": "Skip lot step."
+  },
+  "harvestLotCreated": "{lot} created",
+  "@harvestLotCreated": {
+    "description": "Message after creating lot.",
+    "placeholders": {
+      "lot": {
+        "type": "String",
+        "example": "Lot 2026-08"
+      }
+    }
+  },
+  "harvestLotAdded": "Harvest added to {lot}",
+  "@harvestLotAdded": {
+    "description": "Message after adding to lot.",
+    "placeholders": {
+      "lot": {
+        "type": "String",
+        "example": "Lot 2026-07"
+      }
+    }
+  },
+  "harvestLotGone": "Harvest was undone",
+  "@harvestLotGone": {
+    "description": "Harvest lot step: harvest deleted."
+  },
+  "harvestLotBack": "Back to apiary",
+  "@harvestLotBack": {
+    "description": "Back button."
+  },
+  "syncTableLots": "Lot",
+  "@syncTableLots": {
+    "description": "Sync screen record type."
+  },
+  "syncTableLotHarvests": "Lot harvest",
+  "@syncTableLotHarvests": {
+    "description": "Sync screen record type."
+  },
+  "syncTableLotTreatments": "Lot treatment",
+  "@syncTableLotTreatments": {
+    "description": "Sync screen record type."
+  },
+  "syncTableLabResults": "Lab result",
+  "@syncTableLabResults": {
+    "description": "Sync screen record type."
+  },
+  "syncTableLotSales": "Lot sale",
+  "@syncTableLotSales": {
+    "description": "Sync screen record type."
+  },
+  "harvestLotGoneMessage": "The harvest wasn't added to a lot. You can record it again from the apiary.",
+  "@harvestLotGoneMessage": {
+    "description": "Harvest lot step: harvest deleted message."
   }
 }
