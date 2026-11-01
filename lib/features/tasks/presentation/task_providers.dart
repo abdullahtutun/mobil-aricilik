@@ -22,6 +22,15 @@ Stream<List<TaskView>> openTasks(Ref ref) {
   return ref.watch(taskRepositoryProvider).watchOpen(orgId);
 }
 
+/// Oturumdaki işletmenin açık planlı ilaçlama görevleri ve uygulanacak
+/// kovan sayısı; işletme yoksa boş.
+@riverpod
+Stream<List<({Task task, int hives})>> openPlannedTreatments(Ref ref) {
+  final orgId = ref.watch(currentOrgIdProvider);
+  if (orgId == null) return Stream.value(const []);
+  return ref.watch(taskRepositoryProvider).watchOpenPlannedTreatments(orgId);
+}
+
 /// Görev; yoksa ya da silinmişse null.
 @riverpod
 Stream<Task?> task(Ref ref, String id) =>

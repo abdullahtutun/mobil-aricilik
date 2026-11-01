@@ -9,16 +9,17 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory_rules.dart';
+import 'package:mobil_arici/features/inventory/domain/shopping_rules.dart';
 import 'package:mobil_arici/features/inventory/presentation/inventory_providers.dart';
 import 'package:mobil_arici/features/inventory/presentation/widgets/inventory_labels.dart';
 import 'package:mobil_arici/features/inventory/presentation/widgets/inventory_move_sheet.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
-/// Malzeme ve stok (docs/design "Malzeme ve stok"): Sarf / Ekipman / Petek
-/// sekmeleri, kalemler tek kartta: ad · konum, sağda stok, altında eşiğe
-/// göre çubuk ve eşiğin altındaysa uyarı. Kaleme dokununca hızlı giriş /
-/// çıkış sayfası açılır; viewer'da kalemin ayrıntısı. Tasarımdaki alışveriş
-/// listesi kartı yok.
+/// Malzeme ve stok (docs/design "Malzeme ve stok"): alınacak bir şey
+/// varsa üstte alışveriş listesi kartı; Sarf / Ekipman / Petek sekmeleri,
+/// kalemler tek kartta: ad · konum, sağda stok, altında eşiğe göre çubuk
+/// ve eşiğin altındaysa uyarı. Kaleme dokununca hızlı giriş / çıkış
+/// sayfası açılır; viewer'da kalemin ayrıntısı.
 class InventoryScreen extends ConsumerStatefulWidget {
   const new({super.key});
 
@@ -84,6 +85,7 @@ class _StockList extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.all(spacing.lg),
       children: [
+        const _ShoppingCard(),
         SegmentedTabs<InventoryCategory>(
           expanded: true,
           options: [
@@ -108,6 +110,83 @@ class _StockList extends StatelessWidget {
         else
           ListGroup(children: [for (final stock in stocks) _StockRow(stock)]),
       ],
+    );
+  }
+}
+
+/// Alışveriş listesi kartı: koyu zeminde çanta ikonu, "Alışveriş listesi ·
+/// 3" ve alınacakların adları; dokununca liste açılır. Liste boşsa yok.
+/// Alt boşluğu kendisinde.
+class _ShoppingCard extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final lines =
+        ref.watch(shoppingListOfProvider(languageCode)).value ??
+        const <ShoppingLine>[];
+    if (lines.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: spacing.lg),
+      child: MergeSemantics(
+        child: Material(
+          color: colors.inverseSurface,
+          borderRadius: BorderRadius.circular(context.radii.card),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: () => context.go(AppRoutes.inventoryShopping),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: context.touchTargets.field,
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(spacing.lg),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.shopping_bag_outlined,
+                      size: context.sizes.icon,
+                      color: colors.inversePrimary,
+                    ),
+                    SizedBox(width: spacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.shoppingCardTitle(lines.length),
+                            style: context.typography.subtitle.copyWith(
+                              color: colors.onInverseSurface,
+                            ),
+                          ),
+                          Text(
+                            [for (final line in lines) line.name].join(', '),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.typography.bodySmall.copyWith(
+                              color: colors.onInverseSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: spacing.sm),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: colors.onInverseSurface,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

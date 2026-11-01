@@ -7,6 +7,8 @@ import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 
 import '../../../helpers/test_database.dart';
 
@@ -16,6 +18,7 @@ void main() {
   late FeedingRepository repository;
   late HiveRepository hives;
   late InspectionRepository inspections;
+  late InventoryRepository inventory;
 
   setUp(() {
     db = openTestDatabase();
@@ -23,6 +26,7 @@ void main() {
     repository = FeedingRepository(db, clock: clock.call);
     hives = HiveRepository(db, clock: clock.call);
     inspections = InspectionRepository(db, clock: clock.call);
+    inventory = InventoryRepository(db, clock: clock.call);
   });
 
   Future<Hive> createHive(
@@ -223,6 +227,159 @@ void main() {
           OutboxOperation.delete,
         ],
       );
+    });
+  });
+
+  group('stoktan düşüm', () {
+    Future<InventoryItem> item(String name, InventoryUnit unit) =>
+        inventory.create(
+          orgId: 'org-1',
+          name: name,
+          category: InventoryCategory.consumable,
+          unit: unit,
+        );
+
+    test('şurup şeker kaleminden tarifteki şeker olarak düşer; hareket ilk '
+        "beslemeye bağlı ve outbox'ta", () async {
+      await createHive('101');
+      await createHive('102');
+      final sugar = await item('Şeker', InventoryUnit.kg);
+
+      // 2 kovan × 3 L 2:1 şurup = 6 L × 1,33 kg/L × 2/3 ≈ 5,32 kg şeker.
+      final feedings = await repository.addToApiary(
+        'apiary-1',
+        plan(),
+        stockItem: sugar,
+      );
+
+      final move = (await db.select(db.inventoryMoves).get()).single;
+      expect(move.itemId, sugar.id);
+      expect(move.kind, InventoryMoveKind.stockOut);
+      expect(move.quantity, -5.32);
+      expect(move.linkedTable, 'feedings');
+      expect(move.linkedId, feedings.first.id);
+      expect(await inventory.moves.stockOf(sugar.id), -5.32);
+      expect(
+        [
+          for (final e in await readOutbox(db))
+            if (e.recordTable == 'inventory_moves') e.payload['linked_id'],
+        ],
+        [feedings.first.id],
+      );
+    });
+
+    test('kek kilogram, adetlik kalemde yukarı yuvarlanır', () async {
+      final hive = await createHive('101');
+      final cake = await item('Arı keki', InventoryUnit.kg);
+      final packs = await item('Kek paketi', InventoryUnit.piece);
+
+      await repository.addToHive(
+        hive,
+        plan(kind: FeedingKind.beeCake, amount: 1.5),
+        stockItem: cake,
+      );
+      await repository.addToHive(
+        hive,
+        plan(kind: FeedingKind.beeCake, amount: 1.5),
+        stockItem: packs,
+      );
+
+      expect(await inventory.moves.stockOf(cake.id), -1.5);
+      expect(await inventory.moves.stockOf(packs.id), -2);
+    });
+
+    test('birimi uymayan kalemde ne besleme ne hareket yazılır', () async {
+      final hive = await createHive('101');
+      final syrup = await item('Hazır şurup', InventoryUnit.liter);
+
+      expect(
+        () => repository.addToHive(
+          hive,
+          plan(kind: FeedingKind.beeCake, amount: 1),
+          stockItem: syrup,
+        ),
+        throwsArgumentError,
+      );
+      await pumpEventQueue();
+
+      expect(await db.select(db.feedings).get(), isEmpty);
+      expect(await db.select(db.inventoryMoves).get(), isEmpty);
+    });
+
+    test('hareket yazılamazsa besleme de yazılmaz', () async {
+      final hive = await createHive('101');
+      final sugar = await item('Şeker', InventoryUnit.kg);
+      await db.customStatement(
+        'CREATE TRIGGER move_fails BEFORE INSERT ON inventory_moves '
+        "BEGIN SELECT RAISE(ABORT, 'kapalı'); END",
+      );
+
+      await expectLater(
+        repository.addToHive(hive, plan(), stockItem: sugar),
+        throwsA(isA<SqliteException>()),
+      );
+
+      expect(await db.select(db.feedings).get(), isEmpty);
+      expect(await feedingOutbox(), isEmpty);
+    });
+
+    test('geri al stok çıkışını da siler; stok geri gelir', () async {
+      await createHive('101');
+      await createHive('102');
+      final sugar = await item('Şeker', InventoryUnit.kg);
+      await inventory.moves.add(sugar, InventoryMoveKind.stockIn, 50);
+      final feedings = await repository.addToApiary(
+        'apiary-1',
+        plan(),
+        stockItem: sugar,
+      );
+      expect(await inventory.moves.stockOf(sugar.id), 44.68);
+
+      await repository.deleteAll(feedings);
+
+      expect(await inventory.moves.stockOf(sugar.id), 50);
+      final outbox = [
+        for (final e in await readOutbox(db))
+          if (e.recordTable == 'inventory_moves') e.operation,
+      ];
+      expect(outbox, [
+        OutboxOperation.upsert,
+        OutboxOperation.upsert,
+        OutboxOperation.delete,
+      ]);
+    });
+
+    test('türün son düşülen kalemi; geri alınan ya da silinen kalem '
+        'sayılmaz', () async {
+      final hive = await createHive('101');
+      final sugar = await item('Şeker', InventoryUnit.kg);
+      final other = await item('Toz şeker', InventoryUnit.kg);
+      final cake = await item('Arı keki', InventoryUnit.kg);
+      final emitted = <Map<FeedingKind, String>>[];
+      final subscription = inventory.moves
+          .watchLastFeedingItems('org-1')
+          .listen(emitted.add);
+      addTearDown(subscription.cancel);
+
+      await repository.addToHive(hive, plan(), stockItem: sugar);
+      clock.advance(const Duration(minutes: 1));
+      final undone = await repository.addToHive(hive, plan(), stockItem: other);
+      clock.advance(const Duration(minutes: 1));
+      await repository.addToHive(
+        hive,
+        plan(kind: FeedingKind.beeCake, amount: 1),
+        stockItem: cake,
+      );
+      await pumpEventQueue();
+      expect(emitted.last, {
+        FeedingKind.syrup2to1: other.id,
+        FeedingKind.beeCake: cake.id,
+      });
+
+      await repository.deleteAll([undone]);
+      await inventory.delete(cake.id);
+      await pumpEventQueue();
+      expect(emitted.last, {FeedingKind.syrup2to1: sugar.id});
     });
   });
 

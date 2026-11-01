@@ -15,11 +15,17 @@ import 'package:mobil_arici/features/feeding/presentation/widgets/feeding_labels
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/domain/stock_usage_rules.dart';
+import 'package:mobil_arici/features/inventory/presentation/inventory_providers.dart';
+import 'package:mobil_arici/features/inventory/presentation/widgets/stock_use_field.dart';
 
 /// Besleme (docs/design "Besleme + şurup"): kovan ya da arılığın tümü; tür;
 /// kovan başına miktar (kullanıcının biriminde); bal katı uyarısı; şurupta
 /// gereken şeker ve su. Arılığın tümünde şurup bal katı olan kovanlara
-/// yazılmaz. Kaydedince karta dönülür ve 6 sn geri alınabilir.
+/// yazılmaz. Seçilen stok kaleminden (varsayılan türün son kullanılanı)
+/// kullanılan miktar düşülür. Kaydedince karta dönülür ve 6 sn geri
+/// alınabilir; Geri al stok çıkışını da siler.
 class FeedingFormScreen extends ConsumerWidget {
   const new({required this.hiveId, super.key});
 
@@ -33,28 +39,7 @@ class FeedingFormScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     return switch (ref.watch(_provider)) {
-      AsyncData(value: final form?) => Scaffold(
-        appBar: AppBar(
-          leading: const CloseButton(),
-          title: Text(l10n.feedingFormTitle),
-        ),
-        body: BottomActionLayout(
-          separated: true,
-          body: ListView(
-            padding: EdgeInsets.all(context.spacing.lg),
-            children: [_FeedingFormFields(_provider, form)],
-          ),
-          action: BigButton(
-            label: l10n.feedingSave(_targets(ref, form).fed.length),
-            onPressed:
-                form.kind != null &&
-                    !form.saving &&
-                    _targets(ref, form).fed.isNotEmpty
-                ? () => _save(context, ref, form)
-                : null,
-          ),
-        ),
-      ),
+      AsyncData(value: final form?) => _form(context, ref, form),
       AsyncData() => Scaffold(appBar: AppBar(), body: const HiveNotFound()),
       AsyncError() => Scaffold(
         appBar: AppBar(),
@@ -63,6 +48,32 @@ class FeedingFormScreen extends ConsumerWidget {
       // Yerel DB'den okunuyor; hemen gelir.
       AsyncValue() => Scaffold(appBar: AppBar()),
     };
+  }
+
+  Widget _form(BuildContext context, WidgetRef ref, FeedingFormState form) {
+    final l10n = AppLocalizations.of(context);
+    final targets = _targets(ref, form);
+    // Kalem ekran çizilirken hesaplanır; Kaydet onu yazar.
+    final stockItem = _stock(ref, form)?.item;
+    return Scaffold(
+      appBar: AppBar(
+        leading: const CloseButton(),
+        title: Text(l10n.feedingFormTitle),
+      ),
+      body: BottomActionLayout(
+        separated: true,
+        body: ListView(
+          padding: EdgeInsets.all(context.spacing.lg),
+          children: [_FeedingFormFields(_provider, form)],
+        ),
+        action: BigButton(
+          label: l10n.feedingSave(targets.fed.length),
+          onPressed: form.kind != null && !form.saving && targets.fed.isNotEmpty
+              ? () => _save(context, ref, form, stockItem)
+              : null,
+        ),
+      ),
+    );
   }
 
   /// Arılığın şu an bal katı olan kovanları; gelene kadar yok sayılır.
@@ -86,6 +97,32 @@ class FeedingFormScreen extends ConsumerWidget {
     );
   }
 
+  /// Kalemden düşülecek miktar: beslenecek kovanların toplamı, kalemin
+  /// biriminde ([feedingStockUsage]).
+  static StockUsage _usage(WidgetRef ref, FeedingFormState form) {
+    final kind = form.kind ?? FeedingKind.beeCake;
+    final total =
+        storedFeedingAmount(
+          kind,
+          form.amount,
+          ref.watch(regionConfigProvider).defaultUnits,
+        ) *
+        _targets(ref, form).fed.length;
+    return (unit) => feedingStockUsage(kind, total, unit);
+  }
+
+  /// Düşülecek kalem; tür seçilmemişse yok.
+  static InventoryStock? _stock(WidgetRef ref, FeedingFormState form) {
+    final kind = form.kind;
+    if (kind == null) return null;
+    return watchStockUse(
+      ref,
+      choice: form.stock,
+      defaultItemId: ref.watch(lastFeedingStockItemsProvider).value?[kind],
+      usage: _usage(ref, form),
+    );
+  }
+
   static int _activeInApiary(WidgetRef ref, FeedingFormState form) {
     final hives = ref.watch(apiaryHivesProvider(form.hive.apiaryId)).value;
     if (hives == null) return 1;
@@ -96,10 +133,13 @@ class FeedingFormScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     FeedingFormState form,
+    InventoryItem? stockItem,
   ) async {
     final l10n = AppLocalizations.of(context);
     final actions = ref.read(feedingActionsProvider.notifier);
-    final feedings = await ref.read(_provider.notifier).save();
+    final feedings = await ref
+        .read(_provider.notifier)
+        .save(stockItem: stockItem);
     // Kovan bu arada silindiyse ekran bunu gösterir.
     if (feedings == null || feedings.isEmpty || !context.mounted) return;
     showUndoSnackBar(
@@ -201,6 +241,11 @@ class _FeedingFormFields extends ConsumerWidget {
               hives: targets.fed.length,
               amount: form.amount,
               units: units,
+            ),
+            StockUseField(
+              selected: FeedingFormScreen._stock(ref, form),
+              usage: FeedingFormScreen._usage(ref, form),
+              onChanged: controller.selectStockItem,
             ),
           ],
         ],

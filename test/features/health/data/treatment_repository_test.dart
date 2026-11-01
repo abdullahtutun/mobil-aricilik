@@ -8,6 +8,8 @@ import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
@@ -700,5 +702,121 @@ void main() {
       ],
       [movedTreatment.id],
     );
+  });
+
+  group('stoktan düşüm', () {
+    late InventoryRepository inventory;
+
+    setUp(() => inventory = InventoryRepository(db, clock: clock.call));
+
+    Future<InventoryItem> item(String name, InventoryUnit unit) =>
+        inventory.create(
+          orgId: 'org-1',
+          name: name,
+          category: InventoryCategory.consumable,
+          unit: unit,
+        );
+
+    test('şerit adetlik kalemden doz × kovan düşer; hareket ilk uygulamaya '
+        'bağlı', () async {
+      await createHive('101');
+      await createHive('102');
+      final strips = await item('Amitraz şerit', InventoryUnit.piece);
+
+      final treatments = await repository.addToApiary(
+        'apiary-1',
+        plan(),
+        stockItem: strips,
+      );
+
+      final move = (await db.select(db.inventoryMoves).get()).single;
+      expect(move.quantity, -4);
+      expect(move.kind, InventoryMoveKind.stockOut);
+      expect(move.linkedTable, 'treatments');
+      expect(move.linkedId, treatments.first.id);
+    });
+
+    test('ml litrelik kalemden binde biriyle düşer', () async {
+      final hive = await createHive('101');
+      final acid = await item('Oksalik asit', InventoryUnit.liter);
+
+      await repository.addToHive(
+        hive,
+        plan(
+          drug: const DrugChoice(
+            refDrugId: 'ref-drug-2',
+            name: 'Oksalik asit',
+            activeIngredient: DrugActiveIngredient.oxalicAcid,
+            doseUnit: DrugDoseUnit.ml,
+          ),
+          dose: 50,
+        ),
+        stockItem: acid,
+      );
+
+      expect(await inventory.moves.stockOf(acid.id), -0.05);
+    });
+
+    test(
+      'birimi uymayan kalemde uygulama, görev ve hareket yazılmaz',
+      () async {
+        final hive = await createHive('101');
+        final sugar = await item('Şeker', InventoryUnit.kg);
+
+        expect(
+          () => repository.addToHive(hive, plan(), stockItem: sugar),
+          throwsArgumentError,
+        );
+        await pumpEventQueue();
+
+        expect(await db.select(db.treatments).get(), isEmpty);
+        expect(await db.select(db.tasks).get(), isEmpty);
+        expect(await db.select(db.inventoryMoves).get(), isEmpty);
+      },
+    );
+
+    test('geri al stok çıkışını da siler', () async {
+      final hive = await createHive('101');
+      final strips = await item('Amitraz şerit', InventoryUnit.piece);
+      final treatment = await repository.addToHive(
+        hive,
+        plan(),
+        stockItem: strips,
+      );
+      expect(await inventory.moves.stockOf(strips.id), -2);
+
+      await repository.deleteAll([treatment]);
+
+      expect(await inventory.moves.stockOf(strips.id), 0);
+    });
+
+    test('ilacın son düşülen kalemi; referans ve işletmenin ilacı ayrı '
+        'anahtarla', () async {
+      final hive = await createHive('101');
+      final strips = await item('Amitraz şerit', InventoryUnit.piece);
+      final gel = await item('Timol jel', InventoryUnit.kg);
+      const custom = DrugChoice(
+        drugId: 'drug-1',
+        name: 'Kendi timol jelim',
+        activeIngredient: DrugActiveIngredient.thymol,
+        doseUnit: DrugDoseUnit.g,
+      );
+      final emitted = <Map<String, String>>[];
+      final subscription = inventory.moves
+          .watchLastTreatmentItems('org-1')
+          .listen(emitted.add);
+      addTearDown(subscription.cancel);
+
+      await repository.addToHive(hive, plan(), stockItem: strips);
+      await repository.addToHive(
+        hive,
+        plan(drug: custom, dose: 20),
+        stockItem: gel,
+      );
+      await repository.addToHive(hive, plan());
+      await pumpEventQueue();
+
+      expect(emitted.last, {'ref-drug-1': strips.id, 'drug-1': gel.id});
+    });
   });
 }

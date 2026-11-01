@@ -11,6 +11,9 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/health/data/drug_repository.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
@@ -35,7 +38,11 @@ Future<ProviderContainer> _open(
   FakeReminderNotifications? reminders,
 }) async {
   final container = ProviderContainer.test(
-    overrides: signedIn(db: db, reminders: reminders),
+    overrides: [
+      ...signedIn(db: db, reminders: reminders),
+      // Ürün bilgisi dosyası sahte zamanda okunamaz.
+      drugInfosProvider.overrideWith((ref) async => const {}),
+    ],
   );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
@@ -307,6 +314,57 @@ void main() {
 
     await _tap(tester, _tab('This week'));
     expect(find.text('Varroa sayımı'), findsOneWidget);
+  });
+
+  testWidgets('planlı ilaçlama: ilaç seçilince başlık dolar, doz ve toplam '
+      'görünür; arılıksız kaydedilmez; ilaç ve doz yazılır', (tester) async {
+    final drug = await DrugRepository(db).add(
+      orgId: _orgId,
+      name: 'Kendi şeridim',
+      activeIngredient: DrugActiveIngredient.amitraz,
+      doseUnit: DrugDoseUnit.strip,
+    );
+    final container = await _open(tester, db: db, location: AppRoutes.taskNew);
+    expect(find.text('Planned treatment'), findsOneWidget);
+    expect(find.byType(BigStepper), findsNothing);
+
+    await _tap(tester, find.text('Planned treatment'));
+    await _tap(tester, _inSheet('Kendi şeridim'));
+    expect(find.text('Treatment · Kendi şeridim'), findsOneWidget);
+    expect(find.text('Dose per hive (strip)'), findsOneWidget);
+    expect(
+      find.text('Choose an apiary for the planned treatment'),
+      findsOneWidget,
+    );
+    expect(tester.widget<BigButton>(_button('Save')).onPressed, isNull);
+
+    await _tap(tester, find.text('Apiary'));
+    await _tap(tester, _inSheet('Kızılçam'));
+    final increase = find.descendant(
+      of: find.widgetWithText(BigStepper, 'Dose per hive (strip)'),
+      matching: find.byTooltip('Increase'),
+    );
+    await _tap(tester, increase);
+    expect(find.text('Total 2 strip'), findsOneWidget);
+    await _tap(tester, _button('Save'));
+
+    final task = (await liveTasks()).single;
+    expect(task.title, 'Treatment · Kendi şeridim');
+    expect(task.apiaryId, kizilcam.id);
+    expect(task.drugId, drug.id);
+    expect(task.refDrugId, isNull);
+    expect(task.dose, 2);
+
+    // Düzenlemede ilaç kaldırılınca doz da kalkar.
+    container.read(routerProvider).go(AppRoutes.taskEdit(task.id));
+    await tester.pumpAndSettle();
+    expect(find.text('Kendi şeridim'), findsOneWidget);
+    await _tap(tester, find.text('Planned treatment'));
+    await _tap(tester, _inSheet('None'));
+    await _tap(tester, _button('Save'));
+    final edited = (await liveTasks()).single;
+    expect(edited.drugId, isNull);
+    expect(edited.dose, isNull);
   });
 
   testWidgets('düzenleme: değişiklik yazılır; Tamamlandı listeden düşürür; '

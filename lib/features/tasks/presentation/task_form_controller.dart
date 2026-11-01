@@ -1,5 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
@@ -23,6 +24,12 @@ abstract class TaskFormState with _$TaskFormState {
     /// Düzenlenen görevin kaynağı; otomatik görevde başlık, arılık ve kovan
     /// kaynaktan gelir, değişmez.
     @Default(TaskSource.manual) TaskSource source,
+
+    /// Planlı ilaçlama: ilaç (referans ya da işletmenin; en çok biri) ve
+    /// kovan başı doz. İlaç yoksa doz yazılmaz.
+    String? refDrugId,
+    String? drugId,
+    @Default(1) int dose,
     @Default(false) bool saving,
   }) = _TaskFormState;
 
@@ -34,13 +41,23 @@ abstract class TaskFormState with _$TaskFormState {
     assignedTo: task.assignedTo,
     completed: task.completedAt != null,
     source: task.source,
+    refDrugId: task.refDrugId,
+    drugId: task.drugId,
+    dose: task.dose?.round() ?? 1,
   );
 }
 
 extension TaskFormProgress on TaskFormState {
   bool get isManual => source == TaskSource.manual;
 
-  bool get canSave => (!isManual || title.trim().isNotEmpty) && !saving;
+  /// Planlı ilaçlama: ilaç seçili.
+  bool get hasDrug => refDrugId != null || drugId != null;
+
+  /// İlaçlı görev arılığa bağlı olmalı.
+  bool get canSave =>
+      (!isManual || title.trim().isNotEmpty) &&
+      (!hasDrug || apiaryId != null) &&
+      !saving;
 }
 
 /// Görev ekleme ([taskId] null) ve düzenleme formu. Ekran açık kaldığı
@@ -101,6 +118,18 @@ class TaskFormController extends _$TaskFormController {
   void setHive(String? hiveId) =>
       _update((form) => form.copyWith(hiveId: hiveId));
 
+  /// Planlanan ilacı seçer (null kaldırır); doz ürün bilgisinden, yoksa
+  /// olduğu gibi.
+  void selectDrug(DrugChoice? drug) => _update(
+    (form) => form.copyWith(
+      refDrugId: drug?.refDrugId,
+      drugId: drug?.drugId,
+      dose: drug?.defaultDose ?? form.dose,
+    ),
+  );
+
+  void setDose(int dose) => _update((form) => form.copyWith(dose: dose));
+
   void setAssignee(String? userId) =>
       _update((form) => form.copyWith(assignedTo: userId));
 
@@ -127,6 +156,9 @@ class TaskFormController extends _$TaskFormController {
           apiaryId: form.apiaryId,
           hiveId: form.hiveId,
           assignedTo: form.assignedTo,
+          refDrugId: form.refDrugId,
+          drugId: form.drugId,
+          dose: form.hasDrug ? form.dose.toDouble() : null,
         );
       }
       // Formda olmayan alanlar (ör. kaynak) en son hâlinden alınır.
@@ -141,6 +173,11 @@ class TaskFormController extends _$TaskFormController {
           dueAt: form.dueAt,
           apiaryId: form.isManual ? form.apiaryId : latest.apiaryId,
           hiveId: form.isManual ? form.hiveId : latest.hiveId,
+          refDrugId: form.isManual ? form.refDrugId : latest.refDrugId,
+          drugId: form.isManual ? form.drugId : latest.drugId,
+          dose: form.isManual
+              ? (form.hasDrug ? form.dose.toDouble() : null)
+              : latest.dose,
           assignedTo: form.assignedTo,
           completedAt: form.completed
               ? latest.completedAt ?? clock.now().toUtc()

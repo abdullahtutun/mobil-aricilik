@@ -8,12 +8,20 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
+import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
+import 'package:mobil_arici/features/health/data/drug_repository.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/hives/data/hive_repository.dart';
+import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/presentation/shopping_list_screen.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/fake_share_service.dart';
 import '../../../helpers/fake_team_service.dart';
 import '../../../helpers/test_database.dart';
 
@@ -55,8 +63,11 @@ void main() {
   Future<ProviderContainer> open(
     WidgetTester tester, {
     String location = AppRoutes.inventory,
+    FakeShareService? share,
   }) async {
-    final container = ProviderContainer.test(overrides: signedIn(db: db));
+    final container = ProviderContainer.test(
+      overrides: signedIn(db: db, share: share),
+    );
     await tester.pumpWidget(
       UncontrolledProviderScope(container: container, child: const App()),
     );
@@ -151,10 +162,96 @@ void main() {
     expect(find.text('Körük'), findsOneWidget);
     expect(find.text('3 pcs'), findsOneWidget);
     expect(find.byType(LinearProgressIndicator), findsNothing);
-    expect(find.text('Temel petek'), findsNothing);
+    expect(_rich('Temel petek · depo'), findsNothing);
 
     await _tap(tester, find.text('Comb'));
     expect(find.text('No items in this category'), findsOneWidget);
+  });
+
+  /// İki aktif kovanlı arılıkta işletmenin şerit ilacıyla kovan başı 2
+  /// şeritlik planlı ilaçlama görevi; ilacın stok kalemi yok.
+  Future<void> seedPlannedTreatment() async {
+    final apiary = await ApiaryRepository(db)
+        .create(orgId: _orgId, name: 'Yayla');
+    final hives = HiveRepository(db);
+    for (final number in ['101', '102']) {
+      await hives.create(
+        orgId: _orgId,
+        number: number,
+        type: HiveType.langstroth,
+        apiaryId: apiary.id,
+      );
+    }
+    final drug = await DrugRepository(db).add(
+      orgId: _orgId,
+      name: 'Kendi şeridim',
+      activeIngredient: DrugActiveIngredient.amitraz,
+      doseUnit: DrugDoseUnit.strip,
+    );
+    await TaskRepository(db).create(
+      orgId: _orgId,
+      title: 'İlaçlama · Kendi şeridim',
+      dueAt: DateTime.now().add(const Duration(days: 3)),
+      apiaryId: apiary.id,
+      drugId: drug.id,
+      dose: 2,
+    );
+  }
+
+  testWidgets('alışveriş listesi kartı eşik altı kalemleri ve planlı '
+      'ilaçlamanın ihtiyacını sayar; liste nedenleriyle açılır ve metin '
+      'olarak paylaşılır', (tester) async {
+    await seed();
+    await seedPlannedTreatment();
+    final share = FakeShareService();
+    await open(tester, share: share);
+
+    expect(find.text('Shopping list · 2'), findsOneWidget);
+    expect(find.text('Kendi şeridim, Temel petek'), findsOneWidget);
+
+    await _tap(tester, find.text('Shopping list · 2'));
+    expect(find.byType(ShoppingListScreen), findsOneWidget);
+    expect(find.text('Temel petek'), findsOneWidget);
+    expect(find.text('60 pcs'), findsOneWidget);
+    expect(find.text('40 pcs in stock · min 100'), findsOneWidget);
+    expect(find.text('Kendi şeridim'), findsOneWidget);
+    expect(find.text('4 strip'), findsOneWidget);
+    expect(find.text('Planned treatment · no stock item'), findsOneWidget);
+    // Eşiğin üstündeki şeker listede yok.
+    expect(find.text('Şeker'), findsNothing);
+
+    await _tap(tester, _button('Share'));
+    expect(
+      share.shared.single.text,
+      [
+        'Shopping list',
+        '• Kendi şeridim: 4 strip',
+        '• Temel petek: 60 pcs',
+      ].join('\n'),
+    );
+
+    await _tap(tester, find.text('Temel petek'));
+    expect(find.text('Temel petek'), findsWidgets);
+    expect(find.byType(ShoppingListScreen), findsNothing);
+  });
+
+  testWidgets('alınacak bir şey yoksa kart yok; liste boş durumu söyler', (
+    tester,
+  ) async {
+    final container = await open(tester);
+    await repository.create(
+      orgId: _orgId,
+      name: 'Kavanoz',
+      category: InventoryCategory.consumable,
+      unit: InventoryUnit.piece,
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Shopping list'), findsNothing);
+
+    container.read(routerProvider).go(AppRoutes.inventoryShopping);
+    await tester.pumpAndSettle();
+    expect(find.text('Nothing to buy'), findsOneWidget);
+    expect(_button('Share'), findsNothing);
   });
 
   testWidgets('hızlı giriş, çıkış ve sayım; geri alınabilir', (tester) async {
@@ -271,6 +368,15 @@ void main() {
     expect(find.text('Petek'), findsOneWidget);
     expect(find.text('40 ad'), findsOneWidget);
     expect(find.text('Eşiğin altında · en az 100'), findsOneWidget);
+    expect(find.text('Alışveriş listesi · 1'), findsOneWidget);
+
+    await _tap(tester, find.text('Alışveriş listesi · 1'));
+    expect(find.text('Alışveriş listesi'), findsOneWidget);
+    expect(find.text('60 ad'), findsOneWidget);
+    expect(find.text('Stokta 40 ad · en az 100'), findsOneWidget);
+    expect(_button('Paylaş'), findsOneWidget);
+    container.read(routerProvider).go(AppRoutes.inventory);
+    await tester.pumpAndSettle();
 
     await _tap(tester, _rich('Temel petek · depo'));
     expect(find.text('Stokta 40 ad'), findsOneWidget);
@@ -297,6 +403,10 @@ void main() {
     expect(tester.takeException(), isNull);
 
     await _tap(tester, _rich('Temel petek · depo'));
+    expect(tester.takeException(), isNull);
+
+    container.read(routerProvider).go(AppRoutes.inventoryShopping);
+    await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
 
     container.read(routerProvider).go(AppRoutes.inventoryItem(item.id));

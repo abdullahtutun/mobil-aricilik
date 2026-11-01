@@ -1,6 +1,8 @@
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/domain/shopping_rules.dart';
 
 extension InventoryCategoryLabel on InventoryCategory {
   String label(AppLocalizations l10n) => switch (this) {
@@ -60,3 +62,35 @@ String inventorySignedQuantity(
   final quantity = inventoryQuantity(l10n, format, value, unit);
   return value > 0 ? l10n.inventoryIncrease(quantity) : quantity;
 }
+
+/// Alışveriş satırındaki [value] (alınacak ya da görevlerin ihtiyacı) ve
+/// birimi: kalemde kalemin birimi ("60 ad"), kalemsiz ilaçta doz birimi
+/// ("80 şerit").
+String shoppingQuantity(
+  AppLocalizations l10n,
+  AppFormat format,
+  ShoppingLine line,
+  double value,
+) => switch ((line.stock, line.doseUnit)) {
+  (final stock?, _) => inventoryQuantity(l10n, format, value, stock.item.unit),
+  (null, final unit?) => l10n.inventoryQuantity(
+    inventoryNumber(format, value),
+    unit.label(l10n),
+  ),
+  (null, null) => inventoryNumber(format, value),
+};
+
+/// Paylaşılan alışveriş listesi: başlık ve her satırda ad ile alınacak
+/// miktar.
+String shoppingListText(
+  AppLocalizations l10n,
+  AppFormat format,
+  List<ShoppingLine> lines,
+) => [
+  l10n.shoppingTitle,
+  for (final line in lines)
+    l10n.shoppingShareLine(
+      line.name,
+      shoppingQuantity(l10n, format, line, line.quantity),
+    ),
+].join('\n');

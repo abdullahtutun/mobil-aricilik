@@ -273,6 +273,197 @@ final class InventoryMovesFamily extends $Family
   String toString() => r'inventoryMovesProvider';
 }
 
+/// Besleme türüne göre son düşülen kalem (formdaki varsayılan); işletme
+/// yoksa boş.
+
+@ProviderFor(lastFeedingStockItems)
+final lastFeedingStockItemsProvider = LastFeedingStockItemsProvider._();
+
+/// Besleme türüne göre son düşülen kalem (formdaki varsayılan); işletme
+/// yoksa boş.
+
+final class LastFeedingStockItemsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<FeedingKind, String>>,
+          Map<FeedingKind, String>,
+          Stream<Map<FeedingKind, String>>
+        >
+    with
+        $FutureModifier<Map<FeedingKind, String>>,
+        $StreamProvider<Map<FeedingKind, String>> {
+  /// Besleme türüne göre son düşülen kalem (formdaki varsayılan); işletme
+  /// yoksa boş.
+  LastFeedingStockItemsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lastFeedingStockItemsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lastFeedingStockItemsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<Map<FeedingKind, String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<Map<FeedingKind, String>> create(Ref ref) {
+    return lastFeedingStockItems(ref);
+  }
+}
+
+String _$lastFeedingStockItemsHash() =>
+    r'54f66265308dc976d603468df3a3bb6e3e3a156e';
+
+/// İlaca göre son düşülen kalem (formdaki varsayılan, alışveriş listesinde
+/// ilacın kalemi); işletme yoksa boş.
+
+@ProviderFor(lastTreatmentStockItems)
+final lastTreatmentStockItemsProvider = LastTreatmentStockItemsProvider._();
+
+/// İlaca göre son düşülen kalem (formdaki varsayılan, alışveriş listesinde
+/// ilacın kalemi); işletme yoksa boş.
+
+final class LastTreatmentStockItemsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<String, String>>,
+          Map<String, String>,
+          Stream<Map<String, String>>
+        >
+    with
+        $FutureModifier<Map<String, String>>,
+        $StreamProvider<Map<String, String>> {
+  /// İlaca göre son düşülen kalem (formdaki varsayılan, alışveriş listesinde
+  /// ilacın kalemi); işletme yoksa boş.
+  LastTreatmentStockItemsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lastTreatmentStockItemsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lastTreatmentStockItemsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<Map<String, String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<Map<String, String>> create(Ref ref) {
+    return lastTreatmentStockItems(ref);
+  }
+}
+
+String _$lastTreatmentStockItemsHash() =>
+    r'5d7d06a06af9d991ae93380b73d5c0f20a48b75f';
+
+/// Alışveriş listesi ([shoppingList]): eşik altı kalemler ve açık planlı
+/// ilaçlama görevlerinin ihtiyacı; ilaç adları [languageCode] dilinde.
+
+@ProviderFor(shoppingListOf)
+final shoppingListOfProvider = ShoppingListOfFamily._();
+
+/// Alışveriş listesi ([shoppingList]): eşik altı kalemler ve açık planlı
+/// ilaçlama görevlerinin ihtiyacı; ilaç adları [languageCode] dilinde.
+
+final class ShoppingListOfProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ShoppingLine>>,
+          List<ShoppingLine>,
+          FutureOr<List<ShoppingLine>>
+        >
+    with
+        $FutureModifier<List<ShoppingLine>>,
+        $FutureProvider<List<ShoppingLine>> {
+  /// Alışveriş listesi ([shoppingList]): eşik altı kalemler ve açık planlı
+  /// ilaçlama görevlerinin ihtiyacı; ilaç adları [languageCode] dilinde.
+  ShoppingListOfProvider._({
+    required ShoppingListOfFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'shoppingListOfProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$shoppingListOfHash();
+
+  @override
+  String toString() {
+    return r'shoppingListOfProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<ShoppingLine>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<ShoppingLine>> create(Ref ref) {
+    final argument = this.argument as String;
+    return shoppingListOf(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ShoppingListOfProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$shoppingListOfHash() => r'a96db626dc25cc0871963e77d18a1150f5f16f8e';
+
+/// Alışveriş listesi ([shoppingList]): eşik altı kalemler ve açık planlı
+/// ilaçlama görevlerinin ihtiyacı; ilaç adları [languageCode] dilinde.
+
+final class ShoppingListOfFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<ShoppingLine>>, String> {
+  ShoppingListOfFamily._()
+    : super(
+        retry: null,
+        name: r'shoppingListOfProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Alışveriş listesi ([shoppingList]): eşik altı kalemler ve açık planlı
+  /// ilaçlama görevlerinin ihtiyacı; ilaç adları [languageCode] dilinde.
+
+  ShoppingListOfProvider call(String languageCode) =>
+      ShoppingListOfProvider._(argument: languageCode, from: this);
+
+  @override
+  String toString() => r'shoppingListOfProvider';
+}
+
 /// Stok hareketleri ve kalem silme. Bildirimin Geri al'ı sayfa kapandıktan
 /// sonra da çalışsın diye sürekli yaşar.
 

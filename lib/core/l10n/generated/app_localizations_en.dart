@@ -4801,4 +4801,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String inventoryFormThresholdUnit(String unit) {
     return 'Minimum ($unit)';
   }
+
+  @override
+  String get stockUseTitle => 'Deduct from stock';
+
+  @override
+  String get stockUseNone => 'Don\'t deduct';
+
+  @override
+  String stockUseValue(String item, String quantity) {
+    return '$item · −$quantity';
+  }
+
+  @override
+  String get stockUseChoose => 'Deduct from which item?';
+
+  @override
+  String get taskFormTreatment => 'Planned treatment';
+
+  @override
+  String get taskFormTreatmentUnknown => 'Drug not in the list';
+
+  @override
+  String get taskFormTreatmentNeedsApiary =>
+      'Choose an apiary for the planned treatment';
+
+  @override
+  String taskTreatmentPlanTitle(String drug) {
+    return 'Treatment · $drug';
+  }
+
+  @override
+  String get shoppingTitle => 'Shopping list';
+
+  @override
+  String shoppingCardTitle(int count) {
+    return 'Shopping list · $count';
+  }
+
+  @override
+  String get shoppingEmptyTitle => 'Nothing to buy';
+
+  @override
+  String get shoppingEmptyMessage =>
+      'Items below their threshold and the needs of planned treatments show up here.';
+
+  @override
+  String get shoppingShare => 'Share';
+
+  @override
+  String get shoppingLoadError => 'Couldn\'t open the shopping list';
+
+  @override
+  String shoppingReasonThreshold(String stock, String threshold) {
+    return '$stock in stock · min $threshold';
+  }
+
+  @override
+  String shoppingReasonPlanned(String quantity) {
+    return 'Planned treatments $quantity';
+  }
+
+  @override
+  String get shoppingReasonNoItem => 'Planned treatment · no stock item';
+
+  @override
+  String shoppingShareLine(String name, String quantity) {
+    return '• $name: $quantity';
+  }
 }

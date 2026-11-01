@@ -4360,5 +4360,126 @@
         "example": "kg"
       }
     }
+  },
+
+  "stockUseTitle": "Deduct from stock",
+  "@stockUseTitle": {
+    "description": "Form row: which stock item the feeding or treatment is deducted from."
+  },
+  "stockUseNone": "Don't deduct",
+  "@stockUseNone": {
+    "description": "Stock row value / option: nothing is deducted."
+  },
+  "stockUseValue": "{item} · −{quantity}",
+  "@stockUseValue": {
+    "description": "Stock row value: item name and the amount to deduct.",
+    "placeholders": {
+      "item": {
+        "type": "String",
+        "example": "Sugar"
+      },
+      "quantity": {
+        "type": "String",
+        "example": "45 kg"
+      }
+    }
+  },
+  "stockUseChoose": "Deduct from which item?",
+  "@stockUseChoose": {
+    "description": "Title of the stock item picker."
+  },
+  "taskFormTreatment": "Planned treatment",
+  "@taskFormTreatment": {
+    "description": "Task form row: drug planned for this task."
+  },
+  "taskFormTreatmentUnknown": "Drug not in the list",
+  "@taskFormTreatmentUnknown": {
+    "description": "Planned drug is no longer in the drug list."
+  },
+  "taskFormTreatmentNeedsApiary": "Choose an apiary for the planned treatment",
+  "@taskFormTreatmentNeedsApiary": {
+    "description": "Hint: a planned treatment needs an apiary."
+  },
+  "taskTreatmentPlanTitle": "Treatment · {drug}",
+  "@taskTreatmentPlanTitle": {
+    "description": "Default title of a planned treatment task.",
+    "placeholders": {
+      "drug": {
+        "type": "String",
+        "example": "Apivar"
+      }
+    }
+  },
+  "shoppingTitle": "Shopping list",
+  "@shoppingTitle": {
+    "description": "Shopping list screen title and shared text heading."
+  },
+  "shoppingCardTitle": "Shopping list · {count}",
+  "@shoppingCardTitle": {
+    "description": "Stock screen card: shopping list with item count.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "shoppingEmptyTitle": "Nothing to buy",
+  "@shoppingEmptyTitle": {
+    "description": "Empty shopping list title."
+  },
+  "shoppingEmptyMessage": "Items below their threshold and the needs of planned treatments show up here.",
+  "@shoppingEmptyMessage": {
+    "description": "Empty shopping list message."
+  },
+  "shoppingShare": "Share",
+  "@shoppingShare": {
+    "description": "Button: share the shopping list as text."
+  },
+  "shoppingLoadError": "Couldn't open the shopping list",
+  "@shoppingLoadError": {
+    "description": "Shopping list load error."
+  },
+  "shoppingReasonThreshold": "{stock} in stock · min {threshold}",
+  "@shoppingReasonThreshold": {
+    "description": "Why an item is on the list: stock and threshold.",
+    "placeholders": {
+      "stock": {
+        "type": "String",
+        "example": "40 pcs"
+      },
+      "threshold": {
+        "type": "String",
+        "example": "100"
+      }
+    }
+  },
+  "shoppingReasonPlanned": "Planned treatments {quantity}",
+  "@shoppingReasonPlanned": {
+    "description": "Why an item is on the list: planned treatment needs.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "80 pcs"
+      }
+    }
+  },
+  "shoppingReasonNoItem": "Planned treatment · no stock item",
+  "@shoppingReasonNoItem": {
+    "description": "A planned drug with no stock item linked."
+  },
+  "shoppingShareLine": "• {name}: {quantity}",
+  "@shoppingShareLine": {
+    "description": "One line of the shared shopping list text.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Foundation"
+      },
+      "quantity": {
+        "type": "String",
+        "example": "60 pcs"
+      }
+    }
   }
 }

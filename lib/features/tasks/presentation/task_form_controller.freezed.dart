@@ -18,7 +18,9 @@ mixin _$TaskFormState {
 /// Son tarih, yerel saat.
  DateTime get dueAt; String get title; String? get apiaryId; String? get hiveId; String? get assignedTo; bool get completed;/// Düzenlenen görevin kaynağı; otomatik görevde başlık, arılık ve kovan
 /// kaynaktan gelir, değişmez.
- TaskSource get source; bool get saving;
+ TaskSource get source;/// Planlı ilaçlama: ilaç (referans ya da işletmenin; en çok biri) ve
+/// kovan başı doz. İlaç yoksa doz yazılmaz.
+ String? get refDrugId; String? get drugId; int get dose; bool get saving;
 /// Create a copy of TaskFormState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +32,20 @@ $TaskFormStateCopyWith<TaskFormState> get copyWith => _$TaskFormStateCopyWithImp
 @override
 bool operator ==(Object other) {
   final _this = this as TaskFormState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskFormState&&(identical(other.dueAt, _this.dueAt) || other.dueAt == _this.dueAt)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.apiaryId, _this.apiaryId) || other.apiaryId == _this.apiaryId)&&(identical(other.hiveId, _this.hiveId) || other.hiveId == _this.hiveId)&&(identical(other.assignedTo, _this.assignedTo) || other.assignedTo == _this.assignedTo)&&(identical(other.completed, _this.completed) || other.completed == _this.completed)&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskFormState&&(identical(other.dueAt, _this.dueAt) || other.dueAt == _this.dueAt)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.apiaryId, _this.apiaryId) || other.apiaryId == _this.apiaryId)&&(identical(other.hiveId, _this.hiveId) || other.hiveId == _this.hiveId)&&(identical(other.assignedTo, _this.assignedTo) || other.assignedTo == _this.assignedTo)&&(identical(other.completed, _this.completed) || other.completed == _this.completed)&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.refDrugId, _this.refDrugId) || other.refDrugId == _this.refDrugId)&&(identical(other.drugId, _this.drugId) || other.drugId == _this.drugId)&&(identical(other.dose, _this.dose) || other.dose == _this.dose)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
 }
 
 
 @override
 int get hashCode {
   final _this = this as TaskFormState;
-  return Object.hash(runtimeType,_this.dueAt,_this.title,_this.apiaryId,_this.hiveId,_this.assignedTo,_this.completed,_this.source,_this.saving);
+  return Object.hash(runtimeType,_this.dueAt,_this.title,_this.apiaryId,_this.hiveId,_this.assignedTo,_this.completed,_this.source,_this.refDrugId,_this.drugId,_this.dose,_this.saving);
 }
 
 @override
 String toString() {
   final _this = this as TaskFormState;
-  return 'TaskFormState(dueAt: ${_this.dueAt}, title: ${_this.title}, apiaryId: ${_this.apiaryId}, hiveId: ${_this.hiveId}, assignedTo: ${_this.assignedTo}, completed: ${_this.completed}, source: ${_this.source}, saving: ${_this.saving})';
+  return 'TaskFormState(dueAt: ${_this.dueAt}, title: ${_this.title}, apiaryId: ${_this.apiaryId}, hiveId: ${_this.hiveId}, assignedTo: ${_this.assignedTo}, completed: ${_this.completed}, source: ${_this.source}, refDrugId: ${_this.refDrugId}, drugId: ${_this.drugId}, dose: ${_this.dose}, saving: ${_this.saving})';
 }
 
 
@@ -54,7 +56,7 @@ abstract mixin class $TaskFormStateCopyWith<$Res>  {
   factory $TaskFormStateCopyWith(TaskFormState value, $Res Function(TaskFormState) _then) = _$TaskFormStateCopyWithImpl;
 @useResult
 $Res call({
- DateTime dueAt, String title, String? apiaryId, String? hiveId, String? assignedTo, bool completed, TaskSource source, bool saving
+ DateTime dueAt, String title, String? apiaryId, String? hiveId, String? assignedTo, bool completed, TaskSource source, String? refDrugId, String? drugId, int dose, bool saving
 });
 
 
@@ -71,7 +73,7 @@ class _$TaskFormStateCopyWithImpl<$Res>
 
 /// Create a copy of TaskFormState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? dueAt = null,Object? title = null,Object? apiaryId = freezed,Object? hiveId = freezed,Object? assignedTo = freezed,Object? completed = null,Object? source = null,Object? saving = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? dueAt = null,Object? title = null,Object? apiaryId = freezed,Object? hiveId = freezed,Object? assignedTo = freezed,Object? completed = null,Object? source = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? dose = null,Object? saving = null,}) {
   return _then(TaskFormState(
 dueAt: null == dueAt ? _self.dueAt : dueAt // ignore: cast_nullable_to_non_nullable
 as DateTime,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -80,7 +82,10 @@ as String?,hiveId: freezed == hiveId ? _self.hiveId : hiveId // ignore: cast_nul
 as String?,assignedTo: freezed == assignedTo ? _self.assignedTo : assignedTo // ignore: cast_nullable_to_non_nullable
 as String?,completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable
 as bool,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as TaskSource,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
+as TaskSource,refDrugId: freezed == refDrugId ? _self.refDrugId : refDrugId // ignore: cast_nullable_to_non_nullable
+as String?,drugId: freezed == drugId ? _self.drugId : drugId // ignore: cast_nullable_to_non_nullable
+as String?,dose: null == dose ? _self.dose : dose // ignore: cast_nullable_to_non_nullable
+as int,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -166,10 +171,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime dueAt,  String title,  String? apiaryId,  String? hiveId,  String? assignedTo,  bool completed,  TaskSource source,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime dueAt,  String title,  String? apiaryId,  String? hiveId,  String? assignedTo,  bool completed,  TaskSource source,  String? refDrugId,  String? drugId,  int dose,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskFormState() when $default != null:
-return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assignedTo,_that.completed,_that.source,_that.saving);case _:
+return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assignedTo,_that.completed,_that.source,_that.refDrugId,_that.drugId,_that.dose,_that.saving);case _:
   return orElse();
 
 }
@@ -187,10 +192,10 @@ return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assign
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime dueAt,  String title,  String? apiaryId,  String? hiveId,  String? assignedTo,  bool completed,  TaskSource source,  bool saving)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime dueAt,  String title,  String? apiaryId,  String? hiveId,  String? assignedTo,  bool completed,  TaskSource source,  String? refDrugId,  String? drugId,  int dose,  bool saving)  $default,) {final _that = this;
 switch (_that) {
 case _TaskFormState():
-return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assignedTo,_that.completed,_that.source,_that.saving);case _:
+return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assignedTo,_that.completed,_that.source,_that.refDrugId,_that.drugId,_that.dose,_that.saving);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +212,10 @@ return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assign
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime dueAt,  String title,  String? apiaryId,  String? hiveId,  String? assignedTo,  bool completed,  TaskSource source,  bool saving)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime dueAt,  String title,  String? apiaryId,  String? hiveId,  String? assignedTo,  bool completed,  TaskSource source,  String? refDrugId,  String? drugId,  int dose,  bool saving)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskFormState() when $default != null:
-return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assignedTo,_that.completed,_that.source,_that.saving);case _:
+return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assignedTo,_that.completed,_that.source,_that.refDrugId,_that.drugId,_that.dose,_that.saving);case _:
   return null;
 
 }
@@ -222,7 +227,7 @@ return $default(_that.dueAt,_that.title,_that.apiaryId,_that.hiveId,_that.assign
 
 
 class _TaskFormState implements TaskFormState {
-  const _TaskFormState({required this.dueAt, this.title = '', this.apiaryId, this.hiveId, this.assignedTo, this.completed = false, this.source = TaskSource.manual, this.saving = false});
+  const _TaskFormState({required this.dueAt, this.title = '', this.apiaryId, this.hiveId, this.assignedTo, this.completed = false, this.source = TaskSource.manual, this.refDrugId, this.drugId, this.dose = 1, this.saving = false});
   
 
 /// Son tarih, yerel saat.
@@ -235,6 +240,11 @@ class _TaskFormState implements TaskFormState {
 /// Düzenlenen görevin kaynağı; otomatik görevde başlık, arılık ve kovan
 /// kaynaktan gelir, değişmez.
 @override@JsonKey() final  TaskSource source;
+/// Planlı ilaçlama: ilaç (referans ya da işletmenin; en çok biri) ve
+/// kovan başı doz. İlaç yoksa doz yazılmaz.
+@override final  String? refDrugId;
+@override final  String? drugId;
+@override@JsonKey() final  int dose;
 @override@JsonKey() final  bool saving;
 
 /// Create a copy of TaskFormState
@@ -247,18 +257,18 @@ _$TaskFormStateCopyWith<_TaskFormState> get copyWith => __$TaskFormStateCopyWith
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskFormState&&(identical(other.dueAt, dueAt) || other.dueAt == dueAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.apiaryId, apiaryId) || other.apiaryId == apiaryId)&&(identical(other.hiveId, hiveId) || other.hiveId == hiveId)&&(identical(other.assignedTo, assignedTo) || other.assignedTo == assignedTo)&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.source, source) || other.source == source)&&(identical(other.saving, saving) || other.saving == saving));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskFormState&&(identical(other.dueAt, dueAt) || other.dueAt == dueAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.apiaryId, apiaryId) || other.apiaryId == apiaryId)&&(identical(other.hiveId, hiveId) || other.hiveId == hiveId)&&(identical(other.assignedTo, assignedTo) || other.assignedTo == assignedTo)&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.source, source) || other.source == source)&&(identical(other.refDrugId, refDrugId) || other.refDrugId == refDrugId)&&(identical(other.drugId, drugId) || other.drugId == drugId)&&(identical(other.dose, dose) || other.dose == dose)&&(identical(other.saving, saving) || other.saving == saving));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,dueAt,title,apiaryId,hiveId,assignedTo,completed,source,saving);
+    return Object.hash(runtimeType,dueAt,title,apiaryId,hiveId,assignedTo,completed,source,refDrugId,drugId,dose,saving);
 }
 
 @override
 String toString() {
-    return 'TaskFormState(dueAt: $dueAt, title: $title, apiaryId: $apiaryId, hiveId: $hiveId, assignedTo: $assignedTo, completed: $completed, source: $source, saving: $saving)';
+    return 'TaskFormState(dueAt: $dueAt, title: $title, apiaryId: $apiaryId, hiveId: $hiveId, assignedTo: $assignedTo, completed: $completed, source: $source, refDrugId: $refDrugId, drugId: $drugId, dose: $dose, saving: $saving)';
 }
 
 
@@ -269,7 +279,7 @@ abstract mixin class _$TaskFormStateCopyWith<$Res> implements $TaskFormStateCopy
   factory _$TaskFormStateCopyWith(_TaskFormState value, $Res Function(_TaskFormState) _then) = __$TaskFormStateCopyWithImpl;
 @override @useResult
 $Res call({
- DateTime dueAt, String title, String? apiaryId, String? hiveId, String? assignedTo, bool completed, TaskSource source, bool saving
+ DateTime dueAt, String title, String? apiaryId, String? hiveId, String? assignedTo, bool completed, TaskSource source, String? refDrugId, String? drugId, int dose, bool saving
 });
 
 
@@ -286,7 +296,7 @@ class __$TaskFormStateCopyWithImpl<$Res>
 
 /// Create a copy of TaskFormState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? dueAt = null,Object? title = null,Object? apiaryId = freezed,Object? hiveId = freezed,Object? assignedTo = freezed,Object? completed = null,Object? source = null,Object? saving = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? dueAt = null,Object? title = null,Object? apiaryId = freezed,Object? hiveId = freezed,Object? assignedTo = freezed,Object? completed = null,Object? source = null,Object? refDrugId = freezed,Object? drugId = freezed,Object? dose = null,Object? saving = null,}) {
   return _then(_TaskFormState(
 dueAt: null == dueAt ? _self.dueAt : dueAt // ignore: cast_nullable_to_non_nullable
 as DateTime,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -295,7 +305,10 @@ as String?,hiveId: freezed == hiveId ? _self.hiveId : hiveId // ignore: cast_nul
 as String?,assignedTo: freezed == assignedTo ? _self.assignedTo : assignedTo // ignore: cast_nullable_to_non_nullable
 as String?,completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable
 as bool,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as TaskSource,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
+as TaskSource,refDrugId: freezed == refDrugId ? _self.refDrugId : refDrugId // ignore: cast_nullable_to_non_nullable
+as String?,drugId: freezed == drugId ? _self.drugId : drugId // ignore: cast_nullable_to_non_nullable
+as String?,dose: null == dose ? _self.dose : dose // ignore: cast_nullable_to_non_nullable
+as int,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

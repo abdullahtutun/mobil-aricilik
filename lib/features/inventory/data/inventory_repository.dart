@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
+import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory_rules.dart';
 
@@ -169,6 +170,88 @@ class InventoryMoveRepository
       }
       return await _insert(item, InventoryMoveKind.adjustment, delta);
     });
+  }
+
+  /// [linkedTable] tablosundaki [linkedIds] kayıtlarına bağlı hareketleri
+  /// siler (kaydın Geri al'ı). Çağıranın transaction'ında çalışır.
+  Future<void> deleteLinked(String linkedTable, Iterable<String> linkedIds) =>
+      db.transaction(() async {
+        final linked = await selectWhere(
+          (t) => t.linkedTable.equals(linkedTable) & t.linkedId.isIn(linkedIds),
+        ).get();
+        for (final move in linked) {
+          await delete(move.id);
+        }
+      });
+
+  /// İşletmede besleme türüne göre son düşülen kalem: beslemeye bağlı en
+  /// son silinmemiş hareketin kalemi. Silinmiş kalem sayılmaz. Hareket,
+  /// besleme ya da kalem değişince yeniden yayar.
+  Stream<Map<FeedingKind, String>> watchLastFeedingItems(String orgId) {
+    final feedings = db.feedings;
+    return _watchLastLinked(orgId, feedings, feedings.id, feedings.kind).map(
+      (rows) => {
+        for (final (kind, itemId) in rows.reversed)
+          feedings.kind.converter.fromSql(kind): itemId,
+      },
+    );
+  }
+
+  /// İşletmede ilaca göre (referans ya da işletmenin ilacının kimliği) son
+  /// düşülen kalem: uygulamaya bağlı en son silinmemiş hareketin kalemi.
+  Stream<Map<String, String>> watchLastTreatmentItems(String orgId) {
+    final treatments = db.treatments;
+    return _watchLastLinked(
+      orgId,
+      treatments,
+      treatments.id,
+      coalesce<String>([treatments.refDrugId, treatments.drugId]),
+    ).map(
+      (rows) => {
+        for (final (drugKey, itemId) in rows.reversed) drugKey: itemId,
+      },
+    );
+  }
+
+  /// [linked] tablosuna bağlı silinmemiş hareketlerin ([key], kalem)
+  /// çiftleri, yeni önce; kalem ya da bağlı kayıt silinmişse yok.
+  Stream<List<(String, String)>> _watchLastLinked(
+    String orgId,
+    TableInfo<Table, Object?> linked,
+    Expression<String> linkedId,
+    Expression<String> key,
+  ) {
+    final items = db.inventoryItems;
+    final linkedDeletedAt = linked.columnsByName['deleted_at']!;
+    final query =
+        db.selectOnly(table).join([
+            innerJoin(
+              linked,
+              linkedId.equalsExp(table.linkedId) & linkedDeletedAt.isNull(),
+              useColumns: false,
+            ),
+            innerJoin(
+              items,
+              items.id.equalsExp(table.itemId) & items.deletedAt.isNull(),
+              useColumns: false,
+            ),
+          ])
+          ..addColumns([key, table.itemId])
+          ..where(
+            table.orgId.equals(orgId) &
+                table.deletedAt.isNull() &
+                table.linkedTable.equals(linked.actualTableName),
+          )
+          ..orderBy([
+            OrderingTerm.desc(table.movedAt),
+            OrderingTerm.desc(table.id),
+          ]);
+    return query.watch().map(
+      (rows) => [
+        for (final row in rows)
+          if (row.read(key) case final value?) (value, row.read(table.itemId)!),
+      ],
+    );
   }
 
   Future<InventoryMove> _insert(

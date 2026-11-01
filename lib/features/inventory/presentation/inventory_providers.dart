@@ -1,7 +1,12 @@
 import 'package:mobil_arici/core/db/app_database_provider.dart';
+import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/domain/shopping_rules.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/tasks/presentation/task_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'inventory_providers.g.dart';
@@ -27,6 +32,49 @@ Stream<InventoryStock?> inventoryStock(Ref ref, String id) =>
 @riverpod
 Stream<List<InventoryMove>> inventoryMoves(Ref ref, String itemId) =>
     ref.watch(inventoryRepositoryProvider).moves.watchByItem(itemId);
+
+/// Besleme türüne göre son düşülen kalem (formdaki varsayılan); işletme
+/// yoksa boş.
+@riverpod
+Stream<Map<FeedingKind, String>> lastFeedingStockItems(Ref ref) {
+  final orgId = ref.watch(currentOrgIdProvider);
+  if (orgId == null) return Stream.value(const {});
+  return ref
+      .watch(inventoryRepositoryProvider)
+      .moves
+      .watchLastFeedingItems(orgId);
+}
+
+/// İlaca göre son düşülen kalem (formdaki varsayılan, alışveriş listesinde
+/// ilacın kalemi); işletme yoksa boş.
+@riverpod
+Stream<Map<String, String>> lastTreatmentStockItems(Ref ref) {
+  final orgId = ref.watch(currentOrgIdProvider);
+  if (orgId == null) return Stream.value(const {});
+  return ref
+      .watch(inventoryRepositoryProvider)
+      .moves
+      .watchLastTreatmentItems(orgId);
+}
+
+/// Alışveriş listesi ([shoppingList]): eşik altı kalemler ve açık planlı
+/// ilaçlama görevlerinin ihtiyacı; ilaç adları [languageCode] dilinde.
+@riverpod
+Future<List<ShoppingLine>> shoppingListOf(Ref ref, String languageCode) async {
+  final stocks = await ref.watch(inventoryStocksProvider.future);
+  final planned = await ref.watch(openPlannedTreatmentsProvider.future);
+  final itemByDrug = await ref.watch(lastTreatmentStockItemsProvider.future);
+  final catalog = planned.isEmpty
+      ? const <DrugChoice>[]
+      : await ref.watch(drugCatalogOfProvider(languageCode).future);
+  return shoppingList(
+    stocks: stocks,
+    needs: plannedTreatmentNeeds(planned, {
+      for (final drug in catalog) ?(drug.refDrugId ?? drug.drugId): drug,
+    }),
+    itemByDrug: itemByDrug,
+  );
+}
 
 /// Stok hareketleri ve kalem silme. Bildirimin Geri al'ı sayfa kapandıktan
 /// sonra da çalışsın diye sürekli yaşar.

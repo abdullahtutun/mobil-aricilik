@@ -19,6 +19,8 @@ import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
@@ -153,6 +155,71 @@ void main() {
 
     await _tap(tester, find.text('Undo'));
     expect(await liveFeedings(), isEmpty);
+  });
+
+  testWidgets('stoktan düşülecek kalem seçilir; kayıt çıkış yazar, Geri al '
+      'siler; sonraki beslemede son kullanılan kalem gelir', (tester) async {
+    final inventory = InventoryRepository(db);
+    Future<InventoryItem> item(String name, InventoryUnit unit) =>
+        inventory.create(
+          orgId: _orgId,
+          name: name,
+          category: InventoryCategory.consumable,
+          unit: unit,
+        );
+    final sugar = await item('Şeker', InventoryUnit.kg);
+    await inventory.moves.add(sugar, InventoryMoveKind.stockIn, 50);
+    await item('Hazır şurup', InventoryUnit.liter);
+    await item('Kek', InventoryUnit.kg);
+    Future<List<InventoryMove>> liveMoves() async => [
+      for (final row in await db.select(db.inventoryMoves).get())
+        if (row.deletedAt == null && row.quantity < 0) row,
+    ];
+    Future<void> openForm() async {
+      await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+      await _tap(tester, find.text('Feed'));
+      await _tap(tester, find.text('Syrup 2:1 · winter'));
+    }
+
+    await _open(tester, db: db, location: AppRoutes.hive(yayla.id, plain.id));
+    await openForm();
+    await _step(tester, 'Per hive (L)', 'Increase', times: 2);
+    expect(find.text('Deduct from stock'), findsOneWidget);
+    expect(find.text("Don't deduct"), findsOneWidget);
+
+    await _tap(tester, find.text('Deduct from stock'));
+    expect(find.text('Deduct from which item?'), findsOneWidget);
+    expect(find.text('In stock: 50 kg'), findsOneWidget);
+    expect(find.text('Hazır şurup'), findsOneWidget);
+    await _tap(tester, find.text('Şeker'));
+    // 3 L × 1,33 kg/L × 2/3 şeker.
+    expect(find.text('Şeker · −2.66 kg'), findsOneWidget);
+
+    await _tap(tester, _button('Save'));
+    final move = (await liveMoves()).single;
+    expect(move.itemId, sugar.id);
+    expect(move.quantity, -2.66);
+    expect(move.linkedId, (await liveFeedings()).single.id);
+
+    await _tap(tester, find.text('Undo'));
+    expect(await liveFeedings(), isEmpty);
+    expect(await liveMoves(), isEmpty);
+
+    await openForm();
+    // Geri alınan düşüm son kullanılan sayılmaz.
+    expect(find.text("Don't deduct"), findsOneWidget);
+    await _tap(tester, find.text('Deduct from stock'));
+    await _tap(tester, find.text('Şeker'));
+    await _tap(tester, _button('Save'));
+    expect(await liveMoves(), hasLength(1));
+    await tester.pump(const Duration(seconds: 7));
+    await tester.pumpAndSettle();
+
+    await openForm();
+    expect(find.text('Şeker · −0.887 kg'), findsOneWidget);
+    await _tap(tester, find.text('Bee cake'));
+    // Kekte son kullanılan yok.
+    expect(find.text("Don't deduct"), findsOneWidget);
   });
 
   testWidgets('bal katı olan kovana şurupta uyarı; kayıt yine yazılır; kek '

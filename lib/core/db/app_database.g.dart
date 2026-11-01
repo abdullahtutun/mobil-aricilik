@@ -9220,6 +9220,35 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _refDrugIdMeta = const VerificationMeta(
+    'refDrugId',
+  );
+  @override
+  late final GeneratedColumn<String> refDrugId = GeneratedColumn<String>(
+    'ref_drug_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _drugIdMeta = const VerificationMeta('drugId');
+  @override
+  late final GeneratedColumn<String> drugId = GeneratedColumn<String>(
+    'drug_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _doseMeta = const VerificationMeta('dose');
+  @override
+  late final GeneratedColumn<double> dose = GeneratedColumn<double>(
+    'dose',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -9237,6 +9266,9 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     completedAt,
     source,
     sourceId,
+    refDrugId,
+    drugId,
+    dose,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -9344,6 +9376,24 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
         sourceId.isAcceptableOrUnknown(data['source_id']!, _sourceIdMeta),
       );
     }
+    if (data.containsKey('ref_drug_id')) {
+      context.handle(
+        _refDrugIdMeta,
+        refDrugId.isAcceptableOrUnknown(data['ref_drug_id']!, _refDrugIdMeta),
+      );
+    }
+    if (data.containsKey('drug_id')) {
+      context.handle(
+        _drugIdMeta,
+        drugId.isAcceptableOrUnknown(data['drug_id']!, _drugIdMeta),
+      );
+    }
+    if (data.containsKey('dose')) {
+      context.handle(
+        _doseMeta,
+        dose.isAcceptableOrUnknown(data['dose']!, _doseMeta),
+      );
+    }
     return context;
   }
 
@@ -9403,6 +9453,18 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
         DriftSqlType.string,
         data['${effectivePrefix}source_id'],
       ),
+      refDrugId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ref_drug_id'],
+      ),
+      drugId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}drug_id'],
+      ),
+      dose: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}dose'],
+      ),
       createdBy: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}created_by'],
@@ -9443,6 +9505,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
   final Value<DateTime?> completedAt;
   final Value<TaskSource> source;
   final Value<String?> sourceId;
+  final Value<String?> refDrugId;
+  final Value<String?> drugId;
+  final Value<double?> dose;
   final Value<int> rowid;
   const TasksCompanion({
     this.id = const Value.absent(),
@@ -9460,6 +9525,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
     this.completedAt = const Value.absent(),
     this.source = const Value.absent(),
     this.sourceId = const Value.absent(),
+    this.refDrugId = const Value.absent(),
+    this.drugId = const Value.absent(),
+    this.dose = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TasksCompanion.insert({
@@ -9478,6 +9546,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
     this.completedAt = const Value.absent(),
     required TaskSource source,
     this.sourceId = const Value.absent(),
+    this.refDrugId = const Value.absent(),
+    this.drugId = const Value.absent(),
+    this.dose = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -9501,6 +9572,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
     Expression<DateTime>? completedAt,
     Expression<String>? source,
     Expression<String>? sourceId,
+    Expression<String>? refDrugId,
+    Expression<String>? drugId,
+    Expression<double>? dose,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -9519,6 +9593,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
       if (completedAt != null) 'completed_at': completedAt,
       if (source != null) 'source': source,
       if (sourceId != null) 'source_id': sourceId,
+      if (refDrugId != null) 'ref_drug_id': refDrugId,
+      if (drugId != null) 'drug_id': drugId,
+      if (dose != null) 'dose': dose,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -9539,6 +9616,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
     Value<DateTime?>? completedAt,
     Value<TaskSource>? source,
     Value<String?>? sourceId,
+    Value<String?>? refDrugId,
+    Value<String?>? drugId,
+    Value<double?>? dose,
     Value<int>? rowid,
   }) {
     return TasksCompanion(
@@ -9557,6 +9637,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
       completedAt: completedAt ?? this.completedAt,
       source: source ?? this.source,
       sourceId: sourceId ?? this.sourceId,
+      refDrugId: refDrugId ?? this.refDrugId,
+      drugId: drugId ?? this.drugId,
+      dose: dose ?? this.dose,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -9611,6 +9694,15 @@ class TasksCompanion extends UpdateCompanion<Task> {
     if (sourceId.present) {
       map['source_id'] = Variable<String>(sourceId.value);
     }
+    if (refDrugId.present) {
+      map['ref_drug_id'] = Variable<String>(refDrugId.value);
+    }
+    if (drugId.present) {
+      map['drug_id'] = Variable<String>(drugId.value);
+    }
+    if (dose.present) {
+      map['dose'] = Variable<double>(dose.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -9635,6 +9727,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
           ..write('completedAt: $completedAt, ')
           ..write('source: $source, ')
           ..write('sourceId: $sourceId, ')
+          ..write('refDrugId: $refDrugId, ')
+          ..write('drugId: $drugId, ')
+          ..write('dose: $dose, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -9662,6 +9757,9 @@ class _$TaskInsertable implements Insertable<Task> {
       completedAt: Value(_object.completedAt),
       source: Value(_object.source),
       sourceId: Value(_object.sourceId),
+      refDrugId: Value(_object.refDrugId),
+      drugId: Value(_object.drugId),
+      dose: Value(_object.dose),
     ).toColumns(false);
   }
 }
@@ -17192,6 +17290,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'tasks_source_id_idx',
     'CREATE INDEX tasks_source_id_idx ON tasks (source_id)',
   );
+  late final Index tasksRefDrugIdIdx = Index(
+    'tasks_ref_drug_id_idx',
+    'CREATE INDEX tasks_ref_drug_id_idx ON tasks (ref_drug_id)',
+  );
+  late final Index tasksDrugIdIdx = Index(
+    'tasks_drug_id_idx',
+    'CREATE INDEX tasks_drug_id_idx ON tasks (drug_id)',
+  );
   late final Index harvestsOrgIdIdx = Index(
     'harvests_org_id_idx',
     'CREATE INDEX harvests_org_id_idx ON harvests (org_id)',
@@ -17326,6 +17432,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     tasksOrgIdIdx,
     tasksApiaryIdIdx,
     tasksSourceIdIdx,
+    tasksRefDrugIdIdx,
+    tasksDrugIdIdx,
     harvestsOrgIdIdx,
     harvestsApiaryIdIdx,
     harvestHivesOrgIdIdx,
@@ -22949,6 +23057,9 @@ typedef $$TasksTableCreateCompanionBuilder = TasksCompanion Function({
   Value<DateTime?> completedAt,
   required TaskSource source,
   Value<String?> sourceId,
+  Value<String?> refDrugId,
+  Value<String?> drugId,
+  Value<double?> dose,
   Value<int> rowid,
 });
 typedef $$TasksTableUpdateCompanionBuilder = TasksCompanion Function({
@@ -22967,6 +23078,9 @@ typedef $$TasksTableUpdateCompanionBuilder = TasksCompanion Function({
   Value<DateTime?> completedAt,
   Value<TaskSource> source,
   Value<String?> sourceId,
+  Value<String?> refDrugId,
+  Value<String?> drugId,
+  Value<double?> dose,
   Value<int> rowid,
 });
 
@@ -23051,6 +23165,21 @@ class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
 
   ColumnFilters<String> get sourceId => $composableBuilder(
     column: $table.sourceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get refDrugId => $composableBuilder(
+    column: $table.refDrugId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get drugId => $composableBuilder(
+    column: $table.drugId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get dose => $composableBuilder(
+    column: $table.dose,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -23138,6 +23267,21 @@ class $$TasksTableOrderingComposer
     column: $table.sourceId,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get refDrugId => $composableBuilder(
+    column: $table.refDrugId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get drugId => $composableBuilder(
+    column: $table.drugId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get dose => $composableBuilder(
+    column: $table.dose,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TasksTableAnnotationComposer
@@ -23197,6 +23341,15 @@ class $$TasksTableAnnotationComposer
 
   GeneratedColumn<String> get sourceId =>
       $composableBuilder(column: $table.sourceId, builder: (column) => column);
+
+  GeneratedColumn<String> get refDrugId =>
+      $composableBuilder(column: $table.refDrugId, builder: (column) => column);
+
+  GeneratedColumn<String> get drugId =>
+      $composableBuilder(column: $table.drugId, builder: (column) => column);
+
+  GeneratedColumn<double> get dose =>
+      $composableBuilder(column: $table.dose, builder: (column) => column);
 }
 
 class $$TasksTableTableManager
@@ -23242,6 +23395,9 @@ class $$TasksTableTableManager
                 Value<DateTime?> completedAt = const Value.absent(),
                 Value<TaskSource> source = const Value.absent(),
                 Value<String?> sourceId = const Value.absent(),
+                Value<String?> refDrugId = const Value.absent(),
+                Value<String?> drugId = const Value.absent(),
+                Value<double?> dose = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TasksCompanion(
                 id: id,
@@ -23259,6 +23415,9 @@ class $$TasksTableTableManager
                 completedAt: completedAt,
                 source: source,
                 sourceId: sourceId,
+                refDrugId: refDrugId,
+                drugId: drugId,
+                dose: dose,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -23278,6 +23437,9 @@ class $$TasksTableTableManager
                 Value<DateTime?> completedAt = const Value.absent(),
                 required TaskSource source,
                 Value<String?> sourceId = const Value.absent(),
+                Value<String?> refDrugId = const Value.absent(),
+                Value<String?> drugId = const Value.absent(),
+                Value<double?> dose = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TasksCompanion.insert(
                 id: id,
@@ -23295,6 +23457,9 @@ class $$TasksTableTableManager
                 completedAt: completedAt,
                 source: source,
                 sourceId: sourceId,
+                refDrugId: refDrugId,
+                drugId: drugId,
+                dose: dose,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

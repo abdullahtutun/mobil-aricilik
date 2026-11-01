@@ -72,6 +72,9 @@ void main() {
         'assigned_to': 'user-1',
         'completed_at': null,
         'source_id': null,
+        'ref_drug_id': null,
+        'drug_id': null,
+        'dose': null,
         'created_by': null,
         'deleted_at': null,
       });
@@ -371,6 +374,106 @@ void main() {
       ]).first;
 
       expect([for (final t in tasks) t.id], [soon.id, late.id]);
+    });
+  });
+
+  group('planlı ilaçlama', () {
+    late HiveRepository hives;
+
+    setUp(() => hives = HiveRepository(db, clock: clock.call));
+
+    Future<Hive> hive(
+      String number, {
+      String apiaryId = 'apiary-1',
+      HiveStatus status = HiveStatus.active,
+    }) => hives.create(
+      orgId: 'org-1',
+      number: number,
+      type: HiveType.langstroth,
+      apiaryId: apiaryId,
+      status: status,
+    );
+
+    test("ilaç ve doz yazılır; outbox payload'unda", () async {
+      final task = await repository.create(
+        orgId: 'org-1',
+        title: 'İlaçlama · Amitraz',
+        dueAt: DateTime.utc(2026, 11, 5, 9),
+        apiaryId: 'apiary-1',
+        refDrugId: 'ref-drug-1',
+        dose: 2,
+      );
+
+      expect(task.isPlannedTreatment, isTrue);
+      expect(task.plannedDrugKey, 'ref-drug-1');
+      final payload = (await readOutbox(db)).single.payload;
+      expect(payload['ref_drug_id'], 'ref-drug-1');
+      expect(payload['drug_id'], isNull);
+      expect(payload['dose'], 2.0);
+    });
+
+    test('tutarsız ilaç alanlarında hiçbir şey yazmaz', () async {
+      final invalid =
+          <({String? apiaryId, String? ref, String? drug, double? dose})>[
+            (apiaryId: 'apiary-1', ref: 'ref-drug-1', drug: null, dose: null),
+            (apiaryId: 'apiary-1', ref: null, drug: null, dose: 2),
+            (apiaryId: 'apiary-1', ref: 'ref-drug-1', drug: 'drug-1', dose: 2),
+            (apiaryId: 'apiary-1', ref: 'ref-drug-1', drug: null, dose: 0),
+            (apiaryId: 'apiary-1', ref: 'ref-drug-1', drug: null, dose: 10001),
+            (apiaryId: null, ref: 'ref-drug-1', drug: null, dose: 2),
+          ];
+      for (final values in invalid) {
+        expect(
+          () => repository.create(
+            orgId: 'org-1',
+            title: 'İlaçlama',
+            dueAt: DateTime.utc(2026, 11, 5, 9),
+            apiaryId: values.apiaryId,
+            refDrugId: values.ref,
+            drugId: values.drug,
+            dose: values.dose,
+          ),
+          throwsArgumentError,
+          reason: '$values',
+        );
+      }
+
+      expect(await db.select(db.tasks).get(), isEmpty);
+    });
+
+    test('açık planlı görevler kovan sayısıyla: arılıkta aktif kovanlar, '
+        'kovana bağlıda 1; ilaçsız, tamamlanmış ve silinmiş görev '
+        'yok', () async {
+      final first = await hive('101');
+      await hive('102');
+      await hive('103', status: HiveStatus.dead);
+      await hive('201', apiaryId: 'apiary-2');
+      Future<Task> plan({String? hiveId, String apiaryId = 'apiary-1'}) =>
+          repository.create(
+            orgId: 'org-1',
+            title: 'İlaçlama',
+            dueAt: DateTime.utc(2026, 11, 5, 9),
+            apiaryId: apiaryId,
+            hiveId: hiveId,
+            refDrugId: 'ref-drug-1',
+            dose: 2,
+          );
+      final apiary = await plan();
+      final single = await plan(hiveId: first.id);
+      final empty = await plan(apiaryId: 'apiary-3');
+      await create(apiaryId: 'apiary-1');
+      await repository.setCompleted(await plan(), completed: true);
+      await repository.delete((await plan()).id);
+      await create(orgId: 'org-2');
+
+      final planned = await repository
+          .watchOpenPlannedTreatments('org-1')
+          .first;
+
+      expect(
+        {for (final p in planned) p.task.id: p.hives},
+        {apiary.id: 2, single.id: 1, empty.id: 0},
+      );
     });
   });
 }

@@ -23,6 +23,9 @@ _Task _$TaskFromJson(Map<String, dynamic> json) => _Task(
       ? null
       : DateTime.parse(json['completed_at'] as String),
   sourceId: json['source_id'] as String?,
+  refDrugId: json['ref_drug_id'] as String?,
+  drugId: json['drug_id'] as String?,
+  dose: (json['dose'] as num?)?.toDouble(),
   createdBy: json['created_by'] as String?,
   deletedAt: json['deleted_at'] == null
       ? null
@@ -43,6 +46,9 @@ Map<String, dynamic> _$TaskToJson(_Task instance) => <String, dynamic>{
   'assigned_to': instance.assignedTo,
   'completed_at': instance.completedAt?.toIso8601String(),
   'source_id': instance.sourceId,
+  'ref_drug_id': instance.refDrugId,
+  'drug_id': instance.drugId,
+  'dose': instance.dose,
   'created_by': instance.createdBy,
   'deleted_at': instance.deletedAt?.toIso8601String(),
 };

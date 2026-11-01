@@ -10,6 +10,7 @@ import 'generated/schema_v11.dart' as v11;
 import 'generated/schema_v12.dart' as v12;
 import 'generated/schema_v13.dart' as v13;
 import 'generated/schema_v14.dart' as v14;
+import 'generated/schema_v15.dart' as v15;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -633,6 +634,37 @@ void main() {
         expect(transports.single.vehicles, '["Kamyon 1"]');
         expect(await newDb.select(newDb.inventoryItems).get(), isEmpty);
         expect(await newDb.select(newDb.inventoryMoves).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v14 → v15 görevleri korur; ilaç ve doz boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 14,
+      newVersion: 15,
+      createOld: v14.DatabaseAtV14.new,
+      createNew: v15.DatabaseAtV15.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.tasks,
+          v14.TasksCompanion.insert(
+            id: 'task-1',
+            createdAt: '2026-11-01T09:00:00.000Z',
+            updatedAt: '2026-11-01T09:00:00.000Z',
+            orgId: 'org-1',
+            title: const Value('Şeker al'),
+            dueAt: '2026-11-02T09:00:00.000Z',
+            source: 'manual',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final task = (await newDb.select(newDb.tasks).get()).single;
+        expect(task.title, 'Şeker al');
+        expect(task.refDrugId, null);
+        expect(task.drugId, null);
+        expect(task.dose, null);
       },
     );
   });

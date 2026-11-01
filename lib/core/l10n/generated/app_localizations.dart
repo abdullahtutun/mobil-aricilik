@@ -7474,6 +7474,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Minimum ({unit})'**
   String inventoryFormThresholdUnit(String unit);
+
+  /// Form row: which stock item the feeding or treatment is deducted from.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduct from stock'**
+  String get stockUseTitle;
+
+  /// Stock row value / option: nothing is deducted.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t deduct'**
+  String get stockUseNone;
+
+  /// Stock row value: item name and the amount to deduct.
+  ///
+  /// In en, this message translates to:
+  /// **'{item} · −{quantity}'**
+  String stockUseValue(String item, String quantity);
+
+  /// Title of the stock item picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduct from which item?'**
+  String get stockUseChoose;
+
+  /// Task form row: drug planned for this task.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned treatment'**
+  String get taskFormTreatment;
+
+  /// Planned drug is no longer in the drug list.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug not in the list'**
+  String get taskFormTreatmentUnknown;
+
+  /// Hint: a planned treatment needs an apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an apiary for the planned treatment'**
+  String get taskFormTreatmentNeedsApiary;
+
+  /// Default title of a planned treatment task.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment · {drug}'**
+  String taskTreatmentPlanTitle(String drug);
+
+  /// Shopping list screen title and shared text heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping list'**
+  String get shoppingTitle;
+
+  /// Stock screen card: shopping list with item count.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping list · {count}'**
+  String shoppingCardTitle(int count);
+
+  /// Empty shopping list title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to buy'**
+  String get shoppingEmptyTitle;
+
+  /// Empty shopping list message.
+  ///
+  /// In en, this message translates to:
+  /// **'Items below their threshold and the needs of planned treatments show up here.'**
+  String get shoppingEmptyMessage;
+
+  /// Button: share the shopping list as text.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get shoppingShare;
+
+  /// Shopping list load error.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the shopping list'**
+  String get shoppingLoadError;
+
+  /// Why an item is on the list: stock and threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'{stock} in stock · min {threshold}'**
+  String shoppingReasonThreshold(String stock, String threshold);
+
+  /// Why an item is on the list: planned treatment needs.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned treatments {quantity}'**
+  String shoppingReasonPlanned(String quantity);
+
+  /// A planned drug with no stock item linked.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned treatment · no stock item'**
+  String get shoppingReasonNoItem;
+
+  /// One line of the shared shopping list text.
+  ///
+  /// In en, this message translates to:
+  /// **'• {name}: {quantity}'**
+  String shoppingShareLine(String name, String quantity);
 }
 
 class _AppLocalizationsDelegate

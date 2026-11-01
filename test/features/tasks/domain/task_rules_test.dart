@@ -249,4 +249,49 @@ void main() {
       );
     });
   });
+
+  group('checkTaskPlan', () {
+    Task task({
+      TaskSource source = TaskSource.manual,
+      String? apiaryId = 'apiary-1',
+      String? refDrugId,
+      String? drugId,
+      double? dose,
+    }) => Task(
+      id: 'task-1',
+      orgId: 'org-1',
+      title: 'İlaçlama',
+      dueAt: _created,
+      createdAt: _created,
+      updatedAt: _created,
+      source: source,
+      sourceId: source == TaskSource.manual ? null : 'source-1',
+      apiaryId: apiaryId,
+      refDrugId: refDrugId,
+      drugId: drugId,
+      dose: dose,
+    );
+
+    test('ilaçsız görev ve tek ilaçlı, dozlu, arılıklı elle görev geçer', () {
+      checkTaskPlan(task());
+      checkTaskPlan(task(apiaryId: null));
+      checkTaskPlan(task(refDrugId: 'ref-1', dose: 2));
+      checkTaskPlan(task(drugId: 'drug-1', dose: maxTaskDose.toDouble()));
+    });
+
+    test('ilaç ve doz birlikte, en çok bir ilaç, doz aralıkta, arılık ve '
+        'elle açılma zorunlu', () {
+      for (final invalid in [
+        task(refDrugId: 'ref-1'),
+        task(dose: 2),
+        task(refDrugId: 'ref-1', drugId: 'drug-1', dose: 2),
+        task(refDrugId: 'ref-1', dose: 0),
+        task(refDrugId: 'ref-1', dose: maxTaskDose + 1),
+        task(refDrugId: 'ref-1', dose: 2, apiaryId: null),
+        task(refDrugId: 'ref-1', dose: 2, source: TaskSource.treatment),
+      ]) {
+        expect(() => checkTaskPlan(invalid), throwsArgumentError);
+      }
+    });
+  });
 }

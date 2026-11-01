@@ -1261,5 +1261,24 @@
   "syncTableInventoryItems": "Stok kalemi",
   "syncTableInventoryMoves": "Stok hareketi",
   "inventoryIncrease": "+{quantity}",
-  "inventoryFormThresholdUnit": "Eşik ({unit})"
+  "inventoryFormThresholdUnit": "Eşik ({unit})",
+
+  "stockUseTitle": "Stoktan düş",
+  "stockUseNone": "Düşme",
+  "stockUseValue": "{item} · −{quantity}",
+  "stockUseChoose": "Hangi kalemden düşülsün?",
+  "taskFormTreatment": "İlaçlama planı",
+  "taskFormTreatmentUnknown": "Listede olmayan ilaç",
+  "taskFormTreatmentNeedsApiary": "İlaçlama planı için arılık seç",
+  "taskTreatmentPlanTitle": "İlaçlama · {drug}",
+  "shoppingTitle": "Alışveriş listesi",
+  "shoppingCardTitle": "Alışveriş listesi · {count}",
+  "shoppingEmptyTitle": "Alınacak bir şey yok",
+  "shoppingEmptyMessage": "Eşiğin altına düşen kalemler ve planlı ilaçlamaların ihtiyacı burada görünür.",
+  "shoppingShare": "Paylaş",
+  "shoppingLoadError": "Alışveriş listesi açılamadı",
+  "shoppingReasonThreshold": "Stokta {stock} · en az {threshold}",
+  "shoppingReasonPlanned": "Planlı ilaçlama {quantity}",
+  "shoppingReasonNoItem": "Planlı ilaçlama · stok kalemi yok",
+  "shoppingShareLine": "• {name}: {quantity}"
 }

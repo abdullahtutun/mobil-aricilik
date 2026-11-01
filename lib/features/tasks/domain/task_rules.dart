@@ -169,3 +169,25 @@ int _dayDifference(DateTime a, DateTime b) => DateTime.utc(
   a.month,
   a.day,
 ).difference(DateTime.utc(b.year, b.month, b.day)).inDays;
+
+/// Planlı ilaçlamada kovan başı dozun üst sınırı (sunucunun CHECK'i).
+const maxTaskDose = 10000;
+
+/// Planlı ilaçlama alanları sunucunun kısıtlarına uymazsa [ArgumentError]
+/// atar: ilaç ve doz birlikte dolu ya da boş, en çok bir ilaç, doz
+/// (0, [maxTaskDose]] aralığında, ilaçlı görev elle açılmış ve arılığa
+/// bağlı.
+void checkTaskPlan(Task task) {
+  final dose = task.dose;
+  final drugs = [?task.refDrugId, ?task.drugId].length;
+  if (drugs > 1 || (dose == null) != (drugs == 0)) {
+    throw ArgumentError.value(task.dose, 'dose');
+  }
+  if (dose == null) return;
+  if (!(dose > 0 && dose <= maxTaskDose)) {
+    throw ArgumentError.value(dose, 'dose');
+  }
+  if (task.source != TaskSource.manual || task.apiaryId == null) {
+    throw ArgumentError.value(task.apiaryId, 'apiaryId');
+  }
+}

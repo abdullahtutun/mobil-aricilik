@@ -4630,4 +4630,71 @@ class AppLocalizationsTr extends AppLocalizations {
   String inventoryFormThresholdUnit(String unit) {
     return 'Eşik ($unit)';
   }
+
+  @override
+  String get stockUseTitle => 'Stoktan düş';
+
+  @override
+  String get stockUseNone => 'Düşme';
+
+  @override
+  String stockUseValue(String item, String quantity) {
+    return '$item · −$quantity';
+  }
+
+  @override
+  String get stockUseChoose => 'Hangi kalemden düşülsün?';
+
+  @override
+  String get taskFormTreatment => 'İlaçlama planı';
+
+  @override
+  String get taskFormTreatmentUnknown => 'Listede olmayan ilaç';
+
+  @override
+  String get taskFormTreatmentNeedsApiary => 'İlaçlama planı için arılık seç';
+
+  @override
+  String taskTreatmentPlanTitle(String drug) {
+    return 'İlaçlama · $drug';
+  }
+
+  @override
+  String get shoppingTitle => 'Alışveriş listesi';
+
+  @override
+  String shoppingCardTitle(int count) {
+    return 'Alışveriş listesi · $count';
+  }
+
+  @override
+  String get shoppingEmptyTitle => 'Alınacak bir şey yok';
+
+  @override
+  String get shoppingEmptyMessage =>
+      'Eşiğin altına düşen kalemler ve planlı ilaçlamaların ihtiyacı burada görünür.';
+
+  @override
+  String get shoppingShare => 'Paylaş';
+
+  @override
+  String get shoppingLoadError => 'Alışveriş listesi açılamadı';
+
+  @override
+  String shoppingReasonThreshold(String stock, String threshold) {
+    return 'Stokta $stock · en az $threshold';
+  }
+
+  @override
+  String shoppingReasonPlanned(String quantity) {
+    return 'Planlı ilaçlama $quantity';
+  }
+
+  @override
+  String get shoppingReasonNoItem => 'Planlı ilaçlama · stok kalemi yok';
+
+  @override
+  String shoppingShareLine(String name, String quantity) {
+    return '• $name: $quantity';
+  }
 }

@@ -140,6 +140,7 @@ abstract final class AppRoutes {
     path: inventoryNewPath,
     queryParameters: {inventoryCategoryParameter: category.value},
   ).toString();
+  static const inventoryShopping = '/more/inventory/shopping';
   static String inventoryItem(String id) => '/more/inventory/$id';
   static String inventoryItemEdit(String id) => '/more/inventory/$id/edit';
 

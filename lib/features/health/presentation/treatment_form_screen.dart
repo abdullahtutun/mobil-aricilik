@@ -17,6 +17,10 @@ import 'package:mobil_arici/features/health/presentation/widgets/treatment_label
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/domain/stock_usage_rules.dart';
+import 'package:mobil_arici/features/inventory/presentation/inventory_providers.dart';
+import 'package:mobil_arici/features/inventory/presentation/widgets/stock_use_field.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/media/presentation/media_controllers.dart';
 import 'package:mobil_arici/features/media/presentation/widgets/media_action_row.dart';
@@ -30,8 +34,10 @@ const _maxBackdateDays = 60;
 /// ilaç kartı (dokununca liste, sonda "Yeni ilaç ekle"); parti no ve
 /// başlangıç; kovan başına doz ve toplamı; bekleme süresi; çıkarma ve "bal
 /// katı yok" karoları; aynı etken madde uyarısı; reçete / fatura
-/// fotoğrafı. Kaydedince çıkarma gününün sabahına çıkarma görevi açılır
-/// (bildirimi görevle kurulur), karta dönülür ve 6 sn geri alınabilir.
+/// fotoğrafı; düşülecek stok kalemi (varsayılan ilacın son kullanılanı).
+/// Kaydedince çıkarma gününün sabahına çıkarma görevi açılır (bildirimi
+/// görevle kurulur), toplam doz kalemden düşülür, karta dönülür ve 6 sn
+/// geri alınabilir; Geri al stok çıkışını da siler.
 class TreatmentFormScreen extends ConsumerWidget {
   const new({required this.apiaryId, required this.hiveId, super.key});
 
@@ -54,23 +60,7 @@ class TreatmentFormScreen extends ConsumerWidget {
       ..watch(drugInfosProvider);
 
     return switch (ref.watch(_provider)) {
-      AsyncData(value: final form?) => Scaffold(
-        appBar: AppBar(
-          leading: const CloseButton(),
-          title: Text(l10n.treatmentFormTitle),
-        ),
-        body: BottomActionLayout(
-          separated: true,
-          body: ListView(
-            padding: EdgeInsets.all(context.spacing.lg),
-            children: [_TreatmentFormFields(this, form)],
-          ),
-          action: BigButton(
-            label: l10n.treatmentSave(_targetCount(ref, form)),
-            onPressed: form.canSave ? () => _save(context, ref, form) : null,
-          ),
-        ),
-      ),
+      AsyncData(value: final form?) => _form(context, ref, form),
       AsyncData() => Scaffold(appBar: AppBar(), body: const HiveNotFound()),
       AsyncError() => Scaffold(
         appBar: AppBar(),
@@ -79,6 +69,53 @@ class TreatmentFormScreen extends ConsumerWidget {
       // Yerel DB'den okunuyor; hemen gelir.
       AsyncValue() => Scaffold(appBar: AppBar()),
     };
+  }
+
+  Widget _form(BuildContext context, WidgetRef ref, TreatmentFormState form) {
+    final l10n = AppLocalizations.of(context);
+    // Kalem ekran çizilirken hesaplanır; Kaydet onu yazar.
+    final stockItem = _stock(ref, form)?.item;
+    return Scaffold(
+      appBar: AppBar(
+        leading: const CloseButton(),
+        title: Text(l10n.treatmentFormTitle),
+      ),
+      body: BottomActionLayout(
+        separated: true,
+        body: ListView(
+          padding: EdgeInsets.all(context.spacing.lg),
+          children: [_TreatmentFormFields(this, form)],
+        ),
+        action: BigButton(
+          label: l10n.treatmentSave(_targetCount(ref, form)),
+          onPressed: form.canSave
+              ? () => _save(context, ref, form, stockItem)
+              : null,
+        ),
+      ),
+    );
+  }
+
+  /// Kalemden düşülecek miktar: kovan başı doz × kovan, kalemin biriminde
+  /// ([treatmentStockUsage]). İlaç seçilmemişse hiçbir kalem uymaz.
+  static StockUsage _usage(WidgetRef ref, TreatmentFormState form) {
+    final drug = form.drug;
+    final total = (form.dose * _targetCount(ref, form)).toDouble();
+    return (unit) =>
+        drug == null ? null : treatmentStockUsage(drug.doseUnit, total, unit);
+  }
+
+  /// Düşülecek kalem; ilaç seçilmemişse yok.
+  static InventoryStock? _stock(WidgetRef ref, TreatmentFormState form) {
+    final drug = form.drug;
+    if (drug == null) return null;
+    final drugKey = drug.refDrugId ?? drug.drugId;
+    return watchStockUse(
+      ref,
+      choice: form.stock,
+      defaultItemId: ref.watch(lastTreatmentStockItemsProvider).value?[drugKey],
+      usage: _usage(ref, form),
+    );
   }
 
   /// Arılıktaki aktif kovan sayısı; liste gelene kadar en az bu kovan.
@@ -99,10 +136,13 @@ class TreatmentFormScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     TreatmentFormState form,
+    InventoryItem? stockItem,
   ) async {
     final l10n = AppLocalizations.of(context);
     final actions = ref.read(treatmentActionsProvider.notifier);
-    final treatments = await ref.read(_provider.notifier).save();
+    final treatments = await ref
+        .read(_provider.notifier)
+        .save(stockItem: stockItem);
     // Kovan bu arada silindiyse ekran bunu gösterir.
     if (treatments == null || treatments.isEmpty || !context.mounted) return;
     // Çıkarma görevi açıldıysa hatırlatıcı izinleri istenir.
@@ -293,6 +333,11 @@ class _TreatmentFormFieldsState extends ConsumerState<_TreatmentFormFields> {
               ),
             ),
           ],
+          StockUseField(
+            selected: TreatmentFormScreen._stock(ref, form),
+            usage: TreatmentFormScreen._usage(ref, form),
+            onChanged: _controller.selectStockItem,
+          ),
         ],
         SizedBox(height: context.touchTargets.gap),
         BigStepper(

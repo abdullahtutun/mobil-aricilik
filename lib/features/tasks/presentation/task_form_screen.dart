@@ -6,8 +6,13 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
+import 'package:mobil_arici/features/health/domain/drug.dart';
+import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
+import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
+import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_form_controller.dart';
@@ -19,7 +24,9 @@ import 'package:mobil_arici/features/tasks/presentation/widgets/task_labels.dart
 const _maxDueDays = 366;
 
 /// Görev ekleme ([taskId] null) ve düzenleme: başlık, son tarih (Bugün /
-/// Yarın / Başka gün ve saat), arılık ve kovan, atanan kişi; düzenlemede
+/// Yarın / Başka gün ve saat), arılık ve kovan, planlı ilaçlama (ilaç ve
+/// kovan başı doz; alışveriş listesine ihtiyaç olarak girer), atanan kişi;
+/// düzenlemede
 /// Tamamlandı ve Görevi sil. Otomatik görevin başlığı, arılığı ve kovanı
 /// kaynaktan gelir, değiştirilemez. Kaydedince hatırlatıcı izinleri
 /// istenir ve listeye dönülür.
@@ -155,6 +162,25 @@ class _TaskFormFieldsState extends ConsumerState<_TaskFormFields> {
       for (final hive in hives ?? const <Hive>[])
         if (hive.id == form.hiveId) hive.number,
     ].firstOrNull;
+    final catalog =
+        ref
+            .watch(
+              drugCatalogOfProvider(
+                Localizations.localeOf(context).languageCode,
+              ),
+            )
+            .value ??
+        const <DrugChoice>[];
+    final drug = [
+      for (final choice in catalog)
+        if (form.hasDrug &&
+            choice.refDrugId == form.refDrugId &&
+            choice.drugId == form.drugId)
+          choice,
+    ].firstOrNull;
+    final treatedHives = form.hiveId != null
+        ? 1
+        : (hives ?? const <Hive>[]).where(canInspect).length;
     final members = ref.watch(organizationMembersProvider).value ?? const [];
     final userId = ref.watch(currentUserIdProvider);
     final assignees = taskAssignees(l10n, members, userId: userId);
@@ -255,6 +281,46 @@ class _TaskFormFieldsState extends ConsumerState<_TaskFormFields> {
             ),
           ],
         ),
+        if (form.isManual) ...[
+          SizedBox(height: spacing.xl),
+          ListGroup(
+            children: [
+              ListRow(
+                title: l10n.taskFormTreatment,
+                value: switch ((form.hasDrug, drug)) {
+                  (_, final drug?) => drug.name,
+                  (true, null) => l10n.taskFormTreatmentUnknown,
+                  (false, _) => l10n.taskFormNone,
+                },
+                onTap: () => _pickDrug(context),
+              ),
+            ],
+          ),
+          if (drug != null) ...[
+            SizedBox(height: spacing.lg),
+            BigStepper(
+              label: l10n.treatmentDose(drug.doseUnit.label(l10n)),
+              value: form.dose,
+              min: 1,
+              max: maxTreatmentDose,
+              onChanged: _controller.setDose,
+            ),
+            SizedBox(height: spacing.xs),
+            Text(
+              apiaryId == null
+                  ? l10n.taskFormTreatmentNeedsApiary
+                  : l10n.treatmentDoseTotal(
+                      format.number(form.dose * treatedHives),
+                      drug.doseUnit.label(l10n),
+                    ),
+              style: context.typography.bodySmall.copyWith(
+                color: apiaryId == null
+                    ? context.colors.statusWarning
+                    : context.colors.textSecondary,
+              ),
+            ),
+          ],
+        ],
         SizedBox(height: spacing.xl),
         LabeledField(
           label: l10n.taskFormAssignee,
@@ -351,6 +417,51 @@ class _TaskFormFieldsState extends ConsumerState<_TaskFormFields> {
       ),
     );
     if (picked != null) _controller.setApiary(picked.isEmpty ? null : picked);
+  }
+
+  /// İlaç listesi ve "Yok". İlaç seçilince başlık boşsa "İlaçlama · ilaç"
+  /// yazılır.
+  Future<void> _pickDrug(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final form = widget.form;
+    // Liste ilk açılışta yükleniyor olabilir; boş sayfa açılmasın.
+    final catalog = await ref.read(
+      drugCatalogOfProvider(Localizations.localeOf(context).languageCode)
+          .future,
+    );
+    if (!context.mounted) return;
+    final picked = await showOptionSheet<int>(
+      context,
+      (context) => OptionSheet<int>(
+        title: l10n.treatmentChooseDrug,
+        options: [
+          SheetOption(
+            value: -1,
+            icon: Icons.block_rounded,
+            label: l10n.taskFormNone,
+            selected: !form.hasDrug,
+          ),
+          for (final (index, drug) in catalog.indexed)
+            SheetOption(
+              value: index,
+              icon: Icons.medication_outlined,
+              label: drug.name,
+              hint: drug.activeIngredient.label(l10n),
+              selected:
+                  form.hasDrug &&
+                  drug.refDrugId == form.refDrugId &&
+                  drug.drugId == form.drugId,
+            ),
+        ],
+      ),
+    );
+    if (picked == null) return;
+    final drug = picked < 0 ? null : catalog[picked];
+    _controller.selectDrug(drug);
+    if (drug != null && _title.text.trim().isEmpty) {
+      _title.text = l10n.taskTreatmentPlanTitle(drug.name);
+      _controller.setTitle(_title.text);
+    }
   }
 
   Future<void> _pickHive(

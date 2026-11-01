@@ -87,7 +87,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 14;
+  int get schemaVersion => 15;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -195,6 +195,14 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(schema.inventoryMoves);
         await m.create(schema.inventoryMovesOrgIdIdx);
         await m.create(schema.inventoryMovesItemIdIdx);
+      },
+      // Planlı ilaçlama görevi: görevin ilacı ve kovan başı dozu.
+      from14To15: (m, schema) async {
+        await m.addColumn(schema.tasks, schema.tasks.refDrugId);
+        await m.addColumn(schema.tasks, schema.tasks.drugId);
+        await m.addColumn(schema.tasks, schema.tasks.dose);
+        await m.create(schema.tasksRefDrugIdIdx);
+        await m.create(schema.tasksDrugIdIdx);
       },
     ),
   );

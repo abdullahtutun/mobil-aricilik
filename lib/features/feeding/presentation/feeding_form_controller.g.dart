@@ -60,7 +60,7 @@ final class FeedingFormControllerProvider
 }
 
 String _$feedingFormControllerHash() =>
-    r'4334bd66a283c4906636374c75a9abcee1b87dd5';
+    r'2b69265534aaa5320e4430b5d1d78def4dd130cc';
 
 /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
 /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif

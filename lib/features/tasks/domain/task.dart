@@ -50,12 +50,27 @@ abstract class Task with _$Task implements SyncedRecord {
 
     /// Otomatik görevin kaynağı: muayene ya da uygulama grubu.
     String? sourceId,
+
+    /// Planlı ilaçlama: referans listeden ya da işletmenin listesinden
+    /// ilaç (en çok biri) ve kovan başı doz (birimi ilacın). İlaçla doz
+    /// birlikte dolu; ilaçlı görev elle açılır ve arılığa bağlıdır.
+    String? refDrugId,
+    String? drugId,
+    double? dose,
     String? createdBy,
     DateTime? deletedAt,
     @JsonKey(includeToJson: false) int? serverSeq,
   }) = _Task;
 
   factory fromJson(Map<String, Object?> json) => _$TaskFromJson(json);
+}
+
+extension TaskPlan on Task {
+  /// Planlı ilaçlama görevi: ilacı ve dozu var.
+  bool get isPlannedTreatment => dose != null;
+
+  /// Planlanan ilacın kimliği (referans ya da işletmenin); yoksa null.
+  String? get plannedDrugKey => refDrugId ?? drugId;
 }
 
 /// Listede ve bildirimde gösterilen görev: bağlı arılığın adı ve kovanın

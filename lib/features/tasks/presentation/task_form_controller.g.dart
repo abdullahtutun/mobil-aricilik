@@ -60,7 +60,7 @@ final class TaskFormControllerProvider
 }
 
 String _$taskFormControllerHash() =>
-    r'8df1ffb91ff4c7bd32c3d51aefea25f213d7aea1';
+    r'62ab93189b807467da342ac5da6e5cc89d10576f';
 
 /// Görev ekleme ([taskId] null) ve düzenleme formu. Ekran açık kaldığı
 /// sürece yaşar. Düzenlenecek görev yoksa ya da silinmişse durum null.

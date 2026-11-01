@@ -19,7 +19,8 @@ mixin _$TreatmentFormState {
  DateTime get startedOn; TreatmentScope get scope;/// Seçilene kadar boş ve Kaydet kapalı.
  DrugChoice? get drug; int get dose; int get withdrawalDays;/// Planlanan çıkarma günü; tek seferlik uygulamada boş.
  DateTime? get removalOn; String get batchNo;/// Reçete / fatura fotoğrafı; kaydedilince uygulamaya bağlanır.
- MediaCapture? get prescription; bool get saving;
+ MediaCapture? get prescription;/// Stoktan düşülecek kalem; seçilmediyse ilacın son kullanılanı.
+ StockChoice get stock; bool get saving;
 /// Create a copy of TreatmentFormState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -31,20 +32,20 @@ $TreatmentFormStateCopyWith<TreatmentFormState> get copyWith => _$TreatmentFormS
 @override
 bool operator ==(Object other) {
   final _this = this as TreatmentFormState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TreatmentFormState&&(identical(other.hive, _this.hive) || other.hive == _this.hive)&&(identical(other.startedOn, _this.startedOn) || other.startedOn == _this.startedOn)&&(identical(other.scope, _this.scope) || other.scope == _this.scope)&&(identical(other.drug, _this.drug) || other.drug == _this.drug)&&(identical(other.dose, _this.dose) || other.dose == _this.dose)&&(identical(other.withdrawalDays, _this.withdrawalDays) || other.withdrawalDays == _this.withdrawalDays)&&(identical(other.removalOn, _this.removalOn) || other.removalOn == _this.removalOn)&&(identical(other.batchNo, _this.batchNo) || other.batchNo == _this.batchNo)&&(identical(other.prescription, _this.prescription) || other.prescription == _this.prescription)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TreatmentFormState&&(identical(other.hive, _this.hive) || other.hive == _this.hive)&&(identical(other.startedOn, _this.startedOn) || other.startedOn == _this.startedOn)&&(identical(other.scope, _this.scope) || other.scope == _this.scope)&&(identical(other.drug, _this.drug) || other.drug == _this.drug)&&(identical(other.dose, _this.dose) || other.dose == _this.dose)&&(identical(other.withdrawalDays, _this.withdrawalDays) || other.withdrawalDays == _this.withdrawalDays)&&(identical(other.removalOn, _this.removalOn) || other.removalOn == _this.removalOn)&&(identical(other.batchNo, _this.batchNo) || other.batchNo == _this.batchNo)&&(identical(other.prescription, _this.prescription) || other.prescription == _this.prescription)&&(identical(other.stock, _this.stock) || other.stock == _this.stock)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
 }
 
 
 @override
 int get hashCode {
   final _this = this as TreatmentFormState;
-  return Object.hash(runtimeType,_this.hive,_this.startedOn,_this.scope,_this.drug,_this.dose,_this.withdrawalDays,_this.removalOn,_this.batchNo,_this.prescription,_this.saving);
+  return Object.hash(runtimeType,_this.hive,_this.startedOn,_this.scope,_this.drug,_this.dose,_this.withdrawalDays,_this.removalOn,_this.batchNo,_this.prescription,_this.stock,_this.saving);
 }
 
 @override
 String toString() {
   final _this = this as TreatmentFormState;
-  return 'TreatmentFormState(hive: ${_this.hive}, startedOn: ${_this.startedOn}, scope: ${_this.scope}, drug: ${_this.drug}, dose: ${_this.dose}, withdrawalDays: ${_this.withdrawalDays}, removalOn: ${_this.removalOn}, batchNo: ${_this.batchNo}, prescription: ${_this.prescription}, saving: ${_this.saving})';
+  return 'TreatmentFormState(hive: ${_this.hive}, startedOn: ${_this.startedOn}, scope: ${_this.scope}, drug: ${_this.drug}, dose: ${_this.dose}, withdrawalDays: ${_this.withdrawalDays}, removalOn: ${_this.removalOn}, batchNo: ${_this.batchNo}, prescription: ${_this.prescription}, stock: ${_this.stock}, saving: ${_this.saving})';
 }
 
 
@@ -55,7 +56,7 @@ abstract mixin class $TreatmentFormStateCopyWith<$Res>  {
   factory $TreatmentFormStateCopyWith(TreatmentFormState value, $Res Function(TreatmentFormState) _then) = _$TreatmentFormStateCopyWithImpl;
 @useResult
 $Res call({
- Hive hive, DateTime startedOn, TreatmentScope scope, DrugChoice? drug, int dose, int withdrawalDays, DateTime? removalOn, String batchNo, MediaCapture? prescription, bool saving
+ Hive hive, DateTime startedOn, TreatmentScope scope, DrugChoice? drug, int dose, int withdrawalDays, DateTime? removalOn, String batchNo, MediaCapture? prescription, StockChoice stock, bool saving
 });
 
 
@@ -72,7 +73,7 @@ class _$TreatmentFormStateCopyWithImpl<$Res>
 
 /// Create a copy of TreatmentFormState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? hive = null,Object? startedOn = null,Object? scope = null,Object? drug = freezed,Object? dose = null,Object? withdrawalDays = null,Object? removalOn = freezed,Object? batchNo = null,Object? prescription = freezed,Object? saving = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? hive = null,Object? startedOn = null,Object? scope = null,Object? drug = freezed,Object? dose = null,Object? withdrawalDays = null,Object? removalOn = freezed,Object? batchNo = null,Object? prescription = freezed,Object? stock = null,Object? saving = null,}) {
   return _then(TreatmentFormState(
 hive: null == hive ? _self.hive : hive // ignore: cast_nullable_to_non_nullable
 as Hive,startedOn: null == startedOn ? _self.startedOn : startedOn // ignore: cast_nullable_to_non_nullable
@@ -83,7 +84,8 @@ as int,withdrawalDays: null == withdrawalDays ? _self.withdrawalDays : withdrawa
 as int,removalOn: freezed == removalOn ? _self.removalOn : removalOn // ignore: cast_nullable_to_non_nullable
 as DateTime?,batchNo: null == batchNo ? _self.batchNo : batchNo // ignore: cast_nullable_to_non_nullable
 as String,prescription: freezed == prescription ? _self.prescription : prescription // ignore: cast_nullable_to_non_nullable
-as MediaCapture?,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
+as MediaCapture?,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as StockChoice,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -202,10 +204,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Hive hive,  DateTime startedOn,  TreatmentScope scope,  DrugChoice? drug,  int dose,  int withdrawalDays,  DateTime? removalOn,  String batchNo,  MediaCapture? prescription,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Hive hive,  DateTime startedOn,  TreatmentScope scope,  DrugChoice? drug,  int dose,  int withdrawalDays,  DateTime? removalOn,  String batchNo,  MediaCapture? prescription,  StockChoice stock,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TreatmentFormState() when $default != null:
-return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_that.withdrawalDays,_that.removalOn,_that.batchNo,_that.prescription,_that.saving);case _:
+return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_that.withdrawalDays,_that.removalOn,_that.batchNo,_that.prescription,_that.stock,_that.saving);case _:
   return orElse();
 
 }
@@ -223,10 +225,10 @@ return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Hive hive,  DateTime startedOn,  TreatmentScope scope,  DrugChoice? drug,  int dose,  int withdrawalDays,  DateTime? removalOn,  String batchNo,  MediaCapture? prescription,  bool saving)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Hive hive,  DateTime startedOn,  TreatmentScope scope,  DrugChoice? drug,  int dose,  int withdrawalDays,  DateTime? removalOn,  String batchNo,  MediaCapture? prescription,  StockChoice stock,  bool saving)  $default,) {final _that = this;
 switch (_that) {
 case _TreatmentFormState():
-return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_that.withdrawalDays,_that.removalOn,_that.batchNo,_that.prescription,_that.saving);case _:
+return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_that.withdrawalDays,_that.removalOn,_that.batchNo,_that.prescription,_that.stock,_that.saving);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -243,10 +245,10 @@ return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Hive hive,  DateTime startedOn,  TreatmentScope scope,  DrugChoice? drug,  int dose,  int withdrawalDays,  DateTime? removalOn,  String batchNo,  MediaCapture? prescription,  bool saving)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Hive hive,  DateTime startedOn,  TreatmentScope scope,  DrugChoice? drug,  int dose,  int withdrawalDays,  DateTime? removalOn,  String batchNo,  MediaCapture? prescription,  StockChoice stock,  bool saving)?  $default,) {final _that = this;
 switch (_that) {
 case _TreatmentFormState() when $default != null:
-return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_that.withdrawalDays,_that.removalOn,_that.batchNo,_that.prescription,_that.saving);case _:
+return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_that.withdrawalDays,_that.removalOn,_that.batchNo,_that.prescription,_that.stock,_that.saving);case _:
   return null;
 
 }
@@ -258,7 +260,7 @@ return $default(_that.hive,_that.startedOn,_that.scope,_that.drug,_that.dose,_th
 
 
 class _TreatmentFormState implements TreatmentFormState {
-  const _TreatmentFormState({required this.hive, required this.startedOn, this.scope = TreatmentScope.hive, this.drug, this.dose = 1, this.withdrawalDays = 0, this.removalOn, this.batchNo = '', this.prescription, this.saving = false});
+  const _TreatmentFormState({required this.hive, required this.startedOn, this.scope = TreatmentScope.hive, this.drug, this.dose = 1, this.withdrawalDays = 0, this.removalOn, this.batchNo = '', this.prescription, this.stock = defaultStockChoice, this.saving = false});
   
 
 @override final  Hive hive;
@@ -274,6 +276,8 @@ class _TreatmentFormState implements TreatmentFormState {
 @override@JsonKey() final  String batchNo;
 /// Reçete / fatura fotoğrafı; kaydedilince uygulamaya bağlanır.
 @override final  MediaCapture? prescription;
+/// Stoktan düşülecek kalem; seçilmediyse ilacın son kullanılanı.
+@override@JsonKey() final  StockChoice stock;
 @override@JsonKey() final  bool saving;
 
 /// Create a copy of TreatmentFormState
@@ -286,18 +290,18 @@ _$TreatmentFormStateCopyWith<_TreatmentFormState> get copyWith => __$TreatmentFo
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TreatmentFormState&&(identical(other.hive, hive) || other.hive == hive)&&(identical(other.startedOn, startedOn) || other.startedOn == startedOn)&&(identical(other.scope, scope) || other.scope == scope)&&(identical(other.drug, drug) || other.drug == drug)&&(identical(other.dose, dose) || other.dose == dose)&&(identical(other.withdrawalDays, withdrawalDays) || other.withdrawalDays == withdrawalDays)&&(identical(other.removalOn, removalOn) || other.removalOn == removalOn)&&(identical(other.batchNo, batchNo) || other.batchNo == batchNo)&&(identical(other.prescription, prescription) || other.prescription == prescription)&&(identical(other.saving, saving) || other.saving == saving));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TreatmentFormState&&(identical(other.hive, hive) || other.hive == hive)&&(identical(other.startedOn, startedOn) || other.startedOn == startedOn)&&(identical(other.scope, scope) || other.scope == scope)&&(identical(other.drug, drug) || other.drug == drug)&&(identical(other.dose, dose) || other.dose == dose)&&(identical(other.withdrawalDays, withdrawalDays) || other.withdrawalDays == withdrawalDays)&&(identical(other.removalOn, removalOn) || other.removalOn == removalOn)&&(identical(other.batchNo, batchNo) || other.batchNo == batchNo)&&(identical(other.prescription, prescription) || other.prescription == prescription)&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.saving, saving) || other.saving == saving));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,hive,startedOn,scope,drug,dose,withdrawalDays,removalOn,batchNo,prescription,saving);
+    return Object.hash(runtimeType,hive,startedOn,scope,drug,dose,withdrawalDays,removalOn,batchNo,prescription,stock,saving);
 }
 
 @override
 String toString() {
-    return 'TreatmentFormState(hive: $hive, startedOn: $startedOn, scope: $scope, drug: $drug, dose: $dose, withdrawalDays: $withdrawalDays, removalOn: $removalOn, batchNo: $batchNo, prescription: $prescription, saving: $saving)';
+    return 'TreatmentFormState(hive: $hive, startedOn: $startedOn, scope: $scope, drug: $drug, dose: $dose, withdrawalDays: $withdrawalDays, removalOn: $removalOn, batchNo: $batchNo, prescription: $prescription, stock: $stock, saving: $saving)';
 }
 
 
@@ -308,7 +312,7 @@ abstract mixin class _$TreatmentFormStateCopyWith<$Res> implements $TreatmentFor
   factory _$TreatmentFormStateCopyWith(_TreatmentFormState value, $Res Function(_TreatmentFormState) _then) = __$TreatmentFormStateCopyWithImpl;
 @override @useResult
 $Res call({
- Hive hive, DateTime startedOn, TreatmentScope scope, DrugChoice? drug, int dose, int withdrawalDays, DateTime? removalOn, String batchNo, MediaCapture? prescription, bool saving
+ Hive hive, DateTime startedOn, TreatmentScope scope, DrugChoice? drug, int dose, int withdrawalDays, DateTime? removalOn, String batchNo, MediaCapture? prescription, StockChoice stock, bool saving
 });
 
 
@@ -325,7 +329,7 @@ class __$TreatmentFormStateCopyWithImpl<$Res>
 
 /// Create a copy of TreatmentFormState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? hive = null,Object? startedOn = null,Object? scope = null,Object? drug = freezed,Object? dose = null,Object? withdrawalDays = null,Object? removalOn = freezed,Object? batchNo = null,Object? prescription = freezed,Object? saving = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? hive = null,Object? startedOn = null,Object? scope = null,Object? drug = freezed,Object? dose = null,Object? withdrawalDays = null,Object? removalOn = freezed,Object? batchNo = null,Object? prescription = freezed,Object? stock = null,Object? saving = null,}) {
   return _then(_TreatmentFormState(
 hive: null == hive ? _self.hive : hive // ignore: cast_nullable_to_non_nullable
 as Hive,startedOn: null == startedOn ? _self.startedOn : startedOn // ignore: cast_nullable_to_non_nullable
@@ -336,7 +340,8 @@ as int,withdrawalDays: null == withdrawalDays ? _self.withdrawalDays : withdrawa
 as int,removalOn: freezed == removalOn ? _self.removalOn : removalOn // ignore: cast_nullable_to_non_nullable
 as DateTime?,batchNo: null == batchNo ? _self.batchNo : batchNo // ignore: cast_nullable_to_non_nullable
 as String,prescription: freezed == prescription ? _self.prescription : prescription // ignore: cast_nullable_to_non_nullable
-as MediaCapture?,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
+as MediaCapture?,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as StockChoice,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

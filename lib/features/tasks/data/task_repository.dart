@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
+import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
@@ -58,8 +59,49 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
     );
   }
 
-  /// Elle görev açar. Kovan verilirse arılığı da verilmeli. Başlık boşsa
-  /// ya da çok uzunsa [ArgumentError] atar ve bir şey yazmaz.
+  /// İşletmenin açık planlı ilaçlama görevleri ve uygulanacak kovan
+  /// sayısı: kovana bağlı görevde 1, değilse arılıktaki aktif kovanlar.
+  /// Görev ya da kovanlar değişince yeniden yayar.
+  Stream<List<({Task task, int hives})>> watchOpenPlannedTreatments(
+    String orgId,
+  ) {
+    final hives = db.hives;
+    final count = hives.id.count();
+    final query =
+        db.select(table).join([
+            leftOuterJoin(
+              hives,
+              hives.apiaryId.equalsExp(table.apiaryId) &
+                  hives.deletedAt.isNull() &
+                  hives.status.equalsValue(HiveStatus.active),
+              useColumns: false,
+            ),
+          ])
+          ..addColumns([count])
+          ..where(
+            table.orgId.equals(orgId) &
+                table.deletedAt.isNull() &
+                table.completedAt.isNull() &
+                table.dose.isNotNull(),
+          )
+          ..groupBy([table.id])
+          ..orderBy([
+            OrderingTerm.asc(table.dueAt),
+            OrderingTerm.asc(table.id),
+          ]);
+    return query.watch().map(
+      (rows) => [
+        for (final row in rows)
+          if (row.readTable(table) case final task)
+            (task: task, hives: task.hiveId != null ? 1 : row.read(count) ?? 0),
+      ],
+    );
+  }
+
+  /// Elle görev açar. Kovan verilirse arılığı da verilmeli. Planlı
+  /// ilaçlamada ilaç ([refDrugId] ya da [drugId]) ve kovan başı [dose]
+  /// birlikte verilir, arılık zorunlu. Başlık boşsa ya da çok uzunsa ya da
+  /// ilaç alanları tutarsızsa [ArgumentError] atar ve bir şey yazmaz.
   Future<Task> create({
     required String orgId,
     required String title,
@@ -67,6 +109,9 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
     String? apiaryId,
     String? hiveId,
     String? assignedTo,
+    String? refDrugId,
+    String? drugId,
+    double? dose,
   }) {
     final at = now();
     return insertRecord(
@@ -79,6 +124,9 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
           apiaryId: apiaryId,
           hiveId: hiveId,
           assignedTo: assignedTo,
+          refDrugId: refDrugId,
+          drugId: drugId,
+          dose: dose,
           createdAt: at,
           updatedAt: at,
         ),
@@ -216,7 +264,9 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
       ).get();
 
   /// Sunucunun kısıtları: elle açılan görevin başlığı dolu ve
-  /// [maxTaskTitleLength]'i geçmez; kovana bağlı görev arılığını taşır.
+  /// [maxTaskTitleLength]'i geçmez; kovana bağlı görev arılığını taşır;
+  /// ilaç ve doz birlikte, en çok bir ilaç, ilaçlı görev elle açılmış ve
+  /// arılığa bağlı ([checkTaskPlan]).
   static Task _checked(Task task) {
     final title = task.title;
     if (task.source == TaskSource.manual &&
@@ -226,6 +276,7 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
     if (task.hiveId != null && task.apiaryId == null) {
       throw ArgumentError.value(task.apiaryId, 'apiaryId');
     }
+    checkTaskPlan(task);
     return task;
   }
 }

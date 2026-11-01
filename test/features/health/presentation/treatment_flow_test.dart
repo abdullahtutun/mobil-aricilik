@@ -29,6 +29,8 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_draft_repository.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/media/presentation/widgets/media_strip.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
@@ -389,6 +391,74 @@ void main() {
 
       await _tap(tester, find.text('Undo'));
       expect(await liveTreatments(), isEmpty);
+    });
+
+    testWidgets('stoktan düşüm: birimi uyan kalemler listelenir, toplam '
+        'doz düşer, Geri al siler; ilacın son kullanılanı varsayılan', (
+      tester,
+    ) async {
+      final inventory = InventoryRepository(db);
+      final strips = await inventory.create(
+        orgId: _orgId,
+        name: 'Şerit kutusu',
+        category: InventoryCategory.consumable,
+        unit: InventoryUnit.piece,
+      );
+      await inventory.create(
+        orgId: _orgId,
+        name: 'Şeker',
+        category: InventoryCategory.consumable,
+        unit: InventoryUnit.kg,
+      );
+      Future<List<InventoryMove>> liveMoves() async => [
+        for (final row in await db.select(db.inventoryMoves).get())
+          if (row.deletedAt == null) row,
+      ];
+
+      final container = await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveTreat(yayla.id, hive.id),
+      );
+      Future<void> reopen() async {
+        container
+            .read(routerProvider)
+            .go(AppRoutes.hiveTreat(yayla.id, hive.id));
+        await tester.pumpAndSettle();
+      }
+
+      // İlaç seçilmeden kalem satırı yok.
+      expect(find.text('Deduct from stock'), findsNothing);
+      await _tap(tester, find.text('Whole apiary · 2'));
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      await _step(tester, 'Dose per hive (strip)', 'Increase');
+      expect(find.text("Don't deduct"), findsOneWidget);
+
+      await _tap(tester, find.text('Deduct from stock'));
+      expect(_inSheet('Şeker'), findsNothing);
+      await _tap(tester, _inSheet('Şerit kutusu'));
+      expect(find.text('Şerit kutusu · −4 pcs'), findsOneWidget);
+
+      await _tap(tester, _button('Save to 2 hives'));
+      expect((await liveMoves()).single.quantity, -4);
+      await _tap(tester, find.text('Undo'));
+      expect(await liveMoves(), isEmpty);
+
+      await reopen();
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      await _tap(tester, find.text('Deduct from stock'));
+      await _tap(tester, _inSheet('Şerit kutusu'));
+      await _tap(tester, _button('Save'));
+      expect((await liveMoves()).single.itemId, strips.id);
+      await tester.pump(const Duration(seconds: 7));
+      await tester.pumpAndSettle();
+
+      await reopen();
+      await _tap(tester, _button('Choose drug'));
+      await _tap(tester, _inSheet('Amitraz strip'));
+      expect(find.text('Şerit kutusu · −1 pcs'), findsOneWidget);
     });
 
     testWidgets('tek seferlik ilaçta çıkarma yok; tarih seçilip yeniden '

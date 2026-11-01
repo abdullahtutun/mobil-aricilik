@@ -5,6 +5,9 @@ import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/domain/stock_usage_rules.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
@@ -15,12 +18,16 @@ import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 /// kayıt silinir (Geri al da silmedir). Bir kayıtta yazılan uygulamalar
 /// ortak `application_id` taşır; toplu uygulama hepsini ya da hiçbirini
 /// yazar. Reçete fotoğrafı ve şeridi çıkarma görevi aynı transaction'da
-/// yazılır; fotoğraf formun açıldığı kovanın uygulamasına bağlanır.
+/// yazılır; fotoğraf formun açıldığı kovanın uygulamasına bağlanır. Stok
+/// kalemi verilirse kullanılan miktar ([treatmentStockUsage]) da aynı
+/// transaction'da kalemden çıkış olarak yazılır ve grubun ilk uygulamasına
+/// bağlanır; Geri al onu da siler.
 class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
   new(super.db, {super.clock});
 
   late final _media = MediaRepository(db, clock: clock);
   late final _tasks = TaskRepository(db, clock: clock);
+  late final _moves = InventoryMoveRepository(db, clock: clock);
 
   @override
   $TreatmentsTable get table => db.treatments;
@@ -125,30 +132,35 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
   /// [plan]'ı [hive]'a, kovanın şimdiki arılığında yazar; [prescription]
   /// verilirse reçete fotoğrafı olarak uygulamaya bağlanır. Planlanan
   /// çıkarma varsa kovana çıkarma görevi açılır ve [assignedTo]'ya atanır.
+  /// [stockItem] verilirse doz ondan düşülür.
   Future<Treatment> addToHive(
     Hive hive,
     TreatmentPlan plan, {
     MediaCapture? prescription,
     String? assignedTo,
+    InventoryItem? stockItem,
   }) async => (await _addAll(
     [hive],
     plan,
     prescription: prescription,
     assignedTo: assignedTo,
     removalHiveId: hive.id,
+    stockItem: stockItem,
   )).single;
 
   /// [plan]'ı [apiaryId] arılığındaki her aktif kovana tek transaction'da
   /// yazar ve kovan numarası sırasıyla döner. [prescription] verilirse
   /// [photoHiveId] kovanının (yoksa ilk kovanın) uygulamasına bağlanır.
   /// Planlanan çıkarma varsa arılığa tek çıkarma görevi açılır ve
-  /// [assignedTo]'ya atanır. Aktif kovan yoksa bir şey yazmaz, boş döner.
+  /// [assignedTo]'ya atanır. [stockItem] verilirse kovanların toplam dozu
+  /// ondan düşülür. Aktif kovan yoksa bir şey yazmaz, boş döner.
   Future<List<Treatment>> addToApiary(
     String apiaryId,
     TreatmentPlan plan, {
     MediaCapture? prescription,
     String? photoHiveId,
     String? assignedTo,
+    InventoryItem? stockItem,
   }) => db.transaction(() async {
     final hives =
         await (db.select(db.hives)
@@ -166,11 +178,13 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
       prescription: prescription,
       photoHiveId: photoHiveId,
       assignedTo: assignedTo,
+      stockItem: stockItem,
     );
   });
 
-  /// Geri al: [treatments]'ı, reçete fotoğraflarını ve çıkarma görevini
-  /// tek transaction'da siler. Fotoğraf dosyası çağıranın.
+  /// Geri al: [treatments]'ı, reçete fotoğraflarını, çıkarma görevini ve
+  /// bağlı stok çıkışını tek transaction'da siler. Fotoğraf dosyası
+  /// çağıranın.
   Future<void> deleteAll(Iterable<Treatment> treatments) =>
       db.transaction(() async {
         for (final treatment in treatments) {
@@ -180,10 +194,13 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
         for (final groupId in {for (final t in treatments) t.groupId}) {
           await _tasks.deleteBySource(TaskSource.treatment, groupId);
         }
+        await _moves.deleteLinked(table.actualTableName, [
+          for (final t in treatments) t.id,
+        ]);
       });
 
-  /// Değerler sunucunun kısıtlarına uymazsa [ArgumentError] atar ve bir
-  /// şey yazmaz.
+  /// Değerler sunucunun kısıtlarına ya da kalemin birimi ilacınkine uymazsa
+  /// [ArgumentError] atar ve bir şey yazmaz.
   /// Çıkarma görevi [removalHiveId] kovanına (boşsa arılığa) bağlanır.
   Future<List<Treatment>> _addAll(
     List<Hive> hives,
@@ -192,6 +209,7 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
     String? photoHiveId,
     String? assignedTo,
     String? removalHiveId,
+    InventoryItem? stockItem,
   }) {
     _check(plan);
     final drug = plan.drug;
@@ -248,6 +266,23 @@ class TreatmentRepository extends BaseRepository<$TreatmentsTable, Treatment> {
           hiveId: removalHiveId,
           dueAt: removalDueAt,
           assignedTo: assignedTo,
+        );
+      }
+      if (stockItem != null && treatments.isNotEmpty) {
+        final usage = treatmentStockUsage(
+          drug.doseUnit,
+          plan.dose * treatments.length,
+          stockItem.unit,
+        );
+        if (usage == null) {
+          throw ArgumentError.value(stockItem.unit, 'stockItem.unit');
+        }
+        await _moves.add(
+          stockItem,
+          InventoryMoveKind.stockOut,
+          usage,
+          linkedTable: table.actualTableName,
+          linkedId: treatments.first.id,
         );
       }
       return treatments;

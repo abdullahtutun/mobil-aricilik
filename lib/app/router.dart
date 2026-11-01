@@ -46,6 +46,7 @@ import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/inventory/presentation/inventory_form_screen.dart';
 import 'package:mobil_arici/features/inventory/presentation/inventory_item_screen.dart';
 import 'package:mobil_arici/features/inventory/presentation/inventory_screen.dart';
+import 'package:mobil_arici/features/inventory/presentation/shopping_list_screen.dart';
 import 'package:mobil_arici/features/media/presentation/media_viewer_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_form_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_screen.dart';
@@ -464,6 +465,11 @@ GoRouter router(Ref ref) {
                               )
                               .firstOrNull,
                         ),
+                      ),
+                      GoRoute(
+                        path: 'shopping',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => const ShoppingListScreen(),
                       ),
                       GoRoute(
                         path: ':$_inventoryItemId',

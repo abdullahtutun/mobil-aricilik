@@ -9,6 +9,8 @@ import 'package:mobil_arici/features/health/domain/withdrawal_rules.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/domain/stock_usage_rules.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -40,6 +42,9 @@ abstract class TreatmentFormState with _$TreatmentFormState {
 
     /// Reçete / fatura fotoğrafı; kaydedilince uygulamaya bağlanır.
     MediaCapture? prescription,
+
+    /// Stoktan düşülecek kalem; seçilmediyse ilacın son kullanılanı.
+    @Default(defaultStockChoice) StockChoice stock,
     @Default(false) bool saving,
   }) = _TreatmentFormState;
 }
@@ -138,6 +143,10 @@ class TreatmentFormController extends _$TreatmentFormController {
   void setRemovalOn(DateTime? day) =>
       _update((form) => form.copyWith(removalOn: day));
 
+  /// Stoktan düşülecek kalemi seçer; null "Düşme".
+  void selectStockItem(String? itemId) =>
+      _update((form) => form.copyWith(stock: (chosen: true, itemId: itemId)));
+
   /// Reçete fotoğrafını koyar (boşsa kaldırır); öncekinin dosyası silinir.
   void setPrescription(MediaCapture? capture) {
     final previous = _prescription;
@@ -152,9 +161,10 @@ class TreatmentFormController extends _$TreatmentFormController {
     unawaited(ref.read(mediaFileStoreProvider).delete(capture.fileName));
   }
 
-  /// Uygulamayı yazar ve yazılanları döner; ilaç seçilmemişse ya da kovan
-  /// bu arada silindiyse null.
-  Future<List<Treatment>?> save() async {
+  /// Uygulamayı yazar ve yazılanları döner; [stockItem] verilirse toplam
+  /// doz ondan düşülür. İlaç seçilmemişse ya da kovan bu arada silindiyse
+  /// null.
+  Future<List<Treatment>?> save({InventoryItem? stockItem}) async {
     final form = state.value;
     final drug = form?.drug;
     if (form == null || drug == null || form.saving) return null;
@@ -188,6 +198,7 @@ class TreatmentFormController extends _$TreatmentFormController {
             plan,
             prescription: form.prescription,
             assignedTo: assignee,
+            stockItem: stockItem,
           ),
         ],
         TreatmentScope.apiary => await repository.addToApiary(
@@ -196,6 +207,7 @@ class TreatmentFormController extends _$TreatmentFormController {
           prescription: form.prescription,
           photoHiveId: hive.id,
           assignedTo: assignee,
+          stockItem: stockItem,
         ),
       };
       _saved = saved.isNotEmpty;

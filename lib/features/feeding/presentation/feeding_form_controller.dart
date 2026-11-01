@@ -6,6 +6,8 @@ import 'package:mobil_arici/features/feeding/domain/feeding_rules.dart';
 import 'package:mobil_arici/features/feeding/presentation/feeding_providers.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/domain/stock_usage_rules.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'feeding_form_controller.freezed.dart';
@@ -26,6 +28,9 @@ abstract class FeedingFormState with _$FeedingFormState {
 
     /// Kovan başına, kullanıcının biriminde (şurupta hacim, değilse kütle).
     @Default(1) int amount,
+
+    /// Stoktan düşülecek kalem; seçilmediyse türün son kullanılanı.
+    @Default(defaultStockChoice) StockChoice stock,
     @Default(false) bool saving,
   }) = _FeedingFormState;
 }
@@ -51,9 +56,14 @@ class FeedingFormController extends _$FeedingFormController {
   void setAmount(int amount) =>
       _update((form) => form.copyWith(amount: amount));
 
-  /// Beslemeyi yazar ve yazılanları döner; tür seçilmemişse ya da kovan bu
-  /// arada silindiyse null.
-  Future<List<Feeding>?> save() async {
+  /// Stoktan düşülecek kalemi seçer; null "Düşme".
+  void selectStockItem(String? itemId) =>
+      _update((form) => form.copyWith(stock: (chosen: true, itemId: itemId)));
+
+  /// Beslemeyi yazar ve yazılanları döner; [stockItem] verilirse kullanılan
+  /// miktar ondan düşülür. Tür seçilmemişse ya da kovan bu arada silindiyse
+  /// null.
+  Future<List<Feeding>?> save({InventoryItem? stockItem}) async {
     final form = state.value;
     final kind = form?.kind;
     if (form == null || kind == null || form.saving) return null;
@@ -77,10 +87,13 @@ class FeedingFormController extends _$FeedingFormController {
       );
       final repository = ref.read(feedingRepositoryProvider);
       return switch (form.scope) {
-        FeedingScope.hive => [await repository.addToHive(hive, plan)],
+        FeedingScope.hive => [
+          await repository.addToHive(hive, plan, stockItem: stockItem),
+        ],
         FeedingScope.apiary => await repository.addToApiary(
           hive.apiaryId,
           plan,
+          stockItem: stockItem,
         ),
       };
     } finally {

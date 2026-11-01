@@ -97,6 +97,56 @@ final class OpenTasksProvider
 
 String _$openTasksHash() => r'f1fa8d2f05699b46148d24de8f5df4543a488bb2';
 
+/// Oturumdaki işletmenin açık planlı ilaçlama görevleri ve uygulanacak
+/// kovan sayısı; işletme yoksa boş.
+
+@ProviderFor(openPlannedTreatments)
+final openPlannedTreatmentsProvider = OpenPlannedTreatmentsProvider._();
+
+/// Oturumdaki işletmenin açık planlı ilaçlama görevleri ve uygulanacak
+/// kovan sayısı; işletme yoksa boş.
+
+final class OpenPlannedTreatmentsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<({int hives, Task task})>>,
+          List<({int hives, Task task})>,
+          Stream<List<({int hives, Task task})>>
+        >
+    with
+        $FutureModifier<List<({int hives, Task task})>>,
+        $StreamProvider<List<({int hives, Task task})>> {
+  /// Oturumdaki işletmenin açık planlı ilaçlama görevleri ve uygulanacak
+  /// kovan sayısı; işletme yoksa boş.
+  OpenPlannedTreatmentsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'openPlannedTreatmentsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$openPlannedTreatmentsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<({int hives, Task task})>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<({int hives, Task task})>> create(Ref ref) {
+    return openPlannedTreatments(ref);
+  }
+}
+
+String _$openPlannedTreatmentsHash() =>
+    r'74b6878cf732a9db5829e83d63e551f13b99c942';
+
 /// Görev; yoksa ya da silinmişse null.
 
 @ProviderFor(task)
