@@ -137,13 +137,13 @@ Tüm senkronlanan tablolarda: `id uuid`, `org_id`, `created_at`, `updated_at`, `
 
 - `media` (private): `org_id/hive_id/uuid.jpg` yolu; erişim imzalı URL ile, policy yine üyeliğe bağlı.
 - `documents` (private): belge kasası.
-- `public-lots` (public): parti QR sayfasında gösterilmesine izin verilen analiz raporları.
+- `public-lots` (private): parti QR sayfasında gösterilmesine izin verilen analiz raporlarının kopyası. Dosyayı yalnız `lot-page` yayım durumunu denetleyerek sunar; yayımdan kalkan lotun raporu hemen erişilmez olur.
 
 **Edge Functions**
 
 - `weather-bundle`: Kullanıcının tüm arılıkları için WeatherAPI.com tahminini tek pakette döner, sunucuda önbellekler (çağrı sayısını düşük tutar). Anahtar `WEATHERAPI_KEY` secret'ında; uygulamada "Powered by WeatherAPI.com" atfı gösterilir.
 - `notify`: Ekip görev ataması, kritik uyarı push'ları (FCM).
-- `lot-page`: Parti QR'ı okutulduğunda herkese açık izlenebilirlik sayfası.
+- `lot-page`: Parti QR'ı okutulduğunda herkese açık izlenebilirlik sayfası. Yazıldı ve deploy edildi, ama **şimdilik kullanıma kapalı**: Supabase varsayılan `*.supabase.co` alanında `text/html` yanıtını `text/plain`'e çeviriyor. Sayfa ancak özel alan adıyla (Supabase Custom Domain, ücretli) ya da önüne konan bir proxy ile (ör. ücretsiz Cloudflare Worker) HTML olarak açılır. Uygulamadaki "Herkese açık sayfa" bölümü `--dart-define=LOT_PAGE_BASE_URL=<sayfa kökü>` verilmeden derlenince gizli; alan adı hazır olunca bu değerle derlemek özelliği açar.
 - `reports`: Denetim/sezon PDF raporları (alternatif: PDF cihazda üretilir, offline çalışır — tercih edilen).
 - `invite`: Ekip davet kodu doğrulama.
 

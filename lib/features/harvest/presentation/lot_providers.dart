@@ -1,4 +1,3 @@
-import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/presentation/document_providers.dart';
@@ -69,13 +68,14 @@ Future<List<VaultDocument>> analysisReports(Ref ref) async => [
     if (document.type == DocumentType.analysisReport) document,
 ];
 
-/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...` (özel alan
-/// adı; Supabase varsayılan alanda HTML'i düz metin sunar), verilmezse
-/// projenin `lot-page` fonksiyonu.
+/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...`. Verilmezse
+/// null ve lot ekranındaki "Herkese açık sayfa" bölümü gizli: Supabase
+/// varsayılan `*.supabase.co` alanında HTML'i düz metin sunar, sayfa ancak
+/// özel alan adı ya da önüne konan bir proxy ile açılır. O hazır olunca bu
+/// değerle derlemek özelliği açar.
 @riverpod
-String lotPageBaseUrl(Ref ref) => _lotPageBaseUrl.isNotEmpty
-    ? _lotPageBaseUrl
-    : '${ref.watch(flavorProvider).supabaseUrl}/functions/v1/lot-page';
+String? lotPageBaseUrl(Ref ref) =>
+    _lotPageBaseUrl.isEmpty ? null : _lotPageBaseUrl;
 
 const _lotPageBaseUrl = String.fromEnvironment('LOT_PAGE_BASE_URL');
 

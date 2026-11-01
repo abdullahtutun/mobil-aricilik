@@ -38,14 +38,22 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
+/// Testlerde lot sayfası açık; derlemede `LOT_PAGE_BASE_URL` verilmezse
+/// bölüm gizli.
+const _lotPageBaseUrl = 'https://lot.example.com';
+
 Future<ProviderContainer> _open(
   WidgetTester tester, {
   required AppDatabase db,
   required String location,
   FakePrintService? printer,
+  String? lotPageBaseUrl = _lotPageBaseUrl,
 }) async {
   final container = ProviderContainer.test(
-    overrides: signedIn(db: db, printer: printer),
+    overrides: [
+      ...signedIn(db: db, printer: printer),
+      lotPageBaseUrlProvider.overrideWithValue(lotPageBaseUrl),
+    ],
   );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
@@ -424,15 +432,11 @@ void main() {
     await addMember(db, userId: testUser.id, role: MembershipRole.owner);
     final lot = await lots.createWithHarvest(await harvest());
     final printer = FakePrintService();
-    final container = await _open(
+    await _open(
       tester,
       db: db,
       location: AppRoutes.lot(lot.id),
       printer: printer,
-    );
-    expect(
-      container.read(lotPageBaseUrlProvider),
-      'https://jcddnelaboueazhordfz.supabase.co/functions/v1/lot-page',
     );
 
     await showToggle(tester, 'Publish');
@@ -477,6 +481,29 @@ void main() {
     expect((await lots.findById(lot.id))!.published, isFalse);
     expect(_button('Print'), findsNothing);
     expect(toggle('Analysis report'), findsNothing);
+  });
+
+  testWidgets('sayfa adresi yapılandırılmadıysa (derlemede '
+      'LOT_PAGE_BASE_URL yok) bölüm gizli', (tester) async {
+    await addMember(db, userId: testUser.id, role: MembershipRole.owner);
+    final lot = await lots.createWithHarvest(await harvest());
+    await lots.setPublication(lot.id, published: true);
+    await _open(
+      tester,
+      db: db,
+      location: AppRoutes.lot(lot.id),
+      lotPageBaseUrl: null,
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('No sales recorded yet'),
+      200,
+      scrollable: _list(LotScreen),
+    );
+    expect(find.text('PUBLIC PAGE'), findsNothing);
+    expect(find.text('Public page'), findsNothing);
+    expect(toggle('Publish'), findsNothing);
+    expect(_button('Print'), findsNothing);
   });
 
   testWidgets('owner olmayan yayımı görür ama değiştiremez; etiketi basar', (

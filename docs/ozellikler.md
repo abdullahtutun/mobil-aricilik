@@ -112,7 +112,7 @@ Hasat kaydı, kovandan kavanoza izlenebilirlik zincirinin başlangıcıdır.
 - Diğer ürünler: Polen, propolis, arı sütü, bal mumu, petek bal, ana arı/oğulcuk satışı ayrı kalemler.
 - Verim analizi: Kovan, arılık, ana arı hattı ve yıl bazında kg/kovan karşılaştırması.
 - Depo/stok: Teneke, kavanoz, petek stokları; partiden satışa düşen miktar.
-- **İzlenebilirlik etiketi:** Parti için QR kod — müşteri okuttuğunda balın yöresi, hasat tarihi ve (istenirse) analiz raporu görünür. Sahte bala karşı arıcının güven aracı.
+- **İzlenebilirlik etiketi:** Parti için QR kod — müşteri okuttuğunda balın yöresi, hasat tarihi ve (istenirse) analiz raporu görünür. Sahte bala karşı arıcının güven aracı. *(Yazıldı, alan adı hazır olana kadar uygulamada gizli; bkz. teknik.md `lot-page`.)*
 
 ## 7. Gezginci arıcılık ve konaklama
 

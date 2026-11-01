@@ -137,10 +137,13 @@ class _Body extends ConsumerWidget {
             onPressed: () => context.go(AppRoutes.lotLabResult(lot.id)),
           ),
         ],
-        SizedBox(height: spacing.xl),
-        SectionLabel(l10n.lotPublicPage),
-        SizedBox(height: spacing.sm),
-        _Publication(lot),
+        // Sayfa adresi yapılandırılmadıysa (özel alan adı yok) gizli.
+        if (ref.watch(lotPageBaseUrlProvider) case final baseUrl?) ...[
+          SizedBox(height: spacing.xl),
+          SectionLabel(l10n.lotPublicPage),
+          SizedBox(height: spacing.sm),
+          _Publication(lot, baseUrl: baseUrl),
+        ],
         SizedBox(height: spacing.xl),
         SectionLabel(l10n.lotHarvests),
         SizedBox(height: spacing.sm),
@@ -224,9 +227,12 @@ enum _Output { print, share }
 /// etiketi (QR) PDF'i. Anahtarları yalnız owner değiştirir, diğerleri
 /// durumu görür. Yayımda değilken sayfa 404 olduğu için etiket yok.
 class _Publication extends ConsumerStatefulWidget {
-  const new(this.lot);
+  const new(this.lot, {required this.baseUrl});
 
   final Lot lot;
+
+  /// Lot sayfalarının kökü; QR `<baseUrl>/<lot_id>` taşır.
+  final String baseUrl;
 
   @override
   ConsumerState<_Publication> createState() => _PublicationState();
@@ -262,7 +268,7 @@ class _PublicationState extends ConsumerState<_Publication> {
     setState(() => _busy = true);
     try {
       final bytes = await buildLotLabelPdf((
-        url: lotPageUrl(ref.read(lotPageBaseUrlProvider), lot.id),
+        url: lotPageUrl(widget.baseUrl, lot.id),
         number: number,
         honey: lot.title(l10n),
       ), title: title);
