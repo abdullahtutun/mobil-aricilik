@@ -39,8 +39,10 @@ import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/migration/domain/transport.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
+import 'package:mobil_arici/features/queens/data/queen_rearing_repository.dart';
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
+import 'package:mobil_arici/features/queens/domain/queen_rearing.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -410,6 +412,26 @@ Map<String, Object?> _inventoryMoveRow(int seq) => {
   'moved_at': '2026-11-15T18:05:00+00:00',
   'linked_table': 'feedings',
   'linked_id': 'feeding-1',
+};
+
+Map<String, Object?> _rearingBatchRow(int seq) => {
+  ..._standard('rearing-batch-1', seq),
+  'org_id': _org,
+  'number': 3,
+  'mother_queen_id': 'queen-1',
+  'grafted_on': '2026-05-12',
+  'grafted_count': 40,
+  'accepted_count': 34,
+};
+
+Map<String, Object?> _matingNucRow(int seq) => {
+  ..._standard('mating-nuc-1', seq),
+  'org_id': _org,
+  'number': '7',
+  'apiary_id': 'apiary-1',
+  'rearing_batch_id': 'rearing-batch-1',
+  'status': 'laying',
+  'queen_id': null,
 };
 
 bool _isPull(http.Request request) =>
@@ -918,11 +940,13 @@ void main() {
         'transport_items': [_transportItemRow(21)],
         'inventory_items': [_inventoryItemRow(22)],
         'inventory_moves': [_inventoryMoveRow(23)],
+        'queen_rearing_batches': [_rearingBatchRow(24)],
+        'mating_nucs': [_matingNucRow(25)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 23),
+        const SyncResult(status: SyncStatus.done, pulled: 25),
       );
 
       expect(requests.map(_pullOf), [
@@ -949,6 +973,8 @@ void main() {
         (table: 'transport_items', since: 0),
         (table: 'inventory_items', since: 0),
         (table: 'inventory_moves', since: 0),
+        (table: 'queen_rearing_batches', since: 0),
+        (table: 'mating_nucs', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -1079,6 +1105,8 @@ void main() {
         'transport_items': 21,
         'inventory_items': 22,
         'inventory_moves': 23,
+        'queen_rearing_batches': 24,
+        'mating_nucs': 25,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -1112,6 +1140,14 @@ void main() {
       expect(stockMove.quantity, -12.5);
       expect(stockMove.linkedId, 'feeding-1');
       expect(await inventory.moves.stockOf('inventory-item-1'), -12.5);
+      final rearing = QueenRearingRepository(db);
+      final batch = (await rearing.findById('rearing-batch-1'))!;
+      expect(batch.graftedOn, DateTime(2026, 5, 12));
+      expect(batch.toJson()['grafted_on'], '2026-05-12');
+      expect(batch.acceptedCount, 34);
+      final nuc = (await rearing.nucs.findById('mating-nuc-1'))!;
+      expect(nuc.status, MatingNucStatus.laying);
+      expect(nuc.rearingBatchId, 'rearing-batch-1');
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

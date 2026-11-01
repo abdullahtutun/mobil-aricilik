@@ -73,6 +73,7 @@ class QueenRepository extends BaseRepository<$QueensTable, Queen> {
     String? breed,
     String? breedLine,
     QueenSource? source,
+    QueenMatingStatus? matingStatus,
     bool wingClipped = false,
     String? motherQueenId,
   }) => db.transaction(() async {
@@ -86,6 +87,7 @@ class QueenRepository extends BaseRepository<$QueensTable, Queen> {
       breed: breed,
       breedLine: breedLine,
       source: source,
+      matingStatus: matingStatus,
       wingClipped: wingClipped,
       motherQueenId: motherQueenId,
     );

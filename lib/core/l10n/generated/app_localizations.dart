@@ -7582,6 +7582,438 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'• {name}: {quantity}'**
   String shoppingShareLine(String name, String quantity);
+
+  /// More screen tile: queen rearing.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen rearing'**
+  String get moreRearing;
+
+  /// Queen rearing batches list title.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen rearing'**
+  String get rearingTitle;
+
+  /// Name of a queen rearing batch.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch {number}'**
+  String rearingBatchName(int number);
+
+  /// Batch screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen rearing · Batch {number}'**
+  String rearingBatchTitle(int number);
+
+  /// Button: add a queen rearing batch.
+  ///
+  /// In en, this message translates to:
+  /// **'Add batch'**
+  String get rearingAdd;
+
+  /// Empty batches list title.
+  ///
+  /// In en, this message translates to:
+  /// **'No batches yet'**
+  String get rearingEmptyTitle;
+
+  /// Empty batches list message.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the grafting day; the schedule from acceptance to the laying check and its reminders are set up for you.'**
+  String get rearingEmptyMessage;
+
+  /// Error loading batches.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load batches'**
+  String get rearingLoadError;
+
+  /// Batch was deleted or does not exist.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch not found'**
+  String get rearingNotFound;
+
+  /// Batch row subtitle: grafting day.
+  ///
+  /// In en, this message translates to:
+  /// **'grafted {date}'**
+  String rearingListGrafted(String date);
+
+  /// Tooltip: edit batch.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit batch'**
+  String get rearingEdit;
+
+  /// Summary tile: grafted larvae.
+  ///
+  /// In en, this message translates to:
+  /// **'Grafted'**
+  String get rearingGraftedLabel;
+
+  /// Summary tile: accepted cells.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get rearingAcceptedLabel;
+
+  /// Summary tile: mating nucs of the batch.
+  ///
+  /// In en, this message translates to:
+  /// **'Nucs'**
+  String get rearingNucsLabel;
+
+  /// Accepted cells were not counted yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not counted'**
+  String get rearingNotCounted;
+
+  /// Acceptance rate.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String rearingAcceptedPercent(int percent);
+
+  /// Batch mother queen and grafting day.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother: {mother} · grafted {date}'**
+  String rearingMotherLine(String mother, String date);
+
+  /// Batch without mother queen.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother unknown · grafted {date}'**
+  String rearingMotherUnknownLine(String date);
+
+  /// Schedule day after grafting.
+  ///
+  /// In en, this message translates to:
+  /// **'D{day}'**
+  String rearingDay(int day);
+
+  /// Step date is today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get rearingToday;
+
+  /// Schedule step D0.
+  ///
+  /// In en, this message translates to:
+  /// **'Larva grafting'**
+  String get rearingStepGraft;
+
+  /// Schedule step D1.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance check'**
+  String get rearingStepAcceptance;
+
+  /// Schedule step D5.
+  ///
+  /// In en, this message translates to:
+  /// **'Cells capped'**
+  String get rearingStepCapped;
+
+  /// Schedule step D10.
+  ///
+  /// In en, this message translates to:
+  /// **'Distribute cells'**
+  String get rearingStepDistribution;
+
+  /// Schedule step D12.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen emergence'**
+  String get rearingStepEmergence;
+
+  /// Schedule step D24.
+  ///
+  /// In en, this message translates to:
+  /// **'Laying check'**
+  String get rearingStepLayingCheck;
+
+  /// D0 detail.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} larvae'**
+  String rearingStepGraftDetail(int count);
+
+  /// D1 detail when counted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cells accepted'**
+  String rearingStepAcceptanceDetail(int count);
+
+  /// D1 detail when not counted.
+  ///
+  /// In en, this message translates to:
+  /// **'Count the accepted cells'**
+  String get rearingStepAcceptanceTodo;
+
+  /// D5 detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t disturb'**
+  String get rearingStepCappedDetail;
+
+  /// D10 detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Before emergence, to {count} nucs'**
+  String rearingStepDistributionDetail(int count);
+
+  /// D10 detail without count.
+  ///
+  /// In en, this message translates to:
+  /// **'Before emergence, to the nucs'**
+  String get rearingStepDistributionTodo;
+
+  /// D12 detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the nucs'**
+  String get rearingStepEmergenceDetail;
+
+  /// D24 detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark mating success'**
+  String get rearingStepLayingCheckDetail;
+
+  /// Screen reader: step done.
+  ///
+  /// In en, this message translates to:
+  /// **'done'**
+  String get rearingStepDone;
+
+  /// Screen reader: current step.
+  ///
+  /// In en, this message translates to:
+  /// **'next'**
+  String get rearingStepCurrent;
+
+  /// Screen reader: upcoming step.
+  ///
+  /// In en, this message translates to:
+  /// **'upcoming'**
+  String get rearingStepUpcoming;
+
+  /// Button: distribute cells to mating nucs.
+  ///
+  /// In en, this message translates to:
+  /// **'Distribute cells to nucs'**
+  String get rearingDistribute;
+
+  /// Distribute sheet: apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get rearingDistributeApiary;
+
+  /// Distribute sheet: number of nucs.
+  ///
+  /// In en, this message translates to:
+  /// **'Nucs'**
+  String get rearingDistributeCount;
+
+  /// Distribute sheet: reused and new nucs.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty nucs reused: {reused} · New nucs: {created}'**
+  String rearingDistributePlan(int reused, int created);
+
+  /// Distribute sheet save.
+  ///
+  /// In en, this message translates to:
+  /// **'Distribute'**
+  String get rearingDistributeSave;
+
+  /// Distribute sheet without apiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an apiary first'**
+  String get rearingDistributeNoApiary;
+
+  /// Message after distributing.
+  ///
+  /// In en, this message translates to:
+  /// **'Distributed to {count} nucs'**
+  String rearingDistributed(int count);
+
+  /// Batch screen section.
+  ///
+  /// In en, this message translates to:
+  /// **'Mating nucs'**
+  String get rearingNucsSection;
+
+  /// Mating nuc name.
+  ///
+  /// In en, this message translates to:
+  /// **'Nuc {number}'**
+  String rearingNucTitle(String number);
+
+  /// Nuc status.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get matingNucStatusEmpty;
+
+  /// Nuc status.
+  ///
+  /// In en, this message translates to:
+  /// **'Cell'**
+  String get matingNucStatusCell;
+
+  /// Nuc status.
+  ///
+  /// In en, this message translates to:
+  /// **'Virgin queen'**
+  String get matingNucStatusVirgin;
+
+  /// Nuc status.
+  ///
+  /// In en, this message translates to:
+  /// **'Laying'**
+  String get matingNucStatusLaying;
+
+  /// Nuc status.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get matingNucStatusFailed;
+
+  /// Nuc status.
+  ///
+  /// In en, this message translates to:
+  /// **'Given to a hive'**
+  String get matingNucStatusGiven;
+
+  /// Nuc action: give the laying queen to a hive.
+  ///
+  /// In en, this message translates to:
+  /// **'Give to a hive'**
+  String get rearingNucGive;
+
+  /// Hive picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Which hive?'**
+  String get rearingNucChooseHive;
+
+  /// Hive picker empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No active hives'**
+  String get rearingNucNoHives;
+
+  /// Batch form title (new).
+  ///
+  /// In en, this message translates to:
+  /// **'New batch'**
+  String get rearingFormNewTitle;
+
+  /// Batch form title (edit).
+  ///
+  /// In en, this message translates to:
+  /// **'Edit batch'**
+  String get rearingFormEditTitle;
+
+  /// Batch form: grafting day.
+  ///
+  /// In en, this message translates to:
+  /// **'Grafting day'**
+  String get rearingFormGraftedOn;
+
+  /// Batch form: grafted count.
+  ///
+  /// In en, this message translates to:
+  /// **'Grafted larvae'**
+  String get rearingFormGraftedCount;
+
+  /// Batch form: accepted count.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted cells'**
+  String get rearingFormAcceptedCount;
+
+  /// Batch form: clear accepted count.
+  ///
+  /// In en, this message translates to:
+  /// **'Not counted yet'**
+  String get rearingFormAcceptedClear;
+
+  /// Batch form hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance, capping, distribution, emergence and laying check are added as tasks with reminders.'**
+  String get rearingFormScheduleHint;
+
+  /// Batch form save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get rearingFormSave;
+
+  /// Batch form delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete batch'**
+  String get rearingFormDelete;
+
+  /// Delete dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete batch?'**
+  String get rearingDeleteTitle;
+
+  /// Delete dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'Its tasks are deleted too. Nucs and given queens stay.'**
+  String get rearingDeleteMessage;
+
+  /// Delete dialog confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get rearingDeleteConfirm;
+
+  /// Message after deleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch deleted'**
+  String get rearingDeleted;
+
+  /// Message after saving an edited batch.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch saved'**
+  String get rearingSaved;
+
+  /// Task context: created by queen rearing schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'queen rearing'**
+  String get taskSourceQueenRearing;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen rearing batch'**
+  String get syncTableQueenRearingBatches;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Mating nuc'**
+  String get syncTableMatingNucs;
 }
 
 class _AppLocalizationsDelegate

@@ -144,6 +144,13 @@ abstract final class AppRoutes {
   static String inventoryItem(String id) => '/more/inventory/$id';
   static String inventoryItemEdit(String id) => '/more/inventory/$id/edit';
 
+  /// Ana yetiştirme serileri; Daha fazla'dan açılır. Serinin takvimi,
+  /// ekleme ve düzenleme listenin altında.
+  static const rearing = '/more/rearing';
+  static const rearingNew = '/more/rearing/new';
+  static String rearingBatch(String id) => '/more/rearing/$id';
+  static String rearingBatchEdit(String id) => '/more/rearing/$id/edit';
+
   /// Göç planları; Daha fazla'dan açılır. Planın zaman çizelgesi, plan ve
   /// durak formları planların altında.
   static const migrations = '/more/migrations';

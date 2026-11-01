@@ -62,6 +62,9 @@ void main() {
 
       await tester.tap(find.text('More'));
       await tester.pumpAndSettle();
+      // Yardım bölümü ekranın altında; kaydırınca görünür.
+      await tester.ensureVisible(find.text('Settings'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Settings'));
       await tester.pumpAndSettle();
 

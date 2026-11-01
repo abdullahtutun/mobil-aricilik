@@ -11,6 +11,7 @@ import 'generated/schema_v12.dart' as v12;
 import 'generated/schema_v13.dart' as v13;
 import 'generated/schema_v14.dart' as v14;
 import 'generated/schema_v15.dart' as v15;
+import 'generated/schema_v16.dart' as v16;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -665,6 +666,38 @@ void main() {
         expect(task.refDrugId, null);
         expect(task.drugId, null);
         expect(task.dose, null);
+      },
+    );
+  });
+
+  test('v15 → v16 görevleri korur; takvim günü boş, ana yetiştirme '
+      'tabloları boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 15,
+      newVersion: 16,
+      createOld: v15.DatabaseAtV15.new,
+      createNew: v16.DatabaseAtV16.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.tasks,
+          v15.TasksCompanion.insert(
+            id: 'task-1',
+            createdAt: '2026-11-01T09:00:00.000Z',
+            updatedAt: '2026-11-01T09:00:00.000Z',
+            orgId: 'org-1',
+            title: const Value('Şeker al'),
+            dueAt: '2026-11-02T09:00:00.000Z',
+            source: 'manual',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final task = (await newDb.select(newDb.tasks).get()).single;
+        expect(task.title, 'Şeker al');
+        expect(task.sourceStep, null);
+        expect(await newDb.select(newDb.queenRearingBatches).get(), isEmpty);
+        expect(await newDb.select(newDb.matingNucs).get(), isEmpty);
       },
     );
   });

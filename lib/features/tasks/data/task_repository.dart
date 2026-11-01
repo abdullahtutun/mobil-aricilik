@@ -5,6 +5,7 @@ import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/queens/domain/queen_rearing_rules.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 
@@ -244,6 +245,48 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
       ),
     );
   }
+
+  /// Ana yetiştirme serisinin ([batchId]) takvim görevleri: aktarma
+  /// dışındaki her adım için adım günü [rearingTaskHour]'da bir görev
+  /// ([rearingStepDueAt]). Görevler [assignedTo]'ya atanır; hepsi tek
+  /// transaction'da.
+  Future<List<Task>> addQueenRearingSteps({
+    required String orgId,
+    required String batchId,
+    required DateTime graftedOn,
+    String? assignedTo,
+  }) => db.transaction(() async {
+    final at = now();
+    return [
+      for (final step in rearingTaskSteps)
+        await insertRecord(
+          Task(
+            id: generateId(),
+            orgId: orgId,
+            dueAt: rearingStepDueAt(graftedOn, step),
+            assignedTo: assignedTo,
+            source: TaskSource.queenRearing,
+            sourceId: batchId,
+            sourceStep: step.day,
+            createdAt: at,
+            updatedAt: at,
+          ),
+        ),
+    ];
+  });
+
+  /// Aktarma günü değişince serinin ([batchId]) görevlerinin günü yeni
+  /// takvime çekilir; günü zaten tutan görev yazılmaz.
+  Future<void> rescheduleQueenRearing(String batchId, DateTime graftedOn) =>
+      db.transaction(() async {
+        for (final task in await _bySource(TaskSource.queenRearing, batchId)) {
+          final step = RearingStep.ofDay(task.sourceStep);
+          if (step == null) continue;
+          final dueAt = rearingStepDueAt(graftedOn, step);
+          if (task.dueAt.isAtSameMomentAs(dueAt)) continue;
+          await updateRecord(task.copyWith(dueAt: dueAt));
+        }
+      });
 
   /// [source] kaydının ([sourceId]) görevlerini siler (kaynağın Geri al'ı,
   /// hatırlatmanın kaldırılması).

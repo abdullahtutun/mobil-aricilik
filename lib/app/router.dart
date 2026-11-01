@@ -61,6 +61,9 @@ import 'package:mobil_arici/features/organization/presentation/organization_prov
 import 'package:mobil_arici/features/queens/presentation/old_queens_screen.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_card_screen.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_form_screen.dart';
+import 'package:mobil_arici/features/queens/presentation/queen_rearing_form_screen.dart';
+import 'package:mobil_arici/features/queens/presentation/queen_rearing_screen.dart';
+import 'package:mobil_arici/features/queens/presentation/rearing_batch_screen.dart';
 import 'package:mobil_arici/features/reports/presentation/reports_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
@@ -83,6 +86,7 @@ const _migrationId = 'migrationId';
 const _transportId = 'transportId';
 const _stopId = 'stopId';
 const _inventoryItemId = 'inventoryItemId';
+const _rearingBatchId = 'rearingBatchId';
 const _attentionKind = 'kind';
 
 /// Yoldaki dikkat grubu; bilinmeyen adda null.
@@ -483,6 +487,36 @@ GoRouter router(Ref ref) {
                             parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => InventoryFormScreen(
                               itemId: state.pathParameters[_inventoryItemId],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'rearing',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const QueenRearingScreen(),
+                    routes: [
+                      // Sabit yollar `:id`'den önce.
+                      GoRoute(
+                        path: 'new',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) =>
+                            const QueenRearingFormScreen(),
+                      ),
+                      GoRoute(
+                        path: ':$_rearingBatchId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => RearingBatchScreen(
+                          batchId: state.pathParameters[_rearingBatchId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => QueenRearingFormScreen(
+                              batchId: state.pathParameters[_rearingBatchId],
                             ),
                           ),
                         ],

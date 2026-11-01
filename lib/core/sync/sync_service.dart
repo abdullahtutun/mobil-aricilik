@@ -83,6 +83,8 @@ class SyncService {
     _db.transportItems,
     _db.inventoryItems,
     _db.inventoryMoves,
+    _db.queenRearingBatches,
+    _db.matingNucs,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

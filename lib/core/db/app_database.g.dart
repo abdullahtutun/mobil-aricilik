@@ -9220,6 +9220,17 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _sourceStepMeta = const VerificationMeta(
+    'sourceStep',
+  );
+  @override
+  late final GeneratedColumn<int> sourceStep = GeneratedColumn<int>(
+    'source_step',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _refDrugIdMeta = const VerificationMeta(
     'refDrugId',
   );
@@ -9266,6 +9277,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     completedAt,
     source,
     sourceId,
+    sourceStep,
     refDrugId,
     drugId,
     dose,
@@ -9376,6 +9388,12 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
         sourceId.isAcceptableOrUnknown(data['source_id']!, _sourceIdMeta),
       );
     }
+    if (data.containsKey('source_step')) {
+      context.handle(
+        _sourceStepMeta,
+        sourceStep.isAcceptableOrUnknown(data['source_step']!, _sourceStepMeta),
+      );
+    }
     if (data.containsKey('ref_drug_id')) {
       context.handle(
         _refDrugIdMeta,
@@ -9453,6 +9471,10 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
         DriftSqlType.string,
         data['${effectivePrefix}source_id'],
       ),
+      sourceStep: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}source_step'],
+      ),
       refDrugId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}ref_drug_id'],
@@ -9505,6 +9527,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
   final Value<DateTime?> completedAt;
   final Value<TaskSource> source;
   final Value<String?> sourceId;
+  final Value<int?> sourceStep;
   final Value<String?> refDrugId;
   final Value<String?> drugId;
   final Value<double?> dose;
@@ -9525,6 +9548,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
     this.completedAt = const Value.absent(),
     this.source = const Value.absent(),
     this.sourceId = const Value.absent(),
+    this.sourceStep = const Value.absent(),
     this.refDrugId = const Value.absent(),
     this.drugId = const Value.absent(),
     this.dose = const Value.absent(),
@@ -9546,6 +9570,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
     this.completedAt = const Value.absent(),
     required TaskSource source,
     this.sourceId = const Value.absent(),
+    this.sourceStep = const Value.absent(),
     this.refDrugId = const Value.absent(),
     this.drugId = const Value.absent(),
     this.dose = const Value.absent(),
@@ -9572,6 +9597,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
     Expression<DateTime>? completedAt,
     Expression<String>? source,
     Expression<String>? sourceId,
+    Expression<int>? sourceStep,
     Expression<String>? refDrugId,
     Expression<String>? drugId,
     Expression<double>? dose,
@@ -9593,6 +9619,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
       if (completedAt != null) 'completed_at': completedAt,
       if (source != null) 'source': source,
       if (sourceId != null) 'source_id': sourceId,
+      if (sourceStep != null) 'source_step': sourceStep,
       if (refDrugId != null) 'ref_drug_id': refDrugId,
       if (drugId != null) 'drug_id': drugId,
       if (dose != null) 'dose': dose,
@@ -9616,6 +9643,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
     Value<DateTime?>? completedAt,
     Value<TaskSource>? source,
     Value<String?>? sourceId,
+    Value<int?>? sourceStep,
     Value<String?>? refDrugId,
     Value<String?>? drugId,
     Value<double?>? dose,
@@ -9637,6 +9665,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
       completedAt: completedAt ?? this.completedAt,
       source: source ?? this.source,
       sourceId: sourceId ?? this.sourceId,
+      sourceStep: sourceStep ?? this.sourceStep,
       refDrugId: refDrugId ?? this.refDrugId,
       drugId: drugId ?? this.drugId,
       dose: dose ?? this.dose,
@@ -9694,6 +9723,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
     if (sourceId.present) {
       map['source_id'] = Variable<String>(sourceId.value);
     }
+    if (sourceStep.present) {
+      map['source_step'] = Variable<int>(sourceStep.value);
+    }
     if (refDrugId.present) {
       map['ref_drug_id'] = Variable<String>(refDrugId.value);
     }
@@ -9727,6 +9759,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
           ..write('completedAt: $completedAt, ')
           ..write('source: $source, ')
           ..write('sourceId: $sourceId, ')
+          ..write('sourceStep: $sourceStep, ')
           ..write('refDrugId: $refDrugId, ')
           ..write('drugId: $drugId, ')
           ..write('dose: $dose, ')
@@ -9757,6 +9790,7 @@ class _$TaskInsertable implements Insertable<Task> {
       completedAt: Value(_object.completedAt),
       source: Value(_object.source),
       sourceId: Value(_object.sourceId),
+      sourceStep: Value(_object.sourceStep),
       refDrugId: Value(_object.refDrugId),
       drugId: Value(_object.drugId),
       dose: Value(_object.dose),
@@ -15202,6 +15236,1044 @@ extension InventoryMoveToInsertable on InventoryMove {
   }
 }
 
+class $QueenRearingBatchesTable extends QueenRearingBatches
+    with TableInfo<$QueenRearingBatchesTable, QueenRearingBatch> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $QueenRearingBatchesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedColumn<int> number = GeneratedColumn<int>(
+    'number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _motherQueenIdMeta = const VerificationMeta(
+    'motherQueenId',
+  );
+  @override
+  late final GeneratedColumn<String> motherQueenId = GeneratedColumn<String>(
+    'mother_queen_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, String> graftedOn =
+      GeneratedColumn<String>(
+        'grafted_on',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($QueenRearingBatchesTable.$convertergraftedOn);
+  static const VerificationMeta _graftedCountMeta = const VerificationMeta(
+    'graftedCount',
+  );
+  @override
+  late final GeneratedColumn<int> graftedCount = GeneratedColumn<int>(
+    'grafted_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _acceptedCountMeta = const VerificationMeta(
+    'acceptedCount',
+  );
+  @override
+  late final GeneratedColumn<int> acceptedCount = GeneratedColumn<int>(
+    'accepted_count',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    number,
+    motherQueenId,
+    graftedOn,
+    graftedCount,
+    acceptedCount,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'queen_rearing_batches';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<QueenRearingBatch> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('number')) {
+      context.handle(
+        _numberMeta,
+        number.isAcceptableOrUnknown(data['number']!, _numberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_numberMeta);
+    }
+    if (data.containsKey('mother_queen_id')) {
+      context.handle(
+        _motherQueenIdMeta,
+        motherQueenId.isAcceptableOrUnknown(
+          data['mother_queen_id']!,
+          _motherQueenIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('grafted_count')) {
+      context.handle(
+        _graftedCountMeta,
+        graftedCount.isAcceptableOrUnknown(
+          data['grafted_count']!,
+          _graftedCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_graftedCountMeta);
+    }
+    if (data.containsKey('accepted_count')) {
+      context.handle(
+        _acceptedCountMeta,
+        acceptedCount.isAcceptableOrUnknown(
+          data['accepted_count']!,
+          _acceptedCountMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  QueenRearingBatch map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return QueenRearingBatch(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}number'],
+      )!,
+      graftedOn: $QueenRearingBatchesTable.$convertergraftedOn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}grafted_on'],
+        )!,
+      ),
+      graftedCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}grafted_count'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      motherQueenId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}mother_queen_id'],
+      ),
+      acceptedCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}accepted_count'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $QueenRearingBatchesTable createAlias(String alias) {
+    return $QueenRearingBatchesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, String> $convertergraftedOn =
+      const DateOnlyConverter();
+}
+
+class QueenRearingBatchesCompanion extends UpdateCompanion<QueenRearingBatch> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<int> number;
+  final Value<String?> motherQueenId;
+  final Value<DateTime> graftedOn;
+  final Value<int> graftedCount;
+  final Value<int?> acceptedCount;
+  final Value<int> rowid;
+  const QueenRearingBatchesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.number = const Value.absent(),
+    this.motherQueenId = const Value.absent(),
+    this.graftedOn = const Value.absent(),
+    this.graftedCount = const Value.absent(),
+    this.acceptedCount = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  QueenRearingBatchesCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required int number,
+    this.motherQueenId = const Value.absent(),
+    required DateTime graftedOn,
+    required int graftedCount,
+    this.acceptedCount = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       number = Value(number),
+       graftedOn = Value(graftedOn),
+       graftedCount = Value(graftedCount);
+  static Insertable<QueenRearingBatch> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<int>? number,
+    Expression<String>? motherQueenId,
+    Expression<String>? graftedOn,
+    Expression<int>? graftedCount,
+    Expression<int>? acceptedCount,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (number != null) 'number': number,
+      if (motherQueenId != null) 'mother_queen_id': motherQueenId,
+      if (graftedOn != null) 'grafted_on': graftedOn,
+      if (graftedCount != null) 'grafted_count': graftedCount,
+      if (acceptedCount != null) 'accepted_count': acceptedCount,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  QueenRearingBatchesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<int>? number,
+    Value<String?>? motherQueenId,
+    Value<DateTime>? graftedOn,
+    Value<int>? graftedCount,
+    Value<int?>? acceptedCount,
+    Value<int>? rowid,
+  }) {
+    return QueenRearingBatchesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      number: number ?? this.number,
+      motherQueenId: motherQueenId ?? this.motherQueenId,
+      graftedOn: graftedOn ?? this.graftedOn,
+      graftedCount: graftedCount ?? this.graftedCount,
+      acceptedCount: acceptedCount ?? this.acceptedCount,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (motherQueenId.present) {
+      map['mother_queen_id'] = Variable<String>(motherQueenId.value);
+    }
+    if (graftedOn.present) {
+      map['grafted_on'] = Variable<String>(
+        $QueenRearingBatchesTable.$convertergraftedOn.toSql(graftedOn.value),
+      );
+    }
+    if (graftedCount.present) {
+      map['grafted_count'] = Variable<int>(graftedCount.value);
+    }
+    if (acceptedCount.present) {
+      map['accepted_count'] = Variable<int>(acceptedCount.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QueenRearingBatchesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('number: $number, ')
+          ..write('motherQueenId: $motherQueenId, ')
+          ..write('graftedOn: $graftedOn, ')
+          ..write('graftedCount: $graftedCount, ')
+          ..write('acceptedCount: $acceptedCount, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$QueenRearingBatchInsertable implements Insertable<QueenRearingBatch> {
+  QueenRearingBatch _object;
+  _$QueenRearingBatchInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return QueenRearingBatchesCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      number: Value(_object.number),
+      motherQueenId: Value(_object.motherQueenId),
+      graftedOn: Value(_object.graftedOn),
+      graftedCount: Value(_object.graftedCount),
+      acceptedCount: Value(_object.acceptedCount),
+    ).toColumns(false);
+  }
+}
+
+extension QueenRearingBatchToInsertable on QueenRearingBatch {
+  _$QueenRearingBatchInsertable toInsertable() {
+    return _$QueenRearingBatchInsertable(this);
+  }
+}
+
+class $MatingNucsTable extends MatingNucs
+    with TableInfo<$MatingNucsTable, MatingNuc> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MatingNucsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedColumn<String> number = GeneratedColumn<String>(
+    'number',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rearingBatchIdMeta = const VerificationMeta(
+    'rearingBatchId',
+  );
+  @override
+  late final GeneratedColumn<String> rearingBatchId = GeneratedColumn<String>(
+    'rearing_batch_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<MatingNucStatus, String> status =
+      GeneratedColumn<String>(
+        'status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<MatingNucStatus>($MatingNucsTable.$converterstatus);
+  static const VerificationMeta _queenIdMeta = const VerificationMeta(
+    'queenId',
+  );
+  @override
+  late final GeneratedColumn<String> queenId = GeneratedColumn<String>(
+    'queen_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    number,
+    apiaryId,
+    rearingBatchId,
+    status,
+    queenId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'mating_nucs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MatingNuc> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('number')) {
+      context.handle(
+        _numberMeta,
+        number.isAcceptableOrUnknown(data['number']!, _numberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_numberMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('rearing_batch_id')) {
+      context.handle(
+        _rearingBatchIdMeta,
+        rearingBatchId.isAcceptableOrUnknown(
+          data['rearing_batch_id']!,
+          _rearingBatchIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('queen_id')) {
+      context.handle(
+        _queenIdMeta,
+        queenId.isAcceptableOrUnknown(data['queen_id']!, _queenIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MatingNuc map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MatingNuc(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}number'],
+      )!,
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      status: $MatingNucsTable.$converterstatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}status'],
+        )!,
+      ),
+      rearingBatchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rearing_batch_id'],
+      ),
+      queenId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}queen_id'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $MatingNucsTable createAlias(String alias) {
+    return $MatingNucsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<MatingNucStatus, String> $converterstatus =
+      const ServerEnumConverter(MatingNucStatus.values);
+}
+
+class MatingNucsCompanion extends UpdateCompanion<MatingNuc> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> number;
+  final Value<String> apiaryId;
+  final Value<String?> rearingBatchId;
+  final Value<MatingNucStatus> status;
+  final Value<String?> queenId;
+  final Value<int> rowid;
+  const MatingNucsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.number = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.rearingBatchId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.queenId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MatingNucsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String number,
+    required String apiaryId,
+    this.rearingBatchId = const Value.absent(),
+    required MatingNucStatus status,
+    this.queenId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       number = Value(number),
+       apiaryId = Value(apiaryId),
+       status = Value(status);
+  static Insertable<MatingNuc> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? number,
+    Expression<String>? apiaryId,
+    Expression<String>? rearingBatchId,
+    Expression<String>? status,
+    Expression<String>? queenId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (number != null) 'number': number,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (rearingBatchId != null) 'rearing_batch_id': rearingBatchId,
+      if (status != null) 'status': status,
+      if (queenId != null) 'queen_id': queenId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MatingNucsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? number,
+    Value<String>? apiaryId,
+    Value<String?>? rearingBatchId,
+    Value<MatingNucStatus>? status,
+    Value<String?>? queenId,
+    Value<int>? rowid,
+  }) {
+    return MatingNucsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      number: number ?? this.number,
+      apiaryId: apiaryId ?? this.apiaryId,
+      rearingBatchId: rearingBatchId ?? this.rearingBatchId,
+      status: status ?? this.status,
+      queenId: queenId ?? this.queenId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<String>(number.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (rearingBatchId.present) {
+      map['rearing_batch_id'] = Variable<String>(rearingBatchId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(
+        $MatingNucsTable.$converterstatus.toSql(status.value),
+      );
+    }
+    if (queenId.present) {
+      map['queen_id'] = Variable<String>(queenId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatingNucsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('number: $number, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('rearingBatchId: $rearingBatchId, ')
+          ..write('status: $status, ')
+          ..write('queenId: $queenId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$MatingNucInsertable implements Insertable<MatingNuc> {
+  MatingNuc _object;
+  _$MatingNucInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return MatingNucsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      number: Value(_object.number),
+      apiaryId: Value(_object.apiaryId),
+      rearingBatchId: Value(_object.rearingBatchId),
+      status: Value(_object.status),
+      queenId: Value(_object.queenId),
+    ).toColumns(false);
+  }
+}
+
+extension MatingNucToInsertable on MatingNuc {
+  _$MatingNucInsertable toInsertable() {
+    return _$MatingNucInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -17181,6 +18253,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TransportItemsTable transportItems = $TransportItemsTable(this);
   late final $InventoryItemsTable inventoryItems = $InventoryItemsTable(this);
   late final $InventoryMovesTable inventoryMoves = $InventoryMovesTable(this);
+  late final $QueenRearingBatchesTable queenRearingBatches =
+      $QueenRearingBatchesTable(this);
+  late final $MatingNucsTable matingNucs = $MatingNucsTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $FeedbackQueueTable feedbackQueue = $FeedbackQueueTable(this);
   late final $AnalyticsQueueTable analyticsQueue = $AnalyticsQueueTable(this);
@@ -17370,6 +18445,30 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'inventory_moves_item_id_idx',
     'CREATE INDEX inventory_moves_item_id_idx ON inventory_moves (item_id)',
   );
+  late final Index queenRearingBatchesOrgIdIdx = Index(
+    'queen_rearing_batches_org_id_idx',
+    'CREATE INDEX queen_rearing_batches_org_id_idx ON queen_rearing_batches (org_id)',
+  );
+  late final Index queenRearingBatchesMotherQueenIdIdx = Index(
+    'queen_rearing_batches_mother_queen_id_idx',
+    'CREATE INDEX queen_rearing_batches_mother_queen_id_idx ON queen_rearing_batches (mother_queen_id)',
+  );
+  late final Index matingNucsOrgIdIdx = Index(
+    'mating_nucs_org_id_idx',
+    'CREATE INDEX mating_nucs_org_id_idx ON mating_nucs (org_id)',
+  );
+  late final Index matingNucsApiaryIdIdx = Index(
+    'mating_nucs_apiary_id_idx',
+    'CREATE INDEX mating_nucs_apiary_id_idx ON mating_nucs (apiary_id)',
+  );
+  late final Index matingNucsRearingBatchIdIdx = Index(
+    'mating_nucs_rearing_batch_id_idx',
+    'CREATE INDEX mating_nucs_rearing_batch_id_idx ON mating_nucs (rearing_batch_id)',
+  );
+  late final Index matingNucsQueenIdIdx = Index(
+    'mating_nucs_queen_id_idx',
+    'CREATE INDEX mating_nucs_queen_id_idx ON mating_nucs (queen_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -17401,6 +18500,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     transportItems,
     inventoryItems,
     inventoryMoves,
+    queenRearingBatches,
+    matingNucs,
     localSettings,
     feedbackQueue,
     analyticsQueue,
@@ -17452,6 +18553,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     inventoryItemsOrgIdIdx,
     inventoryMovesOrgIdIdx,
     inventoryMovesItemIdIdx,
+    queenRearingBatchesOrgIdIdx,
+    queenRearingBatchesMotherQueenIdIdx,
+    matingNucsOrgIdIdx,
+    matingNucsApiaryIdIdx,
+    matingNucsRearingBatchIdIdx,
+    matingNucsQueenIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -23057,6 +24164,7 @@ typedef $$TasksTableCreateCompanionBuilder = TasksCompanion Function({
   Value<DateTime?> completedAt,
   required TaskSource source,
   Value<String?> sourceId,
+  Value<int?> sourceStep,
   Value<String?> refDrugId,
   Value<String?> drugId,
   Value<double?> dose,
@@ -23078,6 +24186,7 @@ typedef $$TasksTableUpdateCompanionBuilder = TasksCompanion Function({
   Value<DateTime?> completedAt,
   Value<TaskSource> source,
   Value<String?> sourceId,
+  Value<int?> sourceStep,
   Value<String?> refDrugId,
   Value<String?> drugId,
   Value<double?> dose,
@@ -23165,6 +24274,11 @@ class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
 
   ColumnFilters<String> get sourceId => $composableBuilder(
     column: $table.sourceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sourceStep => $composableBuilder(
+    column: $table.sourceStep,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -23268,6 +24382,11 @@ class $$TasksTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get sourceStep => $composableBuilder(
+    column: $table.sourceStep,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get refDrugId => $composableBuilder(
     column: $table.refDrugId,
     builder: (column) => ColumnOrderings(column),
@@ -23342,6 +24461,11 @@ class $$TasksTableAnnotationComposer
   GeneratedColumn<String> get sourceId =>
       $composableBuilder(column: $table.sourceId, builder: (column) => column);
 
+  GeneratedColumn<int> get sourceStep => $composableBuilder(
+    column: $table.sourceStep,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get refDrugId =>
       $composableBuilder(column: $table.refDrugId, builder: (column) => column);
 
@@ -23395,6 +24519,7 @@ class $$TasksTableTableManager
                 Value<DateTime?> completedAt = const Value.absent(),
                 Value<TaskSource> source = const Value.absent(),
                 Value<String?> sourceId = const Value.absent(),
+                Value<int?> sourceStep = const Value.absent(),
                 Value<String?> refDrugId = const Value.absent(),
                 Value<String?> drugId = const Value.absent(),
                 Value<double?> dose = const Value.absent(),
@@ -23415,6 +24540,7 @@ class $$TasksTableTableManager
                 completedAt: completedAt,
                 source: source,
                 sourceId: sourceId,
+                sourceStep: sourceStep,
                 refDrugId: refDrugId,
                 drugId: drugId,
                 dose: dose,
@@ -23437,6 +24563,7 @@ class $$TasksTableTableManager
                 Value<DateTime?> completedAt = const Value.absent(),
                 required TaskSource source,
                 Value<String?> sourceId = const Value.absent(),
+                Value<int?> sourceStep = const Value.absent(),
                 Value<String?> refDrugId = const Value.absent(),
                 Value<String?> drugId = const Value.absent(),
                 Value<double?> dose = const Value.absent(),
@@ -23457,6 +24584,7 @@ class $$TasksTableTableManager
                 completedAt: completedAt,
                 source: source,
                 sourceId: sourceId,
+                sourceStep: sourceStep,
                 refDrugId: refDrugId,
                 drugId: drugId,
                 dose: dose,
@@ -27014,6 +28142,713 @@ typedef $$InventoryMovesTableProcessedTableManager =
       InventoryMove,
       PrefetchHooks Function()
     >;
+typedef $$QueenRearingBatchesTableCreateCompanionBuilder =
+    QueenRearingBatchesCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required int number,
+      Value<String?> motherQueenId,
+      required DateTime graftedOn,
+      required int graftedCount,
+      Value<int?> acceptedCount,
+      Value<int> rowid,
+    });
+typedef $$QueenRearingBatchesTableUpdateCompanionBuilder =
+    QueenRearingBatchesCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<int> number,
+      Value<String?> motherQueenId,
+      Value<DateTime> graftedOn,
+      Value<int> graftedCount,
+      Value<int?> acceptedCount,
+      Value<int> rowid,
+    });
+
+class $$QueenRearingBatchesTableFilterComposer
+    extends Composer<_$AppDatabase, $QueenRearingBatchesTable> {
+  $$QueenRearingBatchesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get motherQueenId => $composableBuilder(
+    column: $table.motherQueenId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, String> get graftedOn =>
+      $composableBuilder(
+        column: $table.graftedOn,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<int> get graftedCount => $composableBuilder(
+    column: $table.graftedCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get acceptedCount => $composableBuilder(
+    column: $table.acceptedCount,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$QueenRearingBatchesTableOrderingComposer
+    extends Composer<_$AppDatabase, $QueenRearingBatchesTable> {
+  $$QueenRearingBatchesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get motherQueenId => $composableBuilder(
+    column: $table.motherQueenId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get graftedOn => $composableBuilder(
+    column: $table.graftedOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get graftedCount => $composableBuilder(
+    column: $table.graftedCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get acceptedCount => $composableBuilder(
+    column: $table.acceptedCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$QueenRearingBatchesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $QueenRearingBatchesTable> {
+  $$QueenRearingBatchesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<int> get number =>
+      $composableBuilder(column: $table.number, builder: (column) => column);
+
+  GeneratedColumn<String> get motherQueenId => $composableBuilder(
+    column: $table.motherQueenId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DateTime, String> get graftedOn =>
+      $composableBuilder(column: $table.graftedOn, builder: (column) => column);
+
+  GeneratedColumn<int> get graftedCount => $composableBuilder(
+    column: $table.graftedCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get acceptedCount => $composableBuilder(
+    column: $table.acceptedCount,
+    builder: (column) => column,
+  );
+}
+
+class $$QueenRearingBatchesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $QueenRearingBatchesTable,
+          QueenRearingBatch,
+          $$QueenRearingBatchesTableFilterComposer,
+          $$QueenRearingBatchesTableOrderingComposer,
+          $$QueenRearingBatchesTableAnnotationComposer,
+          $$QueenRearingBatchesTableCreateCompanionBuilder,
+          $$QueenRearingBatchesTableUpdateCompanionBuilder,
+          (
+            QueenRearingBatch,
+            BaseReferences<
+              _$AppDatabase,
+              $QueenRearingBatchesTable,
+              QueenRearingBatch
+            >,
+          ),
+          QueenRearingBatch,
+          PrefetchHooks Function()
+        > {
+  $$QueenRearingBatchesTableTableManager(
+    _$AppDatabase db,
+    $QueenRearingBatchesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$QueenRearingBatchesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$QueenRearingBatchesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$QueenRearingBatchesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<int> number = const Value.absent(),
+                Value<String?> motherQueenId = const Value.absent(),
+                Value<DateTime> graftedOn = const Value.absent(),
+                Value<int> graftedCount = const Value.absent(),
+                Value<int?> acceptedCount = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QueenRearingBatchesCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                number: number,
+                motherQueenId: motherQueenId,
+                graftedOn: graftedOn,
+                graftedCount: graftedCount,
+                acceptedCount: acceptedCount,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required int number,
+                Value<String?> motherQueenId = const Value.absent(),
+                required DateTime graftedOn,
+                required int graftedCount,
+                Value<int?> acceptedCount = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QueenRearingBatchesCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                number: number,
+                motherQueenId: motherQueenId,
+                graftedOn: graftedOn,
+                graftedCount: graftedCount,
+                acceptedCount: acceptedCount,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$QueenRearingBatchesTable, QueenRearingBatch>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $QueenRearingBatchesTable,
+                    QueenRearingBatch
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$QueenRearingBatchesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $QueenRearingBatchesTable,
+      QueenRearingBatch,
+      $$QueenRearingBatchesTableFilterComposer,
+      $$QueenRearingBatchesTableOrderingComposer,
+      $$QueenRearingBatchesTableAnnotationComposer,
+      $$QueenRearingBatchesTableCreateCompanionBuilder,
+      $$QueenRearingBatchesTableUpdateCompanionBuilder,
+      (
+        QueenRearingBatch,
+        BaseReferences<
+          _$AppDatabase,
+          $QueenRearingBatchesTable,
+          QueenRearingBatch
+        >,
+      ),
+      QueenRearingBatch,
+      PrefetchHooks Function()
+    >;
+typedef $$MatingNucsTableCreateCompanionBuilder = MatingNucsCompanion Function({
+  required String id,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  required String orgId,
+  required String number,
+  required String apiaryId,
+  Value<String?> rearingBatchId,
+  required MatingNucStatus status,
+  Value<String?> queenId,
+  Value<int> rowid,
+});
+typedef $$MatingNucsTableUpdateCompanionBuilder = MatingNucsCompanion Function({
+  Value<String> id,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String?> createdBy,
+  Value<DateTime?> deletedAt,
+  Value<int?> serverSeq,
+  Value<String> orgId,
+  Value<String> number,
+  Value<String> apiaryId,
+  Value<String?> rearingBatchId,
+  Value<MatingNucStatus> status,
+  Value<String?> queenId,
+  Value<int> rowid,
+});
+
+class $$MatingNucsTableFilterComposer
+    extends Composer<_$AppDatabase, $MatingNucsTable> {
+  $$MatingNucsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get rearingBatchId => $composableBuilder(
+    column: $table.rearingBatchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<MatingNucStatus, MatingNucStatus, String>
+  get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get queenId => $composableBuilder(
+    column: $table.queenId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MatingNucsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MatingNucsTable> {
+  $$MatingNucsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rearingBatchId => $composableBuilder(
+    column: $table.rearingBatchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get queenId => $composableBuilder(
+    column: $table.queenId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MatingNucsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MatingNucsTable> {
+  $$MatingNucsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get number =>
+      $composableBuilder(column: $table.number, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<String> get rearingBatchId => $composableBuilder(
+    column: $table.rearingBatchId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<MatingNucStatus, String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get queenId =>
+      $composableBuilder(column: $table.queenId, builder: (column) => column);
+}
+
+class $$MatingNucsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MatingNucsTable,
+          MatingNuc,
+          $$MatingNucsTableFilterComposer,
+          $$MatingNucsTableOrderingComposer,
+          $$MatingNucsTableAnnotationComposer,
+          $$MatingNucsTableCreateCompanionBuilder,
+          $$MatingNucsTableUpdateCompanionBuilder,
+          (
+            MatingNuc,
+            BaseReferences<_$AppDatabase, $MatingNucsTable, MatingNuc>,
+          ),
+          MatingNuc,
+          PrefetchHooks Function()
+        > {
+  $$MatingNucsTableTableManager(_$AppDatabase db, $MatingNucsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MatingNucsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MatingNucsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MatingNucsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> number = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<String?> rearingBatchId = const Value.absent(),
+                Value<MatingNucStatus> status = const Value.absent(),
+                Value<String?> queenId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MatingNucsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                number: number,
+                apiaryId: apiaryId,
+                rearingBatchId: rearingBatchId,
+                status: status,
+                queenId: queenId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String number,
+                required String apiaryId,
+                Value<String?> rearingBatchId = const Value.absent(),
+                required MatingNucStatus status,
+                Value<String?> queenId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MatingNucsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                number: number,
+                apiaryId: apiaryId,
+                rearingBatchId: rearingBatchId,
+                status: status,
+                queenId: queenId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MatingNucsTable, MatingNuc>(table),
+                  BaseReferences<_$AppDatabase, $MatingNucsTable, MatingNuc>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MatingNucsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MatingNucsTable,
+      MatingNuc,
+      $$MatingNucsTableFilterComposer,
+      $$MatingNucsTableOrderingComposer,
+      $$MatingNucsTableAnnotationComposer,
+      $$MatingNucsTableCreateCompanionBuilder,
+      $$MatingNucsTableUpdateCompanionBuilder,
+      (MatingNuc, BaseReferences<_$AppDatabase, $MatingNucsTable, MatingNuc>),
+      MatingNuc,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -28165,6 +30000,10 @@ class $AppDatabaseManager {
       $$InventoryItemsTableTableManager(_db, _db.inventoryItems);
   $$InventoryMovesTableTableManager get inventoryMoves =>
       $$InventoryMovesTableTableManager(_db, _db.inventoryMoves);
+  $$QueenRearingBatchesTableTableManager get queenRearingBatches =>
+      $$QueenRearingBatchesTableTableManager(_db, _db.queenRearingBatches);
+  $$MatingNucsTableTableManager get matingNucs =>
+      $$MatingNucsTableTableManager(_db, _db.matingNucs);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$FeedbackQueueTableTableManager get feedbackQueue =>

@@ -23,6 +23,7 @@ _Task _$TaskFromJson(Map<String, dynamic> json) => _Task(
       ? null
       : DateTime.parse(json['completed_at'] as String),
   sourceId: json['source_id'] as String?,
+  sourceStep: (json['source_step'] as num?)?.toInt(),
   refDrugId: json['ref_drug_id'] as String?,
   drugId: json['drug_id'] as String?,
   dose: (json['dose'] as num?)?.toDouble(),
@@ -46,6 +47,7 @@ Map<String, dynamic> _$TaskToJson(_Task instance) => <String, dynamic>{
   'assigned_to': instance.assignedTo,
   'completed_at': instance.completedAt?.toIso8601String(),
   'source_id': instance.sourceId,
+  'source_step': instance.sourceStep,
   'ref_drug_id': instance.refDrugId,
   'drug_id': instance.drugId,
   'dose': instance.dose,
@@ -57,4 +59,5 @@ const _$TaskSourceEnumMap = {
   TaskSource.manual: 'manual',
   TaskSource.inspection: 'inspection',
   TaskSource.treatment: 'treatment',
+  TaskSource.queenRearing: 'queen_rearing',
 };

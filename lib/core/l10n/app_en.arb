@@ -4481,5 +4481,379 @@
         "example": "60 pcs"
       }
     }
+  },
+  "moreRearing": "Queen rearing",
+  "@moreRearing": {
+    "description": "More screen tile: queen rearing."
+  },
+  "rearingTitle": "Queen rearing",
+  "@rearingTitle": {
+    "description": "Queen rearing batches list title."
+  },
+  "rearingBatchName": "Batch {number}",
+  "@rearingBatchName": {
+    "description": "Name of a queen rearing batch.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "rearingBatchTitle": "Queen rearing · Batch {number}",
+  "@rearingBatchTitle": {
+    "description": "Batch screen title.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "rearingAdd": "Add batch",
+  "@rearingAdd": {
+    "description": "Button: add a queen rearing batch."
+  },
+  "rearingEmptyTitle": "No batches yet",
+  "@rearingEmptyTitle": {
+    "description": "Empty batches list title."
+  },
+  "rearingEmptyMessage": "Enter the grafting day; the schedule from acceptance to the laying check and its reminders are set up for you.",
+  "@rearingEmptyMessage": {
+    "description": "Empty batches list message."
+  },
+  "rearingLoadError": "Couldn't load batches",
+  "@rearingLoadError": {
+    "description": "Error loading batches."
+  },
+  "rearingNotFound": "Batch not found",
+  "@rearingNotFound": {
+    "description": "Batch was deleted or does not exist."
+  },
+  "rearingListGrafted": "grafted {date}",
+  "@rearingListGrafted": {
+    "description": "Batch row subtitle: grafting day.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "May 12"
+      }
+    }
+  },
+  "rearingEdit": "Edit batch",
+  "@rearingEdit": {
+    "description": "Tooltip: edit batch."
+  },
+  "rearingGraftedLabel": "Grafted",
+  "@rearingGraftedLabel": {
+    "description": "Summary tile: grafted larvae."
+  },
+  "rearingAcceptedLabel": "Accepted",
+  "@rearingAcceptedLabel": {
+    "description": "Summary tile: accepted cells."
+  },
+  "rearingNucsLabel": "Nucs",
+  "@rearingNucsLabel": {
+    "description": "Summary tile: mating nucs of the batch."
+  },
+  "rearingNotCounted": "Not counted",
+  "@rearingNotCounted": {
+    "description": "Accepted cells were not counted yet."
+  },
+  "rearingAcceptedPercent": "{percent}%",
+  "@rearingAcceptedPercent": {
+    "description": "Acceptance rate.",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "85"
+      }
+    }
+  },
+  "rearingMotherLine": "Mother: {mother} · grafted {date}",
+  "@rearingMotherLine": {
+    "description": "Batch mother queen and grafting day.",
+    "placeholders": {
+      "mother": {
+        "type": "String",
+        "example": "Hive 104 · 2025 · Blue"
+      },
+      "date": {
+        "type": "String",
+        "example": "May 12"
+      }
+    }
+  },
+  "rearingMotherUnknownLine": "Mother unknown · grafted {date}",
+  "@rearingMotherUnknownLine": {
+    "description": "Batch without mother queen.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "May 12"
+      }
+    }
+  },
+  "rearingDay": "D{day}",
+  "@rearingDay": {
+    "description": "Schedule day after grafting.",
+    "placeholders": {
+      "day": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "rearingToday": "Today",
+  "@rearingToday": {
+    "description": "Step date is today."
+  },
+  "rearingStepGraft": "Larva grafting",
+  "@rearingStepGraft": {
+    "description": "Schedule step D0."
+  },
+  "rearingStepAcceptance": "Acceptance check",
+  "@rearingStepAcceptance": {
+    "description": "Schedule step D1."
+  },
+  "rearingStepCapped": "Cells capped",
+  "@rearingStepCapped": {
+    "description": "Schedule step D5."
+  },
+  "rearingStepDistribution": "Distribute cells",
+  "@rearingStepDistribution": {
+    "description": "Schedule step D10."
+  },
+  "rearingStepEmergence": "Queen emergence",
+  "@rearingStepEmergence": {
+    "description": "Schedule step D12."
+  },
+  "rearingStepLayingCheck": "Laying check",
+  "@rearingStepLayingCheck": {
+    "description": "Schedule step D24."
+  },
+  "rearingStepGraftDetail": "{count} larvae",
+  "@rearingStepGraftDetail": {
+    "description": "D0 detail.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "rearingStepAcceptanceDetail": "{count} cells accepted",
+  "@rearingStepAcceptanceDetail": {
+    "description": "D1 detail when counted.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "34"
+      }
+    }
+  },
+  "rearingStepAcceptanceTodo": "Count the accepted cells",
+  "@rearingStepAcceptanceTodo": {
+    "description": "D1 detail when not counted."
+  },
+  "rearingStepCappedDetail": "Don't disturb",
+  "@rearingStepCappedDetail": {
+    "description": "D5 detail."
+  },
+  "rearingStepDistributionDetail": "Before emergence, to {count} nucs",
+  "@rearingStepDistributionDetail": {
+    "description": "D10 detail.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "28"
+      }
+    }
+  },
+  "rearingStepDistributionTodo": "Before emergence, to the nucs",
+  "@rearingStepDistributionTodo": {
+    "description": "D10 detail without count."
+  },
+  "rearingStepEmergenceDetail": "Check the nucs",
+  "@rearingStepEmergenceDetail": {
+    "description": "D12 detail."
+  },
+  "rearingStepLayingCheckDetail": "Mark mating success",
+  "@rearingStepLayingCheckDetail": {
+    "description": "D24 detail."
+  },
+  "rearingStepDone": "done",
+  "@rearingStepDone": {
+    "description": "Screen reader: step done."
+  },
+  "rearingStepCurrent": "next",
+  "@rearingStepCurrent": {
+    "description": "Screen reader: current step."
+  },
+  "rearingStepUpcoming": "upcoming",
+  "@rearingStepUpcoming": {
+    "description": "Screen reader: upcoming step."
+  },
+  "rearingDistribute": "Distribute cells to nucs",
+  "@rearingDistribute": {
+    "description": "Button: distribute cells to mating nucs."
+  },
+  "rearingDistributeApiary": "Apiary",
+  "@rearingDistributeApiary": {
+    "description": "Distribute sheet: apiary."
+  },
+  "rearingDistributeCount": "Nucs",
+  "@rearingDistributeCount": {
+    "description": "Distribute sheet: number of nucs."
+  },
+  "rearingDistributePlan": "Empty nucs reused: {reused} · New nucs: {created}",
+  "@rearingDistributePlan": {
+    "description": "Distribute sheet: reused and new nucs.",
+    "placeholders": {
+      "reused": {
+        "type": "int",
+        "example": "3"
+      },
+      "created": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "rearingDistributeSave": "Distribute",
+  "@rearingDistributeSave": {
+    "description": "Distribute sheet save."
+  },
+  "rearingDistributeNoApiary": "Add an apiary first",
+  "@rearingDistributeNoApiary": {
+    "description": "Distribute sheet without apiaries."
+  },
+  "rearingDistributed": "Distributed to {count} nucs",
+  "@rearingDistributed": {
+    "description": "Message after distributing.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "28"
+      }
+    }
+  },
+  "rearingNucsSection": "Mating nucs",
+  "@rearingNucsSection": {
+    "description": "Batch screen section."
+  },
+  "rearingNucTitle": "Nuc {number}",
+  "@rearingNucTitle": {
+    "description": "Mating nuc name.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "12"
+      }
+    }
+  },
+  "matingNucStatusEmpty": "Empty",
+  "@matingNucStatusEmpty": {
+    "description": "Nuc status."
+  },
+  "matingNucStatusCell": "Cell",
+  "@matingNucStatusCell": {
+    "description": "Nuc status."
+  },
+  "matingNucStatusVirgin": "Virgin queen",
+  "@matingNucStatusVirgin": {
+    "description": "Nuc status."
+  },
+  "matingNucStatusLaying": "Laying",
+  "@matingNucStatusLaying": {
+    "description": "Nuc status."
+  },
+  "matingNucStatusFailed": "Failed",
+  "@matingNucStatusFailed": {
+    "description": "Nuc status."
+  },
+  "matingNucStatusGiven": "Given to a hive",
+  "@matingNucStatusGiven": {
+    "description": "Nuc status."
+  },
+  "rearingNucGive": "Give to a hive",
+  "@rearingNucGive": {
+    "description": "Nuc action: give the laying queen to a hive."
+  },
+  "rearingNucChooseHive": "Which hive?",
+  "@rearingNucChooseHive": {
+    "description": "Hive picker title."
+  },
+  "rearingNucNoHives": "No active hives",
+  "@rearingNucNoHives": {
+    "description": "Hive picker empty."
+  },
+  "rearingFormNewTitle": "New batch",
+  "@rearingFormNewTitle": {
+    "description": "Batch form title (new)."
+  },
+  "rearingFormEditTitle": "Edit batch",
+  "@rearingFormEditTitle": {
+    "description": "Batch form title (edit)."
+  },
+  "rearingFormGraftedOn": "Grafting day",
+  "@rearingFormGraftedOn": {
+    "description": "Batch form: grafting day."
+  },
+  "rearingFormGraftedCount": "Grafted larvae",
+  "@rearingFormGraftedCount": {
+    "description": "Batch form: grafted count."
+  },
+  "rearingFormAcceptedCount": "Accepted cells",
+  "@rearingFormAcceptedCount": {
+    "description": "Batch form: accepted count."
+  },
+  "rearingFormAcceptedClear": "Not counted yet",
+  "@rearingFormAcceptedClear": {
+    "description": "Batch form: clear accepted count."
+  },
+  "rearingFormScheduleHint": "Acceptance, capping, distribution, emergence and laying check are added as tasks with reminders.",
+  "@rearingFormScheduleHint": {
+    "description": "Batch form hint."
+  },
+  "rearingFormSave": "Save",
+  "@rearingFormSave": {
+    "description": "Batch form save."
+  },
+  "rearingFormDelete": "Delete batch",
+  "@rearingFormDelete": {
+    "description": "Batch form delete."
+  },
+  "rearingDeleteTitle": "Delete batch?",
+  "@rearingDeleteTitle": {
+    "description": "Delete dialog title."
+  },
+  "rearingDeleteMessage": "Its tasks are deleted too. Nucs and given queens stay.",
+  "@rearingDeleteMessage": {
+    "description": "Delete dialog message."
+  },
+  "rearingDeleteConfirm": "Delete",
+  "@rearingDeleteConfirm": {
+    "description": "Delete dialog confirm."
+  },
+  "rearingDeleted": "Batch deleted",
+  "@rearingDeleted": {
+    "description": "Message after deleting."
+  },
+  "rearingSaved": "Batch saved",
+  "@rearingSaved": {
+    "description": "Message after saving an edited batch."
+  },
+  "taskSourceQueenRearing": "queen rearing",
+  "@taskSourceQueenRearing": {
+    "description": "Task context: created by queen rearing schedule."
+  },
+  "syncTableQueenRearingBatches": "Queen rearing batch",
+  "@syncTableQueenRearingBatches": {
+    "description": "Sync screen record type."
+  },
+  "syncTableMatingNucs": "Mating nuc",
+  "@syncTableMatingNucs": {
+    "description": "Sync screen record type."
   }
 }

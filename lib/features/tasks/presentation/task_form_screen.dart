@@ -218,7 +218,12 @@ class _TaskFormFieldsState extends ConsumerState<_TaskFormFields> {
           )
         else
           Text(
-            autoTaskTitle(l10n, form.source, hiveNumber: hiveNumber),
+            autoTaskTitle(
+              l10n,
+              form.source,
+              hiveNumber: hiveNumber,
+              step: form.sourceStep,
+            ),
             style: context.typography.title,
           ),
         SizedBox(height: spacing.xl),

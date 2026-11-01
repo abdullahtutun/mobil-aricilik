@@ -25,6 +25,9 @@ abstract class TaskFormState with _$TaskFormState {
     /// kaynaktan gelir, değişmez.
     @Default(TaskSource.manual) TaskSource source,
 
+    /// Ana yetiştirme görevinin takvim günü; başlık bundan.
+    int? sourceStep,
+
     /// Planlı ilaçlama: ilaç (referans ya da işletmenin; en çok biri) ve
     /// kovan başı doz. İlaç yoksa doz yazılmaz.
     String? refDrugId,
@@ -41,6 +44,7 @@ abstract class TaskFormState with _$TaskFormState {
     assignedTo: task.assignedTo,
     completed: task.completedAt != null,
     source: task.source,
+    sourceStep: task.sourceStep,
     refDrugId: task.refDrugId,
     drugId: task.drugId,
     dose: task.dose?.round() ?? 1,

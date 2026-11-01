@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart' show StringCharacters;
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
+import 'package:mobil_arici/features/queens/domain/queen_rearing_rules.dart';
+import 'package:mobil_arici/features/queens/presentation/widgets/queen_rearing_labels.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 /// Görevin başlığı: elle açılanda yazılan, otomatik görevde kaynaktan
@@ -8,20 +10,31 @@ import 'package:mobil_arici/features/tasks/domain/task.dart';
 String taskTitle(AppLocalizations l10n, TaskView view) =>
     view.task.source == TaskSource.manual
     ? view.task.title ?? ''
-    : autoTaskTitle(l10n, view.task.source, hiveNumber: view.hiveNumber);
+    : autoTaskTitle(
+        l10n,
+        view.task.source,
+        hiveNumber: view.hiveNumber,
+        step: view.task.sourceStep,
+      );
 
 /// Otomatik görevin başlığı ("Kovan 103 · tekrar bak", arılığın tümünde
-/// "Şeritleri çıkar").
+/// "Şeritleri çıkar"); ana yetiştirmede takvim gününün ([step]) adımı
+/// ("Memeleri dağıt").
 String autoTaskTitle(
   AppLocalizations l10n,
   TaskSource source, {
   required String? hiveNumber,
+  int? step,
 }) => switch ((source, hiveNumber)) {
   (TaskSource.manual, _) => '',
   (TaskSource.inspection, final number?) => l10n.taskInspectionTitle(number),
   (TaskSource.inspection, null) => l10n.taskInspectionTitleNoHive,
   (TaskSource.treatment, final number?) => l10n.taskTreatmentTitle(number),
   (TaskSource.treatment, null) => l10n.taskTreatmentTitleApiary,
+  (TaskSource.queenRearing, _) => switch (RearingStep.ofDay(step)) {
+    final step? => rearingStepTitle(l10n, step),
+    null => l10n.rearingTitle,
+  },
 };
 
 /// Otomatik görevin nereden geldiği ("muayeneden", "ilaç"); elle açılanda
@@ -31,6 +44,7 @@ String? taskSourceLabel(AppLocalizations l10n, TaskSource source) =>
       TaskSource.manual => null,
       TaskSource.inspection => l10n.taskSourceInspection,
       TaskSource.treatment => l10n.taskSourceTreatment,
+      TaskSource.queenRearing => l10n.taskSourceQueenRearing,
     };
 
 /// Başlığın altındaki bağlam parçaları: arılık ([withApiary] ise), elle

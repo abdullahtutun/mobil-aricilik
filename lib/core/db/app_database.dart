@@ -11,6 +11,7 @@ import 'package:mobil_arici/core/db/tables/inventory_tables.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/migration_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
+import 'package:mobil_arici/core/db/tables/queen_rearing_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/core/db/tables/task_tables.dart';
 import 'package:mobil_arici/core/db/tables/telemetry_tables.dart';
@@ -34,6 +35,7 @@ import 'package:mobil_arici/features/migration/domain/transport.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
+import 'package:mobil_arici/features/queens/domain/queen_rearing.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 export 'tables/media_tables.dart' show MediaUploadStatus;
@@ -76,6 +78,8 @@ part 'app_database.g.dart';
     TransportItems,
     InventoryItems,
     InventoryMoves,
+    QueenRearingBatches,
+    MatingNucs,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -87,7 +91,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 15;
+  int get schemaVersion => 16;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -203,6 +207,18 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(schema.tasks, schema.tasks.dose);
         await m.create(schema.tasksRefDrugIdIdx);
         await m.create(schema.tasksDrugIdIdx);
+      },
+      // Ana yetiştirme serileri, çiftleşme kutuları ve görevin takvim günü.
+      from15To16: (m, schema) async {
+        await m.addColumn(schema.tasks, schema.tasks.sourceStep);
+        await m.createTable(schema.queenRearingBatches);
+        await m.create(schema.queenRearingBatchesOrgIdIdx);
+        await m.create(schema.queenRearingBatchesMotherQueenIdIdx);
+        await m.createTable(schema.matingNucs);
+        await m.create(schema.matingNucsOrgIdIdx);
+        await m.create(schema.matingNucsApiaryIdIdx);
+        await m.create(schema.matingNucsRearingBatchIdIdx);
+        await m.create(schema.matingNucsQueenIdIdx);
       },
     ),
   );

@@ -15,7 +15,10 @@ enum TaskSource implements ServerEnum {
   inspection('inspection'),
 
   /// İlaç şeridini çıkarma günü; kaynak uygulama grubu.
-  treatment('treatment');
+  treatment('treatment'),
+
+  /// Ana yetiştirme takviminin bir adımı; kaynak seri, gün `sourceStep`.
+  queenRearing('queen_rearing');
 
   new(this.value);
 
@@ -48,8 +51,13 @@ abstract class Task with _$Task implements SyncedRecord {
     /// Tamamlanma anı; açık görevde boş.
     DateTime? completedAt,
 
-    /// Otomatik görevin kaynağı: muayene ya da uygulama grubu.
+    /// Otomatik görevin kaynağı: muayene, uygulama grubu ya da ana
+    /// yetiştirme serisi.
     String? sourceId,
+
+    /// Ana yetiştirme görevinin takvim günü (aktarmadan sonraki gün: 1, 5,
+    /// 10, 12, 24); diğer görevlerde boş.
+    int? sourceStep,
 
     /// Planlı ilaçlama: referans listeden ya da işletmenin listesinden
     /// ilaç (en çok biri) ve kovan başı doz (birimi ilacın). İlaçla doz

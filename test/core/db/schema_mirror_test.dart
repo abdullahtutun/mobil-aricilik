@@ -19,6 +19,7 @@ import 'package:mobil_arici/features/migration/domain/transport.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
+import 'package:mobil_arici/features/queens/domain/queen_rearing.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 import '../../helpers/test_database.dart';
@@ -68,6 +69,12 @@ _serverSchema() {
       enums[match[1]!] = [
         for (final value in RegExp(r"'(\w+)'").allMatches(match[2]!)) value[1]!,
       ];
+    }
+    // Sonradan eklenen enum değeri sona eklenir.
+    for (final match in RegExp(
+      r"alter type public\.(\w+) add value '(\w+)'",
+    ).allMatches(sql)) {
+      enums[match[1]]!.add(match[2]!);
     }
     // Fonksiyon `create or replace` ile yenilenir; son migration geçerli.
     for (final match in RegExp(
@@ -159,6 +166,7 @@ void main() {
       'inventory_category': values(InventoryCategory.values),
       'inventory_unit': values(InventoryUnit.values),
       'inventory_move_kind': values(InventoryMoveKind.values),
+      'mating_nuc_status': values(MatingNucStatus.values),
     };
 
     expect(local, server.enums);

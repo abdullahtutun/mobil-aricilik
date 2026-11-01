@@ -72,6 +72,7 @@ void main() {
         'assigned_to': 'user-1',
         'completed_at': null,
         'source_id': null,
+        'source_step': null,
         'ref_drug_id': null,
         'drug_id': null,
         'dose': null,

@@ -4697,4 +4697,249 @@ class AppLocalizationsTr extends AppLocalizations {
   String shoppingShareLine(String name, String quantity) {
     return '• $name: $quantity';
   }
+
+  @override
+  String get moreRearing => 'Ana yetiştirme';
+
+  @override
+  String get rearingTitle => 'Ana yetiştirme';
+
+  @override
+  String rearingBatchName(int number) {
+    return 'Seri $number';
+  }
+
+  @override
+  String rearingBatchTitle(int number) {
+    return 'Ana yetiştirme · Seri $number';
+  }
+
+  @override
+  String get rearingAdd => 'Seri ekle';
+
+  @override
+  String get rearingEmptyTitle => 'Henüz seri yok';
+
+  @override
+  String get rearingEmptyMessage =>
+      'Larva aktarma gününü girin; kabulden yumurtlama kontrolüne kadar takvim ve hatırlatmalar kendiliğinden kurulur.';
+
+  @override
+  String get rearingLoadError => 'Seriler açılamadı';
+
+  @override
+  String get rearingNotFound => 'Seri bulunamadı';
+
+  @override
+  String rearingListGrafted(String date) {
+    return 'aktarma $date';
+  }
+
+  @override
+  String get rearingEdit => 'Seriyi düzenle';
+
+  @override
+  String get rearingGraftedLabel => 'Aktarılan';
+
+  @override
+  String get rearingAcceptedLabel => 'Kabul';
+
+  @override
+  String get rearingNucsLabel => 'Kutu';
+
+  @override
+  String get rearingNotCounted => 'Sayılmadı';
+
+  @override
+  String rearingAcceptedPercent(int percent) {
+    return '%$percent';
+  }
+
+  @override
+  String rearingMotherLine(String mother, String date) {
+    return 'Anne ana: $mother · aktarma $date';
+  }
+
+  @override
+  String rearingMotherUnknownLine(String date) {
+    return 'Anne ana bilinmiyor · aktarma $date';
+  }
+
+  @override
+  String rearingDay(int day) {
+    return 'G$day';
+  }
+
+  @override
+  String get rearingToday => 'Bugün';
+
+  @override
+  String get rearingStepGraft => 'Larva aktarma';
+
+  @override
+  String get rearingStepAcceptance => 'Kabul kontrolü';
+
+  @override
+  String get rearingStepCapped => 'Memeler kapandı';
+
+  @override
+  String get rearingStepDistribution => 'Memeleri dağıt';
+
+  @override
+  String get rearingStepEmergence => 'Ana çıkışı';
+
+  @override
+  String get rearingStepLayingCheck => 'Yumurtlama kontrolü';
+
+  @override
+  String rearingStepGraftDetail(int count) {
+    return '$count larva';
+  }
+
+  @override
+  String rearingStepAcceptanceDetail(int count) {
+    return '$count meme kabul edildi';
+  }
+
+  @override
+  String get rearingStepAcceptanceTodo => 'Kabul edilen memeleri say';
+
+  @override
+  String get rearingStepCappedDetail => 'Rahatsız etme';
+
+  @override
+  String rearingStepDistributionDetail(int count) {
+    return 'Çıkıştan önce, $count kutuya';
+  }
+
+  @override
+  String get rearingStepDistributionTodo => 'Çıkıştan önce, kutulara';
+
+  @override
+  String get rearingStepEmergenceDetail => 'Kutularda kontrol et';
+
+  @override
+  String get rearingStepLayingCheckDetail => 'Çiftleşme başarısını işaretle';
+
+  @override
+  String get rearingStepDone => 'bitti';
+
+  @override
+  String get rearingStepCurrent => 'sıradaki';
+
+  @override
+  String get rearingStepUpcoming => 'ileride';
+
+  @override
+  String get rearingDistribute => 'Memeleri kutulara dağıt';
+
+  @override
+  String get rearingDistributeApiary => 'Arılık';
+
+  @override
+  String get rearingDistributeCount => 'Kutu sayısı';
+
+  @override
+  String rearingDistributePlan(int reused, int created) {
+    return 'Boş kutu: $reused · Yeni kutu: $created';
+  }
+
+  @override
+  String get rearingDistributeSave => 'Dağıt';
+
+  @override
+  String get rearingDistributeNoApiary => 'Önce bir arılık ekleyin';
+
+  @override
+  String rearingDistributed(int count) {
+    return '$count kutuya dağıtıldı';
+  }
+
+  @override
+  String get rearingNucsSection => 'Çiftleşme kutuları';
+
+  @override
+  String rearingNucTitle(String number) {
+    return 'Kutu $number';
+  }
+
+  @override
+  String get matingNucStatusEmpty => 'Boş';
+
+  @override
+  String get matingNucStatusCell => 'Meme var';
+
+  @override
+  String get matingNucStatusVirgin => 'Ana çıktı';
+
+  @override
+  String get matingNucStatusLaying => 'Yumurtluyor';
+
+  @override
+  String get matingNucStatusFailed => 'Başarısız';
+
+  @override
+  String get matingNucStatusGiven => 'Kovana verildi';
+
+  @override
+  String get rearingNucGive => 'Kovana ver';
+
+  @override
+  String get rearingNucChooseHive => 'Hangi kovana?';
+
+  @override
+  String get rearingNucNoHives => 'Aktif kovan yok';
+
+  @override
+  String get rearingFormNewTitle => 'Yeni seri';
+
+  @override
+  String get rearingFormEditTitle => 'Seriyi düzenle';
+
+  @override
+  String get rearingFormGraftedOn => 'Aktarma günü';
+
+  @override
+  String get rearingFormGraftedCount => 'Aktarılan larva';
+
+  @override
+  String get rearingFormAcceptedCount => 'Kabul edilen meme';
+
+  @override
+  String get rearingFormAcceptedClear => 'Henüz sayılmadı';
+
+  @override
+  String get rearingFormScheduleHint =>
+      'Kabul, kapanma, dağıtım, çıkış ve yumurtlama kontrolü hatırlatmalı görev olarak açılır.';
+
+  @override
+  String get rearingFormSave => 'Kaydet';
+
+  @override
+  String get rearingFormDelete => 'Seriyi sil';
+
+  @override
+  String get rearingDeleteTitle => 'Seri silinsin mi?';
+
+  @override
+  String get rearingDeleteMessage =>
+      'Takvim görevleri de silinir. Kutular ve verilen analar kalır.';
+
+  @override
+  String get rearingDeleteConfirm => 'Sil';
+
+  @override
+  String get rearingDeleted => 'Seri silindi';
+
+  @override
+  String get rearingSaved => 'Seri kaydedildi';
+
+  @override
+  String get taskSourceQueenRearing => 'ana yetiştirme';
+
+  @override
+  String get syncTableQueenRearingBatches => 'Ana yetiştirme serisi';
+
+  @override
+  String get syncTableMatingNucs => 'Çiftleşme kutusu';
 }

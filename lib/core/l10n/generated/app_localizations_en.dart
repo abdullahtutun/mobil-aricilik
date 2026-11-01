@@ -4869,4 +4869,249 @@ class AppLocalizationsEn extends AppLocalizations {
   String shoppingShareLine(String name, String quantity) {
     return '• $name: $quantity';
   }
+
+  @override
+  String get moreRearing => 'Queen rearing';
+
+  @override
+  String get rearingTitle => 'Queen rearing';
+
+  @override
+  String rearingBatchName(int number) {
+    return 'Batch $number';
+  }
+
+  @override
+  String rearingBatchTitle(int number) {
+    return 'Queen rearing · Batch $number';
+  }
+
+  @override
+  String get rearingAdd => 'Add batch';
+
+  @override
+  String get rearingEmptyTitle => 'No batches yet';
+
+  @override
+  String get rearingEmptyMessage =>
+      'Enter the grafting day; the schedule from acceptance to the laying check and its reminders are set up for you.';
+
+  @override
+  String get rearingLoadError => 'Couldn\'t load batches';
+
+  @override
+  String get rearingNotFound => 'Batch not found';
+
+  @override
+  String rearingListGrafted(String date) {
+    return 'grafted $date';
+  }
+
+  @override
+  String get rearingEdit => 'Edit batch';
+
+  @override
+  String get rearingGraftedLabel => 'Grafted';
+
+  @override
+  String get rearingAcceptedLabel => 'Accepted';
+
+  @override
+  String get rearingNucsLabel => 'Nucs';
+
+  @override
+  String get rearingNotCounted => 'Not counted';
+
+  @override
+  String rearingAcceptedPercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String rearingMotherLine(String mother, String date) {
+    return 'Mother: $mother · grafted $date';
+  }
+
+  @override
+  String rearingMotherUnknownLine(String date) {
+    return 'Mother unknown · grafted $date';
+  }
+
+  @override
+  String rearingDay(int day) {
+    return 'D$day';
+  }
+
+  @override
+  String get rearingToday => 'Today';
+
+  @override
+  String get rearingStepGraft => 'Larva grafting';
+
+  @override
+  String get rearingStepAcceptance => 'Acceptance check';
+
+  @override
+  String get rearingStepCapped => 'Cells capped';
+
+  @override
+  String get rearingStepDistribution => 'Distribute cells';
+
+  @override
+  String get rearingStepEmergence => 'Queen emergence';
+
+  @override
+  String get rearingStepLayingCheck => 'Laying check';
+
+  @override
+  String rearingStepGraftDetail(int count) {
+    return '$count larvae';
+  }
+
+  @override
+  String rearingStepAcceptanceDetail(int count) {
+    return '$count cells accepted';
+  }
+
+  @override
+  String get rearingStepAcceptanceTodo => 'Count the accepted cells';
+
+  @override
+  String get rearingStepCappedDetail => 'Don\'t disturb';
+
+  @override
+  String rearingStepDistributionDetail(int count) {
+    return 'Before emergence, to $count nucs';
+  }
+
+  @override
+  String get rearingStepDistributionTodo => 'Before emergence, to the nucs';
+
+  @override
+  String get rearingStepEmergenceDetail => 'Check the nucs';
+
+  @override
+  String get rearingStepLayingCheckDetail => 'Mark mating success';
+
+  @override
+  String get rearingStepDone => 'done';
+
+  @override
+  String get rearingStepCurrent => 'next';
+
+  @override
+  String get rearingStepUpcoming => 'upcoming';
+
+  @override
+  String get rearingDistribute => 'Distribute cells to nucs';
+
+  @override
+  String get rearingDistributeApiary => 'Apiary';
+
+  @override
+  String get rearingDistributeCount => 'Nucs';
+
+  @override
+  String rearingDistributePlan(int reused, int created) {
+    return 'Empty nucs reused: $reused · New nucs: $created';
+  }
+
+  @override
+  String get rearingDistributeSave => 'Distribute';
+
+  @override
+  String get rearingDistributeNoApiary => 'Add an apiary first';
+
+  @override
+  String rearingDistributed(int count) {
+    return 'Distributed to $count nucs';
+  }
+
+  @override
+  String get rearingNucsSection => 'Mating nucs';
+
+  @override
+  String rearingNucTitle(String number) {
+    return 'Nuc $number';
+  }
+
+  @override
+  String get matingNucStatusEmpty => 'Empty';
+
+  @override
+  String get matingNucStatusCell => 'Cell';
+
+  @override
+  String get matingNucStatusVirgin => 'Virgin queen';
+
+  @override
+  String get matingNucStatusLaying => 'Laying';
+
+  @override
+  String get matingNucStatusFailed => 'Failed';
+
+  @override
+  String get matingNucStatusGiven => 'Given to a hive';
+
+  @override
+  String get rearingNucGive => 'Give to a hive';
+
+  @override
+  String get rearingNucChooseHive => 'Which hive?';
+
+  @override
+  String get rearingNucNoHives => 'No active hives';
+
+  @override
+  String get rearingFormNewTitle => 'New batch';
+
+  @override
+  String get rearingFormEditTitle => 'Edit batch';
+
+  @override
+  String get rearingFormGraftedOn => 'Grafting day';
+
+  @override
+  String get rearingFormGraftedCount => 'Grafted larvae';
+
+  @override
+  String get rearingFormAcceptedCount => 'Accepted cells';
+
+  @override
+  String get rearingFormAcceptedClear => 'Not counted yet';
+
+  @override
+  String get rearingFormScheduleHint =>
+      'Acceptance, capping, distribution, emergence and laying check are added as tasks with reminders.';
+
+  @override
+  String get rearingFormSave => 'Save';
+
+  @override
+  String get rearingFormDelete => 'Delete batch';
+
+  @override
+  String get rearingDeleteTitle => 'Delete batch?';
+
+  @override
+  String get rearingDeleteMessage =>
+      'Its tasks are deleted too. Nucs and given queens stay.';
+
+  @override
+  String get rearingDeleteConfirm => 'Delete';
+
+  @override
+  String get rearingDeleted => 'Batch deleted';
+
+  @override
+  String get rearingSaved => 'Batch saved';
+
+  @override
+  String get taskSourceQueenRearing => 'queen rearing';
+
+  @override
+  String get syncTableQueenRearingBatches => 'Queen rearing batch';
+
+  @override
+  String get syncTableMatingNucs => 'Mating nuc';
 }

@@ -21,6 +21,7 @@ class Tasks extends Table with SyncColumns, OrgColumns {
   TextColumn get source =>
       text().map(const ServerEnumConverter(TaskSource.values))();
   TextColumn get sourceId => text().nullable()();
+  IntColumn get sourceStep => integer().nullable()();
   TextColumn get refDrugId => text().nullable()();
   TextColumn get drugId => text().nullable()();
   RealColumn get dose => real().nullable()();
