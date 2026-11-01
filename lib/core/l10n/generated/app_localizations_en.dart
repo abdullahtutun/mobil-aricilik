@@ -5477,4 +5477,229 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get harvestLotGoneMessage =>
       'The harvest wasn\'t added to a lot. You can record it again from the apiary.';
+
+  @override
+  String get financeTitle => 'Finance';
+
+  @override
+  String financeYearTitle(String year) {
+    return 'Finance · $year';
+  }
+
+  @override
+  String get financeSeasonNet => 'Season net';
+
+  @override
+  String get financeIncome => 'Income';
+
+  @override
+  String get financeExpense => 'Expense';
+
+  @override
+  String get financeCostPerHive => 'Cost/hive';
+
+  @override
+  String get financeRecent => 'Recent entries';
+
+  @override
+  String get financeEmptyTitle => 'No entries yet';
+
+  @override
+  String get financeEmptyMessage =>
+      'Record income and expenses with the buttons below; the season net is calculated here.';
+
+  @override
+  String get financeLoadError => 'Couldn\'t load entries';
+
+  @override
+  String get financeAddIncome => '+ Income';
+
+  @override
+  String get financeAddExpense => '− Expense';
+
+  @override
+  String financePlus(String amount) {
+    return '+$amount';
+  }
+
+  @override
+  String financeMinus(String amount) {
+    return '−$amount';
+  }
+
+  @override
+  String get financeReceiptAttached => 'receipt attached';
+
+  @override
+  String financeTransportRoute(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String get financeFormIncomeTitle => 'Add income';
+
+  @override
+  String get financeFormExpenseTitle => 'Add expense';
+
+  @override
+  String financeFormAmount(String currency) {
+    return 'Amount ($currency)';
+  }
+
+  @override
+  String get financeFormAmountInvalid =>
+      'Enter an amount above 0, like 17500 or 17.50';
+
+  @override
+  String get financeFormCategory => 'Category';
+
+  @override
+  String get financeFormDate => 'Date';
+
+  @override
+  String get financeFormDescription => 'Description';
+
+  @override
+  String get financeFormDescriptionHint => 'E.g. Sugar 500 kg';
+
+  @override
+  String get financeFormReceipt => 'Receipt / invoice';
+
+  @override
+  String get financeFormNoReceipt => 'No receipt';
+
+  @override
+  String get financeFormReceiptAdded => 'Receipt photo added';
+
+  @override
+  String get financeFormTakePhoto => 'Take photo';
+
+  @override
+  String get financeFormPickImage => 'From gallery';
+
+  @override
+  String get financeFormRemoveReceipt => 'Remove receipt';
+
+  @override
+  String get financeFormPhotoDenied =>
+      'Permission denied. To add a receipt, allow camera or photo access for this app in Settings.';
+
+  @override
+  String get financeFormPhotoFailed => 'Couldn\'t get the photo, try again.';
+
+  @override
+  String get financeFormLinks => 'Linked record';
+
+  @override
+  String get financeFormApiary => 'Apiary';
+
+  @override
+  String get financeFormLot => 'Lot';
+
+  @override
+  String get financeFormTransport => 'Move';
+
+  @override
+  String get financeFormNone => 'None';
+
+  @override
+  String get financeFormChooseApiary => 'Choose apiary';
+
+  @override
+  String get financeFormChooseLot => 'Choose lot';
+
+  @override
+  String get financeFormChooseTransport => 'Choose move';
+
+  @override
+  String get financeFormNoLots => 'No lots yet';
+
+  @override
+  String get financeFormNoTransports => 'No moves yet';
+
+  @override
+  String financeFormSaleAmount(String unit) {
+    return 'Honey sold ($unit)';
+  }
+
+  @override
+  String get financeFormSaleHelper =>
+      'Deducted from the lot\'s stock; leave empty to keep the stock';
+
+  @override
+  String get financeFormSave => 'Save';
+
+  @override
+  String get financeIncomeSaved => 'Income saved';
+
+  @override
+  String get financeExpenseSaved => 'Expense saved';
+
+  @override
+  String get financeNotFound => 'Entry not found';
+
+  @override
+  String get financeReceiptPending =>
+      'The receipt hasn\'t reached this phone yet';
+
+  @override
+  String get financeDelete => 'Delete entry';
+
+  @override
+  String get financeDeleteTitle => 'Delete this entry?';
+
+  @override
+  String get financeDeleteMessage =>
+      'If it\'s linked to a lot sale, the sale is deleted too and the stock comes back.';
+
+  @override
+  String get financeDeleteConfirm => 'Delete';
+
+  @override
+  String get financeDeleted => 'Entry deleted';
+
+  @override
+  String get financeCategoryFeeding => 'Feeding';
+
+  @override
+  String get financeCategoryTreatment => 'Medicine';
+
+  @override
+  String get financeCategoryEquipment => 'Equipment';
+
+  @override
+  String get financeCategoryFuelTransport => 'Fuel / transport';
+
+  @override
+  String get financeCategoryLandRent => 'Land rent';
+
+  @override
+  String get financeCategoryLabor => 'Labor';
+
+  @override
+  String get financeCategoryLabAnalysis => 'Lab analysis';
+
+  @override
+  String get financeCategoryHoney => 'Honey';
+
+  @override
+  String get financeCategoryPollen => 'Pollen';
+
+  @override
+  String get financeCategoryPropolis => 'Propolis';
+
+  @override
+  String get financeCategoryWax => 'Wax';
+
+  @override
+  String get financeCategoryNucs => 'Nucs';
+
+  @override
+  String get financeCategoryQueens => 'Queens';
+
+  @override
+  String get financeCategoryOther => 'Other';
+
+  @override
+  String get syncTableTransactions => 'Income/expense';
 }

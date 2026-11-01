@@ -26,6 +26,7 @@ import 'fake_media.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
 import 'fake_push_service.dart';
+import 'fake_receipts.dart';
 import 'fake_reminder_notifications.dart';
 import 'fake_screen_awake.dart';
 import 'fake_share_service.dart';
@@ -89,7 +90,7 @@ class FakeAuthService implements AuthService {
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
 /// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, paylaşma, senkron,
 /// medya (foto, ses, Storage), belge dosyaları (PDF seçici, çizici,
-/// Storage), hava servisi ve ekranı açık tutma sahte; hava servisi
+/// Storage), fiş klasörü, hava servisi ve ekranı açık tutma sahte; hava servisi
 /// verilmezse çevrimdışı gibi hata atar. İlk tam çekme bitmiş
 /// sayılır ([fullPullDone] yanlışsa DB'den okunur).
 List<Override> signedIn({
@@ -101,6 +102,7 @@ List<Override> signedIn({
   FakeSyncService? sync,
   FakeMedia? media,
   FakeDocuments? documents,
+  FakeReceipts? receipts,
   FakeReminderNotifications? reminders,
   FakeWeatherService? weather,
   FakeScreenAwake? screenAwake,
@@ -121,6 +123,7 @@ List<Override> signedIn({
   ...syncOverrides(service: sync, fullPullDone: fullPullDone),
   ...(media ?? FakeMedia()).overrides,
   ...(documents ?? FakeDocuments()).overrides,
+  ...(receipts ?? FakeReceipts()).overrides,
   reminderNotificationsProvider.overrideWithValue(
     reminders ?? FakeReminderNotifications(),
   ),

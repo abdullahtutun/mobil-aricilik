@@ -25,6 +25,10 @@ import 'package:mobil_arici/features/documents/presentation/documents_screen.dar
 import 'package:mobil_arici/features/documents/presentation/road_check_screen.dart';
 import 'package:mobil_arici/features/feedback/presentation/feedback_screen.dart';
 import 'package:mobil_arici/features/feeding/presentation/feeding_form_screen.dart';
+import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
+import 'package:mobil_arici/features/finance/presentation/finance_screen.dart';
+import 'package:mobil_arici/features/finance/presentation/transaction_form_screen.dart';
+import 'package:mobil_arici/features/finance/presentation/transaction_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_hives_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_lot_screen.dart';
@@ -93,6 +97,7 @@ const _stopId = 'stopId';
 const _inventoryItemId = 'inventoryItemId';
 const _harvestId = 'harvestId';
 const _lotId = 'lotId';
+const _transactionId = 'transactionId';
 const _rearingBatchId = 'rearingBatchId';
 const _attentionKind = 'kind';
 
@@ -506,6 +511,37 @@ GoRouter router(Ref ref) {
                             ),
                           ),
                         ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'finance',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const FinanceScreen(),
+                    routes: [
+                      // Sabit yollar `:id`'den önce.
+                      GoRoute(
+                        path: 'new',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => TransactionFormScreen(
+                          kind:
+                              TransactionKind.values
+                                  .where(
+                                    (kind) =>
+                                        kind.value ==
+                                        state.uri.queryParameters[AppRoutes
+                                            .financeKindParameter],
+                                  )
+                                  .firstOrNull ??
+                              TransactionKind.expense,
+                        ),
+                      ),
+                      GoRoute(
+                        path: ':$_transactionId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => TransactionScreen(
+                          transactionId: state.pathParameters[_transactionId]!,
+                        ),
                       ),
                     ],
                   ),

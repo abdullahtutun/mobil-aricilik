@@ -5422,5 +5422,321 @@
   "harvestLotGoneMessage": "The harvest wasn't added to a lot. You can record it again from the apiary.",
   "@harvestLotGoneMessage": {
     "description": "Harvest lot step: harvest deleted message."
+  },
+  "financeTitle": "Finance",
+  "@financeTitle": {
+    "description": "Finance screen and More tile title."
+  },
+  "financeYearTitle": "Finance · {year}",
+  "@financeYearTitle": {
+    "description": "Finance screen app bar with season year.",
+    "placeholders": {
+      "year": {
+        "type": "String",
+        "example": "2026"
+      }
+    }
+  },
+  "financeSeasonNet": "Season net",
+  "@financeSeasonNet": {
+    "description": "Finance summary card label."
+  },
+  "financeIncome": "Income",
+  "@financeIncome": {
+    "description": "Finance summary: income."
+  },
+  "financeExpense": "Expense",
+  "@financeExpense": {
+    "description": "Finance summary: expense."
+  },
+  "financeCostPerHive": "Cost/hive",
+  "@financeCostPerHive": {
+    "description": "Finance summary: expense per active hive."
+  },
+  "financeRecent": "Recent entries",
+  "@financeRecent": {
+    "description": "Finance section label."
+  },
+  "financeEmptyTitle": "No entries yet",
+  "@financeEmptyTitle": {
+    "description": "Finance empty state title."
+  },
+  "financeEmptyMessage": "Record income and expenses with the buttons below; the season net is calculated here.",
+  "@financeEmptyMessage": {
+    "description": "Finance empty state message."
+  },
+  "financeLoadError": "Couldn't load entries",
+  "@financeLoadError": {
+    "description": "Finance load error."
+  },
+  "financeAddIncome": "+ Income",
+  "@financeAddIncome": {
+    "description": "Add income button."
+  },
+  "financeAddExpense": "− Expense",
+  "@financeAddExpense": {
+    "description": "Add expense button."
+  },
+  "financePlus": "+{amount}",
+  "@financePlus": {
+    "description": "Positive amount.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺56.000"
+      }
+    }
+  },
+  "financeMinus": "−{amount}",
+  "@financeMinus": {
+    "description": "Negative amount.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺17.500"
+      }
+    }
+  },
+  "financeReceiptAttached": "receipt attached",
+  "@financeReceiptAttached": {
+    "description": "Entry subtitle when a receipt photo is attached."
+  },
+  "financeTransportRoute": "{from} → {to}",
+  "@financeTransportRoute": {
+    "description": "Transport source and destination apiaries.",
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Kestane"
+      },
+      "to": {
+        "type": "String",
+        "example": "Çam"
+      }
+    }
+  },
+  "financeFormIncomeTitle": "Add income",
+  "@financeFormIncomeTitle": {
+    "description": "Income form title."
+  },
+  "financeFormExpenseTitle": "Add expense",
+  "@financeFormExpenseTitle": {
+    "description": "Expense form title."
+  },
+  "financeFormAmount": "Amount ({currency})",
+  "@financeFormAmount": {
+    "description": "Amount field label with currency symbol.",
+    "placeholders": {
+      "currency": {
+        "type": "String",
+        "example": "₺"
+      }
+    }
+  },
+  "financeFormAmountInvalid": "Enter an amount above 0, like 17500 or 17.50",
+  "@financeFormAmountInvalid": {
+    "description": "Invalid amount warning."
+  },
+  "financeFormCategory": "Category",
+  "@financeFormCategory": {
+    "description": "Category field label."
+  },
+  "financeFormDate": "Date",
+  "@financeFormDate": {
+    "description": "Date row label."
+  },
+  "financeFormDescription": "Description",
+  "@financeFormDescription": {
+    "description": "Description field label."
+  },
+  "financeFormDescriptionHint": "E.g. Sugar 500 kg",
+  "@financeFormDescriptionHint": {
+    "description": "Description hint."
+  },
+  "financeFormReceipt": "Receipt / invoice",
+  "@financeFormReceipt": {
+    "description": "Receipt section label."
+  },
+  "financeFormNoReceipt": "No receipt",
+  "@financeFormNoReceipt": {
+    "description": "No receipt photo yet."
+  },
+  "financeFormReceiptAdded": "Receipt photo added",
+  "@financeFormReceiptAdded": {
+    "description": "Receipt photo taken."
+  },
+  "financeFormTakePhoto": "Take photo",
+  "@financeFormTakePhoto": {
+    "description": "Receipt camera button."
+  },
+  "financeFormPickImage": "From gallery",
+  "@financeFormPickImage": {
+    "description": "Receipt gallery button."
+  },
+  "financeFormRemoveReceipt": "Remove receipt",
+  "@financeFormRemoveReceipt": {
+    "description": "Remove receipt button."
+  },
+  "financeFormPhotoDenied": "Permission denied. To add a receipt, allow camera or photo access for this app in Settings.",
+  "@financeFormPhotoDenied": {
+    "description": "Receipt permission denied."
+  },
+  "financeFormPhotoFailed": "Couldn't get the photo, try again.",
+  "@financeFormPhotoFailed": {
+    "description": "Receipt photo failed."
+  },
+  "financeFormLinks": "Linked record",
+  "@financeFormLinks": {
+    "description": "Linked records section label."
+  },
+  "financeFormApiary": "Apiary",
+  "@financeFormApiary": {
+    "description": "Linked apiary row."
+  },
+  "financeFormLot": "Lot",
+  "@financeFormLot": {
+    "description": "Linked lot row."
+  },
+  "financeFormTransport": "Move",
+  "@financeFormTransport": {
+    "description": "Linked transport row."
+  },
+  "financeFormNone": "None",
+  "@financeFormNone": {
+    "description": "No linked record."
+  },
+  "financeFormChooseApiary": "Choose apiary",
+  "@financeFormChooseApiary": {
+    "description": "Apiary picker title."
+  },
+  "financeFormChooseLot": "Choose lot",
+  "@financeFormChooseLot": {
+    "description": "Lot picker title."
+  },
+  "financeFormChooseTransport": "Choose move",
+  "@financeFormChooseTransport": {
+    "description": "Transport picker title."
+  },
+  "financeFormNoLots": "No lots yet",
+  "@financeFormNoLots": {
+    "description": "Lot picker empty."
+  },
+  "financeFormNoTransports": "No moves yet",
+  "@financeFormNoTransports": {
+    "description": "Transport picker empty."
+  },
+  "financeFormSaleAmount": "Honey sold ({unit})",
+  "@financeFormSaleAmount": {
+    "description": "Sold honey field with mass unit.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "financeFormSaleHelper": "Deducted from the lot's stock; leave empty to keep the stock",
+  "@financeFormSaleHelper": {
+    "description": "Sold honey helper."
+  },
+  "financeFormSave": "Save",
+  "@financeFormSave": {
+    "description": "Save button."
+  },
+  "financeIncomeSaved": "Income saved",
+  "@financeIncomeSaved": {
+    "description": "Snackbar after saving income."
+  },
+  "financeExpenseSaved": "Expense saved",
+  "@financeExpenseSaved": {
+    "description": "Snackbar after saving expense."
+  },
+  "financeNotFound": "Entry not found",
+  "@financeNotFound": {
+    "description": "Transaction not found."
+  },
+  "financeReceiptPending": "The receipt hasn't reached this phone yet",
+  "@financeReceiptPending": {
+    "description": "Receipt file not downloaded yet."
+  },
+  "financeDelete": "Delete entry",
+  "@financeDelete": {
+    "description": "Delete button."
+  },
+  "financeDeleteTitle": "Delete this entry?",
+  "@financeDeleteTitle": {
+    "description": "Delete confirmation title."
+  },
+  "financeDeleteMessage": "If it's linked to a lot sale, the sale is deleted too and the stock comes back.",
+  "@financeDeleteMessage": {
+    "description": "Delete confirmation message."
+  },
+  "financeDeleteConfirm": "Delete",
+  "@financeDeleteConfirm": {
+    "description": "Delete confirmation button."
+  },
+  "financeDeleted": "Entry deleted",
+  "@financeDeleted": {
+    "description": "Snackbar after delete."
+  },
+  "financeCategoryFeeding": "Feeding",
+  "@financeCategoryFeeding": {
+    "description": "Expense category."
+  },
+  "financeCategoryTreatment": "Medicine",
+  "@financeCategoryTreatment": {
+    "description": "Expense category."
+  },
+  "financeCategoryEquipment": "Equipment",
+  "@financeCategoryEquipment": {
+    "description": "Expense category."
+  },
+  "financeCategoryFuelTransport": "Fuel / transport",
+  "@financeCategoryFuelTransport": {
+    "description": "Expense category."
+  },
+  "financeCategoryLandRent": "Land rent",
+  "@financeCategoryLandRent": {
+    "description": "Expense category."
+  },
+  "financeCategoryLabor": "Labor",
+  "@financeCategoryLabor": {
+    "description": "Expense category."
+  },
+  "financeCategoryLabAnalysis": "Lab analysis",
+  "@financeCategoryLabAnalysis": {
+    "description": "Expense category."
+  },
+  "financeCategoryHoney": "Honey",
+  "@financeCategoryHoney": {
+    "description": "Income category."
+  },
+  "financeCategoryPollen": "Pollen",
+  "@financeCategoryPollen": {
+    "description": "Income category."
+  },
+  "financeCategoryPropolis": "Propolis",
+  "@financeCategoryPropolis": {
+    "description": "Income category."
+  },
+  "financeCategoryWax": "Wax",
+  "@financeCategoryWax": {
+    "description": "Income category."
+  },
+  "financeCategoryNucs": "Nucs",
+  "@financeCategoryNucs": {
+    "description": "Income category."
+  },
+  "financeCategoryQueens": "Queens",
+  "@financeCategoryQueens": {
+    "description": "Income and expense category."
+  },
+  "financeCategoryOther": "Other",
+  "@financeCategoryOther": {
+    "description": "Income and expense category."
+  },
+  "syncTableTransactions": "Income/expense",
+  "@syncTableTransactions": {
+    "description": "Sync screen record type."
   }
 }

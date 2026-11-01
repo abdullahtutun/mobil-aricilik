@@ -6,6 +6,7 @@ import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
@@ -170,6 +171,8 @@ void main() {
       'mating_nuc_status': values(MatingNucStatus.values),
       'lot_status': values(LotStatus.values),
       'residue_result': values(ResidueResult.values),
+      'transaction_kind': values(TransactionKind.values),
+      'transaction_category': values(TransactionCategory.values),
     };
 
     expect(local, server.enums);

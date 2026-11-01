@@ -3,6 +3,7 @@ import 'package:mobil_arici/core/db/app_database.steps.dart';
 import 'package:mobil_arici/core/db/converters.dart';
 import 'package:mobil_arici/core/db/tables/document_tables.dart';
 import 'package:mobil_arici/core/db/tables/feeding_tables.dart';
+import 'package:mobil_arici/core/db/tables/finance_tables.dart';
 import 'package:mobil_arici/core/db/tables/harvest_tables.dart';
 import 'package:mobil_arici/core/db/tables/health_tables.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
@@ -20,6 +21,7 @@ import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/health/domain/drug.dart';
@@ -87,6 +89,8 @@ part 'app_database.g.dart';
     LotTreatments,
     LabResults,
     LotSales,
+    Transactions,
+    ReceiptUploads,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -98,7 +102,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 18;
+  int get schemaVersion => 19;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -257,6 +261,13 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(schema.lots, schema.lots.publicOrigin);
         await m.addColumn(schema.lots, schema.lots.publicLab);
         await m.addColumn(schema.lots, schema.lots.publicReport);
+      },
+      // Finans hareketleri; fiş yükleme kuyruğu yalnız bu telefonda.
+      from18To19: (m, schema) async {
+        await m.createTable(schema.transactions);
+        await m.create(schema.transactionsOrgIdIdx);
+        await m.create(schema.transactionsLotIdIdx);
+        await m.createTable(schema.receiptUploads);
       },
     ),
   );

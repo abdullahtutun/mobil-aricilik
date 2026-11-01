@@ -5305,4 +5305,228 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get harvestLotGoneMessage =>
       'Hasat lota eklenmedi. Arılıktan yeniden kaydedebilirsiniz.';
+
+  @override
+  String get financeTitle => 'Finans';
+
+  @override
+  String financeYearTitle(String year) {
+    return 'Finans · $year';
+  }
+
+  @override
+  String get financeSeasonNet => 'Sezon net';
+
+  @override
+  String get financeIncome => 'Gelir';
+
+  @override
+  String get financeExpense => 'Gider';
+
+  @override
+  String get financeCostPerHive => 'Maliyet/kovan';
+
+  @override
+  String get financeRecent => 'Son hareketler';
+
+  @override
+  String get financeEmptyTitle => 'Henüz hareket yok';
+
+  @override
+  String get financeEmptyMessage =>
+      'Gelir ve giderleri aşağıdaki butonlarla kaydedin; sezon neti burada hesaplanır.';
+
+  @override
+  String get financeLoadError => 'Hareketler yüklenemedi';
+
+  @override
+  String get financeAddIncome => '+ Gelir';
+
+  @override
+  String get financeAddExpense => '− Gider';
+
+  @override
+  String financePlus(String amount) {
+    return '+$amount';
+  }
+
+  @override
+  String financeMinus(String amount) {
+    return '−$amount';
+  }
+
+  @override
+  String get financeReceiptAttached => 'fiş eklendi';
+
+  @override
+  String financeTransportRoute(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String get financeFormIncomeTitle => 'Gelir ekle';
+
+  @override
+  String get financeFormExpenseTitle => 'Gider ekle';
+
+  @override
+  String financeFormAmount(String currency) {
+    return 'Tutar ($currency)';
+  }
+
+  @override
+  String get financeFormAmountInvalid =>
+      '0\'dan büyük, 17.500 ya da 17,50 gibi bir tutar yaz';
+
+  @override
+  String get financeFormCategory => 'Kategori';
+
+  @override
+  String get financeFormDate => 'Tarih';
+
+  @override
+  String get financeFormDescription => 'Açıklama';
+
+  @override
+  String get financeFormDescriptionHint => 'Ör. Şeker 500 kg';
+
+  @override
+  String get financeFormReceipt => 'Fiş / fatura';
+
+  @override
+  String get financeFormNoReceipt => 'Fiş eklenmedi';
+
+  @override
+  String get financeFormReceiptAdded => 'Fiş fotoğrafı eklendi';
+
+  @override
+  String get financeFormTakePhoto => 'Fotoğraf çek';
+
+  @override
+  String get financeFormPickImage => 'Galeriden seç';
+
+  @override
+  String get financeFormRemoveReceipt => 'Fişi kaldır';
+
+  @override
+  String get financeFormPhotoDenied =>
+      'İzin verilmedi. Fiş eklemek için Ayarlar\'dan bu uygulamaya kamera ya da fotoğraf izni ver.';
+
+  @override
+  String get financeFormPhotoFailed => 'Fotoğraf alınamadı, yeniden dene.';
+
+  @override
+  String get financeFormLinks => 'Bağlı kayıt';
+
+  @override
+  String get financeFormApiary => 'Arılık';
+
+  @override
+  String get financeFormLot => 'Lot';
+
+  @override
+  String get financeFormTransport => 'Taşıma';
+
+  @override
+  String get financeFormNone => 'Yok';
+
+  @override
+  String get financeFormChooseApiary => 'Arılık seç';
+
+  @override
+  String get financeFormChooseLot => 'Lot seç';
+
+  @override
+  String get financeFormChooseTransport => 'Taşıma seç';
+
+  @override
+  String get financeFormNoLots => 'Henüz lot yok';
+
+  @override
+  String get financeFormNoTransports => 'Henüz taşıma yok';
+
+  @override
+  String financeFormSaleAmount(String unit) {
+    return 'Satılan bal ($unit)';
+  }
+
+  @override
+  String get financeFormSaleHelper =>
+      'Lotun stoğundan düşülür; boş bırakılırsa stok değişmez';
+
+  @override
+  String get financeFormSave => 'Kaydet';
+
+  @override
+  String get financeIncomeSaved => 'Gelir kaydedildi';
+
+  @override
+  String get financeExpenseSaved => 'Gider kaydedildi';
+
+  @override
+  String get financeNotFound => 'Hareket bulunamadı';
+
+  @override
+  String get financeReceiptPending => 'Fiş bu telefona henüz inmedi';
+
+  @override
+  String get financeDelete => 'Hareketi sil';
+
+  @override
+  String get financeDeleteTitle => 'Hareket silinsin mi?';
+
+  @override
+  String get financeDeleteMessage =>
+      'Lot satışına bağlıysa satış da silinir ve stok geri gelir.';
+
+  @override
+  String get financeDeleteConfirm => 'Sil';
+
+  @override
+  String get financeDeleted => 'Hareket silindi';
+
+  @override
+  String get financeCategoryFeeding => 'Besleme';
+
+  @override
+  String get financeCategoryTreatment => 'İlaç';
+
+  @override
+  String get financeCategoryEquipment => 'Ekipman';
+
+  @override
+  String get financeCategoryFuelTransport => 'Yakıt / nakliye';
+
+  @override
+  String get financeCategoryLandRent => 'Arazi kirası';
+
+  @override
+  String get financeCategoryLabor => 'İşçilik';
+
+  @override
+  String get financeCategoryLabAnalysis => 'Analiz';
+
+  @override
+  String get financeCategoryHoney => 'Bal';
+
+  @override
+  String get financeCategoryPollen => 'Polen';
+
+  @override
+  String get financeCategoryPropolis => 'Propolis';
+
+  @override
+  String get financeCategoryWax => 'Mum';
+
+  @override
+  String get financeCategoryNucs => 'Oğulcuk';
+
+  @override
+  String get financeCategoryQueens => 'Ana arı';
+
+  @override
+  String get financeCategoryOther => 'Diğer';
+
+  @override
+  String get syncTableTransactions => 'Gelir-gider';
 }

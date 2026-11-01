@@ -39,6 +39,7 @@ class ListRow extends StatelessWidget {
     super.key,
     this.subtitle,
     this.value,
+    this.valueColor,
     this.trailing,
     this.onTap,
   });
@@ -48,6 +49,10 @@ class ListRow extends StatelessWidget {
 
   /// Sağdaki kalın değer ("32", "Türkçe").
   final String? value;
+
+  /// Değerin rengi (ör. gelir tutarı); boşsa dokunulabilir satırda ikincil,
+  /// değilse birincil metin rengi. Anlamı değerin kendisi taşımalı.
+  final Color? valueColor;
   final Widget? trailing;
   final VoidCallback? onTap;
 
@@ -93,9 +98,11 @@ class ListRow extends StatelessWidget {
                   value,
                   textAlign: TextAlign.end,
                   style: context.typography.label.copyWith(
-                    color: onTap == null
-                        ? colors.textPrimary
-                        : colors.textSecondary,
+                    color:
+                        valueColor ??
+                        (onTap == null
+                            ? colors.textPrimary
+                            : colors.textSecondary),
                   ),
                 ),
               ),

@@ -8632,6 +8632,420 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The harvest wasn\'t added to a lot. You can record it again from the apiary.'**
   String get harvestLotGoneMessage;
+
+  /// Finance screen and More tile title.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get financeTitle;
+
+  /// Finance screen app bar with season year.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance · {year}'**
+  String financeYearTitle(String year);
+
+  /// Finance summary card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Season net'**
+  String get financeSeasonNet;
+
+  /// Finance summary: income.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get financeIncome;
+
+  /// Finance summary: expense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get financeExpense;
+
+  /// Finance summary: expense per active hive.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost/hive'**
+  String get financeCostPerHive;
+
+  /// Finance section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent entries'**
+  String get financeRecent;
+
+  /// Finance empty state title.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet'**
+  String get financeEmptyTitle;
+
+  /// Finance empty state message.
+  ///
+  /// In en, this message translates to:
+  /// **'Record income and expenses with the buttons below; the season net is calculated here.'**
+  String get financeEmptyMessage;
+
+  /// Finance load error.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load entries'**
+  String get financeLoadError;
+
+  /// Add income button.
+  ///
+  /// In en, this message translates to:
+  /// **'+ Income'**
+  String get financeAddIncome;
+
+  /// Add expense button.
+  ///
+  /// In en, this message translates to:
+  /// **'− Expense'**
+  String get financeAddExpense;
+
+  /// Positive amount.
+  ///
+  /// In en, this message translates to:
+  /// **'+{amount}'**
+  String financePlus(String amount);
+
+  /// Negative amount.
+  ///
+  /// In en, this message translates to:
+  /// **'−{amount}'**
+  String financeMinus(String amount);
+
+  /// Entry subtitle when a receipt photo is attached.
+  ///
+  /// In en, this message translates to:
+  /// **'receipt attached'**
+  String get financeReceiptAttached;
+
+  /// Transport source and destination apiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to}'**
+  String financeTransportRoute(String from, String to);
+
+  /// Income form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add income'**
+  String get financeFormIncomeTitle;
+
+  /// Expense form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add expense'**
+  String get financeFormExpenseTitle;
+
+  /// Amount field label with currency symbol.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount ({currency})'**
+  String financeFormAmount(String currency);
+
+  /// Invalid amount warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount above 0, like 17500 or 17.50'**
+  String get financeFormAmountInvalid;
+
+  /// Category field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get financeFormCategory;
+
+  /// Date row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get financeFormDate;
+
+  /// Description field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get financeFormDescription;
+
+  /// Description hint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. Sugar 500 kg'**
+  String get financeFormDescriptionHint;
+
+  /// Receipt section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt / invoice'**
+  String get financeFormReceipt;
+
+  /// No receipt photo yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No receipt'**
+  String get financeFormNoReceipt;
+
+  /// Receipt photo taken.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt photo added'**
+  String get financeFormReceiptAdded;
+
+  /// Receipt camera button.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get financeFormTakePhoto;
+
+  /// Receipt gallery button.
+  ///
+  /// In en, this message translates to:
+  /// **'From gallery'**
+  String get financeFormPickImage;
+
+  /// Remove receipt button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove receipt'**
+  String get financeFormRemoveReceipt;
+
+  /// Receipt permission denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied. To add a receipt, allow camera or photo access for this app in Settings.'**
+  String get financeFormPhotoDenied;
+
+  /// Receipt photo failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get the photo, try again.'**
+  String get financeFormPhotoFailed;
+
+  /// Linked records section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked record'**
+  String get financeFormLinks;
+
+  /// Linked apiary row.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get financeFormApiary;
+
+  /// Linked lot row.
+  ///
+  /// In en, this message translates to:
+  /// **'Lot'**
+  String get financeFormLot;
+
+  /// Linked transport row.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get financeFormTransport;
+
+  /// No linked record.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get financeFormNone;
+
+  /// Apiary picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose apiary'**
+  String get financeFormChooseApiary;
+
+  /// Lot picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose lot'**
+  String get financeFormChooseLot;
+
+  /// Transport picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose move'**
+  String get financeFormChooseTransport;
+
+  /// Lot picker empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No lots yet'**
+  String get financeFormNoLots;
+
+  /// Transport picker empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No moves yet'**
+  String get financeFormNoTransports;
+
+  /// Sold honey field with mass unit.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey sold ({unit})'**
+  String financeFormSaleAmount(String unit);
+
+  /// Sold honey helper.
+  ///
+  /// In en, this message translates to:
+  /// **'Deducted from the lot\'s stock; leave empty to keep the stock'**
+  String get financeFormSaleHelper;
+
+  /// Save button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get financeFormSave;
+
+  /// Snackbar after saving income.
+  ///
+  /// In en, this message translates to:
+  /// **'Income saved'**
+  String get financeIncomeSaved;
+
+  /// Snackbar after saving expense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense saved'**
+  String get financeExpenseSaved;
+
+  /// Transaction not found.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry not found'**
+  String get financeNotFound;
+
+  /// Receipt file not downloaded yet.
+  ///
+  /// In en, this message translates to:
+  /// **'The receipt hasn\'t reached this phone yet'**
+  String get financeReceiptPending;
+
+  /// Delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete entry'**
+  String get financeDelete;
+
+  /// Delete confirmation title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this entry?'**
+  String get financeDeleteTitle;
+
+  /// Delete confirmation message.
+  ///
+  /// In en, this message translates to:
+  /// **'If it\'s linked to a lot sale, the sale is deleted too and the stock comes back.'**
+  String get financeDeleteMessage;
+
+  /// Delete confirmation button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get financeDeleteConfirm;
+
+  /// Snackbar after delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry deleted'**
+  String get financeDeleted;
+
+  /// Expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding'**
+  String get financeCategoryFeeding;
+
+  /// Expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Medicine'**
+  String get financeCategoryTreatment;
+
+  /// Expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get financeCategoryEquipment;
+
+  /// Expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel / transport'**
+  String get financeCategoryFuelTransport;
+
+  /// Expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Land rent'**
+  String get financeCategoryLandRent;
+
+  /// Expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Labor'**
+  String get financeCategoryLabor;
+
+  /// Expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Lab analysis'**
+  String get financeCategoryLabAnalysis;
+
+  /// Income category.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey'**
+  String get financeCategoryHoney;
+
+  /// Income category.
+  ///
+  /// In en, this message translates to:
+  /// **'Pollen'**
+  String get financeCategoryPollen;
+
+  /// Income category.
+  ///
+  /// In en, this message translates to:
+  /// **'Propolis'**
+  String get financeCategoryPropolis;
+
+  /// Income category.
+  ///
+  /// In en, this message translates to:
+  /// **'Wax'**
+  String get financeCategoryWax;
+
+  /// Income category.
+  ///
+  /// In en, this message translates to:
+  /// **'Nucs'**
+  String get financeCategoryNucs;
+
+  /// Income and expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Queens'**
+  String get financeCategoryQueens;
+
+  /// Income and expense category.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get financeCategoryOther;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Income/expense'**
+  String get syncTableTransactions;
 }
 
 class _AppLocalizationsDelegate

@@ -11,6 +11,7 @@ import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/supabase_setup.dart';
 import 'package:mobil_arici/core/sync/document_file_triggers.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
+import 'package:mobil_arici/core/sync/receipt_file_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_triggers.dart';
 import 'package:mobil_arici/features/documents/presentation/document_reminders.dart';
@@ -43,7 +44,7 @@ Future<void> bootstrap(Flavor flavor) async {
 
     final container =
         ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])
-          // Senkron, medya, görüş ve kullanım olayı gönderimi, belge
+          // Senkron, medya, görüş ve kullanım olayı gönderimi, belge ve fiş
           // dosyalarının yüklenip indirilmesi, görev ve belge
           // hatırlatmalarının eşitlemesi, push token kaydı ve bildirimden
           // görev açma uygulama açık kaldıkça çalışır.
@@ -51,6 +52,7 @@ Future<void> bootstrap(Flavor flavor) async {
           ..listen(mediaUploadTriggersProvider, (_, _) {})
           ..listen(telemetryUploadTriggersProvider, (_, _) {})
           ..listen(documentFileTriggersProvider, (_, _) {})
+          ..listen(receiptFileTriggersProvider, (_, _) {})
           ..listen(taskRemindersProvider, (_, _) {})
           ..listen(documentRemindersProvider, (_, _) {})
           ..listen(pushRegistrationProvider, (_, _) {})

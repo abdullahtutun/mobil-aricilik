@@ -19076,6 +19076,1276 @@ extension LotSaleToInsertable on LotSale {
   }
 }
 
+class $TransactionsTable extends Transactions
+    with TableInfo<$TransactionsTable, FinanceTransaction> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TransactionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<TransactionKind, String> kind =
+      GeneratedColumn<String>(
+        'kind',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<TransactionKind>($TransactionsTable.$converterkind);
+  @override
+  late final GeneratedColumnWithTypeConverter<TransactionCategory, String>
+  category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<TransactionCategory>($TransactionsTable.$convertercategory);
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<double> amount = GeneratedColumn<double>(
+    'amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _currencyMeta = const VerificationMeta(
+    'currency',
+  );
+  @override
+  late final GeneratedColumn<String> currency = GeneratedColumn<String>(
+    'currency',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, String> occurredOn =
+      GeneratedColumn<String>(
+        'occurred_on',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($TransactionsTable.$converteroccurredOn);
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _receiptPathMeta = const VerificationMeta(
+    'receiptPath',
+  );
+  @override
+  late final GeneratedColumn<String> receiptPath = GeneratedColumn<String>(
+    'receipt_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lotIdMeta = const VerificationMeta('lotId');
+  @override
+  late final GeneratedColumn<String> lotId = GeneratedColumn<String>(
+    'lot_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _transportIdMeta = const VerificationMeta(
+    'transportId',
+  );
+  @override
+  late final GeneratedColumn<String> transportId = GeneratedColumn<String>(
+    'transport_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lotSaleIdMeta = const VerificationMeta(
+    'lotSaleId',
+  );
+  @override
+  late final GeneratedColumn<String> lotSaleId = GeneratedColumn<String>(
+    'lot_sale_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    kind,
+    category,
+    amount,
+    currency,
+    occurredOn,
+    description,
+    receiptPath,
+    apiaryId,
+    lotId,
+    transportId,
+    lotSaleId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'transactions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<FinanceTransaction> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(
+        _amountMeta,
+        amount.isAcceptableOrUnknown(data['amount']!, _amountMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('currency')) {
+      context.handle(
+        _currencyMeta,
+        currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_currencyMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('receipt_path')) {
+      context.handle(
+        _receiptPathMeta,
+        receiptPath.isAcceptableOrUnknown(
+          data['receipt_path']!,
+          _receiptPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    }
+    if (data.containsKey('lot_id')) {
+      context.handle(
+        _lotIdMeta,
+        lotId.isAcceptableOrUnknown(data['lot_id']!, _lotIdMeta),
+      );
+    }
+    if (data.containsKey('transport_id')) {
+      context.handle(
+        _transportIdMeta,
+        transportId.isAcceptableOrUnknown(
+          data['transport_id']!,
+          _transportIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('lot_sale_id')) {
+      context.handle(
+        _lotSaleIdMeta,
+        lotSaleId.isAcceptableOrUnknown(data['lot_sale_id']!, _lotSaleIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FinanceTransaction map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FinanceTransaction(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      kind: $TransactionsTable.$converterkind.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}kind'],
+        )!,
+      ),
+      category: $TransactionsTable.$convertercategory.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}category'],
+        )!,
+      ),
+      amount: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}amount'],
+      )!,
+      currency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency'],
+      )!,
+      occurredOn: $TransactionsTable.$converteroccurredOn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}occurred_on'],
+        )!,
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      receiptPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}receipt_path'],
+      ),
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      ),
+      lotId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lot_id'],
+      ),
+      transportId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}transport_id'],
+      ),
+      lotSaleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lot_sale_id'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $TransactionsTable createAlias(String alias) {
+    return $TransactionsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<TransactionKind, String> $converterkind =
+      const ServerEnumConverter(TransactionKind.values);
+  static TypeConverter<TransactionCategory, String> $convertercategory =
+      const ServerEnumConverter(TransactionCategory.values);
+  static TypeConverter<DateTime, String> $converteroccurredOn =
+      const DateOnlyConverter();
+}
+
+class TransactionsCompanion extends UpdateCompanion<FinanceTransaction> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<TransactionKind> kind;
+  final Value<TransactionCategory> category;
+  final Value<double> amount;
+  final Value<String> currency;
+  final Value<DateTime> occurredOn;
+  final Value<String?> description;
+  final Value<String?> receiptPath;
+  final Value<String?> apiaryId;
+  final Value<String?> lotId;
+  final Value<String?> transportId;
+  final Value<String?> lotSaleId;
+  final Value<int> rowid;
+  const TransactionsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.category = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.currency = const Value.absent(),
+    this.occurredOn = const Value.absent(),
+    this.description = const Value.absent(),
+    this.receiptPath = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.lotId = const Value.absent(),
+    this.transportId = const Value.absent(),
+    this.lotSaleId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TransactionsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required TransactionKind kind,
+    required TransactionCategory category,
+    required double amount,
+    required String currency,
+    required DateTime occurredOn,
+    this.description = const Value.absent(),
+    this.receiptPath = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.lotId = const Value.absent(),
+    this.transportId = const Value.absent(),
+    this.lotSaleId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       kind = Value(kind),
+       category = Value(category),
+       amount = Value(amount),
+       currency = Value(currency),
+       occurredOn = Value(occurredOn);
+  static Insertable<FinanceTransaction> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? kind,
+    Expression<String>? category,
+    Expression<double>? amount,
+    Expression<String>? currency,
+    Expression<String>? occurredOn,
+    Expression<String>? description,
+    Expression<String>? receiptPath,
+    Expression<String>? apiaryId,
+    Expression<String>? lotId,
+    Expression<String>? transportId,
+    Expression<String>? lotSaleId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (kind != null) 'kind': kind,
+      if (category != null) 'category': category,
+      if (amount != null) 'amount': amount,
+      if (currency != null) 'currency': currency,
+      if (occurredOn != null) 'occurred_on': occurredOn,
+      if (description != null) 'description': description,
+      if (receiptPath != null) 'receipt_path': receiptPath,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (lotId != null) 'lot_id': lotId,
+      if (transportId != null) 'transport_id': transportId,
+      if (lotSaleId != null) 'lot_sale_id': lotSaleId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TransactionsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<TransactionKind>? kind,
+    Value<TransactionCategory>? category,
+    Value<double>? amount,
+    Value<String>? currency,
+    Value<DateTime>? occurredOn,
+    Value<String?>? description,
+    Value<String?>? receiptPath,
+    Value<String?>? apiaryId,
+    Value<String?>? lotId,
+    Value<String?>? transportId,
+    Value<String?>? lotSaleId,
+    Value<int>? rowid,
+  }) {
+    return TransactionsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      kind: kind ?? this.kind,
+      category: category ?? this.category,
+      amount: amount ?? this.amount,
+      currency: currency ?? this.currency,
+      occurredOn: occurredOn ?? this.occurredOn,
+      description: description ?? this.description,
+      receiptPath: receiptPath ?? this.receiptPath,
+      apiaryId: apiaryId ?? this.apiaryId,
+      lotId: lotId ?? this.lotId,
+      transportId: transportId ?? this.transportId,
+      lotSaleId: lotSaleId ?? this.lotSaleId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(
+        $TransactionsTable.$converterkind.toSql(kind.value),
+      );
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(
+        $TransactionsTable.$convertercategory.toSql(category.value),
+      );
+    }
+    if (amount.present) {
+      map['amount'] = Variable<double>(amount.value);
+    }
+    if (currency.present) {
+      map['currency'] = Variable<String>(currency.value);
+    }
+    if (occurredOn.present) {
+      map['occurred_on'] = Variable<String>(
+        $TransactionsTable.$converteroccurredOn.toSql(occurredOn.value),
+      );
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (receiptPath.present) {
+      map['receipt_path'] = Variable<String>(receiptPath.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (lotId.present) {
+      map['lot_id'] = Variable<String>(lotId.value);
+    }
+    if (transportId.present) {
+      map['transport_id'] = Variable<String>(transportId.value);
+    }
+    if (lotSaleId.present) {
+      map['lot_sale_id'] = Variable<String>(lotSaleId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TransactionsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('kind: $kind, ')
+          ..write('category: $category, ')
+          ..write('amount: $amount, ')
+          ..write('currency: $currency, ')
+          ..write('occurredOn: $occurredOn, ')
+          ..write('description: $description, ')
+          ..write('receiptPath: $receiptPath, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('lotId: $lotId, ')
+          ..write('transportId: $transportId, ')
+          ..write('lotSaleId: $lotSaleId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$FinanceTransactionInsertable implements Insertable<FinanceTransaction> {
+  FinanceTransaction _object;
+  _$FinanceTransactionInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return TransactionsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      kind: Value(_object.kind),
+      category: Value(_object.category),
+      amount: Value(_object.amount),
+      currency: Value(_object.currency),
+      occurredOn: Value(_object.occurredOn),
+      description: Value(_object.description),
+      receiptPath: Value(_object.receiptPath),
+      apiaryId: Value(_object.apiaryId),
+      lotId: Value(_object.lotId),
+      transportId: Value(_object.transportId),
+      lotSaleId: Value(_object.lotSaleId),
+    ).toColumns(false);
+  }
+}
+
+extension FinanceTransactionToInsertable on FinanceTransaction {
+  _$FinanceTransactionInsertable toInsertable() {
+    return _$FinanceTransactionInsertable(this);
+  }
+}
+
+class $ReceiptUploadsTable extends ReceiptUploads
+    with TableInfo<$ReceiptUploadsTable, ReceiptUpload> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ReceiptUploadsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _storagePathMeta = const VerificationMeta(
+    'storagePath',
+  );
+  @override
+  late final GeneratedColumn<String> storagePath = GeneratedColumn<String>(
+    'storage_path',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _transactionIdMeta = const VerificationMeta(
+    'transactionId',
+  );
+  @override
+  late final GeneratedColumn<String> transactionId = GeneratedColumn<String>(
+    'transaction_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<MediaUploadStatus, String>
+  uploadStatus =
+      GeneratedColumn<String>(
+        'upload_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<MediaUploadStatus>(
+        $ReceiptUploadsTable.$converteruploadStatus,
+      );
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _nextAttemptAtMeta = const VerificationMeta(
+    'nextAttemptAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> nextAttemptAt =
+      GeneratedColumn<DateTime>(
+        'next_attempt_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
+  @override
+  late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
+    'last_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    storagePath,
+    transactionId,
+    orgId,
+    uploadStatus,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'receipt_uploads';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ReceiptUpload> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('storage_path')) {
+      context.handle(
+        _storagePathMeta,
+        storagePath.isAcceptableOrUnknown(
+          data['storage_path']!,
+          _storagePathMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_storagePathMeta);
+    }
+    if (data.containsKey('transaction_id')) {
+      context.handle(
+        _transactionIdMeta,
+        transactionId.isAcceptableOrUnknown(
+          data['transaction_id']!,
+          _transactionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_transactionIdMeta);
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    }
+    if (data.containsKey('next_attempt_at')) {
+      context.handle(
+        _nextAttemptAtMeta,
+        nextAttemptAt.isAcceptableOrUnknown(
+          data['next_attempt_at']!,
+          _nextAttemptAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_error')) {
+      context.handle(
+        _lastErrorMeta,
+        lastError.isAcceptableOrUnknown(data['last_error']!, _lastErrorMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {storagePath};
+  @override
+  ReceiptUpload map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ReceiptUpload(
+      storagePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}storage_path'],
+      )!,
+      transactionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}transaction_id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      uploadStatus: $ReceiptUploadsTable.$converteruploadStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}upload_status'],
+        )!,
+      ),
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      nextAttemptAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}next_attempt_at'],
+      ),
+      lastError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_error'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $ReceiptUploadsTable createAlias(String alias) {
+    return $ReceiptUploadsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<MediaUploadStatus, String, String>
+  $converteruploadStatus = const EnumNameConverter<MediaUploadStatus>(
+    MediaUploadStatus.values,
+  );
+}
+
+class ReceiptUpload extends DataClass implements Insertable<ReceiptUpload> {
+  /// Hareketin `receipt_path`'i; dosyanın yerel adı bunun son parçası.
+  final String storagePath;
+  final String transactionId;
+  final String orgId;
+  final MediaUploadStatus uploadStatus;
+  final int attempts;
+
+  /// Boşsa hemen denenir.
+  final DateTime? nextAttemptAt;
+  final String? lastError;
+  final DateTime createdAt;
+  const ReceiptUpload({
+    required this.storagePath,
+    required this.transactionId,
+    required this.orgId,
+    required this.uploadStatus,
+    required this.attempts,
+    this.nextAttemptAt,
+    this.lastError,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['storage_path'] = Variable<String>(storagePath);
+    map['transaction_id'] = Variable<String>(transactionId);
+    map['org_id'] = Variable<String>(orgId);
+    {
+      map['upload_status'] = Variable<String>(
+        $ReceiptUploadsTable.$converteruploadStatus.toSql(uploadStatus),
+      );
+    }
+    map['attempts'] = Variable<int>(attempts);
+    if (!nullToAbsent || nextAttemptAt != null) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt);
+    }
+    if (!nullToAbsent || lastError != null) {
+      map['last_error'] = Variable<String>(lastError);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  ReceiptUploadsCompanion toCompanion(bool nullToAbsent) {
+    return ReceiptUploadsCompanion(
+      storagePath: Value(storagePath),
+      transactionId: Value(transactionId),
+      orgId: Value(orgId),
+      uploadStatus: Value(uploadStatus),
+      attempts: Value(attempts),
+      nextAttemptAt: nextAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextAttemptAt),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory ReceiptUpload.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ReceiptUpload(
+      storagePath: serializer.fromJson<String>(json['storagePath']),
+      transactionId: serializer.fromJson<String>(json['transactionId']),
+      orgId: serializer.fromJson<String>(json['orgId']),
+      uploadStatus: $ReceiptUploadsTable.$converteruploadStatus.fromJson(
+        serializer.fromJson<String>(json['uploadStatus']),
+      ),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      nextAttemptAt: serializer.fromJson<DateTime?>(json['nextAttemptAt']),
+      lastError: serializer.fromJson<String?>(json['lastError']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'storagePath': serializer.toJson<String>(storagePath),
+      'transactionId': serializer.toJson<String>(transactionId),
+      'orgId': serializer.toJson<String>(orgId),
+      'uploadStatus': serializer.toJson<String>(
+        $ReceiptUploadsTable.$converteruploadStatus.toJson(uploadStatus),
+      ),
+      'attempts': serializer.toJson<int>(attempts),
+      'nextAttemptAt': serializer.toJson<DateTime?>(nextAttemptAt),
+      'lastError': serializer.toJson<String?>(lastError),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  ReceiptUpload copyWith({
+    String? storagePath,
+    String? transactionId,
+    String? orgId,
+    MediaUploadStatus? uploadStatus,
+    int? attempts,
+    Value<DateTime?> nextAttemptAt = const Value.absent(),
+    Value<String?> lastError = const Value.absent(),
+    DateTime? createdAt,
+  }) => ReceiptUpload(
+    storagePath: storagePath ?? this.storagePath,
+    transactionId: transactionId ?? this.transactionId,
+    orgId: orgId ?? this.orgId,
+    uploadStatus: uploadStatus ?? this.uploadStatus,
+    attempts: attempts ?? this.attempts,
+    nextAttemptAt: nextAttemptAt.present
+        ? nextAttemptAt.value
+        : this.nextAttemptAt,
+    lastError: lastError.present ? lastError.value : this.lastError,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  ReceiptUpload copyWithCompanion(ReceiptUploadsCompanion data) {
+    return ReceiptUpload(
+      storagePath: data.storagePath.present
+          ? data.storagePath.value
+          : this.storagePath,
+      transactionId: data.transactionId.present
+          ? data.transactionId.value
+          : this.transactionId,
+      orgId: data.orgId.present ? data.orgId.value : this.orgId,
+      uploadStatus: data.uploadStatus.present
+          ? data.uploadStatus.value
+          : this.uploadStatus,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      nextAttemptAt: data.nextAttemptAt.present
+          ? data.nextAttemptAt.value
+          : this.nextAttemptAt,
+      lastError: data.lastError.present ? data.lastError.value : this.lastError,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReceiptUpload(')
+          ..write('storagePath: $storagePath, ')
+          ..write('transactionId: $transactionId, ')
+          ..write('orgId: $orgId, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    storagePath,
+    transactionId,
+    orgId,
+    uploadStatus,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ReceiptUpload &&
+          other.storagePath == this.storagePath &&
+          other.transactionId == this.transactionId &&
+          other.orgId == this.orgId &&
+          other.uploadStatus == this.uploadStatus &&
+          other.attempts == this.attempts &&
+          other.nextAttemptAt == this.nextAttemptAt &&
+          other.lastError == this.lastError &&
+          other.createdAt == this.createdAt);
+}
+
+class ReceiptUploadsCompanion extends UpdateCompanion<ReceiptUpload> {
+  final Value<String> storagePath;
+  final Value<String> transactionId;
+  final Value<String> orgId;
+  final Value<MediaUploadStatus> uploadStatus;
+  final Value<int> attempts;
+  final Value<DateTime?> nextAttemptAt;
+  final Value<String?> lastError;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const ReceiptUploadsCompanion({
+    this.storagePath = const Value.absent(),
+    this.transactionId = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.uploadStatus = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ReceiptUploadsCompanion.insert({
+    required String storagePath,
+    required String transactionId,
+    required String orgId,
+    required MediaUploadStatus uploadStatus,
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : storagePath = Value(storagePath),
+       transactionId = Value(transactionId),
+       orgId = Value(orgId),
+       uploadStatus = Value(uploadStatus),
+       createdAt = Value(createdAt);
+  static Insertable<ReceiptUpload> custom({
+    Expression<String>? storagePath,
+    Expression<String>? transactionId,
+    Expression<String>? orgId,
+    Expression<String>? uploadStatus,
+    Expression<int>? attempts,
+    Expression<DateTime>? nextAttemptAt,
+    Expression<String>? lastError,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (storagePath != null) 'storage_path': storagePath,
+      if (transactionId != null) 'transaction_id': transactionId,
+      if (orgId != null) 'org_id': orgId,
+      if (uploadStatus != null) 'upload_status': uploadStatus,
+      if (attempts != null) 'attempts': attempts,
+      if (nextAttemptAt != null) 'next_attempt_at': nextAttemptAt,
+      if (lastError != null) 'last_error': lastError,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ReceiptUploadsCompanion copyWith({
+    Value<String>? storagePath,
+    Value<String>? transactionId,
+    Value<String>? orgId,
+    Value<MediaUploadStatus>? uploadStatus,
+    Value<int>? attempts,
+    Value<DateTime?>? nextAttemptAt,
+    Value<String?>? lastError,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return ReceiptUploadsCompanion(
+      storagePath: storagePath ?? this.storagePath,
+      transactionId: transactionId ?? this.transactionId,
+      orgId: orgId ?? this.orgId,
+      uploadStatus: uploadStatus ?? this.uploadStatus,
+      attempts: attempts ?? this.attempts,
+      nextAttemptAt: nextAttemptAt ?? this.nextAttemptAt,
+      lastError: lastError ?? this.lastError,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (storagePath.present) {
+      map['storage_path'] = Variable<String>(storagePath.value);
+    }
+    if (transactionId.present) {
+      map['transaction_id'] = Variable<String>(transactionId.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (uploadStatus.present) {
+      map['upload_status'] = Variable<String>(
+        $ReceiptUploadsTable.$converteruploadStatus.toSql(uploadStatus.value),
+      );
+    }
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
+    }
+    if (nextAttemptAt.present) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt.value);
+    }
+    if (lastError.present) {
+      map['last_error'] = Variable<String>(lastError.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReceiptUploadsCompanion(')
+          ..write('storagePath: $storagePath, ')
+          ..write('transactionId: $transactionId, ')
+          ..write('orgId: $orgId, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -21063,6 +22333,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $LotTreatmentsTable lotTreatments = $LotTreatmentsTable(this);
   late final $LabResultsTable labResults = $LabResultsTable(this);
   late final $LotSalesTable lotSales = $LotSalesTable(this);
+  late final $TransactionsTable transactions = $TransactionsTable(this);
+  late final $ReceiptUploadsTable receiptUploads = $ReceiptUploadsTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $FeedbackQueueTable feedbackQueue = $FeedbackQueueTable(this);
   late final $AnalyticsQueueTable analyticsQueue = $AnalyticsQueueTable(this);
@@ -21332,6 +22604,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'lot_sales_lot_id_idx',
     'CREATE INDEX lot_sales_lot_id_idx ON lot_sales (lot_id)',
   );
+  late final Index transactionsOrgIdIdx = Index(
+    'transactions_org_id_idx',
+    'CREATE INDEX transactions_org_id_idx ON transactions (org_id)',
+  );
+  late final Index transactionsLotIdIdx = Index(
+    'transactions_lot_id_idx',
+    'CREATE INDEX transactions_lot_id_idx ON transactions (lot_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -21370,6 +22650,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     lotTreatments,
     labResults,
     lotSales,
+    transactions,
+    receiptUploads,
     localSettings,
     feedbackQueue,
     analyticsQueue,
@@ -21441,6 +22723,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     labResultsDocumentIdIdx,
     lotSalesOrgIdIdx,
     lotSalesLotIdIdx,
+    transactionsOrgIdIdx,
+    transactionsLotIdIdx,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -33549,6 +34833,760 @@ typedef $$LotSalesTableProcessedTableManager =
       LotSale,
       PrefetchHooks Function()
     >;
+typedef $$TransactionsTableCreateCompanionBuilder =
+    TransactionsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required TransactionKind kind,
+      required TransactionCategory category,
+      required double amount,
+      required String currency,
+      required DateTime occurredOn,
+      Value<String?> description,
+      Value<String?> receiptPath,
+      Value<String?> apiaryId,
+      Value<String?> lotId,
+      Value<String?> transportId,
+      Value<String?> lotSaleId,
+      Value<int> rowid,
+    });
+typedef $$TransactionsTableUpdateCompanionBuilder =
+    TransactionsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<TransactionKind> kind,
+      Value<TransactionCategory> category,
+      Value<double> amount,
+      Value<String> currency,
+      Value<DateTime> occurredOn,
+      Value<String?> description,
+      Value<String?> receiptPath,
+      Value<String?> apiaryId,
+      Value<String?> lotId,
+      Value<String?> transportId,
+      Value<String?> lotSaleId,
+      Value<int> rowid,
+    });
+
+class $$TransactionsTableFilterComposer
+    extends Composer<_$AppDatabase, $TransactionsTable> {
+  $$TransactionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<TransactionKind, TransactionKind, String>
+  get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    TransactionCategory,
+    TransactionCategory,
+    String
+  >
+  get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<double> get amount => $composableBuilder(
+    column: $table.amount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, String> get occurredOn =>
+      $composableBuilder(
+        column: $table.occurredOn,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get receiptPath => $composableBuilder(
+    column: $table.receiptPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get transportId => $composableBuilder(
+    column: $table.transportId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lotSaleId => $composableBuilder(
+    column: $table.lotSaleId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TransactionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TransactionsTable> {
+  $$TransactionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get amount => $composableBuilder(
+    column: $table.amount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get occurredOn => $composableBuilder(
+    column: $table.occurredOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get receiptPath => $composableBuilder(
+    column: $table.receiptPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lotId => $composableBuilder(
+    column: $table.lotId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get transportId => $composableBuilder(
+    column: $table.transportId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lotSaleId => $composableBuilder(
+    column: $table.lotSaleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TransactionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TransactionsTable> {
+  $$TransactionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<TransactionKind, String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<TransactionCategory, String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<double> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
+
+  GeneratedColumn<String> get currency =>
+      $composableBuilder(column: $table.currency, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, String> get occurredOn =>
+      $composableBuilder(
+        column: $table.occurredOn,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get receiptPath => $composableBuilder(
+    column: $table.receiptPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumn<String> get lotId =>
+      $composableBuilder(column: $table.lotId, builder: (column) => column);
+
+  GeneratedColumn<String> get transportId => $composableBuilder(
+    column: $table.transportId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lotSaleId =>
+      $composableBuilder(column: $table.lotSaleId, builder: (column) => column);
+}
+
+class $$TransactionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TransactionsTable,
+          FinanceTransaction,
+          $$TransactionsTableFilterComposer,
+          $$TransactionsTableOrderingComposer,
+          $$TransactionsTableAnnotationComposer,
+          $$TransactionsTableCreateCompanionBuilder,
+          $$TransactionsTableUpdateCompanionBuilder,
+          (
+            FinanceTransaction,
+            BaseReferences<
+              _$AppDatabase,
+              $TransactionsTable,
+              FinanceTransaction
+            >,
+          ),
+          FinanceTransaction,
+          PrefetchHooks Function()
+        > {
+  $$TransactionsTableTableManager(_$AppDatabase db, $TransactionsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TransactionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TransactionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TransactionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<TransactionKind> kind = const Value.absent(),
+                Value<TransactionCategory> category = const Value.absent(),
+                Value<double> amount = const Value.absent(),
+                Value<String> currency = const Value.absent(),
+                Value<DateTime> occurredOn = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> receiptPath = const Value.absent(),
+                Value<String?> apiaryId = const Value.absent(),
+                Value<String?> lotId = const Value.absent(),
+                Value<String?> transportId = const Value.absent(),
+                Value<String?> lotSaleId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransactionsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                kind: kind,
+                category: category,
+                amount: amount,
+                currency: currency,
+                occurredOn: occurredOn,
+                description: description,
+                receiptPath: receiptPath,
+                apiaryId: apiaryId,
+                lotId: lotId,
+                transportId: transportId,
+                lotSaleId: lotSaleId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required TransactionKind kind,
+                required TransactionCategory category,
+                required double amount,
+                required String currency,
+                required DateTime occurredOn,
+                Value<String?> description = const Value.absent(),
+                Value<String?> receiptPath = const Value.absent(),
+                Value<String?> apiaryId = const Value.absent(),
+                Value<String?> lotId = const Value.absent(),
+                Value<String?> transportId = const Value.absent(),
+                Value<String?> lotSaleId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransactionsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                kind: kind,
+                category: category,
+                amount: amount,
+                currency: currency,
+                occurredOn: occurredOn,
+                description: description,
+                receiptPath: receiptPath,
+                apiaryId: apiaryId,
+                lotId: lotId,
+                transportId: transportId,
+                lotSaleId: lotSaleId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TransactionsTable, FinanceTransaction>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $TransactionsTable,
+                    FinanceTransaction
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TransactionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TransactionsTable,
+      FinanceTransaction,
+      $$TransactionsTableFilterComposer,
+      $$TransactionsTableOrderingComposer,
+      $$TransactionsTableAnnotationComposer,
+      $$TransactionsTableCreateCompanionBuilder,
+      $$TransactionsTableUpdateCompanionBuilder,
+      (
+        FinanceTransaction,
+        BaseReferences<_$AppDatabase, $TransactionsTable, FinanceTransaction>,
+      ),
+      FinanceTransaction,
+      PrefetchHooks Function()
+    >;
+typedef $$ReceiptUploadsTableCreateCompanionBuilder =
+    ReceiptUploadsCompanion Function({
+      required String storagePath,
+      required String transactionId,
+      required String orgId,
+      required MediaUploadStatus uploadStatus,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$ReceiptUploadsTableUpdateCompanionBuilder =
+    ReceiptUploadsCompanion Function({
+      Value<String> storagePath,
+      Value<String> transactionId,
+      Value<String> orgId,
+      Value<MediaUploadStatus> uploadStatus,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$ReceiptUploadsTableFilterComposer
+    extends Composer<_$AppDatabase, $ReceiptUploadsTable> {
+  $$ReceiptUploadsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get transactionId => $composableBuilder(
+    column: $table.transactionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<MediaUploadStatus, MediaUploadStatus, String>
+  get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ReceiptUploadsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ReceiptUploadsTable> {
+  $$ReceiptUploadsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get transactionId => $composableBuilder(
+    column: $table.transactionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ReceiptUploadsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ReceiptUploadsTable> {
+  $$ReceiptUploadsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get transactionId => $composableBuilder(
+    column: $table.transactionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<MediaUploadStatus, String>
+  get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastError =>
+      $composableBuilder(column: $table.lastError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$ReceiptUploadsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ReceiptUploadsTable,
+          ReceiptUpload,
+          $$ReceiptUploadsTableFilterComposer,
+          $$ReceiptUploadsTableOrderingComposer,
+          $$ReceiptUploadsTableAnnotationComposer,
+          $$ReceiptUploadsTableCreateCompanionBuilder,
+          $$ReceiptUploadsTableUpdateCompanionBuilder,
+          (
+            ReceiptUpload,
+            BaseReferences<_$AppDatabase, $ReceiptUploadsTable, ReceiptUpload>,
+          ),
+          ReceiptUpload,
+          PrefetchHooks Function()
+        > {
+  $$ReceiptUploadsTableTableManager(
+    _$AppDatabase db,
+    $ReceiptUploadsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ReceiptUploadsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ReceiptUploadsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ReceiptUploadsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> storagePath = const Value.absent(),
+                Value<String> transactionId = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<MediaUploadStatus> uploadStatus = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ReceiptUploadsCompanion(
+                storagePath: storagePath,
+                transactionId: transactionId,
+                orgId: orgId,
+                uploadStatus: uploadStatus,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String storagePath,
+                required String transactionId,
+                required String orgId,
+                required MediaUploadStatus uploadStatus,
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => ReceiptUploadsCompanion.insert(
+                storagePath: storagePath,
+                transactionId: transactionId,
+                orgId: orgId,
+                uploadStatus: uploadStatus,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ReceiptUploadsTable, ReceiptUpload>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ReceiptUploadsTable,
+                    ReceiptUpload
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ReceiptUploadsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ReceiptUploadsTable,
+      ReceiptUpload,
+      $$ReceiptUploadsTableFilterComposer,
+      $$ReceiptUploadsTableOrderingComposer,
+      $$ReceiptUploadsTableAnnotationComposer,
+      $$ReceiptUploadsTableCreateCompanionBuilder,
+      $$ReceiptUploadsTableUpdateCompanionBuilder,
+      (
+        ReceiptUpload,
+        BaseReferences<_$AppDatabase, $ReceiptUploadsTable, ReceiptUpload>,
+      ),
+      ReceiptUpload,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -34713,6 +36751,10 @@ class $AppDatabaseManager {
       $$LabResultsTableTableManager(_db, _db.labResults);
   $$LotSalesTableTableManager get lotSales =>
       $$LotSalesTableTableManager(_db, _db.lotSales);
+  $$TransactionsTableTableManager get transactions =>
+      $$TransactionsTableTableManager(_db, _db.transactions);
+  $$ReceiptUploadsTableTableManager get receiptUploads =>
+      $$ReceiptUploadsTableTableManager(_db, _db.receiptUploads);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$FeedbackQueueTableTableManager get feedbackQueue =>

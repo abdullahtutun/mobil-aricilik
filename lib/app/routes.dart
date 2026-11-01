@@ -1,3 +1,4 @@
+import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
@@ -155,6 +156,18 @@ abstract final class AppRoutes {
   static String lot(String id) => '/more/lots/$id';
   static String lotEdit(String id) => '/more/lots/$id/edit';
   static String lotLabResult(String id) => '/more/lots/$id/lab';
+
+  /// Finans: sezon özeti ve son hareketler; Daha fazla'dan açılır.
+  /// Gelir/gider ekleme ve hareket listenin altında. Yeni hareketin türü
+  /// sorguda.
+  static const finance = '/more/finance';
+  static const financeNewPath = '/more/finance/new';
+  static const financeKindParameter = 'kind';
+  static String financeNew(TransactionKind kind) => Uri(
+    path: financeNewPath,
+    queryParameters: {financeKindParameter: kind.value},
+  ).toString();
+  static String financeTransaction(String id) => '/more/finance/$id';
 
   /// Ana yetiştirme serileri; Daha fazla'dan açılır. Serinin takvimi,
   /// ekleme ve düzenleme listenin altında.

@@ -7,12 +7,13 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Seyrek kullanılan modüllerin girişi (docs/design "Daha fazla"): üstte
 /// işletme kartı, altında bölüm bölüm iki sütunlu modül karoları. Arılık:
 /// yaşlı analar, gezginci, ana yetiştirme, hasat ve lotlar; işletme: ekip,
-/// raporlar, belge kasası, malzeme ve stok; yardım: görüş bildir, ayarlar,
-/// senkron.
+/// raporlar, belge kasası, malzeme ve stok, finans (yalnız owner ve
+/// partner); yardım: görüş bildir, ayarlar, senkron.
 /// Diğer modüller geldikçe kendi bölümlerine eklenir.
 class MoreScreen extends ConsumerWidget {
   const new({super.key});
@@ -23,6 +24,7 @@ class MoreScreen extends ConsumerWidget {
     final spacing = context.spacing;
     final colors = context.colors;
     final organization = ref.watch(currentOrganizationProvider).value;
+    final canSeeFinance = ref.watch(canSeeFinanceProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -88,6 +90,12 @@ class MoreScreen extends ConsumerWidget {
                   label: l10n.inventoryTitle,
                   onTap: () => context.go(AppRoutes.inventory),
                 ),
+                if (canSeeFinance)
+                  _ModuleTile(
+                    icon: Icons.account_balance_wallet_outlined,
+                    label: l10n.financeTitle,
+                    onTap: () => context.go(AppRoutes.finance),
+                  ),
               ],
             ),
             SizedBox(height: spacing.xl),

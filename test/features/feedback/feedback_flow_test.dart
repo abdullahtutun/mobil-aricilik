@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/shell/more_screen.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
@@ -82,6 +83,17 @@ void main() {
 
     await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
+    // Yardım bölümü ekranın altında; tembel liste kaydırınca kurar.
+    await tester.scrollUntilVisible(
+      find.text('Send feedback'),
+      200,
+      scrollable: find
+          .descendant(
+            of: find.byType(MoreScreen),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
     await _tap(tester, find.text('Send feedback'));
 
     expect(find.byType(FeedbackScreen), findsOneWidget);

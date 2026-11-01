@@ -16,6 +16,8 @@ import 'package:mobil_arici/features/documents/data/document_repository.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feeding/data/feeding_repository.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/finance/data/transaction_repository.dart';
+import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/harvest/data/harvest_repository.dart';
 import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
@@ -485,6 +487,22 @@ Map<String, Object?> _lotSaleRow(int seq) => {
   'lot_id': 'lot-1',
   'sold_on': '2026-10-29',
   'kg': 100.5,
+};
+
+Map<String, Object?> _transactionRow(int seq) => {
+  ..._standard('transaction-1', seq),
+  'org_id': _org,
+  'kind': 'income',
+  'category': 'honey',
+  'amount': 56000.5,
+  'currency': 'TRY',
+  'occurred_on': '2026-10-29',
+  'description': 'Toptancıya çam balı',
+  'receipt_path': null,
+  'apiary_id': null,
+  'lot_id': 'lot-1',
+  'transport_id': null,
+  'lot_sale_id': 'lot-sale-1',
 };
 
 bool _isPull(http.Request request) =>
@@ -1000,11 +1018,12 @@ void main() {
         'lot_treatments': [_lotTreatmentRow(28)],
         'lab_results': [_labResultRow(29)],
         'lot_sales': [_lotSaleRow(30)],
+        'transactions': [_transactionRow(31)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 30),
+        const SyncResult(status: SyncStatus.done, pulled: 31),
       );
 
       expect(requests.map(_pullOf), [
@@ -1038,6 +1057,7 @@ void main() {
         (table: 'lot_treatments', since: 0),
         (table: 'lab_results', since: 0),
         (table: 'lot_sales', since: 0),
+        (table: 'transactions', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -1175,6 +1195,7 @@ void main() {
         'lot_treatments': 28,
         'lab_results': 29,
         'lot_sales': 30,
+        'transactions': 31,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -1229,6 +1250,14 @@ void main() {
       expect(labResult.residue, ResidueResult.none);
       expect(labResult.toJson()['tested_on'], '2026-10-28');
       expect((await lots.sales.findById('lot-sale-1'))!.kg, 100.5);
+      final transaction = (await TransactionRepository(
+        db,
+      ).findById('transaction-1'))!;
+      expect(transaction.kind, TransactionKind.income);
+      expect(transaction.category, TransactionCategory.honey);
+      expect(transaction.amount, 56000.5);
+      expect(transaction.occurredOn, DateTime(2026, 10, 29));
+      expect(transaction.lotSaleId, 'lot-sale-1');
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

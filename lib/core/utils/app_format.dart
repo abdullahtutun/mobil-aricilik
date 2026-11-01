@@ -92,10 +92,16 @@ class AppFormat {
 
   /// Para tutarı; simge ve ondalık hane sayısı para biriminden gelir.
   /// [currencyCode] ISO 4217 kodudur (TRY, USD, EUR). `₺1.234,50`, `₺1,234.50`
-  String currency(num amount, {required String currencyCode}) {
+  /// [decimalDigits] verilirse ondalık hane sayısı o olur (`₺1.235`).
+  String currency(
+    num amount, {
+    required String currencyCode,
+    int? decimalDigits,
+  }) {
     final format = NumberFormat.simpleCurrency(
       locale: locale,
       name: currencyCode,
+      decimalDigits: decimalDigits,
     );
     return format.format(amount);
   }

@@ -81,5 +81,6 @@ String syncTableLabel(AppLocalizations l10n, String table) => switch (table) {
   'lot_treatments' => l10n.syncTableLotTreatments,
   'lab_results' => l10n.syncTableLabResults,
   'lot_sales' => l10n.syncTableLotSales,
+  'transactions' => l10n.syncTableTransactions,
   _ => table,
 };

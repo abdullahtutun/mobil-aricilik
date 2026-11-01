@@ -14,6 +14,7 @@ import 'generated/schema_v15.dart' as v15;
 import 'generated/schema_v16.dart' as v16;
 import 'generated/schema_v17.dart' as v17;
 import 'generated/schema_v18.dart' as v18;
+import 'generated/schema_v19.dart' as v19;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -776,6 +777,36 @@ void main() {
           ],
           everyElement(1),
         );
+      },
+    );
+  });
+
+  test('v18 → v19 lot satışlarını korur; finans tabloları boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 18,
+      newVersion: 19,
+      createOld: v18.DatabaseAtV18.new,
+      createNew: v19.DatabaseAtV19.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.lotSales,
+          v18.LotSalesCompanion.insert(
+            id: 'sale-1',
+            createdAt: '2026-11-01T09:00:00.000Z',
+            updatedAt: '2026-11-01T09:00:00.000Z',
+            orgId: 'org-1',
+            lotId: 'lot-1',
+            soldOn: '2026-11-01',
+            kg: 160,
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final sale = (await newDb.select(newDb.lotSales).get()).single;
+        expect(sale.kg, 160);
+        expect(await newDb.select(newDb.transactions).get(), isEmpty);
+        expect(await newDb.select(newDb.receiptUploads).get(), isEmpty);
       },
     );
   });

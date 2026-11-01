@@ -36,12 +36,21 @@ enum QuickRecordType {
 }
 
 /// Menüyü sekmelerin üstünde açar; seçilen türü, kapatılırsa null döner.
-Future<QuickRecordType?> showQuickRecordSheet(BuildContext context) =>
-    showOptionSheet(context, (context) => const QuickRecordSheet());
+/// [showExpense] false ise (finansı göremeyen rol) gider karosu yok.
+Future<QuickRecordType?> showQuickRecordSheet(
+  BuildContext context, {
+  bool showExpense = true,
+}) => showOptionSheet(
+  context,
+  (context) => QuickRecordSheet(showExpense: showExpense),
+);
 
 /// Büyük karolar; en sık kayıt (muayene) dolgulu ve ilk sırada.
 class QuickRecordSheet extends StatelessWidget {
-  const new({super.key});
+  const new({super.key, this.showExpense = true});
+
+  /// Gider karosu görünsün mü (worker ve viewer finansı görmez).
+  final bool showExpense;
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +60,13 @@ class QuickRecordSheet extends StatelessWidget {
       highlighted: QuickRecordType.inspection,
       options: [
         for (final type in QuickRecordType.values)
-          SheetOption(
-            value: type,
-            icon: type.icon,
-            iconColor: type.iconColorIn(context.colors),
-            label: type.label(l10n),
-          ),
+          if (type != QuickRecordType.expense || showExpense)
+            SheetOption(
+              value: type,
+              icon: type.icon,
+              iconColor: type.iconColorIn(context.colors),
+              label: type.label(l10n),
+            ),
       ],
     );
   }
