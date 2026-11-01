@@ -17,6 +17,12 @@ class Lots extends Table with SyncColumns, OrgColumns {
   RealColumn get moisture => real().nullable()();
   TextColumn get status =>
       text().map(const ServerEnumConverter(LotStatus.values))();
+  BoolColumn get published => boolean().withDefault(const Constant(false))();
+  BoolColumn get publicProducer =>
+      boolean().withDefault(const Constant(true))();
+  BoolColumn get publicOrigin => boolean().withDefault(const Constant(true))();
+  BoolColumn get publicLab => boolean().withDefault(const Constant(true))();
+  BoolColumn get publicReport => boolean().withDefault(const Constant(true))();
 }
 
 /// `public.lot_harvests` aynası; olay tablosu.

@@ -20,7 +20,13 @@ mixin _$Lot {
 /// verebilir).
  int get seq; HoneyKind get honeyKind; DateTime get createdAt; DateTime get updatedAt; LotStatus get status;/// Yöre (ör. arılığın adı); serbest metin.
  String? get origin;/// Refraktömetre nemi, %.
- double? get moisture; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
+ double? get moisture;/// Herkese açık sayfası (`lot-page`) var mı. Yalnız owner değiştirir;
+/// başkasının yazmasını sunucu yok sayar.
+ bool get published;/// Sayfada işletme adı ve aktif kovan sayısı görünür.
+ bool get publicProducer;/// Sayfada yöre ve hasat ayı görünür.
+ bool get publicOrigin;/// Sayfada son analizin değerleri görünür.
+ bool get publicLab;/// Sayfada son analizin raporu açılır.
+ bool get publicReport; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
 /// Create a copy of Lot
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -34,20 +40,20 @@ $LotCopyWith<Lot> get copyWith => _$LotCopyWithImpl<Lot>(this as Lot, _$identity
 @override
 bool operator ==(Object other) {
   final _this = this as Lot;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Lot&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.year, _this.year) || other.year == _this.year)&&(identical(other.seq, _this.seq) || other.seq == _this.seq)&&(identical(other.honeyKind, _this.honeyKind) || other.honeyKind == _this.honeyKind)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.origin, _this.origin) || other.origin == _this.origin)&&(identical(other.moisture, _this.moisture) || other.moisture == _this.moisture)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Lot&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.year, _this.year) || other.year == _this.year)&&(identical(other.seq, _this.seq) || other.seq == _this.seq)&&(identical(other.honeyKind, _this.honeyKind) || other.honeyKind == _this.honeyKind)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.origin, _this.origin) || other.origin == _this.origin)&&(identical(other.moisture, _this.moisture) || other.moisture == _this.moisture)&&(identical(other.published, _this.published) || other.published == _this.published)&&(identical(other.publicProducer, _this.publicProducer) || other.publicProducer == _this.publicProducer)&&(identical(other.publicOrigin, _this.publicOrigin) || other.publicOrigin == _this.publicOrigin)&&(identical(other.publicLab, _this.publicLab) || other.publicLab == _this.publicLab)&&(identical(other.publicReport, _this.publicReport) || other.publicReport == _this.publicReport)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Lot;
-  return Object.hash(runtimeType,_this.id,_this.orgId,_this.year,_this.seq,_this.honeyKind,_this.createdAt,_this.updatedAt,_this.status,_this.origin,_this.moisture,_this.createdBy,_this.deletedAt,_this.serverSeq);
+  return Object.hash(runtimeType,_this.id,_this.orgId,_this.year,_this.seq,_this.honeyKind,_this.createdAt,_this.updatedAt,_this.status,_this.origin,_this.moisture,_this.published,_this.publicProducer,_this.publicOrigin,_this.publicLab,_this.publicReport,_this.createdBy,_this.deletedAt,_this.serverSeq);
 }
 
 @override
 String toString() {
   final _this = this as Lot;
-  return 'Lot(id: ${_this.id}, orgId: ${_this.orgId}, year: ${_this.year}, seq: ${_this.seq}, honeyKind: ${_this.honeyKind}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, status: ${_this.status}, origin: ${_this.origin}, moisture: ${_this.moisture}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
+  return 'Lot(id: ${_this.id}, orgId: ${_this.orgId}, year: ${_this.year}, seq: ${_this.seq}, honeyKind: ${_this.honeyKind}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, status: ${_this.status}, origin: ${_this.origin}, moisture: ${_this.moisture}, published: ${_this.published}, publicProducer: ${_this.publicProducer}, publicOrigin: ${_this.publicOrigin}, publicLab: ${_this.publicLab}, publicReport: ${_this.publicReport}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
 }
 
 
@@ -58,7 +64,7 @@ abstract mixin class $LotCopyWith<$Res>  {
   factory $LotCopyWith(Lot value, $Res Function(Lot) _then) = _$LotCopyWithImpl;
 @useResult
 $Res call({
- String id, String orgId, int year, int seq, HoneyKind honeyKind, DateTime createdAt, DateTime updatedAt, LotStatus status, String? origin, double? moisture, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, int year, int seq, HoneyKind honeyKind, DateTime createdAt, DateTime updatedAt, LotStatus status, String? origin, double? moisture, bool published, bool publicProducer, bool publicOrigin, bool publicLab, bool publicReport, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -75,7 +81,7 @@ class _$LotCopyWithImpl<$Res>
 
 /// Create a copy of Lot
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? year = null,Object? seq = null,Object? honeyKind = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? origin = freezed,Object? moisture = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? year = null,Object? seq = null,Object? honeyKind = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? origin = freezed,Object? moisture = freezed,Object? published = null,Object? publicProducer = null,Object? publicOrigin = null,Object? publicLab = null,Object? publicReport = null,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(Lot(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -87,7 +93,12 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LotStatus,origin: freezed == origin ? _self.origin : origin // ignore: cast_nullable_to_non_nullable
 as String?,moisture: freezed == moisture ? _self.moisture : moisture // ignore: cast_nullable_to_non_nullable
-as double?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
+as double?,published: null == published ? _self.published : published // ignore: cast_nullable_to_non_nullable
+as bool,publicProducer: null == publicProducer ? _self.publicProducer : publicProducer // ignore: cast_nullable_to_non_nullable
+as bool,publicOrigin: null == publicOrigin ? _self.publicOrigin : publicOrigin // ignore: cast_nullable_to_non_nullable
+as bool,publicLab: null == publicLab ? _self.publicLab : publicLab // ignore: cast_nullable_to_non_nullable
+as bool,publicReport: null == publicReport ? _self.publicReport : publicReport // ignore: cast_nullable_to_non_nullable
+as bool,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,serverSeq: freezed == serverSeq ? _self.serverSeq : serverSeq // ignore: cast_nullable_to_non_nullable
 as int?,
@@ -175,10 +186,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  int year,  int seq,  HoneyKind honeyKind,  DateTime createdAt,  DateTime updatedAt,  LotStatus status,  String? origin,  double? moisture,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  int year,  int seq,  HoneyKind honeyKind,  DateTime createdAt,  DateTime updatedAt,  LotStatus status,  String? origin,  double? moisture,  bool published,  bool publicProducer,  bool publicOrigin,  bool publicLab,  bool publicReport,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Lot() when $default != null:
-return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.createdAt,_that.updatedAt,_that.status,_that.origin,_that.moisture,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.createdAt,_that.updatedAt,_that.status,_that.origin,_that.moisture,_that.published,_that.publicProducer,_that.publicOrigin,_that.publicLab,_that.publicReport,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return orElse();
 
 }
@@ -196,10 +207,10 @@ return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  int year,  int seq,  HoneyKind honeyKind,  DateTime createdAt,  DateTime updatedAt,  LotStatus status,  String? origin,  double? moisture,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  int year,  int seq,  HoneyKind honeyKind,  DateTime createdAt,  DateTime updatedAt,  LotStatus status,  String? origin,  double? moisture,  bool published,  bool publicProducer,  bool publicOrigin,  bool publicLab,  bool publicReport,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
 switch (_that) {
 case _Lot():
-return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.createdAt,_that.updatedAt,_that.status,_that.origin,_that.moisture,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.createdAt,_that.updatedAt,_that.status,_that.origin,_that.moisture,_that.published,_that.publicProducer,_that.publicOrigin,_that.publicLab,_that.publicReport,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -216,10 +227,10 @@ return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  int year,  int seq,  HoneyKind honeyKind,  DateTime createdAt,  DateTime updatedAt,  LotStatus status,  String? origin,  double? moisture,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  int year,  int seq,  HoneyKind honeyKind,  DateTime createdAt,  DateTime updatedAt,  LotStatus status,  String? origin,  double? moisture,  bool published,  bool publicProducer,  bool publicOrigin,  bool publicLab,  bool publicReport,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
 switch (_that) {
 case _Lot() when $default != null:
-return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.createdAt,_that.updatedAt,_that.status,_that.origin,_that.moisture,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.createdAt,_that.updatedAt,_that.status,_that.origin,_that.moisture,_that.published,_that.publicProducer,_that.publicOrigin,_that.publicLab,_that.publicReport,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return null;
 
 }
@@ -231,7 +242,7 @@ return $default(_that.id,_that.orgId,_that.year,_that.seq,_that.honeyKind,_that.
 @JsonSerializable()
 
 class _Lot implements Lot {
-  const _Lot({required this.id, required this.orgId, required this.year, required this.seq, required this.honeyKind, required this.createdAt, required this.updatedAt, this.status = LotStatus.open, this.origin, this.moisture, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
+  const _Lot({required this.id, required this.orgId, required this.year, required this.seq, required this.honeyKind, required this.createdAt, required this.updatedAt, this.status = LotStatus.open, this.origin, this.moisture, this.published = false, this.publicProducer = true, this.publicOrigin = true, this.publicLab = true, this.publicReport = true, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
   factory _Lot.fromJson(Map<String, dynamic> json) => _$LotFromJson(json);
 
 @override final  String id;
@@ -248,6 +259,17 @@ class _Lot implements Lot {
 @override final  String? origin;
 /// Refraktömetre nemi, %.
 @override final  double? moisture;
+/// Herkese açık sayfası (`lot-page`) var mı. Yalnız owner değiştirir;
+/// başkasının yazmasını sunucu yok sayar.
+@override@JsonKey() final  bool published;
+/// Sayfada işletme adı ve aktif kovan sayısı görünür.
+@override@JsonKey() final  bool publicProducer;
+/// Sayfada yöre ve hasat ayı görünür.
+@override@JsonKey() final  bool publicOrigin;
+/// Sayfada son analizin değerleri görünür.
+@override@JsonKey() final  bool publicLab;
+/// Sayfada son analizin raporu açılır.
+@override@JsonKey() final  bool publicReport;
 @override final  String? createdBy;
 @override final  DateTime? deletedAt;
 @override@JsonKey(includeToJson: false) final  int? serverSeq;
@@ -265,18 +287,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Lot&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.year, year) || other.year == year)&&(identical(other.seq, seq) || other.seq == seq)&&(identical(other.honeyKind, honeyKind) || other.honeyKind == honeyKind)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.origin, origin) || other.origin == origin)&&(identical(other.moisture, moisture) || other.moisture == moisture)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Lot&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.year, year) || other.year == year)&&(identical(other.seq, seq) || other.seq == seq)&&(identical(other.honeyKind, honeyKind) || other.honeyKind == honeyKind)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.origin, origin) || other.origin == origin)&&(identical(other.moisture, moisture) || other.moisture == moisture)&&(identical(other.published, published) || other.published == published)&&(identical(other.publicProducer, publicProducer) || other.publicProducer == publicProducer)&&(identical(other.publicOrigin, publicOrigin) || other.publicOrigin == publicOrigin)&&(identical(other.publicLab, publicLab) || other.publicLab == publicLab)&&(identical(other.publicReport, publicReport) || other.publicReport == publicReport)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,orgId,year,seq,honeyKind,createdAt,updatedAt,status,origin,moisture,createdBy,deletedAt,serverSeq);
+    return Object.hash(runtimeType,id,orgId,year,seq,honeyKind,createdAt,updatedAt,status,origin,moisture,published,publicProducer,publicOrigin,publicLab,publicReport,createdBy,deletedAt,serverSeq);
 }
 
 @override
 String toString() {
-    return 'Lot(id: $id, orgId: $orgId, year: $year, seq: $seq, honeyKind: $honeyKind, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, origin: $origin, moisture: $moisture, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
+    return 'Lot(id: $id, orgId: $orgId, year: $year, seq: $seq, honeyKind: $honeyKind, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, origin: $origin, moisture: $moisture, published: $published, publicProducer: $publicProducer, publicOrigin: $publicOrigin, publicLab: $publicLab, publicReport: $publicReport, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
 }
 
 
@@ -287,7 +309,7 @@ abstract mixin class _$LotCopyWith<$Res> implements $LotCopyWith<$Res> {
   factory _$LotCopyWith(_Lot value, $Res Function(_Lot) _then) = __$LotCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String orgId, int year, int seq, HoneyKind honeyKind, DateTime createdAt, DateTime updatedAt, LotStatus status, String? origin, double? moisture, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, int year, int seq, HoneyKind honeyKind, DateTime createdAt, DateTime updatedAt, LotStatus status, String? origin, double? moisture, bool published, bool publicProducer, bool publicOrigin, bool publicLab, bool publicReport, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -304,7 +326,7 @@ class __$LotCopyWithImpl<$Res>
 
 /// Create a copy of Lot
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? year = null,Object? seq = null,Object? honeyKind = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? origin = freezed,Object? moisture = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? year = null,Object? seq = null,Object? honeyKind = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? origin = freezed,Object? moisture = freezed,Object? published = null,Object? publicProducer = null,Object? publicOrigin = null,Object? publicLab = null,Object? publicReport = null,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(_Lot(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -316,7 +338,12 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LotStatus,origin: freezed == origin ? _self.origin : origin // ignore: cast_nullable_to_non_nullable
 as String?,moisture: freezed == moisture ? _self.moisture : moisture // ignore: cast_nullable_to_non_nullable
-as double?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
+as double?,published: null == published ? _self.published : published // ignore: cast_nullable_to_non_nullable
+as bool,publicProducer: null == publicProducer ? _self.publicProducer : publicProducer // ignore: cast_nullable_to_non_nullable
+as bool,publicOrigin: null == publicOrigin ? _self.publicOrigin : publicOrigin // ignore: cast_nullable_to_non_nullable
+as bool,publicLab: null == publicLab ? _self.publicLab : publicLab // ignore: cast_nullable_to_non_nullable
+as bool,publicReport: null == publicReport ? _self.publicReport : publicReport // ignore: cast_nullable_to_non_nullable
+as bool,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,serverSeq: freezed == serverSeq ? _self.serverSeq : serverSeq // ignore: cast_nullable_to_non_nullable
 as int?,

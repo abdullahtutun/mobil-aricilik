@@ -16408,6 +16408,81 @@ class $LotsTable extends Lots with TableInfo<$LotsTable, Lot> {
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<LotStatus>($LotsTable.$converterstatus);
+  static const VerificationMeta _publishedMeta = const VerificationMeta(
+    'published',
+  );
+  @override
+  late final GeneratedColumn<bool> published = GeneratedColumn<bool>(
+    'published',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("published" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _publicProducerMeta = const VerificationMeta(
+    'publicProducer',
+  );
+  @override
+  late final GeneratedColumn<bool> publicProducer = GeneratedColumn<bool>(
+    'public_producer',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("public_producer" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _publicOriginMeta = const VerificationMeta(
+    'publicOrigin',
+  );
+  @override
+  late final GeneratedColumn<bool> publicOrigin = GeneratedColumn<bool>(
+    'public_origin',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("public_origin" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _publicLabMeta = const VerificationMeta(
+    'publicLab',
+  );
+  @override
+  late final GeneratedColumn<bool> publicLab = GeneratedColumn<bool>(
+    'public_lab',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("public_lab" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _publicReportMeta = const VerificationMeta(
+    'publicReport',
+  );
+  @override
+  late final GeneratedColumn<bool> publicReport = GeneratedColumn<bool>(
+    'public_report',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("public_report" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -16423,6 +16498,11 @@ class $LotsTable extends Lots with TableInfo<$LotsTable, Lot> {
     origin,
     moisture,
     status,
+    published,
+    publicProducer,
+    publicOrigin,
+    publicLab,
+    publicReport,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -16511,6 +16591,45 @@ class $LotsTable extends Lots with TableInfo<$LotsTable, Lot> {
         moisture.isAcceptableOrUnknown(data['moisture']!, _moistureMeta),
       );
     }
+    if (data.containsKey('published')) {
+      context.handle(
+        _publishedMeta,
+        published.isAcceptableOrUnknown(data['published']!, _publishedMeta),
+      );
+    }
+    if (data.containsKey('public_producer')) {
+      context.handle(
+        _publicProducerMeta,
+        publicProducer.isAcceptableOrUnknown(
+          data['public_producer']!,
+          _publicProducerMeta,
+        ),
+      );
+    }
+    if (data.containsKey('public_origin')) {
+      context.handle(
+        _publicOriginMeta,
+        publicOrigin.isAcceptableOrUnknown(
+          data['public_origin']!,
+          _publicOriginMeta,
+        ),
+      );
+    }
+    if (data.containsKey('public_lab')) {
+      context.handle(
+        _publicLabMeta,
+        publicLab.isAcceptableOrUnknown(data['public_lab']!, _publicLabMeta),
+      );
+    }
+    if (data.containsKey('public_report')) {
+      context.handle(
+        _publicReportMeta,
+        publicReport.isAcceptableOrUnknown(
+          data['public_report']!,
+          _publicReportMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -16564,6 +16683,26 @@ class $LotsTable extends Lots with TableInfo<$LotsTable, Lot> {
         DriftSqlType.double,
         data['${effectivePrefix}moisture'],
       ),
+      published: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}published'],
+      )!,
+      publicProducer: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}public_producer'],
+      )!,
+      publicOrigin: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}public_origin'],
+      )!,
+      publicLab: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}public_lab'],
+      )!,
+      publicReport: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}public_report'],
+      )!,
       createdBy: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}created_by'],
@@ -16604,6 +16743,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
   final Value<String?> origin;
   final Value<double?> moisture;
   final Value<LotStatus> status;
+  final Value<bool> published;
+  final Value<bool> publicProducer;
+  final Value<bool> publicOrigin;
+  final Value<bool> publicLab;
+  final Value<bool> publicReport;
   final Value<int> rowid;
   const LotsCompanion({
     this.id = const Value.absent(),
@@ -16619,6 +16763,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
     this.origin = const Value.absent(),
     this.moisture = const Value.absent(),
     this.status = const Value.absent(),
+    this.published = const Value.absent(),
+    this.publicProducer = const Value.absent(),
+    this.publicOrigin = const Value.absent(),
+    this.publicLab = const Value.absent(),
+    this.publicReport = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   LotsCompanion.insert({
@@ -16635,6 +16784,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
     this.origin = const Value.absent(),
     this.moisture = const Value.absent(),
     required LotStatus status,
+    this.published = const Value.absent(),
+    this.publicProducer = const Value.absent(),
+    this.publicOrigin = const Value.absent(),
+    this.publicLab = const Value.absent(),
+    this.publicReport = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -16658,6 +16812,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
     Expression<String>? origin,
     Expression<double>? moisture,
     Expression<String>? status,
+    Expression<bool>? published,
+    Expression<bool>? publicProducer,
+    Expression<bool>? publicOrigin,
+    Expression<bool>? publicLab,
+    Expression<bool>? publicReport,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -16674,6 +16833,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
       if (origin != null) 'origin': origin,
       if (moisture != null) 'moisture': moisture,
       if (status != null) 'status': status,
+      if (published != null) 'published': published,
+      if (publicProducer != null) 'public_producer': publicProducer,
+      if (publicOrigin != null) 'public_origin': publicOrigin,
+      if (publicLab != null) 'public_lab': publicLab,
+      if (publicReport != null) 'public_report': publicReport,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -16692,6 +16856,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
     Value<String?>? origin,
     Value<double?>? moisture,
     Value<LotStatus>? status,
+    Value<bool>? published,
+    Value<bool>? publicProducer,
+    Value<bool>? publicOrigin,
+    Value<bool>? publicLab,
+    Value<bool>? publicReport,
     Value<int>? rowid,
   }) {
     return LotsCompanion(
@@ -16708,6 +16877,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
       origin: origin ?? this.origin,
       moisture: moisture ?? this.moisture,
       status: status ?? this.status,
+      published: published ?? this.published,
+      publicProducer: publicProducer ?? this.publicProducer,
+      publicOrigin: publicOrigin ?? this.publicOrigin,
+      publicLab: publicLab ?? this.publicLab,
+      publicReport: publicReport ?? this.publicReport,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -16758,6 +16932,21 @@ class LotsCompanion extends UpdateCompanion<Lot> {
         $LotsTable.$converterstatus.toSql(status.value),
       );
     }
+    if (published.present) {
+      map['published'] = Variable<bool>(published.value);
+    }
+    if (publicProducer.present) {
+      map['public_producer'] = Variable<bool>(publicProducer.value);
+    }
+    if (publicOrigin.present) {
+      map['public_origin'] = Variable<bool>(publicOrigin.value);
+    }
+    if (publicLab.present) {
+      map['public_lab'] = Variable<bool>(publicLab.value);
+    }
+    if (publicReport.present) {
+      map['public_report'] = Variable<bool>(publicReport.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -16780,6 +16969,11 @@ class LotsCompanion extends UpdateCompanion<Lot> {
           ..write('origin: $origin, ')
           ..write('moisture: $moisture, ')
           ..write('status: $status, ')
+          ..write('published: $published, ')
+          ..write('publicProducer: $publicProducer, ')
+          ..write('publicOrigin: $publicOrigin, ')
+          ..write('publicLab: $publicLab, ')
+          ..write('publicReport: $publicReport, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -16805,6 +16999,11 @@ class _$LotInsertable implements Insertable<Lot> {
       origin: Value(_object.origin),
       moisture: Value(_object.moisture),
       status: Value(_object.status),
+      published: Value(_object.published),
+      publicProducer: Value(_object.publicProducer),
+      publicOrigin: Value(_object.publicOrigin),
+      publicLab: Value(_object.publicLab),
+      publicReport: Value(_object.publicReport),
     ).toColumns(false);
   }
 }
@@ -31546,6 +31745,11 @@ typedef $$LotsTableCreateCompanionBuilder = LotsCompanion Function({
   Value<String?> origin,
   Value<double?> moisture,
   required LotStatus status,
+  Value<bool> published,
+  Value<bool> publicProducer,
+  Value<bool> publicOrigin,
+  Value<bool> publicLab,
+  Value<bool> publicReport,
   Value<int> rowid,
 });
 typedef $$LotsTableUpdateCompanionBuilder = LotsCompanion Function({
@@ -31562,6 +31766,11 @@ typedef $$LotsTableUpdateCompanionBuilder = LotsCompanion Function({
   Value<String?> origin,
   Value<double?> moisture,
   Value<LotStatus> status,
+  Value<bool> published,
+  Value<bool> publicProducer,
+  Value<bool> publicOrigin,
+  Value<bool> publicLab,
+  Value<bool> publicReport,
   Value<int> rowid,
 });
 
@@ -31639,6 +31848,31 @@ class $$LotsTableFilterComposer extends Composer<_$AppDatabase, $LotsTable> {
         column: $table.status,
         builder: (column) => ColumnWithTypeConverterFilters(column),
       );
+
+  ColumnFilters<bool> get published => $composableBuilder(
+    column: $table.published,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get publicProducer => $composableBuilder(
+    column: $table.publicProducer,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get publicOrigin => $composableBuilder(
+    column: $table.publicOrigin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get publicLab => $composableBuilder(
+    column: $table.publicLab,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get publicReport => $composableBuilder(
+    column: $table.publicReport,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$LotsTableOrderingComposer extends Composer<_$AppDatabase, $LotsTable> {
@@ -31713,6 +31947,31 @@ class $$LotsTableOrderingComposer extends Composer<_$AppDatabase, $LotsTable> {
     column: $table.status,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get published => $composableBuilder(
+    column: $table.published,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get publicProducer => $composableBuilder(
+    column: $table.publicProducer,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get publicOrigin => $composableBuilder(
+    column: $table.publicOrigin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get publicLab => $composableBuilder(
+    column: $table.publicLab,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get publicReport => $composableBuilder(
+    column: $table.publicReport,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$LotsTableAnnotationComposer
@@ -31762,6 +32021,27 @@ class $$LotsTableAnnotationComposer
 
   GeneratedColumnWithTypeConverter<LotStatus, String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<bool> get published =>
+      $composableBuilder(column: $table.published, builder: (column) => column);
+
+  GeneratedColumn<bool> get publicProducer => $composableBuilder(
+    column: $table.publicProducer,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get publicOrigin => $composableBuilder(
+    column: $table.publicOrigin,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get publicLab =>
+      $composableBuilder(column: $table.publicLab, builder: (column) => column);
+
+  GeneratedColumn<bool> get publicReport => $composableBuilder(
+    column: $table.publicReport,
+    builder: (column) => column,
+  );
 }
 
 class $$LotsTableTableManager
@@ -31805,6 +32085,11 @@ class $$LotsTableTableManager
                 Value<String?> origin = const Value.absent(),
                 Value<double?> moisture = const Value.absent(),
                 Value<LotStatus> status = const Value.absent(),
+                Value<bool> published = const Value.absent(),
+                Value<bool> publicProducer = const Value.absent(),
+                Value<bool> publicOrigin = const Value.absent(),
+                Value<bool> publicLab = const Value.absent(),
+                Value<bool> publicReport = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => LotsCompanion(
                 id: id,
@@ -31820,6 +32105,11 @@ class $$LotsTableTableManager
                 origin: origin,
                 moisture: moisture,
                 status: status,
+                published: published,
+                publicProducer: publicProducer,
+                publicOrigin: publicOrigin,
+                publicLab: publicLab,
+                publicReport: publicReport,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -31837,6 +32127,11 @@ class $$LotsTableTableManager
                 Value<String?> origin = const Value.absent(),
                 Value<double?> moisture = const Value.absent(),
                 required LotStatus status,
+                Value<bool> published = const Value.absent(),
+                Value<bool> publicProducer = const Value.absent(),
+                Value<bool> publicOrigin = const Value.absent(),
+                Value<bool> publicLab = const Value.absent(),
+                Value<bool> publicReport = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => LotsCompanion.insert(
                 id: id,
@@ -31852,6 +32147,11 @@ class $$LotsTableTableManager
                 origin: origin,
                 moisture: moisture,
                 status: status,
+                published: published,
+                publicProducer: publicProducer,
+                publicOrigin: publicOrigin,
+                publicLab: publicLab,
+                publicReport: publicReport,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

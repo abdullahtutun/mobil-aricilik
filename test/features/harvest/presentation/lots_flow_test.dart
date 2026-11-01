@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,6 +19,7 @@ import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_lot_screen.dart';
+import 'package:mobil_arici/features/harvest/presentation/lot_providers.dart';
 import 'package:mobil_arici/features/harvest/presentation/lot_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/lots_screen.dart';
 import 'package:mobil_arici/features/health/data/treatment_repository.dart';
@@ -29,6 +32,7 @@ import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/fake_print_service.dart';
 import '../../../helpers/fake_team_service.dart';
 import '../../../helpers/test_database.dart';
 
@@ -38,8 +42,11 @@ Future<ProviderContainer> _open(
   WidgetTester tester, {
   required AppDatabase db,
   required String location,
+  FakePrintService? printer,
 }) async {
-  final container = ProviderContainer.test(overrides: signedIn(db: db));
+  final container = ProviderContainer.test(
+    overrides: signedIn(db: db, printer: printer),
+  );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
   );
@@ -298,6 +305,12 @@ void main() {
     await _tap(tester, _button('Subtract from stock'));
 
     expect(find.text('164 kg sale recorded'), findsOneWidget);
+    // "Satış düş" ekranın üstüne kaydırılmıştı; stok satırları yukarıda.
+    await tester.scrollUntilVisible(
+      find.text('In stock'),
+      -200,
+      scrollable: _list(LotScreen),
+    );
     expect(inStock('410 kg'), findsOneWidget);
     expect((await lots.sales.findByLot(lot.id)).single.kg, 164);
 
@@ -392,6 +405,107 @@ void main() {
     expect(_button('Add analysis'), findsNothing);
   });
 
+  /// "Publish" anahtarı ve alan anahtarları.
+  Finder toggle(String title) => find.widgetWithText(SwitchListTile, title);
+
+  Future<void> showToggle(WidgetTester tester, String title) async {
+    await tester.scrollUntilVisible(
+      toggle(title),
+      200,
+      scrollable: _list(LotScreen),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('owner yayımlar: alanlar seçilir, kavanoz etiketi PDF olarak '
+      'yazdırılır ve paylaşılır; yayımdan kaldırınca etiket kalkar', (
+    tester,
+  ) async {
+    await addMember(db, userId: testUser.id, role: MembershipRole.owner);
+    final lot = await lots.createWithHarvest(await harvest());
+    final printer = FakePrintService();
+    final container = await _open(
+      tester,
+      db: db,
+      location: AppRoutes.lot(lot.id),
+      printer: printer,
+    );
+    expect(
+      container.read(lotPageBaseUrlProvider),
+      'https://jcddnelaboueazhordfz.supabase.co/functions/v1/lot-page',
+    );
+
+    await showToggle(tester, 'Publish');
+    expect(
+      find.text(
+        "Anyone who scans the QR sees the lot's page. Phone, address and "
+        'location are never shown.',
+      ),
+      findsOneWidget,
+    );
+    expect(toggle('Analysis report'), findsNothing);
+    expect(_button('Print'), findsNothing);
+
+    await _tap(tester, toggle('Publish'));
+    expect((await lots.findById(lot.id))!.published, isTrue);
+
+    await showToggle(tester, 'Analysis report');
+    for (final title in [
+      'Business name and hive count',
+      'Origin and harvest month',
+      'Analysis values',
+    ]) {
+      expect(
+        tester.widget<SwitchListTile>(toggle(title)).value,
+        isTrue,
+        reason: title,
+      );
+    }
+    await _tap(tester, toggle('Analysis report'));
+    final saved = (await lots.findById(lot.id))!;
+    expect((saved.published, saved.publicReport), (true, false));
+
+    await _tap(tester, _button('Print'), screen: LotScreen);
+    final printed = printer.printed.single;
+    expect(printed.name, 'Jar labels - Lot $year-01');
+    expect(ascii.decode(printed.bytes.sublist(0, 5)), '%PDF-');
+    await _tap(tester, _button('Share PDF'), screen: LotScreen);
+    expect(printer.shared.single.filename, 'Jar labels - Lot $year-01.pdf');
+
+    await showToggle(tester, 'Publish');
+    await _tap(tester, toggle('Publish'));
+    expect((await lots.findById(lot.id))!.published, isFalse);
+    expect(_button('Print'), findsNothing);
+    expect(toggle('Analysis report'), findsNothing);
+  });
+
+  testWidgets('owner olmayan yayımı görür ama değiştiremez; etiketi basar', (
+    tester,
+  ) async {
+    await addMember(db, userId: testUser.id, role: MembershipRole.worker);
+    final lot = await lots.createWithHarvest(await harvest());
+    await lots.setPublication(lot.id, published: true);
+    await _open(tester, db: db, location: AppRoutes.lot(lot.id));
+
+    await showToggle(tester, 'Publish');
+    expect(
+      find.text('Published · Only the business owner can publish.'),
+      findsOneWidget,
+    );
+    expect(tester.widget<SwitchListTile>(toggle('Publish')).onChanged, isNull);
+    await showToggle(tester, 'Analysis report');
+    expect(
+      tester.widget<SwitchListTile>(toggle('Analysis report')).onChanged,
+      isNull,
+    );
+    await tester.scrollUntilVisible(
+      _button('Print'),
+      200,
+      scrollable: _list(LotScreen),
+    );
+    expect(_enabled(tester, 'Print'), isTrue);
+  });
+
   testWidgets('Türkçe metinler', (tester) async {
     final lot = await lots.createWithHarvest(
       await harvest(override: true),
@@ -420,6 +534,31 @@ void main() {
     await tester.pumpAndSettle();
     expect(_rich('104 bekleme süresinde hasat edildi.'), findsOneWidget);
     expect(_button('Satış düş'), findsOneWidget);
+
+    await lots.setPublication(lot.id, published: true);
+    await showToggle(tester, 'Analiz raporu');
+    for (final text in [
+      'Yayımla',
+      'Yayımda · Yalnız işletme sahibi yayımlayabilir.',
+      'İşletme adı ve kovan sayısı',
+      'Yöre ve hasat ayı',
+      'Analiz değerleri',
+      'Analiz raporu',
+    ]) {
+      expect(find.text(text), findsOneWidget, reason: text);
+    }
+    await tester.scrollUntilVisible(
+      _button('Yazdır'),
+      200,
+      scrollable: _list(LotScreen),
+    );
+    expect(
+      find.text(
+        'A4 sayfaya 24 etiket (70 × 37 mm); yazdırırken ölçeği %100 seç.',
+      ),
+      findsOneWidget,
+    );
+    expect(_button('PDF paylaş'), findsOneWidget);
 
     final h = await harvest(override: true);
     container
@@ -454,6 +593,8 @@ void main() {
       residue: ResidueResult.none,
       documentId: null,
     ));
+    await addMember(db, userId: testUser.id, role: MembershipRole.owner);
+    await lots.setPublication(lot.id, published: true);
     final container = await _open(tester, db: db, location: AppRoutes.lots);
     container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
     container.read(languageProvider.notifier).language = AppLanguage.turkish;

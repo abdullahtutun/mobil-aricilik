@@ -60,6 +60,22 @@ abstract class Lot with _$Lot implements SyncedRecord {
 
     /// Refraktömetre nemi, %.
     double? moisture,
+
+    /// Herkese açık sayfası (`lot-page`) var mı. Yalnız owner değiştirir;
+    /// başkasının yazmasını sunucu yok sayar.
+    @Default(false) bool published,
+
+    /// Sayfada işletme adı ve aktif kovan sayısı görünür.
+    @Default(true) bool publicProducer,
+
+    /// Sayfada yöre ve hasat ayı görünür.
+    @Default(true) bool publicOrigin,
+
+    /// Sayfada son analizin değerleri görünür.
+    @Default(true) bool publicLab,
+
+    /// Sayfada son analizin raporu açılır.
+    @Default(true) bool publicReport,
     String? createdBy,
     DateTime? deletedAt,
     @JsonKey(includeToJson: false) int? serverSeq,

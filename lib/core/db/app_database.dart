@@ -98,7 +98,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 17;
+  int get schemaVersion => 18;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -249,6 +249,14 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(schema.lotSales);
         await m.create(schema.lotSalesOrgIdIdx);
         await m.create(schema.lotSalesLotIdIdx);
+      },
+      // Lotun herkese açık sayfası: yayım ve görünen alanlar.
+      from17To18: (m, schema) async {
+        await m.addColumn(schema.lots, schema.lots.published);
+        await m.addColumn(schema.lots, schema.lots.publicProducer);
+        await m.addColumn(schema.lots, schema.lots.publicOrigin);
+        await m.addColumn(schema.lots, schema.lots.publicLab);
+        await m.addColumn(schema.lots, schema.lots.publicReport);
       },
     ),
   );

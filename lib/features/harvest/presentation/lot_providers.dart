@@ -1,3 +1,4 @@
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/presentation/document_providers.dart';
@@ -68,6 +69,16 @@ Future<List<VaultDocument>> analysisReports(Ref ref) async => [
     if (document.type == DocumentType.analysisReport) document,
 ];
 
+/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...` (özel alan
+/// adı; Supabase varsayılan alanda HTML'i düz metin sunar), verilmezse
+/// projenin `lot-page` fonksiyonu.
+@riverpod
+String lotPageBaseUrl(Ref ref) => _lotPageBaseUrl.isNotEmpty
+    ? _lotPageBaseUrl
+    : '${ref.watch(flavorProvider).supabaseUrl}/functions/v1/lot-page';
+
+const _lotPageBaseUrl = String.fromEnvironment('LOT_PAGE_BASE_URL');
+
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.
 @Riverpod(keepAlive: true)
@@ -89,6 +100,24 @@ class LotActions extends _$LotActions {
       _lots.attachHarvest(lot, harvest);
 
   Future<Lot> update(Lot lot) => _lots.update(lot);
+
+  /// Yayım ve sayfada görünen alanlar; yalnız owner çağırır (sunucu
+  /// başkasınınkini yok sayar).
+  Future<Lot> setPublication(
+    Lot lot, {
+    bool? published,
+    bool? publicProducer,
+    bool? publicOrigin,
+    bool? publicLab,
+    bool? publicReport,
+  }) => _lots.setPublication(
+    lot.id,
+    published: published,
+    publicProducer: publicProducer,
+    publicOrigin: publicOrigin,
+    publicLab: publicLab,
+    publicReport: publicReport,
+  );
 
   Future<void> remove(String id) => _lots.remove(id);
 

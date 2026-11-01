@@ -18,6 +18,11 @@ _Lot _$LotFromJson(Map<String, dynamic> json) => _Lot(
       $enumDecodeNullable(_$LotStatusEnumMap, json['status']) ?? LotStatus.open,
   origin: json['origin'] as String?,
   moisture: (json['moisture'] as num?)?.toDouble(),
+  published: json['published'] as bool? ?? false,
+  publicProducer: json['public_producer'] as bool? ?? true,
+  publicOrigin: json['public_origin'] as bool? ?? true,
+  publicLab: json['public_lab'] as bool? ?? true,
+  publicReport: json['public_report'] as bool? ?? true,
   createdBy: json['created_by'] as String?,
   deletedAt: json['deleted_at'] == null
       ? null
@@ -36,6 +41,11 @@ Map<String, dynamic> _$LotToJson(_Lot instance) => <String, dynamic>{
   'status': _$LotStatusEnumMap[instance.status]!,
   'origin': instance.origin,
   'moisture': instance.moisture,
+  'published': instance.published,
+  'public_producer': instance.publicProducer,
+  'public_origin': instance.publicOrigin,
+  'public_lab': instance.publicLab,
+  'public_report': instance.publicReport,
   'created_by': instance.createdBy,
   'deleted_at': instance.deletedAt?.toIso8601String(),
 };

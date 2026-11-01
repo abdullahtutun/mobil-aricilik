@@ -58,6 +58,18 @@ void main() {
     expect(formatLotNumber(2026, 123), '2026-123');
   });
 
+  test('lot sayfası kök adres + lot kimliği; sondaki / tekrar etmez', () {
+    const id = '0199a3b2-7c1e-7d40-8a5b-000000000001';
+    expect(
+      lotPageUrl('https://x.supabase.co/functions/v1/lot-page', id),
+      'https://x.supabase.co/functions/v1/lot-page/$id',
+    );
+    expect(
+      lotPageUrl('https://mobilaricilik.app/lot/', id),
+      'https://mobilaricilik.app/lot/$id',
+    );
+  });
+
   test('sıradaki numara yılın en büyüğünden bir fazla; lot yoksa 1', () {
     expect(nextLotSeq([]), 1);
     expect(nextLotSeq([3, 1, 7]), 8);

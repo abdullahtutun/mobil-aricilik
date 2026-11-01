@@ -210,6 +210,29 @@ class LotRepository extends BaseRepository<$LotsTable, Lot> {
   /// silinmişse [StateError], alanlar geçersizse [ArgumentError] atar.
   Future<Lot> update(Lot lot) => updateRecord(checkLot(lot));
 
+  /// Lotun yayımını ve sayfada görünen alanlarını yazar; verilmeyen alan
+  /// değişmez. Lot DB'den yeniden okunur, eski bir kopya diğer alanları
+  /// geri yazmasın. Lot yoksa ya da silinmişse [StateError] atar.
+  Future<Lot> setPublication(
+    String id, {
+    bool? published,
+    bool? publicProducer,
+    bool? publicOrigin,
+    bool? publicLab,
+    bool? publicReport,
+  }) => db.transaction(() async {
+    final lot = await requireById(id);
+    return await updateRecord(
+      lot.copyWith(
+        published: published ?? lot.published,
+        publicProducer: publicProducer ?? lot.publicProducer,
+        publicOrigin: publicOrigin ?? lot.publicOrigin,
+        publicLab: publicLab ?? lot.publicLab,
+        publicReport: publicReport ?? lot.publicReport,
+      ),
+    );
+  });
+
   /// Lotu ve bağlı kayıtlarını (hasat bağları, ilaçlama kopyaları,
   /// analizler, satışlar) tek transaction'da siler. Hasatların kendisi
   /// kalır.

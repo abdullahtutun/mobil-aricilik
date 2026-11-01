@@ -5039,6 +5039,68 @@
       }
     }
   },
+  "lotPublicPage": "Public page",
+  "@lotPublicPage": {
+    "description": "Lot screen section for the public QR page."
+  },
+  "lotPublish": "Publish",
+  "@lotPublish": {
+    "description": "Switch that publishes the lot's public page."
+  },
+  "lotPublishHint": "Anyone who scans the QR sees the lot's page. Phone, address and location are never shown.",
+  "@lotPublishHint": {
+    "description": "Explains what publishing a lot does."
+  },
+  "lotPublishOwnerOnly": "Only the business owner can publish.",
+  "@lotPublishOwnerOnly": {
+    "description": "Shown to non-owners under the publish state."
+  },
+  "lotPublished": "Published",
+  "@lotPublished": {
+    "description": "Lot page is public."
+  },
+  "lotNotPublished": "Not published",
+  "@lotNotPublished": {
+    "description": "Lot page is not public."
+  },
+  "lotPublicFields": "Shown on the page",
+  "@lotPublicFields": {
+    "description": "Heading for the public page field switches."
+  },
+  "lotPublicProducer": "Business name and hive count",
+  "@lotPublicProducer": {
+    "description": "Public page field."
+  },
+  "lotPublicOrigin": "Origin and harvest month",
+  "@lotPublicOrigin": {
+    "description": "Public page field."
+  },
+  "lotPublicLab": "Analysis values",
+  "@lotPublicLab": {
+    "description": "Public page field."
+  },
+  "lotPublicReport": "Analysis report",
+  "@lotPublicReport": {
+    "description": "Public page field."
+  },
+  "lotJarLabels": "Jar labels (QR)",
+  "@lotJarLabels": {
+    "description": "Section and title for the lot's jar label PDF."
+  },
+  "lotJarLabelsHint": "24 labels per A4 page (70 × 37 mm); print at 100% scale.",
+  "@lotJarLabelsHint": {
+    "description": "Jar label sheet explanation."
+  },
+  "lotJarLabelsDocumentName": "Jar labels - {number}",
+  "@lotJarLabelsDocumentName": {
+    "description": "Jar label PDF name.",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "Lot 2026-07"
+      }
+    }
+  },
   "lotSales": "Sales",
   "@lotSales": {
     "description": "Section label."

@@ -9,6 +9,8 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/core/services/pdf_fonts.dart';
+import 'package:mobil_arici/core/services/print_service_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/feeding/presentation/widgets/feeding_labels.dart';
 import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
@@ -16,7 +18,9 @@ import 'package:mobil_arici/features/harvest/domain/harvest_rules.dart';
 import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/harvest/domain/lot_rules.dart';
 import 'package:mobil_arici/features/harvest/presentation/lot_providers.dart';
+import 'package:mobil_arici/features/harvest/presentation/widgets/lot_label_sheet.dart';
 import 'package:mobil_arici/features/harvest/presentation/widgets/lot_widgets.dart';
+import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Lot: kart (bal türü, numara · yöre, kilogram, etiketler), bekleme süresi
@@ -134,6 +138,10 @@ class _Body extends ConsumerWidget {
           ),
         ],
         SizedBox(height: spacing.xl),
+        SectionLabel(l10n.lotPublicPage),
+        SizedBox(height: spacing.sm),
+        _Publication(lot),
+        SizedBox(height: spacing.xl),
         SectionLabel(l10n.lotHarvests),
         SizedBox(height: spacing.sm),
         _Harvests(lot),
@@ -205,6 +213,182 @@ class _LabResults extends ConsumerWidget {
               null => null,
             },
           ),
+      ],
+    );
+  }
+}
+
+enum _Output { print, share }
+
+/// "Yayımla" anahtarı; yayımdayken sayfada görünecek alanlar ve kavanoz
+/// etiketi (QR) PDF'i. Anahtarları yalnız owner değiştirir, diğerleri
+/// durumu görür. Yayımda değilken sayfa 404 olduğu için etiket yok.
+class _Publication extends ConsumerStatefulWidget {
+  const new(this.lot);
+
+  final Lot lot;
+
+  @override
+  ConsumerState<_Publication> createState() => _PublicationState();
+}
+
+class _PublicationState extends ConsumerState<_Publication> {
+  /// PDF hazırlanırken butonlar pasif.
+  var _busy = false;
+
+  Future<void> _set({
+    bool? published,
+    bool? publicProducer,
+    bool? publicOrigin,
+    bool? publicLab,
+    bool? publicReport,
+  }) => ref
+      .read(lotActionsProvider.notifier)
+      .setPublication(
+        widget.lot,
+        published: published,
+        publicProducer: publicProducer,
+        publicOrigin: publicOrigin,
+        publicLab: publicLab,
+        publicReport: publicReport,
+      );
+
+  Future<void> _output(_Output output) async {
+    final l10n = AppLocalizations.of(context);
+    final service = ref.read(printServiceProvider);
+    final lot = widget.lot;
+    final number = lot.number(l10n);
+    final title = l10n.lotJarLabelsDocumentName(number);
+    setState(() => _busy = true);
+    try {
+      final bytes = await buildLotLabelPdf((
+        url: lotPageUrl(ref.read(lotPageBaseUrlProvider), lot.id),
+        number: number,
+        honey: lot.title(l10n),
+      ), title: title);
+      switch (output) {
+        case _Output.print:
+          await service.printPdf(bytes, name: title);
+        case _Output.share:
+          await service.sharePdf(bytes, filename: pdfFileName(title));
+      }
+    } on Exception {
+      if (mounted) showMessageSnackBar(context, l10n.hiveLabelsError);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final spacing = context.spacing;
+    final lot = widget.lot;
+    final isOwner = ref.watch(currentRoleProvider) == MembershipRole.owner;
+
+    Widget toggle({
+      required String title,
+      required bool value,
+      required ValueChanged<bool> onChanged,
+      String? subtitle,
+    }) => SwitchListTile(
+      value: value,
+      onChanged: isOwner ? onChanged : null,
+      contentPadding: EdgeInsets.symmetric(horizontal: spacing.lg),
+      title: Text(title, style: context.typography.body),
+      subtitle: subtitle == null
+          ? null
+          : Text(
+              subtitle,
+              style: context.typography.bodySmall.copyWith(
+                color: context.colors.textSecondary,
+              ),
+            ),
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ListGroup(
+          children: [
+            toggle(
+              title: l10n.lotPublish,
+              value: lot.published,
+              subtitle: isOwner
+                  ? l10n.lotPublishHint
+                  : [
+                      if (lot.published)
+                        l10n.lotPublished
+                      else
+                        l10n.lotNotPublished,
+                      l10n.lotPublishOwnerOnly,
+                    ].join(l10n.titleSeparator),
+              onChanged: (value) => unawaited(_set(published: value)),
+            ),
+          ],
+        ),
+        if (lot.published) ...[
+          SizedBox(height: spacing.lg),
+          SectionLabel(l10n.lotPublicFields),
+          SizedBox(height: spacing.sm),
+          ListGroup(
+            children: [
+              toggle(
+                title: l10n.lotPublicProducer,
+                value: lot.publicProducer,
+                onChanged: (value) => unawaited(_set(publicProducer: value)),
+              ),
+              toggle(
+                title: l10n.lotPublicOrigin,
+                value: lot.publicOrigin,
+                onChanged: (value) => unawaited(_set(publicOrigin: value)),
+              ),
+              toggle(
+                title: l10n.lotPublicLab,
+                value: lot.publicLab,
+                onChanged: (value) => unawaited(_set(publicLab: value)),
+              ),
+              toggle(
+                title: l10n.lotPublicReport,
+                value: lot.publicReport,
+                onChanged: (value) => unawaited(_set(publicReport: value)),
+              ),
+            ],
+          ),
+          SizedBox(height: spacing.lg),
+          SectionLabel(l10n.lotJarLabels),
+          SizedBox(height: spacing.sm),
+          Text(
+            l10n.lotJarLabelsHint,
+            style: context.typography.bodySmall.copyWith(
+              color: context.colors.textSecondary,
+            ),
+          ),
+          SizedBox(height: spacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: BigButton(
+                  variant: BigButtonVariant.secondary,
+                  label: l10n.hiveLabelsShare,
+                  onPressed: _busy
+                      ? null
+                      : () => unawaited(_output(_Output.share)),
+                ),
+              ),
+              SizedBox(width: spacing.md),
+              Expanded(
+                child: BigButton(
+                  icon: Icons.qr_code_2_rounded,
+                  label: l10n.hiveLabelsPrint,
+                  onPressed: _busy
+                      ? null
+                      : () => unawaited(_output(_Output.print)),
+                ),
+              ),
+            ],
+          ),
+        ],
       ],
     );
   }

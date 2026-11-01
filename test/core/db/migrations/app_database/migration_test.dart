@@ -13,6 +13,7 @@ import 'generated/schema_v14.dart' as v14;
 import 'generated/schema_v15.dart' as v15;
 import 'generated/schema_v16.dart' as v16;
 import 'generated/schema_v17.dart' as v17;
+import 'generated/schema_v18.dart' as v18;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -735,6 +736,46 @@ void main() {
         expect(await newDb.select(newDb.lotTreatments).get(), isEmpty);
         expect(await newDb.select(newDb.labResults).get(), isEmpty);
         expect(await newDb.select(newDb.lotSales).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v17 → v18 lotları korur; yayımda değil, alanlar açık', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 17,
+      newVersion: 18,
+      createOld: v17.DatabaseAtV17.new,
+      createNew: v18.DatabaseAtV18.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.lots,
+          v17.LotsCompanion.insert(
+            id: 'lot-1',
+            createdAt: '2026-11-01T09:00:00.000Z',
+            updatedAt: '2026-11-01T09:00:00.000Z',
+            orgId: 'org-1',
+            year: 2026,
+            seq: 7,
+            honeyKind: 'pine',
+            status: 'open',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final lot = (await newDb.select(newDb.lots).get()).single;
+        expect(lot.seq, 7);
+        // Dökümde boolean SQLite'taki gibi 0/1.
+        expect(lot.published, 0);
+        expect(
+          [
+            lot.publicProducer,
+            lot.publicOrigin,
+            lot.publicLab,
+            lot.publicReport,
+          ],
+          everyElement(1),
+        );
       },
     );
   });

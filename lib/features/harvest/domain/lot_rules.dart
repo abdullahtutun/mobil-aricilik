@@ -22,6 +22,15 @@ const maxLotSaleKg = 100000.0;
 String formatLotNumber(int year, int seq) =>
     '$year-${seq.toString().padLeft(2, '0')}';
 
+/// Lotun herkese açık sayfası: `<baseUrl>/<lotId>`; sondaki `/` tekrar
+/// etmez. Kavanoz etiketindeki QR bu adresi taşır.
+String lotPageUrl(String baseUrl, String lotId) {
+  final base = baseUrl.endsWith('/')
+      ? baseUrl.substring(0, baseUrl.length - 1)
+      : baseUrl;
+  return '$base/$lotId';
+}
+
 /// Yılın sıradaki lot sırası: [seqs] (o yılın silinmemiş lotlarının
 /// sıraları) içindeki en büyüğün bir fazlası; lot yoksa 1.
 int nextLotSeq(Iterable<int> seqs) =>

@@ -125,6 +125,11 @@ void main() {
       'status': 'open',
       'origin': 'Kızılçam',
       'moisture': 17.2,
+      'published': false,
+      'public_producer': true,
+      'public_origin': true,
+      'public_lab': true,
+      'public_report': true,
       'created_at': '2026-10-26T09:00:00.000Z',
       'updated_at': '2026-10-26T09:00:00.000Z',
       'created_by': null,
@@ -133,6 +138,46 @@ void main() {
     expect(outbox[2].payload['withdrawal_ends_on'], '2026-09-01');
     expect(outbox[2].payload['withdrawal_violation'], false);
     expect(outbox[2].payload.containsKey('server_seq'), isFalse);
+  });
+
+  test("yayım: yalnız verilen alanlar değişir, DB'deki güncel lot yazılır; "
+      "outbox'a durum kaydı olarak gider", () async {
+    final lot = await lots.createWithHarvest(await harvest());
+    await lots.update(lot.copyWith(origin: 'Ula'));
+    clock.advance(const Duration(minutes: 1));
+
+    // Eski kopyanın kimliğiyle: yöre geri yazılmaz.
+    final published = await lots.setPublication(lot.id, published: true);
+    expect(
+      (published.published, published.origin, published.publicReport),
+      (true, 'Ula', true),
+    );
+    await lots.setPublication(lot.id, publicReport: false);
+
+    final saved = (await lots.findById(lot.id))!;
+    expect(
+      (
+        saved.published,
+        saved.publicProducer,
+        saved.publicOrigin,
+        saved.publicLab,
+        saved.publicReport,
+        saved.origin,
+      ),
+      (true, true, true, true, false, 'Ula'),
+    );
+    final last = (await lotOutbox()).last;
+    expect(last.recordTable, 'lots');
+    expect(last.operation, OutboxOperation.upsert);
+    expect(last.payload['published'], true);
+    expect(last.payload['public_report'], false);
+    expect(last.payload['updated_at'], '2026-10-26T09:01:00.000Z');
+
+    await lots.remove(lot.id);
+    await expectLater(
+      lots.setPublication(lot.id, published: false),
+      throwsStateError,
+    );
   });
 
   test('son ilaçlamayı bağlar; hasat günü bekleme süresindeyse lot '

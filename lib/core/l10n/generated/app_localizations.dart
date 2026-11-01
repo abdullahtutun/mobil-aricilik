@@ -8213,6 +8213,90 @@ abstract class AppLocalizations {
   /// **'{date} · withdrawal ends {end}'**
   String lotTreatmentDetail(String date, String end);
 
+  /// Lot screen section for the public QR page.
+  ///
+  /// In en, this message translates to:
+  /// **'Public page'**
+  String get lotPublicPage;
+
+  /// Switch that publishes the lot's public page.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get lotPublish;
+
+  /// Explains what publishing a lot does.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone who scans the QR sees the lot\'s page. Phone, address and location are never shown.'**
+  String get lotPublishHint;
+
+  /// Shown to non-owners under the publish state.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the business owner can publish.'**
+  String get lotPublishOwnerOnly;
+
+  /// Lot page is public.
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get lotPublished;
+
+  /// Lot page is not public.
+  ///
+  /// In en, this message translates to:
+  /// **'Not published'**
+  String get lotNotPublished;
+
+  /// Heading for the public page field switches.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown on the page'**
+  String get lotPublicFields;
+
+  /// Public page field.
+  ///
+  /// In en, this message translates to:
+  /// **'Business name and hive count'**
+  String get lotPublicProducer;
+
+  /// Public page field.
+  ///
+  /// In en, this message translates to:
+  /// **'Origin and harvest month'**
+  String get lotPublicOrigin;
+
+  /// Public page field.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis values'**
+  String get lotPublicLab;
+
+  /// Public page field.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis report'**
+  String get lotPublicReport;
+
+  /// Section and title for the lot's jar label PDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Jar labels (QR)'**
+  String get lotJarLabels;
+
+  /// Jar label sheet explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'24 labels per A4 page (70 × 37 mm); print at 100% scale.'**
+  String get lotJarLabelsHint;
+
+  /// Jar label PDF name.
+  ///
+  /// In en, this message translates to:
+  /// **'Jar labels - {number}'**
+  String lotJarLabelsDocumentName(String number);
+
   /// Section label.
   ///
   /// In en, this message translates to:

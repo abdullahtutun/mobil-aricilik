@@ -5059,6 +5059,52 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get lotPublicPage => 'Herkese açık sayfa';
+
+  @override
+  String get lotPublish => 'Yayımla';
+
+  @override
+  String get lotPublishHint =>
+      'QR\'ı okutan herkes lotun sayfasını görür. Telefon, adres ve konum hiç görünmez.';
+
+  @override
+  String get lotPublishOwnerOnly => 'Yalnız işletme sahibi yayımlayabilir.';
+
+  @override
+  String get lotPublished => 'Yayımda';
+
+  @override
+  String get lotNotPublished => 'Yayımda değil';
+
+  @override
+  String get lotPublicFields => 'Sayfada görünenler';
+
+  @override
+  String get lotPublicProducer => 'İşletme adı ve kovan sayısı';
+
+  @override
+  String get lotPublicOrigin => 'Yöre ve hasat ayı';
+
+  @override
+  String get lotPublicLab => 'Analiz değerleri';
+
+  @override
+  String get lotPublicReport => 'Analiz raporu';
+
+  @override
+  String get lotJarLabels => 'Kavanoz etiketi (QR)';
+
+  @override
+  String get lotJarLabelsHint =>
+      'A4 sayfaya 24 etiket (70 × 37 mm); yazdırırken ölçeği %100 seç.';
+
+  @override
+  String lotJarLabelsDocumentName(String number) {
+    return 'Kavanoz etiketi - $number';
+  }
+
+  @override
   String get lotSales => 'Satışlar';
 
   @override

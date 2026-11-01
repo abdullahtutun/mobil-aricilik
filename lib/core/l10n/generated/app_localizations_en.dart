@@ -5232,6 +5232,52 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get lotPublicPage => 'Public page';
+
+  @override
+  String get lotPublish => 'Publish';
+
+  @override
+  String get lotPublishHint =>
+      'Anyone who scans the QR sees the lot\'s page. Phone, address and location are never shown.';
+
+  @override
+  String get lotPublishOwnerOnly => 'Only the business owner can publish.';
+
+  @override
+  String get lotPublished => 'Published';
+
+  @override
+  String get lotNotPublished => 'Not published';
+
+  @override
+  String get lotPublicFields => 'Shown on the page';
+
+  @override
+  String get lotPublicProducer => 'Business name and hive count';
+
+  @override
+  String get lotPublicOrigin => 'Origin and harvest month';
+
+  @override
+  String get lotPublicLab => 'Analysis values';
+
+  @override
+  String get lotPublicReport => 'Analysis report';
+
+  @override
+  String get lotJarLabels => 'Jar labels (QR)';
+
+  @override
+  String get lotJarLabelsHint =>
+      '24 labels per A4 page (70 × 37 mm); print at 100% scale.';
+
+  @override
+  String lotJarLabelsDocumentName(String number) {
+    return 'Jar labels - $number';
+  }
+
+  @override
   String get lotSales => 'Sales';
 
   @override

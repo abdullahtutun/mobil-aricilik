@@ -685,6 +685,58 @@ final class AnalysisReportsProvider
 
 String _$analysisReportsHash() => r'1c65a7eda0c32da844bc17c00942f168c61eb789';
 
+/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...` (özel alan
+/// adı; Supabase varsayılan alanda HTML'i düz metin sunar), verilmezse
+/// projenin `lot-page` fonksiyonu.
+
+@ProviderFor(lotPageBaseUrl)
+final lotPageBaseUrlProvider = LotPageBaseUrlProvider._();
+
+/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...` (özel alan
+/// adı; Supabase varsayılan alanda HTML'i düz metin sunar), verilmezse
+/// projenin `lot-page` fonksiyonu.
+
+final class LotPageBaseUrlProvider
+    extends $FunctionalProvider<String, String, String>
+    with $Provider<String> {
+  /// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...` (özel alan
+  /// adı; Supabase varsayılan alanda HTML'i düz metin sunar), verilmezse
+  /// projenin `lot-page` fonksiyonu.
+  LotPageBaseUrlProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lotPageBaseUrlProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lotPageBaseUrlHash();
+
+  @$internal
+  @override
+  $ProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String create(Ref ref) {
+    return lotPageBaseUrl(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
+String _$lotPageBaseUrlHash() => r'03ac0933527dcaf4d90dd3fb82f87f4dd25fb4c7';
+
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.
 
@@ -723,7 +775,7 @@ final class LotActionsProvider extends $NotifierProvider<LotActions, void> {
   }
 }
 
-String _$lotActionsHash() => r'bc31cb55e3dbaab7b9a876bbc3263e036ce9257a';
+String _$lotActionsHash() => r'eab54f1d6ab53d5f2587e23404abd7e2f867b0bf';
 
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.
