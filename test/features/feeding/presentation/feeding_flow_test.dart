@@ -222,6 +222,38 @@ void main() {
     expect(find.text("Don't deduct"), findsOneWidget);
   });
 
+  testWidgets('toplu besleme şeker stoğunu düşürür; Geri al stoğu geri '
+      'getirir', (tester) async {
+    final inventory = InventoryRepository(db);
+    final sugar = await inventory.create(
+      orgId: _orgId,
+      name: 'Şeker',
+      category: InventoryCategory.consumable,
+      unit: InventoryUnit.kg,
+    );
+    await inventory.moves.add(sugar, InventoryMoveKind.stockIn, 50);
+
+    await _open(tester, db: db, location: AppRoutes.hive(yayla.id, plain.id));
+    await _tap(tester, find.byIcon(Icons.more_vert_rounded));
+    await _tap(tester, find.text('Feed'));
+    await _tap(tester, find.text('Whole apiary · 3'));
+    await _tap(tester, find.text('Syrup 2:1 · winter'));
+    await _step(tester, 'Per hive (L)', 'Increase', times: 2);
+    await _tap(tester, find.text('Deduct from stock'));
+    await _tap(tester, find.text('Şeker'));
+    // Bal katlı 101 hariç 2 kovan × 3 L = 6 L; × 1,33 kg/L × 2/3 şeker.
+    expect(find.text('Şeker · −5.32 kg'), findsOneWidget);
+
+    await _tap(tester, _button('Save to 2 hives'));
+    expect(find.text('Feeding saved for 2 hives'), findsOneWidget);
+    expect(await liveFeedings(), hasLength(2));
+    expect(await inventory.moves.stockOf(sugar.id), 44.68);
+
+    await _tap(tester, find.text('Undo'));
+    expect(await liveFeedings(), isEmpty);
+    expect(await inventory.moves.stockOf(sugar.id), 50);
+  });
+
   testWidgets('bal katı olan kovana şurupta uyarı; kayıt yine yazılır; kek '
       'seçilince uyarı kalkar, şeker hesabı yok', (tester) async {
     await _open(
