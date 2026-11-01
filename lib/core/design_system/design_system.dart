@@ -2,6 +2,7 @@ export 'app_theme.dart';
 export 'appearance_provider.dart';
 export 'appearance_settings.dart';
 export 'components/action_tile.dart';
+export 'components/app_bar_add_button.dart';
 export 'components/app_card.dart';
 export 'components/app_logo.dart';
 export 'components/app_status.dart';

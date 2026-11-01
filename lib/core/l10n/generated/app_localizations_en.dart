@@ -4577,4 +4577,228 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moveScanDone => 'Done';
+
+  @override
+  String get inventoryTitle => 'Supplies and stock';
+
+  @override
+  String get inventoryAdd => 'Add item';
+
+  @override
+  String get inventoryEmptyTitle => 'No stock items yet';
+
+  @override
+  String get inventoryEmptyMessage =>
+      'Add supplies like sugar, foundation and jars. Items below their minimum are flagged.';
+
+  @override
+  String get inventoryCategoryEmpty => 'No items in this category';
+
+  @override
+  String get inventoryLoadError => 'Couldn\'t open stock.';
+
+  @override
+  String get inventoryNotFound => 'Item not found';
+
+  @override
+  String get inventoryCategoryConsumable => 'Supplies';
+
+  @override
+  String get inventoryCategoryEquipment => 'Equipment';
+
+  @override
+  String get inventoryCategoryComb => 'Comb';
+
+  @override
+  String get inventoryUnitKg => 'kg';
+
+  @override
+  String get inventoryUnitLiter => 'L';
+
+  @override
+  String get inventoryUnitPiece => 'pcs';
+
+  @override
+  String get inventoryUnitRoll => 'rolls';
+
+  @override
+  String get inventoryUnitPack => 'packs';
+
+  @override
+  String get inventoryUnitNameKg => 'Kilogram';
+
+  @override
+  String get inventoryUnitNameLiter => 'Liter';
+
+  @override
+  String get inventoryUnitNamePiece => 'Piece';
+
+  @override
+  String get inventoryUnitNameRoll => 'Roll';
+
+  @override
+  String get inventoryUnitNamePack => 'Pack';
+
+  @override
+  String inventoryQuantity(String quantity, String unit) {
+    return '$quantity $unit';
+  }
+
+  @override
+  String inventoryBelowThreshold(String threshold) {
+    return 'Below minimum · at least $threshold';
+  }
+
+  @override
+  String get inventoryMoveIn => 'In';
+
+  @override
+  String get inventoryMoveOut => 'Out';
+
+  @override
+  String get inventoryMoveCount => 'Count';
+
+  @override
+  String get inventoryMoveAdjustment => 'Correction';
+
+  @override
+  String inventoryInStock(String quantity) {
+    return 'In stock: $quantity';
+  }
+
+  @override
+  String inventoryAmountLabel(String unit) {
+    return 'Amount ($unit)';
+  }
+
+  @override
+  String inventoryCountedLabel(String unit) {
+    return 'Counted amount ($unit)';
+  }
+
+  @override
+  String get inventoryAmountInvalid => 'Enter a valid amount';
+
+  @override
+  String get inventoryAmountWhole => 'Use a whole number for this unit';
+
+  @override
+  String get inventorySaveIn => 'Add to stock';
+
+  @override
+  String get inventorySaveOut => 'Remove from stock';
+
+  @override
+  String get inventorySaveCount => 'Correct stock';
+
+  @override
+  String inventoryMovedIn(String quantity) {
+    return '$quantity added';
+  }
+
+  @override
+  String inventoryMovedOut(String quantity) {
+    return '$quantity removed';
+  }
+
+  @override
+  String inventoryAdjusted(String quantity) {
+    return 'Stock is now $quantity';
+  }
+
+  @override
+  String inventoryUnchanged(String quantity) {
+    return 'Stock is already $quantity';
+  }
+
+  @override
+  String get inventoryDetails => 'Details and history';
+
+  @override
+  String get inventoryHistory => 'History';
+
+  @override
+  String get inventoryHistoryEmpty => 'No movements yet';
+
+  @override
+  String inventoryThreshold(String threshold) {
+    return 'Minimum: at least $threshold';
+  }
+
+  @override
+  String get inventoryNoThreshold => 'No minimum';
+
+  @override
+  String get inventoryQuickMove => 'Add / remove';
+
+  @override
+  String get inventoryEdit => 'Edit item';
+
+  @override
+  String get inventoryFormNewTitle => 'New item';
+
+  @override
+  String get inventoryFormEditTitle => 'Edit item';
+
+  @override
+  String get inventoryFormName => 'Name';
+
+  @override
+  String get inventoryFormCategory => 'Category';
+
+  @override
+  String get inventoryFormUnit => 'Unit';
+
+  @override
+  String get inventoryFormLocation => 'Location';
+
+  @override
+  String get inventoryFormLocationHint => 'Storeroom, truck, office… Optional.';
+
+  @override
+  String get inventoryFormThreshold => 'Minimum';
+
+  @override
+  String get inventoryFormThresholdHint =>
+      'You\'re warned when stock drops below this. Optional.';
+
+  @override
+  String get inventoryFormThresholdInvalid => 'Enter a valid minimum';
+
+  @override
+  String get inventoryFormSave => 'Save';
+
+  @override
+  String get inventoryFormDelete => 'Delete item';
+
+  @override
+  String get inventoryDeleteTitle => 'Delete this item?';
+
+  @override
+  String get inventoryDeleteMessage => 'The item and its stock leave the list.';
+
+  @override
+  String get inventoryDeleteConfirm => 'Delete';
+
+  @override
+  String get inventorySaved => 'Item saved';
+
+  @override
+  String get inventoryDeleted => 'Item deleted';
+
+  @override
+  String get syncTableInventoryItems => 'Stock item';
+
+  @override
+  String get syncTableInventoryMoves => 'Stock movement';
+
+  @override
+  String inventoryIncrease(String quantity) {
+    return '+$quantity';
+  }
+
+  @override
+  String inventoryFormThresholdUnit(String unit) {
+    return 'Minimum ($unit)';
+  }
 }

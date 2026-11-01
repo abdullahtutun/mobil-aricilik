@@ -29,6 +29,8 @@ import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/migration/data/migration_repository.dart';
@@ -387,6 +389,27 @@ Map<String, Object?> _transportItemRow(int seq) => {
   'vehicle': 'Kamyon 2',
   'loaded_at': '2026-11-15T18:05:00+00:00',
   'unloaded_at': null,
+};
+
+Map<String, Object?> _inventoryItemRow(int seq) => {
+  ..._standard('inventory-item-1', seq),
+  'org_id': _org,
+  'name': 'Temel petek',
+  'category': 'comb',
+  'unit': 'piece',
+  'place': 'depo',
+  'threshold': 100,
+};
+
+Map<String, Object?> _inventoryMoveRow(int seq) => {
+  ..._standard('inventory-move-1', seq),
+  'org_id': _org,
+  'item_id': 'inventory-item-1',
+  'kind': 'out',
+  'quantity': -12.5,
+  'moved_at': '2026-11-15T18:05:00+00:00',
+  'linked_table': 'feedings',
+  'linked_id': 'feeding-1',
 };
 
 bool _isPull(http.Request request) =>
@@ -893,11 +916,13 @@ void main() {
         'migration_stops': [_migrationStopRow(19)],
         'transports': [_transportRow(20)],
         'transport_items': [_transportItemRow(21)],
+        'inventory_items': [_inventoryItemRow(22)],
+        'inventory_moves': [_inventoryMoveRow(23)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 21),
+        const SyncResult(status: SyncStatus.done, pulled: 23),
       );
 
       expect(requests.map(_pullOf), [
@@ -922,6 +947,8 @@ void main() {
         (table: 'migration_stops', since: 0),
         (table: 'transports', since: 0),
         (table: 'transport_items', since: 0),
+        (table: 'inventory_items', since: 0),
+        (table: 'inventory_moves', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -1050,6 +1077,8 @@ void main() {
         'migration_stops': 19,
         'transports': 20,
         'transport_items': 21,
+        'inventory_items': 22,
+        'inventory_moves': 23,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -1073,6 +1102,16 @@ void main() {
       expect(item.vehicle, 'Kamyon 2');
       expect(item.loadedAt, DateTime.utc(2026, 11, 15, 18, 5));
       expect(item.unloadedAt, isNull);
+      final inventory = InventoryRepository(db);
+      final stockItem = (await inventory.findById('inventory-item-1'))!;
+      expect(stockItem.category, InventoryCategory.comb);
+      expect(stockItem.unit, InventoryUnit.piece);
+      expect(stockItem.threshold, 100);
+      final stockMove = (await inventory.moves.findById('inventory-move-1'))!;
+      expect(stockMove.kind, InventoryMoveKind.stockOut);
+      expect(stockMove.quantity, -12.5);
+      expect(stockMove.linkedId, 'feeding-1');
+      expect(await inventory.moves.stockOf('inventory-item-1'), -12.5);
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

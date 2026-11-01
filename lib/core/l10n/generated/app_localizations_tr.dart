@@ -4405,4 +4405,229 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moveScanDone => 'Bitti';
+
+  @override
+  String get inventoryTitle => 'Malzeme ve stok';
+
+  @override
+  String get inventoryAdd => 'Kalem ekle';
+
+  @override
+  String get inventoryEmptyTitle => 'Henüz stok kalemi yok';
+
+  @override
+  String get inventoryEmptyMessage =>
+      'Şeker, temel petek, kavanoz gibi malzemeleri ekle. Eşiğin altına düşen kalem kırmızıyla işaretlenir.';
+
+  @override
+  String get inventoryCategoryEmpty => 'Bu kategoride kalem yok';
+
+  @override
+  String get inventoryLoadError => 'Stok açılamadı.';
+
+  @override
+  String get inventoryNotFound => 'Kalem bulunamadı';
+
+  @override
+  String get inventoryCategoryConsumable => 'Sarf';
+
+  @override
+  String get inventoryCategoryEquipment => 'Ekipman';
+
+  @override
+  String get inventoryCategoryComb => 'Petek';
+
+  @override
+  String get inventoryUnitKg => 'kg';
+
+  @override
+  String get inventoryUnitLiter => 'L';
+
+  @override
+  String get inventoryUnitPiece => 'ad';
+
+  @override
+  String get inventoryUnitRoll => 'rulo';
+
+  @override
+  String get inventoryUnitPack => 'paket';
+
+  @override
+  String get inventoryUnitNameKg => 'Kilogram';
+
+  @override
+  String get inventoryUnitNameLiter => 'Litre';
+
+  @override
+  String get inventoryUnitNamePiece => 'Adet';
+
+  @override
+  String get inventoryUnitNameRoll => 'Rulo';
+
+  @override
+  String get inventoryUnitNamePack => 'Paket';
+
+  @override
+  String inventoryQuantity(String quantity, String unit) {
+    return '$quantity $unit';
+  }
+
+  @override
+  String inventoryBelowThreshold(String threshold) {
+    return 'Eşiğin altında · en az $threshold';
+  }
+
+  @override
+  String get inventoryMoveIn => 'Giriş';
+
+  @override
+  String get inventoryMoveOut => 'Çıkış';
+
+  @override
+  String get inventoryMoveCount => 'Sayım';
+
+  @override
+  String get inventoryMoveAdjustment => 'Düzeltme';
+
+  @override
+  String inventoryInStock(String quantity) {
+    return 'Stokta $quantity';
+  }
+
+  @override
+  String inventoryAmountLabel(String unit) {
+    return 'Miktar ($unit)';
+  }
+
+  @override
+  String inventoryCountedLabel(String unit) {
+    return 'Sayılan miktar ($unit)';
+  }
+
+  @override
+  String get inventoryAmountInvalid => 'Geçerli bir miktar yaz';
+
+  @override
+  String get inventoryAmountWhole => 'Bu birimde tam sayı yaz';
+
+  @override
+  String get inventorySaveIn => 'Giriş yap';
+
+  @override
+  String get inventorySaveOut => 'Çıkış yap';
+
+  @override
+  String get inventorySaveCount => 'Stoğu düzelt';
+
+  @override
+  String inventoryMovedIn(String quantity) {
+    return '$quantity giriş yazıldı';
+  }
+
+  @override
+  String inventoryMovedOut(String quantity) {
+    return '$quantity çıkış yazıldı';
+  }
+
+  @override
+  String inventoryAdjusted(String quantity) {
+    return 'Stok $quantity oldu';
+  }
+
+  @override
+  String inventoryUnchanged(String quantity) {
+    return 'Stok zaten $quantity';
+  }
+
+  @override
+  String get inventoryDetails => 'Ayrıntılar ve hareketler';
+
+  @override
+  String get inventoryHistory => 'Hareketler';
+
+  @override
+  String get inventoryHistoryEmpty => 'Henüz hareket yok';
+
+  @override
+  String inventoryThreshold(String threshold) {
+    return 'Eşik: en az $threshold';
+  }
+
+  @override
+  String get inventoryNoThreshold => 'Eşik yok';
+
+  @override
+  String get inventoryQuickMove => 'Giriş / çıkış';
+
+  @override
+  String get inventoryEdit => 'Kalemi düzenle';
+
+  @override
+  String get inventoryFormNewTitle => 'Yeni kalem';
+
+  @override
+  String get inventoryFormEditTitle => 'Kalemi düzenle';
+
+  @override
+  String get inventoryFormName => 'Ad';
+
+  @override
+  String get inventoryFormCategory => 'Kategori';
+
+  @override
+  String get inventoryFormUnit => 'Birim';
+
+  @override
+  String get inventoryFormLocation => 'Konum';
+
+  @override
+  String get inventoryFormLocationHint =>
+      'Depo, kamyonet, ofis… Boş bırakılabilir.';
+
+  @override
+  String get inventoryFormThreshold => 'Eşik';
+
+  @override
+  String get inventoryFormThresholdHint =>
+      'Stok bunun altına düşünce uyarılır. Boş bırakılabilir.';
+
+  @override
+  String get inventoryFormThresholdInvalid => 'Geçerli bir eşik yaz';
+
+  @override
+  String get inventoryFormSave => 'Kaydet';
+
+  @override
+  String get inventoryFormDelete => 'Kalemi sil';
+
+  @override
+  String get inventoryDeleteTitle => 'Kalem silinsin mi?';
+
+  @override
+  String get inventoryDeleteMessage => 'Kalem ve stoğu listeden kalkar.';
+
+  @override
+  String get inventoryDeleteConfirm => 'Sil';
+
+  @override
+  String get inventorySaved => 'Kalem kaydedildi';
+
+  @override
+  String get inventoryDeleted => 'Kalem silindi';
+
+  @override
+  String get syncTableInventoryItems => 'Stok kalemi';
+
+  @override
+  String get syncTableInventoryMoves => 'Stok hareketi';
+
+  @override
+  String inventoryIncrease(String quantity) {
+    return '+$quantity';
+  }
+
+  @override
+  String inventoryFormThresholdUnit(String unit) {
+    return 'Eşik ($unit)';
+  }
 }

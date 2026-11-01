@@ -4020,5 +4020,345 @@
   "moveScanDone": "Done",
   "@moveScanDone": {
     "description": "Closes the continuous scanner."
+  },
+  "inventoryTitle": "Supplies and stock",
+  "@inventoryTitle": {
+    "description": "Supplies and stock screen title; also its tile on More."
+  },
+  "inventoryAdd": "Add item",
+  "@inventoryAdd": {
+    "description": "Adds a stock item."
+  },
+  "inventoryEmptyTitle": "No stock items yet",
+  "@inventoryEmptyTitle": {
+    "description": "Stock screen with no items: title."
+  },
+  "inventoryEmptyMessage": "Add supplies like sugar, foundation and jars. Items below their minimum are flagged.",
+  "@inventoryEmptyMessage": {
+    "description": "Stock screen with no items: message."
+  },
+  "inventoryCategoryEmpty": "No items in this category",
+  "@inventoryCategoryEmpty": {
+    "description": "Selected category tab has no items."
+  },
+  "inventoryLoadError": "Couldn't open stock.",
+  "@inventoryLoadError": {
+    "description": "Stock could not be read."
+  },
+  "inventoryNotFound": "Item not found",
+  "@inventoryNotFound": {
+    "description": "Stock item missing or deleted."
+  },
+  "inventoryCategoryConsumable": "Supplies",
+  "@inventoryCategoryConsumable": {
+    "description": "Stock category: consumables (sugar, jars, labels)."
+  },
+  "inventoryCategoryEquipment": "Equipment",
+  "@inventoryCategoryEquipment": {
+    "description": "Stock category: equipment (boxes, frames, smoker)."
+  },
+  "inventoryCategoryComb": "Comb",
+  "@inventoryCategoryComb": {
+    "description": "Stock category: drawn comb and foundation."
+  },
+  "inventoryUnitKg": "kg",
+  "@inventoryUnitKg": {
+    "description": "Short unit after a quantity: kilograms."
+  },
+  "inventoryUnitLiter": "L",
+  "@inventoryUnitLiter": {
+    "description": "Short unit after a quantity: liters."
+  },
+  "inventoryUnitPiece": "pcs",
+  "@inventoryUnitPiece": {
+    "description": "Short unit after a quantity: pieces."
+  },
+  "inventoryUnitRoll": "rolls",
+  "@inventoryUnitRoll": {
+    "description": "Short unit after a quantity: rolls."
+  },
+  "inventoryUnitPack": "packs",
+  "@inventoryUnitPack": {
+    "description": "Short unit after a quantity: packs."
+  },
+  "inventoryUnitNameKg": "Kilogram",
+  "@inventoryUnitNameKg": {
+    "description": "Unit choice in the item form."
+  },
+  "inventoryUnitNameLiter": "Liter",
+  "@inventoryUnitNameLiter": {
+    "description": "Unit choice in the item form."
+  },
+  "inventoryUnitNamePiece": "Piece",
+  "@inventoryUnitNamePiece": {
+    "description": "Unit choice in the item form."
+  },
+  "inventoryUnitNameRoll": "Roll",
+  "@inventoryUnitNameRoll": {
+    "description": "Unit choice in the item form."
+  },
+  "inventoryUnitNamePack": "Pack",
+  "@inventoryUnitNamePack": {
+    "description": "Unit choice in the item form."
+  },
+  "inventoryQuantity": "{quantity} {unit}",
+  "@inventoryQuantity": {
+    "description": "A stock quantity with its short unit.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "150"
+      },
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "inventoryBelowThreshold": "Below minimum · at least {threshold}",
+  "@inventoryBelowThreshold": {
+    "description": "Item stock is below its minimum.",
+    "placeholders": {
+      "threshold": {
+        "type": "String",
+        "example": "100"
+      }
+    }
+  },
+  "inventoryMoveIn": "In",
+  "@inventoryMoveIn": {
+    "description": "Stock movement kind: stock added."
+  },
+  "inventoryMoveOut": "Out",
+  "@inventoryMoveOut": {
+    "description": "Stock movement kind: stock used or removed."
+  },
+  "inventoryMoveCount": "Count",
+  "@inventoryMoveCount": {
+    "description": "Quick movement tab: enter the counted stock."
+  },
+  "inventoryMoveAdjustment": "Correction",
+  "@inventoryMoveAdjustment": {
+    "description": "Stock movement kind in history: correction after a count."
+  },
+  "inventoryInStock": "In stock: {quantity}",
+  "@inventoryInStock": {
+    "description": "Current stock in the quick movement sheet.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "40 pcs"
+      }
+    }
+  },
+  "inventoryAmountLabel": "Amount ({unit})",
+  "@inventoryAmountLabel": {
+    "description": "Quick movement amount field.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "inventoryCountedLabel": "Counted amount ({unit})",
+  "@inventoryCountedLabel": {
+    "description": "Quick movement field when counting stock.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
+  },
+  "inventoryAmountInvalid": "Enter a valid amount",
+  "@inventoryAmountInvalid": {
+    "description": "Amount is not a valid number."
+  },
+  "inventoryAmountWhole": "Use a whole number for this unit",
+  "@inventoryAmountWhole": {
+    "description": "Amount has decimals but the unit counts pieces."
+  },
+  "inventorySaveIn": "Add to stock",
+  "@inventorySaveIn": {
+    "description": "Saves a stock-in movement."
+  },
+  "inventorySaveOut": "Remove from stock",
+  "@inventorySaveOut": {
+    "description": "Saves a stock-out movement."
+  },
+  "inventorySaveCount": "Correct stock",
+  "@inventorySaveCount": {
+    "description": "Saves the counted stock as a correction."
+  },
+  "inventoryMovedIn": "{quantity} added",
+  "@inventoryMovedIn": {
+    "description": "Undo message after a stock-in.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "12 kg"
+      }
+    }
+  },
+  "inventoryMovedOut": "{quantity} removed",
+  "@inventoryMovedOut": {
+    "description": "Undo message after a stock-out.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "12 kg"
+      }
+    }
+  },
+  "inventoryAdjusted": "Stock is now {quantity}",
+  "@inventoryAdjusted": {
+    "description": "Undo message after a count correction.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "40 pcs"
+      }
+    }
+  },
+  "inventoryUnchanged": "Stock is already {quantity}",
+  "@inventoryUnchanged": {
+    "description": "Counted stock equals current stock; nothing saved.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "40 pcs"
+      }
+    }
+  },
+  "inventoryDetails": "Details and history",
+  "@inventoryDetails": {
+    "description": "Opens the item's detail and movement history."
+  },
+  "inventoryHistory": "History",
+  "@inventoryHistory": {
+    "description": "Section title: item's movements."
+  },
+  "inventoryHistoryEmpty": "No movements yet",
+  "@inventoryHistoryEmpty": {
+    "description": "Item has no movements."
+  },
+  "inventoryThreshold": "Minimum: at least {threshold}",
+  "@inventoryThreshold": {
+    "description": "Item's minimum stock on the detail screen.",
+    "placeholders": {
+      "threshold": {
+        "type": "String",
+        "example": "100 pcs"
+      }
+    }
+  },
+  "inventoryNoThreshold": "No minimum",
+  "@inventoryNoThreshold": {
+    "description": "Item has no minimum stock."
+  },
+  "inventoryQuickMove": "Add / remove",
+  "@inventoryQuickMove": {
+    "description": "Opens the quick stock movement sheet."
+  },
+  "inventoryEdit": "Edit item",
+  "@inventoryEdit": {
+    "description": "Opens the item form."
+  },
+  "inventoryFormNewTitle": "New item",
+  "@inventoryFormNewTitle": {
+    "description": "Item form title when adding."
+  },
+  "inventoryFormEditTitle": "Edit item",
+  "@inventoryFormEditTitle": {
+    "description": "Item form title when editing."
+  },
+  "inventoryFormName": "Name",
+  "@inventoryFormName": {
+    "description": "Item form: name field."
+  },
+  "inventoryFormCategory": "Category",
+  "@inventoryFormCategory": {
+    "description": "Item form: category choice."
+  },
+  "inventoryFormUnit": "Unit",
+  "@inventoryFormUnit": {
+    "description": "Item form: unit choice."
+  },
+  "inventoryFormLocation": "Location",
+  "@inventoryFormLocation": {
+    "description": "Item form: where the item is kept."
+  },
+  "inventoryFormLocationHint": "Storeroom, truck, office… Optional.",
+  "@inventoryFormLocationHint": {
+    "description": "Item form: location helper."
+  },
+  "inventoryFormThreshold": "Minimum",
+  "@inventoryFormThreshold": {
+    "description": "Item form: minimum stock field."
+  },
+  "inventoryFormThresholdHint": "You're warned when stock drops below this. Optional.",
+  "@inventoryFormThresholdHint": {
+    "description": "Item form: minimum helper."
+  },
+  "inventoryFormThresholdInvalid": "Enter a valid minimum",
+  "@inventoryFormThresholdInvalid": {
+    "description": "Item form: minimum is not a valid number."
+  },
+  "inventoryFormSave": "Save",
+  "@inventoryFormSave": {
+    "description": "Saves the item form."
+  },
+  "inventoryFormDelete": "Delete item",
+  "@inventoryFormDelete": {
+    "description": "Deletes the item from the edit form."
+  },
+  "inventoryDeleteTitle": "Delete this item?",
+  "@inventoryDeleteTitle": {
+    "description": "Delete item confirmation title."
+  },
+  "inventoryDeleteMessage": "The item and its stock leave the list.",
+  "@inventoryDeleteMessage": {
+    "description": "Delete item confirmation message."
+  },
+  "inventoryDeleteConfirm": "Delete",
+  "@inventoryDeleteConfirm": {
+    "description": "Delete item confirmation button."
+  },
+  "inventorySaved": "Item saved",
+  "@inventorySaved": {
+    "description": "Message after saving an edited item."
+  },
+  "inventoryDeleted": "Item deleted",
+  "@inventoryDeleted": {
+    "description": "Message after deleting an item."
+  },
+  "syncTableInventoryItems": "Stock item",
+  "@syncTableInventoryItems": {
+    "description": "Sync screen record type: stock item."
+  },
+  "syncTableInventoryMoves": "Stock movement",
+  "@syncTableInventoryMoves": {
+    "description": "Sync screen record type: stock movement."
+  },
+  "inventoryIncrease": "+{quantity}",
+  "@inventoryIncrease": {
+    "description": "A stock increase in the movement history, with its sign.",
+    "placeholders": {
+      "quantity": {
+        "type": "String",
+        "example": "12 kg"
+      }
+    }
+  },
+  "inventoryFormThresholdUnit": "Minimum ({unit})",
+  "@inventoryFormThresholdUnit": {
+    "description": "Item form: minimum stock field once a unit is chosen.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "kg"
+      }
+    }
   }
 }

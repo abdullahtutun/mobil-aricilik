@@ -42,6 +42,10 @@ import 'package:mobil_arici/features/hives/presentation/labels/hive_labels_scree
 import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.dart';
 import 'package:mobil_arici/features/inspections/presentation/tour_screen.dart';
 import 'package:mobil_arici/features/inspections/presentation/tour_summary_screen.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/inventory/presentation/inventory_form_screen.dart';
+import 'package:mobil_arici/features/inventory/presentation/inventory_item_screen.dart';
+import 'package:mobil_arici/features/inventory/presentation/inventory_screen.dart';
 import 'package:mobil_arici/features/media/presentation/media_viewer_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_form_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_screen.dart';
@@ -77,6 +81,7 @@ const _documentId = 'documentId';
 const _migrationId = 'migrationId';
 const _transportId = 'transportId';
 const _stopId = 'stopId';
+const _inventoryItemId = 'inventoryItemId';
 const _attentionKind = 'kind';
 
 /// Yoldaki dikkat grubu; bilinmeyen adda null.
@@ -434,6 +439,44 @@ GoRouter router(Ref ref) {
                             parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => DocumentFormScreen(
                               documentId: state.pathParameters[_documentId],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'inventory',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const InventoryScreen(),
+                    routes: [
+                      // Sabit yollar `:id`'den önce.
+                      GoRoute(
+                        path: 'new',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => InventoryFormScreen(
+                          category: InventoryCategory.values
+                              .where(
+                                (category) =>
+                                    category.value ==
+                                    state.uri.queryParameters[AppRoutes
+                                        .inventoryCategoryParameter],
+                              )
+                              .firstOrNull,
+                        ),
+                      ),
+                      GoRoute(
+                        path: ':$_inventoryItemId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => InventoryItemScreen(
+                          itemId: state.pathParameters[_inventoryItemId]!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => InventoryFormScreen(
+                              itemId: state.pathParameters[_inventoryItemId],
                             ),
                           ),
                         ],

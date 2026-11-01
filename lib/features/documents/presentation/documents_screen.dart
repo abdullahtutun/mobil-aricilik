@@ -30,11 +30,9 @@ class DocumentsScreen extends ConsumerWidget {
         title: Text(l10n.documentsTitle),
         actions: [
           if (canWrite)
-            Padding(
-              padding: EdgeInsetsDirectional.only(end: context.spacing.sm),
-              child: _AddButton(
-                onPressed: () => context.go(AppRoutes.documentNew),
-              ),
+            AppBarAddButton(
+              label: l10n.documentsAdd,
+              onPressed: () => context.go(AppRoutes.documentNew),
             ),
         ],
       ),
@@ -179,35 +177,6 @@ class _DocumentCard extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Belge ekle: soluk zeminde köşeli kare, birincil renkte "+"
-/// (docs/design "Belge kasası").
-class _AddButton extends StatelessWidget {
-  const new({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final size = context.touchTargets.field;
-    return IconButton(
-      tooltip: AppLocalizations.of(context).documentsAdd,
-      onPressed: onPressed,
-      icon: const Icon(Icons.add_rounded),
-      iconSize: context.sizes.icon,
-      color: colors.primary,
-      style: IconButton.styleFrom(
-        backgroundColor: colors.surfaceContainer,
-        fixedSize: Size.square(size),
-        minimumSize: Size.square(size),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(context.radii.card),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/today/domain/today_rules.dart';
 
 /// Rota yolları. Geliştirici rotaları yalnızca dev flavor'da kayıtlıdır.
@@ -129,6 +130,18 @@ abstract final class AppRoutes {
 
   /// Yol kontrolü: belgeler tam ekran, kaydırarak geçilir.
   static const roadCheck = '/more/documents/road-check';
+
+  /// Malzeme ve stok; Daha fazla'dan açılır. Kalem, ekleme ve düzenleme
+  /// listenin altında. Yeni kalemin kategorisi listede açık sekme.
+  static const inventory = '/more/inventory';
+  static const inventoryNewPath = '/more/inventory/new';
+  static const inventoryCategoryParameter = 'category';
+  static String inventoryNew(InventoryCategory category) => Uri(
+    path: inventoryNewPath,
+    queryParameters: {inventoryCategoryParameter: category.value},
+  ).toString();
+  static String inventoryItem(String id) => '/more/inventory/$id';
+  static String inventoryItemEdit(String id) => '/more/inventory/$id/edit';
 
   /// Göç planları; Daha fazla'dan açılır. Planın zaman çizelgesi, plan ve
   /// durak formları planların altında.

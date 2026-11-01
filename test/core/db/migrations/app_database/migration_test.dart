@@ -9,6 +9,7 @@ import 'generated/schema_v10.dart' as v10;
 import 'generated/schema_v11.dart' as v11;
 import 'generated/schema_v12.dart' as v12;
 import 'generated/schema_v13.dart' as v13;
+import 'generated/schema_v14.dart' as v14;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
@@ -601,6 +602,37 @@ void main() {
         expect(stops.single.name, 'Kışlak');
         expect(await newDb.select(newDb.transports).get(), isEmpty);
         expect(await newDb.select(newDb.transportItems).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v13 → v14 taşımaları korur; stok tabloları boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 13,
+      newVersion: 14,
+      createOld: v13.DatabaseAtV13.new,
+      createNew: v14.DatabaseAtV14.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.transports,
+          v13.TransportsCompanion.insert(
+            id: 'transport-1',
+            createdAt: '2026-10-31T09:00:00.000Z',
+            updatedAt: '2026-10-31T09:00:00.000Z',
+            orgId: 'org-1',
+            sourceApiaryId: 'apiary-1',
+            destinationApiaryId: 'apiary-2',
+            vehicles: const Value('["Kamyon 1"]'),
+            status: 'loading',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final transports = await newDb.select(newDb.transports).get();
+        expect(transports.single.vehicles, '["Kamyon 1"]');
+        expect(await newDb.select(newDb.inventoryItems).get(), isEmpty);
+        expect(await newDb.select(newDb.inventoryMoves).get(), isEmpty);
       },
     );
   });

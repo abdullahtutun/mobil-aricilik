@@ -12,6 +12,7 @@ import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/migration/domain/transport.dart';
@@ -155,6 +156,9 @@ void main() {
       'document_file_kind': values(DocumentFileKind.values),
       'migration_stop_status': values(MigrationStopStatus.values),
       'transport_status': values(TransportStatus.values),
+      'inventory_category': values(InventoryCategory.values),
+      'inventory_unit': values(InventoryUnit.values),
+      'inventory_move_kind': values(InventoryMoveKind.values),
     };
 
     expect(local, server.enums);

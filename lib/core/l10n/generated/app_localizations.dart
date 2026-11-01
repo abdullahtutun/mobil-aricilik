@@ -7078,6 +7078,402 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get moveScanDone;
+
+  /// Supplies and stock screen title; also its tile on More.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplies and stock'**
+  String get inventoryTitle;
+
+  /// Adds a stock item.
+  ///
+  /// In en, this message translates to:
+  /// **'Add item'**
+  String get inventoryAdd;
+
+  /// Stock screen with no items: title.
+  ///
+  /// In en, this message translates to:
+  /// **'No stock items yet'**
+  String get inventoryEmptyTitle;
+
+  /// Stock screen with no items: message.
+  ///
+  /// In en, this message translates to:
+  /// **'Add supplies like sugar, foundation and jars. Items below their minimum are flagged.'**
+  String get inventoryEmptyMessage;
+
+  /// Selected category tab has no items.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in this category'**
+  String get inventoryCategoryEmpty;
+
+  /// Stock could not be read.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open stock.'**
+  String get inventoryLoadError;
+
+  /// Stock item missing or deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Item not found'**
+  String get inventoryNotFound;
+
+  /// Stock category: consumables (sugar, jars, labels).
+  ///
+  /// In en, this message translates to:
+  /// **'Supplies'**
+  String get inventoryCategoryConsumable;
+
+  /// Stock category: equipment (boxes, frames, smoker).
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get inventoryCategoryEquipment;
+
+  /// Stock category: drawn comb and foundation.
+  ///
+  /// In en, this message translates to:
+  /// **'Comb'**
+  String get inventoryCategoryComb;
+
+  /// Short unit after a quantity: kilograms.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get inventoryUnitKg;
+
+  /// Short unit after a quantity: liters.
+  ///
+  /// In en, this message translates to:
+  /// **'L'**
+  String get inventoryUnitLiter;
+
+  /// Short unit after a quantity: pieces.
+  ///
+  /// In en, this message translates to:
+  /// **'pcs'**
+  String get inventoryUnitPiece;
+
+  /// Short unit after a quantity: rolls.
+  ///
+  /// In en, this message translates to:
+  /// **'rolls'**
+  String get inventoryUnitRoll;
+
+  /// Short unit after a quantity: packs.
+  ///
+  /// In en, this message translates to:
+  /// **'packs'**
+  String get inventoryUnitPack;
+
+  /// Unit choice in the item form.
+  ///
+  /// In en, this message translates to:
+  /// **'Kilogram'**
+  String get inventoryUnitNameKg;
+
+  /// Unit choice in the item form.
+  ///
+  /// In en, this message translates to:
+  /// **'Liter'**
+  String get inventoryUnitNameLiter;
+
+  /// Unit choice in the item form.
+  ///
+  /// In en, this message translates to:
+  /// **'Piece'**
+  String get inventoryUnitNamePiece;
+
+  /// Unit choice in the item form.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll'**
+  String get inventoryUnitNameRoll;
+
+  /// Unit choice in the item form.
+  ///
+  /// In en, this message translates to:
+  /// **'Pack'**
+  String get inventoryUnitNamePack;
+
+  /// A stock quantity with its short unit.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity} {unit}'**
+  String inventoryQuantity(String quantity, String unit);
+
+  /// Item stock is below its minimum.
+  ///
+  /// In en, this message translates to:
+  /// **'Below minimum · at least {threshold}'**
+  String inventoryBelowThreshold(String threshold);
+
+  /// Stock movement kind: stock added.
+  ///
+  /// In en, this message translates to:
+  /// **'In'**
+  String get inventoryMoveIn;
+
+  /// Stock movement kind: stock used or removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get inventoryMoveOut;
+
+  /// Quick movement tab: enter the counted stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Count'**
+  String get inventoryMoveCount;
+
+  /// Stock movement kind in history: correction after a count.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction'**
+  String get inventoryMoveAdjustment;
+
+  /// Current stock in the quick movement sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock: {quantity}'**
+  String inventoryInStock(String quantity);
+
+  /// Quick movement amount field.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount ({unit})'**
+  String inventoryAmountLabel(String unit);
+
+  /// Quick movement field when counting stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted amount ({unit})'**
+  String inventoryCountedLabel(String unit);
+
+  /// Amount is not a valid number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid amount'**
+  String get inventoryAmountInvalid;
+
+  /// Amount has decimals but the unit counts pieces.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a whole number for this unit'**
+  String get inventoryAmountWhole;
+
+  /// Saves a stock-in movement.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to stock'**
+  String get inventorySaveIn;
+
+  /// Saves a stock-out movement.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from stock'**
+  String get inventorySaveOut;
+
+  /// Saves the counted stock as a correction.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct stock'**
+  String get inventorySaveCount;
+
+  /// Undo message after a stock-in.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity} added'**
+  String inventoryMovedIn(String quantity);
+
+  /// Undo message after a stock-out.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity} removed'**
+  String inventoryMovedOut(String quantity);
+
+  /// Undo message after a count correction.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock is now {quantity}'**
+  String inventoryAdjusted(String quantity);
+
+  /// Counted stock equals current stock; nothing saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock is already {quantity}'**
+  String inventoryUnchanged(String quantity);
+
+  /// Opens the item's detail and movement history.
+  ///
+  /// In en, this message translates to:
+  /// **'Details and history'**
+  String get inventoryDetails;
+
+  /// Section title: item's movements.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get inventoryHistory;
+
+  /// Item has no movements.
+  ///
+  /// In en, this message translates to:
+  /// **'No movements yet'**
+  String get inventoryHistoryEmpty;
+
+  /// Item's minimum stock on the detail screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum: at least {threshold}'**
+  String inventoryThreshold(String threshold);
+
+  /// Item has no minimum stock.
+  ///
+  /// In en, this message translates to:
+  /// **'No minimum'**
+  String get inventoryNoThreshold;
+
+  /// Opens the quick stock movement sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add / remove'**
+  String get inventoryQuickMove;
+
+  /// Opens the item form.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit item'**
+  String get inventoryEdit;
+
+  /// Item form title when adding.
+  ///
+  /// In en, this message translates to:
+  /// **'New item'**
+  String get inventoryFormNewTitle;
+
+  /// Item form title when editing.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit item'**
+  String get inventoryFormEditTitle;
+
+  /// Item form: name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get inventoryFormName;
+
+  /// Item form: category choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get inventoryFormCategory;
+
+  /// Item form: unit choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get inventoryFormUnit;
+
+  /// Item form: where the item is kept.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get inventoryFormLocation;
+
+  /// Item form: location helper.
+  ///
+  /// In en, this message translates to:
+  /// **'Storeroom, truck, office… Optional.'**
+  String get inventoryFormLocationHint;
+
+  /// Item form: minimum stock field.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum'**
+  String get inventoryFormThreshold;
+
+  /// Item form: minimum helper.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re warned when stock drops below this. Optional.'**
+  String get inventoryFormThresholdHint;
+
+  /// Item form: minimum is not a valid number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid minimum'**
+  String get inventoryFormThresholdInvalid;
+
+  /// Saves the item form.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get inventoryFormSave;
+
+  /// Deletes the item from the edit form.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete item'**
+  String get inventoryFormDelete;
+
+  /// Delete item confirmation title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this item?'**
+  String get inventoryDeleteTitle;
+
+  /// Delete item confirmation message.
+  ///
+  /// In en, this message translates to:
+  /// **'The item and its stock leave the list.'**
+  String get inventoryDeleteMessage;
+
+  /// Delete item confirmation button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get inventoryDeleteConfirm;
+
+  /// Message after saving an edited item.
+  ///
+  /// In en, this message translates to:
+  /// **'Item saved'**
+  String get inventorySaved;
+
+  /// Message after deleting an item.
+  ///
+  /// In en, this message translates to:
+  /// **'Item deleted'**
+  String get inventoryDeleted;
+
+  /// Sync screen record type: stock item.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock item'**
+  String get syncTableInventoryItems;
+
+  /// Sync screen record type: stock movement.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock movement'**
+  String get syncTableInventoryMoves;
+
+  /// A stock increase in the movement history, with its sign.
+  ///
+  /// In en, this message translates to:
+  /// **'+{quantity}'**
+  String inventoryIncrease(String quantity);
+
+  /// Item form: minimum stock field once a unit is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum ({unit})'**
+  String inventoryFormThresholdUnit(String unit);
 }
 
 class _AppLocalizationsDelegate

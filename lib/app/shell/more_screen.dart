@@ -10,8 +10,8 @@ import 'package:mobil_arici/features/organization/presentation/organization_prov
 
 /// Seyrek kullanılan modüllerin girişi (docs/design "Daha fazla"): üstte
 /// işletme kartı, altında bölüm bölüm iki sütunlu modül karoları. Arılık:
-/// yaşlı analar; işletme: ekip, raporlar, belge kasası; yardım: görüş
-/// bildir, ayarlar, senkron.
+/// yaşlı analar, gezginci; işletme: ekip, raporlar, belge kasası, malzeme
+/// ve stok; yardım: görüş bildir, ayarlar, senkron.
 /// Diğer modüller geldikçe kendi bölümlerine eklenir.
 class MoreScreen extends ConsumerWidget {
   const new({super.key});
@@ -71,6 +71,11 @@ class MoreScreen extends ConsumerWidget {
                   icon: Icons.folder_copy_outlined,
                   label: l10n.documentsTitle,
                   onTap: () => context.go(AppRoutes.documents),
+                ),
+                _ModuleTile(
+                  icon: Icons.inventory_2_outlined,
+                  label: l10n.inventoryTitle,
+                  onTap: () => context.go(AppRoutes.inventory),
                 ),
               ],
             ),

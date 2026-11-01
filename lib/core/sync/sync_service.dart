@@ -81,6 +81,8 @@ class SyncService {
     _db.migrationStops,
     _db.transports,
     _db.transportItems,
+    _db.inventoryItems,
+    _db.inventoryMoves,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

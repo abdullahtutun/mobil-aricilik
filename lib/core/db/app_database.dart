@@ -7,6 +7,7 @@ import 'package:mobil_arici/core/db/tables/harvest_tables.dart';
 import 'package:mobil_arici/core/db/tables/health_tables.dart';
 import 'package:mobil_arici/core/db/tables/hive_tables.dart';
 import 'package:mobil_arici/core/db/tables/inspection_tables.dart';
+import 'package:mobil_arici/core/db/tables/inventory_tables.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/migration_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
@@ -26,6 +27,7 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
+import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/migration/domain/transport.dart';
@@ -72,6 +74,8 @@ part 'app_database.g.dart';
     MigrationStops,
     Transports,
     TransportItems,
+    InventoryItems,
+    InventoryMoves,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -83,7 +87,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 13;
+  int get schemaVersion => 14;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -183,6 +187,14 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.transportItemsOrgIdIdx);
         await m.create(schema.transportItemsTransportIdIdx);
         await m.create(schema.transportItemsHiveIdIdx);
+      },
+      // Stok kalemleri ve hareketleri.
+      from13To14: (m, schema) async {
+        await m.createTable(schema.inventoryItems);
+        await m.create(schema.inventoryItemsOrgIdIdx);
+        await m.createTable(schema.inventoryMoves);
+        await m.create(schema.inventoryMovesOrgIdIdx);
+        await m.create(schema.inventoryMovesItemIdIdx);
       },
     ),
   );

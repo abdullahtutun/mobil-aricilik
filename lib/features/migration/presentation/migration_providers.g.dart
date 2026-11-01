@@ -840,7 +840,7 @@ final class TransportVehicleProvider
   }
 }
 
-String _$transportVehicleHash() => r'88cac1f83fffb4fcbd5d0a2487b516f5a6b27ab2';
+String _$transportVehicleHash() => r'8fa9efe35a4f5fc101c13e9ce40c8ffa7f68c0fb';
 
 /// Yüklemede seçili araç; taşıma ekranı açıkken yaşar. Boşsa ilk araç.
 
