@@ -86,7 +86,6 @@ class _SignInEmailScreenState extends ConsumerState<SignInEmailScreen> {
                     // İstek sürerken klavye kapanmasın; hata çıkınca
                     // düzeltmeye hazır kalsın.
                     readOnly: state.busy,
-                    autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.send,
                     autofillHints: const [AutofillHints.email],

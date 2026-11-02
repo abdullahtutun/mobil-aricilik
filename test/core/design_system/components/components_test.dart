@@ -667,6 +667,54 @@ void main() {
     });
   });
 
+  group('KeyboardDismissArea', () {
+    testWidgets('alan dışına dokununca odak bırakılır, dokunuş butona da '
+        'gider; kaydırma ve başka alana dokunmak odağı bırakmaz', (
+      tester,
+    ) async {
+      var pressed = 0;
+      final first = FocusNode();
+      final second = FocusNode();
+      addTearDown(first.dispose);
+      addTearDown(second.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => KeyboardDismissArea(child: child!),
+          home: Scaffold(
+            body: ListView(
+              children: [
+                TextField(focusNode: first),
+                TextField(focusNode: second),
+                TextButton(
+                  onPressed: () => pressed++,
+                  child: const Text('Buton'),
+                ),
+                const SizedBox(height: 2000),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(TextField).first);
+      await tester.pump();
+      expect(first.hasFocus, isTrue);
+
+      await tester.tap(find.byType(TextField).last);
+      await tester.pump();
+      expect(second.hasFocus, isTrue);
+
+      await tester.drag(find.text('Buton'), const Offset(0, -100));
+      await tester.pumpAndSettle();
+      expect(second.hasFocus, isTrue);
+
+      await tester.tap(find.text('Buton'));
+      await tester.pump();
+      expect(second.hasFocus, isFalse);
+      expect(pressed, 1);
+    });
+  });
+
   group('SnackBarDismissArea', () {
     testWidgets('bildirim dışına dokununca kapanır, dokunuş alttaki butona '
         'gider; bildirimin içine ve Geri al’a dokunmak kapatmaz', (

@@ -120,7 +120,6 @@ class _HiveFormFieldsState extends ConsumerState<_HiveFormFields> {
           label: l10n.hiveFormNumber,
           field: TextField(
             controller: _number,
-            autofocus: widget.isNew,
             textInputAction: TextInputAction.done,
             textAlign: TextAlign.center,
             style: context.typography.number,

@@ -110,7 +110,6 @@ class _PaymentFormState extends ConsumerState<_PaymentForm> {
             ),
             child: TextField(
               controller: _amount,
-              autofocus: true,
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),

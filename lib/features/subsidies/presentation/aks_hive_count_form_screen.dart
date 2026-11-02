@@ -65,7 +65,6 @@ class _AksHiveCountFormState extends ConsumerState<_AksHiveCountForm> {
             helper: l10n.aksCountHelper,
             child: TextField(
               controller: _count,
-              autofocus: true,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               textInputAction: TextInputAction.done,

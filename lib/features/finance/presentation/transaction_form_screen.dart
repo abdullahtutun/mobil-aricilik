@@ -148,7 +148,6 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
             ),
             child: TextField(
               controller: _amount,
-              autofocus: true,
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),

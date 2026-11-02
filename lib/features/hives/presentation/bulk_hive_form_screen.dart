@@ -90,7 +90,6 @@ class _BulkHiveFormFields extends ConsumerWidget {
         InlineField(
           label: l10n.hiveBulkCount,
           field: TextField(
-            autofocus: true,
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             textInputAction: TextInputAction.next,

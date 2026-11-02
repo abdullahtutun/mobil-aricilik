@@ -135,7 +135,9 @@ void main() {
   });
 
   group('E-posta adımı', () {
-    testWidgets('e-posta alanı odakta açılır', (tester) async {
+    testWidgets('e-posta alanı odaksız açılır, klavye kendiliğinden açılmaz', (
+      tester,
+    ) async {
       await _pumpApp(tester, FakeAuthService());
 
       final field = tester.widget<EditableText>(
@@ -144,7 +146,7 @@ void main() {
           matching: find.byType(EditableText),
         ),
       );
-      expect(field.focusNode.hasFocus, isTrue);
+      expect(field.focusNode.hasFocus, isFalse);
     });
 
     testWidgets('geçersiz e-postada kod istenmez, hata gösterilir', (
@@ -257,7 +259,8 @@ void main() {
           matching: find.byType(EditableText),
         ),
       );
-      expect(editable.focusNode.hasFocus, isTrue);
+      // Klavye kendiliğinden açılmaz.
+      expect(editable.focusNode.hasFocus, isFalse);
 
       await tester.enterText(_field(SignInCodeScreen), '482913');
       await tester.pumpAndSettle();

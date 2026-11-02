@@ -531,6 +531,11 @@
 - Ekranlar: Daha fazla > İşletme > "Destekler" (`/more/subsidies`, yalnız `RegionFeatures.subsidies`): başvuru öncesi kontrol (uygulamadaki aktif kovan / AKS'de beyan edilen karoları; girilmemiş ℹ, tutuyor ✓, farklıysa ! uyarı cümlesi), dönem kartları (açık / yakında / bitti rozeti, günler, açıklama, "Resmî duyuruyu aç"). Owner `/more/subsidies/aks-count`'ta sayıyı girer (boş = sil); diğer rollere not gösterilir. Görev listesinde "AKS'de güncellemeyi unutma · AKS". Testler: 7 kural, 21 repository, 9 akış (TR/DE, owner/worker, Türkçe, 360dp 1.5x + eldiven); senkron çekme testi genişletildi. Tam takımda 1855 test geçiyor, `flutter analyze` temiz.
 - Bilinen: Destek bildirimine dokununca Destekler ekranı değil uygulama açılır (push yalnız `task_id`'yi yönlendiriyor). Kovan taşımasının Geri al'ı açılan AKS görevini silmez. İki telefon çevrimdışıyken ikişer AKS görevi açabilir. Edge Function Deno olmadığı için yerelde çalıştırılmadı; push cihazda denenmedi.
 
+### 2026-11-02 — Klavye: dışarı dokununca kapanır, kendiliğinden açılmaz
+
+- `KeyboardDismissArea` (design_system) uygulama kökünde `SnackBarDismissArea`'nın üstünde: `EditableTextTapOutsideIntent` / `EditableTextTapUpOutsideIntent`'i geçersiz kılarak metin alanı dışına dokunulunca odağı bırakır (dokunuş alttaki butona da gider). Parmak kayarsa (kaydırma) kapanmaz; başka metin alanına ya da kopyala/yapıştır menüsüne dokunmak odağı oraya taşır. Her `TextField` kendiliğinden kapsanır, ekranlara bir şey eklenmez.
+- Bütün form, sayfa ve diyaloglardan `autofocus` kaldırıldı (giriş e-posta ve kod alanları dahil; `ApiaryFormFields.autofocusName` parametresi silindi). Kod ekranında yanlış kod ve "tekrar gönder" sonrası `requestFocus` kalıyor: kullanıcının eylemine yanıt. Giriş akışındaki iki test yeni davranışa göre çevrildi; bileşen testi eklendi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

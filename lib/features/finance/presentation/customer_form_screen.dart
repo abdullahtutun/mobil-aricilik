@@ -139,7 +139,6 @@ class _CustomerFormFieldsState extends ConsumerState<_CustomerFormFields> {
           label: l10n.customerFormName,
           child: TextField(
             controller: _name,
-            autofocus: widget.form.name.isEmpty,
             maxLength: maxCustomerNameLength,
             textCapitalization: TextCapitalization.words,
             textInputAction: TextInputAction.next,

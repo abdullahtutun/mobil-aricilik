@@ -93,7 +93,6 @@ class _JoinSheetState extends ConsumerState<_JoinSheet> {
             label: l10n.teamJoinCodeLabel,
             child: TextField(
               controller: _controller,
-              autofocus: true,
               enabled: !_busy,
               textCapitalization: TextCapitalization.characters,
               autocorrect: false,

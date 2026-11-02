@@ -95,7 +95,6 @@ class _OtpCodeFieldState extends State<OtpCodeField> {
                 // Pasifken de odak ve klavye kalır; yanlış kodda alan
                 // hemen yeniden yazılabilir.
                 readOnly: !widget.enabled,
-                autofocus: true,
                 showCursor: false,
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,

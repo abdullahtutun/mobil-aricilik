@@ -10,11 +10,10 @@ import 'package:mobil_arici/features/apiaries/presentation/apiary_form_controlle
 /// telefonu, notlar. Ekleme/düzenleme ekranı ve onboarding'in ilk arılık
 /// adımı kullanır; kaydet butonu onlarda. Form yüklenmiş olmalı.
 class ApiaryFormFields extends ConsumerStatefulWidget {
-  const new({required this.apiaryId, super.key, this.autofocusName = false});
+  const new({required this.apiaryId, super.key});
 
   /// Düzenlenen arılık; yeni arılıkta null.
   final String? apiaryId;
-  final bool autofocusName;
 
   @override
   ConsumerState<ApiaryFormFields> createState() => _ApiaryFormFieldsState();
@@ -62,7 +61,6 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
           label: l10n.apiaryFormName,
           child: TextField(
             controller: _name,
-            autofocus: widget.autofocusName,
             textCapitalization: TextCapitalization.words,
             textInputAction: TextInputAction.next,
             style: fieldStyle,

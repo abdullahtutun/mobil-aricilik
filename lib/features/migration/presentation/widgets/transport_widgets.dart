@@ -366,7 +366,6 @@ class _TextEntryDialogState extends State<_TextEntryDialog> {
         label: widget.label,
         child: TextField(
           controller: _controller,
-          autofocus: true,
           maxLength: widget.maxLength,
           textInputAction: TextInputAction.done,
           decoration: InputDecoration(errorText: _error),

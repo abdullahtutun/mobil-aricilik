@@ -30,12 +30,7 @@ class ApiaryFormScreen extends ConsumerWidget {
           separated: true,
           body: ListView(
             padding: EdgeInsets.all(context.spacing.lg),
-            children: [
-              ApiaryFormFields(
-                apiaryId: apiaryId,
-                autofocusName: apiaryId == null,
-              ),
-            ],
+            children: [ApiaryFormFields(apiaryId: apiaryId)],
           ),
           action: BigButton(
             label: l10n.apiaryFormSave,

@@ -145,7 +145,6 @@ class _StopFormFieldsState extends ConsumerState<_StopFormFields> {
           label: l10n.stopFormName,
           child: TextField(
             controller: _name,
-            autofocus: widget.screen.stopId == null,
             maxLength: maxMigrationNameLength,
             textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(

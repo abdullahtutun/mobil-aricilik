@@ -608,7 +608,6 @@ class _SaleSheetState extends ConsumerState<_SaleSheet> {
               label: l10n.lotSaleAmount(mass.label(l10n)),
               child: TextField(
                 controller: _amount,
-                autofocus: true,
                 enabled: !_busy,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,

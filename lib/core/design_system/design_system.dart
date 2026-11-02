@@ -17,6 +17,7 @@ export 'components/critical_lock_card.dart';
 export 'components/empty_state.dart';
 export 'components/hive_tile.dart';
 export 'components/inline_field.dart';
+export 'components/keyboard_dismiss_area.dart';
 export 'components/labeled_field.dart';
 export 'components/list_group.dart';
 export 'components/note_card.dart';

@@ -203,7 +203,6 @@ class _TaskFormFieldsState extends ConsumerState<_TaskFormFields> {
             label: l10n.taskFormName,
             child: TextField(
               controller: _title,
-              autofocus: widget.screen.taskId == null,
               maxLength: maxTaskTitleLength,
               textCapitalization: TextCapitalization.sentences,
               style: context.typography.subtitle.copyWith(

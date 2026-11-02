@@ -180,7 +180,6 @@ class _MoveSheetState extends ConsumerState<_MoveSheet> {
                   : l10n.inventoryAmountLabel(unit),
               child: TextField(
                 controller: _amount,
-                autofocus: true,
                 enabled: !_busy,
                 keyboardType: TextInputType.numberWithOptions(
                   decimal: item.unit.allowsFraction,
