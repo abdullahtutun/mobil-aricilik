@@ -157,6 +157,12 @@ abstract final class AppRoutes {
   static String lotEdit(String id) => '/more/lots/$id/edit';
   static String lotLabResult(String id) => '/more/lots/$id/lab';
 
+  /// Destekler (yalnız TR): başvuru öncesi kovan sayısı kontrolü ve
+  /// başvuru dönemleri; Daha fazla'dan açılır. AKS'de beyan edilen kovan
+  /// sayısının formu altında.
+  static const subsidies = '/more/subsidies';
+  static const aksHiveCount = '/more/subsidies/aks-count';
+
   /// Finans: sezon özeti ve son hareketler; Daha fazla'dan açılır.
   /// Gelir/gider ekleme ve hareket listenin altında. Yeni hareketin türü
   /// sorguda.

@@ -6,6 +6,7 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/queens/domain/queen_rearing_rules.dart';
+import 'package:mobil_arici/features/subsidies/domain/subsidy_rules.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 
@@ -287,6 +288,32 @@ class TaskRepository extends BaseRepository<$TasksTable, Task> {
           await updateRecord(task.copyWith(dueAt: dueAt));
         }
       });
+
+  /// "AKS'de güncellemeyi unutma" görevi: kovan sayısı ya da arılık konumu
+  /// değişince, değişiklikle aynı transaction'da. İşletmede açık (silinmemiş,
+  /// tamamlanmamış) AKS görevi varsa yenisi açılmaz, o döner. Görev
+  /// atanmamış; son tarihi ertesi gün [aksTaskHour]'da ([aksTaskDueAt]).
+  Future<Task> remindAksUpdate(String orgId) => db.transaction(() async {
+    final open = await (selectWhere(
+      (t) =>
+          t.source.equalsValue(TaskSource.aksUpdate) &
+          t.sourceId.equals(orgId) &
+          t.completedAt.isNull(),
+    )..limit(1)).getSingleOrNull();
+    if (open != null) return open;
+    final at = now();
+    return await insertRecord(
+      Task(
+        id: generateId(),
+        orgId: orgId,
+        dueAt: aksTaskDueAt(clock()),
+        source: TaskSource.aksUpdate,
+        sourceId: orgId,
+        createdAt: at,
+        updatedAt: at,
+      ),
+    );
+  });
 
   /// [source] kaydının ([sourceId]) görevlerini siler (kaynağın Geri al'ı,
   /// hatırlatmanın kaldırılması).

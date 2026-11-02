@@ -5731,4 +5731,99 @@ class AppLocalizationsTr extends AppLocalizations {
   String customerPartiallyPaid(String paid, String remaining) {
     return '$paid ödendi, $remaining kalan';
   }
+
+  @override
+  String get taskAksUpdateTitle => 'AKS\'de güncellemeyi unutma';
+
+  @override
+  String get taskSourceAks => 'AKS';
+
+  @override
+  String get syncTableRefSupportPeriods => 'Destek dönemi';
+
+  @override
+  String get subsidiesTitle => 'Destekler';
+
+  @override
+  String get subsidiesCheckTitle => 'Başvuru öncesi kontrol';
+
+  @override
+  String get subsidiesActiveHives => 'Uygulamada aktif kovan';
+
+  @override
+  String get subsidiesDeclaredHives => 'AKS\'de beyan edilen';
+
+  @override
+  String get subsidiesNotDeclared => 'Girilmedi';
+
+  @override
+  String get subsidiesCheckNotDeclared =>
+      'AKS\'de beyan ettiğin kovan sayısını gir; başvurmadan önce uygulamadaki sayıyla karşılaştırılır.';
+
+  @override
+  String subsidiesCheckDiffers(String active, String declared) {
+    return 'Uygulamada $active aktif kovan var, AKS\'de $declared beyan edilmiş. Başvurmadan önce AKS kaydını güncelle.';
+  }
+
+  @override
+  String get subsidiesCheckMatches => 'Sayılar tutuyor: uygulama ile AKS aynı.';
+
+  @override
+  String get subsidiesEditDeclared => 'Beyan edilen sayıyı gir';
+
+  @override
+  String get subsidiesDeclaredOwnerOnly =>
+      'Beyan edilen sayıyı yalnız işletme sahibi girebilir.';
+
+  @override
+  String get subsidiesPeriodsTitle => 'Başvuru dönemleri';
+
+  @override
+  String get subsidiesEmptyTitle => 'Henüz destek dönemi yok';
+
+  @override
+  String get subsidiesEmptyMessage =>
+      'Başvuru dönemleri duyuruldukça burada görünür; dönem açılınca bildirim gelir.';
+
+  @override
+  String get subsidiesPhaseOpen => 'Başvuru açık';
+
+  @override
+  String get subsidiesPhaseUpcoming => 'Yakında';
+
+  @override
+  String get subsidiesPhaseClosed => 'Bitti';
+
+  @override
+  String subsidiesPeriodDates(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get subsidiesOpenSource => 'Resmî duyuruyu aç';
+
+  @override
+  String get subsidiesOpenSourceFailed => 'Bağlantı açılamadı';
+
+  @override
+  String get aksCountTitle => 'AKS kovan sayısı';
+
+  @override
+  String get aksCountLabel => 'AKS\'de beyan ettiğin kovan sayısı';
+
+  @override
+  String get aksCountHelper => 'Boş bırakırsan kontrol yapılmaz.';
+
+  @override
+  String get aksCountInvalid => '0 ile 100.000 arasında bir sayı yaz';
+
+  @override
+  String get aksCountSave => 'Kaydet';
+
+  @override
+  String get aksCountSaved => 'AKS kovan sayısı kaydedildi';
+
+  @override
+  String get aksCountNoOrganization =>
+      'İşletme bilgisi henüz bu telefona inmedi; senkronu bekle.';
 }

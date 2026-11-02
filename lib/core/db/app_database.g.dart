@@ -138,6 +138,17 @@ class $OrganizationsTable extends Organizations
       ).withConverter<HiveCountRange?>(
         $OrganizationsTable.$converterhiveCountRangen,
       );
+  static const VerificationMeta _trAksHiveCountMeta = const VerificationMeta(
+    'trAksHiveCount',
+  );
+  @override
+  late final GeneratedColumn<int> trAksHiveCount = GeneratedColumn<int>(
+    'tr_aks_hive_count',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -152,6 +163,7 @@ class $OrganizationsTable extends Organizations
     trRegistrationNo,
     trAksNo,
     hiveCountRange,
+    trAksHiveCount,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -246,6 +258,15 @@ class $OrganizationsTable extends Organizations
         trAksNo.isAcceptableOrUnknown(data['tr_aks_no']!, _trAksNoMeta),
       );
     }
+    if (data.containsKey('tr_aks_hive_count')) {
+      context.handle(
+        _trAksHiveCountMeta,
+        trAksHiveCount.isAcceptableOrUnknown(
+          data['tr_aks_hive_count']!,
+          _trAksHiveCountMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -305,6 +326,10 @@ class $OrganizationsTable extends Organizations
           data['${effectivePrefix}hive_count_range'],
         ),
       ),
+      trAksHiveCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}tr_aks_hive_count'],
+      ),
     );
   }
 
@@ -347,6 +372,10 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
   final String? trRegistrationNo;
   final String? trAksNo;
   final HiveCountRange? hiveCountRange;
+
+  /// AKS'de beyan edilen kovan sayısı; başvuru öncesi kontrol bunu aktif
+  /// kovan sayısıyla karşılaştırır. Owner girer.
+  final int? trAksHiveCount;
   const OrganizationRow({
     required this.id,
     required this.createdAt,
@@ -360,6 +389,7 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     this.trRegistrationNo,
     this.trAksNo,
     this.hiveCountRange,
+    this.trAksHiveCount,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -390,6 +420,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
         $OrganizationsTable.$converterhiveCountRangen.toSql(hiveCountRange),
       );
     }
+    if (!nullToAbsent || trAksHiveCount != null) {
+      map['tr_aks_hive_count'] = Variable<int>(trAksHiveCount);
+    }
     return map;
   }
 
@@ -419,6 +452,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
       hiveCountRange: hiveCountRange == null && nullToAbsent
           ? const Value.absent()
           : Value(hiveCountRange),
+      trAksHiveCount: trAksHiveCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(trAksHiveCount),
     );
   }
 
@@ -442,6 +478,7 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
       hiveCountRange: serializer.fromJson<HiveCountRange?>(
         json['hiveCountRange'],
       ),
+      trAksHiveCount: serializer.fromJson<int?>(json['trAksHiveCount']),
     );
   }
   @override
@@ -460,6 +497,7 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
       'trRegistrationNo': serializer.toJson<String?>(trRegistrationNo),
       'trAksNo': serializer.toJson<String?>(trAksNo),
       'hiveCountRange': serializer.toJson<HiveCountRange?>(hiveCountRange),
+      'trAksHiveCount': serializer.toJson<int?>(trAksHiveCount),
     };
   }
 
@@ -476,6 +514,7 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     Value<String?> trRegistrationNo = const Value.absent(),
     Value<String?> trAksNo = const Value.absent(),
     Value<HiveCountRange?> hiveCountRange = const Value.absent(),
+    Value<int?> trAksHiveCount = const Value.absent(),
   }) => OrganizationRow(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -493,6 +532,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     hiveCountRange: hiveCountRange.present
         ? hiveCountRange.value
         : this.hiveCountRange,
+    trAksHiveCount: trAksHiveCount.present
+        ? trAksHiveCount.value
+        : this.trAksHiveCount,
   );
   OrganizationRow copyWithCompanion(OrganizationsCompanion data) {
     return OrganizationRow(
@@ -514,6 +556,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
       hiveCountRange: data.hiveCountRange.present
           ? data.hiveCountRange.value
           : this.hiveCountRange,
+      trAksHiveCount: data.trAksHiveCount.present
+          ? data.trAksHiveCount.value
+          : this.trAksHiveCount,
     );
   }
 
@@ -531,7 +576,8 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
           ..write('currency: $currency, ')
           ..write('trRegistrationNo: $trRegistrationNo, ')
           ..write('trAksNo: $trAksNo, ')
-          ..write('hiveCountRange: $hiveCountRange')
+          ..write('hiveCountRange: $hiveCountRange, ')
+          ..write('trAksHiveCount: $trAksHiveCount')
           ..write(')'))
         .toString();
   }
@@ -550,6 +596,7 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     trRegistrationNo,
     trAksNo,
     hiveCountRange,
+    trAksHiveCount,
   );
   @override
   bool operator ==(Object other) =>
@@ -566,7 +613,8 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
           other.currency == this.currency &&
           other.trRegistrationNo == this.trRegistrationNo &&
           other.trAksNo == this.trAksNo &&
-          other.hiveCountRange == this.hiveCountRange);
+          other.hiveCountRange == this.hiveCountRange &&
+          other.trAksHiveCount == this.trAksHiveCount);
 }
 
 class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
@@ -582,6 +630,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
   final Value<String?> trRegistrationNo;
   final Value<String?> trAksNo;
   final Value<HiveCountRange?> hiveCountRange;
+  final Value<int?> trAksHiveCount;
   final Value<int> rowid;
   const OrganizationsCompanion({
     this.id = const Value.absent(),
@@ -596,6 +645,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     this.trRegistrationNo = const Value.absent(),
     this.trAksNo = const Value.absent(),
     this.hiveCountRange = const Value.absent(),
+    this.trAksHiveCount = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   OrganizationsCompanion.insert({
@@ -611,6 +661,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     this.trRegistrationNo = const Value.absent(),
     this.trAksNo = const Value.absent(),
     this.hiveCountRange = const Value.absent(),
+    this.trAksHiveCount = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -631,6 +682,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     Expression<String>? trRegistrationNo,
     Expression<String>? trAksNo,
     Expression<String>? hiveCountRange,
+    Expression<int>? trAksHiveCount,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -646,6 +698,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
       if (trRegistrationNo != null) 'tr_registration_no': trRegistrationNo,
       if (trAksNo != null) 'tr_aks_no': trAksNo,
       if (hiveCountRange != null) 'hive_count_range': hiveCountRange,
+      if (trAksHiveCount != null) 'tr_aks_hive_count': trAksHiveCount,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -663,6 +716,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     Value<String?>? trRegistrationNo,
     Value<String?>? trAksNo,
     Value<HiveCountRange?>? hiveCountRange,
+    Value<int?>? trAksHiveCount,
     Value<int>? rowid,
   }) {
     return OrganizationsCompanion(
@@ -678,6 +732,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
       trRegistrationNo: trRegistrationNo ?? this.trRegistrationNo,
       trAksNo: trAksNo ?? this.trAksNo,
       hiveCountRange: hiveCountRange ?? this.hiveCountRange,
+      trAksHiveCount: trAksHiveCount ?? this.trAksHiveCount,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -725,6 +780,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
         ),
       );
     }
+    if (trAksHiveCount.present) {
+      map['tr_aks_hive_count'] = Variable<int>(trAksHiveCount.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -746,6 +804,7 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
           ..write('trRegistrationNo: $trRegistrationNo, ')
           ..write('trAksNo: $trAksNo, ')
           ..write('hiveCountRange: $hiveCountRange, ')
+          ..write('trAksHiveCount: $trAksHiveCount, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -21300,6 +21359,496 @@ extension CustomerPaymentToInsertable on CustomerPayment {
   }
 }
 
+class $RefSupportPeriodsTable extends RefSupportPeriods
+    with TableInfo<$RefSupportPeriodsTable, SupportPeriod> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RefSupportPeriodsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, String>
+  applicationStartsOn =
+      GeneratedColumn<String>(
+        'application_starts_on',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>(
+        $RefSupportPeriodsTable.$converterapplicationStartsOn,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, String>
+  applicationEndsOn =
+      GeneratedColumn<String>(
+        'application_ends_on',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>(
+        $RefSupportPeriodsTable.$converterapplicationEndsOn,
+      );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceUrlMeta = const VerificationMeta(
+    'sourceUrl',
+  );
+  @override
+  late final GeneratedColumn<String> sourceUrl = GeneratedColumn<String>(
+    'source_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    name,
+    applicationStartsOn,
+    applicationEndsOn,
+    description,
+    sourceUrl,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ref_support_periods';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupportPeriod> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source_url')) {
+      context.handle(
+        _sourceUrlMeta,
+        sourceUrl.isAcceptableOrUnknown(data['source_url']!, _sourceUrlMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SupportPeriod map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupportPeriod(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      applicationStartsOn: $RefSupportPeriodsTable.$converterapplicationStartsOn
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}application_starts_on'],
+            )!,
+          ),
+      applicationEndsOn: $RefSupportPeriodsTable.$converterapplicationEndsOn
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}application_ends_on'],
+            )!,
+          ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      sourceUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_url'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $RefSupportPeriodsTable createAlias(String alias) {
+    return $RefSupportPeriodsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, String> $converterapplicationStartsOn =
+      const DateOnlyConverter();
+  static TypeConverter<DateTime, String> $converterapplicationEndsOn =
+      const DateOnlyConverter();
+}
+
+class RefSupportPeriodsCompanion extends UpdateCompanion<SupportPeriod> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> name;
+  final Value<DateTime> applicationStartsOn;
+  final Value<DateTime> applicationEndsOn;
+  final Value<String?> description;
+  final Value<String?> sourceUrl;
+  final Value<int> rowid;
+  const RefSupportPeriodsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.name = const Value.absent(),
+    this.applicationStartsOn = const Value.absent(),
+    this.applicationEndsOn = const Value.absent(),
+    this.description = const Value.absent(),
+    this.sourceUrl = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RefSupportPeriodsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String name,
+    required DateTime applicationStartsOn,
+    required DateTime applicationEndsOn,
+    this.description = const Value.absent(),
+    this.sourceUrl = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       name = Value(name),
+       applicationStartsOn = Value(applicationStartsOn),
+       applicationEndsOn = Value(applicationEndsOn);
+  static Insertable<SupportPeriod> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? name,
+    Expression<String>? applicationStartsOn,
+    Expression<String>? applicationEndsOn,
+    Expression<String>? description,
+    Expression<String>? sourceUrl,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (name != null) 'name': name,
+      if (applicationStartsOn != null)
+        'application_starts_on': applicationStartsOn,
+      if (applicationEndsOn != null) 'application_ends_on': applicationEndsOn,
+      if (description != null) 'description': description,
+      if (sourceUrl != null) 'source_url': sourceUrl,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RefSupportPeriodsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? name,
+    Value<DateTime>? applicationStartsOn,
+    Value<DateTime>? applicationEndsOn,
+    Value<String?>? description,
+    Value<String?>? sourceUrl,
+    Value<int>? rowid,
+  }) {
+    return RefSupportPeriodsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      name: name ?? this.name,
+      applicationStartsOn: applicationStartsOn ?? this.applicationStartsOn,
+      applicationEndsOn: applicationEndsOn ?? this.applicationEndsOn,
+      description: description ?? this.description,
+      sourceUrl: sourceUrl ?? this.sourceUrl,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (applicationStartsOn.present) {
+      map['application_starts_on'] = Variable<String>(
+        $RefSupportPeriodsTable.$converterapplicationStartsOn.toSql(
+          applicationStartsOn.value,
+        ),
+      );
+    }
+    if (applicationEndsOn.present) {
+      map['application_ends_on'] = Variable<String>(
+        $RefSupportPeriodsTable.$converterapplicationEndsOn.toSql(
+          applicationEndsOn.value,
+        ),
+      );
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (sourceUrl.present) {
+      map['source_url'] = Variable<String>(sourceUrl.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RefSupportPeriodsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('name: $name, ')
+          ..write('applicationStartsOn: $applicationStartsOn, ')
+          ..write('applicationEndsOn: $applicationEndsOn, ')
+          ..write('description: $description, ')
+          ..write('sourceUrl: $sourceUrl, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$SupportPeriodInsertable implements Insertable<SupportPeriod> {
+  SupportPeriod _object;
+  _$SupportPeriodInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return RefSupportPeriodsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      name: Value(_object.name),
+      applicationStartsOn: Value(_object.applicationStartsOn),
+      applicationEndsOn: Value(_object.applicationEndsOn),
+      description: Value(_object.description),
+      sourceUrl: Value(_object.sourceUrl),
+    ).toColumns(false);
+  }
+}
+
+extension SupportPeriodToInsertable on SupportPeriod {
+  _$SupportPeriodInsertable toInsertable() {
+    return _$SupportPeriodInsertable(this);
+  }
+}
+
 class $LocalSettingsTable extends LocalSettings
     with TableInfo<$LocalSettingsTable, LocalSetting> {
   @override
@@ -23293,6 +23842,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CustomerPaymentsTable customerPayments = $CustomerPaymentsTable(
     this,
   );
+  late final $RefSupportPeriodsTable refSupportPeriods =
+      $RefSupportPeriodsTable(this);
   late final $LocalSettingsTable localSettings = $LocalSettingsTable(this);
   late final $FeedbackQueueTable feedbackQueue = $FeedbackQueueTable(this);
   late final $AnalyticsQueueTable analyticsQueue = $AnalyticsQueueTable(this);
@@ -23628,6 +24179,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     receiptUploads,
     customers,
     customerPayments,
+    refSupportPeriods,
     localSettings,
     feedbackQueue,
     analyticsQueue,
@@ -23725,6 +24277,7 @@ typedef $$OrganizationsTableCreateCompanionBuilder =
       Value<String?> trRegistrationNo,
       Value<String?> trAksNo,
       Value<HiveCountRange?> hiveCountRange,
+      Value<int?> trAksHiveCount,
       Value<int> rowid,
     });
 typedef $$OrganizationsTableUpdateCompanionBuilder =
@@ -23741,6 +24294,7 @@ typedef $$OrganizationsTableUpdateCompanionBuilder =
       Value<String?> trRegistrationNo,
       Value<String?> trAksNo,
       Value<HiveCountRange?> hiveCountRange,
+      Value<int?> trAksHiveCount,
       Value<int> rowid,
     });
 
@@ -23813,6 +24367,11 @@ class $$OrganizationsTableFilterComposer
     column: $table.hiveCountRange,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
+
+  ColumnFilters<int> get trAksHiveCount => $composableBuilder(
+    column: $table.trAksHiveCount,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$OrganizationsTableOrderingComposer
@@ -23883,6 +24442,11 @@ class $$OrganizationsTableOrderingComposer
     column: $table.hiveCountRange,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get trAksHiveCount => $composableBuilder(
+    column: $table.trAksHiveCount,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$OrganizationsTableAnnotationComposer
@@ -23936,6 +24500,11 @@ class $$OrganizationsTableAnnotationComposer
     column: $table.hiveCountRange,
     builder: (column) => column,
   );
+
+  GeneratedColumn<int> get trAksHiveCount => $composableBuilder(
+    column: $table.trAksHiveCount,
+    builder: (column) => column,
+  );
 }
 
 class $$OrganizationsTableTableManager
@@ -23981,6 +24550,7 @@ class $$OrganizationsTableTableManager
                 Value<String?> trRegistrationNo = const Value.absent(),
                 Value<String?> trAksNo = const Value.absent(),
                 Value<HiveCountRange?> hiveCountRange = const Value.absent(),
+                Value<int?> trAksHiveCount = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => OrganizationsCompanion(
                 id: id,
@@ -23995,6 +24565,7 @@ class $$OrganizationsTableTableManager
                 trRegistrationNo: trRegistrationNo,
                 trAksNo: trAksNo,
                 hiveCountRange: hiveCountRange,
+                trAksHiveCount: trAksHiveCount,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -24011,6 +24582,7 @@ class $$OrganizationsTableTableManager
                 Value<String?> trRegistrationNo = const Value.absent(),
                 Value<String?> trAksNo = const Value.absent(),
                 Value<HiveCountRange?> hiveCountRange = const Value.absent(),
+                Value<int?> trAksHiveCount = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => OrganizationsCompanion.insert(
                 id: id,
@@ -24025,6 +24597,7 @@ class $$OrganizationsTableTableManager
                 trRegistrationNo: trRegistrationNo,
                 trAksNo: trAksNo,
                 hiveCountRange: hiveCountRange,
+                trAksHiveCount: trAksHiveCount,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -37216,6 +37789,348 @@ typedef $$CustomerPaymentsTableProcessedTableManager =
       CustomerPayment,
       PrefetchHooks Function()
     >;
+typedef $$RefSupportPeriodsTableCreateCompanionBuilder =
+    RefSupportPeriodsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String name,
+      required DateTime applicationStartsOn,
+      required DateTime applicationEndsOn,
+      Value<String?> description,
+      Value<String?> sourceUrl,
+      Value<int> rowid,
+    });
+typedef $$RefSupportPeriodsTableUpdateCompanionBuilder =
+    RefSupportPeriodsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> name,
+      Value<DateTime> applicationStartsOn,
+      Value<DateTime> applicationEndsOn,
+      Value<String?> description,
+      Value<String?> sourceUrl,
+      Value<int> rowid,
+    });
+
+class $$RefSupportPeriodsTableFilterComposer
+    extends Composer<_$AppDatabase, $RefSupportPeriodsTable> {
+  $$RefSupportPeriodsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, String>
+  get applicationStartsOn => $composableBuilder(
+    column: $table.applicationStartsOn,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, String>
+  get applicationEndsOn => $composableBuilder(
+    column: $table.applicationEndsOn,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceUrl => $composableBuilder(
+    column: $table.sourceUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RefSupportPeriodsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RefSupportPeriodsTable> {
+  $$RefSupportPeriodsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get applicationStartsOn => $composableBuilder(
+    column: $table.applicationStartsOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get applicationEndsOn => $composableBuilder(
+    column: $table.applicationEndsOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceUrl => $composableBuilder(
+    column: $table.sourceUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RefSupportPeriodsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RefSupportPeriodsTable> {
+  $$RefSupportPeriodsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, String> get applicationStartsOn =>
+      $composableBuilder(
+        column: $table.applicationStartsOn,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<DateTime, String> get applicationEndsOn =>
+      $composableBuilder(
+        column: $table.applicationEndsOn,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceUrl =>
+      $composableBuilder(column: $table.sourceUrl, builder: (column) => column);
+}
+
+class $$RefSupportPeriodsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RefSupportPeriodsTable,
+          SupportPeriod,
+          $$RefSupportPeriodsTableFilterComposer,
+          $$RefSupportPeriodsTableOrderingComposer,
+          $$RefSupportPeriodsTableAnnotationComposer,
+          $$RefSupportPeriodsTableCreateCompanionBuilder,
+          $$RefSupportPeriodsTableUpdateCompanionBuilder,
+          (
+            SupportPeriod,
+            BaseReferences<
+              _$AppDatabase,
+              $RefSupportPeriodsTable,
+              SupportPeriod
+            >,
+          ),
+          SupportPeriod,
+          PrefetchHooks Function()
+        > {
+  $$RefSupportPeriodsTableTableManager(
+    _$AppDatabase db,
+    $RefSupportPeriodsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RefSupportPeriodsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RefSupportPeriodsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RefSupportPeriodsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<DateTime> applicationStartsOn = const Value.absent(),
+                Value<DateTime> applicationEndsOn = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> sourceUrl = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RefSupportPeriodsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                name: name,
+                applicationStartsOn: applicationStartsOn,
+                applicationEndsOn: applicationEndsOn,
+                description: description,
+                sourceUrl: sourceUrl,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String name,
+                required DateTime applicationStartsOn,
+                required DateTime applicationEndsOn,
+                Value<String?> description = const Value.absent(),
+                Value<String?> sourceUrl = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RefSupportPeriodsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                name: name,
+                applicationStartsOn: applicationStartsOn,
+                applicationEndsOn: applicationEndsOn,
+                description: description,
+                sourceUrl: sourceUrl,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RefSupportPeriodsTable, SupportPeriod>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $RefSupportPeriodsTable,
+                    SupportPeriod
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RefSupportPeriodsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RefSupportPeriodsTable,
+      SupportPeriod,
+      $$RefSupportPeriodsTableFilterComposer,
+      $$RefSupportPeriodsTableOrderingComposer,
+      $$RefSupportPeriodsTableAnnotationComposer,
+      $$RefSupportPeriodsTableCreateCompanionBuilder,
+      $$RefSupportPeriodsTableUpdateCompanionBuilder,
+      (
+        SupportPeriod,
+        BaseReferences<_$AppDatabase, $RefSupportPeriodsTable, SupportPeriod>,
+      ),
+      SupportPeriod,
+      PrefetchHooks Function()
+    >;
 typedef $$LocalSettingsTableCreateCompanionBuilder =
     LocalSettingsCompanion Function({
       required String key,
@@ -38388,6 +39303,8 @@ class $AppDatabaseManager {
       $$CustomersTableTableManager(_db, _db.customers);
   $$CustomerPaymentsTableTableManager get customerPayments =>
       $$CustomerPaymentsTableTableManager(_db, _db.customerPayments);
+  $$RefSupportPeriodsTableTableManager get refSupportPeriods =>
+      $$RefSupportPeriodsTableTableManager(_db, _db.refSupportPeriods);
   $$LocalSettingsTableTableManager get localSettings =>
       $$LocalSettingsTableTableManager(_db, _db.localSettings);
   $$FeedbackQueueTableTableManager get feedbackQueue =>

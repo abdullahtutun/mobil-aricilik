@@ -228,6 +228,54 @@ final class CurrentOrgIdProvider
 
 String _$currentOrgIdHash() => r'42b911b32ed632dce9ac43e1724ffd3789ec3635';
 
+@ProviderFor(organizationRepository)
+final organizationRepositoryProvider = OrganizationRepositoryProvider._();
+
+final class OrganizationRepositoryProvider
+    extends
+        $FunctionalProvider<
+          OrganizationRepository,
+          OrganizationRepository,
+          OrganizationRepository
+        >
+    with $Provider<OrganizationRepository> {
+  OrganizationRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'organizationRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$organizationRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<OrganizationRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  OrganizationRepository create(Ref ref) {
+    return organizationRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(OrganizationRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<OrganizationRepository>(value),
+    );
+  }
+}
+
+String _$organizationRepositoryHash() =>
+    r'38aa529218607432cbc42a9d45e294066f927aeb';
+
 @ProviderFor(membershipRepository)
 final membershipRepositoryProvider = MembershipRepositoryProvider._();
 

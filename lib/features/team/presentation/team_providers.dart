@@ -44,6 +44,11 @@ bool canWriteRecords(Ref ref) =>
 bool canSeeFinance(Ref ref) =>
     permissions.canSeeFinance(ref.watch(currentRoleProvider));
 
+/// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+@riverpod
+bool canEditOrganization(Ref ref) =>
+    permissions.canEditOrganization(ref.watch(currentRoleProvider));
+
 /// Üyelerin e-postaları (kullanıcı kimliğine göre). Çevrimdışıysa ya da
 /// çağrı başarısızsa boş harita; liste yerel üyeliklerle yine çizilir.
 @riverpod

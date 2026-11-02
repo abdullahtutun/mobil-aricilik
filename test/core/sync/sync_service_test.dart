@@ -48,6 +48,7 @@ import 'package:mobil_arici/features/queens/data/queen_rearing_repository.dart';
 import 'package:mobil_arici/features/queens/data/queen_repository.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
 import 'package:mobil_arici/features/queens/domain/queen_rearing.dart';
+import 'package:mobil_arici/features/subsidies/data/support_period_repository.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -139,6 +140,7 @@ Map<String, Object?> _organizationRow(int seq) => {
   'tr_registration_no': null,
   'tr_aks_no': null,
   'hive_count_range': 'up_to_50',
+  'tr_aks_hive_count': 120,
 };
 
 Map<String, Object?> _membershipRow(int seq) => {
@@ -522,6 +524,15 @@ Map<String, Object?> _customerPaymentRow(int seq) => {
   'transaction_id': 'transaction-1',
   'amount': 20000,
   'paid_on': '2026-10-30',
+};
+
+Map<String, Object?> _supportPeriodRow(int seq) => {
+  ..._standard('support-period-1', seq),
+  'name': 'Arıcılık desteği',
+  'application_starts_on': '2027-01-15',
+  'application_ends_on': '2027-02-15',
+  'description': null,
+  'source_url': 'https://www.tarimorman.gov.tr/',
 };
 
 bool _isPull(http.Request request) =>
@@ -1040,11 +1051,12 @@ void main() {
         'customers': [_customerRow(32)],
         'transactions': [_transactionRow(31)],
         'customer_payments': [_customerPaymentRow(33)],
+        'ref_support_periods': [_supportPeriodRow(34)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 33),
+        const SyncResult(status: SyncStatus.done, pulled: 34),
       );
 
       expect(requests.map(_pullOf), [
@@ -1081,6 +1093,7 @@ void main() {
         (table: 'customers', since: 0),
         (table: 'transactions', since: 0),
         (table: 'customer_payments', since: 0),
+        (table: 'ref_support_periods', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -1089,6 +1102,7 @@ void main() {
       final organization = await db.select(db.organizations).getSingle();
       expect(organization.name, 'Petek Arıcılık');
       expect(organization.hiveCountRange, HiveCountRange.upTo50);
+      expect(organization.trAksHiveCount, 120);
       expect(
         (await db.select(db.memberships).getSingle()).role,
         MembershipRole.owner,
@@ -1221,6 +1235,7 @@ void main() {
         'transactions': 31,
         'customers': 32,
         'customer_payments': 33,
+        'ref_support_periods': 34,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -1290,6 +1305,13 @@ void main() {
       ).findBySale('transaction-1')).single;
       expect(payment.amount, 20000);
       expect(payment.paidOn, DateTime(2026, 10, 30));
+      final period = (await SupportPeriodRepository(
+        db,
+      ).watchAll().first).single;
+      expect(period.name, 'Arıcılık desteği');
+      expect(period.applicationStartsOn, DateTime(2027, 1, 15));
+      expect(period.applicationEndsOn, DateTime(2027, 2, 15));
+      expect(period.sourceUrl, 'https://www.tarimorman.gov.tr/');
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

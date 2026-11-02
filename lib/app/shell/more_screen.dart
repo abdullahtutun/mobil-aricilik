@@ -5,6 +5,7 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
+import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
@@ -13,8 +14,8 @@ import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 /// işletme kartı, altında bölüm bölüm iki sütunlu modül karoları. Arılık:
 /// yaşlı analar, gezginci, ana yetiştirme, hasat ve lotlar; işletme: ekip,
 /// raporlar, belge kasası, malzeme ve stok, finans (yalnız owner ve
-/// partner); yardım: görüş bildir, ayarlar, senkron.
-/// Diğer modüller geldikçe kendi bölümlerine eklenir.
+/// partner), destekler (yalnız TR profilinde); yardım: görüş bildir,
+/// ayarlar, senkron. Diğer modüller geldikçe kendi bölümlerine eklenir.
 class MoreScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -25,6 +26,9 @@ class MoreScreen extends ConsumerWidget {
     final colors = context.colors;
     final organization = ref.watch(currentOrganizationProvider).value;
     final canSeeFinance = ref.watch(canSeeFinanceProvider);
+    final subsidies = ref.watch(
+      regionConfigProvider.select((region) => region.features.subsidies),
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -95,6 +99,12 @@ class MoreScreen extends ConsumerWidget {
                     icon: Icons.account_balance_wallet_outlined,
                     label: l10n.financeTitle,
                     onTap: () => context.go(AppRoutes.finance),
+                  ),
+                if (subsidies)
+                  _ModuleTile(
+                    icon: Icons.volunteer_activism_outlined,
+                    label: l10n.subsidiesTitle,
+                    onTap: () => context.go(AppRoutes.subsidies),
                   ),
               ],
             ),

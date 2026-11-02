@@ -1,4 +1,7 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ProviderListenableSelect;
 import 'package:mobil_arici/core/db/app_database_provider.dart';
+import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/features/migration/data/migration_repository.dart';
 import 'package:mobil_arici/features/migration/data/transport_repository.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
@@ -15,8 +18,12 @@ MigrationRepository migrationRepository(Ref ref) =>
     MigrationRepository(ref.watch(appDatabaseProvider));
 
 @Riverpod(keepAlive: true)
-TransportRepository transportRepository(Ref ref) =>
-    TransportRepository(ref.watch(appDatabaseProvider));
+TransportRepository transportRepository(Ref ref) => TransportRepository(
+  ref.watch(appDatabaseProvider),
+  aksReminders: ref.watch(
+    regionConfigProvider.select((region) => region.features.aks),
+  ),
+);
 
 /// Oturumdaki işletmenin göç planları, yeni yıl önce; işletme yoksa boş.
 @riverpod

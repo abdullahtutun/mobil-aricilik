@@ -1,4 +1,7 @@
-// notify: Göreve kişi atanınca atanana push (FCM) gönderir.
+// notify: Göreve kişi atanınca atanana push (FCM) gönderir. Destek başvuru
+// dönemi açılınca (`private.notify_support_periods`, pg_cron) gövdedeki
+// alıcılara da gönderir: { table: "ref_support_periods", type: "OPENED",
+// record, recipients }; bildirimde `data.type = "support_period"`.
 //
 // `private.notify_task_assigned` tetikleyicisi (pg_net) ya da Dashboard'dan
 // kurulan bir Database Webhook çağırır: POST { type, table, record,
@@ -13,12 +16,16 @@
 // `user_metadata.locale` değeri (yoksa Türkçe). Bildirime dokununca
 // uygulama `data.task_id` ile görevi açar. Geçersiz token'lar silinir.
 
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { accessToken, type ServiceAccount, send } from "./fcm.ts";
 import {
   assignedTask,
+  type Locale,
   localeOf,
   notificationText,
+  openedSupportPeriod,
+  supportPeriodText,
+  type SupportPeriodRecord,
   type WebhookPayload,
 } from "./message.ts";
 
@@ -55,14 +62,18 @@ Deno.serve(async (request) => {
   } catch {
     return json({ error: "bad_request" }, 400);
   }
-  const task = assignedTask(payload);
-  if (!task) return json({ sent: 0 });
-
   const admin = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     { auth: { persistSession: false } },
   );
+  const account: ServiceAccount = JSON.parse(serviceAccountJson);
+
+  const opened = openedSupportPeriod(payload);
+  if (opened) return await notifySupportPeriod(admin, account, opened);
+
+  const task = assignedTask(payload);
+  if (!task) return json({ sent: 0 });
 
   // Alıcı hâlâ işletmenin etkin üyesi mi.
   const { data: membership } = await admin
@@ -89,7 +100,6 @@ Deno.serve(async (request) => {
     localeOf(recipient.user?.user_metadata?.locale),
   );
 
-  const account: ServiceAccount = JSON.parse(serviceAccountJson);
   let access: string;
   try {
     access = await accessToken(account);
@@ -112,3 +122,49 @@ Deno.serve(async (request) => {
   }
   return json({ sent });
 });
+
+/// Açılan destek dönemini alıcıların her telefonuna, alıcının dilinde
+/// gönderir. Alıcıları veritabanı seçti (TR işletmelerinin owner ve
+/// partner üyeleri); gizli anahtar doğrulandığı için gövdeye güvenilir.
+async function notifySupportPeriod(
+  admin: SupabaseClient,
+  account: ServiceAccount,
+  { period, recipients }: {
+    period: SupportPeriodRecord;
+    recipients: string[];
+  },
+): Promise<Response> {
+  const { data: tokens, error } = await admin
+    .from("device_tokens")
+    .select("user_id, token")
+    .in("user_id", recipients);
+  if (error) return json({ error: "server" }, 500);
+  if (!tokens?.length) return json({ sent: 0 });
+
+  let access: string;
+  try {
+    access = await accessToken(account);
+  } catch {
+    return json({ error: "fcm_auth" }, 502);
+  }
+
+  const locales = new Map<string, Locale>();
+  let sent = 0;
+  const invalid: string[] = [];
+  for (const { user_id: userId, token } of tokens) {
+    if (!locales.has(userId)) {
+      const { data } = await admin.auth.admin.getUserById(userId);
+      locales.set(userId, localeOf(data.user?.user_metadata?.locale));
+    }
+    const result = await send(account, token, access, {
+      ...supportPeriodText(period, locales.get(userId)!),
+      data: { type: "support_period", period_id: period.id },
+    });
+    if (result === "sent") sent++;
+    if (result === "invalid_token") invalid.push(token);
+  }
+  if (invalid.length) {
+    await admin.from("device_tokens").delete().in("token", invalid);
+  }
+  return json({ sent });
+}

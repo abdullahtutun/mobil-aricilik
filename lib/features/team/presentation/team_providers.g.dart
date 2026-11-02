@@ -195,6 +195,53 @@ final class CanSeeFinanceProvider extends $FunctionalProvider<bool, bool, bool>
 
 String _$canSeeFinanceHash() => r'9b9a6ba77fde5941a6ae22ca7464796e8bb592e0';
 
+/// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+
+@ProviderFor(canEditOrganization)
+final canEditOrganizationProvider = CanEditOrganizationProvider._();
+
+/// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+
+final class CanEditOrganizationProvider
+    extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+  CanEditOrganizationProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'canEditOrganizationProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$canEditOrganizationHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    return canEditOrganization(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$canEditOrganizationHash() =>
+    r'cdf92c7ce078fc1840bc5cace11d4b8c35ae80d0';
+
 /// Üyelerin e-postaları (kullanıcı kimliğine göre). Çevrimdışıysa ya da
 /// çağrı başarısızsa boş harita; liste yerel üyeliklerle yine çizilir.
 

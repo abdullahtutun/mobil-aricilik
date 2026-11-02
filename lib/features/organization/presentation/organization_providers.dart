@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/data/membership_repository.dart';
 import 'package:mobil_arici/features/organization/data/organization_cache.dart';
+import 'package:mobil_arici/features/organization/data/organization_repository.dart';
 import 'package:mobil_arici/features/organization/data/organization_service.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
@@ -110,6 +111,10 @@ class CurrentOrganization extends _$CurrentOrganization {
 String? currentOrgId(Ref ref) => ref.watch(
   currentOrganizationProvider.select((organization) => organization.value?.id),
 );
+
+@Riverpod(keepAlive: true)
+OrganizationRepository organizationRepository(Ref ref) =>
+    OrganizationRepository(ref.watch(appDatabaseProvider));
 
 @Riverpod(keepAlive: true)
 MembershipRepository membershipRepository(Ref ref) =>

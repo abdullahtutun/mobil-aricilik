@@ -17,6 +17,7 @@ import 'generated/schema_v18.dart' as v18;
 import 'generated/schema_v19.dart' as v19;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v20.dart' as v20;
+import 'generated/schema_v21.dart' as v21;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
@@ -840,6 +841,38 @@ void main() {
         expect(transaction.customerId, null);
         expect(await newDb.select(newDb.customers).get(), isEmpty);
         expect(await newDb.select(newDb.customerPayments).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v20 → v21 işletmeyi AKS kovan sayısı boş olarak korur; destek '
+      'dönemleri boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 20,
+      newVersion: 21,
+      createOld: v20.DatabaseAtV20.new,
+      createNew: v21.DatabaseAtV21.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.organizations,
+          v20.OrganizationsCompanion.insert(
+            id: 'org-1',
+            createdAt: '2026-11-04T09:00:00.000Z',
+            updatedAt: '2026-11-04T09:00:00.000Z',
+            name: 'Petek Arıcılık',
+            countryCode: 'TR',
+            currency: 'TRY',
+            trAksNo: const Value('12345'),
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final organization =
+            (await newDb.select(newDb.organizations).get()).single;
+        expect(organization.trAksNo, '12345');
+        expect(organization.trAksHiveCount, null);
+        expect(await newDb.select(newDb.refSupportPeriods).get(), isEmpty);
       },
     );
   });

@@ -18,7 +18,12 @@ enum TaskSource implements ServerEnum {
   treatment('treatment'),
 
   /// Ana yetiştirme takviminin bir adımı; kaynak seri, gün `sourceStep`.
-  queenRearing('queen_rearing');
+  queenRearing('queen_rearing'),
+
+  /// Kovan sayısı ya da arılık konumu değişti: "AKS'de güncellemeyi
+  /// unutma" (yalnız TR); kaynak işletme. İşletmede aynı anda tek açık
+  /// görev olur.
+  aksUpdate('aks_update');
 
   new(this.value);
 

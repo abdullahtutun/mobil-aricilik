@@ -22,6 +22,10 @@ bool canInvite(MembershipRole? role) =>
 /// Rol değiştirme ve üyeyi çıkarma: yalnız owner.
 bool canManageMembers(MembershipRole? role) => role == MembershipRole.owner;
 
+/// İşletme bilgilerini değiştirme (ör. AKS'de beyan edilen kovan sayısı):
+/// yalnız owner; sunucu da yalnız owner'ın güncellemesini kabul eder.
+bool canEditOrganization(MembershipRole? role) => role == MembershipRole.owner;
+
 /// Davetle verilebilen roller; owner davetle verilmez.
 const invitableRoles = <MembershipRole>[
   MembershipRole.partner,

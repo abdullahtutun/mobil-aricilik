@@ -55,3 +55,55 @@ export function notificationText(
     body: title ? title : "Bir görev sana atandı.",
   };
 }
+
+export interface SupportPeriodRecord {
+  id: string;
+  name: string;
+  application_starts_on: string;
+  application_ends_on: string;
+}
+
+/// `private.notify_support_periods`'un gövdesi: açılan destek dönemi ve
+/// alıcıları (TR işletmelerinin owner ve partner üyeleri).
+export interface SupportPeriodPayload {
+  type: string;
+  table: string;
+  record: SupportPeriodRecord | null;
+  recipients: string[] | null;
+}
+
+/// Gövde açılan bir destek dönemi mi; dönem ve alıcılar.
+export function openedSupportPeriod(
+  payload: { table?: string; type?: string },
+): { period: SupportPeriodRecord; recipients: string[] } | null {
+  if (payload.table !== "ref_support_periods") return null;
+  const { type, record, recipients } = payload as SupportPeriodPayload;
+  if (type !== "OPENED" || !record?.id || !record.name) return null;
+  if (!Array.isArray(recipients) || recipients.length === 0) return null;
+  return { period: record, recipients };
+}
+
+/// "2026-12-31" → "31.12.2026" (TR) ya da "2026-12-31" (EN).
+function formatDay(day: string, locale: Locale): string {
+  const [year, month, date] = day.split("-");
+  if (locale === "en" || !year || !month || !date) return day;
+  return `${date}.${month}.${year}`;
+}
+
+/// Destek dönemi bildirimi: başlık ve "ad · son gün".
+export function supportPeriodText(
+  period: SupportPeriodRecord,
+  locale: Locale,
+): { title: string; body: string } {
+  const last = formatDay(period.application_ends_on, locale);
+  if (locale === "en") {
+    return {
+      title: "Support application is open",
+      body: `${period.name} · last day ${last}`,
+    };
+  }
+  return {
+    title: "Destek başvurusu açıldı",
+    body: `${period.name} · son gün ${last}`,
+  };
+}

@@ -48,7 +48,7 @@ final class HiveRepositoryProvider
   }
 }
 
-String _$hiveRepositoryHash() => r'a0aa1124c7c7aa16dc4881d1ffbb4ea988725a78';
+String _$hiveRepositoryHash() => r'9da2e27e0f176ed634cab8563a6a065ca32435f6';
 
 @ProviderFor(hiveLocationRepository)
 final hiveLocationRepositoryProvider = HiveLocationRepositoryProvider._();

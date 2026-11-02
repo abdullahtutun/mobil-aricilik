@@ -35,6 +35,7 @@ String autoTaskTitle(
     final step? => rearingStepTitle(l10n, step),
     null => l10n.rearingTitle,
   },
+  (TaskSource.aksUpdate, _) => l10n.taskAksUpdateTitle,
 };
 
 /// Otomatik görevin nereden geldiği ("muayeneden", "ilaç"); elle açılanda
@@ -45,6 +46,7 @@ String? taskSourceLabel(AppLocalizations l10n, TaskSource source) =>
       TaskSource.inspection => l10n.taskSourceInspection,
       TaskSource.treatment => l10n.taskSourceTreatment,
       TaskSource.queenRearing => l10n.taskSourceQueenRearing,
+      TaskSource.aksUpdate => l10n.taskSourceAks,
     };
 
 /// Başlığın altındaki bağlam parçaları: arılık ([withApiary] ise), elle

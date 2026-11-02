@@ -5,10 +5,19 @@ import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 
 /// Arılıklar; durum kaydı, son yazan kazanır.
+///
+/// [aksReminders] açıksa (TR, `RegionFeatures.aks`) arılığın konumunu
+/// değiştiren düzenleme "AKS'de güncellemeyi unutma" görevini açar; yeni
+/// arılık açmaz.
 class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
-  new(super.db, {super.clock});
+  new(super.db, {super.clock, this.aksReminders = false});
+
+  final bool aksReminders;
+
+  late final _tasks = TaskRepository(db, clock: clock);
 
   @override
   $ApiariesTable get table => db.apiaries;
@@ -110,6 +119,17 @@ class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
     );
   }
 
-  /// Arılığın alanlarını yazar.
-  Future<Apiary> update(Apiary apiary) => updateRecord(apiary);
+  /// Arılığın alanlarını yazar. Konum (enlem/boylam) değiştiyse ve
+  /// [aksReminders] açıksa "AKS'de güncellemeyi unutma" görevini aynı
+  /// transaction'da açar. Arılık yoksa ya da silinmişse [StateError].
+  Future<Apiary> update(Apiary apiary) => db.transaction(() async {
+    final before = await requireById(apiary.id);
+    final updated = await updateRecord(apiary);
+    if (aksReminders &&
+        (before.latitude != updated.latitude ||
+            before.longitude != updated.longitude)) {
+      await _tasks.remindAksUpdate(apiary.orgId);
+    }
+    return updated;
+  });
 }

@@ -24,6 +24,10 @@ class Organizations extends Table with SyncColumns {
   TextColumn get trAksNo => text().nullable()();
   TextColumn get hiveCountRange =>
       text().nullable().map(const ServerEnumConverter(HiveCountRange.values))();
+
+  /// AKS'de beyan edilen kovan sayısı; başvuru öncesi kontrol bunu aktif
+  /// kovan sayısıyla karşılaştırır. Owner girer.
+  IntColumn get trAksHiveCount => integer().nullable()();
 }
 
 /// `public.memberships` aynası.

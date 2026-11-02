@@ -103,7 +103,7 @@ final class TransportRepositoryProvider
 }
 
 String _$transportRepositoryHash() =>
-    r'552327fea3e7c506257c9a0f3af1be468f2936b8';
+    r'c3881346683ff48ff7f81f4e8ac254aaca39ce8d';
 
 /// Oturumdaki işletmenin göç planları, yeni yıl önce; işletme yoksa boş.
 

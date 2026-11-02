@@ -5,6 +5,7 @@ import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 
 /// Bir taşıma: kovanın yeni hâli, geldiği arılık ve yazılan geçmiş kaydı.
 /// Geri almak için [HiveRepository.undoMove]'a verilir.
@@ -12,10 +13,18 @@ typedef HiveMove = ({Hive hive, String fromApiaryId, HiveLocationEntry entry});
 
 /// Kovanlar; durum kaydı, son yazan kazanır. Oluşturma ve taşıma arılık
 /// geçmişini ([HiveLocationRepository]) aynı transaction'da yazar.
+///
+/// [aksReminders] açıksa (TR, `RegionFeatures.aks`) aktif kovan sayısını
+/// ya da kovanın arılığını değiştiren her yazma "AKS'de güncellemeyi
+/// unutma" görevini ([TaskRepository.remindAksUpdate]) aynı transaction'da
+/// açar.
 class HiveRepository extends BaseRepository<$HivesTable, Hive> {
-  new(super.db, {super.clock});
+  new(super.db, {super.clock, this.aksReminders = false});
+
+  final bool aksReminders;
 
   late final _locations = HiveLocationRepository(db, clock: clock);
+  late final _tasks = TaskRepository(db, clock: clock);
 
   @override
   $HivesTable get table => db.hives;
@@ -34,6 +43,21 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     (t) => t.apiaryId.equals(apiaryId),
     orderBy: [(t) => OrderingTerm.asc(t.number)],
   );
+
+  /// İşletmenin aktif (silinmemiş) kovan sayısı; kovanlar değişince
+  /// yeniden yayar. Başvuru öncesi kontrol bunu AKS'deki beyanla
+  /// karşılaştırır.
+  Stream<int> watchActiveCount(String orgId) {
+    final count = table.id.count();
+    final query = db.selectOnly(table)
+      ..addColumns([count])
+      ..where(
+        table.orgId.equals(orgId) &
+            table.deletedAt.isNull() &
+            table.status.equalsValue(HiveStatus.active),
+      );
+    return query.watchSingle().map((row) => row.read(count) ?? 0);
+  }
 
   /// [apiaryId] arılığının kovanları; okuma anında.
   Future<List<Hive>> findByApiary(String apiaryId) =>
@@ -87,6 +111,7 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
       apiaryId: apiaryId,
       movedAt: at,
     );
+    if (status == HiveStatus.active) await _remindAks(orgId);
     return hive;
   });
 
@@ -111,15 +136,22 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     ],
   );
 
-  /// Kovanın alanlarını yazar.
-  Future<Hive> update(Hive hive) => updateRecord(hive);
+  /// Kovanın alanlarını yazar. Kovan yoksa ya da silinmişse [StateError].
+  Future<Hive> update(Hive hive) => db.transaction(() async {
+    final before = await requireById(hive.id);
+    final updated = await updateRecord(hive);
+    if (_changesAks(before, updated)) await _remindAks(hive.orgId);
+    return updated;
+  });
 
   /// Durumu kovanın en son hâlinin üzerine yazar. Kovan yoksa ya da
   /// silinmişse [StateError].
   Future<Hive> setStatus(String hiveId, HiveStatus status) =>
       db.transaction(() async {
         final hive = await requireById(hiveId);
-        return await updateRecord(hive.copyWith(status: status));
+        final updated = await updateRecord(hive.copyWith(status: status));
+        if (_changesAks(hive, updated)) await _remindAks(hive.orgId);
+        return updated;
       });
 
   /// [tagCode] etiketini kovana atar; kovanın önceki etiketi düşer. Etiket
@@ -159,6 +191,7 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
       apiaryId: apiaryId,
       movedAt: movedAt ?? moved.updatedAt,
     );
+    if (_changesAks(hive, moved)) await _remindAks(hive.orgId);
     return (hive: moved, fromApiaryId: hive.apiaryId, entry: entry);
   });
 
@@ -172,4 +205,17 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     await _locations.delete(move.entry.id);
     return true;
   });
+
+  /// AKS'deki kayda dokunan değişiklik: kovan aktifliğe girdi ya da
+  /// çıktı, ya da aktif kovan başka arılığa geçti.
+  static bool _changesAks(Hive before, Hive after) {
+    final wasActive = before.status == HiveStatus.active;
+    final isActive = after.status == HiveStatus.active;
+    return wasActive != isActive ||
+        (isActive && before.apiaryId != after.apiaryId);
+  }
+
+  Future<void> _remindAks(String orgId) async {
+    if (aksReminders) await _tasks.remindAksUpdate(orgId);
+  }
 }

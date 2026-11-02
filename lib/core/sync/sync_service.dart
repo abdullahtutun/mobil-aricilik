@@ -93,6 +93,7 @@ class SyncService {
     _db.customers,
     _db.transactions,
     _db.customerPayments,
+    _db.refSupportPeriods,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

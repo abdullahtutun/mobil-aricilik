@@ -60,4 +60,5 @@ const _$TaskSourceEnumMap = {
   TaskSource.inspection: 'inspection',
   TaskSource.treatment: 'treatment',
   TaskSource.queenRearing: 'queen_rearing',
+  TaskSource.aksUpdate: 'aks_update',
 };

@@ -5906,4 +5906,99 @@ class AppLocalizationsEn extends AppLocalizations {
   String customerPartiallyPaid(String paid, String remaining) {
     return '$paid paid, $remaining left';
   }
+
+  @override
+  String get taskAksUpdateTitle => 'Don\'t forget to update AKS';
+
+  @override
+  String get taskSourceAks => 'AKS';
+
+  @override
+  String get syncTableRefSupportPeriods => 'Support period';
+
+  @override
+  String get subsidiesTitle => 'Subsidies';
+
+  @override
+  String get subsidiesCheckTitle => 'Before you apply';
+
+  @override
+  String get subsidiesActiveHives => 'Active hives in the app';
+
+  @override
+  String get subsidiesDeclaredHives => 'Declared in AKS';
+
+  @override
+  String get subsidiesNotDeclared => 'Not entered';
+
+  @override
+  String get subsidiesCheckNotDeclared =>
+      'Enter the hive count you declared in AKS; it is compared with the app before you apply.';
+
+  @override
+  String subsidiesCheckDiffers(String active, String declared) {
+    return 'The app has $active active hives but $declared are declared in AKS. Update your AKS record before you apply.';
+  }
+
+  @override
+  String get subsidiesCheckMatches => 'Counts match: the app and AKS agree.';
+
+  @override
+  String get subsidiesEditDeclared => 'Enter declared count';
+
+  @override
+  String get subsidiesDeclaredOwnerOnly =>
+      'Only the owner can enter the declared count.';
+
+  @override
+  String get subsidiesPeriodsTitle => 'Application periods';
+
+  @override
+  String get subsidiesEmptyTitle => 'No support periods yet';
+
+  @override
+  String get subsidiesEmptyMessage =>
+      'Application periods appear here as they are announced; you get a notification when one opens.';
+
+  @override
+  String get subsidiesPhaseOpen => 'Open';
+
+  @override
+  String get subsidiesPhaseUpcoming => 'Upcoming';
+
+  @override
+  String get subsidiesPhaseClosed => 'Closed';
+
+  @override
+  String subsidiesPeriodDates(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get subsidiesOpenSource => 'Open official notice';
+
+  @override
+  String get subsidiesOpenSourceFailed => 'Couldn\'t open the link';
+
+  @override
+  String get aksCountTitle => 'AKS hive count';
+
+  @override
+  String get aksCountLabel => 'Hive count declared in AKS';
+
+  @override
+  String get aksCountHelper => 'Leave empty to skip the check.';
+
+  @override
+  String get aksCountInvalid => 'Enter a number between 0 and 100,000';
+
+  @override
+  String get aksCountSave => 'Save';
+
+  @override
+  String get aksCountSaved => 'AKS hive count saved';
+
+  @override
+  String get aksCountNoOrganization =>
+      'Business details haven\'t synced to this phone yet; wait for sync.';
 }

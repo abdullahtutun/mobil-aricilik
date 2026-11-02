@@ -12,8 +12,12 @@ import 'package:mobil_arici/features/migration/domain/transport_rules.dart';
 /// Kovanlar yüklemede araca okutulur, indirmede yeniden okutulur; indirme
 /// bitince indirilen kovanların arılığı, konum geçmişi ve göç durağı aynı
 /// transaction'da güncellenir. Hepsi yerel DB'de; yol boyunca ağ gerekmez.
+/// [aksReminders] açıksa (TR) arılık değiştiren indirme "AKS'de
+/// güncellemeyi unutma" görevini de açar ([HiveRepository.aksReminders]).
 class TransportRepository extends BaseRepository<$TransportsTable, Transport> {
-  new(super.db, {super.clock});
+  new(super.db, {super.clock, this.aksReminders = false});
+
+  final bool aksReminders;
 
   @override
   $TransportsTable get table => db.transports;
@@ -24,7 +28,11 @@ class TransportRepository extends BaseRepository<$TransportsTable, Transport> {
   /// Taşınan kovanlar; aynı veritabanı ve saat.
   late final items = TransportItemRepository(db, clock: clock);
 
-  late final _hives = HiveRepository(db, clock: clock);
+  late final _hives = HiveRepository(
+    db,
+    clock: clock,
+    aksReminders: aksReminders,
+  );
 
   late final _stops = MigrationStopRepository(db, clock: clock);
 

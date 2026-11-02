@@ -9394,6 +9394,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{paid} paid, {remaining} left'**
   String customerPartiallyPaid(String paid, String remaining);
+
+  /// Auto task title: hive count or apiary location changed (TR only).
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t forget to update AKS'**
+  String get taskAksUpdateTitle;
+
+  /// Task context label for the AKS update task.
+  ///
+  /// In en, this message translates to:
+  /// **'AKS'**
+  String get taskSourceAks;
+
+  /// Record type on the sync screen: support application period.
+  ///
+  /// In en, this message translates to:
+  /// **'Support period'**
+  String get syncTableRefSupportPeriods;
+
+  /// Subsidies screen title and More tile (TR only).
+  ///
+  /// In en, this message translates to:
+  /// **'Subsidies'**
+  String get subsidiesTitle;
+
+  /// Section label for the hive count check.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you apply'**
+  String get subsidiesCheckTitle;
+
+  /// Summary tile label: active hive count in the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Active hives in the app'**
+  String get subsidiesActiveHives;
+
+  /// Summary tile label: hive count declared in AKS.
+  ///
+  /// In en, this message translates to:
+  /// **'Declared in AKS'**
+  String get subsidiesDeclaredHives;
+
+  /// Declared hive count is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Not entered'**
+  String get subsidiesNotDeclared;
+
+  /// Check message when no declared count.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the hive count you declared in AKS; it is compared with the app before you apply.'**
+  String get subsidiesCheckNotDeclared;
+
+  /// Warning when counts differ.
+  ///
+  /// In en, this message translates to:
+  /// **'The app has {active} active hives but {declared} are declared in AKS. Update your AKS record before you apply.'**
+  String subsidiesCheckDiffers(String active, String declared);
+
+  /// Check message when counts match.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts match: the app and AKS agree.'**
+  String get subsidiesCheckMatches;
+
+  /// Button opening the declared count form.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter declared count'**
+  String get subsidiesEditDeclared;
+
+  /// Note for non-owners.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the owner can enter the declared count.'**
+  String get subsidiesDeclaredOwnerOnly;
+
+  /// Section label for support periods.
+  ///
+  /// In en, this message translates to:
+  /// **'Application periods'**
+  String get subsidiesPeriodsTitle;
+
+  /// Empty state title.
+  ///
+  /// In en, this message translates to:
+  /// **'No support periods yet'**
+  String get subsidiesEmptyTitle;
+
+  /// Empty state message.
+  ///
+  /// In en, this message translates to:
+  /// **'Application periods appear here as they are announced; you get a notification when one opens.'**
+  String get subsidiesEmptyMessage;
+
+  /// Period status: applications open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get subsidiesPhaseOpen;
+
+  /// Period status: not started.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get subsidiesPhaseUpcoming;
+
+  /// Period status: ended.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get subsidiesPhaseClosed;
+
+  /// Application period date range.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end}'**
+  String subsidiesPeriodDates(String start, String end);
+
+  /// Button opening the period source link.
+  ///
+  /// In en, this message translates to:
+  /// **'Open official notice'**
+  String get subsidiesOpenSource;
+
+  /// Snack bar when the link fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the link'**
+  String get subsidiesOpenSourceFailed;
+
+  /// Declared hive count form title.
+  ///
+  /// In en, this message translates to:
+  /// **'AKS hive count'**
+  String get aksCountTitle;
+
+  /// Declared hive count field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive count declared in AKS'**
+  String get aksCountLabel;
+
+  /// Declared hive count field helper.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty to skip the check.'**
+  String get aksCountHelper;
+
+  /// Declared hive count validation error.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number between 0 and 100,000'**
+  String get aksCountInvalid;
+
+  /// Declared hive count save button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get aksCountSave;
+
+  /// Snack bar after saving.
+  ///
+  /// In en, this message translates to:
+  /// **'AKS hive count saved'**
+  String get aksCountSaved;
+
+  /// Snack bar when local organization row is missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Business details haven\'t synced to this phone yet; wait for sync.'**
+  String get aksCountNoOrganization;
 }
 
 class _AppLocalizationsDelegate

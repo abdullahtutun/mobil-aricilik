@@ -14,6 +14,7 @@ import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/migration_tables.dart';
 import 'package:mobil_arici/core/db/tables/organization_tables.dart';
 import 'package:mobil_arici/core/db/tables/queen_rearing_tables.dart';
+import 'package:mobil_arici/core/db/tables/subsidy_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_tables.dart';
 import 'package:mobil_arici/core/db/tables/task_tables.dart';
 import 'package:mobil_arici/core/db/tables/telemetry_tables.dart';
@@ -41,6 +42,7 @@ import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
 import 'package:mobil_arici/features/queens/domain/queen_rearing.dart';
+import 'package:mobil_arici/features/subsidies/domain/support_period.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 
 export 'tables/media_tables.dart' show MediaUploadStatus;
@@ -94,6 +96,7 @@ part 'app_database.g.dart';
     ReceiptUploads,
     Customers,
     CustomerPayments,
+    RefSupportPeriods,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -105,7 +108,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 20;
+  int get schemaVersion => 21;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -281,6 +284,14 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(schema.customerPayments);
         await m.create(schema.customerPaymentsOrgIdIdx);
         await m.create(schema.customerPaymentsTransactionIdIdx);
+      },
+      // Destek başvuru dönemleri ve AKS'de beyan edilen kovan sayısı.
+      from20To21: (m, schema) async {
+        await m.createTable(schema.refSupportPeriods);
+        await m.addColumn(
+          schema.organizations,
+          schema.organizations.trAksHiveCount,
+        );
       },
     ),
   );

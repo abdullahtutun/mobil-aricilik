@@ -80,6 +80,8 @@ import 'package:mobil_arici/features/queens/presentation/rearing_batch_screen.da
 import 'package:mobil_arici/features/reports/presentation/reports_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
+import 'package:mobil_arici/features/subsidies/presentation/aks_hive_count_form_screen.dart';
+import 'package:mobil_arici/features/subsidies/presentation/subsidies_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_form_screen.dart';
 import 'package:mobil_arici/features/tasks/presentation/tasks_screen.dart';
 import 'package:mobil_arici/features/team/presentation/team_screen.dart';
@@ -516,6 +518,20 @@ GoRouter router(Ref ref) {
                             ),
                           ),
                         ],
+                      ),
+                    ],
+                  ),
+                  // Yalnız TR profilinde girişi var (RegionFeatures.subsidies).
+                  GoRoute(
+                    path: 'subsidies',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const SubsidiesScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'aks-count',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) =>
+                            const AksHiveCountFormScreen(),
                       ),
                     ],
                   ),

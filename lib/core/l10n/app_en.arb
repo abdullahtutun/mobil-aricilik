@@ -6039,5 +6039,142 @@
         "example": "₺4,000"
       }
     }
+  },
+
+  "taskAksUpdateTitle": "Don't forget to update AKS",
+  "@taskAksUpdateTitle": {
+    "description": "Auto task title: hive count or apiary location changed (TR only)."
+  },
+  "taskSourceAks": "AKS",
+  "@taskSourceAks": {
+    "description": "Task context label for the AKS update task."
+  },
+  "syncTableRefSupportPeriods": "Support period",
+  "@syncTableRefSupportPeriods": {
+    "description": "Record type on the sync screen: support application period."
+  },
+  "subsidiesTitle": "Subsidies",
+  "@subsidiesTitle": {
+    "description": "Subsidies screen title and More tile (TR only)."
+  },
+  "subsidiesCheckTitle": "Before you apply",
+  "@subsidiesCheckTitle": {
+    "description": "Section label for the hive count check."
+  },
+  "subsidiesActiveHives": "Active hives in the app",
+  "@subsidiesActiveHives": {
+    "description": "Summary tile label: active hive count in the app."
+  },
+  "subsidiesDeclaredHives": "Declared in AKS",
+  "@subsidiesDeclaredHives": {
+    "description": "Summary tile label: hive count declared in AKS."
+  },
+  "subsidiesNotDeclared": "Not entered",
+  "@subsidiesNotDeclared": {
+    "description": "Declared hive count is empty."
+  },
+  "subsidiesCheckNotDeclared": "Enter the hive count you declared in AKS; it is compared with the app before you apply.",
+  "@subsidiesCheckNotDeclared": {
+    "description": "Check message when no declared count."
+  },
+  "subsidiesCheckDiffers": "The app has {active} active hives but {declared} are declared in AKS. Update your AKS record before you apply.",
+  "@subsidiesCheckDiffers": {
+    "description": "Warning when counts differ.",
+    "placeholders": {
+      "active": {
+        "type": "String",
+        "example": "132"
+      },
+      "declared": {
+        "type": "String",
+        "example": "120"
+      }
+    }
+  },
+  "subsidiesCheckMatches": "Counts match: the app and AKS agree.",
+  "@subsidiesCheckMatches": {
+    "description": "Check message when counts match."
+  },
+  "subsidiesEditDeclared": "Enter declared count",
+  "@subsidiesEditDeclared": {
+    "description": "Button opening the declared count form."
+  },
+  "subsidiesDeclaredOwnerOnly": "Only the owner can enter the declared count.",
+  "@subsidiesDeclaredOwnerOnly": {
+    "description": "Note for non-owners."
+  },
+  "subsidiesPeriodsTitle": "Application periods",
+  "@subsidiesPeriodsTitle": {
+    "description": "Section label for support periods."
+  },
+  "subsidiesEmptyTitle": "No support periods yet",
+  "@subsidiesEmptyTitle": {
+    "description": "Empty state title."
+  },
+  "subsidiesEmptyMessage": "Application periods appear here as they are announced; you get a notification when one opens.",
+  "@subsidiesEmptyMessage": {
+    "description": "Empty state message."
+  },
+  "subsidiesPhaseOpen": "Open",
+  "@subsidiesPhaseOpen": {
+    "description": "Period status: applications open."
+  },
+  "subsidiesPhaseUpcoming": "Upcoming",
+  "@subsidiesPhaseUpcoming": {
+    "description": "Period status: not started."
+  },
+  "subsidiesPhaseClosed": "Closed",
+  "@subsidiesPhaseClosed": {
+    "description": "Period status: ended."
+  },
+  "subsidiesPeriodDates": "{start} – {end}",
+  "@subsidiesPeriodDates": {
+    "description": "Application period date range.",
+    "placeholders": {
+      "start": {
+        "type": "String",
+        "example": "Jan 15, 2027"
+      },
+      "end": {
+        "type": "String",
+        "example": "Feb 15, 2027"
+      }
+    }
+  },
+  "subsidiesOpenSource": "Open official notice",
+  "@subsidiesOpenSource": {
+    "description": "Button opening the period source link."
+  },
+  "subsidiesOpenSourceFailed": "Couldn't open the link",
+  "@subsidiesOpenSourceFailed": {
+    "description": "Snack bar when the link fails."
+  },
+  "aksCountTitle": "AKS hive count",
+  "@aksCountTitle": {
+    "description": "Declared hive count form title."
+  },
+  "aksCountLabel": "Hive count declared in AKS",
+  "@aksCountLabel": {
+    "description": "Declared hive count field label."
+  },
+  "aksCountHelper": "Leave empty to skip the check.",
+  "@aksCountHelper": {
+    "description": "Declared hive count field helper."
+  },
+  "aksCountInvalid": "Enter a number between 0 and 100,000",
+  "@aksCountInvalid": {
+    "description": "Declared hive count validation error."
+  },
+  "aksCountSave": "Save",
+  "@aksCountSave": {
+    "description": "Declared hive count save button."
+  },
+  "aksCountSaved": "AKS hive count saved",
+  "@aksCountSaved": {
+    "description": "Snack bar after saving."
+  },
+  "aksCountNoOrganization": "Business details haven't synced to this phone yet; wait for sync.",
+  "@aksCountNoOrganization": {
+    "description": "Snack bar when local organization row is missing."
   }
 }
