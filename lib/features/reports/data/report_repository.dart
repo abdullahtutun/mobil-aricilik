@@ -4,6 +4,7 @@ import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/reports/domain/report.dart';
+import 'package:mobil_arici/features/reports/domain/season_rules.dart';
 
 /// Raporların okuduğu kayıtlar; yalnız yerel DB ile konuşur, yazmaz.
 ///
@@ -27,6 +28,39 @@ class ReportRepository {
               aksNo: row?.trAksNo,
             ),
           );
+
+  /// Sezon raporunun kayıtları: işletmenin silinmemiş kovanları, durum
+  /// olayları, taşımaları, anaları, hasatları ve uygulamaları.
+  Future<SeasonRecords> findSeasonRecords(String orgId) async {
+    final (hives, events, locations, queens, harvests, treatments) = await (
+      (db.select(
+        db.hives,
+      )..where((t) => t.orgId.equals(orgId) & t.deletedAt.isNull())).get(),
+      (db.select(
+        db.hiveStatusEvents,
+      )..where((t) => t.orgId.equals(orgId) & t.deletedAt.isNull())).get(),
+      (db.select(
+        db.hiveLocationHistory,
+      )..where((t) => t.orgId.equals(orgId) & t.deletedAt.isNull())).get(),
+      (db.select(
+        db.queens,
+      )..where((t) => t.orgId.equals(orgId) & t.deletedAt.isNull())).get(),
+      (db.select(
+        db.harvests,
+      )..where((t) => t.orgId.equals(orgId) & t.deletedAt.isNull())).get(),
+      (db.select(
+        db.treatments,
+      )..where((t) => t.orgId.equals(orgId) & t.deletedAt.isNull())).get(),
+    ).wait;
+    return (
+      hives: hives,
+      events: events,
+      locations: locations,
+      queens: queens,
+      harvests: harvests,
+      treatments: treatments,
+    );
+  }
 
   /// İşletmenin bütün uygulamaları.
   Future<List<Treatment>> findTreatments(String orgId) =>

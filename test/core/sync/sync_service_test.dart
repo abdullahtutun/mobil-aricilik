@@ -32,6 +32,7 @@ import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inventory/data/inventory_repository.dart';
@@ -210,6 +211,17 @@ Map<String, Object?> _moveRow(int seq) => {
   'hive_id': 'hive-1',
   'apiary_id': 'apiary-1',
   'moved_at': '2026-10-23T06:30:00+00:00',
+};
+
+Map<String, Object?> _statusEventRow(int seq) => {
+  ..._standard('status-event-1', seq),
+  'org_id': _org,
+  'hive_id': 'hive-1',
+  'apiary_id': 'apiary-1',
+  'from_status': 'active',
+  'to_status': 'dead',
+  'changed_at': '2027-02-10T09:00:00+00:00',
+  'loss_reason': 'wintering',
 };
 
 Map<String, Object?> _inspectionRow(int seq) => {
@@ -1052,11 +1064,12 @@ void main() {
         'transactions': [_transactionRow(31)],
         'customer_payments': [_customerPaymentRow(33)],
         'ref_support_periods': [_supportPeriodRow(34)],
+        'hive_status_events': [_statusEventRow(35)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 34),
+        const SyncResult(status: SyncStatus.done, pulled: 35),
       );
 
       expect(requests.map(_pullOf), [
@@ -1066,6 +1079,7 @@ void main() {
         (table: 'queens', since: 0),
         (table: 'hives', since: 0),
         (table: 'hive_location_history', since: 0),
+        (table: 'hive_status_events', since: 0),
         (table: 'inspections', since: 0),
         (table: 'media', since: 0),
         (table: 'mite_counts', since: 0),
@@ -1236,8 +1250,12 @@ void main() {
         'customers': 32,
         'customer_payments': 33,
         'ref_support_periods': 34,
+        'hive_status_events': 35,
         fullPullMarker: 0,
       });
+      final statusEvent = await db.select(db.hiveStatusEvents).getSingle();
+      expect(statusEvent.toStatus, HiveStatus.dead);
+      expect(statusEvent.lossReason, HiveLossReason.wintering);
       final document = (await DocumentRepository(db).findById('document-1'))!;
       expect(document.type, DocumentType.transportPermit);
       expect(document.expiresOn, DateTime(2027, 5));

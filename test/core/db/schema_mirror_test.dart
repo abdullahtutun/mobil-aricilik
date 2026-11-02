@@ -13,6 +13,7 @@ import 'package:mobil_arici/features/health/domain/drug.dart';
 import 'package:mobil_arici/features/health/domain/mite_count.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
@@ -173,6 +174,7 @@ void main() {
       'residue_result': values(ResidueResult.values),
       'transaction_kind': values(TransactionKind.values),
       'transaction_category': values(TransactionCategory.values),
+      'hive_loss_reason': values(HiveLossReason.values),
     };
 
     expect(local, server.enums);

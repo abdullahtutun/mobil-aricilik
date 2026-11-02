@@ -5,6 +5,7 @@ import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 
 import '../../../helpers/test_database.dart';
 
@@ -260,7 +261,9 @@ void main() {
       expect(updated.marking, 'Mavi kapak');
       expect(updated.updatedAt, clock.current);
       expect(
-        (await readOutbox(db)).last.payload,
+        (await readOutbox(db))
+            .lastWhere((entry) => entry.recordTable == 'hives')
+            .payload,
         containsPair('status', 'sold'),
       );
     });
@@ -270,6 +273,95 @@ void main() {
         repository.setStatus('yok', HiveStatus.dead),
         throwsStateError,
       );
+    });
+
+    test('durum değişince olay kovanın arılığı ve kayıp nedeniyle yazılır; '
+        'outbox payload sunucu kolonlarını taşır', () async {
+      final hive = await createHive('101', apiaryId: 'apiary-2');
+      clock.advance(const Duration(minutes: 1));
+
+      await repository.setStatus(
+        hive.id,
+        HiveStatus.dead,
+        lossReason: HiveLossReason.varroa,
+      );
+
+      final event = await db.select(db.hiveStatusEvents).getSingle();
+      expect(event.hiveId, hive.id);
+      expect(event.apiaryId, 'apiary-2');
+      expect(event.fromStatus, HiveStatus.active);
+      expect(event.toStatus, HiveStatus.dead);
+      expect(event.lossReason, HiveLossReason.varroa);
+      expect(event.changedAt, clock.current);
+      final payload = (await readOutbox(db))
+          .lastWhere((entry) => entry.recordTable == 'hive_status_events')
+          .payload;
+      expect(payload, containsPair('from_status', 'active'));
+      expect(payload, containsPair('to_status', 'dead'));
+      expect(payload, containsPair('loss_reason', 'varroa'));
+      expect(payload.containsKey('server_seq'), isFalse);
+    });
+
+    test("kayıp nedeni yalnız söndü/kayboldu'da yazılır; durum aynıysa "
+        'olay yok', () async {
+      final hive = await createHive('101');
+
+      await repository.setStatus(
+        hive.id,
+        HiveStatus.sold,
+        lossReason: HiveLossReason.varroa,
+      );
+      await repository.setStatus(hive.id, HiveStatus.sold);
+
+      final events = await db.select(db.hiveStatusEvents).get();
+      expect(events.single.toStatus, HiveStatus.sold);
+      expect(events.single.lossReason, isNull);
+    });
+
+    test('düzenleme durumu değiştirirse olay yazılır, değiştirmezse '
+        'yazılmaz', () async {
+      final hive = await createHive('101');
+
+      await repository.update(hive.copyWith(marking: 'Mavi'));
+      expect(await db.select(db.hiveStatusEvents).get(), isEmpty);
+
+      final latest = (await repository.findById(hive.id))!;
+      await repository.update(
+        latest.copyWith(status: HiveStatus.lost),
+        lossReason: HiveLossReason.predator,
+      );
+      final event = await db.select(db.hiveStatusEvents).getSingle();
+      expect(event.toStatus, HiveStatus.lost);
+      expect(event.lossReason, HiveLossReason.predator);
+    });
+
+    test(
+      'Geri al eski duruma döner ve olayı siler; yeni olay yazmaz',
+      () async {
+        final hive = await createHive('101');
+        await repository.setStatus(hive.id, HiveStatus.sold);
+
+        final restored = await repository.undoStatus(
+          hive.id,
+          previous: HiveStatus.active,
+        );
+
+        expect(restored.status, HiveStatus.active);
+        final events = await db.select(db.hiveStatusEvents).get();
+        expect(events.single.deletedAt, isNotNull);
+      },
+    );
+
+    test('olay yazılamazsa kovanın durumu da değişmez', () async {
+      final hive = await createHive('101');
+      await breakInsert('hive_status_events');
+
+      await expectLater(
+        repository.setStatus(hive.id, HiveStatus.dead),
+        throwsA(isA<SqliteException>()),
+      );
+
+      expect((await repository.findById(hive.id))!.status, HiveStatus.active);
     });
   });
 

@@ -6,6 +6,7 @@ import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 
 enum AddHivesChoice { one, bulk }
@@ -52,6 +53,32 @@ Future<HiveStatus?> showHiveStatusSheet(BuildContext context, Hive hive) =>
         ],
       );
     });
+
+/// Söndü ya da kayboldu'ya geçen kovanın kayıp nedeni; sezon raporundaki
+/// "Kayıplar ve nedenleri" buradan gelir. "Belirtmeden geç" boş nedendir.
+/// Kapatılırsa null (durum değişmez).
+Future<({HiveLossReason? reason})?> showHiveLossReasonSheet(
+  BuildContext context, {
+  required String number,
+}) => showOptionSheet(context, (context) {
+  final l10n = AppLocalizations.of(context);
+  return OptionSheet(
+    title: l10n.hiveLossReasonTitle(number),
+    options: [
+      for (final reason in HiveLossReason.values)
+        SheetOption(
+          value: (reason: reason),
+          icon: reason.icon,
+          label: reason.label(l10n),
+        ),
+      SheetOption(
+        value: (reason: null),
+        icon: Icons.help_outline_rounded,
+        label: l10n.hiveLossSkip,
+      ),
+    ],
+  );
+});
 
 /// Kovanın taşınacağı arılık; bulunduğu arılık listede yok. Kapatılırsa
 /// null.

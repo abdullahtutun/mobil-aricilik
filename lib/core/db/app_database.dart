@@ -32,6 +32,7 @@ import 'package:mobil_arici/features/health/domain/treatment.dart';
 import 'package:mobil_arici/features/health/domain/withdrawal.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_draft.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
@@ -65,6 +66,7 @@ part 'app_database.g.dart';
     Queens,
     Hives,
     HiveLocationHistory,
+    HiveStatusEvents,
     Inspections,
     InspectionDrafts,
     Media,
@@ -108,7 +110,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 22;
+  int get schemaVersion => 23;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -298,6 +300,12 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(schema.hives, schema.hives.quarantined);
         await m.addColumn(schema.hives, schema.hives.quarantinedAt);
         await m.addColumn(schema.hives, schema.hives.quarantineDisease);
+      },
+      // Kovan yaşam döngüsü olayları (sezon raporu).
+      from22To23: (m, schema) async {
+        await m.createTable(schema.hiveStatusEvents);
+        await m.create(schema.hiveStatusEventsOrgIdIdx);
+        await m.create(schema.hiveStatusEventsHiveIdIdx);
       },
     ),
   );

@@ -8,6 +8,7 @@ import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
 import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
@@ -152,8 +153,15 @@ class HiveActions extends _$HiveActions {
 
   HiveRepository get _repository => ref.read(hiveRepositoryProvider);
 
-  Future<void> setStatus(String hiveId, HiveStatus status) =>
-      _repository.setStatus(hiveId, status);
+  Future<void> setStatus(
+    String hiveId,
+    HiveStatus status, {
+    HiveLossReason? lossReason,
+  }) => _repository.setStatus(hiveId, status, lossReason: lossReason);
+
+  /// Durum değişikliğinin Geri al'ı; değişikliğin olayı da silinir.
+  Future<void> undoStatus(String hiveId, {required HiveStatus previous}) =>
+      _repository.undoStatus(hiveId, previous: previous);
 
   /// Kovan zaten o arılıktaysa null.
   Future<HiveMove?> move(String hiveId, {required String apiaryId}) =>

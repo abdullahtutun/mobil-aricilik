@@ -4,6 +4,7 @@ import 'package:mobil_arici/core/db/tables/sync_columns.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/queens/domain/queen.dart';
 
 // Sunucudaki bileşik yabancı anahtarlar ve etiket tekilliği yerelde yok:
@@ -84,4 +85,20 @@ class HiveLocationHistory extends Table with SyncColumns, OrgColumns {
   TextColumn get hiveId => text()();
   TextColumn get apiaryId => text()();
   DateTimeColumn get movedAt => dateTime()();
+}
+
+/// `public.hive_status_events` aynası; olay tablosu.
+@UseRowClass(HiveStatusEvent, generateInsertable: true)
+@TableIndex(name: 'hive_status_events_org_id_idx', columns: {#orgId})
+@TableIndex(name: 'hive_status_events_hive_id_idx', columns: {#hiveId})
+class HiveStatusEvents extends Table with SyncColumns, OrgColumns {
+  TextColumn get hiveId => text()();
+  TextColumn get apiaryId => text()();
+  TextColumn get fromStatus =>
+      text().map(const ServerEnumConverter(HiveStatus.values))();
+  TextColumn get toStatus =>
+      text().map(const ServerEnumConverter(HiveStatus.values))();
+  DateTimeColumn get changedAt => dateTime()();
+  TextColumn get lossReason =>
+      text().nullable().map(const ServerEnumConverter(HiveLossReason.values))();
 }

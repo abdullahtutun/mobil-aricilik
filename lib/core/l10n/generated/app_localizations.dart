@@ -1928,6 +1928,12 @@ abstract class AppLocalizations {
   /// **'Hive'**
   String get syncTableHives;
 
+  /// No description provided for @syncTableHiveStatusEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive status change'**
+  String get syncTableHiveStatusEvents;
+
   /// No description provided for @syncTableHiveLocationHistory.
   ///
   /// In en, this message translates to:
@@ -10042,6 +10048,450 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Steps'**
   String get calculatorQueenSteps;
+
+  /// No description provided for @hiveLossWintering.
+  ///
+  /// In en, this message translates to:
+  /// **'Wintering'**
+  String get hiveLossWintering;
+
+  /// No description provided for @hiveLossQueenless.
+  ///
+  /// In en, this message translates to:
+  /// **'Queenless'**
+  String get hiveLossQueenless;
+
+  /// No description provided for @hiveLossVarroa.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa'**
+  String get hiveLossVarroa;
+
+  /// No description provided for @hiveLossDisease.
+  ///
+  /// In en, this message translates to:
+  /// **'Disease'**
+  String get hiveLossDisease;
+
+  /// No description provided for @hiveLossStarvation.
+  ///
+  /// In en, this message translates to:
+  /// **'Starvation'**
+  String get hiveLossStarvation;
+
+  /// No description provided for @hiveLossRobbing.
+  ///
+  /// In en, this message translates to:
+  /// **'Robbing'**
+  String get hiveLossRobbing;
+
+  /// No description provided for @hiveLossPredator.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear / animal'**
+  String get hiveLossPredator;
+
+  /// No description provided for @hiveLossPoisoning.
+  ///
+  /// In en, this message translates to:
+  /// **'Poisoning'**
+  String get hiveLossPoisoning;
+
+  /// No description provided for @hiveLossOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get hiveLossOther;
+
+  /// No description provided for @hiveLossUnspecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get hiveLossUnspecified;
+
+  /// No description provided for @hiveLossReasonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why was hive {number} lost?'**
+  String hiveLossReasonTitle(String number);
+
+  /// No description provided for @hiveLossSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip without a reason'**
+  String get hiveLossSkip;
+
+  /// No description provided for @hiveFormLossReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for the loss'**
+  String get hiveFormLossReason;
+
+  /// No description provided for @hiveFormLossReasonHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Used in the season report; can be left empty.'**
+  String get hiveFormLossReasonHelper;
+
+  /// No description provided for @seasonReportTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Season report'**
+  String get seasonReportTile;
+
+  /// No description provided for @seasonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Season {year}'**
+  String seasonTitle(String year);
+
+  /// No description provided for @seasonPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get seasonPdf;
+
+  /// No description provided for @seasonExportCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Export to Excel (CSV)'**
+  String get seasonExportCsv;
+
+  /// No description provided for @seasonExportError.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be created. Try again.'**
+  String get seasonExportError;
+
+  /// No description provided for @seasonLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'The season report could not be loaded.'**
+  String get seasonLoadError;
+
+  /// No description provided for @seasonHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get seasonHives;
+
+  /// No description provided for @seasonHiveChange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} → {end}'**
+  String seasonHiveChange(int start, int end);
+
+  /// No description provided for @seasonNetGain.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} net'**
+  String seasonNetGain(int count);
+
+  /// No description provided for @seasonNetLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'−{count} net'**
+  String seasonNetLoss(int count);
+
+  /// No description provided for @seasonNetSame.
+  ///
+  /// In en, this message translates to:
+  /// **'No change'**
+  String get seasonNetSame;
+
+  /// No description provided for @seasonWinterLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Winter loss'**
+  String get seasonWinterLoss;
+
+  /// No description provided for @seasonWinterNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Winter has not started'**
+  String get seasonWinterNotStarted;
+
+  /// No description provided for @seasonPreviousWinter.
+  ///
+  /// In en, this message translates to:
+  /// **'Winter loss {year}'**
+  String seasonPreviousWinter(String year);
+
+  /// No description provided for @seasonPreviousWinterRate.
+  ///
+  /// In en, this message translates to:
+  /// **'{year}: {rate}'**
+  String seasonPreviousWinterRate(String year, String rate);
+
+  /// No description provided for @seasonHoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Total honey'**
+  String get seasonHoney;
+
+  /// No description provided for @seasonNewQueens.
+  ///
+  /// In en, this message translates to:
+  /// **'New queens'**
+  String get seasonNewQueens;
+
+  /// No description provided for @seasonOwnReared.
+  ///
+  /// In en, this message translates to:
+  /// **'own rearing {count}'**
+  String seasonOwnReared(int count);
+
+  /// No description provided for @seasonLossesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Losses and causes'**
+  String get seasonLossesTitle;
+
+  /// No description provided for @seasonNoLosses.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives lost this season.'**
+  String get seasonNoLosses;
+
+  /// No description provided for @seasonHiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive} other{{count} hives}}'**
+  String seasonHiveCount(int count);
+
+  /// No description provided for @seasonByTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Winter loss · by treatment method'**
+  String get seasonByTreatment;
+
+  /// No description provided for @seasonByApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Winter loss · by apiary'**
+  String get seasonByApiary;
+
+  /// No description provided for @seasonByQueenLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Winter loss · by queen line'**
+  String get seasonByQueenLine;
+
+  /// No description provided for @seasonTabTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment'**
+  String get seasonTabTreatment;
+
+  /// No description provided for @seasonTabApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get seasonTabApiary;
+
+  /// No description provided for @seasonTabQueenLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen line'**
+  String get seasonTabQueenLine;
+
+  /// No description provided for @seasonNoWinterData.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives went into winter in your records yet.'**
+  String get seasonNoWinterData;
+
+  /// No description provided for @seasonFewData.
+  ///
+  /// In en, this message translates to:
+  /// **'few data'**
+  String get seasonFewData;
+
+  /// No description provided for @seasonMisleadingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'From your own records; may be misleading with few hives.'**
+  String get seasonMisleadingNote;
+
+  /// No description provided for @seasonUntreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not treated'**
+  String get seasonUntreated;
+
+  /// No description provided for @seasonMethodSeparator.
+  ///
+  /// In en, this message translates to:
+  /// **' + '**
+  String get seasonMethodSeparator;
+
+  /// No description provided for @seasonQueenLineUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown line'**
+  String get seasonQueenLineUnknown;
+
+  /// No description provided for @seasonFinanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost and profit'**
+  String get seasonFinanceTitle;
+
+  /// No description provided for @seasonProfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit'**
+  String get seasonProfit;
+
+  /// No description provided for @seasonPdfFigure.
+  ///
+  /// In en, this message translates to:
+  /// **'Figure'**
+  String get seasonPdfFigure;
+
+  /// No description provided for @seasonPdfValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get seasonPdfValue;
+
+  /// No description provided for @seasonPdfHiveChange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} → {end} ({net})'**
+  String seasonPdfHiveChange(int start, int end, String net);
+
+  /// No description provided for @seasonPdfNewQueens.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} (own rearing {own})'**
+  String seasonPdfNewQueens(int count, int own);
+
+  /// No description provided for @seasonPdfWinterLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate} ({lost} of {hives} hives)'**
+  String seasonPdfWinterLoss(String rate, int lost, int hives);
+
+  /// No description provided for @seasonPdfReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Cause'**
+  String get seasonPdfReason;
+
+  /// No description provided for @seasonPdfHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get seasonPdfHives;
+
+  /// No description provided for @seasonPdfLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get seasonPdfLost;
+
+  /// No description provided for @seasonPdfRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Loss'**
+  String get seasonPdfRate;
+
+  /// No description provided for @seasonPdfGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get seasonPdfGroup;
+
+  /// No description provided for @seasonPdfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get seasonPdfTotal;
+
+  /// No description provided for @seasonCsvHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive'**
+  String get seasonCsvHive;
+
+  /// No description provided for @seasonCsvApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get seasonCsvApiary;
+
+  /// No description provided for @seasonCsvStartStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status at season start'**
+  String get seasonCsvStartStatus;
+
+  /// No description provided for @seasonCsvEndStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status at season end'**
+  String get seasonCsvEndStatus;
+
+  /// No description provided for @seasonCsvLossDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Loss date'**
+  String get seasonCsvLossDate;
+
+  /// No description provided for @seasonCsvLossReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Loss cause'**
+  String get seasonCsvLossReason;
+
+  /// No description provided for @seasonCsvInWinter.
+  ///
+  /// In en, this message translates to:
+  /// **'Went into winter'**
+  String get seasonCsvInWinter;
+
+  /// No description provided for @seasonCsvLostInWinter.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost in winter'**
+  String get seasonCsvLostInWinter;
+
+  /// No description provided for @seasonCsvWinterApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Winter apiary'**
+  String get seasonCsvWinterApiary;
+
+  /// No description provided for @seasonCsvTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pre-winter treatment'**
+  String get seasonCsvTreatment;
+
+  /// No description provided for @seasonCsvQueenLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen line'**
+  String get seasonCsvQueenLine;
+
+  /// No description provided for @seasonCsvAddedInSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Added this season'**
+  String get seasonCsvAddedInSeason;
+
+  /// No description provided for @seasonCsvYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get seasonCsvYes;
+
+  /// No description provided for @seasonCsvNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get seasonCsvNo;
 }
 
 class _AppLocalizationsDelegate

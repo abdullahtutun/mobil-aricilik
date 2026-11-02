@@ -13,8 +13,8 @@ import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 /// Seyrek kullanılan modüllerin girişi (docs/design "Daha fazla"): üstte
 /// işletme kartı, altında bölüm bölüm iki sütunlu modül karoları. Arılık:
 /// yaşlı analar, gezginci, ana yetiştirme, hasat ve lotlar; işletme: ekip,
-/// raporlar, belge kasası, malzeme ve stok, finans (yalnız owner ve
-/// partner), destekler (yalnız TR profilinde); yardım: bilgi bankası,
+/// raporlar, sezon raporu, belge kasası, malzeme ve stok, finans (yalnız
+/// owner ve partner), destekler (yalnız TR profilinde); yardım: bilgi bankası,
 /// görüş bildir, ayarlar, senkron. Diğer modüller geldikçe kendi
 /// bölümlerine eklenir.
 class MoreScreen extends ConsumerWidget {
@@ -84,6 +84,11 @@ class MoreScreen extends ConsumerWidget {
                   icon: Icons.picture_as_pdf_outlined,
                   label: l10n.reportsTitle,
                   onTap: () => context.go(AppRoutes.reports),
+                ),
+                _ModuleTile(
+                  icon: Icons.insights_outlined,
+                  label: l10n.seasonReportTile,
+                  onTap: () => context.go(AppRoutes.season),
                 ),
                 _ModuleTile(
                   icon: Icons.folder_copy_outlined,

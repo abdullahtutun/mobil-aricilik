@@ -1119,6 +1119,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncTableHives => 'Hive';
 
   @override
+  String get syncTableHiveStatusEvents => 'Hive status change';
+
+  @override
   String get syncTableHiveLocationHistory => 'Hive move';
 
   @override
@@ -6287,4 +6290,259 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calculatorQueenSteps => 'Steps';
+
+  @override
+  String get hiveLossWintering => 'Wintering';
+
+  @override
+  String get hiveLossQueenless => 'Queenless';
+
+  @override
+  String get hiveLossVarroa => 'Varroa';
+
+  @override
+  String get hiveLossDisease => 'Disease';
+
+  @override
+  String get hiveLossStarvation => 'Starvation';
+
+  @override
+  String get hiveLossRobbing => 'Robbing';
+
+  @override
+  String get hiveLossPredator => 'Bear / animal';
+
+  @override
+  String get hiveLossPoisoning => 'Poisoning';
+
+  @override
+  String get hiveLossOther => 'Other';
+
+  @override
+  String get hiveLossUnspecified => 'Not specified';
+
+  @override
+  String hiveLossReasonTitle(String number) {
+    return 'Why was hive $number lost?';
+  }
+
+  @override
+  String get hiveLossSkip => 'Skip without a reason';
+
+  @override
+  String get hiveFormLossReason => 'Reason for the loss';
+
+  @override
+  String get hiveFormLossReasonHelper =>
+      'Used in the season report; can be left empty.';
+
+  @override
+  String get seasonReportTile => 'Season report';
+
+  @override
+  String seasonTitle(String year) {
+    return 'Season $year';
+  }
+
+  @override
+  String get seasonPdf => 'PDF';
+
+  @override
+  String get seasonExportCsv => 'Export to Excel (CSV)';
+
+  @override
+  String get seasonExportError => 'The file could not be created. Try again.';
+
+  @override
+  String get seasonLoadError => 'The season report could not be loaded.';
+
+  @override
+  String get seasonHives => 'Hives';
+
+  @override
+  String seasonHiveChange(int start, int end) {
+    return '$start → $end';
+  }
+
+  @override
+  String seasonNetGain(int count) {
+    return '+$count net';
+  }
+
+  @override
+  String seasonNetLoss(int count) {
+    return '−$count net';
+  }
+
+  @override
+  String get seasonNetSame => 'No change';
+
+  @override
+  String get seasonWinterLoss => 'Winter loss';
+
+  @override
+  String get seasonWinterNotStarted => 'Winter has not started';
+
+  @override
+  String seasonPreviousWinter(String year) {
+    return 'Winter loss $year';
+  }
+
+  @override
+  String seasonPreviousWinterRate(String year, String rate) {
+    return '$year: $rate';
+  }
+
+  @override
+  String get seasonHoney => 'Total honey';
+
+  @override
+  String get seasonNewQueens => 'New queens';
+
+  @override
+  String seasonOwnReared(int count) {
+    return 'own rearing $count';
+  }
+
+  @override
+  String get seasonLossesTitle => 'Losses and causes';
+
+  @override
+  String get seasonNoLosses => 'No hives lost this season.';
+
+  @override
+  String seasonHiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives',
+      one: '1 hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get seasonByTreatment => 'Winter loss · by treatment method';
+
+  @override
+  String get seasonByApiary => 'Winter loss · by apiary';
+
+  @override
+  String get seasonByQueenLine => 'Winter loss · by queen line';
+
+  @override
+  String get seasonTabTreatment => 'Treatment';
+
+  @override
+  String get seasonTabApiary => 'Apiary';
+
+  @override
+  String get seasonTabQueenLine => 'Queen line';
+
+  @override
+  String get seasonNoWinterData =>
+      'No hives went into winter in your records yet.';
+
+  @override
+  String get seasonFewData => 'few data';
+
+  @override
+  String get seasonMisleadingNote =>
+      'From your own records; may be misleading with few hives.';
+
+  @override
+  String get seasonUntreated => 'Not treated';
+
+  @override
+  String get seasonMethodSeparator => ' + ';
+
+  @override
+  String get seasonQueenLineUnknown => 'Unknown line';
+
+  @override
+  String get seasonFinanceTitle => 'Cost and profit';
+
+  @override
+  String get seasonProfit => 'Profit';
+
+  @override
+  String get seasonPdfFigure => 'Figure';
+
+  @override
+  String get seasonPdfValue => 'Value';
+
+  @override
+  String seasonPdfHiveChange(int start, int end, String net) {
+    return '$start → $end ($net)';
+  }
+
+  @override
+  String seasonPdfNewQueens(int count, int own) {
+    return '$count (own rearing $own)';
+  }
+
+  @override
+  String seasonPdfWinterLoss(String rate, int lost, int hives) {
+    return '$rate ($lost of $hives hives)';
+  }
+
+  @override
+  String get seasonPdfReason => 'Cause';
+
+  @override
+  String get seasonPdfHives => 'Hives';
+
+  @override
+  String get seasonPdfLost => 'Lost';
+
+  @override
+  String get seasonPdfRate => 'Loss';
+
+  @override
+  String get seasonPdfGroup => 'Group';
+
+  @override
+  String get seasonPdfTotal => 'Total';
+
+  @override
+  String get seasonCsvHive => 'Hive';
+
+  @override
+  String get seasonCsvApiary => 'Apiary';
+
+  @override
+  String get seasonCsvStartStatus => 'Status at season start';
+
+  @override
+  String get seasonCsvEndStatus => 'Status at season end';
+
+  @override
+  String get seasonCsvLossDate => 'Loss date';
+
+  @override
+  String get seasonCsvLossReason => 'Loss cause';
+
+  @override
+  String get seasonCsvInWinter => 'Went into winter';
+
+  @override
+  String get seasonCsvLostInWinter => 'Lost in winter';
+
+  @override
+  String get seasonCsvWinterApiary => 'Winter apiary';
+
+  @override
+  String get seasonCsvTreatment => 'Pre-winter treatment';
+
+  @override
+  String get seasonCsvQueenLine => 'Queen line';
+
+  @override
+  String get seasonCsvAddedInSeason => 'Added this season';
+
+  @override
+  String get seasonCsvYes => 'Yes';
+
+  @override
+  String get seasonCsvNo => 'No';
 }

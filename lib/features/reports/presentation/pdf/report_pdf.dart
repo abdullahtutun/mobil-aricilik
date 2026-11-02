@@ -115,7 +115,7 @@ pw.Document reportDocument(
         ReportKind.hiveHistory => PdfPageFormat.a4,
       },
       margin: const pw.EdgeInsets.all(ReportPdfStyle.margin),
-      footer: (context) => _footer(context, l10n, format, createdAt),
+      footer: (context) => reportPdfFooter(context, l10n, format, createdAt),
       build: (context) => [
         _header(
           title: title,
@@ -171,7 +171,8 @@ pw.Widget _header({
   );
 }
 
-pw.Widget _footer(
+/// Altta oluşturulma zamanı ve "Sayfa 1 / 2".
+pw.Widget reportPdfFooter(
   pw.Context context,
   AppLocalizations l10n,
   AppFormat format,
@@ -204,7 +205,7 @@ pw.Widget _treatmentTable(
   Map<String, String> apiaryNames,
   AppLocalizations l10n,
   AppFormat format,
-) => _table(
+) => reportPdfTable(
   headers: [
     l10n.pdfColumnDate,
     l10n.pdfColumnApiary,
@@ -287,7 +288,7 @@ List<pw.Widget> _hiveSection(
     if (history.items.isEmpty)
       _paragraph(l10n.reportEmpty)
     else
-      _table(
+      reportPdfTable(
         headers: [
           l10n.pdfColumnDate,
           l10n.pdfColumnEvent,
@@ -380,7 +381,7 @@ List<String> _historyCells(
 
 /// Çizgili tablo; başlık satırı her sayfada tekrar eder. [widths] sütunların
 /// oranı.
-pw.Widget _table({
+pw.Widget reportPdfTable({
   required List<String> headers,
   required List<double> widths,
   required List<List<String>> rows,

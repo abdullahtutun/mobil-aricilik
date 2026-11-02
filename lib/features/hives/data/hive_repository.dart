@@ -3,8 +3,10 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
+import 'package:mobil_arici/features/hives/data/hive_status_event_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 
 /// Bir taşıma: kovanın yeni hâli, geldiği arılık ve yazılan geçmiş kaydı.
@@ -12,7 +14,8 @@ import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 typedef HiveMove = ({Hive hive, String fromApiaryId, HiveLocationEntry entry});
 
 /// Kovanlar; durum kaydı, son yazan kazanır. Oluşturma ve taşıma arılık
-/// geçmişini ([HiveLocationRepository]) aynı transaction'da yazar.
+/// geçmişini ([HiveLocationRepository]), durum değişikliği yaşam döngüsü
+/// olayını ([HiveStatusEventRepository]) aynı transaction'da yazar.
 ///
 /// [aksReminders] açıksa (TR, `RegionFeatures.aks`) aktif kovan sayısını
 /// ya da kovanın arılığını değiştiren her yazma "AKS'de güncellemeyi
@@ -25,6 +28,7 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
 
   late final _locations = HiveLocationRepository(db, clock: clock);
   late final _tasks = TaskRepository(db, clock: clock);
+  late final _statusEvents = HiveStatusEventRepository(db, clock: clock);
 
   @override
   $HivesTable get table => db.hives;
@@ -136,22 +140,50 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     ],
   );
 
-  /// Kovanın alanlarını yazar. Kovan yoksa ya da silinmişse [StateError].
-  Future<Hive> update(Hive hive) => db.transaction(() async {
-    final before = await requireById(hive.id);
-    final updated = await updateRecord(hive);
-    if (_changesAks(before, updated)) await _remindAks(hive.orgId);
+  /// Kovanın alanlarını yazar; durum değiştiyse olayını da ([lossReason]
+  /// yalnız söndü/kayboldu'da). Kovan yoksa ya da silinmişse [StateError].
+  Future<Hive> update(Hive hive, {HiveLossReason? lossReason}) =>
+      db.transaction(() async {
+        final before = await requireById(hive.id);
+        final updated = await updateRecord(hive);
+        await _recordStatus(before, updated, lossReason);
+        if (_changesAks(before, updated)) await _remindAks(hive.orgId);
+        return updated;
+      });
+
+  /// Durumu kovanın en son hâlinin üzerine yazar ve değiştiyse olayını
+  /// ([lossReason] yalnız söndü/kayboldu'da) yazar. Kovan yoksa ya da
+  /// silinmişse [StateError].
+  Future<Hive> setStatus(
+    String hiveId,
+    HiveStatus status, {
+    HiveLossReason? lossReason,
+  }) => db.transaction(() async {
+    final hive = await requireById(hiveId);
+    final updated = await updateRecord(hive.copyWith(status: status));
+    await _recordStatus(hive, updated, lossReason);
+    if (_changesAks(hive, updated)) await _remindAks(hive.orgId);
     return updated;
   });
 
-  /// Durumu kovanın en son hâlinin üzerine yazar. Kovan yoksa ya da
-  /// silinmişse [StateError].
-  Future<Hive> setStatus(String hiveId, HiveStatus status) =>
+  /// Durum değişikliğinin Geri al'ı: kovan [previous] durumuna döner ve
+  /// değişikliğin olayı (kovanın [previous]'tan bugünkü durumuna son
+  /// olayı) silinir; yeni olay yazılmaz. Kovan yoksa ya da silinmişse
+  /// [StateError].
+  Future<Hive> undoStatus(String hiveId, {required HiveStatus previous}) =>
       db.transaction(() async {
         final hive = await requireById(hiveId);
-        final updated = await updateRecord(hive.copyWith(status: status));
-        if (_changesAks(hive, updated)) await _remindAks(hive.orgId);
-        return updated;
+        if (hive.status == previous) return hive;
+        final events = await _statusEvents.findByHive(hiveId);
+        final last = events.lastOrNull;
+        if (last != null &&
+            last.fromStatus == previous &&
+            last.toStatus == hive.status) {
+          await _statusEvents.delete(last.id);
+        }
+        final restored = await updateRecord(hive.copyWith(status: previous));
+        if (_changesAks(hive, restored)) await _remindAks(hive.orgId);
+        return restored;
       });
 
   /// Kovanı [disease] şüphesiyle karantinaya alır; zaten karantinadaysa
@@ -248,6 +280,20 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
     await _locations.delete(move.entry.id);
     return true;
   });
+
+  Future<void> _recordStatus(
+    Hive before,
+    Hive after,
+    HiveLossReason? lossReason,
+  ) async {
+    if (before.status == after.status) return;
+    await _statusEvents.add(
+      before,
+      to: after.status,
+      changedAt: after.updatedAt,
+      lossReason: lossReason,
+    );
+  }
 
   /// AKS'deki kayda dokunan değişiklik: kovan aktifliğe girdi ya da
   /// çıktı, ya da aktif kovan başka arılığa geçti.

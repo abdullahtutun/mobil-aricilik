@@ -88,6 +88,7 @@ import 'package:mobil_arici/features/queens/presentation/queen_rearing_form_scre
 import 'package:mobil_arici/features/queens/presentation/queen_rearing_screen.dart';
 import 'package:mobil_arici/features/queens/presentation/rearing_batch_screen.dart';
 import 'package:mobil_arici/features/reports/presentation/reports_screen.dart';
+import 'package:mobil_arici/features/reports/presentation/season_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/developer_menu_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/subsidies/presentation/aks_hive_count_form_screen.dart';
@@ -617,6 +618,11 @@ GoRouter router(Ref ref) {
                             const AksHiveCountFormScreen(),
                       ),
                     ],
+                  ),
+                  GoRoute(
+                    path: 'season',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const SeasonScreen(),
                   ),
                   GoRoute(
                     path: 'finance',

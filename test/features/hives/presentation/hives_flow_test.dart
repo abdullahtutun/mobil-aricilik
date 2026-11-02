@@ -14,6 +14,7 @@ import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_form_screen.dart';
@@ -348,6 +349,9 @@ void main() {
       // Şimdiki durum sayfada yok.
       expect(_inSheet('Active'), findsNothing);
       await _tap(tester, find.text('Dead'));
+      // Kayıpta önce neden sorulur.
+      expect(find.text('Why was hive 101 lost?'), findsOneWidget);
+      await _tap(tester, _inSheet('Wintering'));
 
       expect(find.text('Record hive 101 as dead?'), findsOneWidget);
       expect(
@@ -364,9 +368,13 @@ void main() {
 
       await _menu(tester, 'Change status');
       await _tap(tester, find.text('Dead'));
+      await _tap(tester, _inSheet('Varroa'));
       await _tap(tester, find.text('Yes, record'));
 
       expect((await hives.findById(hive.id))!.status, HiveStatus.dead);
+      final event = await db.select(db.hiveStatusEvents).getSingle();
+      expect(event.toStatus, HiveStatus.dead);
+      expect(event.lossReason, HiveLossReason.varroa);
       await _scrollCardToTop(tester);
       expect(find.widgetWithText(StatusBadge, 'Dead'), findsOneWidget);
       // Onaylanan kayıtta geri al yok.
@@ -384,10 +392,51 @@ void main() {
       ]) {
         await _menu(tester, 'Change status');
         await _tap(tester, find.text(label));
+        if (label == 'Lost') {
+          await _tap(tester, _inSheet('Skip without a reason'));
+        }
         expect(find.text(question), findsOneWidget);
         await _tap(tester, find.text('Cancel'));
       }
       expect((await hives.findById(hive.id))!.status, HiveStatus.active);
+    });
+
+    testWidgets('kayıp nedeni sorusu kapatılırsa durum değişmez', (
+      tester,
+    ) async {
+      final hive = await createHive('101');
+      await _open(tester, db: db, location: AppRoutes.hive(yayla.id, hive.id));
+
+      await _menu(tester, 'Change status');
+      await _tap(tester, find.text('Lost'));
+      expect(find.text('Why was hive 101 lost?'), findsOneWidget);
+      await tester.tapAt(const Offset(10, 10));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsNothing);
+      expect((await hives.findById(hive.id))!.status, HiveStatus.active);
+      expect(await db.select(db.hiveStatusEvents).get(), isEmpty);
+    });
+
+    testWidgets('düzenlemede söndü seçilince kayıp nedeni sorulur ve '
+        'yazılır', (tester) async {
+      final hive = await createHive('101');
+      await _open(
+        tester,
+        db: db,
+        location: AppRoutes.hiveEdit(yayla.id, hive.id),
+      );
+      expect(find.text('REASON FOR THE LOSS'), findsNothing);
+
+      await _tap(tester, find.text('Dead'));
+      expect(find.text('REASON FOR THE LOSS'), findsOneWidget);
+      await _tap(tester, find.text('Queenless'));
+      await _tap(tester, find.text('Save'));
+      await _tap(tester, find.text('Yes, record'));
+
+      final event = await db.select(db.hiveStatusEvents).getSingle();
+      expect(event.toStatus, HiveStatus.dead);
+      expect(event.lossReason, HiveLossReason.queenless);
     });
 
     testWidgets('yeniden aktif yapmak onay istemez; 6 sn geri alınabilir', (
@@ -406,6 +455,13 @@ void main() {
 
       await _tap(tester, find.text('Undo'));
       expect((await hives.findById(hive.id))!.status, HiveStatus.lost);
+      // Geri al değişikliğin olayını siler.
+      expect(
+        (await db.select(db.hiveStatusEvents).get()).every(
+          (event) => event.deletedAt != null,
+        ),
+        isTrue,
+      );
       await _scrollToTop(tester);
       expect(find.widgetWithText(StatusBadge, 'Lost'), findsOneWidget);
 
@@ -492,6 +548,8 @@ void main() {
     expect(find.text('Ana arı · Kayıt yok'), findsOneWidget);
     await _menu(tester, 'Durumu değiştir');
     await _tap(tester, find.text('Söndü'));
+    expect(find.text('101 numaralı kovan neden kaybedildi?'), findsOneWidget);
+    await _tap(tester, find.text('Kışlama'));
     expect(find.text('Kovan 101 söndü olarak kaydedilsin mi?'), findsOneWidget);
     await _tap(tester, find.text('Evet, kaydet'));
     await _scrollToTop(tester);

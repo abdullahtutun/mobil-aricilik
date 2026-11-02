@@ -19,6 +19,7 @@ import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v20.dart' as v20;
 import 'generated/schema_v21.dart' as v21;
 import 'generated/schema_v22.dart' as v22;
+import 'generated/schema_v23.dart' as v23;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
@@ -905,6 +906,36 @@ void main() {
         expect(hive.quarantined, 0);
         expect(hive.quarantinedAt, null);
         expect(hive.quarantineDisease, null);
+      },
+    );
+  });
+
+  test('v22 → v23 kovanları korur; durum olayları boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 22,
+      newVersion: 23,
+      createOld: v22.DatabaseAtV22.new,
+      createNew: v23.DatabaseAtV23.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.hives,
+          v22.HivesCompanion.insert(
+            id: 'hive-1',
+            createdAt: '2026-11-08T09:00:00.000Z',
+            updatedAt: '2026-11-08T09:00:00.000Z',
+            orgId: 'org-1',
+            number: '101',
+            type: 'langstroth',
+            status: 'dead',
+            apiaryId: 'apiary-1',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final hive = (await newDb.select(newDb.hives).get()).single;
+        expect(hive.status, 'dead');
+        expect(await newDb.select(newDb.hiveStatusEvents).get(), isEmpty);
       },
     );
   });

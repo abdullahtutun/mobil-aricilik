@@ -1108,6 +1108,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get syncTableHives => 'Kovan';
 
   @override
+  String get syncTableHiveStatusEvents => 'Kovan durum değişikliği';
+
+  @override
   String get syncTableHiveLocationHistory => 'Kovan taşıma';
 
   @override
@@ -6112,4 +6115,252 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get calculatorQueenSteps => 'Adımlar';
+
+  @override
+  String get hiveLossWintering => 'Kışlama';
+
+  @override
+  String get hiveLossQueenless => 'Anasızlık';
+
+  @override
+  String get hiveLossVarroa => 'Varroa';
+
+  @override
+  String get hiveLossDisease => 'Hastalık';
+
+  @override
+  String get hiveLossStarvation => 'Açlık';
+
+  @override
+  String get hiveLossRobbing => 'Yağma';
+
+  @override
+  String get hiveLossPredator => 'Ayı / hayvan';
+
+  @override
+  String get hiveLossPoisoning => 'Zehirlenme';
+
+  @override
+  String get hiveLossOther => 'Diğer';
+
+  @override
+  String get hiveLossUnspecified => 'Belirtilmemiş';
+
+  @override
+  String hiveLossReasonTitle(String number) {
+    return '$number numaralı kovan neden kaybedildi?';
+  }
+
+  @override
+  String get hiveLossSkip => 'Belirtmeden geç';
+
+  @override
+  String get hiveFormLossReason => 'Kayıp nedeni';
+
+  @override
+  String get hiveFormLossReasonHelper =>
+      'Sezon raporunda kullanılır; boş bırakılabilir.';
+
+  @override
+  String get seasonReportTile => 'Sezon raporu';
+
+  @override
+  String seasonTitle(String year) {
+    return 'Sezon $year';
+  }
+
+  @override
+  String get seasonPdf => 'PDF';
+
+  @override
+  String get seasonExportCsv => 'Excel\'e aktar (CSV)';
+
+  @override
+  String get seasonExportError => 'Dosya oluşturulamadı. Yeniden dene.';
+
+  @override
+  String get seasonLoadError => 'Sezon raporu yüklenemedi.';
+
+  @override
+  String get seasonHives => 'Kovan';
+
+  @override
+  String seasonHiveChange(int start, int end) {
+    return '$start → $end';
+  }
+
+  @override
+  String seasonNetGain(int count) {
+    return '+$count net';
+  }
+
+  @override
+  String seasonNetLoss(int count) {
+    return '−$count net';
+  }
+
+  @override
+  String get seasonNetSame => 'Değişmedi';
+
+  @override
+  String get seasonWinterLoss => 'Kış kaybı';
+
+  @override
+  String get seasonWinterNotStarted => 'Kış henüz başlamadı';
+
+  @override
+  String seasonPreviousWinter(String year) {
+    return '$year kış kaybı';
+  }
+
+  @override
+  String seasonPreviousWinterRate(String year, String rate) {
+    return '$year: $rate';
+  }
+
+  @override
+  String get seasonHoney => 'Toplam bal';
+
+  @override
+  String get seasonNewQueens => 'Yeni ana';
+
+  @override
+  String seasonOwnReared(int count) {
+    return 'kendi üretim $count';
+  }
+
+  @override
+  String get seasonLossesTitle => 'Kayıplar ve nedenleri';
+
+  @override
+  String get seasonNoLosses => 'Bu sezon kovan kaybı yok.';
+
+  @override
+  String seasonHiveCount(int count) {
+    return '$count kovan';
+  }
+
+  @override
+  String get seasonByTreatment => 'Kış kaybı · mücadele yöntemine göre';
+
+  @override
+  String get seasonByApiary => 'Kış kaybı · arılığa göre';
+
+  @override
+  String get seasonByQueenLine => 'Kış kaybı · ana hattına göre';
+
+  @override
+  String get seasonTabTreatment => 'Mücadele';
+
+  @override
+  String get seasonTabApiary => 'Arılık';
+
+  @override
+  String get seasonTabQueenLine => 'Ana hattı';
+
+  @override
+  String get seasonNoWinterData => 'Kayıtlarında henüz kışa giren kovan yok.';
+
+  @override
+  String get seasonFewData => 'az veri';
+
+  @override
+  String get seasonMisleadingNote =>
+      'Kendi kayıtlarından; az kovanda yanıltıcı olabilir.';
+
+  @override
+  String get seasonUntreated => 'İlaçlanmadı';
+
+  @override
+  String get seasonMethodSeparator => ' + ';
+
+  @override
+  String get seasonQueenLineUnknown => 'Hattı bilinmiyor';
+
+  @override
+  String get seasonFinanceTitle => 'Maliyet ve kâr';
+
+  @override
+  String get seasonProfit => 'Kâr';
+
+  @override
+  String get seasonPdfFigure => 'Gösterge';
+
+  @override
+  String get seasonPdfValue => 'Değer';
+
+  @override
+  String seasonPdfHiveChange(int start, int end, String net) {
+    return '$start → $end ($net)';
+  }
+
+  @override
+  String seasonPdfNewQueens(int count, int own) {
+    return '$count (kendi üretim $own)';
+  }
+
+  @override
+  String seasonPdfWinterLoss(String rate, int lost, int hives) {
+    return '$rate ($hives kovandan $lost)';
+  }
+
+  @override
+  String get seasonPdfReason => 'Neden';
+
+  @override
+  String get seasonPdfHives => 'Kovan';
+
+  @override
+  String get seasonPdfLost => 'Kayıp';
+
+  @override
+  String get seasonPdfRate => 'Oran';
+
+  @override
+  String get seasonPdfGroup => 'Grup';
+
+  @override
+  String get seasonPdfTotal => 'Toplam';
+
+  @override
+  String get seasonCsvHive => 'Kovan';
+
+  @override
+  String get seasonCsvApiary => 'Arılık';
+
+  @override
+  String get seasonCsvStartStatus => 'Sezon başı durum';
+
+  @override
+  String get seasonCsvEndStatus => 'Sezon sonu durum';
+
+  @override
+  String get seasonCsvLossDate => 'Kayıp günü';
+
+  @override
+  String get seasonCsvLossReason => 'Kayıp nedeni';
+
+  @override
+  String get seasonCsvInWinter => 'Kışa girdi';
+
+  @override
+  String get seasonCsvLostInWinter => 'Kışta kaybedildi';
+
+  @override
+  String get seasonCsvWinterApiary => 'Kış arılığı';
+
+  @override
+  String get seasonCsvTreatment => 'Kış öncesi mücadele';
+
+  @override
+  String get seasonCsvQueenLine => 'Ana hattı';
+
+  @override
+  String get seasonCsvAddedInSeason => 'Sezonda eklendi';
+
+  @override
+  String get seasonCsvYes => 'Evet';
+
+  @override
+  String get seasonCsvNo => 'Hayır';
 }

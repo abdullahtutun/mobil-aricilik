@@ -66,6 +66,7 @@ class SyncService {
     _db.queens,
     _db.hives,
     _db.hiveLocationHistory,
+    _db.hiveStatusEvents,
     _db.inspections,
     _db.media,
     _db.miteCounts,

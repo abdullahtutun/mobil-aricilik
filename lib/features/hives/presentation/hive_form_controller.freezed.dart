@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HiveFormState {
 
- String get number; HiveType get type; HiveStatus get status; HiveSource? get source;/// Düzenlenen kovanın form açılırkenki durumu; yeni kovanda null.
+ String get number; HiveType get type; HiveStatus get status; HiveSource? get source;/// Kayba (söndü/kayboldu) geçişin nedeni; boş: belirtilmemiş.
+ HiveLossReason? get lossReason;/// Düzenlenen kovanın form açılırkenki durumu; yeni kovanda null.
  HiveStatus? get savedStatus; bool get saving;
 /// Create a copy of HiveFormState
 /// with the given fields replaced by the non-null parameter values.
@@ -28,20 +29,20 @@ $HiveFormStateCopyWith<HiveFormState> get copyWith => _$HiveFormStateCopyWithImp
 @override
 bool operator ==(Object other) {
   final _this = this as HiveFormState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HiveFormState&&(identical(other.number, _this.number) || other.number == _this.number)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.savedStatus, _this.savedStatus) || other.savedStatus == _this.savedStatus)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HiveFormState&&(identical(other.number, _this.number) || other.number == _this.number)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.lossReason, _this.lossReason) || other.lossReason == _this.lossReason)&&(identical(other.savedStatus, _this.savedStatus) || other.savedStatus == _this.savedStatus)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
 }
 
 
 @override
 int get hashCode {
   final _this = this as HiveFormState;
-  return Object.hash(runtimeType,_this.number,_this.type,_this.status,_this.source,_this.savedStatus,_this.saving);
+  return Object.hash(runtimeType,_this.number,_this.type,_this.status,_this.source,_this.lossReason,_this.savedStatus,_this.saving);
 }
 
 @override
 String toString() {
   final _this = this as HiveFormState;
-  return 'HiveFormState(number: ${_this.number}, type: ${_this.type}, status: ${_this.status}, source: ${_this.source}, savedStatus: ${_this.savedStatus}, saving: ${_this.saving})';
+  return 'HiveFormState(number: ${_this.number}, type: ${_this.type}, status: ${_this.status}, source: ${_this.source}, lossReason: ${_this.lossReason}, savedStatus: ${_this.savedStatus}, saving: ${_this.saving})';
 }
 
 
@@ -52,7 +53,7 @@ abstract mixin class $HiveFormStateCopyWith<$Res>  {
   factory $HiveFormStateCopyWith(HiveFormState value, $Res Function(HiveFormState) _then) = _$HiveFormStateCopyWithImpl;
 @useResult
 $Res call({
- String number, HiveType type, HiveStatus status, HiveSource? source, HiveStatus? savedStatus, bool saving
+ String number, HiveType type, HiveStatus status, HiveSource? source, HiveLossReason? lossReason, HiveStatus? savedStatus, bool saving
 });
 
 
@@ -69,13 +70,14 @@ class _$HiveFormStateCopyWithImpl<$Res>
 
 /// Create a copy of HiveFormState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? type = null,Object? status = null,Object? source = freezed,Object? savedStatus = freezed,Object? saving = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? type = null,Object? status = null,Object? source = freezed,Object? lossReason = freezed,Object? savedStatus = freezed,Object? saving = null,}) {
   return _then(HiveFormState(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as HiveType,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as HiveStatus,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as HiveSource?,savedStatus: freezed == savedStatus ? _self.savedStatus : savedStatus // ignore: cast_nullable_to_non_nullable
+as HiveSource?,lossReason: freezed == lossReason ? _self.lossReason : lossReason // ignore: cast_nullable_to_non_nullable
+as HiveLossReason?,savedStatus: freezed == savedStatus ? _self.savedStatus : savedStatus // ignore: cast_nullable_to_non_nullable
 as HiveStatus?,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -162,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String number,  HiveType type,  HiveStatus status,  HiveSource? source,  HiveStatus? savedStatus,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String number,  HiveType type,  HiveStatus status,  HiveSource? source,  HiveLossReason? lossReason,  HiveStatus? savedStatus,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HiveFormState() when $default != null:
-return $default(_that.number,_that.type,_that.status,_that.source,_that.savedStatus,_that.saving);case _:
+return $default(_that.number,_that.type,_that.status,_that.source,_that.lossReason,_that.savedStatus,_that.saving);case _:
   return orElse();
 
 }
@@ -183,10 +185,10 @@ return $default(_that.number,_that.type,_that.status,_that.source,_that.savedSta
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String number,  HiveType type,  HiveStatus status,  HiveSource? source,  HiveStatus? savedStatus,  bool saving)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String number,  HiveType type,  HiveStatus status,  HiveSource? source,  HiveLossReason? lossReason,  HiveStatus? savedStatus,  bool saving)  $default,) {final _that = this;
 switch (_that) {
 case _HiveFormState():
-return $default(_that.number,_that.type,_that.status,_that.source,_that.savedStatus,_that.saving);case _:
+return $default(_that.number,_that.type,_that.status,_that.source,_that.lossReason,_that.savedStatus,_that.saving);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +205,10 @@ return $default(_that.number,_that.type,_that.status,_that.source,_that.savedSta
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String number,  HiveType type,  HiveStatus status,  HiveSource? source,  HiveStatus? savedStatus,  bool saving)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String number,  HiveType type,  HiveStatus status,  HiveSource? source,  HiveLossReason? lossReason,  HiveStatus? savedStatus,  bool saving)?  $default,) {final _that = this;
 switch (_that) {
 case _HiveFormState() when $default != null:
-return $default(_that.number,_that.type,_that.status,_that.source,_that.savedStatus,_that.saving);case _:
+return $default(_that.number,_that.type,_that.status,_that.source,_that.lossReason,_that.savedStatus,_that.saving);case _:
   return null;
 
 }
@@ -218,13 +220,15 @@ return $default(_that.number,_that.type,_that.status,_that.source,_that.savedSta
 
 
 class _HiveFormState implements HiveFormState {
-  const _HiveFormState({this.number = '', this.type = HiveType.langstroth, this.status = HiveStatus.active, this.source, this.savedStatus, this.saving = false});
+  const _HiveFormState({this.number = '', this.type = HiveType.langstroth, this.status = HiveStatus.active, this.source, this.lossReason, this.savedStatus, this.saving = false});
   
 
 @override@JsonKey() final  String number;
 @override@JsonKey() final  HiveType type;
 @override@JsonKey() final  HiveStatus status;
 @override final  HiveSource? source;
+/// Kayba (söndü/kayboldu) geçişin nedeni; boş: belirtilmemiş.
+@override final  HiveLossReason? lossReason;
 /// Düzenlenen kovanın form açılırkenki durumu; yeni kovanda null.
 @override final  HiveStatus? savedStatus;
 @override@JsonKey() final  bool saving;
@@ -239,18 +243,18 @@ _$HiveFormStateCopyWith<_HiveFormState> get copyWith => __$HiveFormStateCopyWith
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HiveFormState&&(identical(other.number, number) || other.number == number)&&(identical(other.type, type) || other.type == type)&&(identical(other.status, status) || other.status == status)&&(identical(other.source, source) || other.source == source)&&(identical(other.savedStatus, savedStatus) || other.savedStatus == savedStatus)&&(identical(other.saving, saving) || other.saving == saving));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HiveFormState&&(identical(other.number, number) || other.number == number)&&(identical(other.type, type) || other.type == type)&&(identical(other.status, status) || other.status == status)&&(identical(other.source, source) || other.source == source)&&(identical(other.lossReason, lossReason) || other.lossReason == lossReason)&&(identical(other.savedStatus, savedStatus) || other.savedStatus == savedStatus)&&(identical(other.saving, saving) || other.saving == saving));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,number,type,status,source,savedStatus,saving);
+    return Object.hash(runtimeType,number,type,status,source,lossReason,savedStatus,saving);
 }
 
 @override
 String toString() {
-    return 'HiveFormState(number: $number, type: $type, status: $status, source: $source, savedStatus: $savedStatus, saving: $saving)';
+    return 'HiveFormState(number: $number, type: $type, status: $status, source: $source, lossReason: $lossReason, savedStatus: $savedStatus, saving: $saving)';
 }
 
 
@@ -261,7 +265,7 @@ abstract mixin class _$HiveFormStateCopyWith<$Res> implements $HiveFormStateCopy
   factory _$HiveFormStateCopyWith(_HiveFormState value, $Res Function(_HiveFormState) _then) = __$HiveFormStateCopyWithImpl;
 @override @useResult
 $Res call({
- String number, HiveType type, HiveStatus status, HiveSource? source, HiveStatus? savedStatus, bool saving
+ String number, HiveType type, HiveStatus status, HiveSource? source, HiveLossReason? lossReason, HiveStatus? savedStatus, bool saving
 });
 
 
@@ -278,13 +282,14 @@ class __$HiveFormStateCopyWithImpl<$Res>
 
 /// Create a copy of HiveFormState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? number = null,Object? type = null,Object? status = null,Object? source = freezed,Object? savedStatus = freezed,Object? saving = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? number = null,Object? type = null,Object? status = null,Object? source = freezed,Object? lossReason = freezed,Object? savedStatus = freezed,Object? saving = null,}) {
   return _then(_HiveFormState(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as HiveType,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as HiveStatus,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as HiveSource?,savedStatus: freezed == savedStatus ? _self.savedStatus : savedStatus // ignore: cast_nullable_to_non_nullable
+as HiveSource?,lossReason: freezed == lossReason ? _self.lossReason : lossReason // ignore: cast_nullable_to_non_nullable
+as HiveLossReason?,savedStatus: freezed == savedStatus ? _self.savedStatus : savedStatus // ignore: cast_nullable_to_non_nullable
 as HiveStatus?,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

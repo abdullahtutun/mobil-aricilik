@@ -8,6 +8,10 @@ extension HiveStatusRules on HiveStatus {
   /// Arılığın kovan sayısına giriyor. Sönen, birleşen, satılan ve kaybolan
   /// kovanlar sayılmaz.
   bool get isCounted => this == HiveStatus.active;
+
+  /// Kayıp sayılan durum: söndü ya da kayboldu. Birleşen ve satılan kovan
+  /// kayıp değildir; sezon raporu yalnız bunları kayıp sayar.
+  bool get isLoss => this == HiveStatus.dead || this == HiveStatus.lost;
 }
 
 /// Durum değişikliği onay ister mi: aktif kovan sayısını düşüren her geçiş

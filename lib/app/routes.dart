@@ -186,6 +186,10 @@ abstract final class AppRoutes {
   static String calculator(Calculator calculator) =>
       '/more/knowledge/calculators/${calculator.value}';
 
+  /// Sezon raporu: kovan sayısı, kayıplar, kış kaybı karşılaştırması;
+  /// Daha fazla'dan açılır.
+  static const season = '/more/season';
+
   /// Finans: sezon özeti ve son hareketler; Daha fazla'dan açılır.
   /// Gelir/gider ekleme ve hareket listenin altında. Yeni hareketin türü
   /// sorguda.

@@ -917,7 +917,7 @@ final class HiveActionsProvider extends $NotifierProvider<HiveActions, void> {
   }
 }
 
-String _$hiveActionsHash() => r'a5f7a3290316b14fafa89248995ec34b2c991ddf';
+String _$hiveActionsHash() => r'5b8cd86f305d3a1a36a854e0c95c7b9ed1fb14df';
 
 /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri
 /// alma, karantina. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye

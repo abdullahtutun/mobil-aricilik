@@ -849,6 +849,7 @@
   "syncTableApiaries": "Apiary",
   "syncTableQueens": "Queen",
   "syncTableHives": "Hive",
+  "syncTableHiveStatusEvents": "Hive status change",
   "syncTableHiveLocationHistory": "Hive move",
   "initialSyncTitle": "Downloading your records",
   "initialSyncMessage": "Your business's records are being downloaded to this phone. This happens only once; after that the app works without internet too.",
@@ -6572,5 +6573,184 @@
   "calculatorQueenSteps": "Steps",
   "@calculatorQueenSteps": {
     "description": "Queen calendar steps label."
-  }
+  },
+  "hiveLossWintering": "Wintering",
+  "hiveLossQueenless": "Queenless",
+  "hiveLossVarroa": "Varroa",
+  "hiveLossDisease": "Disease",
+  "hiveLossStarvation": "Starvation",
+  "hiveLossRobbing": "Robbing",
+  "hiveLossPredator": "Bear / animal",
+  "hiveLossPoisoning": "Poisoning",
+  "hiveLossOther": "Other",
+  "hiveLossUnspecified": "Not specified",
+  "hiveLossReasonTitle": "Why was hive {number} lost?",
+  "@hiveLossReasonTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "hiveLossSkip": "Skip without a reason",
+  "hiveFormLossReason": "Reason for the loss",
+  "hiveFormLossReasonHelper": "Used in the season report; can be left empty.",
+  "seasonReportTile": "Season report",
+  "seasonTitle": "Season {year}",
+  "@seasonTitle": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPdf": "PDF",
+  "seasonExportCsv": "Export to Excel (CSV)",
+  "seasonExportError": "The file could not be created. Try again.",
+  "seasonLoadError": "The season report could not be loaded.",
+  "seasonHives": "Hives",
+  "seasonHiveChange": "{start} → {end}",
+  "@seasonHiveChange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonNetGain": "+{count} net",
+  "@seasonNetGain": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonNetLoss": "−{count} net",
+  "@seasonNetLoss": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonNetSame": "No change",
+  "seasonWinterLoss": "Winter loss",
+  "seasonWinterNotStarted": "Winter has not started",
+  "seasonPreviousWinter": "Winter loss {year}",
+  "@seasonPreviousWinter": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPreviousWinterRate": "{year}: {rate}",
+  "@seasonPreviousWinterRate": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      },
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonHoney": "Total honey",
+  "seasonNewQueens": "New queens",
+  "seasonOwnReared": "own rearing {count}",
+  "@seasonOwnReared": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonLossesTitle": "Losses and causes",
+  "seasonNoLosses": "No hives lost this season.",
+  "seasonHiveCount": "{count, plural, =1{1 hive} other{{count} hives}}",
+  "@seasonHiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonByTreatment": "Winter loss · by treatment method",
+  "seasonByApiary": "Winter loss · by apiary",
+  "seasonByQueenLine": "Winter loss · by queen line",
+  "seasonTabTreatment": "Treatment",
+  "seasonTabApiary": "Apiary",
+  "seasonTabQueenLine": "Queen line",
+  "seasonNoWinterData": "No hives went into winter in your records yet.",
+  "seasonFewData": "few data",
+  "seasonMisleadingNote": "From your own records; may be misleading with few hives.",
+  "seasonUntreated": "Not treated",
+  "seasonMethodSeparator": " + ",
+  "seasonQueenLineUnknown": "Unknown line",
+  "seasonFinanceTitle": "Cost and profit",
+  "seasonProfit": "Profit",
+  "seasonPdfFigure": "Figure",
+  "seasonPdfValue": "Value",
+  "seasonPdfHiveChange": "{start} → {end} ({net})",
+  "@seasonPdfHiveChange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      },
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPdfNewQueens": "{count} (own rearing {own})",
+  "@seasonPdfNewQueens": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "own": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPdfWinterLoss": "{rate} ({lost} of {hives} hives)",
+  "@seasonPdfWinterLoss": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      },
+      "lost": {
+        "type": "int"
+      },
+      "hives": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPdfReason": "Cause",
+  "seasonPdfHives": "Hives",
+  "seasonPdfLost": "Lost",
+  "seasonPdfRate": "Loss",
+  "seasonPdfGroup": "Group",
+  "seasonPdfTotal": "Total",
+  "seasonCsvHive": "Hive",
+  "seasonCsvApiary": "Apiary",
+  "seasonCsvStartStatus": "Status at season start",
+  "seasonCsvEndStatus": "Status at season end",
+  "seasonCsvLossDate": "Loss date",
+  "seasonCsvLossReason": "Loss cause",
+  "seasonCsvInWinter": "Went into winter",
+  "seasonCsvLostInWinter": "Lost in winter",
+  "seasonCsvWinterApiary": "Winter apiary",
+  "seasonCsvTreatment": "Pre-winter treatment",
+  "seasonCsvQueenLine": "Queen line",
+  "seasonCsvAddedInSeason": "Added this season",
+  "seasonCsvYes": "Yes",
+  "seasonCsvNo": "No"
 }

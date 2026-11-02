@@ -6,6 +6,7 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_form_controller.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_choice_fields.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
@@ -146,6 +147,24 @@ class _HiveFormFieldsState extends ConsumerState<_HiveFormFields> {
             },
           ),
         ),
+        if (form.asksLossReason) ...[
+          SizedBox(height: spacing.xl),
+          LabeledField(
+            label: l10n.hiveFormLossReason,
+            helper: l10n.hiveFormLossReasonHelper,
+            group: true,
+            child: ChoiceChipGroup<HiveLossReason>(
+              options: [
+                for (final reason in HiveLossReason.values)
+                  ChoiceChipOption(value: reason, label: reason.label(l10n)),
+              ],
+              selected: {?form.lossReason},
+              onChanged: (selected) => controller.selectLossReason(
+                selected.isEmpty ? null : selected.single,
+              ),
+            ),
+          ),
+        ],
         SizedBox(height: spacing.xl),
         HiveSourceField(
           selected: form.source,

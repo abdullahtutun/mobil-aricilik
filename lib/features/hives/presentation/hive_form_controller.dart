@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,6 +17,9 @@ abstract class HiveFormState with _$HiveFormState {
     @Default(HiveType.langstroth) HiveType type,
     @Default(HiveStatus.active) HiveStatus status,
     HiveSource? source,
+
+    /// Kayba (söndü/kayboldu) geçişin nedeni; boş: belirtilmemiş.
+    HiveLossReason? lossReason,
 
     /// Düzenlenen kovanın form açılırkenki durumu; yeni kovanda null.
     HiveStatus? savedStatus,
@@ -33,6 +37,9 @@ abstract class HiveFormState with _$HiveFormState {
 
 extension HiveFormProgress on HiveFormState {
   bool get canSave => number.trim().isNotEmpty && !saving;
+
+  /// Kayıp nedeni sorulur: kovan kayba geçiyor (yeni kovanda da).
+  bool get asksLossReason => status.isLoss && status != savedStatus;
 
   /// Kaydetmek aktif kovan sayısını düşürür; ekran önce onay ister. Yeni
   /// kovan henüz sayılmadığı için onay istemez.
@@ -70,6 +77,9 @@ class HiveFormController extends _$HiveFormController {
 
   void selectStatus(HiveStatus status) =>
       _update((form) => form.copyWith(status: status));
+
+  void selectLossReason(HiveLossReason? reason) =>
+      _update((form) => form.copyWith(lossReason: reason));
 
   void selectSource(HiveSource? source) =>
       _update((form) => form.copyWith(source: source));
@@ -114,6 +124,7 @@ class HiveFormController extends _$HiveFormController {
             status: form.status,
             source: form.source,
           ),
+          lossReason: form.asksLossReason ? form.lossReason : null,
         );
       }
       return saved.id;

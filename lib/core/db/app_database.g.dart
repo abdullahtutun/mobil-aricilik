@@ -3970,6 +3970,558 @@ extension HiveLocationEntryToInsertable on HiveLocationEntry {
   }
 }
 
+class $HiveStatusEventsTable extends HiveStatusEvents
+    with TableInfo<$HiveStatusEventsTable, HiveStatusEvent> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HiveStatusEventsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hiveIdMeta = const VerificationMeta('hiveId');
+  @override
+  late final GeneratedColumn<String> hiveId = GeneratedColumn<String>(
+    'hive_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _apiaryIdMeta = const VerificationMeta(
+    'apiaryId',
+  );
+  @override
+  late final GeneratedColumn<String> apiaryId = GeneratedColumn<String>(
+    'apiary_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HiveStatus, String> fromStatus =
+      GeneratedColumn<String>(
+        'from_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HiveStatus>($HiveStatusEventsTable.$converterfromStatus);
+  @override
+  late final GeneratedColumnWithTypeConverter<HiveStatus, String> toStatus =
+      GeneratedColumn<String>(
+        'to_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HiveStatus>($HiveStatusEventsTable.$convertertoStatus);
+  static const VerificationMeta _changedAtMeta = const VerificationMeta(
+    'changedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> changedAt = GeneratedColumn<DateTime>(
+    'changed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HiveLossReason?, String>
+  lossReason =
+      GeneratedColumn<String>(
+        'loss_reason',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<HiveLossReason?>(
+        $HiveStatusEventsTable.$converterlossReasonn,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    createdBy,
+    deletedAt,
+    serverSeq,
+    orgId,
+    hiveId,
+    apiaryId,
+    fromStatus,
+    toStatus,
+    changedAt,
+    lossReason,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'hive_status_events';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HiveStatusEvent> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('hive_id')) {
+      context.handle(
+        _hiveIdMeta,
+        hiveId.isAcceptableOrUnknown(data['hive_id']!, _hiveIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hiveIdMeta);
+    }
+    if (data.containsKey('apiary_id')) {
+      context.handle(
+        _apiaryIdMeta,
+        apiaryId.isAcceptableOrUnknown(data['apiary_id']!, _apiaryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_apiaryIdMeta);
+    }
+    if (data.containsKey('changed_at')) {
+      context.handle(
+        _changedAtMeta,
+        changedAt.isAcceptableOrUnknown(data['changed_at']!, _changedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_changedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HiveStatusEvent map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HiveStatusEvent(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      hiveId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hive_id'],
+      )!,
+      apiaryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}apiary_id'],
+      )!,
+      fromStatus: $HiveStatusEventsTable.$converterfromStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}from_status'],
+        )!,
+      ),
+      toStatus: $HiveStatusEventsTable.$convertertoStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}to_status'],
+        )!,
+      ),
+      changedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}changed_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      lossReason: $HiveStatusEventsTable.$converterlossReasonn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}loss_reason'],
+        ),
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+    );
+  }
+
+  @override
+  $HiveStatusEventsTable createAlias(String alias) {
+    return $HiveStatusEventsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<HiveStatus, String> $converterfromStatus =
+      const ServerEnumConverter(HiveStatus.values);
+  static TypeConverter<HiveStatus, String> $convertertoStatus =
+      const ServerEnumConverter(HiveStatus.values);
+  static TypeConverter<HiveLossReason, String> $converterlossReason =
+      const ServerEnumConverter(HiveLossReason.values);
+  static TypeConverter<HiveLossReason?, String?> $converterlossReasonn =
+      NullAwareTypeConverter.wrap($converterlossReason);
+}
+
+class HiveStatusEventsCompanion extends UpdateCompanion<HiveStatusEvent> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String?> createdBy;
+  final Value<DateTime?> deletedAt;
+  final Value<int?> serverSeq;
+  final Value<String> orgId;
+  final Value<String> hiveId;
+  final Value<String> apiaryId;
+  final Value<HiveStatus> fromStatus;
+  final Value<HiveStatus> toStatus;
+  final Value<DateTime> changedAt;
+  final Value<HiveLossReason?> lossReason;
+  final Value<int> rowid;
+  const HiveStatusEventsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.hiveId = const Value.absent(),
+    this.apiaryId = const Value.absent(),
+    this.fromStatus = const Value.absent(),
+    this.toStatus = const Value.absent(),
+    this.changedAt = const Value.absent(),
+    this.lossReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HiveStatusEventsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.createdBy = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    required String orgId,
+    required String hiveId,
+    required String apiaryId,
+    required HiveStatus fromStatus,
+    required HiveStatus toStatus,
+    required DateTime changedAt,
+    this.lossReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       orgId = Value(orgId),
+       hiveId = Value(hiveId),
+       apiaryId = Value(apiaryId),
+       fromStatus = Value(fromStatus),
+       toStatus = Value(toStatus),
+       changedAt = Value(changedAt);
+  static Insertable<HiveStatusEvent> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdBy,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? orgId,
+    Expression<String>? hiveId,
+    Expression<String>? apiaryId,
+    Expression<String>? fromStatus,
+    Expression<String>? toStatus,
+    Expression<DateTime>? changedAt,
+    Expression<String>? lossReason,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdBy != null) 'created_by': createdBy,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (orgId != null) 'org_id': orgId,
+      if (hiveId != null) 'hive_id': hiveId,
+      if (apiaryId != null) 'apiary_id': apiaryId,
+      if (fromStatus != null) 'from_status': fromStatus,
+      if (toStatus != null) 'to_status': toStatus,
+      if (changedAt != null) 'changed_at': changedAt,
+      if (lossReason != null) 'loss_reason': lossReason,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HiveStatusEventsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String?>? createdBy,
+    Value<DateTime?>? deletedAt,
+    Value<int?>? serverSeq,
+    Value<String>? orgId,
+    Value<String>? hiveId,
+    Value<String>? apiaryId,
+    Value<HiveStatus>? fromStatus,
+    Value<HiveStatus>? toStatus,
+    Value<DateTime>? changedAt,
+    Value<HiveLossReason?>? lossReason,
+    Value<int>? rowid,
+  }) {
+    return HiveStatusEventsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdBy: createdBy ?? this.createdBy,
+      deletedAt: deletedAt ?? this.deletedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      orgId: orgId ?? this.orgId,
+      hiveId: hiveId ?? this.hiveId,
+      apiaryId: apiaryId ?? this.apiaryId,
+      fromStatus: fromStatus ?? this.fromStatus,
+      toStatus: toStatus ?? this.toStatus,
+      changedAt: changedAt ?? this.changedAt,
+      lossReason: lossReason ?? this.lossReason,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (hiveId.present) {
+      map['hive_id'] = Variable<String>(hiveId.value);
+    }
+    if (apiaryId.present) {
+      map['apiary_id'] = Variable<String>(apiaryId.value);
+    }
+    if (fromStatus.present) {
+      map['from_status'] = Variable<String>(
+        $HiveStatusEventsTable.$converterfromStatus.toSql(fromStatus.value),
+      );
+    }
+    if (toStatus.present) {
+      map['to_status'] = Variable<String>(
+        $HiveStatusEventsTable.$convertertoStatus.toSql(toStatus.value),
+      );
+    }
+    if (changedAt.present) {
+      map['changed_at'] = Variable<DateTime>(changedAt.value);
+    }
+    if (lossReason.present) {
+      map['loss_reason'] = Variable<String>(
+        $HiveStatusEventsTable.$converterlossReasonn.toSql(lossReason.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HiveStatusEventsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('orgId: $orgId, ')
+          ..write('hiveId: $hiveId, ')
+          ..write('apiaryId: $apiaryId, ')
+          ..write('fromStatus: $fromStatus, ')
+          ..write('toStatus: $toStatus, ')
+          ..write('changedAt: $changedAt, ')
+          ..write('lossReason: $lossReason, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class _$HiveStatusEventInsertable implements Insertable<HiveStatusEvent> {
+  HiveStatusEvent _object;
+  _$HiveStatusEventInsertable(this._object);
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    return HiveStatusEventsCompanion(
+      id: Value(_object.id),
+      createdAt: Value(_object.createdAt),
+      updatedAt: Value(_object.updatedAt),
+      createdBy: Value(_object.createdBy),
+      deletedAt: Value(_object.deletedAt),
+      serverSeq: Value(_object.serverSeq),
+      orgId: Value(_object.orgId),
+      hiveId: Value(_object.hiveId),
+      apiaryId: Value(_object.apiaryId),
+      fromStatus: Value(_object.fromStatus),
+      toStatus: Value(_object.toStatus),
+      changedAt: Value(_object.changedAt),
+      lossReason: Value(_object.lossReason),
+    ).toColumns(false);
+  }
+}
+
+extension HiveStatusEventToInsertable on HiveStatusEvent {
+  _$HiveStatusEventInsertable toInsertable() {
+    return _$HiveStatusEventInsertable(this);
+  }
+}
+
 class $InspectionsTable extends Inspections
     with TableInfo<$InspectionsTable, Inspection> {
   @override
@@ -23921,6 +24473,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $HivesTable hives = $HivesTable(this);
   late final $HiveLocationHistoryTable hiveLocationHistory =
       $HiveLocationHistoryTable(this);
+  late final $HiveStatusEventsTable hiveStatusEvents = $HiveStatusEventsTable(
+    this,
+  );
   late final $InspectionsTable inspections = $InspectionsTable(this);
   late final $InspectionDraftsTable inspectionDrafts = $InspectionDraftsTable(
     this,
@@ -23993,6 +24548,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final Index hiveLocationHistoryHiveIdIdx = Index(
     'hive_location_history_hive_id_idx',
     'CREATE INDEX hive_location_history_hive_id_idx ON hive_location_history (hive_id)',
+  );
+  late final Index hiveStatusEventsOrgIdIdx = Index(
+    'hive_status_events_org_id_idx',
+    'CREATE INDEX hive_status_events_org_id_idx ON hive_status_events (org_id)',
+  );
+  late final Index hiveStatusEventsHiveIdIdx = Index(
+    'hive_status_events_hive_id_idx',
+    'CREATE INDEX hive_status_events_hive_id_idx ON hive_status_events (hive_id)',
   );
   late final Index inspectionsOrgIdIdx = Index(
     'inspections_org_id_idx',
@@ -24265,6 +24828,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     queens,
     hives,
     hiveLocationHistory,
+    hiveStatusEvents,
     inspections,
     inspectionDrafts,
     media,
@@ -24309,6 +24873,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     hivesApiaryIdIdx,
     hiveLocationHistoryOrgIdIdx,
     hiveLocationHistoryHiveIdIdx,
+    hiveStatusEventsOrgIdIdx,
+    hiveStatusEventsHiveIdIdx,
     inspectionsOrgIdIdx,
     inspectionsHiveIdIdx,
     mediaOrgIdIdx,
@@ -26714,6 +27280,382 @@ typedef $$HiveLocationHistoryTableProcessedTableManager =
         >,
       ),
       HiveLocationEntry,
+      PrefetchHooks Function()
+    >;
+typedef $$HiveStatusEventsTableCreateCompanionBuilder =
+    HiveStatusEventsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      required String orgId,
+      required String hiveId,
+      required String apiaryId,
+      required HiveStatus fromStatus,
+      required HiveStatus toStatus,
+      required DateTime changedAt,
+      Value<HiveLossReason?> lossReason,
+      Value<int> rowid,
+    });
+typedef $$HiveStatusEventsTableUpdateCompanionBuilder =
+    HiveStatusEventsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String?> createdBy,
+      Value<DateTime?> deletedAt,
+      Value<int?> serverSeq,
+      Value<String> orgId,
+      Value<String> hiveId,
+      Value<String> apiaryId,
+      Value<HiveStatus> fromStatus,
+      Value<HiveStatus> toStatus,
+      Value<DateTime> changedAt,
+      Value<HiveLossReason?> lossReason,
+      Value<int> rowid,
+    });
+
+class $$HiveStatusEventsTableFilterComposer
+    extends Composer<_$AppDatabase, $HiveStatusEventsTable> {
+  $$HiveStatusEventsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HiveStatus, HiveStatus, String>
+  get fromStatus => $composableBuilder(
+    column: $table.fromStatus,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HiveStatus, HiveStatus, String> get toStatus =>
+      $composableBuilder(
+        column: $table.toStatus,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<DateTime> get changedAt => $composableBuilder(
+    column: $table.changedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HiveLossReason?, HiveLossReason, String>
+  get lossReason => $composableBuilder(
+    column: $table.lossReason,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$HiveStatusEventsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HiveStatusEventsTable> {
+  $$HiveStatusEventsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hiveId => $composableBuilder(
+    column: $table.hiveId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get apiaryId => $composableBuilder(
+    column: $table.apiaryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fromStatus => $composableBuilder(
+    column: $table.fromStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get toStatus => $composableBuilder(
+    column: $table.toStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get changedAt => $composableBuilder(
+    column: $table.changedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lossReason => $composableBuilder(
+    column: $table.lossReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HiveStatusEventsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HiveStatusEventsTable> {
+  $$HiveStatusEventsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumn<String> get hiveId =>
+      $composableBuilder(column: $table.hiveId, builder: (column) => column);
+
+  GeneratedColumn<String> get apiaryId =>
+      $composableBuilder(column: $table.apiaryId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HiveStatus, String> get fromStatus =>
+      $composableBuilder(
+        column: $table.fromStatus,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<HiveStatus, String> get toStatus =>
+      $composableBuilder(column: $table.toStatus, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get changedAt =>
+      $composableBuilder(column: $table.changedAt, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HiveLossReason?, String> get lossReason =>
+      $composableBuilder(
+        column: $table.lossReason,
+        builder: (column) => column,
+      );
+}
+
+class $$HiveStatusEventsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HiveStatusEventsTable,
+          HiveStatusEvent,
+          $$HiveStatusEventsTableFilterComposer,
+          $$HiveStatusEventsTableOrderingComposer,
+          $$HiveStatusEventsTableAnnotationComposer,
+          $$HiveStatusEventsTableCreateCompanionBuilder,
+          $$HiveStatusEventsTableUpdateCompanionBuilder,
+          (
+            HiveStatusEvent,
+            BaseReferences<
+              _$AppDatabase,
+              $HiveStatusEventsTable,
+              HiveStatusEvent
+            >,
+          ),
+          HiveStatusEvent,
+          PrefetchHooks Function()
+        > {
+  $$HiveStatusEventsTableTableManager(
+    _$AppDatabase db,
+    $HiveStatusEventsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HiveStatusEventsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HiveStatusEventsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HiveStatusEventsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<String> hiveId = const Value.absent(),
+                Value<String> apiaryId = const Value.absent(),
+                Value<HiveStatus> fromStatus = const Value.absent(),
+                Value<HiveStatus> toStatus = const Value.absent(),
+                Value<DateTime> changedAt = const Value.absent(),
+                Value<HiveLossReason?> lossReason = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HiveStatusEventsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                fromStatus: fromStatus,
+                toStatus: toStatus,
+                changedAt: changedAt,
+                lossReason: lossReason,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<String?> createdBy = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                required String orgId,
+                required String hiveId,
+                required String apiaryId,
+                required HiveStatus fromStatus,
+                required HiveStatus toStatus,
+                required DateTime changedAt,
+                Value<HiveLossReason?> lossReason = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HiveStatusEventsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdBy: createdBy,
+                deletedAt: deletedAt,
+                serverSeq: serverSeq,
+                orgId: orgId,
+                hiveId: hiveId,
+                apiaryId: apiaryId,
+                fromStatus: fromStatus,
+                toStatus: toStatus,
+                changedAt: changedAt,
+                lossReason: lossReason,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HiveStatusEventsTable, HiveStatusEvent>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $HiveStatusEventsTable,
+                    HiveStatusEvent
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HiveStatusEventsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HiveStatusEventsTable,
+      HiveStatusEvent,
+      $$HiveStatusEventsTableFilterComposer,
+      $$HiveStatusEventsTableOrderingComposer,
+      $$HiveStatusEventsTableAnnotationComposer,
+      $$HiveStatusEventsTableCreateCompanionBuilder,
+      $$HiveStatusEventsTableUpdateCompanionBuilder,
+      (
+        HiveStatusEvent,
+        BaseReferences<_$AppDatabase, $HiveStatusEventsTable, HiveStatusEvent>,
+      ),
+      HiveStatusEvent,
       PrefetchHooks Function()
     >;
 typedef $$InspectionsTableCreateCompanionBuilder =
@@ -39422,6 +40364,8 @@ class $AppDatabaseManager {
       $$HivesTableTableManager(_db, _db.hives);
   $$HiveLocationHistoryTableTableManager get hiveLocationHistory =>
       $$HiveLocationHistoryTableTableManager(_db, _db.hiveLocationHistory);
+  $$HiveStatusEventsTableTableManager get hiveStatusEvents =>
+      $$HiveStatusEventsTableTableManager(_db, _db.hiveStatusEvents);
   $$InspectionsTableTableManager get inspections =>
       $$InspectionsTableTableManager(_db, _db.inspections);
   $$InspectionDraftsTableTableManager get inspectionDrafts =>

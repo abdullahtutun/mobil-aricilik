@@ -18,6 +18,7 @@ import 'package:mobil_arici/features/health/presentation/widgets/treatment_label
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
@@ -213,23 +214,36 @@ class HiveCardScreen extends ConsumerWidget {
     final status = await showHiveStatusSheet(context, hive);
     if (status == null || !context.mounted) return;
 
+    // Kayıpta önce neden sorulur; sheet kapatılırsa durum değişmez.
+    HiveLossReason? lossReason;
+    if (status.isLoss) {
+      final choice = await showHiveLossReasonSheet(
+        context,
+        number: hive.number,
+      );
+      if (choice == null || !context.mounted) return;
+      lossReason = choice.reason;
+    }
+
     if (statusChangeNeedsConfirmation(from: hive.status, to: status)) {
       final confirmed = await confirmHiveStatusChange(
         context,
         number: hive.number,
         status: status,
       );
-      if (confirmed) await actions.setStatus(hive.id, status);
+      if (confirmed) {
+        await actions.setStatus(hive.id, status, lossReason: lossReason);
+      }
       return;
     }
 
     final previous = hive.status;
-    await actions.setStatus(hive.id, status);
+    await actions.setStatus(hive.id, status, lossReason: lossReason);
     if (!context.mounted) return;
     showUndoSnackBar(
       context,
       message: l10n.hiveStatusChanged(hive.number, status.label(l10n)),
-      onUndo: () => actions.setStatus(hive.id, previous),
+      onUndo: () => actions.undoStatus(hive.id, previous: previous),
     );
   }
 }
