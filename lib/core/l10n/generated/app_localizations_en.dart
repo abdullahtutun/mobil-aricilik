@@ -6001,4 +6001,107 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aksCountNoOrganization =>
       'Business details haven\'t synced to this phone yet; wait for sync.';
+
+  @override
+  String get knowledgeTitle => 'Knowledge base';
+
+  @override
+  String get knowledgeSearchHint => 'Chalkbrood, introducing a queen…';
+
+  @override
+  String knowledgeMonthLabel(String month, String place) {
+    return '$month · $place';
+  }
+
+  @override
+  String get knowledgePlaceTurkey => 'Türkiye';
+
+  @override
+  String get knowledgePlaceNorthern => 'Northern hemisphere';
+
+  @override
+  String get knowledgePlaceSouthern => 'Southern hemisphere';
+
+  @override
+  String get knowledgeMonthTitle => 'To do this month';
+
+  @override
+  String get knowledgeDiagnosisTitle => 'Diagnosis helper';
+
+  @override
+  String get knowledgeDiagnosisSubtitle => 'Pick a sign, see possible causes';
+
+  @override
+  String get knowledgeComingSoon => 'Coming soon';
+
+  @override
+  String get knowledgeAtlasTitle => 'Diseases and pests atlas';
+
+  @override
+  String knowledgeTopicCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count topics',
+      one: '1 topic',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get knowledgeGuidesTitle => 'Technical guides';
+
+  @override
+  String get knowledgeGuidesSubtitle =>
+      'Splits, queen introduction, uniting, wintering';
+
+  @override
+  String get knowledgeCalculatorsTitle => 'Calculators';
+
+  @override
+  String get knowledgeCalculatorsSubtitle => 'Syrup, drug dose, queen calendar';
+
+  @override
+  String get knowledgeRegulationsTitle => 'Regulation summaries';
+
+  @override
+  String get knowledgeRegulationsSubtitle =>
+      'Regulation, migratory beekeeping, honey communiqué';
+
+  @override
+  String get knowledgeTrBadge => 'TR';
+
+  @override
+  String get knowledgeFirstYearTitle => 'My first year';
+
+  @override
+  String get knowledgeFirstYearSubtitle => 'Step by step for beginners';
+
+  @override
+  String get knowledgeCalendarTitle => 'Seasonal calendar';
+
+  @override
+  String get knowledgeOffline => 'All content opens offline';
+
+  @override
+  String get knowledgeNoResultsTitle => 'No results';
+
+  @override
+  String get knowledgeNoResultsMessage => 'Try another word.';
+
+  @override
+  String get knowledgeCategoryEmptyTitle => 'No articles yet';
+
+  @override
+  String get knowledgeCategoryEmptyMessage =>
+      'Content for this section will come with an update.';
+
+  @override
+  String get knowledgeArticleNotFound => 'Article not found';
+
+  @override
+  String get knowledgeLoadError => 'Couldn\'t open the knowledge base';
+
+  @override
+  String get knowledgeLinkFailed => 'Couldn\'t open the link';
 }

@@ -2,6 +2,7 @@ import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/knowledge/domain/knowledge_article.dart';
 import 'package:mobil_arici/features/today/domain/today_rules.dart';
 
 /// Rota yolları. Geliştirici rotaları yalnızca dev flavor'da kayıtlıdır.
@@ -162,6 +163,13 @@ abstract final class AppRoutes {
   /// sayısının formu altında.
   static const subsidies = '/more/subsidies';
   static const aksHiveCount = '/more/subsidies/aks-count';
+
+  /// Bilgi bankası; Daha fazla'dan açılır. Kategori ve makale altında
+  /// (makale kimliği `category` olamaz).
+  static const knowledge = '/more/knowledge';
+  static String knowledgeCategory(KnowledgeCategory category) =>
+      '/more/knowledge/category/${category.value}';
+  static String knowledgeArticle(String id) => '/more/knowledge/$id';
 
   /// Finans: sezon özeti ve son hareketler; Daha fazla'dan açılır.
   /// Gelir/gider ekleme ve hareket listenin altında. Yeni hareketin türü

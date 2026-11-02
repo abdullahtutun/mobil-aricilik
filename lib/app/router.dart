@@ -60,6 +60,10 @@ import 'package:mobil_arici/features/inventory/presentation/inventory_form_scree
 import 'package:mobil_arici/features/inventory/presentation/inventory_item_screen.dart';
 import 'package:mobil_arici/features/inventory/presentation/inventory_screen.dart';
 import 'package:mobil_arici/features/inventory/presentation/shopping_list_screen.dart';
+import 'package:mobil_arici/features/knowledge/domain/knowledge_article.dart';
+import 'package:mobil_arici/features/knowledge/presentation/knowledge_article_screen.dart';
+import 'package:mobil_arici/features/knowledge/presentation/knowledge_category_screen.dart';
+import 'package:mobil_arici/features/knowledge/presentation/knowledge_screen.dart';
 import 'package:mobil_arici/features/media/presentation/media_viewer_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_form_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_screen.dart';
@@ -97,6 +101,8 @@ const _hiveId = 'hiveId';
 const _mediaId = 'mediaId';
 const _taskId = 'taskId';
 const _documentId = 'documentId';
+const _knowledgeCategory = 'knowledgeCategory';
+const _knowledgeArticleId = 'knowledgeArticleId';
 const _migrationId = 'migrationId';
 const _transportId = 'transportId';
 const _stopId = 'stopId';
@@ -518,6 +524,34 @@ GoRouter router(Ref ref) {
                             ),
                           ),
                         ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'knowledge',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const KnowledgeScreen(),
+                    routes: [
+                      // Sabit yollar `:id`'den önce.
+                      GoRoute(
+                        path: 'category/:$_knowledgeCategory',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => KnowledgeCategoryScreen(
+                          category: KnowledgeCategory.values
+                              .where(
+                                (category) =>
+                                    category.value ==
+                                    state.pathParameters[_knowledgeCategory],
+                              )
+                              .firstOrNull,
+                        ),
+                      ),
+                      GoRoute(
+                        path: ':$_knowledgeArticleId',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => KnowledgeArticleScreen(
+                          articleId: state.pathParameters[_knowledgeArticleId]!,
+                        ),
                       ),
                     ],
                   ),

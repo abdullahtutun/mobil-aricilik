@@ -29,6 +29,9 @@ class AppFormat {
   /// Kısa ay adı; dönem aralıkları için. `Ağu`, `Aug`
   String shortMonth(DateTime value) => DateFormat.MMM(locale).format(value);
 
+  /// Tek başına tam ay adı. `Kasım`, `November`
+  String month(DateTime value) => DateFormat.LLLL(locale).format(value);
+
   /// Günsüz ay ve yıl; uzak tarihler için. `May 2027`, `May 2027`
   String monthYear(DateTime value) => DateFormat.yMMM(locale).format(value);
 

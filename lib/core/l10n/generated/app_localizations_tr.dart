@@ -5826,4 +5826,106 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get aksCountNoOrganization =>
       'İşletme bilgisi henüz bu telefona inmedi; senkronu bekle.';
+
+  @override
+  String get knowledgeTitle => 'Bilgi bankası';
+
+  @override
+  String get knowledgeSearchHint => 'Kireç hastalığı, ana verme…';
+
+  @override
+  String knowledgeMonthLabel(String month, String place) {
+    return '$month · $place';
+  }
+
+  @override
+  String get knowledgePlaceTurkey => 'Türkiye';
+
+  @override
+  String get knowledgePlaceNorthern => 'Kuzey yarımküre';
+
+  @override
+  String get knowledgePlaceSouthern => 'Güney yarımküre';
+
+  @override
+  String get knowledgeMonthTitle => 'Bu ay yapılacaklar';
+
+  @override
+  String get knowledgeDiagnosisTitle => 'Teşhis yardımcısı';
+
+  @override
+  String get knowledgeDiagnosisSubtitle => 'Belirtiyi seç, olası nedenleri gör';
+
+  @override
+  String get knowledgeComingSoon => 'Yakında';
+
+  @override
+  String get knowledgeAtlasTitle => 'Hastalık ve zararlı atlası';
+
+  @override
+  String knowledgeTopicCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count konu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get knowledgeGuidesTitle => 'Teknik rehberler';
+
+  @override
+  String get knowledgeGuidesSubtitle =>
+      'Bölme, ana verme, birleştirme, kışlatma';
+
+  @override
+  String get knowledgeCalculatorsTitle => 'Hesaplayıcılar';
+
+  @override
+  String get knowledgeCalculatorsSubtitle => 'Şurup, ilaç dozu, ana takvimi';
+
+  @override
+  String get knowledgeRegulationsTitle => 'Mevzuat özetleri';
+
+  @override
+  String get knowledgeRegulationsSubtitle =>
+      'Yönetmelik, gezginci, bal tebliği';
+
+  @override
+  String get knowledgeTrBadge => 'TR';
+
+  @override
+  String get knowledgeFirstYearTitle => 'İlk yılım';
+
+  @override
+  String get knowledgeFirstYearSubtitle => 'Yeni başlayanlar için adım adım';
+
+  @override
+  String get knowledgeCalendarTitle => 'Mevsim takvimi';
+
+  @override
+  String get knowledgeOffline => 'Tüm içerik internetsiz açılır';
+
+  @override
+  String get knowledgeNoResultsTitle => 'Sonuç yok';
+
+  @override
+  String get knowledgeNoResultsMessage => 'Başka bir kelimeyle ara.';
+
+  @override
+  String get knowledgeCategoryEmptyTitle => 'Henüz makale yok';
+
+  @override
+  String get knowledgeCategoryEmptyMessage =>
+      'Bu bölümün içeriği güncellemeyle gelecek.';
+
+  @override
+  String get knowledgeArticleNotFound => 'Makale bulunamadı';
+
+  @override
+  String get knowledgeLoadError => 'Bilgi bankası açılamadı';
+
+  @override
+  String get knowledgeLinkFailed => 'Bağlantı açılamadı';
 }

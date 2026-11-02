@@ -9568,6 +9568,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Business details haven\'t synced to this phone yet; wait for sync.'**
   String get aksCountNoOrganization;
+
+  /// Knowledge base screen title and More tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge base'**
+  String get knowledgeTitle;
+
+  /// Knowledge base search field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Chalkbrood, introducing a queen…'**
+  String get knowledgeSearchHint;
+
+  /// Overline of the this-month card, e.g. NOVEMBER · TÜRKİYE.
+  ///
+  /// In en, this message translates to:
+  /// **'{month} · {place}'**
+  String knowledgeMonthLabel(String month, String place);
+
+  /// Place in the this-month card for the TR profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Türkiye'**
+  String get knowledgePlaceTurkey;
+
+  /// Place in the this-month card outside TR, northern hemisphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Northern hemisphere'**
+  String get knowledgePlaceNorthern;
+
+  /// Place in the this-month card outside TR, southern hemisphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Southern hemisphere'**
+  String get knowledgePlaceSouthern;
+
+  /// This-month card title.
+  ///
+  /// In en, this message translates to:
+  /// **'To do this month'**
+  String get knowledgeMonthTitle;
+
+  /// Diagnosis helper card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnosis helper'**
+  String get knowledgeDiagnosisTitle;
+
+  /// Diagnosis helper card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a sign, see possible causes'**
+  String get knowledgeDiagnosisSubtitle;
+
+  /// Marks a knowledge base section that is not available yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get knowledgeComingSoon;
+
+  /// Atlas category title.
+  ///
+  /// In en, this message translates to:
+  /// **'Diseases and pests atlas'**
+  String get knowledgeAtlasTitle;
+
+  /// Number of articles in a category.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 topic} other{{count} topics}}'**
+  String knowledgeTopicCount(int count);
+
+  /// Guides category title.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical guides'**
+  String get knowledgeGuidesTitle;
+
+  /// Guides category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Splits, queen introduction, uniting, wintering'**
+  String get knowledgeGuidesSubtitle;
+
+  /// Calculators row title.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculators'**
+  String get knowledgeCalculatorsTitle;
+
+  /// Calculators row subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrup, drug dose, queen calendar'**
+  String get knowledgeCalculatorsSubtitle;
+
+  /// Regulations category title (TR only).
+  ///
+  /// In en, this message translates to:
+  /// **'Regulation summaries'**
+  String get knowledgeRegulationsTitle;
+
+  /// Regulations category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Regulation, migratory beekeeping, honey communiqué'**
+  String get knowledgeRegulationsSubtitle;
+
+  /// Badge marking Türkiye-only content.
+  ///
+  /// In en, this message translates to:
+  /// **'TR'**
+  String get knowledgeTrBadge;
+
+  /// First year category title.
+  ///
+  /// In en, this message translates to:
+  /// **'My first year'**
+  String get knowledgeFirstYearTitle;
+
+  /// First year category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Step by step for beginners'**
+  String get knowledgeFirstYearSubtitle;
+
+  /// Calendar category title (search results and category screen).
+  ///
+  /// In en, this message translates to:
+  /// **'Seasonal calendar'**
+  String get knowledgeCalendarTitle;
+
+  /// Footer note on the knowledge base screen.
+  ///
+  /// In en, this message translates to:
+  /// **'All content opens offline'**
+  String get knowledgeOffline;
+
+  /// Empty search results title.
+  ///
+  /// In en, this message translates to:
+  /// **'No results'**
+  String get knowledgeNoResultsTitle;
+
+  /// Empty search results message.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another word.'**
+  String get knowledgeNoResultsMessage;
+
+  /// Empty category title.
+  ///
+  /// In en, this message translates to:
+  /// **'No articles yet'**
+  String get knowledgeCategoryEmptyTitle;
+
+  /// Empty category message.
+  ///
+  /// In en, this message translates to:
+  /// **'Content for this section will come with an update.'**
+  String get knowledgeCategoryEmptyMessage;
+
+  /// Shown when the article id does not exist.
+  ///
+  /// In en, this message translates to:
+  /// **'Article not found'**
+  String get knowledgeArticleNotFound;
+
+  /// Shown when content cannot be read.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the knowledge base'**
+  String get knowledgeLoadError;
+
+  /// Snack bar when a link in an article cannot be opened.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the link'**
+  String get knowledgeLinkFailed;
 }
 
 class _AppLocalizationsDelegate

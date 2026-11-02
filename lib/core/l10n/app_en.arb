@@ -6176,5 +6176,142 @@
   "aksCountNoOrganization": "Business details haven't synced to this phone yet; wait for sync.",
   "@aksCountNoOrganization": {
     "description": "Snack bar when local organization row is missing."
+  },
+
+  "knowledgeTitle": "Knowledge base",
+  "@knowledgeTitle": {
+    "description": "Knowledge base screen title and More tile."
+  },
+  "knowledgeSearchHint": "Chalkbrood, introducing a queen…",
+  "@knowledgeSearchHint": {
+    "description": "Knowledge base search field hint."
+  },
+  "knowledgeMonthLabel": "{month} · {place}",
+  "@knowledgeMonthLabel": {
+    "description": "Overline of the this-month card, e.g. NOVEMBER · TÜRKİYE.",
+    "placeholders": {
+      "month": {
+        "type": "String",
+        "example": "KASIM"
+      },
+      "place": {
+        "type": "String",
+        "example": "TÜRKİYE"
+      }
+    }
+  },
+  "knowledgePlaceTurkey": "Türkiye",
+  "@knowledgePlaceTurkey": {
+    "description": "Place in the this-month card for the TR profile."
+  },
+  "knowledgePlaceNorthern": "Northern hemisphere",
+  "@knowledgePlaceNorthern": {
+    "description": "Place in the this-month card outside TR, northern hemisphere."
+  },
+  "knowledgePlaceSouthern": "Southern hemisphere",
+  "@knowledgePlaceSouthern": {
+    "description": "Place in the this-month card outside TR, southern hemisphere."
+  },
+  "knowledgeMonthTitle": "To do this month",
+  "@knowledgeMonthTitle": {
+    "description": "This-month card title."
+  },
+  "knowledgeDiagnosisTitle": "Diagnosis helper",
+  "@knowledgeDiagnosisTitle": {
+    "description": "Diagnosis helper card title."
+  },
+  "knowledgeDiagnosisSubtitle": "Pick a sign, see possible causes",
+  "@knowledgeDiagnosisSubtitle": {
+    "description": "Diagnosis helper card subtitle."
+  },
+  "knowledgeComingSoon": "Coming soon",
+  "@knowledgeComingSoon": {
+    "description": "Marks a knowledge base section that is not available yet."
+  },
+  "knowledgeAtlasTitle": "Diseases and pests atlas",
+  "@knowledgeAtlasTitle": {
+    "description": "Atlas category title."
+  },
+  "knowledgeTopicCount": "{count, plural, =1{1 topic} other{{count} topics}}",
+  "@knowledgeTopicCount": {
+    "description": "Number of articles in a category.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "24"
+      }
+    }
+  },
+  "knowledgeGuidesTitle": "Technical guides",
+  "@knowledgeGuidesTitle": {
+    "description": "Guides category title."
+  },
+  "knowledgeGuidesSubtitle": "Splits, queen introduction, uniting, wintering",
+  "@knowledgeGuidesSubtitle": {
+    "description": "Guides category subtitle."
+  },
+  "knowledgeCalculatorsTitle": "Calculators",
+  "@knowledgeCalculatorsTitle": {
+    "description": "Calculators row title."
+  },
+  "knowledgeCalculatorsSubtitle": "Syrup, drug dose, queen calendar",
+  "@knowledgeCalculatorsSubtitle": {
+    "description": "Calculators row subtitle."
+  },
+  "knowledgeRegulationsTitle": "Regulation summaries",
+  "@knowledgeRegulationsTitle": {
+    "description": "Regulations category title (TR only)."
+  },
+  "knowledgeRegulationsSubtitle": "Regulation, migratory beekeeping, honey communiqué",
+  "@knowledgeRegulationsSubtitle": {
+    "description": "Regulations category subtitle."
+  },
+  "knowledgeTrBadge": "TR",
+  "@knowledgeTrBadge": {
+    "description": "Badge marking Türkiye-only content."
+  },
+  "knowledgeFirstYearTitle": "My first year",
+  "@knowledgeFirstYearTitle": {
+    "description": "First year category title."
+  },
+  "knowledgeFirstYearSubtitle": "Step by step for beginners",
+  "@knowledgeFirstYearSubtitle": {
+    "description": "First year category subtitle."
+  },
+  "knowledgeCalendarTitle": "Seasonal calendar",
+  "@knowledgeCalendarTitle": {
+    "description": "Calendar category title (search results and category screen)."
+  },
+  "knowledgeOffline": "All content opens offline",
+  "@knowledgeOffline": {
+    "description": "Footer note on the knowledge base screen."
+  },
+  "knowledgeNoResultsTitle": "No results",
+  "@knowledgeNoResultsTitle": {
+    "description": "Empty search results title."
+  },
+  "knowledgeNoResultsMessage": "Try another word.",
+  "@knowledgeNoResultsMessage": {
+    "description": "Empty search results message."
+  },
+  "knowledgeCategoryEmptyTitle": "No articles yet",
+  "@knowledgeCategoryEmptyTitle": {
+    "description": "Empty category title."
+  },
+  "knowledgeCategoryEmptyMessage": "Content for this section will come with an update.",
+  "@knowledgeCategoryEmptyMessage": {
+    "description": "Empty category message."
+  },
+  "knowledgeArticleNotFound": "Article not found",
+  "@knowledgeArticleNotFound": {
+    "description": "Shown when the article id does not exist."
+  },
+  "knowledgeLoadError": "Couldn't open the knowledge base",
+  "@knowledgeLoadError": {
+    "description": "Shown when content cannot be read."
+  },
+  "knowledgeLinkFailed": "Couldn't open the link",
+  "@knowledgeLinkFailed": {
+    "description": "Snack bar when a link in an article cannot be opened."
   }
 }
