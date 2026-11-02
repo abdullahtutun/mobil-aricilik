@@ -1582,5 +1582,7 @@
   "financeProfitUnknownApiary": "Silinmiş arılık",
   "financeReceivables": "{amount} alacak · {count, plural, =1{1 müşteri} other{{count} müşteri}}",
   "syncTableCustomers": "Müşteri",
-  "syncTableCustomerPayments": "Tahsilat"
+  "syncTableCustomerPayments": "Tahsilat",
+  "customerUnpaid": "Ödenmedi",
+  "customerPartiallyPaid": "{paid} ödendi, {remaining} kalan"
 }

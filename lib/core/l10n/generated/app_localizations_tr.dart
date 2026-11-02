@@ -5723,4 +5723,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncTableCustomerPayments => 'Tahsilat';
+
+  @override
+  String get customerUnpaid => 'Ödenmedi';
+
+  @override
+  String customerPartiallyPaid(String paid, String remaining) {
+    return '$paid ödendi, $remaining kalan';
+  }
 }

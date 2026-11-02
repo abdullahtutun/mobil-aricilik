@@ -194,6 +194,40 @@ void main() {
     );
   });
 
+  testWidgets('son hareketlerde müşterili satırda ödeme durumu: kısmi, '
+      'ödenmedi ve ödendi', (tester) async {
+    final partial = await seedSale();
+    await seedSale(paidNow: null);
+    await seedSale(paidNow: 6000);
+    final container = await _open(tester, db: db, location: AppRoutes.finance);
+    Finder row(String status) =>
+        find.widgetWithText(ListRow, 'Honey · Ayşe Hanım · $status');
+    Future<void> see(String status) => tester.scrollUntilVisible(
+      row(status),
+      200,
+      scrollable: _list(FinanceScreen),
+    );
+    await see('${lira(2000)} paid, ${lira(4000)} left');
+    await see('Unpaid');
+    await see('Paid');
+
+    container.read(languageProvider.notifier).language = AppLanguage.turkish;
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Bal · Ayşe Hanım · ₺2.000 ödendi, ₺4.000 kalan'),
+      findsOneWidget,
+    );
+
+    // Tahsilat gelince satır kendiliğinden güncellenir.
+    await tester.runAsync(
+      () =>
+          CustomerPaymentRepository(db)
+              .add(partial, 4000, paidOn: DateTime.now()),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Bal · Ayşe Hanım · Ödendi'), findsNWidgets(2));
+  });
+
   testWidgets('Ödendi olarak işaretle kalanı kapatır; Geri al geri getirir', (
     tester,
   ) async {

@@ -79,8 +79,8 @@ String? financeTransportLabel(AppLocalizations l10n, TransactionRow row) {
 String financeRowTitle(AppLocalizations l10n, FinanceTransaction transaction) =>
     transaction.description ?? transaction.category.label(l10n);
 
-/// Satırın alt yazısı: (açıklama varsa) kategori, lot, arılık, taşıma ve
-/// fiş; boşsa null.
+/// Satırın alt yazısı: (açıklama varsa) kategori, lot, arılık, taşıma,
+/// müşteri ve ödeme durumu ([financePaymentLabel]), fiş; boşsa null.
 String? financeRowSubtitle(
   WidgetRef ref,
   BuildContext context,
@@ -94,9 +94,25 @@ String? financeRowSubtitle(
     ?row.apiaryName,
     ?financeTransportLabel(l10n, row),
     ?row.customerName,
+    ?financePaymentLabel(context, row),
     if (transaction.receiptPath != null) l10n.financeReceiptAttached,
   ];
   return parts.isEmpty ? null : parts.join(l10n.titleSeparator);
+}
+
+/// Müşterili satışın ödeme durumu: "Ödendi", kısmi ödemede "₺2.000 ödendi,
+/// ₺4.000 kalan", hiç ödenmediyse "Ödenmedi"; müşterisiz harekette null.
+String? financePaymentLabel(BuildContext context, TransactionRow row) {
+  if (row.transaction.customerId == null) return null;
+  final l10n = AppLocalizations.of(context);
+  final balance = rowBalance(row);
+  if (isPaid(balance)) return l10n.customerPaid;
+  if (balance.paid <= 0) return l10n.customerUnpaid;
+  final currency = row.transaction.currency;
+  return l10n.customerPartiallyPaid(
+    financeMoney(context, balance.paid, currency),
+    financeMoney(context, balance.remaining, currency),
+  );
 }
 
 /// Satışın ödeme durumu: "Ödendi" ya da "Kalan ₺4.000" (renk + ikon +

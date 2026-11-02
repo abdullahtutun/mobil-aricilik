@@ -9382,6 +9382,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment'**
   String get syncTableCustomerPayments;
+
+  /// Sale with no payment yet; recent entries subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get customerUnpaid;
+
+  /// Partly paid sale; recent entries subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{paid} paid, {remaining} left'**
+  String customerPartiallyPaid(String paid, String remaining);
 }
 
 class _AppLocalizationsDelegate

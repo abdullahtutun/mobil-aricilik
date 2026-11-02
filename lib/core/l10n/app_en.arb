@@ -6021,5 +6021,23 @@
   "syncTableCustomerPayments": "Payment",
   "@syncTableCustomerPayments": {
     "description": "Sync screen record type."
+  },
+  "customerUnpaid": "Unpaid",
+  "@customerUnpaid": {
+    "description": "Sale with no payment yet; recent entries subtitle."
+  },
+  "customerPartiallyPaid": "{paid} paid, {remaining} left",
+  "@customerPartiallyPaid": {
+    "description": "Partly paid sale; recent entries subtitle.",
+    "placeholders": {
+      "paid": {
+        "type": "String",
+        "example": "₺2,000"
+      },
+      "remaining": {
+        "type": "String",
+        "example": "₺4,000"
+      }
+    }
   }
 }
