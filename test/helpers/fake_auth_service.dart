@@ -25,6 +25,7 @@ import 'fake_code_scanner.dart';
 import 'fake_documents.dart';
 import 'fake_knowledge.dart';
 import 'fake_media.dart';
+import 'fake_offline_maps.dart';
 import 'fake_organization_service.dart';
 import 'fake_print_service.dart';
 import 'fake_push_service.dart';
@@ -115,6 +116,7 @@ List<Override> signedIn({
   FakePushService? push,
   FakeDeviceTokenService? deviceTokens,
   FakeKnowledge? knowledge,
+  FakeOfflineMaps? offlineMaps,
   bool fullPullDone = true,
 }) => [
   authServiceProvider.overrideWithValue(
@@ -144,4 +146,5 @@ List<Override> signedIn({
     deviceTokens ?? FakeDeviceTokenService(),
   ),
   ...(knowledge ?? FakeKnowledge()).overrides,
+  ...(offlineMaps ?? FakeOfflineMaps()).overrides,
 ];

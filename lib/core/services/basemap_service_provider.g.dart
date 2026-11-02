@@ -54,23 +54,82 @@ final class BasemapServiceProvider
 
 String _$basemapServiceHash() => r'5b3f254ca0e26883dc22927ff89d0f358baaed02';
 
-/// Altlık uygulama açık kaldıkça bir kez okunur. Hata kendiliğinden yeniden
-/// denenmez; ekran "Yeniden dene" ile ya da haritaya yeniden geçince
-/// yeniler.
+/// İndirilmiş paketlerden altlık; testler override eder.
+
+@ProviderFor(offlineBasemapService)
+final offlineBasemapServiceProvider = OfflineBasemapServiceProvider._();
+
+/// İndirilmiş paketlerden altlık; testler override eder.
+
+final class OfflineBasemapServiceProvider
+    extends
+        $FunctionalProvider<
+          OfflineBasemapService,
+          OfflineBasemapService,
+          OfflineBasemapService
+        >
+    with $Provider<OfflineBasemapService> {
+  /// İndirilmiş paketlerden altlık; testler override eder.
+  OfflineBasemapServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'offlineBasemapServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$offlineBasemapServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<OfflineBasemapService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  OfflineBasemapService create(Ref ref) {
+    return offlineBasemapService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(OfflineBasemapService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<OfflineBasemapService>(value),
+    );
+  }
+}
+
+String _$offlineBasemapServiceHash() =>
+    r'38d5e77fbf5b394ff64e28bdf67d3e39bc40d748';
+
+/// Altlık uygulama açık kaldıkça bir kez okunur. Ağdan okunamazsa
+/// indirilmiş paketlerden açılır; paket de yoksa [BasemapUnavailable].
+/// Hata kendiliğinden yeniden denenmez; ekran "Yeniden dene" ile ya da
+/// haritaya yeniden geçince yeniler. Paket inince ya da silinince
+/// internetsiz altlık yeniden okunur.
 
 @ProviderFor(basemap)
 final basemapProvider = BasemapProvider._();
 
-/// Altlık uygulama açık kaldıkça bir kez okunur. Hata kendiliğinden yeniden
-/// denenmez; ekran "Yeniden dene" ile ya da haritaya yeniden geçince
-/// yeniler.
+/// Altlık uygulama açık kaldıkça bir kez okunur. Ağdan okunamazsa
+/// indirilmiş paketlerden açılır; paket de yoksa [BasemapUnavailable].
+/// Hata kendiliğinden yeniden denenmez; ekran "Yeniden dene" ile ya da
+/// haritaya yeniden geçince yeniler. Paket inince ya da silinince
+/// internetsiz altlık yeniden okunur.
 
 final class BasemapProvider
     extends $FunctionalProvider<AsyncValue<Basemap>, Basemap, FutureOr<Basemap>>
     with $FutureModifier<Basemap>, $FutureProvider<Basemap> {
-  /// Altlık uygulama açık kaldıkça bir kez okunur. Hata kendiliğinden yeniden
-  /// denenmez; ekran "Yeniden dene" ile ya da haritaya yeniden geçince
-  /// yeniler.
+  /// Altlık uygulama açık kaldıkça bir kez okunur. Ağdan okunamazsa
+  /// indirilmiş paketlerden açılır; paket de yoksa [BasemapUnavailable].
+  /// Hata kendiliğinden yeniden denenmez; ekran "Yeniden dene" ile ya da
+  /// haritaya yeniden geçince yeniler. Paket inince ya da silinince
+  /// internetsiz altlık yeniden okunur.
   BasemapProvider._()
     : super(
         from: null,
@@ -96,4 +155,4 @@ final class BasemapProvider
   }
 }
 
-String _$basemapHash() => r'c198a765e7599657b9bc501e779cef2f9fbff1a8';
+String _$basemapHash() => r'a36e2e32907ca93214ee59e531dfedbf48de7f89';

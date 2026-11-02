@@ -10492,6 +10492,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No'**
   String get seasonCsvNo;
+
+  /// No description provided for @offlineMapsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline maps'**
+  String get offlineMapsTitle;
+
+  /// No description provided for @offlineMapsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the regions where your apiaries are; the map opens even without signal.'**
+  String get offlineMapsIntro;
+
+  /// Size of a map pack in megabytes.
+  ///
+  /// In en, this message translates to:
+  /// **'{size} MB'**
+  String offlineMapsMegabytes(String size);
+
+  /// Approximate size before download, e.g. ≈ 72 MB.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {size}'**
+  String offlineMapsApproxSize(String size);
+
+  /// Badge of a downloaded region with its size.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded · {size}'**
+  String offlineMapsDownloaded(String size);
+
+  /// Date of the map data, e.g. updated: Sep 2026.
+  ///
+  /// In en, this message translates to:
+  /// **'updated: {date}'**
+  String offlineMapsUpdated(String date);
+
+  /// Progress line while downloading on Wi‑Fi only.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading on Wi‑Fi · {received} / {total}'**
+  String offlineMapsDownloadingWifi(String received, String total);
+
+  /// Progress line while downloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading · {received} / {total}'**
+  String offlineMapsDownloading(String received, String total);
+
+  /// Tooltip of the download button of a region.
+  ///
+  /// In en, this message translates to:
+  /// **'Download {name}'**
+  String offlineMapsDownload(String name);
+
+  /// No description provided for @offlineMapsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop download'**
+  String get offlineMapsCancel;
+
+  /// Tooltip of the delete button of a downloaded region.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name}'**
+  String offlineMapsDelete(String name);
+
+  /// No description provided for @offlineMapsDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name}?'**
+  String offlineMapsDeleteTitle(String name);
+
+  /// No description provided for @offlineMapsDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Without internet, the map of this region won\'t open. You can download it again any time.'**
+  String get offlineMapsDeleteMessage;
+
+  /// No description provided for @offlineMapsDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get offlineMapsDeleteConfirm;
+
+  /// No description provided for @offlineMapsWifiOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Download on Wi‑Fi only'**
+  String get offlineMapsWifiOnly;
+
+  /// No description provided for @offlineMapsWifiOnlyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Packs are tens of MB; no mobile data is used.'**
+  String get offlineMapsWifiOnlyHint;
+
+  /// No description provided for @offlineMapsSuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested · apiaries and migration plan'**
+  String get offlineMapsSuggested;
+
+  /// No description provided for @offlineMapsAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All regions'**
+  String get offlineMapsAll;
+
+  /// Migration plan stop inside a region; name is the forage source, e.g. Citrus stop.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} stop'**
+  String offlineMapsStop(String name);
+
+  /// No description provided for @offlineMapsCatalogErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the region list'**
+  String get offlineMapsCatalogErrorTitle;
+
+  /// No description provided for @offlineMapsCatalogErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The list needs internet. Regions you downloaded still open.'**
+  String get offlineMapsCatalogErrorMessage;
+
+  /// No description provided for @offlineMapsCatalogEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No regions to download right now.'**
+  String get offlineMapsCatalogEmpty;
+
+  /// No description provided for @offlineMapsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} downloaded'**
+  String offlineMapsDone(String name);
+
+  /// No description provided for @offlineMapsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download {name}. Check your connection and try again.'**
+  String offlineMapsFailed(String name);
+
+  /// No description provided for @offlineMapsNeedsWifi.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to Wi‑Fi or turn off \"Download on Wi‑Fi only\".'**
+  String get offlineMapsNeedsWifi;
+
+  /// Map data credit under the offline maps list. Keep the names as they are.
+  ///
+  /// In en, this message translates to:
+  /// **'Map data © OpenStreetMap contributors · OpenFreeMap'**
+  String get offlineMapsAttribution;
+
+  /// No description provided for @settingsOfflineMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline maps'**
+  String get settingsOfflineMaps;
+
+  /// Settings row value: number of downloaded regions and total size.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{None} =1{1 region · {size}} other{{count} regions · {size}}}'**
+  String settingsOfflineMapsValue(int count, String size);
 }
 
 class _AppLocalizationsDelegate

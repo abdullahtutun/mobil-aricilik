@@ -20,6 +20,18 @@ class LocalSettingsRepository {
   Future<void> setMediaWifiOnly({required bool enabled}) =>
       _write(mediaWifiOnlyKey, '$enabled');
 
+  /// Offline harita paketleri yalnız Wi‑Fi'da (kotasız ağda) insin;
+  /// varsayılan açık (paketler onlarca MB).
+  static const mapWifiOnlyKey = 'map_wifi_only';
+
+  Stream<bool> watchMapWifiOnly() =>
+      _watch(mapWifiOnlyKey).map((value) => value != 'false');
+
+  Future<bool> mapWifiOnly() async => await _read(mapWifiOnlyKey) != 'false';
+
+  Future<void> setMapWifiOnly({required bool enabled}) =>
+      _write(mapWifiOnlyKey, '$enabled');
+
   /// Tam zamanlı alarm izninin neden gerektiği bu telefonda bir kez
   /// anlatıldı; sonra yalnız Ayarlar'dan istenir.
   static const exactAlarmPromptedKey = 'exact_alarm_prompted';

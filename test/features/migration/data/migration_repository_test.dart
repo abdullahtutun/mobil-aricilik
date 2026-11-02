@@ -172,6 +172,31 @@ void main() {
     ]);
   });
 
+  test('işletmenin geçmişte kalmamış durakları; silinen ve başka işletmenin '
+      'durağı yok', () async {
+    final migration = await createMigration();
+    final other = await createMigration(year: 2025);
+    await createStop(migration.id, plan());
+    await createStop(
+      migration.id,
+      plan(position: 2, name: 'Yayla', status: MigrationStopStatus.current),
+    );
+    await createStop(
+      migration.id,
+      plan(position: 3, name: 'Narenciye', status: MigrationStopStatus.past),
+    );
+    final deleted = await createStop(other.id, plan(name: 'Silinen'));
+    await stops.delete(deleted.id);
+    await stops.create(
+      orgId: 'org-2',
+      migrationId: 'm-2',
+      plan: plan(name: 'Başka'),
+    );
+
+    final upcoming = await stops.watchUpcomingByOrg('org-1').first;
+    expect({for (final stop in upcoming) stop.name}, {'Çam', 'Yayla'});
+  });
+
   test('durakları rota sırasıyla izler; ekleme, düzenleme ve silmede yeniden '
       'yayar; sonraki sıra en büyük sıradan bir fazla', () async {
     final migration = await createMigration();

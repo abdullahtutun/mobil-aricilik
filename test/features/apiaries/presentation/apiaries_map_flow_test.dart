@@ -17,6 +17,7 @@ import 'package:mobil_arici/features/today/presentation/today_providers.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_basemap_service.dart';
+import '../../../helpers/fake_offline_maps.dart';
 import '../../../helpers/fake_organization_service.dart';
 import '../../../helpers/test_database.dart';
 
@@ -27,11 +28,12 @@ Future<ProviderContainer> _openMap(
   WidgetTester tester, {
   required AppDatabase db,
   required FakeBasemapService basemap,
+  FakeOfflineMaps? offlineMaps,
   List<Override> overrides = const [],
 }) async {
   final container = ProviderContainer.test(
     overrides: [
-      ...signedIn(db: db, basemap: basemap),
+      ...signedIn(db: db, basemap: basemap, offlineMaps: offlineMaps),
       ...overrides,
     ],
   );
@@ -120,6 +122,31 @@ void main() {
     await _tap(tester, find.text('List'));
     await _tap(tester, find.text('Map'));
     expect(basemap.loadCount, 3);
+  });
+
+  testWidgets('internet yokken bölge indirilmişse harita paketten açılır', (
+    tester,
+  ) async {
+    await apiaries.create(
+      orgId: _orgId,
+      name: 'Yayla',
+      latitude: 37.1,
+      longitude: 28.4,
+    );
+    final maps = FakeOfflineMaps();
+    await maps.install('tr-48');
+    await _openMap(
+      tester,
+      db: db,
+      basemap: FakeBasemapService(),
+      offlineMaps: maps,
+    );
+
+    expect(find.text('Map unavailable'), findsNothing);
+    expect(find.byType(FlutterMap), findsOneWidget);
+    expect(find.byKey(const Key('offline-basemap')), findsOneWidget);
+    expect(find.text(_attribution), findsOneWidget);
+    expect(find.bySemanticsLabel('Yayla, No hives'), findsOneWidget);
   });
 
   testWidgets('konumlu arılıklar pin olur; uyarı rozeti, dokununca arılık', (

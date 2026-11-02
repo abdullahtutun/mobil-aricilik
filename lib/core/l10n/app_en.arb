@@ -6752,5 +6752,146 @@
   "seasonCsvQueenLine": "Queen line",
   "seasonCsvAddedInSeason": "Added this season",
   "seasonCsvYes": "Yes",
-  "seasonCsvNo": "No"
+  "seasonCsvNo": "No",
+  "offlineMapsTitle": "Offline maps",
+  "offlineMapsIntro": "Download the regions where your apiaries are; the map opens even without signal.",
+  "offlineMapsMegabytes": "{size} MB",
+  "@offlineMapsMegabytes": {
+    "description": "Size of a map pack in megabytes.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsApproxSize": "≈ {size}",
+  "@offlineMapsApproxSize": {
+    "description": "Approximate size before download, e.g. ≈ 72 MB.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsDownloaded": "Downloaded · {size}",
+  "@offlineMapsDownloaded": {
+    "description": "Badge of a downloaded region with its size.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsUpdated": "updated: {date}",
+  "@offlineMapsUpdated": {
+    "description": "Date of the map data, e.g. updated: Sep 2026.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsDownloadingWifi": "Downloading on Wi‑Fi · {received} / {total}",
+  "@offlineMapsDownloadingWifi": {
+    "description": "Progress line while downloading on Wi‑Fi only.",
+    "placeholders": {
+      "received": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsDownloading": "Downloading · {received} / {total}",
+  "@offlineMapsDownloading": {
+    "description": "Progress line while downloading.",
+    "placeholders": {
+      "received": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsDownload": "Download {name}",
+  "@offlineMapsDownload": {
+    "description": "Tooltip of the download button of a region.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsCancel": "Stop download",
+  "offlineMapsDelete": "Delete {name}",
+  "@offlineMapsDelete": {
+    "description": "Tooltip of the delete button of a downloaded region.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsDeleteTitle": "Delete {name}?",
+  "@offlineMapsDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsDeleteMessage": "Without internet, the map of this region won't open. You can download it again any time.",
+  "offlineMapsDeleteConfirm": "Delete",
+  "offlineMapsWifiOnly": "Download on Wi‑Fi only",
+  "offlineMapsWifiOnlyHint": "Packs are tens of MB; no mobile data is used.",
+  "offlineMapsSuggested": "Suggested · apiaries and migration plan",
+  "offlineMapsAll": "All regions",
+  "offlineMapsStop": "{name} stop",
+  "@offlineMapsStop": {
+    "description": "Migration plan stop inside a region; name is the forage source, e.g. Citrus stop.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsCatalogErrorTitle": "Couldn't load the region list",
+  "offlineMapsCatalogErrorMessage": "The list needs internet. Regions you downloaded still open.",
+  "offlineMapsCatalogEmpty": "No regions to download right now.",
+  "offlineMapsDone": "{name} downloaded",
+  "@offlineMapsDone": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsFailed": "Couldn't download {name}. Check your connection and try again.",
+  "@offlineMapsFailed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsNeedsWifi": "Connect to Wi‑Fi or turn off \"Download on Wi‑Fi only\".",
+  "offlineMapsAttribution": "Map data © OpenStreetMap contributors · OpenFreeMap",
+  "@offlineMapsAttribution": {
+    "description": "Map data credit under the offline maps list. Keep the names as they are."
+  },
+  "settingsOfflineMaps": "Offline maps",
+  "settingsOfflineMapsValue": "{count, plural, =0{None} =1{1 region · {size}} other{{count} regions · {size}}}",
+  "@settingsOfflineMapsValue": {
+    "description": "Settings row value: number of downloaded regions and total size.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  }
 }

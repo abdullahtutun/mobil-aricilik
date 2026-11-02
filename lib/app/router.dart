@@ -77,6 +77,7 @@ import 'package:mobil_arici/features/migration/presentation/migration_stop_form_
 import 'package:mobil_arici/features/migration/presentation/migrations_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/move_screen.dart';
 import 'package:mobil_arici/features/migration/presentation/transport_scan_screen.dart';
+import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
@@ -438,6 +439,13 @@ GoRouter router(Ref ref) {
                     path: 'settings',
                     parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const SettingsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'maps',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => const OfflineMapsScreen(),
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: 'reports',

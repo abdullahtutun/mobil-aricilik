@@ -17,10 +17,17 @@ class BasemapUnavailable implements Exception {
 /// Yüklenmiş harita altlığı: `FlutterMap`'in en alttaki karo katmanı.
 abstract interface class Basemap {
   Widget tileLayer();
+
+  /// İndirilmiş paketlerden mi (internetsiz).
+  bool get offline;
+
+  /// Açık dosyaları kapatır; altlık artık kullanılmaz.
+  void dispose();
 }
 
 /// Altlığı ağdan okur. Ağa giden çağrı; ekranlar buna provider üzerinden
-/// ulaşır. Çevrimdışı paketler Faz E'de gelecek.
+/// ulaşır. İnternet yoksa provider indirilmiş paketlere döner
+/// (`OfflineBasemapService`).
 abstract interface class BasemapService {
   /// Hata [BasemapUnavailable] olarak gelir.
   Future<Basemap> load();
@@ -59,4 +66,10 @@ class _VectorBasemap implements Basemap {
     sprites: _style.sprites,
     tileProviders: _style.providers,
   );
+
+  @override
+  bool get offline => false;
+
+  @override
+  void dispose() {}
 }

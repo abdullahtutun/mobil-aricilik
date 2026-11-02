@@ -95,6 +95,44 @@ final class MediaWifiOnlyProvider
 
 String _$mediaWifiOnlyHash() => r'857837556216810395de7759865cba36de9cac47';
 
+/// "Sadece Wi‑Fi'da indir" (offline harita paketleri).
+
+@ProviderFor(mapWifiOnly)
+final mapWifiOnlyProvider = MapWifiOnlyProvider._();
+
+/// "Sadece Wi‑Fi'da indir" (offline harita paketleri).
+
+final class MapWifiOnlyProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  /// "Sadece Wi‑Fi'da indir" (offline harita paketleri).
+  MapWifiOnlyProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'mapWifiOnlyProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapWifiOnlyHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    return mapWifiOnly(ref);
+  }
+}
+
+String _$mapWifiOnlyHash() => r'e7bf1746da0fccde3d4e1db18a3c861b692e53e8';
+
 /// "Görev bildirimleri" (push).
 
 @ProviderFor(pushEnabled)

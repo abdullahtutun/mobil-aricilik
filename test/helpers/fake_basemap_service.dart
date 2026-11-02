@@ -23,4 +23,10 @@ class _BlankBasemap implements Basemap {
 
   @override
   Widget tileLayer() => const SizedBox.expand();
+
+  @override
+  bool get offline => false;
+
+  @override
+  void dispose() {}
 }

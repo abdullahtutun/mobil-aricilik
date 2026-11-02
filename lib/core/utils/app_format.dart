@@ -83,6 +83,13 @@ class AppFormat {
     return format.format(value);
   }
 
+  /// Bayt, MB (1024²) olarak ve birimsiz: 10'dan küçükse bir ondalık.
+  /// `2,5`, `84`
+  String megabytes(int bytes) {
+    final value = bytes / (1024 * 1024);
+    return number(value, maxFractionDigits: value < 10 ? 1 : 0);
+  }
+
   /// Ondalık derece enlem ve boylam, beş hane (~1 m). GPS uygulamaları ve
   /// haritalar gibi her dilde nokta ile; virgül iki sayıyı ayırır.
   /// `40.12346, 29.65432`

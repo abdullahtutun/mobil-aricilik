@@ -14,6 +14,11 @@ LocalSettingsRepository localSettingsRepository(Ref ref) =>
 Stream<bool> mediaWifiOnly(Ref ref) =>
     ref.watch(localSettingsRepositoryProvider).watchMediaWifiOnly();
 
+/// "Sadece Wi‑Fi'da indir" (offline harita paketleri).
+@Riverpod(keepAlive: true)
+Stream<bool> mapWifiOnly(Ref ref) =>
+    ref.watch(localSettingsRepositoryProvider).watchMapWifiOnly();
+
 /// "Görev bildirimleri" (push).
 @Riverpod(keepAlive: true)
 Stream<bool> pushEnabled(Ref ref) =>

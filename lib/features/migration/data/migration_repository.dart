@@ -130,6 +130,14 @@ class MigrationStopRepository
   Stream<List<MigrationStop>> watchByMigration(String migrationId) =>
       watchWhere((t) => t.migrationId.equals(migrationId)).map(sortStops);
 
+  /// İşletmenin bütün planlarındaki, geçmişte kalmamış (şu anki ve
+  /// planlanan) duraklar; sırası önemsiz. Offline harita önerisi için.
+  Stream<List<MigrationStop>> watchUpcomingByOrg(String orgId) => watchWhere(
+    (t) =>
+        t.orgId.equals(orgId) &
+        t.status.equalsValue(MigrationStopStatus.past).not(),
+  );
+
   /// Planın silinmemiş durakları.
   Future<List<MigrationStop>> findByMigration(String migrationId) =>
       selectWhere((t) => t.migrationId.equals(migrationId)).get();

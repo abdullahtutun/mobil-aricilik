@@ -117,6 +117,9 @@ abstract final class AppRoutes {
 
   static const settings = '/more/settings';
 
+  /// Offline harita paketleri; Ayarlar'dan açılır.
+  static const offlineMaps = '/more/settings/maps';
+
   /// PDF raporları; Daha fazla'dan açılır.
   static const reports = '/more/reports';
 

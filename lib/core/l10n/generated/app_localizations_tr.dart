@@ -6363,4 +6363,126 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get seasonCsvNo => 'Hayır';
+
+  @override
+  String get offlineMapsTitle => 'Offline haritalar';
+
+  @override
+  String get offlineMapsIntro =>
+      'Arılıklarının olduğu bölgeyi indir; çekmeyen yerde de harita açılır.';
+
+  @override
+  String offlineMapsMegabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
+  String offlineMapsApproxSize(String size) {
+    return '≈ $size';
+  }
+
+  @override
+  String offlineMapsDownloaded(String size) {
+    return 'İndirildi · $size';
+  }
+
+  @override
+  String offlineMapsUpdated(String date) {
+    return 'güncelleme: $date';
+  }
+
+  @override
+  String offlineMapsDownloadingWifi(String received, String total) {
+    return 'Wi‑Fi ile indiriliyor · $received / $total';
+  }
+
+  @override
+  String offlineMapsDownloading(String received, String total) {
+    return 'İndiriliyor · $received / $total';
+  }
+
+  @override
+  String offlineMapsDownload(String name) {
+    return '$name indir';
+  }
+
+  @override
+  String get offlineMapsCancel => 'İndirmeyi durdur';
+
+  @override
+  String offlineMapsDelete(String name) {
+    return '$name sil';
+  }
+
+  @override
+  String offlineMapsDeleteTitle(String name) {
+    return '$name silinsin mi?';
+  }
+
+  @override
+  String get offlineMapsDeleteMessage =>
+      'İnternet yokken bu bölgenin haritası açılmaz. İstediğinde yeniden indirebilirsin.';
+
+  @override
+  String get offlineMapsDeleteConfirm => 'Sil';
+
+  @override
+  String get offlineMapsWifiOnly => 'Sadece Wi‑Fi\'da indir';
+
+  @override
+  String get offlineMapsWifiOnlyHint =>
+      'Paketler onlarca MB; mobil veri harcanmaz.';
+
+  @override
+  String get offlineMapsSuggested => 'Önerilen · arılıklar ve göç planı';
+
+  @override
+  String get offlineMapsAll => 'Tüm bölgeler';
+
+  @override
+  String offlineMapsStop(String name) {
+    return '$name durağı';
+  }
+
+  @override
+  String get offlineMapsCatalogErrorTitle => 'Bölge listesi alınamadı';
+
+  @override
+  String get offlineMapsCatalogErrorMessage =>
+      'Listeyi görmek için internet gerekir. İndirdiğin bölgeler yine de açılır.';
+
+  @override
+  String get offlineMapsCatalogEmpty => 'Şu an indirilebilecek bölge yok.';
+
+  @override
+  String offlineMapsDone(String name) {
+    return '$name indirildi';
+  }
+
+  @override
+  String offlineMapsFailed(String name) {
+    return '$name indirilemedi. Bağlantını kontrol edip yeniden dene.';
+  }
+
+  @override
+  String get offlineMapsNeedsWifi =>
+      'Wi‑Fi\'a bağlan ya da \"Sadece Wi‑Fi\'da indir\"i kapat.';
+
+  @override
+  String get offlineMapsAttribution =>
+      'Harita verisi © OpenStreetMap katkıcıları · OpenFreeMap';
+
+  @override
+  String get settingsOfflineMaps => 'Offline haritalar';
+
+  @override
+  String settingsOfflineMapsValue(int count, String size) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bölge · $size',
+      zero: 'Yok',
+    );
+    return '$_temp0';
+  }
 }

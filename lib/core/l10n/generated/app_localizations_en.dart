@@ -6545,4 +6545,127 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seasonCsvNo => 'No';
+
+  @override
+  String get offlineMapsTitle => 'Offline maps';
+
+  @override
+  String get offlineMapsIntro =>
+      'Download the regions where your apiaries are; the map opens even without signal.';
+
+  @override
+  String offlineMapsMegabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
+  String offlineMapsApproxSize(String size) {
+    return '≈ $size';
+  }
+
+  @override
+  String offlineMapsDownloaded(String size) {
+    return 'Downloaded · $size';
+  }
+
+  @override
+  String offlineMapsUpdated(String date) {
+    return 'updated: $date';
+  }
+
+  @override
+  String offlineMapsDownloadingWifi(String received, String total) {
+    return 'Downloading on Wi‑Fi · $received / $total';
+  }
+
+  @override
+  String offlineMapsDownloading(String received, String total) {
+    return 'Downloading · $received / $total';
+  }
+
+  @override
+  String offlineMapsDownload(String name) {
+    return 'Download $name';
+  }
+
+  @override
+  String get offlineMapsCancel => 'Stop download';
+
+  @override
+  String offlineMapsDelete(String name) {
+    return 'Delete $name';
+  }
+
+  @override
+  String offlineMapsDeleteTitle(String name) {
+    return 'Delete $name?';
+  }
+
+  @override
+  String get offlineMapsDeleteMessage =>
+      'Without internet, the map of this region won\'t open. You can download it again any time.';
+
+  @override
+  String get offlineMapsDeleteConfirm => 'Delete';
+
+  @override
+  String get offlineMapsWifiOnly => 'Download on Wi‑Fi only';
+
+  @override
+  String get offlineMapsWifiOnlyHint =>
+      'Packs are tens of MB; no mobile data is used.';
+
+  @override
+  String get offlineMapsSuggested => 'Suggested · apiaries and migration plan';
+
+  @override
+  String get offlineMapsAll => 'All regions';
+
+  @override
+  String offlineMapsStop(String name) {
+    return '$name stop';
+  }
+
+  @override
+  String get offlineMapsCatalogErrorTitle => 'Couldn\'t load the region list';
+
+  @override
+  String get offlineMapsCatalogErrorMessage =>
+      'The list needs internet. Regions you downloaded still open.';
+
+  @override
+  String get offlineMapsCatalogEmpty => 'No regions to download right now.';
+
+  @override
+  String offlineMapsDone(String name) {
+    return '$name downloaded';
+  }
+
+  @override
+  String offlineMapsFailed(String name) {
+    return 'Couldn\'t download $name. Check your connection and try again.';
+  }
+
+  @override
+  String get offlineMapsNeedsWifi =>
+      'Connect to Wi‑Fi or turn off \"Download on Wi‑Fi only\".';
+
+  @override
+  String get offlineMapsAttribution =>
+      'Map data © OpenStreetMap contributors · OpenFreeMap';
+
+  @override
+  String get settingsOfflineMaps => 'Offline maps';
+
+  @override
+  String settingsOfflineMapsValue(int count, String size) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count regions · $size',
+      one: '1 region · $size',
+      zero: 'None',
+    );
+    return '$_temp0';
+  }
 }
