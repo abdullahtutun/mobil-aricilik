@@ -1,0 +1,137 @@
+{
+  "format": 1,
+  "symptoms": [
+    {
+      "id": "sunken_perforated_cappings",
+      "label": {
+        "tr": "Çökük, delikli yavru kapakları",
+        "en": "Sunken, perforated brood cappings"
+      }
+    },
+    {
+      "id": "ropy_larva",
+      "label": {
+        "tr": "Kibrit testinde larva uzayıp sünüyor",
+        "en": "Larva ropes out in the matchstick test"
+      }
+    },
+    {
+      "id": "spotty_brood",
+      "label": {
+        "tr": "Düzensiz, alacalı yavru",
+        "en": "Spotty, patchy brood"
+      }
+    },
+    {
+      "id": "foul_smell",
+      "label": {
+        "tr": "Kovanda kötü, çürük kokusu",
+        "en": "Foul, rotten smell in the hive"
+      }
+    },
+    {
+      "id": "chalky_larvae",
+      "label": {
+        "tr": "Kireçleşmiş, beyaz-gri sert larvalar",
+        "en": "Chalky, white-grey hard larvae"
+      }
+    },
+    {
+      "id": "mummies_at_entrance",
+      "label": {
+        "tr": "Uçuş deliği önünde mumyalaşmış larvalar",
+        "en": "Mummified larvae at the entrance"
+      }
+    },
+    {
+      "id": "dysentery_streaks",
+      "label": {
+        "tr": "Kovan önünde ve çerçevelerde ishal izi",
+        "en": "Dysentery streaks on the hive and frames"
+      }
+    },
+    {
+      "id": "crawling_bees",
+      "label": {
+        "tr": "Uçamayan, sürünen arılar",
+        "en": "Bees crawling, unable to fly"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "id": "american_foulbrood",
+      "name": {
+        "tr": "Amerikan yavru çürüklüğü",
+        "en": "American foulbrood"
+      },
+      "symptoms": [
+        "sunken_perforated_cappings",
+        "ropy_larva",
+        "spotty_brood",
+        "foul_smell"
+      ],
+      "notifiable": true,
+      "advice": {
+        "tr": "Kovanı açık bırakma, petek ve ekipmanı başka kovana taşıma. Kesin teşhis laboratuvarda konur; yetkili kuruma hemen bildir ve gelen talimatlara uy.",
+        "en": "Keep the hive closed and don't move combs or equipment to other hives. Only a laboratory can confirm it; notify the authority right away and follow their instructions."
+      }
+    },
+    {
+      "id": "chalkbrood",
+      "name": {
+        "tr": "Kireç hastalığı",
+        "en": "Chalkbrood"
+      },
+      "symptoms": [
+        "chalky_larvae",
+        "mummies_at_entrance",
+        "spotty_brood"
+      ],
+      "notifiable": false,
+      "advice": {
+        "tr": "Nemli ve serin kovanlarda artar. Havalandırmayı iyileştir, koloniyi güçlendir; sürerse anayı değiştir.",
+        "en": "Worse in damp, cool hives. Improve ventilation and strengthen the colony; requeen if it persists."
+      }
+    },
+    {
+      "id": "nosema",
+      "name": {
+        "tr": "Nosema",
+        "en": "Nosema"
+      },
+      "symptoms": [
+        "dysentery_streaks",
+        "crawling_bees"
+      ],
+      "notifiable": false,
+      "advice": {
+        "tr": "Kesin teşhis için 30 arının bağırsağı mikroskopta incelenir. Kirli çerçeveleri değiştir, kışlıkta bal kalitesine dikkat et.",
+        "en": "A microscope check of 30 bees' guts confirms it. Replace soiled frames and watch winter store quality."
+      }
+    }
+  ],
+  "authorities": {
+    "TR": {
+      "name": {
+        "tr": "İl/ilçe tarım ve orman müdürlüğü",
+        "en": "Provincial/district directorate of agriculture and forestry"
+      },
+      "detail": {
+        "tr": "Şüpheyi bulunduğun yerin müdürlüğüne bildir. ALO 174 Gıda Hattı'ndan da ihbar edebilirsin.",
+        "en": "Report the suspicion to your local directorate. You can also call the ALO 174 food line."
+      },
+      "phone": "174"
+    },
+    "GLOBAL": {
+      "name": {
+        "tr": "Yerel veteriner otoritesi",
+        "en": "Local veterinary authority"
+      },
+      "detail": {
+        "tr": "Bölgendeki resmî veteriner hizmetine ya da arıcılık müfettişine bildir.",
+        "en": "Report it to the official veterinary service or bee inspector in your area."
+      }
+    }
+  }
+}

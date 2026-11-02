@@ -6224,10 +6224,6 @@
   "@knowledgeDiagnosisSubtitle": {
     "description": "Diagnosis helper card subtitle."
   },
-  "knowledgeComingSoon": "Coming soon",
-  "@knowledgeComingSoon": {
-    "description": "Marks a knowledge base section that is not available yet."
-  },
   "knowledgeAtlasTitle": "Diseases and pests atlas",
   "@knowledgeAtlasTitle": {
     "description": "Atlas category title."
@@ -6254,7 +6250,7 @@
   "@knowledgeCalculatorsTitle": {
     "description": "Calculators row title."
   },
-  "knowledgeCalculatorsSubtitle": "Syrup, drug dose, queen calendar",
+  "knowledgeCalculatorsSubtitle": "Syrup, drug dose, queen calendar, yield",
   "@knowledgeCalculatorsSubtitle": {
     "description": "Calculators row subtitle."
   },
@@ -6313,5 +6309,268 @@
   "knowledgeLinkFailed": "Couldn't open the link",
   "@knowledgeLinkFailed": {
     "description": "Snack bar when a link in an article cannot be opened."
+  },
+
+  "diagnosisSymptoms": "Signs you see",
+  "@diagnosisSymptoms": {
+    "description": "Symptom chips label."
+  },
+  "diagnosisSymptomsHelper": "You can pick more than one.",
+  "@diagnosisSymptomsHelper": {
+    "description": "Helper under symptom chips."
+  },
+  "diagnosisResults": "Possible diseases",
+  "@diagnosisResults": {
+    "description": "Results section label."
+  },
+  "diagnosisPickHint": "Pick a sign to see possible diseases here.",
+  "@diagnosisPickHint": {
+    "description": "Shown before any symptom is selected."
+  },
+  "diagnosisNoMatch": "No disease matches the selected signs.",
+  "@diagnosisNoMatch": {
+    "description": "Shown when nothing matches."
+  },
+  "diagnosisMatched": "Matching signs: {matched}/{total}",
+  "@diagnosisMatched": {
+    "description": "How many of the disease's signs were selected.",
+    "placeholders": {
+      "matched": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "diagnosisNotifiable": "Notifiable",
+  "@diagnosisNotifiable": {
+    "description": "Badge on a notifiable disease."
+  },
+  "diagnosisDisclaimer": "This is a first assessment; a vet or laboratory gives the final diagnosis.",
+  "@diagnosisDisclaimer": {
+    "description": "Note on the diagnosis screens."
+  },
+  "diagnosisLoadError": "Couldn't open the diagnosis table",
+  "@diagnosisLoadError": {
+    "description": "Shown when the rules file cannot be read."
+  },
+  "diagnosisNotFound": "Disease not found",
+  "@diagnosisNotFound": {
+    "description": "Shown for an unknown disease id."
+  },
+  "diagnosisNotifiableTitle": "Notifiable disease.",
+  "@diagnosisNotifiableTitle": {
+    "description": "Bold start of the notifiable warning."
+  },
+  "diagnosisNotifiableMessage": "Report the suspicion to the authority; don't share this hive's equipment, frames or honey with other hives.",
+  "@diagnosisNotifiableMessage": {
+    "description": "Notifiable warning text."
+  },
+  "diagnosisAdvice": "What to do",
+  "@diagnosisAdvice": {
+    "description": "Advice section label."
+  },
+  "diagnosisAuthority": "Authority",
+  "@diagnosisAuthority": {
+    "description": "Authority section label."
+  },
+  "diagnosisCall": "Call {phone}",
+  "@diagnosisCall": {
+    "description": "Button that calls the authority.",
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "diagnosisCallFailed": "Couldn't start the call",
+  "@diagnosisCallFailed": {
+    "description": "Snack bar when the phone app cannot be opened."
+  },
+  "diagnosisQuarantine": "Quarantine a hive",
+  "@diagnosisQuarantine": {
+    "description": "Button on a notifiable disease."
+  },
+  "quarantinePickTitle": "Hive to quarantine",
+  "@quarantinePickTitle": {
+    "description": "Hive picker title."
+  },
+  "quarantineSearchHint": "Hive number",
+  "@quarantineSearchHint": {
+    "description": "Search field hint in the hive picker."
+  },
+  "quarantineNoHivesTitle": "No hives",
+  "@quarantineNoHivesTitle": {
+    "description": "Empty hive picker title."
+  },
+  "quarantineNoHivesMessage": "No active hive to quarantine.",
+  "@quarantineNoHivesMessage": {
+    "description": "Empty hive picker message."
+  },
+  "quarantineDone": "Hive {number} quarantined",
+  "@quarantineDone": {
+    "description": "Snack bar after quarantining.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "hiveQuarantined": "Quarantined",
+  "@hiveQuarantined": {
+    "description": "Quarantine status word."
+  },
+  "hiveQuarantineDisease": "Suspected: {disease}",
+  "@hiveQuarantineDisease": {
+    "description": "Suspected disease on the hive card.",
+    "placeholders": {
+      "disease": {
+        "type": "String"
+      }
+    }
+  },
+  "hiveQuarantineSince": "Since {date}",
+  "@hiveQuarantineSince": {
+    "description": "When the quarantine started.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hiveQuarantineWarning": "Don't share its equipment, frames or honey with other hives.",
+  "@hiveQuarantineWarning": {
+    "description": "Equipment sharing warning on the hive card."
+  },
+  "hiveQuarantineEnd": "End quarantine",
+  "@hiveQuarantineEnd": {
+    "description": "Button that ends the quarantine."
+  },
+  "hiveQuarantineEnded": "Hive {number} is out of quarantine",
+  "@hiveQuarantineEnded": {
+    "description": "Snack bar after ending the quarantine.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorSyrup": "Syrup",
+  "@calculatorSyrup": {
+    "description": "Syrup calculator title."
+  },
+  "calculatorSyrupSubtitle": "Sugar and water needed",
+  "@calculatorSyrupSubtitle": {
+    "description": "Syrup calculator subtitle."
+  },
+  "calculatorDose": "Treatment dose",
+  "@calculatorDose": {
+    "description": "Dose calculator title."
+  },
+  "calculatorDoseSubtitle": "Total for your hive count",
+  "@calculatorDoseSubtitle": {
+    "description": "Dose calculator subtitle."
+  },
+  "calculatorQueen": "Queen calendar",
+  "@calculatorQueen": {
+    "description": "Queen calendar calculator title."
+  },
+  "calculatorQueenSubtitle": "Step days from the grafting day",
+  "@calculatorQueenSubtitle": {
+    "description": "Queen calendar calculator subtitle."
+  },
+  "calculatorYield": "Yield",
+  "@calculatorYield": {
+    "description": "Yield calculator title."
+  },
+  "calculatorYieldSubtitle": "Honey per hive",
+  "@calculatorYieldSubtitle": {
+    "description": "Yield calculator subtitle."
+  },
+  "calculatorOffline": "Calculations work offline and save nothing.",
+  "@calculatorOffline": {
+    "description": "Note at the bottom of the calculators list."
+  },
+  "calculatorNotFound": "Calculator not found",
+  "@calculatorNotFound": {
+    "description": "Shown for an unknown calculator."
+  },
+  "calculatorHives": "Number of hives",
+  "@calculatorHives": {
+    "description": "Hive count field."
+  },
+  "calculatorSyrupKind": "Syrup type",
+  "@calculatorSyrupKind": {
+    "description": "Syrup kind chips label."
+  },
+  "calculatorFillHint": "Enter the hive count and amount.",
+  "@calculatorFillHint": {
+    "description": "Shown while the inputs are empty or invalid."
+  },
+  "calculatorDosePerHive": "Dose per hive",
+  "@calculatorDosePerHive": {
+    "description": "Dose per hive field."
+  },
+  "calculatorDoseUnit": "Unit",
+  "@calculatorDoseUnit": {
+    "description": "Dose unit chips label."
+  },
+  "calculatorTotal": "Total",
+  "@calculatorTotal": {
+    "description": "Result card label."
+  },
+  "calculatorDoseTotal": "{unit, select, strip{{total} strips} ml{{total} ml} g{{total} g} other{{total} doses}}",
+  "@calculatorDoseTotal": {
+    "description": "Total treatment amount.",
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorDoseCount": "{count, plural, =1{1 hive × {amount}} other{{count} hives × {amount}}}",
+  "@calculatorDoseCount": {
+    "description": "Dose calculation line.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorYieldTotal": "Total honey ({unit})",
+  "@calculatorYieldTotal": {
+    "description": "Total honey field.",
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorYieldPerHive": "Per hive",
+  "@calculatorYieldPerHive": {
+    "description": "Yield result card label."
+  },
+  "calculatorYieldValue": "{amount} {unit}",
+  "@calculatorYieldValue": {
+    "description": "Yield per hive value.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorQueenSteps": "Steps",
+  "@calculatorQueenSteps": {
+    "description": "Queen calendar steps label."
   }
 }

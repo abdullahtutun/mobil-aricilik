@@ -9,7 +9,9 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/relative_date.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
+import 'package:mobil_arici/features/health/domain/diagnosis_rules.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
+import 'package:mobil_arici/features/health/presentation/diagnosis_providers.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/health/presentation/varroa_providers.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/treatment_labels.dart';
@@ -32,9 +34,9 @@ import 'package:mobil_arici/features/queens/presentation/widgets/queen_labels.da
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Kovan kartı: üst çubukta arılık adı; dev numara, durum rozeti ve güç
-/// puanı; ana arı şeridi (dokununca ana arı kartı), son muayene, aktif
-/// ilaç ve son varroa oranı; varroa ölçümü, ilaç uygulaması, taşıma ve durum
-/// değiştirme; en altta zaman
+/// puanı; karantinadaysa kritik karantina kartı; ana arı şeridi (dokununca
+/// ana arı kartı), son muayene, aktif ilaç ve son varroa oranı; varroa
+/// ölçümü, ilaç uygulaması, taşıma ve durum değiştirme; en altta zaman
 /// tüneli. Altta sabit foto ve
 /// mikrofon butonları kovana tek dokunuşla foto ya da sesli not ekler;
 /// aktif kovanda yanlarındaki
@@ -118,6 +120,10 @@ class HiveCardScreen extends ConsumerWidget {
             padding: EdgeInsets.all(spacing.lg),
             children: [
               _Header(hive),
+              if (hive.quarantined) ...[
+                SizedBox(height: spacing.lg),
+                _QuarantineCard(hive),
+              ],
               SizedBox(height: spacing.lg),
               _QueenStrip(apiaryId: apiaryId, hiveId: hiveId),
               SizedBox(height: spacing.md),
@@ -318,6 +324,104 @@ class _Header extends ConsumerWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+/// Karantina kartı: kritik zeminde "Karantinada", şüphelenilen hastalık
+/// (kural tablosunda varsa), başlangıç günü ve ekipman paylaşımı uyarısı.
+/// Kayıt yazabilen "Karantinadan çıkar" ile kaldırır; Geri al eski hâli
+/// döndürür.
+class _QuarantineCard extends ConsumerWidget {
+  const new(this.hive);
+
+  final Hive hive;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final typography = context.typography;
+    final language = Localizations.localeOf(context).languageCode;
+    final rule = switch (ref.watch(diagnosisTableProvider)) {
+      AsyncData(:final value) => diagnosisRule(value, hive.quarantineDisease),
+      _ => null,
+    };
+    final since = hive.quarantinedAt;
+    final secondary = typography.body.copyWith(color: colors.textPrimary);
+
+    return AppCard(
+      status: AppStatus.critical,
+      child: Padding(
+        padding: EdgeInsets.all(spacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: spacing.md,
+          children: [
+            MergeSemantics(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.report_rounded,
+                    size: context.sizes.icon,
+                    color: colors.statusCritical,
+                  ),
+                  SizedBox(width: spacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: spacing.xs,
+                      children: [
+                        Text(
+                          l10n.hiveQuarantined,
+                          style: typography.title.copyWith(
+                            color: colors.statusCritical,
+                          ),
+                        ),
+                        if (rule != null)
+                          Text(
+                            l10n.hiveQuarantineDisease(
+                              localizedText(rule.name, language),
+                            ),
+                            style: secondary,
+                          ),
+                        if (since != null)
+                          Text(
+                            l10n.hiveQuarantineSince(
+                              AppFormat.of(context).date(since.toLocal()),
+                            ),
+                            style: secondary,
+                          ),
+                        Text(l10n.hiveQuarantineWarning, style: secondary),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (ref.watch(canWriteRecordsProvider))
+              BigButton(
+                label: l10n.hiveQuarantineEnd,
+                variant: BigButtonVariant.secondary,
+                onPressed: () => _end(context, ref),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _end(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final actions = ref.read(hiveActionsProvider.notifier);
+    await actions.endQuarantine(hive.id);
+    if (!context.mounted) return;
+    showUndoSnackBar(
+      context,
+      message: l10n.hiveQuarantineEnded(hive.number),
+      onUndo: () => actions.restoreQuarantine(hive),
     );
   }
 }

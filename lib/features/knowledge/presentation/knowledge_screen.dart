@@ -17,10 +17,9 @@ import 'package:mobil_arici/features/knowledge/presentation/widgets/knowledge_wi
 
 /// Bilgi bankası (docs/design "Bilgi bankası"): üstte internetsiz tam metin
 /// arama; arama boşken "Bu ay yapılacaklar" kartı (ay, bölge ve
-/// yarımküreye göre), teşhis yardımcısı ve kategoriler. Teşhis yardımcısı
-/// ve hesaplayıcılar henüz yok, "Yakında" yazar. Mevzuat yalnız TR
-/// profilinde. Açılınca içerik güncellemesine bakılır; yeni paket inerse
-/// ekran kendiliğinden yenilenir.
+/// yarımküreye göre), teşhis yardımcısı, kategoriler ve hesaplayıcılar.
+/// Mevzuat yalnız TR profilinde. Açılınca içerik güncellemesine bakılır;
+/// yeni paket inerse ekran kendiliğinden yenilenir.
 class KnowledgeScreen extends ConsumerStatefulWidget {
   const new({super.key});
 
@@ -125,7 +124,7 @@ class _KnowledgeScreenState extends ConsumerState<KnowledgeScreen> {
           ListRow(
             title: l10n.knowledgeCalculatorsTitle,
             subtitle: l10n.knowledgeCalculatorsSubtitle,
-            value: l10n.knowledgeComingSoon,
+            onTap: () => unawaited(context.push(AppRoutes.calculators)),
           ),
           if (region.features.regulations)
             ListRow(
@@ -206,7 +205,7 @@ class _MonthCard extends StatelessWidget {
   }
 }
 
-/// Teşhis yardımcısı; henüz yok, "Yakında" rozetiyle dokunulamaz.
+/// Teşhis yardımcısı; dokununca belirti seçimi açılır.
 class _DiagnosisCard extends StatelessWidget {
   const new();
 
@@ -218,6 +217,7 @@ class _DiagnosisCard extends StatelessWidget {
 
     return MergeSemantics(
       child: AppCard(
+        onTap: () => unawaited(context.push(AppRoutes.diagnosis)),
         child: Padding(
           padding: EdgeInsets.all(spacing.lg),
           child: Row(
@@ -252,12 +252,13 @@ class _DiagnosisCard extends StatelessWidget {
                         color: colors.textSecondary,
                       ),
                     ),
-                    StatusBadge(
-                      status: AppStatus.info,
-                      label: l10n.knowledgeComingSoon,
-                    ),
                   ],
                 ),
+              ),
+              Icon(
+                Icons.chevron_right_rounded,
+                size: context.sizes.icon,
+                color: colors.textSecondary,
               ),
             ],
           ),

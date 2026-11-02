@@ -18,6 +18,7 @@ import 'generated/schema_v19.dart' as v19;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v20.dart' as v20;
 import 'generated/schema_v21.dart' as v21;
+import 'generated/schema_v22.dart' as v22;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
@@ -873,6 +874,37 @@ void main() {
         expect(organization.trAksNo, '12345');
         expect(organization.trAksHiveCount, null);
         expect(await newDb.select(newDb.refSupportPeriods).get(), isEmpty);
+      },
+    );
+  });
+  test('v21 → v22 kovanları karantinasız korur', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 21,
+      newVersion: 22,
+      createOld: v21.DatabaseAtV21.new,
+      createNew: v22.DatabaseAtV22.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.hives,
+          v21.HivesCompanion.insert(
+            id: 'hive-1',
+            createdAt: '2026-11-02T09:00:00.000Z',
+            updatedAt: '2026-11-02T09:00:00.000Z',
+            orgId: 'org-1',
+            number: '101',
+            type: 'langstroth',
+            status: 'active',
+            apiaryId: 'apiary-1',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final hive = (await newDb.select(newDb.hives).get()).single;
+        expect(hive.number, '101');
+        expect(hive.quarantined, 0);
+        expect(hive.quarantinedAt, null);
+        expect(hive.quarantineDisease, null);
       },
     );
   });

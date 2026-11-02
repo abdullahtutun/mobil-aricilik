@@ -41,7 +41,10 @@ import 'package:mobil_arici/features/harvest/presentation/lab_result_form_screen
 import 'package:mobil_arici/features/harvest/presentation/lot_form_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/lot_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/lots_screen.dart';
+import 'package:mobil_arici/features/health/presentation/diagnosis_result_screen.dart';
+import 'package:mobil_arici/features/health/presentation/diagnosis_screen.dart';
 import 'package:mobil_arici/features/health/presentation/drug_form_screen.dart';
+import 'package:mobil_arici/features/health/presentation/quarantine_hive_screen.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_form_screen.dart';
 import 'package:mobil_arici/features/health/presentation/varroa_form_screen.dart';
 import 'package:mobil_arici/features/hives/domain/hive_label_code.dart';
@@ -60,7 +63,10 @@ import 'package:mobil_arici/features/inventory/presentation/inventory_form_scree
 import 'package:mobil_arici/features/inventory/presentation/inventory_item_screen.dart';
 import 'package:mobil_arici/features/inventory/presentation/inventory_screen.dart';
 import 'package:mobil_arici/features/inventory/presentation/shopping_list_screen.dart';
+import 'package:mobil_arici/features/knowledge/domain/calculator_rules.dart';
 import 'package:mobil_arici/features/knowledge/domain/knowledge_article.dart';
+import 'package:mobil_arici/features/knowledge/presentation/calculator_screen.dart';
+import 'package:mobil_arici/features/knowledge/presentation/calculators_screen.dart';
 import 'package:mobil_arici/features/knowledge/presentation/knowledge_article_screen.dart';
 import 'package:mobil_arici/features/knowledge/presentation/knowledge_category_screen.dart';
 import 'package:mobil_arici/features/knowledge/presentation/knowledge_screen.dart';
@@ -103,6 +109,8 @@ const _taskId = 'taskId';
 const _documentId = 'documentId';
 const _knowledgeCategory = 'knowledgeCategory';
 const _knowledgeArticleId = 'knowledgeArticleId';
+const _diagnosisRuleId = 'diagnosisRuleId';
+const _calculator = 'calculator';
 const _migrationId = 'migrationId';
 const _transportId = 'transportId';
 const _stopId = 'stopId';
@@ -545,6 +553,47 @@ GoRouter router(Ref ref) {
                               )
                               .firstOrNull,
                         ),
+                      ),
+                      GoRoute(
+                        path: 'diagnosis',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => const DiagnosisScreen(),
+                        routes: [
+                          GoRoute(
+                            path: ':$_diagnosisRuleId',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => DiagnosisResultScreen(
+                              ruleId: state.pathParameters[_diagnosisRuleId]!,
+                            ),
+                            routes: [
+                              GoRoute(
+                                path: 'quarantine',
+                                parentNavigatorKey: rootNavigatorKey,
+                                builder: (context, state) =>
+                                    QuarantineHiveScreen(
+                                      ruleId: state
+                                          .pathParameters[_diagnosisRuleId]!,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      GoRoute(
+                        path: 'calculators',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => const CalculatorsScreen(),
+                        routes: [
+                          GoRoute(
+                            path: ':$_calculator',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => CalculatorScreen(
+                              calculator: Calculator.fromValue(
+                                state.pathParameters[_calculator],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       GoRoute(
                         path: ':$_knowledgeArticleId',

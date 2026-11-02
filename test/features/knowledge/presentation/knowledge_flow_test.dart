@@ -14,7 +14,9 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/features/health/presentation/diagnosis_screen.dart';
 import 'package:mobil_arici/features/knowledge/data/knowledge_repository.dart';
+import 'package:mobil_arici/features/knowledge/presentation/calculators_screen.dart';
 import 'package:mobil_arici/features/knowledge/presentation/knowledge_article_screen.dart';
 import 'package:mobil_arici/features/knowledge/presentation/knowledge_category_screen.dart';
 import 'package:mobil_arici/features/knowledge/presentation/knowledge_screen.dart';
@@ -82,8 +84,8 @@ const _summaryTr =
 void main() {
   setUpAll(initializeDateFormatting);
 
-  testWidgets("TR'de Daha fazla'dan açılır: ay kartı, teşhis ve hesaplayıcı "
-      'yakında, kategoriler, TR rozetli mevzuat; güncellemeye bakılır', (
+  testWidgets("TR'de Daha fazla'dan açılır: ay kartı, teşhis, kategoriler, "
+      'hesaplayıcılar, TR rozetli mevzuat; güncellemeye bakılır', (
     tester,
   ) async {
     tester.view
@@ -115,11 +117,15 @@ void main() {
         expect(find.text(text), findsOneWidget, reason: text);
       }
       expect(find.textContaining('NOVEMBER · T'), findsOneWidget);
-      expect(find.text('Coming soon'), findsNWidgets(2));
 
-      // Yakında olanlar açılmaz.
       await _tap(tester, find.text('Calculators'));
+      expect(find.byType(CalculatorsScreen), findsOneWidget);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
       await _tap(tester, find.text('Diagnosis helper'));
+      expect(find.byType(DiagnosisScreen), findsOneWidget);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
       expect(find.byType(KnowledgeScreen), findsOneWidget);
 
       await _tap(tester, find.text('To do this month'));
@@ -281,7 +287,7 @@ void main() {
         'Teknik rehberler',
         'Bölme, ana verme, birleştirme, kışlatma',
         'Hesaplayıcılar',
-        'Şurup, ilaç dozu, ana takvimi',
+        'Şurup, ilaç dozu, ana takvimi, verim',
         'Mevzuat özetleri',
         'Yönetmelik, gezginci, bal tebliği',
         'İlk yılım',
@@ -290,7 +296,7 @@ void main() {
       ]) {
         expect(find.text(text), findsOneWidget, reason: text);
       }
-      expect(find.text('Yakında'), findsNWidgets(2));
+      expect(find.text('Yakında'), findsNothing);
       final hint = tester.widget<TextField>(find.byType(TextField));
       expect(hint.decoration?.hintText, 'Kireç hastalığı, ana verme…');
 

@@ -143,7 +143,7 @@ class HiveSortPreference extends _$HiveSortPreference {
 }
 
 /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri
-/// alma. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
+/// alma, karantina. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
 /// sürekli yaşar. Her şey yerel DB'ye yazılır.
 @Riverpod(keepAlive: true)
 class HiveActions extends _$HiveActions {
@@ -160,4 +160,14 @@ class HiveActions extends _$HiveActions {
       _repository.move(hiveId, apiaryId: apiaryId);
 
   Future<void> undoMove(HiveMove move) => _repository.undoMove(move);
+
+  Future<void> quarantine(String hiveId, {required String disease}) =>
+      _repository.quarantine(hiveId, disease: disease);
+
+  Future<void> endQuarantine(String hiveId) =>
+      _repository.endQuarantine(hiveId);
+
+  /// Karantina eylemlerinin Geri al'ı: [previous] hâline döner.
+  Future<void> restoreQuarantine(Hive previous) =>
+      _repository.restoreQuarantine(previous.id, previous: previous);
 }

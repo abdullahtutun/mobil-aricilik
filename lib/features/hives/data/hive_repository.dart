@@ -154,6 +154,49 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
         return updated;
       });
 
+  /// Kovanı [disease] şüphesiyle karantinaya alır; zaten karantinadaysa
+  /// hastalık değişir, başlangıç zamanı kalır. Kovanın aktifliği
+  /// değişmez. Kovan yoksa ya da silinmişse [StateError].
+  Future<Hive> quarantine(String hiveId, {required String disease}) =>
+      db.transaction(() async {
+        final hive = await requireById(hiveId);
+        return await updateRecord(
+          hive.copyWith(
+            quarantined: true,
+            quarantinedAt: hive.quarantinedAt ?? now(),
+            quarantineDisease: disease,
+          ),
+        );
+      });
+
+  /// Karantinayı [previous] kovanın karantina hâline döndürür: Geri al
+  /// eski hastalığı ve zamanı, kaldırma boş hâli yazar. Kovan yoksa ya da
+  /// silinmişse [StateError].
+  Future<Hive> restoreQuarantine(String hiveId, {required Hive previous}) =>
+      db.transaction(() async {
+        final hive = await requireById(hiveId);
+        return await updateRecord(
+          hive.copyWith(
+            quarantined: previous.quarantined,
+            quarantinedAt: previous.quarantinedAt,
+            quarantineDisease: previous.quarantineDisease,
+          ),
+        );
+      });
+
+  /// Kovanı karantinadan çıkarır. Kovan yoksa ya da silinmişse
+  /// [StateError].
+  Future<Hive> endQuarantine(String hiveId) => db.transaction(() async {
+    final hive = await requireById(hiveId);
+    return await updateRecord(
+      hive.copyWith(
+        quarantined: false,
+        quarantinedAt: null,
+        quarantineDisease: null,
+      ),
+    );
+  });
+
   /// [tagCode] etiketini kovana atar; kovanın önceki etiketi düşer. Etiket
   /// işletmede başka bir kovandaysa ondan alınır, çünkü bir etiket tek
   /// kovanı açar (sunucuda da tekil). Hepsi tek transaction'da. Kovan

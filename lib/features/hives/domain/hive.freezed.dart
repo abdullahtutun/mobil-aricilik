@@ -20,7 +20,10 @@ mixin _$Hive {
  String get number; HiveType get type;/// Güncel arılık; geçmişi `hive_location_history`'de.
  String get apiaryId; DateTime get createdAt; DateTime get updatedAt; HiveStatus get status;/// Önceden basılmış QR ya da NFC etiketin kodu.
  String? get tagCode; String? get queenId; int get boxCount; int? get frameCount; HiveSource? get source;/// Kutunun rengi ya da üstündeki işaret.
- String? get marking; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
+ String? get marking;/// İhbarı mecburi hastalık şüphesiyle karantinada; kovan aktif kalır.
+ bool get quarantined;/// Karantinanın başladığı an; yalnız [quarantined] iken dolu.
+ DateTime? get quarantinedAt;/// Şüphelenilen hastalığın teşhis kural tablosundaki kimliği.
+ String? get quarantineDisease; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
 /// Create a copy of Hive
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -34,20 +37,20 @@ $HiveCopyWith<Hive> get copyWith => _$HiveCopyWithImpl<Hive>(this as Hive, _$ide
 @override
 bool operator ==(Object other) {
   final _this = this as Hive;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Hive&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.number, _this.number) || other.number == _this.number)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.apiaryId, _this.apiaryId) || other.apiaryId == _this.apiaryId)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.tagCode, _this.tagCode) || other.tagCode == _this.tagCode)&&(identical(other.queenId, _this.queenId) || other.queenId == _this.queenId)&&(identical(other.boxCount, _this.boxCount) || other.boxCount == _this.boxCount)&&(identical(other.frameCount, _this.frameCount) || other.frameCount == _this.frameCount)&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.marking, _this.marking) || other.marking == _this.marking)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Hive&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.number, _this.number) || other.number == _this.number)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.apiaryId, _this.apiaryId) || other.apiaryId == _this.apiaryId)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.tagCode, _this.tagCode) || other.tagCode == _this.tagCode)&&(identical(other.queenId, _this.queenId) || other.queenId == _this.queenId)&&(identical(other.boxCount, _this.boxCount) || other.boxCount == _this.boxCount)&&(identical(other.frameCount, _this.frameCount) || other.frameCount == _this.frameCount)&&(identical(other.source, _this.source) || other.source == _this.source)&&(identical(other.marking, _this.marking) || other.marking == _this.marking)&&(identical(other.quarantined, _this.quarantined) || other.quarantined == _this.quarantined)&&(identical(other.quarantinedAt, _this.quarantinedAt) || other.quarantinedAt == _this.quarantinedAt)&&(identical(other.quarantineDisease, _this.quarantineDisease) || other.quarantineDisease == _this.quarantineDisease)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Hive;
-  return Object.hash(runtimeType,_this.id,_this.orgId,_this.number,_this.type,_this.apiaryId,_this.createdAt,_this.updatedAt,_this.status,_this.tagCode,_this.queenId,_this.boxCount,_this.frameCount,_this.source,_this.marking,_this.createdBy,_this.deletedAt,_this.serverSeq);
+  return Object.hashAll([runtimeType,_this.id,_this.orgId,_this.number,_this.type,_this.apiaryId,_this.createdAt,_this.updatedAt,_this.status,_this.tagCode,_this.queenId,_this.boxCount,_this.frameCount,_this.source,_this.marking,_this.quarantined,_this.quarantinedAt,_this.quarantineDisease,_this.createdBy,_this.deletedAt,_this.serverSeq]);
 }
 
 @override
 String toString() {
   final _this = this as Hive;
-  return 'Hive(id: ${_this.id}, orgId: ${_this.orgId}, number: ${_this.number}, type: ${_this.type}, apiaryId: ${_this.apiaryId}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, status: ${_this.status}, tagCode: ${_this.tagCode}, queenId: ${_this.queenId}, boxCount: ${_this.boxCount}, frameCount: ${_this.frameCount}, source: ${_this.source}, marking: ${_this.marking}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
+  return 'Hive(id: ${_this.id}, orgId: ${_this.orgId}, number: ${_this.number}, type: ${_this.type}, apiaryId: ${_this.apiaryId}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, status: ${_this.status}, tagCode: ${_this.tagCode}, queenId: ${_this.queenId}, boxCount: ${_this.boxCount}, frameCount: ${_this.frameCount}, source: ${_this.source}, marking: ${_this.marking}, quarantined: ${_this.quarantined}, quarantinedAt: ${_this.quarantinedAt}, quarantineDisease: ${_this.quarantineDisease}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
 }
 
 
@@ -58,7 +61,7 @@ abstract mixin class $HiveCopyWith<$Res>  {
   factory $HiveCopyWith(Hive value, $Res Function(Hive) _then) = _$HiveCopyWithImpl;
 @useResult
 $Res call({
- String id, String orgId, String number, HiveType type, String apiaryId, DateTime createdAt, DateTime updatedAt, HiveStatus status, String? tagCode, String? queenId, int boxCount, int? frameCount, HiveSource? source, String? marking, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String number, HiveType type, String apiaryId, DateTime createdAt, DateTime updatedAt, HiveStatus status, String? tagCode, String? queenId, int boxCount, int? frameCount, HiveSource? source, String? marking, bool quarantined, DateTime? quarantinedAt, String? quarantineDisease, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -75,7 +78,7 @@ class _$HiveCopyWithImpl<$Res>
 
 /// Create a copy of Hive
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? number = null,Object? type = null,Object? apiaryId = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? tagCode = freezed,Object? queenId = freezed,Object? boxCount = null,Object? frameCount = freezed,Object? source = freezed,Object? marking = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? number = null,Object? type = null,Object? apiaryId = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? tagCode = freezed,Object? queenId = freezed,Object? boxCount = null,Object? frameCount = freezed,Object? source = freezed,Object? marking = freezed,Object? quarantined = null,Object? quarantinedAt = freezed,Object? quarantineDisease = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(Hive(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -91,6 +94,9 @@ as String?,boxCount: null == boxCount ? _self.boxCount : boxCount // ignore: cas
 as int,frameCount: freezed == frameCount ? _self.frameCount : frameCount // ignore: cast_nullable_to_non_nullable
 as int?,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as HiveSource?,marking: freezed == marking ? _self.marking : marking // ignore: cast_nullable_to_non_nullable
+as String?,quarantined: null == quarantined ? _self.quarantined : quarantined // ignore: cast_nullable_to_non_nullable
+as bool,quarantinedAt: freezed == quarantinedAt ? _self.quarantinedAt : quarantinedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,quarantineDisease: freezed == quarantineDisease ? _self.quarantineDisease : quarantineDisease // ignore: cast_nullable_to_non_nullable
 as String?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,serverSeq: freezed == serverSeq ? _self.serverSeq : serverSeq // ignore: cast_nullable_to_non_nullable
@@ -179,10 +185,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String number,  HiveType type,  String apiaryId,  DateTime createdAt,  DateTime updatedAt,  HiveStatus status,  String? tagCode,  String? queenId,  int boxCount,  int? frameCount,  HiveSource? source,  String? marking,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String number,  HiveType type,  String apiaryId,  DateTime createdAt,  DateTime updatedAt,  HiveStatus status,  String? tagCode,  String? queenId,  int boxCount,  int? frameCount,  HiveSource? source,  String? marking,  bool quarantined,  DateTime? quarantinedAt,  String? quarantineDisease,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Hive() when $default != null:
-return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_that.createdAt,_that.updatedAt,_that.status,_that.tagCode,_that.queenId,_that.boxCount,_that.frameCount,_that.source,_that.marking,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_that.createdAt,_that.updatedAt,_that.status,_that.tagCode,_that.queenId,_that.boxCount,_that.frameCount,_that.source,_that.marking,_that.quarantined,_that.quarantinedAt,_that.quarantineDisease,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return orElse();
 
 }
@@ -200,10 +206,10 @@ return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String number,  HiveType type,  String apiaryId,  DateTime createdAt,  DateTime updatedAt,  HiveStatus status,  String? tagCode,  String? queenId,  int boxCount,  int? frameCount,  HiveSource? source,  String? marking,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String number,  HiveType type,  String apiaryId,  DateTime createdAt,  DateTime updatedAt,  HiveStatus status,  String? tagCode,  String? queenId,  int boxCount,  int? frameCount,  HiveSource? source,  String? marking,  bool quarantined,  DateTime? quarantinedAt,  String? quarantineDisease,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
 switch (_that) {
 case _Hive():
-return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_that.createdAt,_that.updatedAt,_that.status,_that.tagCode,_that.queenId,_that.boxCount,_that.frameCount,_that.source,_that.marking,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_that.createdAt,_that.updatedAt,_that.status,_that.tagCode,_that.queenId,_that.boxCount,_that.frameCount,_that.source,_that.marking,_that.quarantined,_that.quarantinedAt,_that.quarantineDisease,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -220,10 +226,10 @@ return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String number,  HiveType type,  String apiaryId,  DateTime createdAt,  DateTime updatedAt,  HiveStatus status,  String? tagCode,  String? queenId,  int boxCount,  int? frameCount,  HiveSource? source,  String? marking,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String number,  HiveType type,  String apiaryId,  DateTime createdAt,  DateTime updatedAt,  HiveStatus status,  String? tagCode,  String? queenId,  int boxCount,  int? frameCount,  HiveSource? source,  String? marking,  bool quarantined,  DateTime? quarantinedAt,  String? quarantineDisease,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
 switch (_that) {
 case _Hive() when $default != null:
-return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_that.createdAt,_that.updatedAt,_that.status,_that.tagCode,_that.queenId,_that.boxCount,_that.frameCount,_that.source,_that.marking,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_that.createdAt,_that.updatedAt,_that.status,_that.tagCode,_that.queenId,_that.boxCount,_that.frameCount,_that.source,_that.marking,_that.quarantined,_that.quarantinedAt,_that.quarantineDisease,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return null;
 
 }
@@ -235,7 +241,7 @@ return $default(_that.id,_that.orgId,_that.number,_that.type,_that.apiaryId,_tha
 @JsonSerializable()
 
 class _Hive implements Hive {
-  const _Hive({required this.id, required this.orgId, required this.number, required this.type, required this.apiaryId, required this.createdAt, required this.updatedAt, this.status = HiveStatus.active, this.tagCode, this.queenId, this.boxCount = 1, this.frameCount, this.source, this.marking, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
+  const _Hive({required this.id, required this.orgId, required this.number, required this.type, required this.apiaryId, required this.createdAt, required this.updatedAt, this.status = HiveStatus.active, this.tagCode, this.queenId, this.boxCount = 1, this.frameCount, this.source, this.marking, this.quarantined = false, this.quarantinedAt, this.quarantineDisease, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
   factory _Hive.fromJson(Map<String, dynamic> json) => _$HiveFromJson(json);
 
 @override final  String id;
@@ -256,6 +262,12 @@ class _Hive implements Hive {
 @override final  HiveSource? source;
 /// Kutunun rengi ya da üstündeki işaret.
 @override final  String? marking;
+/// İhbarı mecburi hastalık şüphesiyle karantinada; kovan aktif kalır.
+@override@JsonKey() final  bool quarantined;
+/// Karantinanın başladığı an; yalnız [quarantined] iken dolu.
+@override final  DateTime? quarantinedAt;
+/// Şüphelenilen hastalığın teşhis kural tablosundaki kimliği.
+@override final  String? quarantineDisease;
 @override final  String? createdBy;
 @override final  DateTime? deletedAt;
 @override@JsonKey(includeToJson: false) final  int? serverSeq;
@@ -273,18 +285,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Hive&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.number, number) || other.number == number)&&(identical(other.type, type) || other.type == type)&&(identical(other.apiaryId, apiaryId) || other.apiaryId == apiaryId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.tagCode, tagCode) || other.tagCode == tagCode)&&(identical(other.queenId, queenId) || other.queenId == queenId)&&(identical(other.boxCount, boxCount) || other.boxCount == boxCount)&&(identical(other.frameCount, frameCount) || other.frameCount == frameCount)&&(identical(other.source, source) || other.source == source)&&(identical(other.marking, marking) || other.marking == marking)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Hive&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.number, number) || other.number == number)&&(identical(other.type, type) || other.type == type)&&(identical(other.apiaryId, apiaryId) || other.apiaryId == apiaryId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.tagCode, tagCode) || other.tagCode == tagCode)&&(identical(other.queenId, queenId) || other.queenId == queenId)&&(identical(other.boxCount, boxCount) || other.boxCount == boxCount)&&(identical(other.frameCount, frameCount) || other.frameCount == frameCount)&&(identical(other.source, source) || other.source == source)&&(identical(other.marking, marking) || other.marking == marking)&&(identical(other.quarantined, quarantined) || other.quarantined == quarantined)&&(identical(other.quarantinedAt, quarantinedAt) || other.quarantinedAt == quarantinedAt)&&(identical(other.quarantineDisease, quarantineDisease) || other.quarantineDisease == quarantineDisease)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,orgId,number,type,apiaryId,createdAt,updatedAt,status,tagCode,queenId,boxCount,frameCount,source,marking,createdBy,deletedAt,serverSeq);
+    return Object.hashAll([runtimeType,id,orgId,number,type,apiaryId,createdAt,updatedAt,status,tagCode,queenId,boxCount,frameCount,source,marking,quarantined,quarantinedAt,quarantineDisease,createdBy,deletedAt,serverSeq]);
 }
 
 @override
 String toString() {
-    return 'Hive(id: $id, orgId: $orgId, number: $number, type: $type, apiaryId: $apiaryId, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, tagCode: $tagCode, queenId: $queenId, boxCount: $boxCount, frameCount: $frameCount, source: $source, marking: $marking, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
+    return 'Hive(id: $id, orgId: $orgId, number: $number, type: $type, apiaryId: $apiaryId, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, tagCode: $tagCode, queenId: $queenId, boxCount: $boxCount, frameCount: $frameCount, source: $source, marking: $marking, quarantined: $quarantined, quarantinedAt: $quarantinedAt, quarantineDisease: $quarantineDisease, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
 }
 
 
@@ -295,7 +307,7 @@ abstract mixin class _$HiveCopyWith<$Res> implements $HiveCopyWith<$Res> {
   factory _$HiveCopyWith(_Hive value, $Res Function(_Hive) _then) = __$HiveCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String orgId, String number, HiveType type, String apiaryId, DateTime createdAt, DateTime updatedAt, HiveStatus status, String? tagCode, String? queenId, int boxCount, int? frameCount, HiveSource? source, String? marking, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String number, HiveType type, String apiaryId, DateTime createdAt, DateTime updatedAt, HiveStatus status, String? tagCode, String? queenId, int boxCount, int? frameCount, HiveSource? source, String? marking, bool quarantined, DateTime? quarantinedAt, String? quarantineDisease, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -312,7 +324,7 @@ class __$HiveCopyWithImpl<$Res>
 
 /// Create a copy of Hive
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? number = null,Object? type = null,Object? apiaryId = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? tagCode = freezed,Object? queenId = freezed,Object? boxCount = null,Object? frameCount = freezed,Object? source = freezed,Object? marking = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? number = null,Object? type = null,Object? apiaryId = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? tagCode = freezed,Object? queenId = freezed,Object? boxCount = null,Object? frameCount = freezed,Object? source = freezed,Object? marking = freezed,Object? quarantined = null,Object? quarantinedAt = freezed,Object? quarantineDisease = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(_Hive(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -328,6 +340,9 @@ as String?,boxCount: null == boxCount ? _self.boxCount : boxCount // ignore: cas
 as int,frameCount: freezed == frameCount ? _self.frameCount : frameCount // ignore: cast_nullable_to_non_nullable
 as int?,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as HiveSource?,marking: freezed == marking ? _self.marking : marking // ignore: cast_nullable_to_non_nullable
+as String?,quarantined: null == quarantined ? _self.quarantined : quarantined // ignore: cast_nullable_to_non_nullable
+as bool,quarantinedAt: freezed == quarantinedAt ? _self.quarantinedAt : quarantinedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,quarantineDisease: freezed == quarantineDisease ? _self.quarantineDisease : quarantineDisease // ignore: cast_nullable_to_non_nullable
 as String?,createdBy: freezed == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
 as String?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,serverSeq: freezed == serverSeq ? _self.serverSeq : serverSeq // ignore: cast_nullable_to_non_nullable

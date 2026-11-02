@@ -76,6 +76,15 @@ abstract class Hive with _$Hive implements SyncedRecord {
 
     /// Kutunun rengi ya da üstündeki işaret.
     String? marking,
+
+    /// İhbarı mecburi hastalık şüphesiyle karantinada; kovan aktif kalır.
+    @Default(false) bool quarantined,
+
+    /// Karantinanın başladığı an; yalnız [quarantined] iken dolu.
+    DateTime? quarantinedAt,
+
+    /// Şüphelenilen hastalığın teşhis kural tablosundaki kimliği.
+    String? quarantineDisease,
     String? createdBy,
     DateTime? deletedAt,
     @JsonKey(includeToJson: false) int? serverSeq,

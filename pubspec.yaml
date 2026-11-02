@@ -103,6 +103,8 @@ flutter:
   assets:
     - assets/fonts/inter/LICENSE.txt
     - assets/drugs/ilaclar.json
+    # Teşhis yardımcısının kural tablosu; şeması rules.schema.json.
+    - assets/diagnosis/rules.json
     # Bilgi bankası: her dil kendi klasöründe; yeni dil klasörü buraya da
     # eklenir.
     - assets/knowledge/manifest.json

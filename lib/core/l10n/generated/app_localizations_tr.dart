@@ -5857,9 +5857,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get knowledgeDiagnosisSubtitle => 'Belirtiyi seç, olası nedenleri gör';
 
   @override
-  String get knowledgeComingSoon => 'Yakında';
-
-  @override
   String get knowledgeAtlasTitle => 'Hastalık ve zararlı atlası';
 
   @override
@@ -5883,7 +5880,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get knowledgeCalculatorsTitle => 'Hesaplayıcılar';
 
   @override
-  String get knowledgeCalculatorsSubtitle => 'Şurup, ilaç dozu, ana takvimi';
+  String get knowledgeCalculatorsSubtitle =>
+      'Şurup, ilaç dozu, ana takvimi, verim';
 
   @override
   String get knowledgeRegulationsTitle => 'Mevzuat özetleri';
@@ -5928,4 +5926,190 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get knowledgeLinkFailed => 'Bağlantı açılamadı';
+
+  @override
+  String get diagnosisSymptoms => 'Gördüğün belirtiler';
+
+  @override
+  String get diagnosisSymptomsHelper => 'Birden çok seçebilirsin.';
+
+  @override
+  String get diagnosisResults => 'Olası hastalıklar';
+
+  @override
+  String get diagnosisPickHint =>
+      'Belirti seçince olası hastalıklar burada görünür.';
+
+  @override
+  String get diagnosisNoMatch => 'Seçilen belirtilere uyan hastalık yok.';
+
+  @override
+  String diagnosisMatched(int matched, int total) {
+    return 'Eşleşen belirti: $matched/$total';
+  }
+
+  @override
+  String get diagnosisNotifiable => 'İhbarı mecburi';
+
+  @override
+  String get diagnosisDisclaimer =>
+      'Bu bir ön değerlendirmedir; kesin teşhisi veteriner ya da laboratuvar koyar.';
+
+  @override
+  String get diagnosisLoadError => 'Teşhis tablosu açılamadı';
+
+  @override
+  String get diagnosisNotFound => 'Hastalık bulunamadı';
+
+  @override
+  String get diagnosisNotifiableTitle => 'İhbarı mecburi hastalık.';
+
+  @override
+  String get diagnosisNotifiableMessage =>
+      'Şüpheyi yetkili kuruma bildir; kovanın ekipmanını, çerçevelerini ve balını başka kovanlarla paylaşma.';
+
+  @override
+  String get diagnosisAdvice => 'Ne yapmalı';
+
+  @override
+  String get diagnosisAuthority => 'Yetkili kurum';
+
+  @override
+  String diagnosisCall(String phone) {
+    return 'Ara: $phone';
+  }
+
+  @override
+  String get diagnosisCallFailed => 'Arama açılamadı';
+
+  @override
+  String get diagnosisQuarantine => 'Kovanı karantinaya al';
+
+  @override
+  String get quarantinePickTitle => 'Karantinaya alınacak kovan';
+
+  @override
+  String get quarantineSearchHint => 'Kovan numarası';
+
+  @override
+  String get quarantineNoHivesTitle => 'Kovan yok';
+
+  @override
+  String get quarantineNoHivesMessage =>
+      'Karantinaya alınacak aktif kovan bulunamadı.';
+
+  @override
+  String quarantineDone(String number) {
+    return 'Kovan $number karantinada';
+  }
+
+  @override
+  String get hiveQuarantined => 'Karantinada';
+
+  @override
+  String hiveQuarantineDisease(String disease) {
+    return 'Şüphe: $disease';
+  }
+
+  @override
+  String hiveQuarantineSince(String date) {
+    return '$date tarihinden beri';
+  }
+
+  @override
+  String get hiveQuarantineWarning =>
+      'Ekipmanını, çerçevelerini ve balını başka kovanlarla paylaşma.';
+
+  @override
+  String get hiveQuarantineEnd => 'Karantinadan çıkar';
+
+  @override
+  String hiveQuarantineEnded(String number) {
+    return 'Kovan $number karantinadan çıktı';
+  }
+
+  @override
+  String get calculatorSyrup => 'Şurup';
+
+  @override
+  String get calculatorSyrupSubtitle => 'Şeker ve su miktarı';
+
+  @override
+  String get calculatorDose => 'İlaç dozu';
+
+  @override
+  String get calculatorDoseSubtitle => 'Kovan sayısına göre toplam';
+
+  @override
+  String get calculatorQueen => 'Ana takvimi';
+
+  @override
+  String get calculatorQueenSubtitle => 'Aktarma gününden adımların günleri';
+
+  @override
+  String get calculatorYield => 'Verim';
+
+  @override
+  String get calculatorYieldSubtitle => 'Kovan başına bal';
+
+  @override
+  String get calculatorOffline => 'Hesaplar internetsiz çalışır, kayıt yazmaz.';
+
+  @override
+  String get calculatorNotFound => 'Hesaplayıcı bulunamadı';
+
+  @override
+  String get calculatorHives => 'Kovan sayısı';
+
+  @override
+  String get calculatorSyrupKind => 'Şurup türü';
+
+  @override
+  String get calculatorFillHint => 'Kovan sayısını ve miktarı yaz.';
+
+  @override
+  String get calculatorDosePerHive => 'Kovan başına doz';
+
+  @override
+  String get calculatorDoseUnit => 'Birim';
+
+  @override
+  String get calculatorTotal => 'Toplam';
+
+  @override
+  String calculatorDoseTotal(String unit, String total) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'strip': '$total şerit',
+      'ml': '$total ml',
+      'g': '$total g',
+      'other': '$total doz',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String calculatorDoseCount(int count, String amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kovan × $amount',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String calculatorYieldTotal(String unit) {
+    return 'Toplam bal ($unit)';
+  }
+
+  @override
+  String get calculatorYieldPerHive => 'Kovan başına';
+
+  @override
+  String calculatorYieldValue(String amount, String unit) {
+    return '$amount $unit';
+  }
+
+  @override
+  String get calculatorQueenSteps => 'Adımlar';
 }

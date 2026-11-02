@@ -108,7 +108,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 21;
+  int get schemaVersion => 22;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -292,6 +292,12 @@ class AppDatabase extends _$AppDatabase {
           schema.organizations,
           schema.organizations.trAksHiveCount,
         );
+      },
+      // Kovan karantinası.
+      from21To22: (m, schema) async {
+        await m.addColumn(schema.hives, schema.hives.quarantined);
+        await m.addColumn(schema.hives, schema.hives.quarantinedAt);
+        await m.addColumn(schema.hives, schema.hives.quarantineDisease);
       },
     ),
   );

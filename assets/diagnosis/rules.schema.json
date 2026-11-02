@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mobil-arici/diagnosis-rules",
+  "title": "Teşhis yardımcısı kural tablosu",
+  "description": "assets/diagnosis/rules.json. Uygulama açılışta okur ve parseDiagnosisTable ile denetler; tabloda bozukluk varsa teşhis ekranı hata gösterir. Metinler TR ve EN birlikte. Bir kuralın sonucu, seçilen belirtilerden kaçının kuralın belirtileri arasında olduğuna göre sıralanır.",
+  "type": "object",
+  "required": ["format", "symptoms", "rules", "authorities"],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "description": "Dosya biçiminin sürümü; şimdilik 1.",
+      "const": 1
+    },
+    "symptoms": {
+      "description": "Ekrandaki belirti chip'leri, bu sırayla.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "label": { "$ref": "#/$defs/text" }
+        }
+      }
+    },
+    "rules": {
+      "description": "Her kural bir hastalık: belirtileri, ihbarı mecburi olup olmadığı ve ne yapılacağı. Kimlik kovanın karantina kaydında saklanır; yayımlandıktan sonra değiştirilmemeli.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "symptoms", "notifiable", "advice"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "name": { "$ref": "#/$defs/text" },
+          "symptoms": {
+            "description": "symptoms[].id değerleri; tekrar etmez.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/id" }
+          },
+          "notifiable": {
+            "description": "İhbarı mecburi: sonuçta yetkili kurum ve kovanı karantinaya alma eylemi çıkar.",
+            "type": "boolean"
+          },
+          "advice": { "$ref": "#/$defs/text" }
+        }
+      }
+    },
+    "authorities": {
+      "description": "Yetkili kurum, bölge profiline göre: TR profilinde TR (yoksa GLOBAL), diğerlerinde GLOBAL.",
+      "type": "object",
+      "required": ["GLOBAL"],
+      "additionalProperties": false,
+      "properties": {
+        "TR": { "$ref": "#/$defs/authority" },
+        "GLOBAL": { "$ref": "#/$defs/authority" }
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]{1,100}$"
+    },
+    "text": {
+      "description": "Dile göre metin; uygulama arayüz dilini, yoksa EN'i gösterir.",
+      "type": "object",
+      "required": ["tr", "en"],
+      "additionalProperties": false,
+      "properties": {
+        "tr": { "type": "string", "minLength": 1 },
+        "en": { "type": "string", "minLength": 1 }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "$ref": "#/$defs/text" },
+        "detail": { "$ref": "#/$defs/text" },
+        "phone": {
+          "description": "Aranacak numara; ekranda 'Ara' butonu çıkar.",
+          "type": "string",
+          "pattern": "^\\+?[0-9 ]{2,20}$"
+        }
+      }
+    }
+  }
+}

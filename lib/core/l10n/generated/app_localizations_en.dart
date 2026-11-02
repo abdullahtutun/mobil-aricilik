@@ -6032,9 +6032,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get knowledgeDiagnosisSubtitle => 'Pick a sign, see possible causes';
 
   @override
-  String get knowledgeComingSoon => 'Coming soon';
-
-  @override
   String get knowledgeAtlasTitle => 'Diseases and pests atlas';
 
   @override
@@ -6059,7 +6056,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get knowledgeCalculatorsTitle => 'Calculators';
 
   @override
-  String get knowledgeCalculatorsSubtitle => 'Syrup, drug dose, queen calendar';
+  String get knowledgeCalculatorsSubtitle =>
+      'Syrup, drug dose, queen calendar, yield';
 
   @override
   String get knowledgeRegulationsTitle => 'Regulation summaries';
@@ -6104,4 +6102,189 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get knowledgeLinkFailed => 'Couldn\'t open the link';
+
+  @override
+  String get diagnosisSymptoms => 'Signs you see';
+
+  @override
+  String get diagnosisSymptomsHelper => 'You can pick more than one.';
+
+  @override
+  String get diagnosisResults => 'Possible diseases';
+
+  @override
+  String get diagnosisPickHint => 'Pick a sign to see possible diseases here.';
+
+  @override
+  String get diagnosisNoMatch => 'No disease matches the selected signs.';
+
+  @override
+  String diagnosisMatched(int matched, int total) {
+    return 'Matching signs: $matched/$total';
+  }
+
+  @override
+  String get diagnosisNotifiable => 'Notifiable';
+
+  @override
+  String get diagnosisDisclaimer =>
+      'This is a first assessment; a vet or laboratory gives the final diagnosis.';
+
+  @override
+  String get diagnosisLoadError => 'Couldn\'t open the diagnosis table';
+
+  @override
+  String get diagnosisNotFound => 'Disease not found';
+
+  @override
+  String get diagnosisNotifiableTitle => 'Notifiable disease.';
+
+  @override
+  String get diagnosisNotifiableMessage =>
+      'Report the suspicion to the authority; don\'t share this hive\'s equipment, frames or honey with other hives.';
+
+  @override
+  String get diagnosisAdvice => 'What to do';
+
+  @override
+  String get diagnosisAuthority => 'Authority';
+
+  @override
+  String diagnosisCall(String phone) {
+    return 'Call $phone';
+  }
+
+  @override
+  String get diagnosisCallFailed => 'Couldn\'t start the call';
+
+  @override
+  String get diagnosisQuarantine => 'Quarantine a hive';
+
+  @override
+  String get quarantinePickTitle => 'Hive to quarantine';
+
+  @override
+  String get quarantineSearchHint => 'Hive number';
+
+  @override
+  String get quarantineNoHivesTitle => 'No hives';
+
+  @override
+  String get quarantineNoHivesMessage => 'No active hive to quarantine.';
+
+  @override
+  String quarantineDone(String number) {
+    return 'Hive $number quarantined';
+  }
+
+  @override
+  String get hiveQuarantined => 'Quarantined';
+
+  @override
+  String hiveQuarantineDisease(String disease) {
+    return 'Suspected: $disease';
+  }
+
+  @override
+  String hiveQuarantineSince(String date) {
+    return 'Since $date';
+  }
+
+  @override
+  String get hiveQuarantineWarning =>
+      'Don\'t share its equipment, frames or honey with other hives.';
+
+  @override
+  String get hiveQuarantineEnd => 'End quarantine';
+
+  @override
+  String hiveQuarantineEnded(String number) {
+    return 'Hive $number is out of quarantine';
+  }
+
+  @override
+  String get calculatorSyrup => 'Syrup';
+
+  @override
+  String get calculatorSyrupSubtitle => 'Sugar and water needed';
+
+  @override
+  String get calculatorDose => 'Treatment dose';
+
+  @override
+  String get calculatorDoseSubtitle => 'Total for your hive count';
+
+  @override
+  String get calculatorQueen => 'Queen calendar';
+
+  @override
+  String get calculatorQueenSubtitle => 'Step days from the grafting day';
+
+  @override
+  String get calculatorYield => 'Yield';
+
+  @override
+  String get calculatorYieldSubtitle => 'Honey per hive';
+
+  @override
+  String get calculatorOffline => 'Calculations work offline and save nothing.';
+
+  @override
+  String get calculatorNotFound => 'Calculator not found';
+
+  @override
+  String get calculatorHives => 'Number of hives';
+
+  @override
+  String get calculatorSyrupKind => 'Syrup type';
+
+  @override
+  String get calculatorFillHint => 'Enter the hive count and amount.';
+
+  @override
+  String get calculatorDosePerHive => 'Dose per hive';
+
+  @override
+  String get calculatorDoseUnit => 'Unit';
+
+  @override
+  String get calculatorTotal => 'Total';
+
+  @override
+  String calculatorDoseTotal(String unit, String total) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'strip': '$total strips',
+      'ml': '$total ml',
+      'g': '$total g',
+      'other': '$total doses',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String calculatorDoseCount(int count, String amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hives × $amount',
+      one: '1 hive × $amount',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String calculatorYieldTotal(String unit) {
+    return 'Total honey ($unit)';
+  }
+
+  @override
+  String get calculatorYieldPerHive => 'Per hive';
+
+  @override
+  String calculatorYieldValue(String amount, String unit) {
+    return '$amount $unit';
+  }
+
+  @override
+  String get calculatorQueenSteps => 'Steps';
 }

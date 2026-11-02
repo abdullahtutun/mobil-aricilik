@@ -23,6 +23,11 @@ _Hive _$HiveFromJson(Map<String, dynamic> json) => _Hive(
   frameCount: (json['frame_count'] as num?)?.toInt(),
   source: $enumDecodeNullable(_$HiveSourceEnumMap, json['source']),
   marking: json['marking'] as String?,
+  quarantined: json['quarantined'] as bool? ?? false,
+  quarantinedAt: json['quarantined_at'] == null
+      ? null
+      : DateTime.parse(json['quarantined_at'] as String),
+  quarantineDisease: json['quarantine_disease'] as String?,
   createdBy: json['created_by'] as String?,
   deletedAt: json['deleted_at'] == null
       ? null
@@ -45,6 +50,9 @@ Map<String, dynamic> _$HiveToJson(_Hive instance) => <String, dynamic>{
   'frame_count': instance.frameCount,
   'source': _$HiveSourceEnumMap[instance.source],
   'marking': instance.marking,
+  'quarantined': instance.quarantined,
+  'quarantined_at': instance.quarantinedAt?.toIso8601String(),
+  'quarantine_disease': instance.quarantineDisease,
   'created_by': instance.createdBy,
   'deleted_at': instance.deletedAt?.toIso8601String(),
 };

@@ -9623,12 +9623,6 @@ abstract class AppLocalizations {
   /// **'Pick a sign, see possible causes'**
   String get knowledgeDiagnosisSubtitle;
 
-  /// Marks a knowledge base section that is not available yet.
-  ///
-  /// In en, this message translates to:
-  /// **'Coming soon'**
-  String get knowledgeComingSoon;
-
   /// Atlas category title.
   ///
   /// In en, this message translates to:
@@ -9662,7 +9656,7 @@ abstract class AppLocalizations {
   /// Calculators row subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Syrup, drug dose, queen calendar'**
+  /// **'Syrup, drug dose, queen calendar, yield'**
   String get knowledgeCalculatorsSubtitle;
 
   /// Regulations category title (TR only).
@@ -9748,6 +9742,306 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t open the link'**
   String get knowledgeLinkFailed;
+
+  /// Symptom chips label.
+  ///
+  /// In en, this message translates to:
+  /// **'Signs you see'**
+  String get diagnosisSymptoms;
+
+  /// Helper under symptom chips.
+  ///
+  /// In en, this message translates to:
+  /// **'You can pick more than one.'**
+  String get diagnosisSymptomsHelper;
+
+  /// Results section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Possible diseases'**
+  String get diagnosisResults;
+
+  /// Shown before any symptom is selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a sign to see possible diseases here.'**
+  String get diagnosisPickHint;
+
+  /// Shown when nothing matches.
+  ///
+  /// In en, this message translates to:
+  /// **'No disease matches the selected signs.'**
+  String get diagnosisNoMatch;
+
+  /// How many of the disease's signs were selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching signs: {matched}/{total}'**
+  String diagnosisMatched(int matched, int total);
+
+  /// Badge on a notifiable disease.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifiable'**
+  String get diagnosisNotifiable;
+
+  /// Note on the diagnosis screens.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a first assessment; a vet or laboratory gives the final diagnosis.'**
+  String get diagnosisDisclaimer;
+
+  /// Shown when the rules file cannot be read.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the diagnosis table'**
+  String get diagnosisLoadError;
+
+  /// Shown for an unknown disease id.
+  ///
+  /// In en, this message translates to:
+  /// **'Disease not found'**
+  String get diagnosisNotFound;
+
+  /// Bold start of the notifiable warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifiable disease.'**
+  String get diagnosisNotifiableTitle;
+
+  /// Notifiable warning text.
+  ///
+  /// In en, this message translates to:
+  /// **'Report the suspicion to the authority; don\'t share this hive\'s equipment, frames or honey with other hives.'**
+  String get diagnosisNotifiableMessage;
+
+  /// Advice section label.
+  ///
+  /// In en, this message translates to:
+  /// **'What to do'**
+  String get diagnosisAdvice;
+
+  /// Authority section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Authority'**
+  String get diagnosisAuthority;
+
+  /// Button that calls the authority.
+  ///
+  /// In en, this message translates to:
+  /// **'Call {phone}'**
+  String diagnosisCall(String phone);
+
+  /// Snack bar when the phone app cannot be opened.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t start the call'**
+  String get diagnosisCallFailed;
+
+  /// Button on a notifiable disease.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarantine a hive'**
+  String get diagnosisQuarantine;
+
+  /// Hive picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive to quarantine'**
+  String get quarantinePickTitle;
+
+  /// Search field hint in the hive picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive number'**
+  String get quarantineSearchHint;
+
+  /// Empty hive picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'No hives'**
+  String get quarantineNoHivesTitle;
+
+  /// Empty hive picker message.
+  ///
+  /// In en, this message translates to:
+  /// **'No active hive to quarantine.'**
+  String get quarantineNoHivesMessage;
+
+  /// Snack bar after quarantining.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} quarantined'**
+  String quarantineDone(String number);
+
+  /// Quarantine status word.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarantined'**
+  String get hiveQuarantined;
+
+  /// Suspected disease on the hive card.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspected: {disease}'**
+  String hiveQuarantineDisease(String disease);
+
+  /// When the quarantine started.
+  ///
+  /// In en, this message translates to:
+  /// **'Since {date}'**
+  String hiveQuarantineSince(String date);
+
+  /// Equipment sharing warning on the hive card.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t share its equipment, frames or honey with other hives.'**
+  String get hiveQuarantineWarning;
+
+  /// Button that ends the quarantine.
+  ///
+  /// In en, this message translates to:
+  /// **'End quarantine'**
+  String get hiveQuarantineEnd;
+
+  /// Snack bar after ending the quarantine.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} is out of quarantine'**
+  String hiveQuarantineEnded(String number);
+
+  /// Syrup calculator title.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrup'**
+  String get calculatorSyrup;
+
+  /// Syrup calculator subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sugar and water needed'**
+  String get calculatorSyrupSubtitle;
+
+  /// Dose calculator title.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment dose'**
+  String get calculatorDose;
+
+  /// Dose calculator subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Total for your hive count'**
+  String get calculatorDoseSubtitle;
+
+  /// Queen calendar calculator title.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen calendar'**
+  String get calculatorQueen;
+
+  /// Queen calendar calculator subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Step days from the grafting day'**
+  String get calculatorQueenSubtitle;
+
+  /// Yield calculator title.
+  ///
+  /// In en, this message translates to:
+  /// **'Yield'**
+  String get calculatorYield;
+
+  /// Yield calculator subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey per hive'**
+  String get calculatorYieldSubtitle;
+
+  /// Note at the bottom of the calculators list.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculations work offline and save nothing.'**
+  String get calculatorOffline;
+
+  /// Shown for an unknown calculator.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculator not found'**
+  String get calculatorNotFound;
+
+  /// Hive count field.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of hives'**
+  String get calculatorHives;
+
+  /// Syrup kind chips label.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrup type'**
+  String get calculatorSyrupKind;
+
+  /// Shown while the inputs are empty or invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the hive count and amount.'**
+  String get calculatorFillHint;
+
+  /// Dose per hive field.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose per hive'**
+  String get calculatorDosePerHive;
+
+  /// Dose unit chips label.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get calculatorDoseUnit;
+
+  /// Result card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get calculatorTotal;
+
+  /// Total treatment amount.
+  ///
+  /// In en, this message translates to:
+  /// **'{unit, select, strip{{total} strips} ml{{total} ml} g{{total} g} other{{total} doses}}'**
+  String calculatorDoseTotal(String unit, String total);
+
+  /// Dose calculation line.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive × {amount}} other{{count} hives × {amount}}}'**
+  String calculatorDoseCount(int count, String amount);
+
+  /// Total honey field.
+  ///
+  /// In en, this message translates to:
+  /// **'Total honey ({unit})'**
+  String calculatorYieldTotal(String unit);
+
+  /// Yield result card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Per hive'**
+  String get calculatorYieldPerHive;
+
+  /// Yield per hive value.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {unit}'**
+  String calculatorYieldValue(String amount, String unit);
+
+  /// Queen calendar steps label.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get calculatorQueenSteps;
 }
 
 class _AppLocalizationsDelegate

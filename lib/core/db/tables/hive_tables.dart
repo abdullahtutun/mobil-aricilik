@@ -71,6 +71,9 @@ class Hives extends Table with SyncColumns, OrgColumns {
   TextColumn get source =>
       text().nullable().map(const ServerEnumConverter(HiveSource.values))();
   TextColumn get marking => text().nullable()();
+  BoolColumn get quarantined => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get quarantinedAt => dateTime().nullable()();
+  TextColumn get quarantineDisease => text().nullable()();
 }
 
 /// `public.hive_location_history` aynası; olay tablosu.

@@ -877,18 +877,18 @@ abstract class _$HiveSortPreference extends $Notifier<HiveSort> {
 }
 
 /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri
-/// alma. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
+/// alma, karantina. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
 /// sürekli yaşar. Her şey yerel DB'ye yazılır.
 
 @ProviderFor(HiveActions)
 final hiveActionsProvider = HiveActionsProvider._();
 
 /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri
-/// alma. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
+/// alma, karantina. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
 /// sürekli yaşar. Her şey yerel DB'ye yazılır.
 final class HiveActionsProvider extends $NotifierProvider<HiveActions, void> {
   /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri
-  /// alma. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
+  /// alma, karantina. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
   /// sürekli yaşar. Her şey yerel DB'ye yazılır.
   HiveActionsProvider._()
     : super(
@@ -917,10 +917,10 @@ final class HiveActionsProvider extends $NotifierProvider<HiveActions, void> {
   }
 }
 
-String _$hiveActionsHash() => r'f7c01c1f34bba32630628f6728088373f481d595';
+String _$hiveActionsHash() => r'a5f7a3290316b14fafa89248995ec34b2c991ddf';
 
 /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri
-/// alma. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
+/// alma, karantina. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye
 /// sürekli yaşar. Her şey yerel DB'ye yazılır.
 
 abstract class _$HiveActions extends $Notifier<void> {

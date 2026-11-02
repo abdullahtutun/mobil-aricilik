@@ -2,6 +2,7 @@ import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
+import 'package:mobil_arici/features/knowledge/domain/calculator_rules.dart';
 import 'package:mobil_arici/features/knowledge/domain/knowledge_article.dart';
 import 'package:mobil_arici/features/today/domain/today_rules.dart';
 
@@ -164,12 +165,26 @@ abstract final class AppRoutes {
   static const subsidies = '/more/subsidies';
   static const aksHiveCount = '/more/subsidies/aks-count';
 
-  /// Bilgi bankası; Daha fazla'dan açılır. Kategori ve makale altında
-  /// (makale kimliği `category` olamaz).
+  /// Bilgi bankası; Daha fazla'dan açılır. Kategori, teşhis yardımcısı,
+  /// hesaplayıcılar ve makale altında (makale kimliği `category`,
+  /// `diagnosis` ya da `calculators` olamaz).
   static const knowledge = '/more/knowledge';
   static String knowledgeCategory(KnowledgeCategory category) =>
       '/more/knowledge/category/${category.value}';
   static String knowledgeArticle(String id) => '/more/knowledge/$id';
+
+  /// Teşhis yardımcısı: belirti seçimi, olası hastalık ve ihbarı mecburi
+  /// hastalıkta karantinaya alınacak kovanın seçimi.
+  static const diagnosis = '/more/knowledge/diagnosis';
+  static String diagnosisResult(String ruleId) =>
+      '/more/knowledge/diagnosis/$ruleId';
+  static String diagnosisQuarantine(String ruleId) =>
+      '/more/knowledge/diagnosis/$ruleId/quarantine';
+
+  /// Hesaplayıcılar; her biri altında.
+  static const calculators = '/more/knowledge/calculators';
+  static String calculator(Calculator calculator) =>
+      '/more/knowledge/calculators/${calculator.value}';
 
   /// Finans: sezon özeti ve son hareketler; Daha fazla'dan açılır.
   /// Gelir/gider ekleme ve hareket listenin altında. Yeni hareketin türü

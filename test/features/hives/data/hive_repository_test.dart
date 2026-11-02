@@ -273,6 +273,84 @@ void main() {
     });
   });
 
+  group('karantina', () {
+    test('karantinaya alınır, aktif kalır; payload üç kolonu taşır', () async {
+      final hive = await createHive('101');
+      clock.advance(const Duration(minutes: 1));
+
+      final quarantined = await repository.quarantine(
+        hive.id,
+        disease: 'american_foulbrood',
+      );
+
+      expect(quarantined.quarantined, isTrue);
+      expect(quarantined.quarantinedAt, clock.current);
+      expect(quarantined.quarantineDisease, 'american_foulbrood');
+      expect(quarantined.status, HiveStatus.active);
+      expect(await repository.findById(hive.id), quarantined);
+      final payload = (await readOutbox(db)).last.payload;
+      expect(payload, containsPair('quarantined', true));
+      expect(payload, containsPair('quarantine_disease', 'american_foulbrood'));
+      expect(payload, containsPair('quarantined_at', isNotNull));
+    });
+
+    test('yeniden alınınca hastalık değişir, başlangıç kalır', () async {
+      final hive = await createHive('101');
+      final first = await repository.quarantine(hive.id, disease: 'nosema');
+      clock.advance(const Duration(days: 2));
+
+      final second = await repository.quarantine(
+        hive.id,
+        disease: 'american_foulbrood',
+      );
+
+      expect(second.quarantinedAt, first.quarantinedAt);
+      expect(second.quarantineDisease, 'american_foulbrood');
+    });
+
+    test('karantinadan çıkınca zaman ve hastalık boşalır; payload false '
+        'gönderir', () async {
+      final hive = await createHive('101');
+      await repository.quarantine(hive.id, disease: 'american_foulbrood');
+
+      final ended = await repository.endQuarantine(hive.id);
+
+      expect(ended.quarantined, isFalse);
+      expect(ended.quarantinedAt, isNull);
+      expect(ended.quarantineDisease, isNull);
+      final payload = (await readOutbox(db)).last.payload;
+      expect(payload, containsPair('quarantined', false));
+      expect(payload, containsPair('quarantined_at', null));
+    });
+
+    test('geri al önceki hâli döndürür, öbür alanlar korunur', () async {
+      final hive = await createHive('101');
+      final before = await repository.quarantine(hive.id, disease: 'nosema');
+      await repository.endQuarantine(hive.id);
+      await repository.update(
+        (await repository.findById(hive.id))!.copyWith(marking: 'Mavi'),
+      );
+
+      final restored = await repository.restoreQuarantine(
+        hive.id,
+        previous: before,
+      );
+
+      expect(restored.quarantined, isTrue);
+      expect(restored.quarantinedAt, before.quarantinedAt);
+      expect(restored.quarantineDisease, 'nosema');
+      expect(restored.marking, 'Mavi');
+    });
+
+    test('olmayan kovan karantinaya alınamaz', () async {
+      await expectLater(
+        repository.quarantine('yok', disease: 'nosema'),
+        throwsStateError,
+      );
+      await expectLater(repository.endQuarantine('yok'), throwsStateError);
+    });
+  });
+
   group('etiket', () {
     test('etiket koduyla işletmenin silinmemiş kovanı bulunur', () async {
       final hive = await createHive('101');

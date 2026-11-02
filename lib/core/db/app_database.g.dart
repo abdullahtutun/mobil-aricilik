@@ -2904,6 +2904,45 @@ class $HivesTable extends Hives with TableInfo<$HivesTable, Hive> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _quarantinedMeta = const VerificationMeta(
+    'quarantined',
+  );
+  @override
+  late final GeneratedColumn<bool> quarantined = GeneratedColumn<bool>(
+    'quarantined',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("quarantined" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _quarantinedAtMeta = const VerificationMeta(
+    'quarantinedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> quarantinedAt =
+      GeneratedColumn<DateTime>(
+        'quarantined_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _quarantineDiseaseMeta = const VerificationMeta(
+    'quarantineDisease',
+  );
+  @override
+  late final GeneratedColumn<String> quarantineDisease =
+      GeneratedColumn<String>(
+        'quarantine_disease',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -2923,6 +2962,9 @@ class $HivesTable extends Hives with TableInfo<$HivesTable, Hive> {
     frameCount,
     source,
     marking,
+    quarantined,
+    quarantinedAt,
+    quarantineDisease,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3029,6 +3071,33 @@ class $HivesTable extends Hives with TableInfo<$HivesTable, Hive> {
         marking.isAcceptableOrUnknown(data['marking']!, _markingMeta),
       );
     }
+    if (data.containsKey('quarantined')) {
+      context.handle(
+        _quarantinedMeta,
+        quarantined.isAcceptableOrUnknown(
+          data['quarantined']!,
+          _quarantinedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('quarantined_at')) {
+      context.handle(
+        _quarantinedAtMeta,
+        quarantinedAt.isAcceptableOrUnknown(
+          data['quarantined_at']!,
+          _quarantinedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('quarantine_disease')) {
+      context.handle(
+        _quarantineDiseaseMeta,
+        quarantineDisease.isAcceptableOrUnknown(
+          data['quarantine_disease']!,
+          _quarantineDiseaseMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -3100,6 +3169,18 @@ class $HivesTable extends Hives with TableInfo<$HivesTable, Hive> {
         DriftSqlType.string,
         data['${effectivePrefix}marking'],
       ),
+      quarantined: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}quarantined'],
+      )!,
+      quarantinedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}quarantined_at'],
+      ),
+      quarantineDisease: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}quarantine_disease'],
+      ),
       createdBy: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}created_by'],
@@ -3148,6 +3229,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
   final Value<int?> frameCount;
   final Value<HiveSource?> source;
   final Value<String?> marking;
+  final Value<bool> quarantined;
+  final Value<DateTime?> quarantinedAt;
+  final Value<String?> quarantineDisease;
   final Value<int> rowid;
   const HivesCompanion({
     this.id = const Value.absent(),
@@ -3167,6 +3251,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
     this.frameCount = const Value.absent(),
     this.source = const Value.absent(),
     this.marking = const Value.absent(),
+    this.quarantined = const Value.absent(),
+    this.quarantinedAt = const Value.absent(),
+    this.quarantineDisease = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   HivesCompanion.insert({
@@ -3187,6 +3274,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
     this.frameCount = const Value.absent(),
     this.source = const Value.absent(),
     this.marking = const Value.absent(),
+    this.quarantined = const Value.absent(),
+    this.quarantinedAt = const Value.absent(),
+    this.quarantineDisease = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -3214,6 +3304,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
     Expression<int>? frameCount,
     Expression<String>? source,
     Expression<String>? marking,
+    Expression<bool>? quarantined,
+    Expression<DateTime>? quarantinedAt,
+    Expression<String>? quarantineDisease,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -3234,6 +3327,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
       if (frameCount != null) 'frame_count': frameCount,
       if (source != null) 'source': source,
       if (marking != null) 'marking': marking,
+      if (quarantined != null) 'quarantined': quarantined,
+      if (quarantinedAt != null) 'quarantined_at': quarantinedAt,
+      if (quarantineDisease != null) 'quarantine_disease': quarantineDisease,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -3256,6 +3352,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
     Value<int?>? frameCount,
     Value<HiveSource?>? source,
     Value<String?>? marking,
+    Value<bool>? quarantined,
+    Value<DateTime?>? quarantinedAt,
+    Value<String?>? quarantineDisease,
     Value<int>? rowid,
   }) {
     return HivesCompanion(
@@ -3276,6 +3375,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
       frameCount: frameCount ?? this.frameCount,
       source: source ?? this.source,
       marking: marking ?? this.marking,
+      quarantined: quarantined ?? this.quarantined,
+      quarantinedAt: quarantinedAt ?? this.quarantinedAt,
+      quarantineDisease: quarantineDisease ?? this.quarantineDisease,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3340,6 +3442,15 @@ class HivesCompanion extends UpdateCompanion<Hive> {
     if (marking.present) {
       map['marking'] = Variable<String>(marking.value);
     }
+    if (quarantined.present) {
+      map['quarantined'] = Variable<bool>(quarantined.value);
+    }
+    if (quarantinedAt.present) {
+      map['quarantined_at'] = Variable<DateTime>(quarantinedAt.value);
+    }
+    if (quarantineDisease.present) {
+      map['quarantine_disease'] = Variable<String>(quarantineDisease.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -3366,6 +3477,9 @@ class HivesCompanion extends UpdateCompanion<Hive> {
           ..write('frameCount: $frameCount, ')
           ..write('source: $source, ')
           ..write('marking: $marking, ')
+          ..write('quarantined: $quarantined, ')
+          ..write('quarantinedAt: $quarantinedAt, ')
+          ..write('quarantineDisease: $quarantineDisease, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3395,6 +3509,9 @@ class _$HiveInsertable implements Insertable<Hive> {
       frameCount: Value(_object.frameCount),
       source: Value(_object.source),
       marking: Value(_object.marking),
+      quarantined: Value(_object.quarantined),
+      quarantinedAt: Value(_object.quarantinedAt),
+      quarantineDisease: Value(_object.quarantineDisease),
     ).toColumns(false);
   }
 }
@@ -25799,6 +25916,9 @@ typedef $$HivesTableCreateCompanionBuilder = HivesCompanion Function({
   Value<int?> frameCount,
   Value<HiveSource?> source,
   Value<String?> marking,
+  Value<bool> quarantined,
+  Value<DateTime?> quarantinedAt,
+  Value<String?> quarantineDisease,
   Value<int> rowid,
 });
 typedef $$HivesTableUpdateCompanionBuilder = HivesCompanion Function({
@@ -25819,6 +25939,9 @@ typedef $$HivesTableUpdateCompanionBuilder = HivesCompanion Function({
   Value<int?> frameCount,
   Value<HiveSource?> source,
   Value<String?> marking,
+  Value<bool> quarantined,
+  Value<DateTime?> quarantinedAt,
+  Value<String?> quarantineDisease,
   Value<int> rowid,
 });
 
@@ -25917,6 +26040,21 @@ class $$HivesTableFilterComposer extends Composer<_$AppDatabase, $HivesTable> {
     column: $table.marking,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnFilters<bool> get quarantined => $composableBuilder(
+    column: $table.quarantined,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get quarantinedAt => $composableBuilder(
+    column: $table.quarantinedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get quarantineDisease => $composableBuilder(
+    column: $table.quarantineDisease,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$HivesTableOrderingComposer
@@ -26012,6 +26150,21 @@ class $$HivesTableOrderingComposer
     column: $table.marking,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get quarantined => $composableBuilder(
+    column: $table.quarantined,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get quarantinedAt => $composableBuilder(
+    column: $table.quarantinedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get quarantineDisease => $composableBuilder(
+    column: $table.quarantineDisease,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$HivesTableAnnotationComposer
@@ -26075,6 +26228,21 @@ class $$HivesTableAnnotationComposer
 
   GeneratedColumn<String> get marking =>
       $composableBuilder(column: $table.marking, builder: (column) => column);
+
+  GeneratedColumn<bool> get quarantined => $composableBuilder(
+    column: $table.quarantined,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get quarantinedAt => $composableBuilder(
+    column: $table.quarantinedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get quarantineDisease => $composableBuilder(
+    column: $table.quarantineDisease,
+    builder: (column) => column,
+  );
 }
 
 class $$HivesTableTableManager
@@ -26122,6 +26290,9 @@ class $$HivesTableTableManager
                 Value<int?> frameCount = const Value.absent(),
                 Value<HiveSource?> source = const Value.absent(),
                 Value<String?> marking = const Value.absent(),
+                Value<bool> quarantined = const Value.absent(),
+                Value<DateTime?> quarantinedAt = const Value.absent(),
+                Value<String?> quarantineDisease = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => HivesCompanion(
                 id: id,
@@ -26141,6 +26312,9 @@ class $$HivesTableTableManager
                 frameCount: frameCount,
                 source: source,
                 marking: marking,
+                quarantined: quarantined,
+                quarantinedAt: quarantinedAt,
+                quarantineDisease: quarantineDisease,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -26162,6 +26336,9 @@ class $$HivesTableTableManager
                 Value<int?> frameCount = const Value.absent(),
                 Value<HiveSource?> source = const Value.absent(),
                 Value<String?> marking = const Value.absent(),
+                Value<bool> quarantined = const Value.absent(),
+                Value<DateTime?> quarantinedAt = const Value.absent(),
+                Value<String?> quarantineDisease = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => HivesCompanion.insert(
                 id: id,
@@ -26181,6 +26358,9 @@ class $$HivesTableTableManager
                 frameCount: frameCount,
                 source: source,
                 marking: marking,
+                quarantined: quarantined,
+                quarantinedAt: quarantinedAt,
+                quarantineDisease: quarantineDisease,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
