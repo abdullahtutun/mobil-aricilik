@@ -31,8 +31,8 @@ double? parseAmount(String text) {
 /// Hareketi yazılacak hâline getirir: tutar iki ondalığa yuvarlanır,
 /// açıklamanın baştaki ve sondaki boşlukları atılır, boş açıklama null
 /// olur, gün saatsiz olur. Tutar aralık dışındaysa, kategori türe
-/// uymuyorsa, açıklama uzunsa ya da satış bağı lotlu gelirde değilse
-/// [ArgumentError] atar.
+/// uymuyorsa, açıklama uzunsa, satış bağı lotlu gelirde değilse ya da
+/// müşteri gelirde değilse [ArgumentError] atar.
 FinanceTransaction checkTransaction(FinanceTransaction transaction) {
   final amount = (transaction.amount * 100).round() / 100;
   if (!(amount > 0 && amount <= maxTransactionAmount)) {
@@ -50,6 +50,10 @@ FinanceTransaction checkTransaction(FinanceTransaction transaction) {
       (transaction.kind != TransactionKind.income ||
           transaction.lotId == null)) {
     throw ArgumentError.value(transaction.lotSaleId, 'lotSaleId');
+  }
+  if (transaction.customerId != null &&
+      transaction.kind != TransactionKind.income) {
+    throw ArgumentError.value(transaction.customerId, 'customerId');
   }
   return transaction.copyWith(
     amount: amount,

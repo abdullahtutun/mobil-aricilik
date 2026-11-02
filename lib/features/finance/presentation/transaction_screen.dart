@@ -12,9 +12,10 @@ import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/finance/presentation/finance_providers.dart';
 import 'package:mobil_arici/features/finance/presentation/widgets/finance_labels.dart';
 
-/// Hareketin ayrıntısı: yönüyle tutar, kategori, tarih, bağlı kayıtlar ve
-/// fiş fotoğrafı; altta "Hareketi sil" (onaylı). Olay kaydı olduğu için
-/// düzenleme yok: yanlış kayıt silinip yeniden girilir.
+/// Hareketin ayrıntısı: yönüyle tutar, kategori, tarih, bağlı kayıtlar,
+/// müşterili satışta müşteri, ödenen ve ödeme durumu, fiş fotoğrafı;
+/// altta "Hareketi sil" (onaylı). Olay kaydı olduğu için düzenleme yok:
+/// yanlış kayıt silinip yeniden girilir.
 class TransactionScreen extends ConsumerWidget {
   const new({required this.transactionId, super.key});
 
@@ -81,8 +82,26 @@ class _TransactionDetail extends ConsumerWidget {
             if (lot != null) ListRow(title: l10n.financeFormLot, value: lot),
             if (transport != null)
               ListRow(title: l10n.financeFormTransport, value: transport),
+            if ((transaction.customerId, row.customerName) case (
+              final id?,
+              final name?,
+            ))
+              ListRow(
+                title: l10n.financeFormCustomer,
+                value: name,
+                onTap: () => context.go(AppRoutes.customer(id)),
+              ),
+            if (transaction.customerId != null)
+              ListRow(
+                title: l10n.customerPaidAmount,
+                value: financeMoney(context, row.paid, transaction.currency),
+              ),
           ],
         ),
+        if (transaction.customerId != null) ...[
+          SizedBox(height: spacing.md),
+          SaleStatusBadge(row),
+        ],
         if (receiptPath != null) ...[
           SizedBox(height: spacing.xl),
           SectionLabel(l10n.financeFormReceipt),

@@ -70,6 +70,7 @@ dependencies:
   share_plus: ^13.3.1
   supabase_flutter: ^2.18.3
   timezone: ^0.11.2
+  url_launcher: ^6.3.3
   uuid: ^4.6.0
   vector_map_tiles: 9.0.0-beta.13
   wakelock_plus: ^1.8.0

@@ -169,6 +169,25 @@ abstract final class AppRoutes {
   ).toString();
   static String financeTransaction(String id) => '/more/finance/$id';
 
+  /// Satışa tahsilat ekleme.
+  static String financePayment(String transactionId) =>
+      '/more/finance/$transactionId/payment';
+
+  /// Müşteri defteri; Finans'tan açılır. Yeni gelir müşteriyle açılabilir
+  /// (sorguda [financeCustomerParameter]).
+  static const customers = '/more/finance/customers';
+  static const customerNew = '/more/finance/customers/new';
+  static String customer(String id) => '/more/finance/customers/$id';
+  static String customerEdit(String id) => '/more/finance/customers/$id/edit';
+  static const financeCustomerParameter = 'customer';
+  static String financeSale(String customerId) => Uri(
+    path: financeNewPath,
+    queryParameters: {
+      financeKindParameter: TransactionKind.income.value,
+      financeCustomerParameter: customerId,
+    },
+  ).toString();
+
   /// Ana yetiştirme serileri; Daha fazla'dan açılır. Serinin takvimi,
   /// ekleme ve düzenleme listenin altında.
   static const rearing = '/more/rearing';

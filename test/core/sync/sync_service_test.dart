@@ -16,6 +16,7 @@ import 'package:mobil_arici/features/documents/data/document_repository.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feeding/data/feeding_repository.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/finance/data/customer_repository.dart';
 import 'package:mobil_arici/features/finance/data/transaction_repository.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/harvest/data/harvest_repository.dart';
@@ -503,6 +504,24 @@ Map<String, Object?> _transactionRow(int seq) => {
   'lot_id': 'lot-1',
   'transport_id': null,
   'lot_sale_id': 'lot-sale-1',
+  'customer_id': 'customer-1',
+};
+
+Map<String, Object?> _customerRow(int seq) => {
+  ..._standard('customer-1', seq),
+  'org_id': _org,
+  'name': 'Ayşe Hanım',
+  'phone': '+90 532 000 00 00',
+  'address': 'Rize',
+  'notes': null,
+};
+
+Map<String, Object?> _customerPaymentRow(int seq) => {
+  ..._standard('customer-payment-1', seq),
+  'org_id': _org,
+  'transaction_id': 'transaction-1',
+  'amount': 20000,
+  'paid_on': '2026-10-30',
 };
 
 bool _isPull(http.Request request) =>
@@ -1018,12 +1037,14 @@ void main() {
         'lot_treatments': [_lotTreatmentRow(28)],
         'lab_results': [_labResultRow(29)],
         'lot_sales': [_lotSaleRow(30)],
+        'customers': [_customerRow(32)],
         'transactions': [_transactionRow(31)],
+        'customer_payments': [_customerPaymentRow(33)],
       });
 
       expect(
         await service.pull(),
-        const SyncResult(status: SyncStatus.done, pulled: 31),
+        const SyncResult(status: SyncStatus.done, pulled: 33),
       );
 
       expect(requests.map(_pullOf), [
@@ -1057,7 +1078,9 @@ void main() {
         (table: 'lot_treatments', since: 0),
         (table: 'lab_results', since: 0),
         (table: 'lot_sales', since: 0),
+        (table: 'customers', since: 0),
         (table: 'transactions', since: 0),
+        (table: 'customer_payments', since: 0),
       ]);
       final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
       expect(body['page_size'], SyncService.pullPageSize);
@@ -1196,6 +1219,8 @@ void main() {
         'lab_results': 29,
         'lot_sales': 30,
         'transactions': 31,
+        'customers': 32,
+        'customer_payments': 33,
         fullPullMarker: 0,
       });
       final document = (await DocumentRepository(db).findById('document-1'))!;
@@ -1250,14 +1275,21 @@ void main() {
       expect(labResult.residue, ResidueResult.none);
       expect(labResult.toJson()['tested_on'], '2026-10-28');
       expect((await lots.sales.findById('lot-sale-1'))!.kg, 100.5);
-      final transaction = (await TransactionRepository(
-        db,
-      ).findById('transaction-1'))!;
+      final transaction = (await TransactionRepository(db)
+          .findById('transaction-1'))!;
       expect(transaction.kind, TransactionKind.income);
       expect(transaction.category, TransactionCategory.honey);
       expect(transaction.amount, 56000.5);
       expect(transaction.occurredOn, DateTime(2026, 10, 29));
       expect(transaction.lotSaleId, 'lot-sale-1');
+      expect(transaction.customerId, 'customer-1');
+      final customer = (await CustomerRepository(db).findById('customer-1'))!;
+      expect(customer.address, 'Rize');
+      final payment = (await CustomerPaymentRepository(
+        db,
+      ).findBySale('transaction-1')).single;
+      expect(payment.amount, 20000);
+      expect(payment.paidOn, DateTime(2026, 10, 30));
       // Çekme outbox'a yazmaz; inen satırlar geri gönderilmez.
       expect(await readOutbox(db), isEmpty);
     });

@@ -57,6 +57,102 @@ final class TransactionRepositoryProvider
 String _$transactionRepositoryHash() =>
     r'3aa8ec799ae327e93274d19afe4e5b474c10cee7';
 
+@ProviderFor(customerRepository)
+final customerRepositoryProvider = CustomerRepositoryProvider._();
+
+final class CustomerRepositoryProvider
+    extends
+        $FunctionalProvider<
+          CustomerRepository,
+          CustomerRepository,
+          CustomerRepository
+        >
+    with $Provider<CustomerRepository> {
+  CustomerRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'customerRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$customerRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<CustomerRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CustomerRepository create(Ref ref) {
+    return customerRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CustomerRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CustomerRepository>(value),
+    );
+  }
+}
+
+String _$customerRepositoryHash() =>
+    r'f689edf3044f7155530a88cdd11da9d7e1078996';
+
+@ProviderFor(customerPaymentRepository)
+final customerPaymentRepositoryProvider = CustomerPaymentRepositoryProvider._();
+
+final class CustomerPaymentRepositoryProvider
+    extends
+        $FunctionalProvider<
+          CustomerPaymentRepository,
+          CustomerPaymentRepository,
+          CustomerPaymentRepository
+        >
+    with $Provider<CustomerPaymentRepository> {
+  CustomerPaymentRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'customerPaymentRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$customerPaymentRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<CustomerPaymentRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CustomerPaymentRepository create(Ref ref) {
+    return customerPaymentRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CustomerPaymentRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CustomerPaymentRepository>(value),
+    );
+  }
+}
+
+String _$customerPaymentRepositoryHash() =>
+    r'b281dbbe5e302d756a37a4531eb5dca1f2814810';
+
 /// Oturumdaki işletmenin hareketleri, yeni önce; işletme yoksa boş.
 
 @ProviderFor(transactionRows)
@@ -329,6 +425,405 @@ final class FinanceSeasonProvider
 
 String _$financeSeasonHash() => r'7d0657c83b447f31ec42f66b553bf4f0bff30718';
 
+/// Bu sezonun konaklama noktası (arılık) kârları, büyük net önce
+/// ([apiaryProfits]); işletmenin para birimindeki hareketlerden.
+
+@ProviderFor(apiaryProfitList)
+final apiaryProfitListProvider = ApiaryProfitListProvider._();
+
+/// Bu sezonun konaklama noktası (arılık) kârları, büyük net önce
+/// ([apiaryProfits]); işletmenin para birimindeki hareketlerden.
+
+final class ApiaryProfitListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ApiaryProfit>>,
+          List<ApiaryProfit>,
+          FutureOr<List<ApiaryProfit>>
+        >
+    with
+        $FutureModifier<List<ApiaryProfit>>,
+        $FutureProvider<List<ApiaryProfit>> {
+  /// Bu sezonun konaklama noktası (arılık) kârları, büyük net önce
+  /// ([apiaryProfits]); işletmenin para birimindeki hareketlerden.
+  ApiaryProfitListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'apiaryProfitListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$apiaryProfitListHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<ApiaryProfit>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<ApiaryProfit>> create(Ref ref) {
+    return apiaryProfitList(ref);
+  }
+}
+
+String _$apiaryProfitListHash() => r'b43e20aecdd6362d02c06274089e5fb23ebea8a7';
+
+/// İşletmenin lota bağlı hasatları (lot, arılık, kg); işletme yoksa boş.
+
+@ProviderFor(lotHarvestShares)
+final lotHarvestSharesProvider = LotHarvestSharesProvider._();
+
+/// İşletmenin lota bağlı hasatları (lot, arılık, kg); işletme yoksa boş.
+
+final class LotHarvestSharesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<LotHarvestShare>>,
+          List<LotHarvestShare>,
+          Stream<List<LotHarvestShare>>
+        >
+    with
+        $FutureModifier<List<LotHarvestShare>>,
+        $StreamProvider<List<LotHarvestShare>> {
+  /// İşletmenin lota bağlı hasatları (lot, arılık, kg); işletme yoksa boş.
+  LotHarvestSharesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lotHarvestSharesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lotHarvestSharesHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<LotHarvestShare>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<LotHarvestShare>> create(Ref ref) {
+    return lotHarvestShares(ref);
+  }
+}
+
+String _$lotHarvestSharesHash() => r'350dc50dfdb51cfc2601d031ef460cc400434e42';
+
+/// Oturumdaki işletmenin müşterileri, ada göre; işletme yoksa boş.
+
+@ProviderFor(customerList)
+final customerListProvider = CustomerListProvider._();
+
+/// Oturumdaki işletmenin müşterileri, ada göre; işletme yoksa boş.
+
+final class CustomerListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Customer>>,
+          List<Customer>,
+          Stream<List<Customer>>
+        >
+    with $FutureModifier<List<Customer>>, $StreamProvider<List<Customer>> {
+  /// Oturumdaki işletmenin müşterileri, ada göre; işletme yoksa boş.
+  CustomerListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'customerListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$customerListHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Customer>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Customer>> create(Ref ref) {
+    return customerList(ref);
+  }
+}
+
+String _$customerListHash() => r'ead292c55718e28559b9853055b91d195e59ceb0';
+
+/// Müşteri; yoksa ya da silinmişse null.
+
+@ProviderFor(customer)
+final customerProvider = CustomerFamily._();
+
+/// Müşteri; yoksa ya da silinmişse null.
+
+final class CustomerProvider
+    extends
+        $FunctionalProvider<AsyncValue<Customer?>, Customer?, Stream<Customer?>>
+    with $FutureModifier<Customer?>, $StreamProvider<Customer?> {
+  /// Müşteri; yoksa ya da silinmişse null.
+  CustomerProvider._({
+    required CustomerFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'customerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$customerHash();
+
+  @override
+  String toString() {
+    return r'customerProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<Customer?> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<Customer?> create(Ref ref) {
+    final argument = this.argument as String;
+    return customer(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CustomerProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$customerHash() => r'd9c32ee45cc54c3172b336ede8aef86b83386913';
+
+/// Müşteri; yoksa ya da silinmişse null.
+
+final class CustomerFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<Customer?>, String> {
+  CustomerFamily._()
+    : super(
+        retry: null,
+        name: r'customerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Müşteri; yoksa ya da silinmişse null.
+
+  CustomerProvider call(String id) =>
+      CustomerProvider._(argument: id, from: this);
+
+  @override
+  String toString() => r'customerProvider';
+}
+
+/// Müşterinin satışları, yeni önce.
+
+@ProviderFor(customerSales)
+final customerSalesProvider = CustomerSalesFamily._();
+
+/// Müşterinin satışları, yeni önce.
+
+final class CustomerSalesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<TransactionRow>>,
+          List<TransactionRow>,
+          Stream<List<TransactionRow>>
+        >
+    with
+        $FutureModifier<List<TransactionRow>>,
+        $StreamProvider<List<TransactionRow>> {
+  /// Müşterinin satışları, yeni önce.
+  CustomerSalesProvider._({
+    required CustomerSalesFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'customerSalesProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$customerSalesHash();
+
+  @override
+  String toString() {
+    return r'customerSalesProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<TransactionRow>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<TransactionRow>> create(Ref ref) {
+    final argument = this.argument as String;
+    return customerSales(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CustomerSalesProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$customerSalesHash() => r'4ef86ba05762514e145e9681c71d4f575aec5eec';
+
+/// Müşterinin satışları, yeni önce.
+
+final class CustomerSalesFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<TransactionRow>>, String> {
+  CustomerSalesFamily._()
+    : super(
+        retry: null,
+        name: r'customerSalesProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Müşterinin satışları, yeni önce.
+
+  CustomerSalesProvider call(String customerId) =>
+      CustomerSalesProvider._(argument: customerId, from: this);
+
+  @override
+  String toString() => r'customerSalesProvider';
+}
+
+/// Müşteriler alacaklarıyla, ada göre.
+
+@ProviderFor(customerSummaries)
+final customerSummariesProvider = CustomerSummariesProvider._();
+
+/// Müşteriler alacaklarıyla, ada göre.
+
+final class CustomerSummariesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<CustomerSummary>>,
+          List<CustomerSummary>,
+          FutureOr<List<CustomerSummary>>
+        >
+    with
+        $FutureModifier<List<CustomerSummary>>,
+        $FutureProvider<List<CustomerSummary>> {
+  /// Müşteriler alacaklarıyla, ada göre.
+  CustomerSummariesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'customerSummariesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$customerSummariesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<CustomerSummary>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<CustomerSummary>> create(Ref ref) {
+    return customerSummaries(ref);
+  }
+}
+
+String _$customerSummariesHash() => r'b19d6e45d1762a59e13b7ba51682e285463736a6';
+
+/// İşletmenin para birimindeki alacakların özeti: silinmemiş müşterilerin
+/// satışlarının kalanı ve alacağı olan müşteri sayısı.
+
+@ProviderFor(receivables)
+final receivablesProvider = ReceivablesProvider._();
+
+/// İşletmenin para birimindeki alacakların özeti: silinmemiş müşterilerin
+/// satışlarının kalanı ve alacağı olan müşteri sayısı.
+
+final class ReceivablesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ReceivablesSummary?>,
+          ReceivablesSummary?,
+          FutureOr<ReceivablesSummary?>
+        >
+    with
+        $FutureModifier<ReceivablesSummary?>,
+        $FutureProvider<ReceivablesSummary?> {
+  /// İşletmenin para birimindeki alacakların özeti: silinmemiş müşterilerin
+  /// satışlarının kalanı ve alacağı olan müşteri sayısı.
+  ReceivablesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'receivablesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$receivablesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<ReceivablesSummary?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ReceivablesSummary?> create(Ref ref) {
+    return receivables(ref);
+  }
+}
+
+String _$receivablesHash() => r'06221cde275459a8196434fcee5821968c299880';
+
 /// Fiş fotoğrafı bu telefonda varsa; yoksa (henüz inmedi) null.
 
 @ProviderFor(receiptFile)
@@ -446,7 +941,7 @@ final class FinanceActionsProvider
   }
 }
 
-String _$financeActionsHash() => r'46c2d6f9353da5ad4c24e00377ab87ac0c528c65';
+String _$financeActionsHash() => r'140c9af2c4c5805256643efeffc3bd55abec62da';
 
 /// Hareket yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da
 /// çalışsın diye sürekli yaşar.

@@ -5529,4 +5529,198 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncTableTransactions => 'Gelir-gider';
+
+  @override
+  String get customersTitle => 'Müşteri defteri';
+
+  @override
+  String get customersAdd => 'Müşteri ekle';
+
+  @override
+  String get customersEmptyTitle => 'Henüz müşteri yok';
+
+  @override
+  String get customersEmptyMessage =>
+      'Satışlarını ve alacağını izlemek için müşteri ekle.';
+
+  @override
+  String customerReceivableValue(String amount) {
+    return '$amount alacak';
+  }
+
+  @override
+  String get customerNoReceivable => 'Alacak yok';
+
+  @override
+  String get customerNotFound => 'Müşteri bulunamadı';
+
+  @override
+  String get customerEdit => 'Müşteriyi düzenle';
+
+  @override
+  String get customerAddSale => 'Satış ekle';
+
+  @override
+  String get customerOrders => 'Siparişler';
+
+  @override
+  String get customerNoOrders => 'Bu müşteriye henüz satış yok.';
+
+  @override
+  String get customerPaid => 'Ödendi';
+
+  @override
+  String customerRemaining(String amount) {
+    return 'Kalan $amount';
+  }
+
+  @override
+  String get customerPaidAmount => 'Ödenen';
+
+  @override
+  String get customerMarkPaid => 'Ödendi olarak işaretle';
+
+  @override
+  String get customerMarkedPaid => 'Ödendi olarak işaretlendi';
+
+  @override
+  String get customerAddPayment => 'Tahsilat ekle';
+
+  @override
+  String get customerSendWhatsApp => 'WhatsApp ile gönder';
+
+  @override
+  String get customerWhatsAppNoPhone =>
+      'Telefon yok; kişiyi WhatsApp\'ta seçersin';
+
+  @override
+  String get customerWhatsAppFailed => 'WhatsApp açılamadı';
+
+  @override
+  String get customerOpenTransaction => 'Hareketi aç';
+
+  @override
+  String customerWhatsAppGreeting(String name) {
+    return 'Merhaba $name,';
+  }
+
+  @override
+  String get customerWhatsAppIntro => 'Sipariş özetiniz:';
+
+  @override
+  String customerWhatsAppAmount(String amount) {
+    return 'Tutar: $amount';
+  }
+
+  @override
+  String customerWhatsAppPaid(String amount) {
+    return 'Ödenen: $amount';
+  }
+
+  @override
+  String customerWhatsAppRemaining(String amount) {
+    return 'Kalan: $amount';
+  }
+
+  @override
+  String get customerWhatsAppPaidInFull => 'Ödemeniz tamamlandı, teşekkürler.';
+
+  @override
+  String customerWhatsAppAddress(String address) {
+    return 'Kargo adresi: $address';
+  }
+
+  @override
+  String get customerFormNewTitle => 'Yeni müşteri';
+
+  @override
+  String get customerFormEditTitle => 'Müşteriyi düzenle';
+
+  @override
+  String get customerFormName => 'Ad';
+
+  @override
+  String get customerFormPhone => 'Telefon';
+
+  @override
+  String get customerFormPhoneHelper => 'WhatsApp için; ör. 0532 123 45 67';
+
+  @override
+  String get customerFormAddress => 'Kargo adresi';
+
+  @override
+  String get customerFormNotes => 'Not';
+
+  @override
+  String get customerFormSave => 'Kaydet';
+
+  @override
+  String get customerSaved => 'Müşteri kaydedildi';
+
+  @override
+  String get customerDelete => 'Müşteriyi sil';
+
+  @override
+  String get customerDeleteTitle => 'Müşteri silinsin mi?';
+
+  @override
+  String get customerDeleteMessage => 'Satışları finans hareketlerinde kalır.';
+
+  @override
+  String get customerDeleteConfirm => 'Sil';
+
+  @override
+  String get customerDeleted => 'Müşteri silindi';
+
+  @override
+  String get customerPaymentSave => 'Tahsilatı kaydet';
+
+  @override
+  String get customerPaymentSaved => 'Tahsilat kaydedildi';
+
+  @override
+  String customerPaymentTooMuch(String amount) {
+    return 'Kalan $amount; daha fazlası yazılamaz.';
+  }
+
+  @override
+  String get financeFormCustomer => 'Müşteri';
+
+  @override
+  String get financeFormChooseCustomer => 'Müşteri seç';
+
+  @override
+  String get financeFormNoCustomers => 'Henüz müşteri yok';
+
+  @override
+  String get financeFormPaidNow => 'Peşin alınan';
+
+  @override
+  String get financeFormPaidNowHelper => 'Boş bırakırsan tamamı alacak olur.';
+
+  @override
+  String get financeFormPaidTooMuch => 'Peşin alınan tutardan fazla olamaz.';
+
+  @override
+  String get financeProfitTitle => 'Konaklama kârlılığı';
+
+  @override
+  String get financeProfitUnknownApiary => 'Silinmiş arılık';
+
+  @override
+  String financeReceivables(String amount, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count müşteri',
+      one: '1 müşteri',
+    );
+    return '$amount alacak · $_temp0';
+  }
+
+  @override
+  String get syncTableCustomers => 'Müşteri';
+
+  @override
+  String get syncTableCustomerPayments => 'Tahsilat';
 }

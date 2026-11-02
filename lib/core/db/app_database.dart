@@ -21,6 +21,7 @@ import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
+import 'package:mobil_arici/features/finance/domain/customer.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/domain/lot.dart';
@@ -91,6 +92,8 @@ part 'app_database.g.dart';
     LotSales,
     Transactions,
     ReceiptUploads,
+    Customers,
+    CustomerPayments,
     LocalSettings,
     FeedbackQueue,
     AnalyticsQueue,
@@ -102,7 +105,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 19;
+  int get schemaVersion => 20;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -268,6 +271,16 @@ class AppDatabase extends _$AppDatabase {
         await m.create(schema.transactionsOrgIdIdx);
         await m.create(schema.transactionsLotIdIdx);
         await m.createTable(schema.receiptUploads);
+      },
+      // Müşteri defteri: müşteriler, satışın müşterisi ve tahsilatlar.
+      from19To20: (m, schema) async {
+        await m.addColumn(schema.transactions, schema.transactions.customerId);
+        await m.create(schema.transactionsCustomerIdIdx);
+        await m.createTable(schema.customers);
+        await m.create(schema.customersOrgIdIdx);
+        await m.createTable(schema.customerPayments);
+        await m.create(schema.customerPaymentsOrgIdIdx);
+        await m.create(schema.customerPaymentsTransactionIdIdx);
       },
     ),
   );

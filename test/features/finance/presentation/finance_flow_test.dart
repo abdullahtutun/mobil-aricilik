@@ -415,6 +415,9 @@ void main() {
     expect(_button('Fotoğraf çek'), findsOneWidget);
     expect(_button('Kaydet'), findsOneWidget);
 
+    // Aynı rota gider formunu kaydırılmış listeyle açmasın diye önce Finans.
+    container.read(routerProvider).go(AppRoutes.finance);
+    await tester.pumpAndSettle();
     container
         .read(routerProvider)
         .go(AppRoutes.financeNew(TransactionKind.expense));

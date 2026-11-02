@@ -95,6 +95,7 @@ const int maxReceiptBytes = 10 * 1024 * 1024;
 /// Lottan satış gelirinde satılan kilogram `lot_sales`'te; gelir ona
 /// `lot_sale_id` ile bağlı. Fiş fotoğrafı `receipts` bucket'ında
 /// `receipt_path`'te ve bu telefonda aynı adla (`receiptFileName`).
+/// Müşteriye bağlı gelir bir satıştır; tahsil edilmemiş kısmı alacaktır.
 @freezed
 abstract class FinanceTransaction
     with _$FinanceTransaction
@@ -123,6 +124,10 @@ abstract class FinanceTransaction
 
     /// Lottan satışta düşülen kilogramın kaydı.
     String? lotSaleId,
+
+    /// Satışın müşterisi; yalnız gelirde. Alacak bu satışa alınan
+    /// tahsilatlarla kapanır.
+    String? customerId,
     String? createdBy,
     DateTime? deletedAt,
     @JsonKey(includeToJson: false) int? serverSeq,

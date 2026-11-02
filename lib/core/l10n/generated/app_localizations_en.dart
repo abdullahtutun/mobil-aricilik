@@ -5702,4 +5702,200 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncTableTransactions => 'Income/expense';
+
+  @override
+  String get customersTitle => 'Customer book';
+
+  @override
+  String get customersAdd => 'Add customer';
+
+  @override
+  String get customersEmptyTitle => 'No customers yet';
+
+  @override
+  String get customersEmptyMessage =>
+      'Add customers to track their orders and what they owe.';
+
+  @override
+  String customerReceivableValue(String amount) {
+    return '$amount owed';
+  }
+
+  @override
+  String get customerNoReceivable => 'Nothing owed';
+
+  @override
+  String get customerNotFound => 'Customer not found';
+
+  @override
+  String get customerEdit => 'Edit customer';
+
+  @override
+  String get customerAddSale => 'Add sale';
+
+  @override
+  String get customerOrders => 'Orders';
+
+  @override
+  String get customerNoOrders => 'No sales to this customer yet.';
+
+  @override
+  String get customerPaid => 'Paid';
+
+  @override
+  String customerRemaining(String amount) {
+    return '$amount left';
+  }
+
+  @override
+  String get customerPaidAmount => 'Paid so far';
+
+  @override
+  String get customerMarkPaid => 'Mark as paid';
+
+  @override
+  String get customerMarkedPaid => 'Marked as paid';
+
+  @override
+  String get customerAddPayment => 'Record payment';
+
+  @override
+  String get customerSendWhatsApp => 'Send via WhatsApp';
+
+  @override
+  String get customerWhatsAppNoPhone =>
+      'No phone; pick the contact in WhatsApp';
+
+  @override
+  String get customerWhatsAppFailed => 'Couldn\'t open WhatsApp';
+
+  @override
+  String get customerOpenTransaction => 'Open entry';
+
+  @override
+  String customerWhatsAppGreeting(String name) {
+    return 'Hello $name,';
+  }
+
+  @override
+  String get customerWhatsAppIntro => 'Your order summary:';
+
+  @override
+  String customerWhatsAppAmount(String amount) {
+    return 'Total: $amount';
+  }
+
+  @override
+  String customerWhatsAppPaid(String amount) {
+    return 'Paid: $amount';
+  }
+
+  @override
+  String customerWhatsAppRemaining(String amount) {
+    return 'Remaining: $amount';
+  }
+
+  @override
+  String get customerWhatsAppPaidInFull => 'Paid in full, thank you.';
+
+  @override
+  String customerWhatsAppAddress(String address) {
+    return 'Shipping address: $address';
+  }
+
+  @override
+  String get customerFormNewTitle => 'New customer';
+
+  @override
+  String get customerFormEditTitle => 'Edit customer';
+
+  @override
+  String get customerFormName => 'Name';
+
+  @override
+  String get customerFormPhone => 'Phone';
+
+  @override
+  String get customerFormPhoneHelper => 'For WhatsApp, e.g. +44 7700 900123';
+
+  @override
+  String get customerFormAddress => 'Shipping address';
+
+  @override
+  String get customerFormNotes => 'Note';
+
+  @override
+  String get customerFormSave => 'Save';
+
+  @override
+  String get customerSaved => 'Customer saved';
+
+  @override
+  String get customerDelete => 'Delete customer';
+
+  @override
+  String get customerDeleteTitle => 'Delete customer?';
+
+  @override
+  String get customerDeleteMessage =>
+      'Their sales stay in your income entries.';
+
+  @override
+  String get customerDeleteConfirm => 'Delete';
+
+  @override
+  String get customerDeleted => 'Customer deleted';
+
+  @override
+  String get customerPaymentSave => 'Save payment';
+
+  @override
+  String get customerPaymentSaved => 'Payment saved';
+
+  @override
+  String customerPaymentTooMuch(String amount) {
+    return 'Only $amount is left.';
+  }
+
+  @override
+  String get financeFormCustomer => 'Customer';
+
+  @override
+  String get financeFormChooseCustomer => 'Choose customer';
+
+  @override
+  String get financeFormNoCustomers => 'No customers yet';
+
+  @override
+  String get financeFormPaidNow => 'Paid now';
+
+  @override
+  String get financeFormPaidNowHelper =>
+      'Leave empty if the whole amount is owed.';
+
+  @override
+  String get financeFormPaidTooMuch => 'Can\'t be more than the amount.';
+
+  @override
+  String get financeProfitTitle => 'Profit by apiary';
+
+  @override
+  String get financeProfitUnknownApiary => 'Deleted apiary';
+
+  @override
+  String financeReceivables(String amount, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count customers',
+      one: '1 customer',
+    );
+    return '$amount owed · $_temp0';
+  }
+
+  @override
+  String get syncTableCustomers => 'Customer';
+
+  @override
+  String get syncTableCustomerPayments => 'Payment';
 }

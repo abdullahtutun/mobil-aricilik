@@ -33,6 +33,12 @@ abstract class TransactionFormState with _$TransactionFormState {
 
     /// Lottan satılan bal (kg); yalnız lotlu gelirde.
     double? saleKg,
+
+    /// Satışın müşterisi; yalnız gelirde.
+    String? customerId,
+
+    /// Müşteriden satışta alınan ödeme; boşsa tamamı alacak.
+    double? paidNow,
     @Default(false) bool saving,
   }) = _TransactionFormState;
 }
@@ -42,6 +48,10 @@ extension TransactionFormProgress on TransactionFormState {
 
   /// Satılan kilogram girilebilir: lotlu gelir.
   bool get canSell => kind == TransactionKind.income && lotId != null;
+
+  /// Peşin ödeme girilebilir: müşterili gelir.
+  bool get canTakePayment =>
+      kind == TransactionKind.income && customerId != null;
 }
 
 /// Gelir ya da gider ekleme formu. Ekran açık kaldığı sürece yaşar. Her
@@ -55,14 +65,18 @@ class TransactionFormController extends _$TransactionFormController {
   String? _picked;
 
   @override
-  TransactionFormState build(TransactionKind kind) {
+  TransactionFormState build(TransactionKind kind, {String? customerId}) {
     final files = ref.read(receiptFileStoreProvider);
     ref.onDispose(() {
       if (_picked case final fileName? when !_saved) {
         unawaited(files.delete(fileName));
       }
     });
-    return TransactionFormState(kind: kind, occurredOn: dateOnly(clock.now()));
+    return TransactionFormState(
+      kind: kind,
+      occurredOn: dateOnly(clock.now()),
+      customerId: kind == TransactionKind.income ? customerId : null,
+    );
   }
 
   void setCategory(TransactionCategory? category) =>
@@ -87,6 +101,12 @@ class TransactionFormController extends _$TransactionFormController {
       state = state.copyWith(transportId: transportId);
 
   void setSaleKg(double? kg) => state = state.copyWith(saleKg: kg);
+
+  /// Müşteri değişince peşin ödeme sıfırlanır.
+  void setCustomer(String? customerId) =>
+      state = state.copyWith(customerId: customerId, paidNow: null);
+
+  void setPaidNow(double? amount) => state = state.copyWith(paidNow: amount);
 
   /// Kamerayla fişin fotoğrafını çeker.
   Future<void> takePhoto() => _pickImage(fromGallery: false);
@@ -126,7 +146,7 @@ class TransactionFormController extends _$TransactionFormController {
   }
 
   /// Hareketi yazar ve döner; kaydedilemiyorsa null. Satılan kilogram
-  /// yalnız lotlu gelirde yazılır.
+  /// yalnız lotlu gelirde, müşteri ve peşin ödeme yalnız gelirde yazılır.
   Future<FinanceTransaction?> save() async {
     final form = state;
     final orgId = ref.read(currentOrgIdProvider);
@@ -150,6 +170,8 @@ class TransactionFormController extends _$TransactionFormController {
             lotId: form.lotId,
             transportId: form.transportId,
             saleKg: form.canSell ? form.saleKg : null,
+            customerId: form.canTakePayment ? form.customerId : null,
+            paidNow: form.canTakePayment ? form.paidNow : null,
           );
       _saved = true;
       return saved;

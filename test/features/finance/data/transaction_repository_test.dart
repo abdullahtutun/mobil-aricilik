@@ -104,6 +104,7 @@ void main() {
         'lot_id': null,
         'transport_id': null,
         'lot_sale_id': null,
+        'customer_id': null,
         'created_at': '2026-10-26T09:00:00.000Z',
         'updated_at': '2026-10-26T09:00:00.000Z',
         'created_by': null,

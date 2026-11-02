@@ -2,13 +2,17 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
+import 'package:mobil_arici/features/finance/data/customer_repository.dart';
 import 'package:mobil_arici/features/finance/domain/finance_rules.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
+import 'package:mobil_arici/features/finance/domain/profitability_rules.dart';
 import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
 
 /// Hareket ve bağlı kayıtların ekranda gösterilen adları: lotun yılı ve
 /// sırası, satışta düşülen kilogram, arılığın adı, taşımanın çıkış ve
-/// varış arılıkları. Bağlı kayıt silinmişse ilgili alan boş.
+/// varış arılıkları (varışın kimliği de), müşterinin adı. Bağlı kayıt
+/// silinmişse ilgili alan boş. `paid` satışa alınan silinmemiş
+/// tahsilatların toplamı; tahsilat yoksa 0.
 typedef TransactionRow = ({
   FinanceTransaction transaction,
   int? lotYear,
@@ -17,6 +21,9 @@ typedef TransactionRow = ({
   String? apiaryName,
   String? transportFrom,
   String? transportTo,
+  String? transportToId,
+  String? customerName,
+  double paid,
 });
 
 /// Gidere bağlanabilecek taşıma: çıkış ve varış arılıklarının adı.
@@ -47,12 +54,17 @@ class TransactionRepository
       record.toInsertable();
 
   late final _lots = LotRepository(db, clock: clock);
+  late final _payments = CustomerPaymentRepository(db, clock: clock);
 
   /// İşletmenin hareketleri bağlı kayıtların adlarıyla, yeni önce
   /// ([compareTransactions]); hareket ya da bağlı kayıt değişince yeniden
   /// yayar.
   Stream<List<TransactionRow>> watchRows(String orgId) =>
       _watchRows('t.org_id = ?', orgId);
+
+  /// Müşterinin satışları, yeni önce.
+  Stream<List<TransactionRow>> watchCustomerRows(String customerId) =>
+      _watchRows('t.customer_id = ?', customerId);
 
   /// Hareket ve bağlı kayıtların adları; yoksa ya da silinmişse null.
   Stream<TransactionRow?> watchRow(String id) =>
@@ -62,7 +74,11 @@ class TransactionRepository
     final sql =
         'select t.*, l.year as lot_year, l.seq as lot_seq, '
         's.kg as sale_kg, a.name as apiary_name, '
-        'sa.name as transport_from, da.name as transport_to '
+        'sa.name as transport_from, da.name as transport_to, '
+        'tr.destination_apiary_id as transport_to_id, '
+        'c.name as customer_name, '
+        '(select coalesce(sum(p.amount), 0) from customer_payments p '
+        'where p.transaction_id = t.id and p.deleted_at is null) as paid '
         'from transactions t '
         'left join lots l on l.id = t.lot_id and l.deleted_at is null '
         'left join lot_sales s on s.id = t.lot_sale_id '
@@ -72,6 +88,8 @@ class TransactionRepository
         'and tr.deleted_at is null '
         'left join apiaries sa on sa.id = tr.source_apiary_id '
         'left join apiaries da on da.id = tr.destination_apiary_id '
+        'left join customers c on c.id = t.customer_id '
+        'and c.deleted_at is null '
         'where t.deleted_at is null and $filter';
     return db
         .customSelect(
@@ -83,6 +101,8 @@ class TransactionRepository
             db.lotSales,
             db.apiaries,
             db.transports,
+            db.customers,
+            db.customerPayments,
           },
         )
         .watch()
@@ -97,10 +117,35 @@ class TransactionRepository
                 apiaryName: row.readNullable<String>('apiary_name'),
                 transportFrom: row.readNullable<String>('transport_from'),
                 transportTo: row.readNullable<String>('transport_to'),
+                transportToId: row.readNullable<String>('transport_to_id'),
+                customerName: row.readNullable<String>('customer_name'),
+                paid: row.read<double>('paid'),
               ),
           ]..sort((a, b) => compareTransactions(a.transaction, b.transaction)),
         );
   }
+
+  /// İşletmenin lota bağlı hasatları: lot, hasadın arılığı ve kilogramı;
+  /// lotun gelirini arılıklara paylaştırmak için ([apiaryProfits]).
+  Stream<List<LotHarvestShare>> watchLotHarvestShares(String orgId) => db
+      .customSelect(
+        'select lh.lot_id, h.apiary_id, h.net_kg from lot_harvests lh '
+        'join harvests h on h.id = lh.harvest_id and h.deleted_at is null '
+        'where lh.deleted_at is null and lh.org_id = ?',
+        variables: [Variable.withString(orgId)],
+        readsFrom: {db.lotHarvests, db.harvests},
+      )
+      .watch()
+      .map(
+        (rows) => [
+          for (final row in rows)
+            (
+              lotId: row.read<String>('lot_id'),
+              apiaryId: row.read<String>('apiary_id'),
+              kg: row.read<double>('net_kg'),
+            ),
+        ],
+      );
 
   /// İşletmenin son [limit] taşıması, yeni önce; gidere bağlamak için.
   Stream<List<TransportChoice>> watchTransportChoices(
@@ -135,8 +180,10 @@ class TransactionRepository
 
   /// Hareketi yazar; [receipt] verilirse fişi yükleme kuyruğuna ekler.
   /// [saleKg] verilirse [lotId] lotundan o kadar satış düşer ve hareket
-  /// satışa bağlanır. Hepsi tek transaction'da. Alanlar geçersizse
-  /// ([checkTransaction]) ya da satış kilogramı sınır dışındaysa
+  /// satışa bağlanır. [customerId] gelirin müşterisi; [paidNow] satışta
+  /// alınan ödeme, tahsilat olarak yazılır (kalanı alacak). Hepsi tek
+  /// transaction'da. Alanlar geçersizse ([checkTransaction]), satış
+  /// kilogramı sınır dışındaysa ya da peşin ödeme tutarı aşıyorsa
   /// [ArgumentError], satılan lot yoksa [StateError] atar ve bir şey
   /// yazmaz.
   Future<FinanceTransaction> create({
@@ -152,6 +199,8 @@ class TransactionRepository
     String? lotId,
     String? transportId,
     double? saleKg,
+    String? customerId,
+    double? paidNow,
   }) => db.transaction(() async {
     final at = now();
     final id = generateId();
@@ -186,11 +235,16 @@ class TransactionRepository
           lotId: lotId,
           transportId: transportId,
           lotSaleId: lotSaleId,
+          customerId: customerId,
           createdAt: at,
           updatedAt: at,
         ),
       ),
     );
+    if (paidNow != null) {
+      if (customerId == null) throw ArgumentError.value(paidNow, 'paidNow');
+      await _payments.add(transaction, paidNow, paidOn: occurredOn);
+    }
     if (transaction.receiptPath case final path?) {
       await db
           .into(db.receiptUploads)
@@ -207,15 +261,18 @@ class TransactionRepository
     return transaction;
   });
 
-  /// Hareketi ve bağlı lot satışını siler, fişi henüz yüklenmediyse
-  /// kuyruktan çıkarır; hepsi tek transaction'da. Yüklenmiş fiş Storage'da
-  /// kalır. Hareket yoksa ya da zaten silinmişse bir şey yazmaz.
+  /// Hareketi, bağlı lot satışını ve tahsilatlarını siler, fişi henüz
+  /// yüklenmediyse kuyruktan çıkarır; hepsi tek transaction'da. Yüklenmiş
+  /// fiş Storage'da kalır. Hareket yoksa ya da zaten silinmişse bir şey yazmaz.
   Future<void> remove(String id) => db.transaction(() async {
     final transaction = await findById(id);
     if (transaction == null) return;
     await delete(id);
     if (transaction.lotSaleId case final saleId?) {
       await _lots.sales.delete(saleId);
+    }
+    for (final payment in await _payments.findBySale(id)) {
+      await _payments.delete(payment.id);
     }
     await (db.delete(db.receiptUploads)..where(
           (t) =>

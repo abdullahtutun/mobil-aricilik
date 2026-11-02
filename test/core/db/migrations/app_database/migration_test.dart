@@ -16,6 +16,7 @@ import 'generated/schema_v17.dart' as v17;
 import 'generated/schema_v18.dart' as v18;
 import 'generated/schema_v19.dart' as v19;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v20.dart' as v20;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
@@ -768,15 +769,12 @@ void main() {
         expect(lot.seq, 7);
         // Dökümde boolean SQLite'taki gibi 0/1.
         expect(lot.published, 0);
-        expect(
-          [
-            lot.publicProducer,
-            lot.publicOrigin,
-            lot.publicLab,
-            lot.publicReport,
-          ],
-          everyElement(1),
-        );
+        expect([
+          lot.publicProducer,
+          lot.publicOrigin,
+          lot.publicLab,
+          lot.publicReport,
+        ], everyElement(1));
       },
     );
   });
@@ -807,6 +805,41 @@ void main() {
         expect(sale.kg, 160);
         expect(await newDb.select(newDb.transactions).get(), isEmpty);
         expect(await newDb.select(newDb.receiptUploads).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v19 → v20 finans hareketlerini müşterisiz korur; müşteri tabloları '
+      'boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 19,
+      newVersion: 20,
+      createOld: v19.DatabaseAtV19.new,
+      createNew: v20.DatabaseAtV20.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.transactions,
+          v19.TransactionsCompanion.insert(
+            id: 'transaction-1',
+            createdAt: '2026-11-02T09:00:00.000Z',
+            updatedAt: '2026-11-02T09:00:00.000Z',
+            orgId: 'org-1',
+            kind: 'income',
+            category: 'honey',
+            amount: 56000,
+            currency: 'TRY',
+            occurredOn: '2026-11-02',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final transaction =
+            (await newDb.select(newDb.transactions).get()).single;
+        expect(transaction.amount, 56000);
+        expect(transaction.customerId, null);
+        expect(await newDb.select(newDb.customers).get(), isEmpty);
+        expect(await newDb.select(newDb.customerPayments).get(), isEmpty);
       },
     );
   });

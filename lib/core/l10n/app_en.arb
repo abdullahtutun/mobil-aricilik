@@ -5738,5 +5738,288 @@
   "syncTableTransactions": "Income/expense",
   "@syncTableTransactions": {
     "description": "Sync screen record type."
+  },
+
+  "customersTitle": "Customer book",
+  "@customersTitle": {
+    "description": "Customer list title; link on finance screen."
+  },
+  "customersAdd": "Add customer",
+  "@customersAdd": {
+    "description": "App bar add button."
+  },
+  "customersEmptyTitle": "No customers yet",
+  "@customersEmptyTitle": {
+    "description": "Empty customer list title."
+  },
+  "customersEmptyMessage": "Add customers to track their orders and what they owe.",
+  "@customersEmptyMessage": {
+    "description": "Empty customer list message."
+  },
+  "customerReceivableValue": "{amount} owed",
+  "@customerReceivableValue": {
+    "description": "Receivable of a customer.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺6.000"
+      }
+    }
+  },
+  "customerNoReceivable": "Nothing owed",
+  "@customerNoReceivable": {
+    "description": "No receivable."
+  },
+  "customerNotFound": "Customer not found",
+  "@customerNotFound": {
+    "description": "Missing customer."
+  },
+  "customerEdit": "Edit customer",
+  "@customerEdit": {
+    "description": "Edit button tooltip."
+  },
+  "customerAddSale": "Add sale",
+  "@customerAddSale": {
+    "description": "Opens income form for this customer."
+  },
+  "customerOrders": "Orders",
+  "@customerOrders": {
+    "description": "Section label for customer sales."
+  },
+  "customerNoOrders": "No sales to this customer yet.",
+  "@customerNoOrders": {
+    "description": "Empty orders."
+  },
+  "customerPaid": "Paid",
+  "@customerPaid": {
+    "description": "Sale fully paid badge."
+  },
+  "customerRemaining": "{amount} left",
+  "@customerRemaining": {
+    "description": "Unpaid remainder of a sale.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺4.000"
+      }
+    }
+  },
+  "customerPaidAmount": "Paid so far",
+  "@customerPaidAmount": {
+    "description": "Paid amount row."
+  },
+  "customerMarkPaid": "Mark as paid",
+  "@customerMarkPaid": {
+    "description": "Order action: pays the remainder."
+  },
+  "customerMarkedPaid": "Marked as paid",
+  "@customerMarkedPaid": {
+    "description": "Snackbar after marking paid."
+  },
+  "customerAddPayment": "Record payment",
+  "@customerAddPayment": {
+    "description": "Order action and payment form title."
+  },
+  "customerSendWhatsApp": "Send via WhatsApp",
+  "@customerSendWhatsApp": {
+    "description": "Order action: sends order summary."
+  },
+  "customerWhatsAppNoPhone": "No phone; pick the contact in WhatsApp",
+  "@customerWhatsAppNoPhone": {
+    "description": "Hint when customer has no phone."
+  },
+  "customerWhatsAppFailed": "Couldn't open WhatsApp",
+  "@customerWhatsAppFailed": {
+    "description": "Launch failure."
+  },
+  "customerOpenTransaction": "Open entry",
+  "@customerOpenTransaction": {
+    "description": "Order action: open transaction."
+  },
+  "customerWhatsAppGreeting": "Hello {name},",
+  "@customerWhatsAppGreeting": {
+    "description": "Order summary first line.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Ayşe Hanım"
+      }
+    }
+  },
+  "customerWhatsAppIntro": "Your order summary:",
+  "@customerWhatsAppIntro": {
+    "description": "Order summary intro."
+  },
+  "customerWhatsAppAmount": "Total: {amount}",
+  "@customerWhatsAppAmount": {
+    "description": "Order summary total.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺6.000"
+      }
+    }
+  },
+  "customerWhatsAppPaid": "Paid: {amount}",
+  "@customerWhatsAppPaid": {
+    "description": "Order summary paid.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺2.000"
+      }
+    }
+  },
+  "customerWhatsAppRemaining": "Remaining: {amount}",
+  "@customerWhatsAppRemaining": {
+    "description": "Order summary remaining.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺4.000"
+      }
+    }
+  },
+  "customerWhatsAppPaidInFull": "Paid in full, thank you.",
+  "@customerWhatsAppPaidInFull": {
+    "description": "Order summary when paid."
+  },
+  "customerWhatsAppAddress": "Shipping address: {address}",
+  "@customerWhatsAppAddress": {
+    "description": "Order summary address.",
+    "placeholders": {
+      "address": {
+        "type": "String",
+        "example": "Rize"
+      }
+    }
+  },
+  "customerFormNewTitle": "New customer",
+  "@customerFormNewTitle": {
+    "description": "Customer form title."
+  },
+  "customerFormEditTitle": "Edit customer",
+  "@customerFormEditTitle": {
+    "description": "Customer form title."
+  },
+  "customerFormName": "Name",
+  "@customerFormName": {
+    "description": "Customer name field."
+  },
+  "customerFormPhone": "Phone",
+  "@customerFormPhone": {
+    "description": "Customer phone field."
+  },
+  "customerFormPhoneHelper": "For WhatsApp, e.g. +44 7700 900123",
+  "@customerFormPhoneHelper": {
+    "description": "Phone field helper."
+  },
+  "customerFormAddress": "Shipping address",
+  "@customerFormAddress": {
+    "description": "Customer address field."
+  },
+  "customerFormNotes": "Note",
+  "@customerFormNotes": {
+    "description": "Customer note field."
+  },
+  "customerFormSave": "Save",
+  "@customerFormSave": {
+    "description": "Customer form save."
+  },
+  "customerSaved": "Customer saved",
+  "@customerSaved": {
+    "description": "Snackbar after save."
+  },
+  "customerDelete": "Delete customer",
+  "@customerDelete": {
+    "description": "Delete button."
+  },
+  "customerDeleteTitle": "Delete customer?",
+  "@customerDeleteTitle": {
+    "description": "Confirm title."
+  },
+  "customerDeleteMessage": "Their sales stay in your income entries.",
+  "@customerDeleteMessage": {
+    "description": "Confirm message."
+  },
+  "customerDeleteConfirm": "Delete",
+  "@customerDeleteConfirm": {
+    "description": "Confirm button."
+  },
+  "customerDeleted": "Customer deleted",
+  "@customerDeleted": {
+    "description": "Snackbar after delete."
+  },
+  "customerPaymentSave": "Save payment",
+  "@customerPaymentSave": {
+    "description": "Payment form save."
+  },
+  "customerPaymentSaved": "Payment saved",
+  "@customerPaymentSaved": {
+    "description": "Snackbar after payment."
+  },
+  "customerPaymentTooMuch": "Only {amount} is left.",
+  "@customerPaymentTooMuch": {
+    "description": "Payment over remainder.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺4.000"
+      }
+    }
+  },
+  "financeFormCustomer": "Customer",
+  "@financeFormCustomer": {
+    "description": "Income customer link."
+  },
+  "financeFormChooseCustomer": "Choose customer",
+  "@financeFormChooseCustomer": {
+    "description": "Customer picker title."
+  },
+  "financeFormNoCustomers": "No customers yet",
+  "@financeFormNoCustomers": {
+    "description": "Customer picker empty."
+  },
+  "financeFormPaidNow": "Paid now",
+  "@financeFormPaidNow": {
+    "description": "Upfront payment field."
+  },
+  "financeFormPaidNowHelper": "Leave empty if the whole amount is owed.",
+  "@financeFormPaidNowHelper": {
+    "description": "Upfront payment helper."
+  },
+  "financeFormPaidTooMuch": "Can't be more than the amount.",
+  "@financeFormPaidTooMuch": {
+    "description": "Upfront payment over amount."
+  },
+  "financeProfitTitle": "Profit by apiary",
+  "@financeProfitTitle": {
+    "description": "Profitability card title."
+  },
+  "financeProfitUnknownApiary": "Deleted apiary",
+  "@financeProfitUnknownApiary": {
+    "description": "Profit row for deleted apiary."
+  },
+  "financeReceivables": "{amount} owed · {count, plural, =1{1 customer} other{{count} customers}}",
+  "@financeReceivables": {
+    "description": "Receivables summary.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "₺24.500"
+      },
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "syncTableCustomers": "Customer",
+  "@syncTableCustomers": {
+    "description": "Sync screen record type."
+  },
+  "syncTableCustomerPayments": "Payment",
+  "@syncTableCustomerPayments": {
+    "description": "Sync screen record type."
   }
 }

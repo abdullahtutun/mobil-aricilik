@@ -11,6 +11,7 @@ import 'package:mobil_arici/core/services/print_service_provider.dart';
 import 'package:mobil_arici/core/services/push_service_provider.dart';
 import 'package:mobil_arici/core/services/screen_awake.dart';
 import 'package:mobil_arici/core/services/share_service_provider.dart';
+import 'package:mobil_arici/core/services/url_launcher_service_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
@@ -31,6 +32,7 @@ import 'fake_reminder_notifications.dart';
 import 'fake_screen_awake.dart';
 import 'fake_share_service.dart';
 import 'fake_sync_service.dart';
+import 'fake_url_launcher.dart';
 import 'fake_weather_service.dart';
 import 'test_database.dart';
 
@@ -88,10 +90,10 @@ class FakeAuthService implements AuthService {
 }
 
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
-/// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, paylaşma, senkron,
-/// medya (foto, ses, Storage), belge dosyaları (PDF seçici, çizici,
-/// Storage), fiş klasörü, hava servisi ve ekranı açık tutma sahte; hava servisi
-/// verilmezse çevrimdışı gibi hata atar. İlk tam çekme bitmiş
+/// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, paylaşma, adres
+/// açıcı, senkron, medya (foto, ses, Storage), belge dosyaları (PDF seçici,
+/// çizici, Storage), fiş klasörü, hava servisi ve ekranı açık tutma sahte;
+/// hava servisi verilmezse çevrimdışı gibi hata atar. İlk tam çekme bitmiş
 /// sayılır ([fullPullDone] yanlışsa DB'den okunur).
 List<Override> signedIn({
   FakeAuthService? auth,
@@ -99,6 +101,7 @@ List<Override> signedIn({
   FakeCodeScanner? scanner,
   FakePrintService? printer,
   FakeShareService? share,
+  FakeUrlLauncher? urlLauncher,
   FakeSyncService? sync,
   FakeMedia? media,
   FakeDocuments? documents,
@@ -120,6 +123,9 @@ List<Override> signedIn({
   codeScannerProvider.overrideWithValue((scanner ?? FakeCodeScanner()).builder),
   printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
   shareServiceProvider.overrideWithValue(share ?? FakeShareService()),
+  urlLauncherServiceProvider.overrideWithValue(
+    urlLauncher ?? FakeUrlLauncher(),
+  ),
   ...syncOverrides(service: sync, fullPullDone: fullPullDone),
   ...(media ?? FakeMedia()).overrides,
   ...(documents ?? FakeDocuments()).overrides,

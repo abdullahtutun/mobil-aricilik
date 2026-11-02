@@ -1,9 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/finance/data/transaction_repository.dart';
+import 'package:mobil_arici/features/finance/domain/customer.dart';
+import 'package:mobil_arici/features/finance/domain/customer_rules.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
+import 'package:mobil_arici/features/finance/presentation/finance_providers.dart';
 import 'package:mobil_arici/features/harvest/domain/lot_rules.dart';
 import 'package:mobil_arici/features/harvest/presentation/widgets/lot_widgets.dart';
 
@@ -89,7 +93,69 @@ String? financeRowSubtitle(
     ?financeLotLabel(ref, context, row),
     ?row.apiaryName,
     ?financeTransportLabel(l10n, row),
+    ?row.customerName,
     if (transaction.receiptPath != null) l10n.financeReceiptAttached,
   ];
   return parts.isEmpty ? null : parts.join(l10n.titleSeparator);
+}
+
+/// Satışın ödeme durumu: "Ödendi" ya da "Kalan ₺4.000" (renk + ikon +
+/// kelime).
+class SaleStatusBadge extends StatelessWidget {
+  const new(this.row, {super.key});
+
+  final TransactionRow row;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final balance = rowBalance(row);
+    return isPaid(balance)
+        ? StatusBadge(status: AppStatus.good, label: l10n.customerPaid)
+        : StatusBadge(
+            status: AppStatus.warning,
+            label: l10n.customerRemaining(
+              financeMoney(
+                context,
+                balance.remaining,
+                row.transaction.currency,
+              ),
+            ),
+          );
+  }
+}
+
+/// WhatsApp'a gidecek hazır sipariş özeti: selam, sipariş (başlık, gün,
+/// lot), tutar, ödenen ve kalan ya da "ödendi", kargo adresi ve işletmenin
+/// adı.
+String orderSummaryMessage(
+  WidgetRef ref,
+  BuildContext context, {
+  required Customer customer,
+  required TransactionRow row,
+  String? organizationName,
+}) {
+  final l10n = AppLocalizations.of(context);
+  final transaction = row.transaction;
+  final balance = rowBalance(row);
+  String money(double amount) =>
+      financeMoney(context, amount, transaction.currency);
+  return [
+    l10n.customerWhatsAppGreeting(customer.name),
+    l10n.customerWhatsAppIntro,
+    [
+      financeRowTitle(l10n, transaction),
+      AppFormat.of(context).date(transaction.occurredOn),
+      ?financeLotLabel(ref, context, row),
+    ].join(l10n.titleSeparator),
+    l10n.customerWhatsAppAmount(money(balance.amount)),
+    if (balance.paid > 0) l10n.customerWhatsAppPaid(money(balance.paid)),
+    if (isPaid(balance))
+      l10n.customerWhatsAppPaidInFull
+    else
+      l10n.customerWhatsAppRemaining(money(balance.remaining)),
+    if (customer.address case final address?)
+      l10n.customerWhatsAppAddress(address),
+    ?organizationName,
+  ].join('\n');
 }

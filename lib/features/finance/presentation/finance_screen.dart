@@ -6,13 +6,16 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/finance/data/transaction_repository.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:mobil_arici/features/finance/presentation/finance_providers.dart';
 import 'package:mobil_arici/features/finance/presentation/widgets/finance_labels.dart';
 
 /// Finans (docs/design "Finans"): üstte koyu sezon kartı (net, gelir,
-/// gider, kovan başı maliyet), altında son hareketler; en altta hızlı
+/// gider, kovan başı maliyet), konaklama kârlılığı (arılık başı net),
+/// alacak ve müşteri defteri kartı, son hareketler; en altta hızlı
 /// "− Gider" ve "+ Gelir". Harekete dokununca ayrıntısı açılır.
 class FinanceScreen extends ConsumerWidget {
   const new({super.key});
@@ -31,6 +34,9 @@ class FinanceScreen extends ConsumerWidget {
             padding: EdgeInsets.all(spacing.lg),
             children: [
               const _SeasonCard(),
+              const _ProfitCard(),
+              SizedBox(height: spacing.lg),
+              const _ReceivablesCard(),
               SizedBox(height: spacing.xl),
               if (rows.isEmpty)
                 EmptyState(
@@ -160,6 +166,186 @@ class _SeasonCard extends ConsumerWidget {
 
   /// Kovan başı maliyet kuruşa yuvarlı; küsuratsızsa kuruşsuz yazılır.
   static double _cents(double value) => (value * 100).round() / 100;
+}
+
+/// Konaklama kârlılığı: bu sezon arılık başı net, büyük önce; çubuk en
+/// büyük tutara göre. Kâr yeşil "+", zarar kırmızı "−" ve ikonla. Arılığa
+/// bağlanabilen hareket yoksa kart yok.
+class _ProfitCard extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final currency = ref.watch(financeCurrencyProvider);
+    final profits = ref.watch(apiaryProfitListProvider).value ?? const [];
+    if (currency == null || profits.isEmpty) return const SizedBox.shrink();
+    final apiaries = ref.watch(apiaryListProvider).value;
+    final names = {
+      for (final item in apiaries ?? const <ApiarySummary>[])
+        item.apiary.id: item.apiary.name,
+    };
+    final largest = profits.fold<double>(
+      0,
+      (max, p) => p.net.abs() > max ? p.net.abs() : max,
+    );
+
+    return Padding(
+      padding: EdgeInsets.only(top: spacing.lg),
+      child: SectionCard(
+        title: l10n.financeProfitTitle,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: spacing.md,
+          children: [
+            for (final profit in profits)
+              _ProfitRow(
+                name: names[profit.apiaryId] ?? l10n.financeProfitUnknownApiary,
+                value: profit.net < 0
+                    ? l10n.financeMinus(
+                        financeMoney(context, -profit.net, currency),
+                      )
+                    : l10n.financePlus(
+                        financeMoney(context, profit.net, currency),
+                      ),
+                loss: profit.net < 0,
+                fill: largest == 0 ? 0 : profit.net.abs() / largest,
+                color: profit.net < 0
+                    ? colors.statusCritical
+                    : colors.statusGood,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfitRow extends StatelessWidget {
+  const new({
+    required this.name,
+    required this.value,
+    required this.loss,
+    required this.fill,
+    required this.color,
+  });
+
+  final String name;
+  final String value;
+  final bool loss;
+  final double fill;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final spacing = context.spacing;
+    return MergeSemantics(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: spacing.xs,
+        children: [
+          Row(
+            children: [
+              Expanded(child: Text(name, style: context.typography.body)),
+              SizedBox(width: spacing.sm),
+              Icon(
+                loss ? Icons.trending_down_rounded : Icons.trending_up_rounded,
+                size: context.sizes.iconSmall,
+                color: color,
+              ),
+              SizedBox(width: spacing.xs),
+              Text(
+                value,
+                style: context.typography.label.copyWith(color: color),
+              ),
+            ],
+          ),
+          ExcludeSemantics(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(context.radii.pill),
+              child: LinearProgressIndicator(
+                value: fill,
+                minHeight: spacing.md,
+                color: color,
+                backgroundColor: context.colors.divider,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Alacak özeti ve müşteri defterine geçiş: "₺24.500 alacak · 4 müşteri";
+/// alacak yoksa "Alacak yok".
+class _ReceivablesCard extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final currency = ref.watch(financeCurrencyProvider);
+    final summary = ref.watch(receivablesProvider).value;
+    final owed = summary != null && currency != null && summary.total > 0;
+    final status = owed ? AppStatus.warning : null;
+    final tone = status?.colorIn(colors) ?? colors.textPrimary;
+
+    return MergeSemantics(
+      child: AppCard(
+        status: status,
+        onTap: () => context.go(AppRoutes.customers),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: context.touchTargets.field),
+          child: Padding(
+            padding: EdgeInsets.all(spacing.lg),
+            child: Wrap(
+              spacing: spacing.md,
+              runSpacing: spacing.sm,
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (status != null) ...[
+                      Icon(
+                        status.icon,
+                        size: context.sizes.iconSmall,
+                        color: tone,
+                      ),
+                      SizedBox(width: spacing.xs),
+                    ],
+                    Flexible(
+                      child: Text(
+                        owed
+                            ? l10n.financeReceivables(
+                                financeMoney(context, summary.total, currency),
+                                summary.customers,
+                              )
+                            : l10n.customerNoReceivable,
+                        style: context.typography.label.copyWith(color: tone),
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  l10n.customersTitle,
+                  style: context.typography.label.copyWith(
+                    color: owed ? tone : colors.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _TransactionList extends ConsumerWidget {

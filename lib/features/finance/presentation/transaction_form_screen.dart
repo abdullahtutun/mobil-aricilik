@@ -24,12 +24,14 @@ import 'package:mobil_arici/features/harvest/presentation/widgets/lot_widgets.da
 
 /// Gelir ya da gider ekleme: tutar (işletmenin para birimi), kategori,
 /// tarih, açıklama; bağlı arılık, lot ve (giderde) taşıma; lotlu gelirde
-/// satılan bal (lotun stoğundan düşer); fiş fotoğrafı. Kaydedince 6 sn
-/// geri alınabilir.
+/// satılan bal (lotun stoğundan düşer); gelirde müşteri ve peşin alınan
+/// (kalanı alacak); fiş fotoğrafı. Kaydedince 6 sn geri alınabilir. Gelir
+/// müşteri ekranından açılırsa müşteri [customerId] seçili gelir.
 class TransactionFormScreen extends ConsumerWidget {
-  const new({required this.kind, super.key});
+  const new({required this.kind, super.key, this.customerId});
 
   final TransactionKind kind;
+  final String? customerId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,15 +44,16 @@ class TransactionFormScreen extends ConsumerWidget {
           TransactionKind.expense => l10n.financeFormExpenseTitle,
         }),
       ),
-      body: _TransactionFormBody(kind),
+      body: _TransactionFormBody(kind, customerId),
     );
   }
 }
 
 class _TransactionFormBody extends ConsumerStatefulWidget {
-  const new(this.kind);
+  const new(this.kind, this.customerId);
 
   final TransactionKind kind;
+  final String? customerId;
 
   @override
   ConsumerState<_TransactionFormBody> createState() =>
@@ -61,17 +64,22 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
   final _amount = TextEditingController();
   final _description = TextEditingController();
   final _sale = TextEditingController();
+  final _paidNow = TextEditingController();
 
   @override
   void dispose() {
     _amount.dispose();
     _description.dispose();
     _sale.dispose();
+    _paidNow.dispose();
     super.dispose();
   }
 
   TransactionFormControllerProvider get _provider =>
-      transactionFormControllerProvider(widget.kind);
+      transactionFormControllerProvider(
+        widget.kind,
+        customerId: widget.customerId,
+      );
 
   TransactionFormController get _controller => ref.read(_provider.notifier);
 
@@ -94,6 +102,10 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
     final transport = transports
         .where((t) => t.id == form.transportId)
         .firstOrNull;
+    final customers = ref.watch(customerListProvider).value ?? const [];
+    final customer = customers
+        .where((c) => c.id == form.customerId)
+        .firstOrNull;
     final inputStyle = context.typography.subtitle.copyWith(
       fontWeight: context.typography.body.fontWeight,
     );
@@ -109,7 +121,21 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
         : stock != null && saleKg > stock
         ? l10n.lotSaleTooMuch(lotWeight(ref, context, stock))
         : null;
-    final canSave = form.canSave && currency != null && saleProblem == null;
+    final paidText = _paidNow.text.trim();
+    final paidNow = form.paidNow;
+    final amount = form.amount;
+    final paidProblem = !form.canTakePayment || paidText.isEmpty
+        ? null
+        : paidNow == null
+        ? l10n.financeFormAmountInvalid
+        : amount != null && (paidNow * 100).round() > (amount * 100).round()
+        ? l10n.financeFormPaidTooMuch
+        : null;
+    final canSave =
+        form.canSave &&
+        currency != null &&
+        saleProblem == null &&
+        paidProblem == null;
 
     return BottomActionLayout(
       separated: true,
@@ -238,6 +264,28 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
                   ),
                 ),
               ),
+              if (widget.kind == TransactionKind.income)
+                ListRow(
+                  title: l10n.financeFormCustomer,
+                  value: customer?.name ?? l10n.financeFormNone,
+                  onTap: () => unawaited(
+                    _pick(
+                      context,
+                      title: l10n.financeFormChooseCustomer,
+                      emptyMessage: l10n.financeFormNoCustomers,
+                      selected: form.customerId,
+                      icon: Icons.person_outline_rounded,
+                      options: [
+                        for (final c in customers)
+                          (id: c.id, label: c.name, hint: c.phone),
+                      ],
+                      onPicked: (id) {
+                        _paidNow.clear();
+                        _controller.setCustomer(id);
+                      },
+                    ),
+                  ),
+                ),
               if (widget.kind == TransactionKind.expense)
                 ListRow(
                   title: l10n.financeFormTransport,
@@ -274,6 +322,10 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
           if (form.canSell) ...[
             SizedBox(height: spacing.xl),
             _saleField(l10n, saleProblem),
+          ],
+          if (form.canTakePayment) ...[
+            SizedBox(height: spacing.xl),
+            _paidNowField(l10n, paidProblem),
           ],
           SizedBox(height: spacing.xl),
           _receiptField(l10n, form),
@@ -318,6 +370,33 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
       ],
     );
   }
+
+  /// Müşterili gelirde satışta alınan ödeme; boşsa tamamı alacak.
+  Widget _paidNowField(AppLocalizations l10n, String? problem) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      LabeledField(
+        label: l10n.financeFormPaidNow,
+        helper: l10n.financeFormPaidNowHelper,
+        child: TextField(
+          controller: _paidNow,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp('[0-9., ]')),
+          ],
+          style: context.typography.number,
+          onChanged: (text) {
+            _controller.setPaidNow(parseAmount(text));
+            setState(() {});
+          },
+        ),
+      ),
+      if (problem != null) ...[
+        SizedBox(height: context.spacing.sm),
+        StatusMessage(status: AppStatus.warning, message: problem),
+      ],
+    ],
+  );
 
   Widget _receiptField(AppLocalizations l10n, TransactionFormState form) {
     final spacing = context.spacing;

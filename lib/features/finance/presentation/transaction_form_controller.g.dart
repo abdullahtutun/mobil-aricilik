@@ -25,7 +25,7 @@ final class TransactionFormControllerProvider
   /// çektiği fiş silinir.
   TransactionFormControllerProvider._({
     required TransactionFormControllerFamily super.from,
-    required TransactionKind super.argument,
+    required (TransactionKind, {String? customerId}) super.argument,
   }) : super(
          retry: null,
          name: r'transactionFormControllerProvider',
@@ -41,7 +41,7 @@ final class TransactionFormControllerProvider
   String toString() {
     return r'transactionFormControllerProvider'
         ''
-        '($argument)';
+        '$argument';
   }
 
   @$internal
@@ -69,7 +69,7 @@ final class TransactionFormControllerProvider
 }
 
 String _$transactionFormControllerHash() =>
-    r'17a25565c86c6d2b1ed364123402049f51502e59';
+    r'a96323ee8f2022db739857ec55776d3f73ead30c';
 
 /// Gelir ya da gider ekleme formu. Ekran açık kaldığı sürece yaşar. Her
 /// şey yerel DB'ye ve fiş klasörüne yazılır; kaydedilmeden kapanan formun
@@ -82,7 +82,7 @@ final class TransactionFormControllerFamily extends $Family
           TransactionFormState,
           TransactionFormState,
           TransactionFormState,
-          TransactionKind
+          (TransactionKind, {String? customerId})
         > {
   TransactionFormControllerFamily._()
     : super(
@@ -97,8 +97,13 @@ final class TransactionFormControllerFamily extends $Family
   /// şey yerel DB'ye ve fiş klasörüne yazılır; kaydedilmeden kapanan formun
   /// çektiği fiş silinir.
 
-  TransactionFormControllerProvider call(TransactionKind kind) =>
-      TransactionFormControllerProvider._(argument: kind, from: this);
+  TransactionFormControllerProvider call(
+    TransactionKind kind, {
+    String? customerId,
+  }) => TransactionFormControllerProvider._(
+    argument: (kind, customerId: customerId),
+    from: this,
+  );
 
   @override
   String toString() => r'transactionFormControllerProvider';
@@ -110,10 +115,11 @@ final class TransactionFormControllerFamily extends $Family
 
 abstract class _$TransactionFormController
     extends $Notifier<TransactionFormState> {
-  late final _$args = ref.$arg as TransactionKind;
-  TransactionKind get kind => _$args;
+  late final _$args = ref.$arg as (TransactionKind, {String? customerId});
+  TransactionKind get kind => _$args.$1;
+  String? get customerId => _$args.customerId;
 
-  TransactionFormState build(TransactionKind kind);
+  TransactionFormState build(TransactionKind kind, {String? customerId});
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
@@ -126,6 +132,9 @@ abstract class _$TransactionFormController
               Object?,
               Object?
             >;
-    return element.handleCreate(ref, () => build(_$args));
+    return element.handleCreate(
+      ref,
+      () => build(_$args.$1, customerId: _$args.customerId),
+    );
   }
 }

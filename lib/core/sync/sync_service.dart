@@ -90,7 +90,9 @@ class SyncService {
     _db.lotTreatments,
     _db.labResults,
     _db.lotSales,
+    _db.customers,
     _db.transactions,
+    _db.customerPayments,
   ];
 
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.

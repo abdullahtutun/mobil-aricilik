@@ -9046,6 +9046,342 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Income/expense'**
   String get syncTableTransactions;
+
+  /// Customer list title; link on finance screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer book'**
+  String get customersTitle;
+
+  /// App bar add button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add customer'**
+  String get customersAdd;
+
+  /// Empty customer list title.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet'**
+  String get customersEmptyTitle;
+
+  /// Empty customer list message.
+  ///
+  /// In en, this message translates to:
+  /// **'Add customers to track their orders and what they owe.'**
+  String get customersEmptyMessage;
+
+  /// Receivable of a customer.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} owed'**
+  String customerReceivableValue(String amount);
+
+  /// No receivable.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing owed'**
+  String get customerNoReceivable;
+
+  /// Missing customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer not found'**
+  String get customerNotFound;
+
+  /// Edit button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit customer'**
+  String get customerEdit;
+
+  /// Opens income form for this customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Add sale'**
+  String get customerAddSale;
+
+  /// Section label for customer sales.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get customerOrders;
+
+  /// Empty orders.
+  ///
+  /// In en, this message translates to:
+  /// **'No sales to this customer yet.'**
+  String get customerNoOrders;
+
+  /// Sale fully paid badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get customerPaid;
+
+  /// Unpaid remainder of a sale.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} left'**
+  String customerRemaining(String amount);
+
+  /// Paid amount row.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid so far'**
+  String get customerPaidAmount;
+
+  /// Order action: pays the remainder.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as paid'**
+  String get customerMarkPaid;
+
+  /// Snackbar after marking paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as paid'**
+  String get customerMarkedPaid;
+
+  /// Order action and payment form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment'**
+  String get customerAddPayment;
+
+  /// Order action: sends order summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Send via WhatsApp'**
+  String get customerSendWhatsApp;
+
+  /// Hint when customer has no phone.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone; pick the contact in WhatsApp'**
+  String get customerWhatsAppNoPhone;
+
+  /// Launch failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open WhatsApp'**
+  String get customerWhatsAppFailed;
+
+  /// Order action: open transaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Open entry'**
+  String get customerOpenTransaction;
+
+  /// Order summary first line.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello {name},'**
+  String customerWhatsAppGreeting(String name);
+
+  /// Order summary intro.
+  ///
+  /// In en, this message translates to:
+  /// **'Your order summary:'**
+  String get customerWhatsAppIntro;
+
+  /// Order summary total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {amount}'**
+  String customerWhatsAppAmount(String amount);
+
+  /// Order summary paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid: {amount}'**
+  String customerWhatsAppPaid(String amount);
+
+  /// Order summary remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining: {amount}'**
+  String customerWhatsAppRemaining(String amount);
+
+  /// Order summary when paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid in full, thank you.'**
+  String get customerWhatsAppPaidInFull;
+
+  /// Order summary address.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping address: {address}'**
+  String customerWhatsAppAddress(String address);
+
+  /// Customer form title.
+  ///
+  /// In en, this message translates to:
+  /// **'New customer'**
+  String get customerFormNewTitle;
+
+  /// Customer form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit customer'**
+  String get customerFormEditTitle;
+
+  /// Customer name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get customerFormName;
+
+  /// Customer phone field.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get customerFormPhone;
+
+  /// Phone field helper.
+  ///
+  /// In en, this message translates to:
+  /// **'For WhatsApp, e.g. +44 7700 900123'**
+  String get customerFormPhoneHelper;
+
+  /// Customer address field.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping address'**
+  String get customerFormAddress;
+
+  /// Customer note field.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get customerFormNotes;
+
+  /// Customer form save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get customerFormSave;
+
+  /// Snackbar after save.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer saved'**
+  String get customerSaved;
+
+  /// Delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete customer'**
+  String get customerDelete;
+
+  /// Confirm title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete customer?'**
+  String get customerDeleteTitle;
+
+  /// Confirm message.
+  ///
+  /// In en, this message translates to:
+  /// **'Their sales stay in your income entries.'**
+  String get customerDeleteMessage;
+
+  /// Confirm button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get customerDeleteConfirm;
+
+  /// Snackbar after delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer deleted'**
+  String get customerDeleted;
+
+  /// Payment form save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save payment'**
+  String get customerPaymentSave;
+
+  /// Snackbar after payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment saved'**
+  String get customerPaymentSaved;
+
+  /// Payment over remainder.
+  ///
+  /// In en, this message translates to:
+  /// **'Only {amount} is left.'**
+  String customerPaymentTooMuch(String amount);
+
+  /// Income customer link.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get financeFormCustomer;
+
+  /// Customer picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose customer'**
+  String get financeFormChooseCustomer;
+
+  /// Customer picker empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet'**
+  String get financeFormNoCustomers;
+
+  /// Upfront payment field.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid now'**
+  String get financeFormPaidNow;
+
+  /// Upfront payment helper.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty if the whole amount is owed.'**
+  String get financeFormPaidNowHelper;
+
+  /// Upfront payment over amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t be more than the amount.'**
+  String get financeFormPaidTooMuch;
+
+  /// Profitability card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit by apiary'**
+  String get financeProfitTitle;
+
+  /// Profit row for deleted apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted apiary'**
+  String get financeProfitUnknownApiary;
+
+  /// Receivables summary.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} owed · {count, plural, =1{1 customer} other{{count} customers}}'**
+  String financeReceivables(String amount, int count);
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get syncTableCustomers;
+
+  /// Sync screen record type.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get syncTableCustomerPayments;
 }
 
 class _AppLocalizationsDelegate

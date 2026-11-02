@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/converters.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/db/tables/sync_columns.dart';
+import 'package:mobil_arici/features/finance/domain/customer.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 
 /// `public.transactions` aynası; olay tablosu. Sunucudaki `numeric` tutar
@@ -10,6 +11,7 @@ import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 @UseRowClass(FinanceTransaction, generateInsertable: true)
 @TableIndex(name: 'transactions_org_id_idx', columns: {#orgId})
 @TableIndex(name: 'transactions_lot_id_idx', columns: {#lotId})
+@TableIndex(name: 'transactions_customer_id_idx', columns: {#customerId})
 class Transactions extends Table with SyncColumns, OrgColumns {
   TextColumn get kind =>
       text().map(const ServerEnumConverter(TransactionKind.values))();
@@ -24,6 +26,31 @@ class Transactions extends Table with SyncColumns, OrgColumns {
   TextColumn get lotId => text().nullable()();
   TextColumn get transportId => text().nullable()();
   TextColumn get lotSaleId => text().nullable()();
+  TextColumn get customerId => text().nullable()();
+}
+
+/// `public.customers` aynası; durum tablosu.
+@UseRowClass(Customer, generateInsertable: true)
+@TableIndex(name: 'customers_org_id_idx', columns: {#orgId})
+class Customers extends Table with SyncColumns, OrgColumns {
+  TextColumn get name => text()();
+  TextColumn get phone => text().nullable()();
+  TextColumn get address => text().nullable()();
+  TextColumn get notes => text().nullable()();
+}
+
+/// `public.customer_payments` aynası; olay tablosu. Yerelde satışa FK yok,
+/// senkron satırları sırasız indirir.
+@UseRowClass(CustomerPayment, generateInsertable: true)
+@TableIndex(name: 'customer_payments_org_id_idx', columns: {#orgId})
+@TableIndex(
+  name: 'customer_payments_transaction_id_idx',
+  columns: {#transactionId},
+)
+class CustomerPayments extends Table with SyncColumns, OrgColumns {
+  TextColumn get transactionId => text()();
+  RealColumn get amount => real()();
+  TextColumn get paidOn => text().map(const DateOnlyConverter())();
 }
 
 /// Bu telefonda çekilen fiş fotoğraflarının yükleme kuyruğu; yalnız bu

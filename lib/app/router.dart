@@ -26,7 +26,11 @@ import 'package:mobil_arici/features/documents/presentation/road_check_screen.da
 import 'package:mobil_arici/features/feedback/presentation/feedback_screen.dart';
 import 'package:mobil_arici/features/feeding/presentation/feeding_form_screen.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
+import 'package:mobil_arici/features/finance/presentation/customer_form_screen.dart';
+import 'package:mobil_arici/features/finance/presentation/customer_screen.dart';
+import 'package:mobil_arici/features/finance/presentation/customers_screen.dart';
 import 'package:mobil_arici/features/finance/presentation/finance_screen.dart';
+import 'package:mobil_arici/features/finance/presentation/payment_form_screen.dart';
 import 'package:mobil_arici/features/finance/presentation/transaction_form_screen.dart';
 import 'package:mobil_arici/features/finance/presentation/transaction_screen.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_form_screen.dart';
@@ -98,6 +102,7 @@ const _inventoryItemId = 'inventoryItemId';
 const _harvestId = 'harvestId';
 const _lotId = 'lotId';
 const _transactionId = 'transactionId';
+const _customerId = 'customerId';
 const _rearingBatchId = 'rearingBatchId';
 const _attentionKind = 'kind';
 
@@ -534,7 +539,39 @@ GoRouter router(Ref ref) {
                                   )
                                   .firstOrNull ??
                               TransactionKind.expense,
+                          customerId:
+                              state.uri.queryParameters[AppRoutes
+                                  .financeCustomerParameter],
                         ),
+                      ),
+                      GoRoute(
+                        path: 'customers',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) => const CustomersScreen(),
+                        routes: [
+                          GoRoute(
+                            path: 'new',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) =>
+                                const CustomerFormScreen(),
+                          ),
+                          GoRoute(
+                            path: ':$_customerId',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => CustomerScreen(
+                              customerId: state.pathParameters[_customerId]!,
+                            ),
+                            routes: [
+                              GoRoute(
+                                path: 'edit',
+                                parentNavigatorKey: rootNavigatorKey,
+                                builder: (context, state) => CustomerFormScreen(
+                                  customerId: state.pathParameters[_customerId],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       GoRoute(
                         path: ':$_transactionId',
@@ -542,6 +579,16 @@ GoRouter router(Ref ref) {
                         builder: (context, state) => TransactionScreen(
                           transactionId: state.pathParameters[_transactionId]!,
                         ),
+                        routes: [
+                          GoRoute(
+                            path: 'payment',
+                            parentNavigatorKey: rootNavigatorKey,
+                            builder: (context, state) => PaymentFormScreen(
+                              transactionId:
+                                  state.pathParameters[_transactionId]!,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

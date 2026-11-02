@@ -25,6 +25,7 @@ _FinanceTransaction _$FinanceTransactionFromJson(Map<String, dynamic> json) =>
       lotId: json['lot_id'] as String?,
       transportId: json['transport_id'] as String?,
       lotSaleId: json['lot_sale_id'] as String?,
+      customerId: json['customer_id'] as String?,
       createdBy: json['created_by'] as String?,
       deletedAt: json['deleted_at'] == null
           ? null
@@ -49,6 +50,7 @@ Map<String, dynamic> _$FinanceTransactionToJson(_FinanceTransaction instance) =>
       'lot_id': instance.lotId,
       'transport_id': instance.transportId,
       'lot_sale_id': instance.lotSaleId,
+      'customer_id': instance.customerId,
       'created_by': instance.createdBy,
       'deleted_at': instance.deletedAt?.toIso8601String(),
     };
