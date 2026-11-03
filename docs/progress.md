@@ -619,6 +619,8 @@
 
 - Yazı küçültme (kullanıcı isteği): Günlük tablonun başlıkları (GÜN, SICAKLIK, YAĞIŞ, KM/S, KOVAN), değerleri ve kovan rozeti bir punto küçüldü. Yeni `AppTypography.caption` tokenı (standart 12, saha 13; `bodySmall`'dan bir küçük). `StatusBadge.dense` artık `caption` kullanıyor (yalnız hava ekranında kullanılıyordu). Gün adı ve sıcaklığın üst değeri `subtitle` (16) yerine `body` kalın (15/16).
 
+- Tablo hizası (kullanıcı isteği): YAĞIŞ başlığı dar sütuna (`flex 4`) sığmadığı için `FittedBox` onu küçültüyordu, öbür başlıklar küçülmüyordu. Sütun payları 8 / 7 / 5 / 4 / 8 oldu (yağış büyüdü, kovan küçüldü). Gün dışındaki sütunlarda başlık, değer ve rozet sütunda ortalanıyor; gün sola yaslı. Cihazda (gerçek Inter) görülmedi; testteki Ahem yazı tipi geniş olduğu için orada küçülme ölçüsü gerçeği yansıtmıyor.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

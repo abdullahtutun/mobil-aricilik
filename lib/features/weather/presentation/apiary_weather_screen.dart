@@ -699,17 +699,18 @@ class _TableRow extends StatelessWidget {
     final gap = SizedBox(width: context.spacing.xs);
     return Row(
       children: [
-        // Tasarımdaki sütun enleri (390dp'de ~80 / 70 / 40 / 40 / 90); kovan
-        // sütununa en geniş rozet ("! Rüzgarlı") küçülmeden sığar.
+        // Tasarımdaki sütun enleri (390dp'de ~80 / 70 / 40 / 40 / 90); YAĞIŞ
+        // başlığı küçülmeden sığsın diye yağış biraz geniş, kovan biraz dar.
+        // Başlık ve değerler sütunda ortalanır; yalnız gün sola yaslıdır.
         Expanded(flex: 8, child: day),
         gap,
         Expanded(flex: 7, child: _OneLine(temperature)),
         gap,
-        Expanded(flex: 4, child: _OneLine(precipitation)),
+        Expanded(flex: 5, child: _OneLine(precipitation)),
         gap,
         Expanded(flex: 4, child: _OneLine(wind)),
         gap,
-        Expanded(flex: 9, child: _OneLine(hive)),
+        Expanded(flex: 8, child: _OneLine(hive)),
       ],
     );
   }
@@ -717,16 +718,14 @@ class _TableRow extends StatelessWidget {
 
 /// Sütuna sığmayan başlık ya da değer alt satıra geçmez, küçülür.
 class _OneLine extends StatelessWidget {
-  const new(this.child);
+  const new(this.child, {this.alignment = Alignment.center});
 
   final Widget child;
+  final AlignmentGeometry alignment;
 
   @override
-  Widget build(BuildContext context) => FittedBox(
-    fit: BoxFit.scaleDown,
-    alignment: AlignmentDirectional.centerStart,
-    child: child,
-  );
+  Widget build(BuildContext context) =>
+      FittedBox(fit: BoxFit.scaleDown, alignment: alignment, child: child);
 }
 
 class _DayRow extends StatelessWidget {
@@ -763,12 +762,16 @@ class _DayRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _OneLine(
+          alignment: AlignmentDirectional.centerStart,
           Text(
             isToday ? l10n.weatherToday : format.weekdayShort(day.day),
             style: typography.body.copyWith(fontWeight: FontWeight.w600),
           ),
         ),
-        _OneLine(Text(format.dayMonth(day.day), style: secondary)),
+        _OneLine(
+          Text(format.dayMonth(day.day), style: secondary),
+          alignment: AlignmentDirectional.centerStart,
+        ),
       ],
     );
     final temperature = Text.rich(
@@ -816,7 +819,6 @@ class _DayRow extends StatelessWidget {
     final badge = opening == null
         ? const SizedBox.shrink()
         : Align(
-            alignment: AlignmentDirectional.centerStart,
             child: StatusBadge(
               status: hiveOpeningStatus(opening),
               icon: hiveOpeningIcon(opening),
