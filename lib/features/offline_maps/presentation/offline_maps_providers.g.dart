@@ -129,7 +129,7 @@ final class InstalledMapPacksProvider
   InstalledMapPacks create() => InstalledMapPacks();
 }
 
-String _$installedMapPacksHash() => r'fab0885abc7dfb2d5b5de005554b64a4b2a22b4e';
+String _$installedMapPacksHash() => r'7f80b823afbe6ec8dc8c4ccb6f3cd1d6f34b8b86';
 
 /// Bu telefona indirilmiş paketler, indirme sırasıyla.
 
@@ -208,13 +208,15 @@ String _$upcomingMigrationStopsHash() =>
     r'ac9af9a0bb6702ff5f1ce50e918487fb2efebb49';
 
 /// Arılıkların ve göç duraklarının içinde kaldığı, indirilmemiş paketler
-/// ([suggestMapPacks]).
+/// ([suggestMapPacks]). Katalogun hatasını taşır; o da kendiliğinden
+/// yeniden denenmez.
 
 @ProviderFor(mapPackSuggestions)
 final mapPackSuggestionsProvider = MapPackSuggestionsProvider._();
 
 /// Arılıkların ve göç duraklarının içinde kaldığı, indirilmemiş paketler
-/// ([suggestMapPacks]).
+/// ([suggestMapPacks]). Katalogun hatasını taşır; o da kendiliğinden
+/// yeniden denenmez.
 
 final class MapPackSuggestionsProvider
     extends
@@ -227,12 +229,13 @@ final class MapPackSuggestionsProvider
         $FutureModifier<List<MapPackSuggestion>>,
         $FutureProvider<List<MapPackSuggestion>> {
   /// Arılıkların ve göç duraklarının içinde kaldığı, indirilmemiş paketler
-  /// ([suggestMapPacks]).
+  /// ([suggestMapPacks]). Katalogun hatasını taşır; o da kendiliğinden
+  /// yeniden denenmez.
   MapPackSuggestionsProvider._()
     : super(
         from: null,
         argument: null,
-        retry: null,
+        retry: _noRetry,
         name: r'mapPackSuggestionsProvider',
         isAutoDispose: true,
         dependencies: null,
@@ -255,7 +258,7 @@ final class MapPackSuggestionsProvider
 }
 
 String _$mapPackSuggestionsHash() =>
-    r'b6cd6fe6f445986918be83df48b08a45f43a1389';
+    r'5f4d3fd07bb9412079f809c558bc8a80368e3e1e';
 
 /// Süren indirmeler: paket kimliğinden o ana kadar inen bayta. Uygulama
 /// açık kaldıkça sürer; ekrandan çıkınca durmaz.
@@ -296,7 +299,7 @@ final class MapPackDownloadsProvider
   }
 }
 
-String _$mapPackDownloadsHash() => r'057907f4a37b750891ed8ce8e78636914c5d853b';
+String _$mapPackDownloadsHash() => r'fbc47545022a8d00ef20985619320fa447050283';
 
 /// Süren indirmeler: paket kimliğinden o ana kadar inen bayta. Uygulama
 /// açık kaldıkça sürer; ekrandan çıkınca durmaz.

@@ -296,6 +296,24 @@ void main() {
     expect(find.byTooltip('Download Mugla'), findsNothing);
   });
 
+  testWidgets('yeniden denerken yükleniyor görünür; yine olmazsa mesaj', (
+    tester,
+  ) async {
+    await openMaps(tester);
+    expect(find.text("Couldn't load the region list"), findsOneWidget);
+
+    maps.catalogHold = Completer<void>();
+    await tester.tap(find.text('Try again'));
+    await tester.pump();
+    expect(find.text("Couldn't load the region list"), findsNothing);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    maps.catalogHold!.complete();
+    await tester.pumpAndSettle();
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.text("Couldn't load the region list"), findsOneWidget);
+  });
+
   testWidgets('silme onay ister; vazgeçince kalır', (tester) async {
     await maps.install('tr-48');
     maps.publish(_packs);

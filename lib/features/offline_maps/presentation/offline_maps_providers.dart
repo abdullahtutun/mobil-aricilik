@@ -63,8 +63,9 @@ Stream<List<MigrationStop>> upcomingMigrationStops(Ref ref) {
 }
 
 /// Arılıkların ve göç duraklarının içinde kaldığı, indirilmemiş paketler
-/// ([suggestMapPacks]).
-@riverpod
+/// ([suggestMapPacks]). Katalogun hatasını taşır; o da kendiliğinden
+/// yeniden denenmez.
+@Riverpod(retry: _noRetry)
 Future<List<MapPackSuggestion>> mapPackSuggestions(Ref ref) async {
   final catalog = await ref.watch(mapPackCatalogProvider.future);
   final installed = await ref.watch(installedMapPacksProvider.future);

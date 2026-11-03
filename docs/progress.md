@@ -576,6 +576,8 @@
 - Testler: 8 kural, 4 depo, 5 indirici, 5 MBTiles/altlık, 1 göç durağı okuması, 9 ekran akışı (öneriler, ilerleme, durdurma, Wi‑Fi, bozuk paket, katalogsuz, silme, Türkçe, 360dp 1.5x + eldiven) ve Arılıklar haritasında "internetsiz + paket" testi. Tam takımda 2067 test geçiyor, `flutter analyze` temiz.
 - Bilinen: Gerçek paketle ve cihazda denenmedi (uzak bucket hâlâ boş). Wi‑Fi yalnız başlarken denetleniyor; indirme sürerken mobil veriye geçilirse durmuyor. İndirme yalnız uygulama açıkken sürüyor (arka planda devam etmiyor, yarıda kalan baştan iner). Pakette olmayan yer ve paketin en küçük zoom'undan (6) uzak görünüm internetsizken boş. Katalogdaki yeni sürüm için "güncelle" yok; tasarımdaki "Haritada alan seç" yapılmadı. MBTiles okuması ana isolate'te, eşzamanlı. Widget testlerinde sahte HTTP'nin bir adımı gerçek olay döngüsüne düşüyor; akış testi `runAsync` ile bekliyor.
 
+- Düzeltme: "Bölge listesi alınamadı" kartındaki "Yeniden dene" tepkisiz görünüyordu. Riverpod 3 yenilemede önceki hatayı `isLoading` ile tuttuğu için ekran hata kartını çizmeye devam ediyordu; artık yenilenirken yükleniyor gösteriliyor. Öneriler provider'ı katalog hatasını otomatik yeniden denemiyor. Uzak `map-packs` bucket'ında `catalog.json` yok (istek 400); paketler `cut_packs.py --upload` ile yüklenene kadar ekran bu mesajı göstermeye devam eder.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

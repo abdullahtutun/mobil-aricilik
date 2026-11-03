@@ -84,6 +84,13 @@ class OfflineMapsScreen extends ConsumerWidget {
           gap,
           const ListGroup(children: [_WifiOnlyTile()]),
           ...switch (catalog) {
+            // Yeniden denerken önceki hata da durumda kalır; önce yükleniyor
+            // gösterilir, yoksa "Yeniden dene" hiçbir şey yapmıyor gibi
+            // görünür.
+            AsyncValue(isLoading: true) => [
+              sectionGap,
+              const Center(child: CircularProgressIndicator()),
+            ],
             AsyncData(:final value) => [
               if (suggestions.isNotEmpty) ...[
                 sectionGap,
@@ -140,10 +147,7 @@ class OfflineMapsScreen extends ConsumerWidget {
                 ),
               ),
             ],
-            AsyncValue() => [
-              sectionGap,
-              const Center(child: CircularProgressIndicator()),
-            ],
+            AsyncValue() => const [],
           },
           sectionGap,
           Text(

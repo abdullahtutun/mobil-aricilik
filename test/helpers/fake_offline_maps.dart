@@ -41,6 +41,9 @@ class FakeOfflineMaps {
   /// bekler (ilerleme ve iptal testleri).
   Completer<void>? hold;
 
+  /// Verilirse Storage okuması (katalog) bu tamamlanana kadar bekler.
+  Completer<void>? catalogHold;
+
   /// İstenen adresler, sırayla.
   final requested = <String>[];
 
@@ -127,6 +130,7 @@ class FakeOfflineMaps {
   }
 
   Future<Uint8List> download(String path) async {
+    await catalogHold?.future;
     final bytes = files[path];
     if (bytes == null) {
       throw const StorageException('Object not found', statusCode: '404');
