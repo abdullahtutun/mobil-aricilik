@@ -592,7 +592,8 @@ $ForecastCopyWith<$Res> get forecast {
 /// @nodoc
 mixin _$Forecast {
 
- String get timezone; int get utcOffsetSeconds; HourlySeries get hourly; DailySeries get daily;
+ String get timezone; int get utcOffsetSeconds; CurrentWeather get current;/// WeatherAPI'nin yer adı (genelde ilçe) ve bölgesi (il).
+ String? get place; String? get region; HourlySeries get hourly; DailySeries get daily;
 /// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -606,20 +607,20 @@ $ForecastCopyWith<Forecast> get copyWith => _$ForecastCopyWithImpl<Forecast>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as Forecast;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Forecast&&(identical(other.timezone, _this.timezone) || other.timezone == _this.timezone)&&(identical(other.utcOffsetSeconds, _this.utcOffsetSeconds) || other.utcOffsetSeconds == _this.utcOffsetSeconds)&&(identical(other.hourly, _this.hourly) || other.hourly == _this.hourly)&&(identical(other.daily, _this.daily) || other.daily == _this.daily));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Forecast&&(identical(other.timezone, _this.timezone) || other.timezone == _this.timezone)&&(identical(other.utcOffsetSeconds, _this.utcOffsetSeconds) || other.utcOffsetSeconds == _this.utcOffsetSeconds)&&(identical(other.current, _this.current) || other.current == _this.current)&&(identical(other.place, _this.place) || other.place == _this.place)&&(identical(other.region, _this.region) || other.region == _this.region)&&(identical(other.hourly, _this.hourly) || other.hourly == _this.hourly)&&(identical(other.daily, _this.daily) || other.daily == _this.daily));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Forecast;
-  return Object.hash(runtimeType,_this.timezone,_this.utcOffsetSeconds,_this.hourly,_this.daily);
+  return Object.hash(runtimeType,_this.timezone,_this.utcOffsetSeconds,_this.current,_this.place,_this.region,_this.hourly,_this.daily);
 }
 
 @override
 String toString() {
   final _this = this as Forecast;
-  return 'Forecast(timezone: ${_this.timezone}, utcOffsetSeconds: ${_this.utcOffsetSeconds}, hourly: ${_this.hourly}, daily: ${_this.daily})';
+  return 'Forecast(timezone: ${_this.timezone}, utcOffsetSeconds: ${_this.utcOffsetSeconds}, current: ${_this.current}, place: ${_this.place}, region: ${_this.region}, hourly: ${_this.hourly}, daily: ${_this.daily})';
 }
 
 
@@ -630,11 +631,11 @@ abstract mixin class $ForecastCopyWith<$Res>  {
   factory $ForecastCopyWith(Forecast value, $Res Function(Forecast) _then) = _$ForecastCopyWithImpl;
 @useResult
 $Res call({
- String timezone, int utcOffsetSeconds, HourlySeries hourly, DailySeries daily
+ String timezone, int utcOffsetSeconds, CurrentWeather current, String? place, String? region, HourlySeries hourly, DailySeries daily
 });
 
 
-$HourlySeriesCopyWith<$Res> get hourly;$DailySeriesCopyWith<$Res> get daily;
+$CurrentWeatherCopyWith<$Res> get current;$HourlySeriesCopyWith<$Res> get hourly;$DailySeriesCopyWith<$Res> get daily;
 
 }
 /// @nodoc
@@ -647,16 +648,28 @@ class _$ForecastCopyWithImpl<$Res>
 
 /// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? hourly = null,Object? daily = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? current = null,Object? place = freezed,Object? region = freezed,Object? hourly = null,Object? daily = null,}) {
   return _then(Forecast(
 timezone: null == timezone ? _self.timezone : timezone // ignore: cast_nullable_to_non_nullable
 as String,utcOffsetSeconds: null == utcOffsetSeconds ? _self.utcOffsetSeconds : utcOffsetSeconds // ignore: cast_nullable_to_non_nullable
-as int,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
+as int,current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
+as CurrentWeather,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
+as String?,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
+as String?,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
 as HourlySeries,daily: null == daily ? _self.daily : daily // ignore: cast_nullable_to_non_nullable
 as DailySeries,
   ));
 }
 /// Create a copy of Forecast
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CurrentWeatherCopyWith<$Res> get current {
+  
+  return $CurrentWeatherCopyWith<$Res>(_self.current, (value) {
+    return _then(_self.copyWith(current: value));
+  });
+}/// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -756,10 +769,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  HourlySeries hourly,  DailySeries daily)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  String? place,  String? region,  HourlySeries hourly,  DailySeries daily)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Forecast() when $default != null:
-return $default(_that.timezone,_that.utcOffsetSeconds,_that.hourly,_that.daily);case _:
+return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,_that.region,_that.hourly,_that.daily);case _:
   return orElse();
 
 }
@@ -777,10 +790,10 @@ return $default(_that.timezone,_that.utcOffsetSeconds,_that.hourly,_that.daily);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  HourlySeries hourly,  DailySeries daily)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  String? place,  String? region,  HourlySeries hourly,  DailySeries daily)  $default,) {final _that = this;
 switch (_that) {
 case _Forecast():
-return $default(_that.timezone,_that.utcOffsetSeconds,_that.hourly,_that.daily);case _:
+return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,_that.region,_that.hourly,_that.daily);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -797,10 +810,10 @@ return $default(_that.timezone,_that.utcOffsetSeconds,_that.hourly,_that.daily);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String timezone,  int utcOffsetSeconds,  HourlySeries hourly,  DailySeries daily)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  String? place,  String? region,  HourlySeries hourly,  DailySeries daily)?  $default,) {final _that = this;
 switch (_that) {
 case _Forecast() when $default != null:
-return $default(_that.timezone,_that.utcOffsetSeconds,_that.hourly,_that.daily);case _:
+return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,_that.region,_that.hourly,_that.daily);case _:
   return null;
 
 }
@@ -812,11 +825,15 @@ return $default(_that.timezone,_that.utcOffsetSeconds,_that.hourly,_that.daily);
 @JsonSerializable()
 
 class _Forecast implements Forecast {
-  const _Forecast({required this.timezone, required this.utcOffsetSeconds, required this.hourly, required this.daily});
+  const _Forecast({required this.timezone, required this.utcOffsetSeconds, required this.current, this.place, this.region, required this.hourly, required this.daily});
   factory _Forecast.fromJson(Map<String, dynamic> json) => _$ForecastFromJson(json);
 
 @override final  String timezone;
 @override final  int utcOffsetSeconds;
+@override final  CurrentWeather current;
+/// WeatherAPI'nin yer adı (genelde ilçe) ve bölgesi (il).
+@override final  String? place;
+@override final  String? region;
 @override final  HourlySeries hourly;
 @override final  DailySeries daily;
 
@@ -833,18 +850,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Forecast&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.utcOffsetSeconds, utcOffsetSeconds) || other.utcOffsetSeconds == utcOffsetSeconds)&&(identical(other.hourly, hourly) || other.hourly == hourly)&&(identical(other.daily, daily) || other.daily == daily));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Forecast&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.utcOffsetSeconds, utcOffsetSeconds) || other.utcOffsetSeconds == utcOffsetSeconds)&&(identical(other.current, current) || other.current == current)&&(identical(other.place, place) || other.place == place)&&(identical(other.region, region) || other.region == region)&&(identical(other.hourly, hourly) || other.hourly == hourly)&&(identical(other.daily, daily) || other.daily == daily));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,timezone,utcOffsetSeconds,hourly,daily);
+    return Object.hash(runtimeType,timezone,utcOffsetSeconds,current,place,region,hourly,daily);
 }
 
 @override
 String toString() {
-    return 'Forecast(timezone: $timezone, utcOffsetSeconds: $utcOffsetSeconds, hourly: $hourly, daily: $daily)';
+    return 'Forecast(timezone: $timezone, utcOffsetSeconds: $utcOffsetSeconds, current: $current, place: $place, region: $region, hourly: $hourly, daily: $daily)';
 }
 
 
@@ -855,11 +872,11 @@ abstract mixin class _$ForecastCopyWith<$Res> implements $ForecastCopyWith<$Res>
   factory _$ForecastCopyWith(_Forecast value, $Res Function(_Forecast) _then) = __$ForecastCopyWithImpl;
 @override @useResult
 $Res call({
- String timezone, int utcOffsetSeconds, HourlySeries hourly, DailySeries daily
+ String timezone, int utcOffsetSeconds, CurrentWeather current, String? place, String? region, HourlySeries hourly, DailySeries daily
 });
 
 
-@override $HourlySeriesCopyWith<$Res> get hourly;@override $DailySeriesCopyWith<$Res> get daily;
+@override $CurrentWeatherCopyWith<$Res> get current;@override $HourlySeriesCopyWith<$Res> get hourly;@override $DailySeriesCopyWith<$Res> get daily;
 
 }
 /// @nodoc
@@ -872,17 +889,29 @@ class __$ForecastCopyWithImpl<$Res>
 
 /// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? hourly = null,Object? daily = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? current = null,Object? place = freezed,Object? region = freezed,Object? hourly = null,Object? daily = null,}) {
   return _then(_Forecast(
 timezone: null == timezone ? _self.timezone : timezone // ignore: cast_nullable_to_non_nullable
 as String,utcOffsetSeconds: null == utcOffsetSeconds ? _self.utcOffsetSeconds : utcOffsetSeconds // ignore: cast_nullable_to_non_nullable
-as int,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
+as int,current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
+as CurrentWeather,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
+as String?,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
+as String?,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
 as HourlySeries,daily: null == daily ? _self.daily : daily // ignore: cast_nullable_to_non_nullable
 as DailySeries,
   ));
 }
 
 /// Create a copy of Forecast
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CurrentWeatherCopyWith<$Res> get current {
+  
+  return $CurrentWeatherCopyWith<$Res>(_self.current, (value) {
+    return _then(_self.copyWith(current: value));
+  });
+}/// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -905,10 +934,300 @@ $DailySeriesCopyWith<$Res> get daily {
 
 
 /// @nodoc
+mixin _$CurrentWeather {
+
+ int get time; double? get temperatureC; double? get feelsLikeC;/// Bağıl nem, yüzde (0–100).
+ double? get humidity; double? get windKmh; double? get precipitationMm; int? get conditionCode;
+/// Create a copy of CurrentWeather
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CurrentWeatherCopyWith<CurrentWeather> get copyWith => _$CurrentWeatherCopyWithImpl<CurrentWeather>(this as CurrentWeather, _$identity);
+
+  /// Serializes this CurrentWeather to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CurrentWeather;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentWeather&&(identical(other.time, _this.time) || other.time == _this.time)&&(identical(other.temperatureC, _this.temperatureC) || other.temperatureC == _this.temperatureC)&&(identical(other.feelsLikeC, _this.feelsLikeC) || other.feelsLikeC == _this.feelsLikeC)&&(identical(other.humidity, _this.humidity) || other.humidity == _this.humidity)&&(identical(other.windKmh, _this.windKmh) || other.windKmh == _this.windKmh)&&(identical(other.precipitationMm, _this.precipitationMm) || other.precipitationMm == _this.precipitationMm)&&(identical(other.conditionCode, _this.conditionCode) || other.conditionCode == _this.conditionCode));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CurrentWeather;
+  return Object.hash(runtimeType,_this.time,_this.temperatureC,_this.feelsLikeC,_this.humidity,_this.windKmh,_this.precipitationMm,_this.conditionCode);
+}
+
+@override
+String toString() {
+  final _this = this as CurrentWeather;
+  return 'CurrentWeather(time: ${_this.time}, temperatureC: ${_this.temperatureC}, feelsLikeC: ${_this.feelsLikeC}, humidity: ${_this.humidity}, windKmh: ${_this.windKmh}, precipitationMm: ${_this.precipitationMm}, conditionCode: ${_this.conditionCode})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CurrentWeatherCopyWith<$Res>  {
+  factory $CurrentWeatherCopyWith(CurrentWeather value, $Res Function(CurrentWeather) _then) = _$CurrentWeatherCopyWithImpl;
+@useResult
+$Res call({
+ int time, double? temperatureC, double? feelsLikeC, double? humidity, double? windKmh, double? precipitationMm, int? conditionCode
+});
+
+
+
+
+}
+/// @nodoc
+class _$CurrentWeatherCopyWithImpl<$Res>
+    implements $CurrentWeatherCopyWith<$Res> {
+  _$CurrentWeatherCopyWithImpl(this._self, this._then);
+
+  final CurrentWeather _self;
+  final $Res Function(CurrentWeather) _then;
+
+/// Create a copy of CurrentWeather
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? temperatureC = freezed,Object? feelsLikeC = freezed,Object? humidity = freezed,Object? windKmh = freezed,Object? precipitationMm = freezed,Object? conditionCode = freezed,}) {
+  return _then(CurrentWeather(
+time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as int,temperatureC: freezed == temperatureC ? _self.temperatureC : temperatureC // ignore: cast_nullable_to_non_nullable
+as double?,feelsLikeC: freezed == feelsLikeC ? _self.feelsLikeC : feelsLikeC // ignore: cast_nullable_to_non_nullable
+as double?,humidity: freezed == humidity ? _self.humidity : humidity // ignore: cast_nullable_to_non_nullable
+as double?,windKmh: freezed == windKmh ? _self.windKmh : windKmh // ignore: cast_nullable_to_non_nullable
+as double?,precipitationMm: freezed == precipitationMm ? _self.precipitationMm : precipitationMm // ignore: cast_nullable_to_non_nullable
+as double?,conditionCode: freezed == conditionCode ? _self.conditionCode : conditionCode // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CurrentWeather].
+extension CurrentWeatherPatterns on CurrentWeather {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CurrentWeather value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CurrentWeather() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CurrentWeather value)  $default,){
+final _that = this;
+switch (_that) {
+case _CurrentWeather():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CurrentWeather value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CurrentWeather() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int time,  double? temperatureC,  double? feelsLikeC,  double? humidity,  double? windKmh,  double? precipitationMm,  int? conditionCode)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CurrentWeather() when $default != null:
+return $default(_that.time,_that.temperatureC,_that.feelsLikeC,_that.humidity,_that.windKmh,_that.precipitationMm,_that.conditionCode);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int time,  double? temperatureC,  double? feelsLikeC,  double? humidity,  double? windKmh,  double? precipitationMm,  int? conditionCode)  $default,) {final _that = this;
+switch (_that) {
+case _CurrentWeather():
+return $default(_that.time,_that.temperatureC,_that.feelsLikeC,_that.humidity,_that.windKmh,_that.precipitationMm,_that.conditionCode);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int time,  double? temperatureC,  double? feelsLikeC,  double? humidity,  double? windKmh,  double? precipitationMm,  int? conditionCode)?  $default,) {final _that = this;
+switch (_that) {
+case _CurrentWeather() when $default != null:
+return $default(_that.time,_that.temperatureC,_that.feelsLikeC,_that.humidity,_that.windKmh,_that.precipitationMm,_that.conditionCode);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CurrentWeather implements CurrentWeather {
+  const _CurrentWeather({required this.time, this.temperatureC, this.feelsLikeC, this.humidity, this.windKmh, this.precipitationMm, this.conditionCode});
+  factory _CurrentWeather.fromJson(Map<String, dynamic> json) => _$CurrentWeatherFromJson(json);
+
+@override final  int time;
+@override final  double? temperatureC;
+@override final  double? feelsLikeC;
+/// Bağıl nem, yüzde (0–100).
+@override final  double? humidity;
+@override final  double? windKmh;
+@override final  double? precipitationMm;
+@override final  int? conditionCode;
+
+/// Create a copy of CurrentWeather
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CurrentWeatherCopyWith<_CurrentWeather> get copyWith => __$CurrentWeatherCopyWithImpl<_CurrentWeather>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CurrentWeatherToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentWeather&&(identical(other.time, time) || other.time == time)&&(identical(other.temperatureC, temperatureC) || other.temperatureC == temperatureC)&&(identical(other.feelsLikeC, feelsLikeC) || other.feelsLikeC == feelsLikeC)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.windKmh, windKmh) || other.windKmh == windKmh)&&(identical(other.precipitationMm, precipitationMm) || other.precipitationMm == precipitationMm)&&(identical(other.conditionCode, conditionCode) || other.conditionCode == conditionCode));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,time,temperatureC,feelsLikeC,humidity,windKmh,precipitationMm,conditionCode);
+}
+
+@override
+String toString() {
+    return 'CurrentWeather(time: $time, temperatureC: $temperatureC, feelsLikeC: $feelsLikeC, humidity: $humidity, windKmh: $windKmh, precipitationMm: $precipitationMm, conditionCode: $conditionCode)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CurrentWeatherCopyWith<$Res> implements $CurrentWeatherCopyWith<$Res> {
+  factory _$CurrentWeatherCopyWith(_CurrentWeather value, $Res Function(_CurrentWeather) _then) = __$CurrentWeatherCopyWithImpl;
+@override @useResult
+$Res call({
+ int time, double? temperatureC, double? feelsLikeC, double? humidity, double? windKmh, double? precipitationMm, int? conditionCode
+});
+
+
+
+
+}
+/// @nodoc
+class __$CurrentWeatherCopyWithImpl<$Res>
+    implements _$CurrentWeatherCopyWith<$Res> {
+  __$CurrentWeatherCopyWithImpl(this._self, this._then);
+
+  final _CurrentWeather _self;
+  final $Res Function(_CurrentWeather) _then;
+
+/// Create a copy of CurrentWeather
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? temperatureC = freezed,Object? feelsLikeC = freezed,Object? humidity = freezed,Object? windKmh = freezed,Object? precipitationMm = freezed,Object? conditionCode = freezed,}) {
+  return _then(_CurrentWeather(
+time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as int,temperatureC: freezed == temperatureC ? _self.temperatureC : temperatureC // ignore: cast_nullable_to_non_nullable
+as double?,feelsLikeC: freezed == feelsLikeC ? _self.feelsLikeC : feelsLikeC // ignore: cast_nullable_to_non_nullable
+as double?,humidity: freezed == humidity ? _self.humidity : humidity // ignore: cast_nullable_to_non_nullable
+as double?,windKmh: freezed == windKmh ? _self.windKmh : windKmh // ignore: cast_nullable_to_non_nullable
+as double?,precipitationMm: freezed == precipitationMm ? _self.precipitationMm : precipitationMm // ignore: cast_nullable_to_non_nullable
+as double?,conditionCode: freezed == conditionCode ? _self.conditionCode : conditionCode // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$HourlySeries {
 
  List<int> get time; List<double?> get temperatureC; List<double?> get windKmh; List<double?> get precipitationMm;/// Yüzde (0–100).
- List<double?> get precipitationProbability;@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> get condition;
+ List<double?> get precipitationProbability; List<int?> get conditionCode;
 /// Create a copy of HourlySeries
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -922,20 +1241,20 @@ $HourlySeriesCopyWith<HourlySeries> get copyWith => _$HourlySeriesCopyWithImpl<H
 @override
 bool operator ==(Object other) {
   final _this = this as HourlySeries;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HourlySeries&&const DeepCollectionEquality().equals(other.time, _this.time)&&const DeepCollectionEquality().equals(other.temperatureC, _this.temperatureC)&&const DeepCollectionEquality().equals(other.windKmh, _this.windKmh)&&const DeepCollectionEquality().equals(other.precipitationMm, _this.precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbability, _this.precipitationProbability)&&const DeepCollectionEquality().equals(other.condition, _this.condition));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HourlySeries&&const DeepCollectionEquality().equals(other.time, _this.time)&&const DeepCollectionEquality().equals(other.temperatureC, _this.temperatureC)&&const DeepCollectionEquality().equals(other.windKmh, _this.windKmh)&&const DeepCollectionEquality().equals(other.precipitationMm, _this.precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbability, _this.precipitationProbability)&&const DeepCollectionEquality().equals(other.conditionCode, _this.conditionCode));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as HourlySeries;
-  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.time),const DeepCollectionEquality().hash(_this.temperatureC),const DeepCollectionEquality().hash(_this.windKmh),const DeepCollectionEquality().hash(_this.precipitationMm),const DeepCollectionEquality().hash(_this.precipitationProbability),const DeepCollectionEquality().hash(_this.condition));
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.time),const DeepCollectionEquality().hash(_this.temperatureC),const DeepCollectionEquality().hash(_this.windKmh),const DeepCollectionEquality().hash(_this.precipitationMm),const DeepCollectionEquality().hash(_this.precipitationProbability),const DeepCollectionEquality().hash(_this.conditionCode));
 }
 
 @override
 String toString() {
   final _this = this as HourlySeries;
-  return 'HourlySeries(time: ${_this.time}, temperatureC: ${_this.temperatureC}, windKmh: ${_this.windKmh}, precipitationMm: ${_this.precipitationMm}, precipitationProbability: ${_this.precipitationProbability}, condition: ${_this.condition})';
+  return 'HourlySeries(time: ${_this.time}, temperatureC: ${_this.temperatureC}, windKmh: ${_this.windKmh}, precipitationMm: ${_this.precipitationMm}, precipitationProbability: ${_this.precipitationProbability}, conditionCode: ${_this.conditionCode})';
 }
 
 
@@ -946,7 +1265,7 @@ abstract mixin class $HourlySeriesCopyWith<$Res>  {
   factory $HourlySeriesCopyWith(HourlySeries value, $Res Function(HourlySeries) _then) = _$HourlySeriesCopyWithImpl;
 @useResult
 $Res call({
- List<int> time, List<double?> temperatureC, List<double?> windKmh, List<double?> precipitationMm, List<double?> precipitationProbability,@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> condition
+ List<int> time, List<double?> temperatureC, List<double?> windKmh, List<double?> precipitationMm, List<double?> precipitationProbability, List<int?> conditionCode
 });
 
 
@@ -963,15 +1282,15 @@ class _$HourlySeriesCopyWithImpl<$Res>
 
 /// Create a copy of HourlySeries
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? temperatureC = null,Object? windKmh = null,Object? precipitationMm = null,Object? precipitationProbability = null,Object? condition = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? temperatureC = null,Object? windKmh = null,Object? precipitationMm = null,Object? precipitationProbability = null,Object? conditionCode = null,}) {
   return _then(HourlySeries(
 time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as List<int>,temperatureC: null == temperatureC ? _self.temperatureC : temperatureC // ignore: cast_nullable_to_non_nullable
 as List<double?>,windKmh: null == windKmh ? _self.windKmh : windKmh // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationMm: null == precipitationMm ? _self.precipitationMm : precipitationMm // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationProbability: null == precipitationProbability ? _self.precipitationProbability : precipitationProbability // ignore: cast_nullable_to_non_nullable
-as List<double?>,condition: null == condition ? _self.condition : condition // ignore: cast_nullable_to_non_nullable
-as List<WeatherCondition?>,
+as List<double?>,conditionCode: null == conditionCode ? _self.conditionCode : conditionCode // ignore: cast_nullable_to_non_nullable
+as List<int?>,
   ));
 }
 
@@ -1056,10 +1375,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<int> time,  List<double?> temperatureC,  List<double?> windKmh,  List<double?> precipitationMm,  List<double?> precipitationProbability, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  List<WeatherCondition?> condition)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<int> time,  List<double?> temperatureC,  List<double?> windKmh,  List<double?> precipitationMm,  List<double?> precipitationProbability,  List<int?> conditionCode)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HourlySeries() when $default != null:
-return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationMm,_that.precipitationProbability,_that.condition);case _:
+return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationMm,_that.precipitationProbability,_that.conditionCode);case _:
   return orElse();
 
 }
@@ -1077,10 +1396,10 @@ return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationM
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<int> time,  List<double?> temperatureC,  List<double?> windKmh,  List<double?> precipitationMm,  List<double?> precipitationProbability, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  List<WeatherCondition?> condition)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<int> time,  List<double?> temperatureC,  List<double?> windKmh,  List<double?> precipitationMm,  List<double?> precipitationProbability,  List<int?> conditionCode)  $default,) {final _that = this;
 switch (_that) {
 case _HourlySeries():
-return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationMm,_that.precipitationProbability,_that.condition);case _:
+return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationMm,_that.precipitationProbability,_that.conditionCode);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1097,10 +1416,10 @@ return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationM
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<int> time,  List<double?> temperatureC,  List<double?> windKmh,  List<double?> precipitationMm,  List<double?> precipitationProbability, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  List<WeatherCondition?> condition)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<int> time,  List<double?> temperatureC,  List<double?> windKmh,  List<double?> precipitationMm,  List<double?> precipitationProbability,  List<int?> conditionCode)?  $default,) {final _that = this;
 switch (_that) {
 case _HourlySeries() when $default != null:
-return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationMm,_that.precipitationProbability,_that.condition);case _:
+return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationMm,_that.precipitationProbability,_that.conditionCode);case _:
   return null;
 
 }
@@ -1112,7 +1431,7 @@ return $default(_that.time,_that.temperatureC,_that.windKmh,_that.precipitationM
 @JsonSerializable()
 
 class _HourlySeries implements HourlySeries {
-  const _HourlySeries({required  List<int> time, required  List<double?> temperatureC, required  List<double?> windKmh, required  List<double?> precipitationMm, required  List<double?> precipitationProbability, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) required  List<WeatherCondition?> condition}): _time = time,_temperatureC = temperatureC,_windKmh = windKmh,_precipitationMm = precipitationMm,_precipitationProbability = precipitationProbability,_condition = condition;
+  const _HourlySeries({required  List<int> time, required  List<double?> temperatureC, required  List<double?> windKmh, required  List<double?> precipitationMm, required  List<double?> precipitationProbability, required  List<int?> conditionCode}): _time = time,_temperatureC = temperatureC,_windKmh = windKmh,_precipitationMm = precipitationMm,_precipitationProbability = precipitationProbability,_conditionCode = conditionCode;
   factory _HourlySeries.fromJson(Map<String, dynamic> json) => _$HourlySeriesFromJson(json);
 
  final  List<int> _time;
@@ -1152,11 +1471,11 @@ class _HourlySeries implements HourlySeries {
   return EqualUnmodifiableListView(_precipitationProbability);
 }
 
- final  List<WeatherCondition?> _condition;
-@override@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> get condition {
-  if (_condition is EqualUnmodifiableListView) return _condition;
+ final  List<int?> _conditionCode;
+@override List<int?> get conditionCode {
+  if (_conditionCode is EqualUnmodifiableListView) return _conditionCode;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_condition);
+  return EqualUnmodifiableListView(_conditionCode);
 }
 
 
@@ -1173,18 +1492,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HourlySeries&&const DeepCollectionEquality().equals(other.time, _time)&&const DeepCollectionEquality().equals(other.temperatureC, _temperatureC)&&const DeepCollectionEquality().equals(other.windKmh, _windKmh)&&const DeepCollectionEquality().equals(other.precipitationMm, _precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbability, _precipitationProbability)&&const DeepCollectionEquality().equals(other.condition, _condition));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HourlySeries&&const DeepCollectionEquality().equals(other.time, _time)&&const DeepCollectionEquality().equals(other.temperatureC, _temperatureC)&&const DeepCollectionEquality().equals(other.windKmh, _windKmh)&&const DeepCollectionEquality().equals(other.precipitationMm, _precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbability, _precipitationProbability)&&const DeepCollectionEquality().equals(other.conditionCode, _conditionCode));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_time),const DeepCollectionEquality().hash(_temperatureC),const DeepCollectionEquality().hash(_windKmh),const DeepCollectionEquality().hash(_precipitationMm),const DeepCollectionEquality().hash(_precipitationProbability),const DeepCollectionEquality().hash(_condition));
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_time),const DeepCollectionEquality().hash(_temperatureC),const DeepCollectionEquality().hash(_windKmh),const DeepCollectionEquality().hash(_precipitationMm),const DeepCollectionEquality().hash(_precipitationProbability),const DeepCollectionEquality().hash(_conditionCode));
 }
 
 @override
 String toString() {
-    return 'HourlySeries(time: $time, temperatureC: $temperatureC, windKmh: $windKmh, precipitationMm: $precipitationMm, precipitationProbability: $precipitationProbability, condition: $condition)';
+    return 'HourlySeries(time: $time, temperatureC: $temperatureC, windKmh: $windKmh, precipitationMm: $precipitationMm, precipitationProbability: $precipitationProbability, conditionCode: $conditionCode)';
 }
 
 
@@ -1195,7 +1514,7 @@ abstract mixin class _$HourlySeriesCopyWith<$Res> implements $HourlySeriesCopyWi
   factory _$HourlySeriesCopyWith(_HourlySeries value, $Res Function(_HourlySeries) _then) = __$HourlySeriesCopyWithImpl;
 @override @useResult
 $Res call({
- List<int> time, List<double?> temperatureC, List<double?> windKmh, List<double?> precipitationMm, List<double?> precipitationProbability,@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> condition
+ List<int> time, List<double?> temperatureC, List<double?> windKmh, List<double?> precipitationMm, List<double?> precipitationProbability, List<int?> conditionCode
 });
 
 
@@ -1212,15 +1531,15 @@ class __$HourlySeriesCopyWithImpl<$Res>
 
 /// Create a copy of HourlySeries
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? temperatureC = null,Object? windKmh = null,Object? precipitationMm = null,Object? precipitationProbability = null,Object? condition = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? temperatureC = null,Object? windKmh = null,Object? precipitationMm = null,Object? precipitationProbability = null,Object? conditionCode = null,}) {
   return _then(_HourlySeries(
 time: null == time ? _self._time : time // ignore: cast_nullable_to_non_nullable
 as List<int>,temperatureC: null == temperatureC ? _self._temperatureC : temperatureC // ignore: cast_nullable_to_non_nullable
 as List<double?>,windKmh: null == windKmh ? _self._windKmh : windKmh // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationMm: null == precipitationMm ? _self._precipitationMm : precipitationMm // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationProbability: null == precipitationProbability ? _self._precipitationProbability : precipitationProbability // ignore: cast_nullable_to_non_nullable
-as List<double?>,condition: null == condition ? _self._condition : condition // ignore: cast_nullable_to_non_nullable
-as List<WeatherCondition?>,
+as List<double?>,conditionCode: null == conditionCode ? _self._conditionCode : conditionCode // ignore: cast_nullable_to_non_nullable
+as List<int?>,
   ));
 }
 
@@ -1231,7 +1550,7 @@ as List<WeatherCondition?>,
 /// @nodoc
 mixin _$DailySeries {
 
- List<int> get time;@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> get condition; List<double?> get temperatureMaxC; List<double?> get temperatureMinC; List<double?> get precipitationMm; List<double?> get precipitationProbabilityMax; List<double?> get windMaxKmh;
+ List<int> get time; List<int?> get conditionCode; List<double?> get temperatureMaxC; List<double?> get temperatureMinC; List<double?> get precipitationMm; List<double?> get precipitationProbabilityMax; List<double?> get windMaxKmh;
 /// Create a copy of DailySeries
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1245,20 +1564,20 @@ $DailySeriesCopyWith<DailySeries> get copyWith => _$DailySeriesCopyWithImpl<Dail
 @override
 bool operator ==(Object other) {
   final _this = this as DailySeries;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DailySeries&&const DeepCollectionEquality().equals(other.time, _this.time)&&const DeepCollectionEquality().equals(other.condition, _this.condition)&&const DeepCollectionEquality().equals(other.temperatureMaxC, _this.temperatureMaxC)&&const DeepCollectionEquality().equals(other.temperatureMinC, _this.temperatureMinC)&&const DeepCollectionEquality().equals(other.precipitationMm, _this.precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbabilityMax, _this.precipitationProbabilityMax)&&const DeepCollectionEquality().equals(other.windMaxKmh, _this.windMaxKmh));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DailySeries&&const DeepCollectionEquality().equals(other.time, _this.time)&&const DeepCollectionEquality().equals(other.conditionCode, _this.conditionCode)&&const DeepCollectionEquality().equals(other.temperatureMaxC, _this.temperatureMaxC)&&const DeepCollectionEquality().equals(other.temperatureMinC, _this.temperatureMinC)&&const DeepCollectionEquality().equals(other.precipitationMm, _this.precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbabilityMax, _this.precipitationProbabilityMax)&&const DeepCollectionEquality().equals(other.windMaxKmh, _this.windMaxKmh));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as DailySeries;
-  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.time),const DeepCollectionEquality().hash(_this.condition),const DeepCollectionEquality().hash(_this.temperatureMaxC),const DeepCollectionEquality().hash(_this.temperatureMinC),const DeepCollectionEquality().hash(_this.precipitationMm),const DeepCollectionEquality().hash(_this.precipitationProbabilityMax),const DeepCollectionEquality().hash(_this.windMaxKmh));
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.time),const DeepCollectionEquality().hash(_this.conditionCode),const DeepCollectionEquality().hash(_this.temperatureMaxC),const DeepCollectionEquality().hash(_this.temperatureMinC),const DeepCollectionEquality().hash(_this.precipitationMm),const DeepCollectionEquality().hash(_this.precipitationProbabilityMax),const DeepCollectionEquality().hash(_this.windMaxKmh));
 }
 
 @override
 String toString() {
   final _this = this as DailySeries;
-  return 'DailySeries(time: ${_this.time}, condition: ${_this.condition}, temperatureMaxC: ${_this.temperatureMaxC}, temperatureMinC: ${_this.temperatureMinC}, precipitationMm: ${_this.precipitationMm}, precipitationProbabilityMax: ${_this.precipitationProbabilityMax}, windMaxKmh: ${_this.windMaxKmh})';
+  return 'DailySeries(time: ${_this.time}, conditionCode: ${_this.conditionCode}, temperatureMaxC: ${_this.temperatureMaxC}, temperatureMinC: ${_this.temperatureMinC}, precipitationMm: ${_this.precipitationMm}, precipitationProbabilityMax: ${_this.precipitationProbabilityMax}, windMaxKmh: ${_this.windMaxKmh})';
 }
 
 
@@ -1269,7 +1588,7 @@ abstract mixin class $DailySeriesCopyWith<$Res>  {
   factory $DailySeriesCopyWith(DailySeries value, $Res Function(DailySeries) _then) = _$DailySeriesCopyWithImpl;
 @useResult
 $Res call({
- List<int> time,@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> condition, List<double?> temperatureMaxC, List<double?> temperatureMinC, List<double?> precipitationMm, List<double?> precipitationProbabilityMax, List<double?> windMaxKmh
+ List<int> time, List<int?> conditionCode, List<double?> temperatureMaxC, List<double?> temperatureMinC, List<double?> precipitationMm, List<double?> precipitationProbabilityMax, List<double?> windMaxKmh
 });
 
 
@@ -1286,11 +1605,11 @@ class _$DailySeriesCopyWithImpl<$Res>
 
 /// Create a copy of DailySeries
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? condition = null,Object? temperatureMaxC = null,Object? temperatureMinC = null,Object? precipitationMm = null,Object? precipitationProbabilityMax = null,Object? windMaxKmh = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? conditionCode = null,Object? temperatureMaxC = null,Object? temperatureMinC = null,Object? precipitationMm = null,Object? precipitationProbabilityMax = null,Object? windMaxKmh = null,}) {
   return _then(DailySeries(
 time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
-as List<int>,condition: null == condition ? _self.condition : condition // ignore: cast_nullable_to_non_nullable
-as List<WeatherCondition?>,temperatureMaxC: null == temperatureMaxC ? _self.temperatureMaxC : temperatureMaxC // ignore: cast_nullable_to_non_nullable
+as List<int>,conditionCode: null == conditionCode ? _self.conditionCode : conditionCode // ignore: cast_nullable_to_non_nullable
+as List<int?>,temperatureMaxC: null == temperatureMaxC ? _self.temperatureMaxC : temperatureMaxC // ignore: cast_nullable_to_non_nullable
 as List<double?>,temperatureMinC: null == temperatureMinC ? _self.temperatureMinC : temperatureMinC // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationMm: null == precipitationMm ? _self.precipitationMm : precipitationMm // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationProbabilityMax: null == precipitationProbabilityMax ? _self.precipitationProbabilityMax : precipitationProbabilityMax // ignore: cast_nullable_to_non_nullable
@@ -1380,10 +1699,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<int> time, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  List<WeatherCondition?> condition,  List<double?> temperatureMaxC,  List<double?> temperatureMinC,  List<double?> precipitationMm,  List<double?> precipitationProbabilityMax,  List<double?> windMaxKmh)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<int> time,  List<int?> conditionCode,  List<double?> temperatureMaxC,  List<double?> temperatureMinC,  List<double?> precipitationMm,  List<double?> precipitationProbabilityMax,  List<double?> windMaxKmh)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DailySeries() when $default != null:
-return $default(_that.time,_that.condition,_that.temperatureMaxC,_that.temperatureMinC,_that.precipitationMm,_that.precipitationProbabilityMax,_that.windMaxKmh);case _:
+return $default(_that.time,_that.conditionCode,_that.temperatureMaxC,_that.temperatureMinC,_that.precipitationMm,_that.precipitationProbabilityMax,_that.windMaxKmh);case _:
   return orElse();
 
 }
@@ -1401,10 +1720,10 @@ return $default(_that.time,_that.condition,_that.temperatureMaxC,_that.temperatu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<int> time, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  List<WeatherCondition?> condition,  List<double?> temperatureMaxC,  List<double?> temperatureMinC,  List<double?> precipitationMm,  List<double?> precipitationProbabilityMax,  List<double?> windMaxKmh)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<int> time,  List<int?> conditionCode,  List<double?> temperatureMaxC,  List<double?> temperatureMinC,  List<double?> precipitationMm,  List<double?> precipitationProbabilityMax,  List<double?> windMaxKmh)  $default,) {final _that = this;
 switch (_that) {
 case _DailySeries():
-return $default(_that.time,_that.condition,_that.temperatureMaxC,_that.temperatureMinC,_that.precipitationMm,_that.precipitationProbabilityMax,_that.windMaxKmh);case _:
+return $default(_that.time,_that.conditionCode,_that.temperatureMaxC,_that.temperatureMinC,_that.precipitationMm,_that.precipitationProbabilityMax,_that.windMaxKmh);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1421,10 +1740,10 @@ return $default(_that.time,_that.condition,_that.temperatureMaxC,_that.temperatu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<int> time, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  List<WeatherCondition?> condition,  List<double?> temperatureMaxC,  List<double?> temperatureMinC,  List<double?> precipitationMm,  List<double?> precipitationProbabilityMax,  List<double?> windMaxKmh)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<int> time,  List<int?> conditionCode,  List<double?> temperatureMaxC,  List<double?> temperatureMinC,  List<double?> precipitationMm,  List<double?> precipitationProbabilityMax,  List<double?> windMaxKmh)?  $default,) {final _that = this;
 switch (_that) {
 case _DailySeries() when $default != null:
-return $default(_that.time,_that.condition,_that.temperatureMaxC,_that.temperatureMinC,_that.precipitationMm,_that.precipitationProbabilityMax,_that.windMaxKmh);case _:
+return $default(_that.time,_that.conditionCode,_that.temperatureMaxC,_that.temperatureMinC,_that.precipitationMm,_that.precipitationProbabilityMax,_that.windMaxKmh);case _:
   return null;
 
 }
@@ -1436,7 +1755,7 @@ return $default(_that.time,_that.condition,_that.temperatureMaxC,_that.temperatu
 @JsonSerializable()
 
 class _DailySeries implements DailySeries {
-  const _DailySeries({required  List<int> time, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) required  List<WeatherCondition?> condition, required  List<double?> temperatureMaxC, required  List<double?> temperatureMinC, required  List<double?> precipitationMm, required  List<double?> precipitationProbabilityMax, required  List<double?> windMaxKmh}): _time = time,_condition = condition,_temperatureMaxC = temperatureMaxC,_temperatureMinC = temperatureMinC,_precipitationMm = precipitationMm,_precipitationProbabilityMax = precipitationProbabilityMax,_windMaxKmh = windMaxKmh;
+  const _DailySeries({required  List<int> time, required  List<int?> conditionCode, required  List<double?> temperatureMaxC, required  List<double?> temperatureMinC, required  List<double?> precipitationMm, required  List<double?> precipitationProbabilityMax, required  List<double?> windMaxKmh}): _time = time,_conditionCode = conditionCode,_temperatureMaxC = temperatureMaxC,_temperatureMinC = temperatureMinC,_precipitationMm = precipitationMm,_precipitationProbabilityMax = precipitationProbabilityMax,_windMaxKmh = windMaxKmh;
   factory _DailySeries.fromJson(Map<String, dynamic> json) => _$DailySeriesFromJson(json);
 
  final  List<int> _time;
@@ -1446,11 +1765,11 @@ class _DailySeries implements DailySeries {
   return EqualUnmodifiableListView(_time);
 }
 
- final  List<WeatherCondition?> _condition;
-@override@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> get condition {
-  if (_condition is EqualUnmodifiableListView) return _condition;
+ final  List<int?> _conditionCode;
+@override List<int?> get conditionCode {
+  if (_conditionCode is EqualUnmodifiableListView) return _conditionCode;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_condition);
+  return EqualUnmodifiableListView(_conditionCode);
 }
 
  final  List<double?> _temperatureMaxC;
@@ -1502,18 +1821,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailySeries&&const DeepCollectionEquality().equals(other.time, _time)&&const DeepCollectionEquality().equals(other.condition, _condition)&&const DeepCollectionEquality().equals(other.temperatureMaxC, _temperatureMaxC)&&const DeepCollectionEquality().equals(other.temperatureMinC, _temperatureMinC)&&const DeepCollectionEquality().equals(other.precipitationMm, _precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbabilityMax, _precipitationProbabilityMax)&&const DeepCollectionEquality().equals(other.windMaxKmh, _windMaxKmh));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailySeries&&const DeepCollectionEquality().equals(other.time, _time)&&const DeepCollectionEquality().equals(other.conditionCode, _conditionCode)&&const DeepCollectionEquality().equals(other.temperatureMaxC, _temperatureMaxC)&&const DeepCollectionEquality().equals(other.temperatureMinC, _temperatureMinC)&&const DeepCollectionEquality().equals(other.precipitationMm, _precipitationMm)&&const DeepCollectionEquality().equals(other.precipitationProbabilityMax, _precipitationProbabilityMax)&&const DeepCollectionEquality().equals(other.windMaxKmh, _windMaxKmh));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_time),const DeepCollectionEquality().hash(_condition),const DeepCollectionEquality().hash(_temperatureMaxC),const DeepCollectionEquality().hash(_temperatureMinC),const DeepCollectionEquality().hash(_precipitationMm),const DeepCollectionEquality().hash(_precipitationProbabilityMax),const DeepCollectionEquality().hash(_windMaxKmh));
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_time),const DeepCollectionEquality().hash(_conditionCode),const DeepCollectionEquality().hash(_temperatureMaxC),const DeepCollectionEquality().hash(_temperatureMinC),const DeepCollectionEquality().hash(_precipitationMm),const DeepCollectionEquality().hash(_precipitationProbabilityMax),const DeepCollectionEquality().hash(_windMaxKmh));
 }
 
 @override
 String toString() {
-    return 'DailySeries(time: $time, condition: $condition, temperatureMaxC: $temperatureMaxC, temperatureMinC: $temperatureMinC, precipitationMm: $precipitationMm, precipitationProbabilityMax: $precipitationProbabilityMax, windMaxKmh: $windMaxKmh)';
+    return 'DailySeries(time: $time, conditionCode: $conditionCode, temperatureMaxC: $temperatureMaxC, temperatureMinC: $temperatureMinC, precipitationMm: $precipitationMm, precipitationProbabilityMax: $precipitationProbabilityMax, windMaxKmh: $windMaxKmh)';
 }
 
 
@@ -1524,7 +1843,7 @@ abstract mixin class _$DailySeriesCopyWith<$Res> implements $DailySeriesCopyWith
   factory _$DailySeriesCopyWith(_DailySeries value, $Res Function(_DailySeries) _then) = __$DailySeriesCopyWithImpl;
 @override @useResult
 $Res call({
- List<int> time,@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) List<WeatherCondition?> condition, List<double?> temperatureMaxC, List<double?> temperatureMinC, List<double?> precipitationMm, List<double?> precipitationProbabilityMax, List<double?> windMaxKmh
+ List<int> time, List<int?> conditionCode, List<double?> temperatureMaxC, List<double?> temperatureMinC, List<double?> precipitationMm, List<double?> precipitationProbabilityMax, List<double?> windMaxKmh
 });
 
 
@@ -1541,11 +1860,11 @@ class __$DailySeriesCopyWithImpl<$Res>
 
 /// Create a copy of DailySeries
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? condition = null,Object? temperatureMaxC = null,Object? temperatureMinC = null,Object? precipitationMm = null,Object? precipitationProbabilityMax = null,Object? windMaxKmh = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? conditionCode = null,Object? temperatureMaxC = null,Object? temperatureMinC = null,Object? precipitationMm = null,Object? precipitationProbabilityMax = null,Object? windMaxKmh = null,}) {
   return _then(_DailySeries(
 time: null == time ? _self._time : time // ignore: cast_nullable_to_non_nullable
-as List<int>,condition: null == condition ? _self._condition : condition // ignore: cast_nullable_to_non_nullable
-as List<WeatherCondition?>,temperatureMaxC: null == temperatureMaxC ? _self._temperatureMaxC : temperatureMaxC // ignore: cast_nullable_to_non_nullable
+as List<int>,conditionCode: null == conditionCode ? _self._conditionCode : conditionCode // ignore: cast_nullable_to_non_nullable
+as List<int?>,temperatureMaxC: null == temperatureMaxC ? _self._temperatureMaxC : temperatureMaxC // ignore: cast_nullable_to_non_nullable
 as List<double?>,temperatureMinC: null == temperatureMinC ? _self._temperatureMinC : temperatureMinC // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationMm: null == precipitationMm ? _self._precipitationMm : precipitationMm // ignore: cast_nullable_to_non_nullable
 as List<double?>,precipitationProbabilityMax: null == precipitationProbabilityMax ? _self._precipitationProbabilityMax : precipitationProbabilityMax // ignore: cast_nullable_to_non_nullable

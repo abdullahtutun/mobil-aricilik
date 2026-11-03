@@ -20,14 +20,16 @@ import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_providers.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
+import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/weather_labels.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
 /// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar, "kullanım
-/// verisi paylaş", offline haritalar ve PDF raporları), varroa
-/// eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
+/// verisi paylaş", offline haritalar ve PDF raporları), varroa ve kovan
+/// açma eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
 /// dokununca sistem ayarı açılır) ve hesap. Görünüm ve dil şimdilik
-/// yalnızca bellekte; Wi‑Fi seçimi, analitik ve varroa eşikleri bu
-/// telefonun yerel DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
+/// yalnızca bellekte; Wi‑Fi seçimi, analitik ve eşikler bu telefonun yerel
+/// DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -127,6 +129,10 @@ class SettingsScreen extends ConsumerWidget {
           SectionLabel(l10n.settingsVarroa),
           labelGap,
           const _VarroaThresholds(),
+          sectionGap,
+          SectionLabel(l10n.settingsHiveOpening),
+          labelGap,
+          const _HiveOpeningThresholds(),
           if (ref.watch(reminderAccessProvider).value case ReminderAccessState(
             supportsExact: true,
             :final exact,
@@ -421,6 +427,112 @@ class _VarroaThresholds extends ConsumerWidget {
         SizedBox(height: context.spacing.sm),
         Text(
           l10n.settingsVarroaHint,
+          style: context.typography.bodySmall.copyWith(
+            color: context.colors.textSecondary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Kovan açma eşikleri: sıcaklık, rüzgar ve yağış olasılığı. Hava ekranı ve
+/// Bugün kartları bunlara göre "Açılır" der. Değerler metrik saklanır,
+/// kullanıcının biriminde gösterilir; seçim alttan açılan sayfada.
+class _HiveOpeningThresholds extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final units = WeatherFormat(
+      l10n,
+      AppFormat.of(context),
+      ref.watch(regionConfigProvider).defaultUnits,
+    );
+    final thresholds =
+        ref.watch(hiveOpeningThresholdsProvider).value ??
+        defaultHiveOpeningThresholds;
+    final settings = ref.read(localSettingsRepositoryProvider);
+
+    Future<void> choose(
+      String title,
+      List<double> options,
+      double current,
+      String Function(double value) label,
+      Future<void> Function(double value) save,
+    ) async {
+      final chosen = await showOptionSheet<double>(
+        context,
+        (context) => OptionSheet(
+          title: title,
+          options: [
+            for (final option in options)
+              SheetOption(
+                value: option,
+                icon: option == current
+                    ? Icons.check_circle_rounded
+                    : Icons.radio_button_unchecked_rounded,
+                iconColor: option == current ? null : context.colors.outline,
+                label: label(option),
+                selected: option == current,
+              ),
+          ],
+        ),
+      );
+      if (chosen != null) await save(chosen);
+    }
+
+    String temperature(double value) =>
+        l10n.settingsHiveOpeningTemperatureValue(units.temperature(value));
+    String wind(double value) =>
+        l10n.settingsHiveOpeningBelow(units.speed(value));
+    String precipitation(double value) =>
+        l10n.settingsHiveOpeningBelow(units.percent(value));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ListGroup(
+          children: [
+            ListRow(
+              title: l10n.settingsHiveOpeningTemperature,
+              value: temperature(thresholds.minTemperatureC),
+              onTap: () => choose(
+                l10n.settingsHiveOpeningTemperature,
+                minTemperatureOptions,
+                thresholds.minTemperatureC,
+                temperature,
+                settings.setHiveOpeningMinTemperature,
+              ),
+            ),
+            ListRow(
+              title: l10n.settingsHiveOpeningWind,
+              value: wind(thresholds.maxWindKmh),
+              onTap: () => choose(
+                l10n.settingsHiveOpeningWind,
+                maxWindOptions,
+                thresholds.maxWindKmh,
+                wind,
+                settings.setHiveOpeningMaxWind,
+              ),
+            ),
+            ListRow(
+              title: l10n.settingsHiveOpeningPrecipitation,
+              value: precipitation(thresholds.maxPrecipitationProbability),
+              onTap: () => choose(
+                l10n.settingsHiveOpeningPrecipitation,
+                maxPrecipitationOptions,
+                thresholds.maxPrecipitationProbability,
+                precipitation,
+                settings.setHiveOpeningMaxPrecipitation,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: context.spacing.sm),
+        Text(
+          l10n.settingsHiveOpeningHint,
           style: context.typography.bodySmall.copyWith(
             color: context.colors.textSecondary,
           ),

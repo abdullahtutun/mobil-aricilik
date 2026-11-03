@@ -2703,16 +2703,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsExactAlarmsOff => 'Off · may be a few minutes late';
 
   @override
-  String get weatherAttribution => 'Powered by WeatherAPI.com';
-
-  @override
   String weatherTemperature(String value) {
     return '$value°';
-  }
-
-  @override
-  String weatherWind(String speed) {
-    return 'Wind $speed km/h';
   }
 
   @override
@@ -2721,25 +2713,220 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String weatherWind(String speed) {
+    return 'Wind $speed';
+  }
+
+  @override
+  String weatherSpeed(String value, String unit) {
+    return '$value $unit';
+  }
+
+  @override
+  String get unitKmh => 'km/h';
+
+  @override
+  String get unitMph => 'mph';
+
+  @override
+  String weatherPercent(String value) {
+    return '$value%';
+  }
+
+  @override
+  String weatherTemperatureRange(String max, String min) {
+    return '$max / $min';
+  }
+
+  @override
+  String get hiveOpeningRain => 'Rain';
+
+  @override
+  String get hiveOpeningWind => 'Windy';
+
+  @override
+  String get hiveOpeningCold => 'Cold';
+
+  @override
+  String get hiveOpeningDaySuitable => 'Open';
+
+  @override
+  String get weatherConditionSunny => 'Sunny';
+
+  @override
+  String get weatherConditionPartlyCloudy => 'Partly cloudy';
+
+  @override
+  String get weatherConditionCloudy => 'Cloudy';
+
+  @override
+  String get weatherConditionRainy => 'Rainy';
+
+  @override
+  String get weatherConditionWindy => 'Windy';
+
+  @override
+  String get weatherConditionOther => 'Snow, fog or storm';
+
+  @override
+  String weatherFeelsLike(String condition, String value) {
+    return '$condition · feels like $value';
+  }
+
+  @override
+  String get weatherWindLabel => 'Wind';
+
+  @override
+  String get weatherHumidityLabel => 'Humidity';
+
+  @override
+  String get weatherPrecipitationLabel => 'Rain';
+
+  @override
+  String get weatherScreenTitle => 'Apiary weather';
+
+  @override
+  String weatherScreenSubtitle(String place, String days) {
+    return '$place · $days-day forecast';
+  }
+
+  @override
+  String weatherScreenSubtitleNoPlace(String days) {
+    return '$days-day forecast';
+  }
+
+  @override
+  String weatherUpdatedAt(String time) {
+    return 'Updated $time';
+  }
+
+  @override
+  String get weatherNow => 'Now';
+
+  @override
+  String get weatherToday => 'Today';
+
+  @override
+  String get weatherColumnDay => 'Day';
+
+  @override
+  String get weatherColumnTemperature => 'Temp';
+
+  @override
+  String get weatherColumnPrecipitation => 'Rain';
+
+  @override
+  String get weatherColumnHive => 'Hives';
+
+  @override
+  String get weatherTodaySuitable => 'Good day to open hives';
+
+  @override
+  String get weatherTodayRain => 'Rain today; not a day to open hives';
+
+  @override
+  String get weatherTodayWind => 'Windy today; not a day to open hives';
+
+  @override
+  String get weatherTodayCold => 'Cold today; not a day to open hives';
+
+  @override
+  String weatherDayRange(String from, String to) {
+    return '$from–$to';
+  }
+
+  @override
+  String weatherPlanRain(String days) {
+    return 'Rain on $days.';
+  }
+
+  @override
+  String weatherPlanWind(String days) {
+    return 'Windy on $days.';
+  }
+
+  @override
+  String weatherPlanRainWind(String days) {
+    return 'Rain and wind on $days.';
+  }
+
+  @override
+  String weatherPlanMove(String day) {
+    return 'Move inspections to $day.';
+  }
+
+  @override
+  String get weatherPlanAction => 'Plan';
+
+  @override
+  String weatherPlanTaskTitle(String apiary) {
+    return 'Inspect $apiary';
+  }
+
+  @override
+  String weatherThresholdsHint(
+    String temperature,
+    String wind,
+    String precipitation,
+  ) {
+    return 'Good to open: above $temperature, wind under $wind, rain chance under $precipitation. You can change the thresholds in Settings.';
+  }
+
+  @override
+  String get weatherEmptyTitle => 'No forecast yet';
+
+  @override
+  String get weatherEmptyMessage =>
+      'This apiary\'s forecast hasn\'t been fetched yet. Refresh once you\'re online.';
+
+  @override
+  String get weatherNoLocationMessage =>
+      'This apiary has no location. Add one to get a forecast.';
+
+  @override
+  String get weatherRefresh => 'Refresh';
+
+  @override
+  String get weatherRefreshFailed =>
+      'Couldn\'t get the forecast. Check your internet connection.';
+
+  @override
+  String get weatherApiaryNotFound => 'Apiary not found';
+
+  @override
+  String get weatherAttributionPrefix => 'Powered by ';
+
+  @override
+  String get weatherAttributionLink => 'WeatherAPI.com';
+
+  @override
+  String get settingsHiveOpening => 'Hive opening thresholds';
+
+  @override
+  String get settingsHiveOpeningTemperature => 'Temperature';
+
+  @override
+  String settingsHiveOpeningTemperatureValue(String value) {
+    return 'above $value';
+  }
+
+  @override
+  String get settingsHiveOpeningWind => 'Wind';
+
+  @override
+  String get settingsHiveOpeningPrecipitation => 'Rain chance';
+
+  @override
+  String settingsHiveOpeningBelow(String value) {
+    return 'under $value';
+  }
+
+  @override
+  String get settingsHiveOpeningHint =>
+      'The weather screen and Today cards say \"Open\" by these thresholds. Saved on this phone only.';
+
+  @override
   String get hiveOpeningSuitable => 'Good to open';
-
-  @override
-  String get hiveOpeningCautionRain => 'Rain possible';
-
-  @override
-  String get hiveOpeningCautionWind => 'Windy';
-
-  @override
-  String get hiveOpeningCautionCold => 'Cool';
-
-  @override
-  String get hiveOpeningUnsuitableRain => 'Raining';
-
-  @override
-  String get hiveOpeningUnsuitableWind => 'Strong wind';
-
-  @override
-  String get hiveOpeningUnsuitableCold => 'Too cold';
 
   @override
   String get todayGreetingMorning => 'Good morning';

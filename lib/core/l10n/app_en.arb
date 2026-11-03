@@ -2085,10 +2085,6 @@
   "settingsExactAlarms": "Ring right on time",
   "settingsExactAlarmsOn": "On",
   "settingsExactAlarmsOff": "Off · may be a few minutes late",
-  "weatherAttribution": "Powered by WeatherAPI.com",
-  "@weatherAttribution": {
-    "description": "WeatherAPI.com attribution shown wherever weather appears; keep this exact English text in every language."
-  },
   "weatherTemperature": "{value}°",
   "@weatherTemperature": {
     "description": "Temperature in the user's unit, without the unit letter.",
@@ -2096,15 +2092,6 @@
       "value": {
         "type": "String",
         "example": "22"
-      }
-    }
-  },
-  "weatherWind": "Wind {speed} km/h",
-  "@weatherWind": {
-    "placeholders": {
-      "speed": {
-        "type": "String",
-        "example": "8"
       }
     }
   },
@@ -2118,16 +2105,262 @@
       }
     }
   },
+  "weatherWind": "Wind {speed}",
+  "@weatherWind": {
+    "placeholders": {
+      "speed": {
+        "type": "String",
+        "example": "8 km/h"
+      }
+    }
+  },
+  "weatherSpeed": "{value} {unit}",
+  "@weatherSpeed": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "8"
+      },
+      "unit": {
+        "type": "String",
+        "example": "km/h"
+      }
+    }
+  },
+  "unitKmh": "km/h",
+  "@unitKmh": {
+    "description": "Wind speed unit, kilometres per hour."
+  },
+  "unitMph": "mph",
+  "@unitMph": {
+    "description": "Wind speed unit, miles per hour."
+  },
+  "weatherPercent": "{value}%",
+  "@weatherPercent": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "40"
+      }
+    }
+  },
+  "weatherTemperatureRange": "{max} / {min}",
+  "@weatherTemperatureRange": {
+    "placeholders": {
+      "max": {
+        "type": "String",
+        "example": "22°"
+      },
+      "min": {
+        "type": "String",
+        "example": "11°"
+      }
+    }
+  },
+  "hiveOpeningRain": "Rain",
+  "@hiveOpeningRain": {
+    "description": "Badge: rain chance is over the hive opening threshold."
+  },
+  "hiveOpeningWind": "Windy",
+  "@hiveOpeningWind": {
+    "description": "Badge: wind is over the hive opening threshold."
+  },
+  "hiveOpeningCold": "Cold",
+  "@hiveOpeningCold": {
+    "description": "Badge: temperature is under the hive opening threshold."
+  },
+  "hiveOpeningDaySuitable": "Open",
+  "@hiveOpeningDaySuitable": {
+    "description": "Short badge in the daily list: hives can be opened that day."
+  },
+  "weatherConditionSunny": "Sunny",
+  "weatherConditionPartlyCloudy": "Partly cloudy",
+  "weatherConditionCloudy": "Cloudy",
+  "weatherConditionRainy": "Rainy",
+  "weatherConditionWindy": "Windy",
+  "weatherConditionOther": "Snow, fog or storm",
+  "@weatherConditionOther": {
+    "description": "Any other sky condition (snow, sleet, fog, thunder)."
+  },
+  "weatherFeelsLike": "{condition} · feels like {value}",
+  "@weatherFeelsLike": {
+    "placeholders": {
+      "condition": {
+        "type": "String",
+        "example": "Sunny"
+      },
+      "value": {
+        "type": "String",
+        "example": "21°"
+      }
+    }
+  },
+  "weatherWindLabel": "Wind",
+  "weatherHumidityLabel": "Humidity",
+  "weatherPrecipitationLabel": "Rain",
+  "weatherScreenTitle": "Apiary weather",
+  "weatherScreenSubtitle": "{place} · {days}-day forecast",
+  "@weatherScreenSubtitle": {
+    "placeholders": {
+      "place": {
+        "type": "String",
+        "example": "Ula, Mugla"
+      },
+      "days": {
+        "type": "String",
+        "example": "7"
+      }
+    }
+  },
+  "weatherScreenSubtitleNoPlace": "{days}-day forecast",
+  "@weatherScreenSubtitleNoPlace": {
+    "placeholders": {
+      "days": {
+        "type": "String",
+        "example": "7"
+      }
+    }
+  },
+  "weatherUpdatedAt": "Updated {time}",
+  "@weatherUpdatedAt": {
+    "description": "When the shown forecast was fetched.",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "06:40"
+      }
+    }
+  },
+  "weatherNow": "Now",
+  "weatherToday": "Today",
+  "weatherColumnDay": "Day",
+  "weatherColumnTemperature": "Temp",
+  "weatherColumnPrecipitation": "Rain",
+  "weatherColumnHive": "Hives",
+  "weatherTodaySuitable": "Good day to open hives",
+  "weatherTodayRain": "Rain today; not a day to open hives",
+  "weatherTodayWind": "Windy today; not a day to open hives",
+  "weatherTodayCold": "Cold today; not a day to open hives",
+  "weatherDayRange": "{from}–{to}",
+  "@weatherDayRange": {
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Tuesday"
+      },
+      "to": {
+        "type": "String",
+        "example": "Wednesday"
+      }
+    }
+  },
+  "weatherPlanRain": "Rain on {days}.",
+  "@weatherPlanRain": {
+    "placeholders": {
+      "days": {
+        "type": "String",
+        "example": "Tuesday–Wednesday"
+      }
+    }
+  },
+  "weatherPlanWind": "Windy on {days}.",
+  "@weatherPlanWind": {
+    "placeholders": {
+      "days": {
+        "type": "String",
+        "example": "Thursday"
+      }
+    }
+  },
+  "weatherPlanRainWind": "Rain and wind on {days}.",
+  "@weatherPlanRainWind": {
+    "placeholders": {
+      "days": {
+        "type": "String",
+        "example": "Tuesday–Thursday"
+      }
+    }
+  },
+  "weatherPlanMove": "Move inspections to {day}.",
+  "@weatherPlanMove": {
+    "placeholders": {
+      "day": {
+        "type": "String",
+        "example": "Monday"
+      }
+    }
+  },
+  "weatherPlanAction": "Plan",
+  "@weatherPlanAction": {
+    "description": "Opens the new task form on the suggested day."
+  },
+  "weatherPlanTaskTitle": "Inspect {apiary}",
+  "@weatherPlanTaskTitle": {
+    "placeholders": {
+      "apiary": {
+        "type": "String",
+        "example": "Kızılçam"
+      }
+    }
+  },
+  "weatherThresholdsHint": "Good to open: above {temperature}, wind under {wind}, rain chance under {precipitation}. You can change the thresholds in Settings.",
+  "@weatherThresholdsHint": {
+    "placeholders": {
+      "temperature": {
+        "type": "String",
+        "example": "15°"
+      },
+      "wind": {
+        "type": "String",
+        "example": "25 km/h"
+      },
+      "precipitation": {
+        "type": "String",
+        "example": "40%"
+      }
+    }
+  },
+  "weatherEmptyTitle": "No forecast yet",
+  "weatherEmptyMessage": "This apiary's forecast hasn't been fetched yet. Refresh once you're online.",
+  "weatherNoLocationMessage": "This apiary has no location. Add one to get a forecast.",
+  "weatherRefresh": "Refresh",
+  "weatherRefreshFailed": "Couldn't get the forecast. Check your internet connection.",
+  "weatherApiaryNotFound": "Apiary not found",
+  "weatherAttributionPrefix": "Powered by ",
+  "@weatherAttributionPrefix": {
+    "description": "Text before the WeatherAPI.com link; keep this exact English text in every language."
+  },
+  "weatherAttributionLink": "WeatherAPI.com",
+  "@weatherAttributionLink": {
+    "description": "Linked provider name; keep as is."
+  },
+  "settingsHiveOpening": "Hive opening thresholds",
+  "settingsHiveOpeningTemperature": "Temperature",
+  "settingsHiveOpeningTemperatureValue": "above {value}",
+  "@settingsHiveOpeningTemperatureValue": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "15°"
+      }
+    }
+  },
+  "settingsHiveOpeningWind": "Wind",
+  "settingsHiveOpeningPrecipitation": "Rain chance",
+  "settingsHiveOpeningBelow": "under {value}",
+  "@settingsHiveOpeningBelow": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "25 km/h"
+      }
+    }
+  },
+  "settingsHiveOpeningHint": "The weather screen and Today cards say \"Open\" by these thresholds. Saved on this phone only.",
   "hiveOpeningSuitable": "Good to open",
   "@hiveOpeningSuitable": {
     "description": "Green badge: weather is fine for opening hives."
   },
-  "hiveOpeningCautionRain": "Rain possible",
-  "hiveOpeningCautionWind": "Windy",
-  "hiveOpeningCautionCold": "Cool",
-  "hiveOpeningUnsuitableRain": "Raining",
-  "hiveOpeningUnsuitableWind": "Strong wind",
-  "hiveOpeningUnsuitableCold": "Too cold",
 
   "todayGreetingMorning": "Good morning",
   "todayGreetingAfternoon": "Good afternoon",

@@ -310,7 +310,7 @@ as bool,
 /// @nodoc
 mixin _$DefaultUnits {
 
- MassUnit get mass; TemperatureUnit get temperature; VolumeUnit get volume;
+ MassUnit get mass; TemperatureUnit get temperature; VolumeUnit get volume; SpeedUnit get speed;
 /// Create a copy of DefaultUnits
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -322,20 +322,20 @@ $DefaultUnitsCopyWith<DefaultUnits> get copyWith => _$DefaultUnitsCopyWithImpl<D
 @override
 bool operator ==(Object other) {
   final _this = this as DefaultUnits;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DefaultUnits&&(identical(other.mass, _this.mass) || other.mass == _this.mass)&&(identical(other.temperature, _this.temperature) || other.temperature == _this.temperature)&&(identical(other.volume, _this.volume) || other.volume == _this.volume));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DefaultUnits&&(identical(other.mass, _this.mass) || other.mass == _this.mass)&&(identical(other.temperature, _this.temperature) || other.temperature == _this.temperature)&&(identical(other.volume, _this.volume) || other.volume == _this.volume)&&(identical(other.speed, _this.speed) || other.speed == _this.speed));
 }
 
 
 @override
 int get hashCode {
   final _this = this as DefaultUnits;
-  return Object.hash(runtimeType,_this.mass,_this.temperature,_this.volume);
+  return Object.hash(runtimeType,_this.mass,_this.temperature,_this.volume,_this.speed);
 }
 
 @override
 String toString() {
   final _this = this as DefaultUnits;
-  return 'DefaultUnits(mass: ${_this.mass}, temperature: ${_this.temperature}, volume: ${_this.volume})';
+  return 'DefaultUnits(mass: ${_this.mass}, temperature: ${_this.temperature}, volume: ${_this.volume}, speed: ${_this.speed})';
 }
 
 
@@ -346,7 +346,7 @@ abstract mixin class $DefaultUnitsCopyWith<$Res>  {
   factory $DefaultUnitsCopyWith(DefaultUnits value, $Res Function(DefaultUnits) _then) = _$DefaultUnitsCopyWithImpl;
 @useResult
 $Res call({
- MassUnit mass, TemperatureUnit temperature, VolumeUnit volume
+ MassUnit mass, TemperatureUnit temperature, VolumeUnit volume, SpeedUnit speed
 });
 
 
@@ -363,12 +363,13 @@ class _$DefaultUnitsCopyWithImpl<$Res>
 
 /// Create a copy of DefaultUnits
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? mass = null,Object? temperature = null,Object? volume = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? mass = null,Object? temperature = null,Object? volume = null,Object? speed = null,}) {
   return _then(DefaultUnits(
 mass: null == mass ? _self.mass : mass // ignore: cast_nullable_to_non_nullable
 as MassUnit,temperature: null == temperature ? _self.temperature : temperature // ignore: cast_nullable_to_non_nullable
 as TemperatureUnit,volume: null == volume ? _self.volume : volume // ignore: cast_nullable_to_non_nullable
-as VolumeUnit,
+as VolumeUnit,speed: null == speed ? _self.speed : speed // ignore: cast_nullable_to_non_nullable
+as SpeedUnit,
   ));
 }
 
@@ -453,10 +454,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MassUnit mass,  TemperatureUnit temperature,  VolumeUnit volume)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MassUnit mass,  TemperatureUnit temperature,  VolumeUnit volume,  SpeedUnit speed)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DefaultUnits() when $default != null:
-return $default(_that.mass,_that.temperature,_that.volume);case _:
+return $default(_that.mass,_that.temperature,_that.volume,_that.speed);case _:
   return orElse();
 
 }
@@ -474,10 +475,10 @@ return $default(_that.mass,_that.temperature,_that.volume);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MassUnit mass,  TemperatureUnit temperature,  VolumeUnit volume)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MassUnit mass,  TemperatureUnit temperature,  VolumeUnit volume,  SpeedUnit speed)  $default,) {final _that = this;
 switch (_that) {
 case _DefaultUnits():
-return $default(_that.mass,_that.temperature,_that.volume);case _:
+return $default(_that.mass,_that.temperature,_that.volume,_that.speed);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -494,10 +495,10 @@ return $default(_that.mass,_that.temperature,_that.volume);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MassUnit mass,  TemperatureUnit temperature,  VolumeUnit volume)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MassUnit mass,  TemperatureUnit temperature,  VolumeUnit volume,  SpeedUnit speed)?  $default,) {final _that = this;
 switch (_that) {
 case _DefaultUnits() when $default != null:
-return $default(_that.mass,_that.temperature,_that.volume);case _:
+return $default(_that.mass,_that.temperature,_that.volume,_that.speed);case _:
   return null;
 
 }
@@ -509,12 +510,13 @@ return $default(_that.mass,_that.temperature,_that.volume);case _:
 
 
 class _DefaultUnits implements DefaultUnits {
-  const _DefaultUnits({this.mass = MassUnit.kilogram, this.temperature = TemperatureUnit.celsius, this.volume = VolumeUnit.liter});
+  const _DefaultUnits({this.mass = MassUnit.kilogram, this.temperature = TemperatureUnit.celsius, this.volume = VolumeUnit.liter, this.speed = SpeedUnit.kilometersPerHour});
   
 
 @override@JsonKey() final  MassUnit mass;
 @override@JsonKey() final  TemperatureUnit temperature;
 @override@JsonKey() final  VolumeUnit volume;
+@override@JsonKey() final  SpeedUnit speed;
 
 /// Create a copy of DefaultUnits
 /// with the given fields replaced by the non-null parameter values.
@@ -526,18 +528,18 @@ _$DefaultUnitsCopyWith<_DefaultUnits> get copyWith => __$DefaultUnitsCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DefaultUnits&&(identical(other.mass, mass) || other.mass == mass)&&(identical(other.temperature, temperature) || other.temperature == temperature)&&(identical(other.volume, volume) || other.volume == volume));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DefaultUnits&&(identical(other.mass, mass) || other.mass == mass)&&(identical(other.temperature, temperature) || other.temperature == temperature)&&(identical(other.volume, volume) || other.volume == volume)&&(identical(other.speed, speed) || other.speed == speed));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,mass,temperature,volume);
+    return Object.hash(runtimeType,mass,temperature,volume,speed);
 }
 
 @override
 String toString() {
-    return 'DefaultUnits(mass: $mass, temperature: $temperature, volume: $volume)';
+    return 'DefaultUnits(mass: $mass, temperature: $temperature, volume: $volume, speed: $speed)';
 }
 
 
@@ -548,7 +550,7 @@ abstract mixin class _$DefaultUnitsCopyWith<$Res> implements $DefaultUnitsCopyWi
   factory _$DefaultUnitsCopyWith(_DefaultUnits value, $Res Function(_DefaultUnits) _then) = __$DefaultUnitsCopyWithImpl;
 @override @useResult
 $Res call({
- MassUnit mass, TemperatureUnit temperature, VolumeUnit volume
+ MassUnit mass, TemperatureUnit temperature, VolumeUnit volume, SpeedUnit speed
 });
 
 
@@ -565,12 +567,13 @@ class __$DefaultUnitsCopyWithImpl<$Res>
 
 /// Create a copy of DefaultUnits
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? mass = null,Object? temperature = null,Object? volume = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? mass = null,Object? temperature = null,Object? volume = null,Object? speed = null,}) {
   return _then(_DefaultUnits(
 mass: null == mass ? _self.mass : mass // ignore: cast_nullable_to_non_nullable
 as MassUnit,temperature: null == temperature ? _self.temperature : temperature // ignore: cast_nullable_to_non_nullable
 as TemperatureUnit,volume: null == volume ? _self.volume : volume // ignore: cast_nullable_to_non_nullable
-as VolumeUnit,
+as VolumeUnit,speed: null == speed ? _self.speed : speed // ignore: cast_nullable_to_non_nullable
+as SpeedUnit,
   ));
 }
 

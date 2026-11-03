@@ -1,5 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
+import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
@@ -25,12 +26,13 @@ WeatherRepository weatherRepository(Ref ref) =>
 Stream<WeatherBundle?> weatherBundle(Ref ref) =>
     ref.watch(weatherRepositoryProvider).watchBundle();
 
-/// Bir arılığın şu anki saatinin havası. `advice` sıcaklık, rüzgar ya da
-/// yağış eksikse null.
+/// Bir arılığın şu anki saatinin havası. `opening` sıcaklık ya da rüzgar
+/// eksikse null; `thresholds` simgenin rüzgar sınırı için.
 typedef ApiaryWeather = ({
   Apiary apiary,
   HourlyWeather hour,
-  HiveOpeningAdvice? advice,
+  HiveOpening? opening,
+  HiveOpeningThresholds thresholds,
 });
 
 /// Saklanan paketten, arılık sırasıyla, şu anki saatin havası. Pakette
@@ -39,6 +41,7 @@ typedef ApiaryWeather = ({
 Future<List<ApiaryWeather>> apiaryWeather(Ref ref) async {
   final summaries = await ref.watch(apiaryListProvider.future);
   final bundle = await ref.watch(weatherBundleProvider.future);
+  final thresholds = await ref.watch(hiveOpeningThresholdsProvider.future);
   if (bundle == null) return const [];
   final forecasts = {for (final f in bundle.forecasts) f.apiaryId: f.forecast};
   final now = clock.now();
@@ -46,8 +49,43 @@ Future<List<ApiaryWeather>> apiaryWeather(Ref ref) async {
     for (final summary in summaries)
       if (forecasts[summary.apiary.id] case final forecast?)
         if (forecastHourAt(forecast, now) case final hour?)
-          (apiary: summary.apiary, hour: hour, advice: hourOpeningAdvice(hour)),
+          (
+            apiary: summary.apiary,
+            hour: hour,
+            opening: hourOpening(hour, thresholds),
+            thresholds: thresholds,
+          ),
   ];
+}
+
+/// "Arılık havası" ekranının verisi. `forecast` ve `generatedAt` saklanan
+/// pakette arılık yoksa (ya da paket hiç yoksa) null.
+typedef ApiaryWeatherDetail = ({
+  Apiary apiary,
+  Forecast? forecast,
+  DateTime? generatedAt,
+  HiveOpeningThresholds thresholds,
+});
+
+/// Arılık silinmişse ya da yoksa null.
+@riverpod
+Future<ApiaryWeatherDetail?> apiaryWeatherDetail(
+  Ref ref,
+  String apiaryId,
+) async {
+  final summary = await ref.watch(apiarySummaryProvider(apiaryId).future);
+  final bundle = await ref.watch(weatherBundleProvider.future);
+  final thresholds = await ref.watch(hiveOpeningThresholdsProvider.future);
+  if (summary == null) return null;
+  final forecast = bundle?.forecasts
+      .where((f) => f.apiaryId == apiaryId)
+      .firstOrNull;
+  return (
+    apiary: summary.apiary,
+    forecast: forecast?.forecast,
+    generatedAt: forecast == null ? null : bundle?.generatedAt,
+    thresholds: thresholds,
+  );
 }
 
 /// Paketi gerekince sunucudan yeniler ([weatherNeedsRefresh]). Ağ yoksa ya
@@ -65,23 +103,40 @@ class WeatherRefresher {
   Future<void> refreshIfStale() =>
       _running ??= _refresh().whenComplete(() => _running = null);
 
-  Future<void> _refresh() async {
+  /// Paketi beklemeden sunucudan ister ("Yenile"). Alınamazsa false;
+  /// saklanan paket kalır.
+  Future<bool> refreshNow() async {
+    await _running;
+    final run = _refresh(force: true);
+    _running = run.then((_) {});
+    try {
+      return await run;
+    } finally {
+      _running = null;
+    }
+  }
+
+  Future<bool> _refresh({bool force = false}) async {
     final orgId = _ref.read(currentOrgIdProvider);
-    if (orgId == null) return;
+    if (orgId == null) return false;
     final repository = _ref.read(weatherRepositoryProvider);
-    final needsRefresh = weatherNeedsRefresh(
-      bundle: await repository.readBundle(),
-      now: clock.now(),
-      locatedApiaryIds: await _ref
-          .read(apiaryRepositoryProvider)
-          .locatedIds(orgId),
-    );
-    if (!needsRefresh) return;
+    final needsRefresh =
+        force ||
+        weatherNeedsRefresh(
+          bundle: await repository.readBundle(),
+          now: clock.now(),
+          locatedApiaryIds: await _ref
+              .read(apiaryRepositoryProvider)
+              .locatedIds(orgId),
+        );
+    if (!needsRefresh) return true;
     try {
       final bundle = await _ref.read(weatherServiceProvider).fetchBundle();
       await repository.saveBundle(bundle);
+      return true;
     } on WeatherServiceException {
       // Çevrimdışı ya da sunucu hatası: saklanan paket gösterilir.
+      return false;
     }
   }
 }

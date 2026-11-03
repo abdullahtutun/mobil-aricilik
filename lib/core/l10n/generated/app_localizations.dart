@@ -4370,23 +4370,11 @@ abstract class AppLocalizations {
   /// **'Off · may be a few minutes late'**
   String get settingsExactAlarmsOff;
 
-  /// WeatherAPI.com attribution shown wherever weather appears; keep this exact English text in every language.
-  ///
-  /// In en, this message translates to:
-  /// **'Powered by WeatherAPI.com'**
-  String get weatherAttribution;
-
   /// Temperature in the user's unit, without the unit letter.
   ///
   /// In en, this message translates to:
   /// **'{value}°'**
   String weatherTemperature(String value);
-
-  /// No description provided for @weatherWind.
-  ///
-  /// In en, this message translates to:
-  /// **'Wind {speed} km/h'**
-  String weatherWind(String speed);
 
   /// Shown when the stored weather bundle is older than an hour (e.g. offline).
   ///
@@ -4394,47 +4382,357 @@ abstract class AppLocalizations {
   /// **'Forecast as of {time}'**
   String weatherForecastAsOf(String time);
 
+  /// No description provided for @weatherWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind {speed}'**
+  String weatherWind(String speed);
+
+  /// No description provided for @weatherSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} {unit}'**
+  String weatherSpeed(String value, String unit);
+
+  /// Wind speed unit, kilometres per hour.
+  ///
+  /// In en, this message translates to:
+  /// **'km/h'**
+  String get unitKmh;
+
+  /// Wind speed unit, miles per hour.
+  ///
+  /// In en, this message translates to:
+  /// **'mph'**
+  String get unitMph;
+
+  /// No description provided for @weatherPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}%'**
+  String weatherPercent(String value);
+
+  /// No description provided for @weatherTemperatureRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{max} / {min}'**
+  String weatherTemperatureRange(String max, String min);
+
+  /// Badge: rain chance is over the hive opening threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get hiveOpeningRain;
+
+  /// Badge: wind is over the hive opening threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Windy'**
+  String get hiveOpeningWind;
+
+  /// Badge: temperature is under the hive opening threshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Cold'**
+  String get hiveOpeningCold;
+
+  /// Short badge in the daily list: hives can be opened that day.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get hiveOpeningDaySuitable;
+
+  /// No description provided for @weatherConditionSunny.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunny'**
+  String get weatherConditionSunny;
+
+  /// No description provided for @weatherConditionPartlyCloudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Partly cloudy'**
+  String get weatherConditionPartlyCloudy;
+
+  /// No description provided for @weatherConditionCloudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloudy'**
+  String get weatherConditionCloudy;
+
+  /// No description provided for @weatherConditionRainy.
+  ///
+  /// In en, this message translates to:
+  /// **'Rainy'**
+  String get weatherConditionRainy;
+
+  /// No description provided for @weatherConditionWindy.
+  ///
+  /// In en, this message translates to:
+  /// **'Windy'**
+  String get weatherConditionWindy;
+
+  /// Any other sky condition (snow, sleet, fog, thunder).
+  ///
+  /// In en, this message translates to:
+  /// **'Snow, fog or storm'**
+  String get weatherConditionOther;
+
+  /// No description provided for @weatherFeelsLike.
+  ///
+  /// In en, this message translates to:
+  /// **'{condition} · feels like {value}'**
+  String weatherFeelsLike(String condition, String value);
+
+  /// No description provided for @weatherWindLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get weatherWindLabel;
+
+  /// No description provided for @weatherHumidityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Humidity'**
+  String get weatherHumidityLabel;
+
+  /// No description provided for @weatherPrecipitationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get weatherPrecipitationLabel;
+
+  /// No description provided for @weatherScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary weather'**
+  String get weatherScreenTitle;
+
+  /// No description provided for @weatherScreenSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{place} · {days}-day forecast'**
+  String weatherScreenSubtitle(String place, String days);
+
+  /// No description provided for @weatherScreenSubtitleNoPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}-day forecast'**
+  String weatherScreenSubtitleNoPlace(String days);
+
+  /// When the shown forecast was fetched.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {time}'**
+  String weatherUpdatedAt(String time);
+
+  /// No description provided for @weatherNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get weatherNow;
+
+  /// No description provided for @weatherToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get weatherToday;
+
+  /// No description provided for @weatherColumnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get weatherColumnDay;
+
+  /// No description provided for @weatherColumnTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temp'**
+  String get weatherColumnTemperature;
+
+  /// No description provided for @weatherColumnPrecipitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get weatherColumnPrecipitation;
+
+  /// No description provided for @weatherColumnHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get weatherColumnHive;
+
+  /// No description provided for @weatherTodaySuitable.
+  ///
+  /// In en, this message translates to:
+  /// **'Good day to open hives'**
+  String get weatherTodaySuitable;
+
+  /// No description provided for @weatherTodayRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain today; not a day to open hives'**
+  String get weatherTodayRain;
+
+  /// No description provided for @weatherTodayWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Windy today; not a day to open hives'**
+  String get weatherTodayWind;
+
+  /// No description provided for @weatherTodayCold.
+  ///
+  /// In en, this message translates to:
+  /// **'Cold today; not a day to open hives'**
+  String get weatherTodayCold;
+
+  /// No description provided for @weatherDayRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{from}–{to}'**
+  String weatherDayRange(String from, String to);
+
+  /// No description provided for @weatherPlanRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain on {days}.'**
+  String weatherPlanRain(String days);
+
+  /// No description provided for @weatherPlanWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Windy on {days}.'**
+  String weatherPlanWind(String days);
+
+  /// No description provided for @weatherPlanRainWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain and wind on {days}.'**
+  String weatherPlanRainWind(String days);
+
+  /// No description provided for @weatherPlanMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move inspections to {day}.'**
+  String weatherPlanMove(String day);
+
+  /// Opens the new task form on the suggested day.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get weatherPlanAction;
+
+  /// No description provided for @weatherPlanTaskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspect {apiary}'**
+  String weatherPlanTaskTitle(String apiary);
+
+  /// No description provided for @weatherThresholdsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Good to open: above {temperature}, wind under {wind}, rain chance under {precipitation}. You can change the thresholds in Settings.'**
+  String weatherThresholdsHint(
+    String temperature,
+    String wind,
+    String precipitation,
+  );
+
+  /// No description provided for @weatherEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No forecast yet'**
+  String get weatherEmptyTitle;
+
+  /// No description provided for @weatherEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This apiary\'s forecast hasn\'t been fetched yet. Refresh once you\'re online.'**
+  String get weatherEmptyMessage;
+
+  /// No description provided for @weatherNoLocationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This apiary has no location. Add one to get a forecast.'**
+  String get weatherNoLocationMessage;
+
+  /// No description provided for @weatherRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get weatherRefresh;
+
+  /// No description provided for @weatherRefreshFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get the forecast. Check your internet connection.'**
+  String get weatherRefreshFailed;
+
+  /// No description provided for @weatherApiaryNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary not found'**
+  String get weatherApiaryNotFound;
+
+  /// Text before the WeatherAPI.com link; keep this exact English text in every language.
+  ///
+  /// In en, this message translates to:
+  /// **'Powered by '**
+  String get weatherAttributionPrefix;
+
+  /// Linked provider name; keep as is.
+  ///
+  /// In en, this message translates to:
+  /// **'WeatherAPI.com'**
+  String get weatherAttributionLink;
+
+  /// No description provided for @settingsHiveOpening.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive opening thresholds'**
+  String get settingsHiveOpening;
+
+  /// No description provided for @settingsHiveOpeningTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get settingsHiveOpeningTemperature;
+
+  /// No description provided for @settingsHiveOpeningTemperatureValue.
+  ///
+  /// In en, this message translates to:
+  /// **'above {value}'**
+  String settingsHiveOpeningTemperatureValue(String value);
+
+  /// No description provided for @settingsHiveOpeningWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get settingsHiveOpeningWind;
+
+  /// No description provided for @settingsHiveOpeningPrecipitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain chance'**
+  String get settingsHiveOpeningPrecipitation;
+
+  /// No description provided for @settingsHiveOpeningBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'under {value}'**
+  String settingsHiveOpeningBelow(String value);
+
+  /// No description provided for @settingsHiveOpeningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The weather screen and Today cards say \"Open\" by these thresholds. Saved on this phone only.'**
+  String get settingsHiveOpeningHint;
+
   /// Green badge: weather is fine for opening hives.
   ///
   /// In en, this message translates to:
   /// **'Good to open'**
   String get hiveOpeningSuitable;
-
-  /// No description provided for @hiveOpeningCautionRain.
-  ///
-  /// In en, this message translates to:
-  /// **'Rain possible'**
-  String get hiveOpeningCautionRain;
-
-  /// No description provided for @hiveOpeningCautionWind.
-  ///
-  /// In en, this message translates to:
-  /// **'Windy'**
-  String get hiveOpeningCautionWind;
-
-  /// No description provided for @hiveOpeningCautionCold.
-  ///
-  /// In en, this message translates to:
-  /// **'Cool'**
-  String get hiveOpeningCautionCold;
-
-  /// No description provided for @hiveOpeningUnsuitableRain.
-  ///
-  /// In en, this message translates to:
-  /// **'Raining'**
-  String get hiveOpeningUnsuitableRain;
-
-  /// No description provided for @hiveOpeningUnsuitableWind.
-  ///
-  /// In en, this message translates to:
-  /// **'Strong wind'**
-  String get hiveOpeningUnsuitableWind;
-
-  /// No description provided for @hiveOpeningUnsuitableCold.
-  ///
-  /// In en, this message translates to:
-  /// **'Too cold'**
-  String get hiveOpeningUnsuitableCold;
 
   /// No description provided for @todayGreetingMorning.
   ///

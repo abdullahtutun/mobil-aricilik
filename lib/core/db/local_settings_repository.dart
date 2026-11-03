@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
+import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
 
 /// Yalnız bu telefondaki ayarlar (`local_settings`). Outbox'a yazılmaz,
 /// senkronlanmaz; arka plan görevi de aynı DB'den okur.
@@ -111,6 +112,45 @@ class LocalSettingsRepository {
 
   Future<void> setVarroaPerDayThreshold(double perDay) =>
       writeValue(varroaPerDayKey, '$perDay');
+
+  /// Kovan açma eşikleri (°C, km/s, %); ayar yoksa ya da okunamıyorsa
+  /// [defaultHiveOpeningThresholds].
+  static const hiveOpeningTemperatureKey = 'hive_opening_min_temperature_c';
+  static const hiveOpeningWindKey = 'hive_opening_max_wind_kmh';
+  static const hiveOpeningPrecipitationKey =
+      'hive_opening_max_precipitation_probability';
+
+  Stream<HiveOpeningThresholds> watchHiveOpeningThresholds() =>
+      (db.select(db.localSettings)..where(
+            (t) => t.key.isIn([
+              hiveOpeningTemperatureKey,
+              hiveOpeningWindKey,
+              hiveOpeningPrecipitationKey,
+            ]),
+          ))
+          .watch()
+          .map((rows) {
+            final values = {for (final row in rows) row.key: row.value};
+            double? read(String key) => double.tryParse(values[key] ?? '');
+            const defaults = defaultHiveOpeningThresholds;
+            return (
+              minTemperatureC:
+                  read(hiveOpeningTemperatureKey) ?? defaults.minTemperatureC,
+              maxWindKmh: read(hiveOpeningWindKey) ?? defaults.maxWindKmh,
+              maxPrecipitationProbability:
+                  read(hiveOpeningPrecipitationKey) ??
+                  defaults.maxPrecipitationProbability,
+            );
+          });
+
+  Future<void> setHiveOpeningMinTemperature(double celsius) =>
+      writeValue(hiveOpeningTemperatureKey, '$celsius');
+
+  Future<void> setHiveOpeningMaxWind(double kmh) =>
+      writeValue(hiveOpeningWindKey, '$kmh');
+
+  Future<void> setHiveOpeningMaxPrecipitation(double percent) =>
+      writeValue(hiveOpeningPrecipitationKey, '$percent');
 
   /// [key]'in ham değeri; yoksa null. Tipli ayarlar ve başka özelliklerin
   /// yalnız bu telefonda tuttuğu kayıtlar (tur, hava paketi) bunun üstünde.

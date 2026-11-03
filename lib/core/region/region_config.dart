@@ -58,6 +58,7 @@ abstract class DefaultUnits with _$DefaultUnits {
     @Default(MassUnit.kilogram) MassUnit mass,
     @Default(TemperatureUnit.celsius) TemperatureUnit temperature,
     @Default(VolumeUnit.liter) VolumeUnit volume,
+    @Default(SpeedUnit.kilometersPerHour) SpeedUnit speed,
   }) = _DefaultUnits;
 }
 
@@ -158,6 +159,7 @@ DefaultUnits _defaultUnitsFor(String countryCode) {
       mass: MassUnit.pound,
       temperature: TemperatureUnit.fahrenheit,
       volume: VolumeUnit.gallon,
+      speed: SpeedUnit.milesPerHour,
     );
   }
   if (_fahrenheitOnlyCountries.contains(countryCode)) {

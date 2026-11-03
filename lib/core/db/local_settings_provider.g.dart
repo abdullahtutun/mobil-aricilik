@@ -214,3 +214,50 @@ final class VarroaThresholdsProvider
 }
 
 String _$varroaThresholdsHash() => r'f86a5bfc69ac8abdfde3f08a3395811284beecb8';
+
+/// Kovan açma eşikleri (bu telefonun ayarı).
+
+@ProviderFor(hiveOpeningThresholds)
+final hiveOpeningThresholdsProvider = HiveOpeningThresholdsProvider._();
+
+/// Kovan açma eşikleri (bu telefonun ayarı).
+
+final class HiveOpeningThresholdsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<HiveOpeningThresholds>,
+          HiveOpeningThresholds,
+          Stream<HiveOpeningThresholds>
+        >
+    with
+        $FutureModifier<HiveOpeningThresholds>,
+        $StreamProvider<HiveOpeningThresholds> {
+  /// Kovan açma eşikleri (bu telefonun ayarı).
+  HiveOpeningThresholdsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hiveOpeningThresholdsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveOpeningThresholdsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<HiveOpeningThresholds> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<HiveOpeningThresholds> create(Ref ref) {
+    return hiveOpeningThresholds(ref);
+  }
+}
+
+String _$hiveOpeningThresholdsHash() =>
+    r'bd22058cb234d162adc68533be166965dae161fe';

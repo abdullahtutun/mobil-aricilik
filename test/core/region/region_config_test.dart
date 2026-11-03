@@ -15,6 +15,7 @@ const _usCustomary = DefaultUnits(
   mass: MassUnit.pound,
   temperature: TemperatureUnit.fahrenheit,
   volume: VolumeUnit.gallon,
+  speed: SpeedUnit.milesPerHour,
 );
 
 void main() {

@@ -31,12 +31,21 @@ const _maxDueDays = 366;
 /// kaynaktan gelir, değiştirilemez. Kaydedince hatırlatıcı izinleri
 /// istenir ve listeye dönülür.
 class TaskFormScreen extends ConsumerWidget {
-  const new({super.key, this.taskId});
+  const new({super.key, this.taskId, this.dueDay, this.apiaryId, this.title});
 
   final String? taskId;
 
-  TaskFormControllerProvider get _provider =>
-      taskFormControllerProvider(taskId);
+  /// Yeni görevin önerilen günü, arılığı ve başlığı.
+  final DateTime? dueDay;
+  final String? apiaryId;
+  final String? title;
+
+  TaskFormControllerProvider get _provider => taskFormControllerProvider(
+    taskId,
+    dueDay: dueDay,
+    apiaryId: apiaryId,
+    title: title,
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

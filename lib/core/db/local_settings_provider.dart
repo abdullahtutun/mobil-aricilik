@@ -1,6 +1,7 @@
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
+import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'local_settings_provider.g.dart';
@@ -28,3 +29,8 @@ Stream<bool> pushEnabled(Ref ref) =>
 @Riverpod(keepAlive: true)
 Stream<VarroaThresholds> varroaThresholds(Ref ref) =>
     ref.watch(localSettingsRepositoryProvider).watchVarroaThresholds();
+
+/// Kovan açma eşikleri (bu telefonun ayarı).
+@Riverpod(keepAlive: true)
+Stream<HiveOpeningThresholds> hiveOpeningThresholds(Ref ref) =>
+    ref.watch(localSettingsRepositoryProvider).watchHiveOpeningThresholds();

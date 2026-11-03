@@ -21,39 +21,62 @@ class FakeWeatherService implements WeatherService {
   }
 }
 
+/// WeatherAPI kodları: güneşli ve hafif yağmur.
+const sunnyCode = 1000;
+const rainCode = 1183;
+
 /// [at]'in saatinden başlayan [hours] saatlik tahmin; her saat aynı hava.
-/// Günlük sütunlar tek gün.
+/// Günlük sütunlar [days] gün (ilk gün [at]'in günü), hepsi aynı hava; şimdiki
+/// durum da aynı.
 Forecast testForecast({
   required DateTime at,
   double? temperatureC = 22,
   double? windKmh = 8,
   double? precipitationMm = 0,
   double? precipitationProbability = 0,
-  WeatherCondition? condition = WeatherCondition.clear,
+  int? conditionCode = sunnyCode,
   int hours = 24,
+  int days = 1,
 }) {
   const hour = Duration.secondsPerHour;
+  const offset = 10800;
   final start = at.millisecondsSinceEpoch ~/ 1000 ~/ hour * hour;
-  List<T> repeat<T>(T value) => List.filled(hours, value);
+  // Arılığın (UTC+3) gece yarısı.
+  final midnight =
+      (start + offset) ~/ Duration.secondsPerDay * Duration.secondsPerDay -
+      offset;
+  List<T> repeat<T>(T value, [int? count]) =>
+      List.filled(count ?? hours, value);
   return Forecast(
     timezone: 'Europe/Istanbul',
-    utcOffsetSeconds: 10800,
+    utcOffsetSeconds: offset,
+    current: CurrentWeather(
+      time: start,
+      temperatureC: temperatureC,
+      feelsLikeC: temperatureC,
+      humidity: 48,
+      windKmh: windKmh,
+      precipitationMm: precipitationMm,
+      conditionCode: conditionCode,
+    ),
     hourly: HourlySeries(
       time: [for (var i = 0; i < hours; i++) start + i * hour],
       temperatureC: repeat(temperatureC),
       windKmh: repeat(windKmh),
       precipitationMm: repeat(precipitationMm),
       precipitationProbability: repeat(precipitationProbability),
-      condition: repeat(condition),
+      conditionCode: repeat(conditionCode),
     ),
     daily: DailySeries(
-      time: [start],
-      condition: [condition],
-      temperatureMaxC: [temperatureC],
-      temperatureMinC: [temperatureC],
-      precipitationMm: [precipitationMm],
-      precipitationProbabilityMax: [precipitationProbability],
-      windMaxKmh: [windKmh],
+      time: [
+        for (var i = 0; i < days; i++) midnight + i * Duration.secondsPerDay,
+      ],
+      conditionCode: repeat(conditionCode, days),
+      temperatureMaxC: repeat(temperatureC, days),
+      temperatureMinC: repeat(temperatureC, days),
+      precipitationMm: repeat(precipitationMm, days),
+      precipitationProbabilityMax: repeat(precipitationProbability, days),
+      windMaxKmh: repeat(windKmh, days),
     ),
   );
 }

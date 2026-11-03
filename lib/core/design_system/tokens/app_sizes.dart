@@ -20,6 +20,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.dayDot,
     required this.mapPin,
     required this.stopDot,
+    required this.weatherTable,
   });
 
   static const standard = AppSizes(
@@ -38,6 +39,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     dayDot: 6,
     mapPin: 120,
     stopDot: 20,
+    weatherTable: 340,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -89,6 +91,11 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// Göç planı zaman çizelgesinde durağın noktası (daire).
   final double stopDot;
 
+  /// Hava ekranındaki günlük listenin tablo olarak (tek satırda gün, simge,
+  /// sıcaklık, yağış, rüzgar, kovan) sığdığı en dar en, 1x yazıda; daha
+  /// dar ya da büyük yazıda her gün iki satır.
+  final double weatherTable;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -106,6 +113,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? dayDot,
     double? mapPin,
     double? stopDot,
+    double? weatherTable,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -123,6 +131,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       dayDot: dayDot ?? this.dayDot,
       mapPin: mapPin ?? this.mapPin,
       stopDot: stopDot ?? this.stopDot,
+      weatherTable: weatherTable ?? this.weatherTable,
     );
   }
 
@@ -149,6 +158,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       dayDot: lerpDouble(dayDot, other.dayDot, t)!,
       mapPin: lerpDouble(mapPin, other.mapPin, t)!,
       stopDot: lerpDouble(stopDot, other.stopDot, t)!,
+      weatherTable: lerpDouble(weatherTable, other.weatherTable, t)!,
     );
   }
 }

@@ -39,6 +39,9 @@ Map<String, dynamic> _$ApiaryForecastToJson(_ApiaryForecast instance) =>
 _Forecast _$ForecastFromJson(Map<String, dynamic> json) => _Forecast(
   timezone: json['timezone'] as String,
   utcOffsetSeconds: (json['utc_offset_seconds'] as num).toInt(),
+  current: CurrentWeather.fromJson(json['current'] as Map<String, dynamic>),
+  place: json['place'] as String?,
+  region: json['region'] as String?,
   hourly: HourlySeries.fromJson(json['hourly'] as Map<String, dynamic>),
   daily: DailySeries.fromJson(json['daily'] as Map<String, dynamic>),
 );
@@ -46,9 +49,34 @@ _Forecast _$ForecastFromJson(Map<String, dynamic> json) => _Forecast(
 Map<String, dynamic> _$ForecastToJson(_Forecast instance) => <String, dynamic>{
   'timezone': instance.timezone,
   'utc_offset_seconds': instance.utcOffsetSeconds,
+  'current': instance.current,
+  'place': instance.place,
+  'region': instance.region,
   'hourly': instance.hourly,
   'daily': instance.daily,
 };
+
+_CurrentWeather _$CurrentWeatherFromJson(Map<String, dynamic> json) =>
+    _CurrentWeather(
+      time: (json['time'] as num).toInt(),
+      temperatureC: (json['temperature_c'] as num?)?.toDouble(),
+      feelsLikeC: (json['feels_like_c'] as num?)?.toDouble(),
+      humidity: (json['humidity'] as num?)?.toDouble(),
+      windKmh: (json['wind_kmh'] as num?)?.toDouble(),
+      precipitationMm: (json['precipitation_mm'] as num?)?.toDouble(),
+      conditionCode: (json['condition_code'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$CurrentWeatherToJson(_CurrentWeather instance) =>
+    <String, dynamic>{
+      'time': instance.time,
+      'temperature_c': instance.temperatureC,
+      'feels_like_c': instance.feelsLikeC,
+      'humidity': instance.humidity,
+      'wind_kmh': instance.windKmh,
+      'precipitation_mm': instance.precipitationMm,
+      'condition_code': instance.conditionCode,
+    };
 
 _HourlySeries _$HourlySeriesFromJson(
   Map<String, dynamic> json,
@@ -66,14 +94,8 @@ _HourlySeries _$HourlySeriesFromJson(
   precipitationProbability: (json['precipitation_probability'] as List<dynamic>)
       .map((e) => (e as num?)?.toDouble())
       .toList(),
-  condition: (json['condition'] as List<dynamic>)
-      .map(
-        (e) => $enumDecodeNullable(
-          _$WeatherConditionEnumMap,
-          e,
-          unknownValue: JsonKey.nullForUndefinedEnumValue,
-        ),
-      )
+  conditionCode: (json['condition_code'] as List<dynamic>)
+      .map((e) => (e as num?)?.toInt())
       .toList(),
 );
 
@@ -84,31 +106,13 @@ Map<String, dynamic> _$HourlySeriesToJson(_HourlySeries instance) =>
       'wind_kmh': instance.windKmh,
       'precipitation_mm': instance.precipitationMm,
       'precipitation_probability': instance.precipitationProbability,
-      'condition': instance.condition
-          .map((e) => _$WeatherConditionEnumMap[e])
-          .toList(),
+      'condition_code': instance.conditionCode,
     };
-
-const _$WeatherConditionEnumMap = {
-  WeatherCondition.clear: 'clear',
-  WeatherCondition.partlyCloudy: 'partly_cloudy',
-  WeatherCondition.cloudy: 'cloudy',
-  WeatherCondition.fog: 'fog',
-  WeatherCondition.rain: 'rain',
-  WeatherCondition.snow: 'snow',
-  WeatherCondition.thunder: 'thunder',
-};
 
 _DailySeries _$DailySeriesFromJson(Map<String, dynamic> json) => _DailySeries(
   time: (json['time'] as List<dynamic>).map((e) => (e as num).toInt()).toList(),
-  condition: (json['condition'] as List<dynamic>)
-      .map(
-        (e) => $enumDecodeNullable(
-          _$WeatherConditionEnumMap,
-          e,
-          unknownValue: JsonKey.nullForUndefinedEnumValue,
-        ),
-      )
+  conditionCode: (json['condition_code'] as List<dynamic>)
+      .map((e) => (e as num?)?.toInt())
       .toList(),
   temperatureMaxC: (json['temperature_max_c'] as List<dynamic>)
       .map((e) => (e as num?)?.toDouble())
@@ -131,9 +135,7 @@ _DailySeries _$DailySeriesFromJson(Map<String, dynamic> json) => _DailySeries(
 Map<String, dynamic> _$DailySeriesToJson(_DailySeries instance) =>
     <String, dynamic>{
       'time': instance.time,
-      'condition': instance.condition
-          .map((e) => _$WeatherConditionEnumMap[e])
-          .toList(),
+      'condition_code': instance.conditionCode,
       'temperature_max_c': instance.temperatureMaxC,
       'temperature_min_c': instance.temperatureMinC,
       'precipitation_mm': instance.precipitationMm,

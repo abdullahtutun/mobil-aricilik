@@ -138,6 +138,22 @@ DateTime defaultTaskDueAt(DateTime now) {
   return DateTime(local.year, local.month, local.day + 1, defaultTaskHour);
 }
 
+/// Önerilen güne ([day], yerel takvim günü) yeni görevin son tarihi:
+/// bugünse ya da gün yoksa [defaultTaskDueAt], ileride bir günse o gün
+/// [defaultTaskHour]'da. Geçmiş gün bugüne çekilir.
+DateTime suggestedTaskDueAt(DateTime now, DateTime? day) {
+  final local = now.toLocal();
+  if (day == null ||
+      !DateTime(
+        day.year,
+        day.month,
+        day.day,
+      ).isAfter(DateTime(local.year, local.month, local.day))) {
+    return defaultTaskDueAt(now);
+  }
+  return DateTime(day.year, day.month, day.day, defaultTaskHour);
+}
+
 /// İlaç çıkarma görevinin son tarihi: planlanan çıkarma günü
 /// [defaultTaskHour]'da (yerel). Çıkarma yoksa ya da günü [now]'dan önce
 /// geçtiyse (sonradan girilen eski uygulama) null; görev açılmaz.

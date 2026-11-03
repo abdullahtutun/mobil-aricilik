@@ -1,116 +1,75 @@
 // WeatherAPI.com isteği ve yanıtın uygulamaya giden biçimi. Ağ ve
-// veritabanı yok; index.ts kullanır.
+// veritabanı yok; index.ts kullanır. Birimler metrik (°C, km/s, mm, %);
+// uygulama kullanıcının birimine çevirir.
 
-/// İstenen gün sayısı. WeatherAPI planın izin verdiği kadarını döner
-/// (ücretsiz plan 3, Starter ve üstü 7).
-export const forecastDays = 7;
+/// Varsayılan gün sayısı; `WEATHERAPI_DAYS` secret'ıyla değişir.
+export const defaultForecastDays = 7;
+
+/// WeatherAPI'nin `forecast.json`'da kabul ettiği en çok gün.
+const maxForecastDays = 14;
+
+/// İstenen gün sayısı: `WEATHERAPI_DAYS` (1–14), yoksa ya da geçersizse
+/// [defaultForecastDays]. WeatherAPI planın izin verdiğinden fazlasını
+/// istemeyi hata saymaz, planın sınırı kadar gün döner (Free 3, Starter 7,
+/// Pro+ ve üstü 14); uygulama gelen gün sayısını olduğu gibi gösterir.
+export function forecastDays(value: string | undefined): number {
+  const days = Number.parseInt(value ?? "", 10);
+  if (!Number.isFinite(days) || days < 1) return defaultForecastDays;
+  return Math.min(days, maxForecastDays);
+}
+
+/// Önbellekteki tahminin biçimi. Biçim değişince artar; eski biçimdeki
+/// satır yokmuş gibi yeniden alınır, istemciye hiç gitmez.
+export const forecastFormat = 2;
 
 /// Konumun 0,01°'lik (~1 km) hücresi: "37.11,28.39". Önbellek anahtarı ve
-/// WeatherAPI'ye giden koordinat; yakın arılıklar tek isteği paylaşır.
+/// WeatherAPI'ye giden koordinat (`q=enlem,boylam`); yakın arılıklar tek
+/// isteği paylaşır.
 export function cellOf(latitude: number, longitude: number): string {
   return `${latitude.toFixed(2)},${longitude.toFixed(2)}`;
 }
 
 /// Hücrenin tahmini. Anahtar adreste; adres loglanmaz.
-export function forecastUrl(cell: string, key: string): string {
+export function forecastUrl(cell: string, key: string, days: number): string {
   const params = new URLSearchParams({
     key,
     q: cell,
-    days: `${forecastDays}`,
+    days: `${days}`,
     aqi: "no",
     alerts: "no",
   });
   return `https://api.weatherapi.com/v1/forecast.json?${params}`;
 }
 
-/// Sağlayıcıdan bağımsız gökyüzü durumu; uygulama ikonu buna göre seçer.
-export type Condition =
-  | "clear"
-  | "partly_cloudy"
-  | "cloudy"
-  | "fog"
-  | "rain"
-  | "snow"
-  | "thunder";
-
-/// WeatherAPI durum kodu (https://www.weatherapi.com/docs/weather_conditions.json)
-/// → [Condition]. Bilinmeyen kod null.
-export function conditionOf(code: number | null | undefined): Condition | null {
-  switch (code) {
-    case 1000:
-      return "clear";
-    case 1003:
-      return "partly_cloudy";
-    case 1006:
-    case 1009:
-      return "cloudy";
-    case 1030:
-    case 1135:
-    case 1147:
-      return "fog";
-    case 1087:
-    case 1273:
-    case 1276:
-    case 1279:
-    case 1282:
-      return "thunder";
-    case 1066:
-    case 1069:
-    case 1114:
-    case 1117:
-    case 1204:
-    case 1207:
-    case 1210:
-    case 1213:
-    case 1216:
-    case 1219:
-    case 1222:
-    case 1225:
-    case 1237:
-    case 1249:
-    case 1252:
-    case 1255:
-    case 1258:
-    case 1261:
-    case 1264:
-      return "snow";
-    case 1063:
-    case 1072:
-    case 1150:
-    case 1153:
-    case 1168:
-    case 1171:
-    case 1180:
-    case 1183:
-    case 1186:
-    case 1189:
-    case 1192:
-    case 1195:
-    case 1198:
-    case 1201:
-    case 1240:
-    case 1243:
-    case 1246:
-      return "rain";
-    default:
-      return null;
-  }
-}
-
+/// Uygulamaya giden tahmin. Durum kodları WeatherAPI'nin `condition.code`
+/// değeri, çevrilmeden; simgeye uygulamadaki tek tablo çevirir.
 export type Forecast = {
+  format: number;
+  /// WeatherAPI'nin yer adı (genelde ilçe) ve bölgesi (il); başlıkta.
+  place: string | null;
+  region: string | null;
   timezone: string;
   utc_offset_seconds: number;
+  current: {
+    time: number;
+    temperature_c: number | null;
+    feels_like_c: number | null;
+    humidity: number | null;
+    wind_kmh: number | null;
+    precipitation_mm: number | null;
+    condition_code: number | null;
+  };
   hourly: {
     time: number[];
     temperature_c: (number | null)[];
     wind_kmh: (number | null)[];
     precipitation_mm: (number | null)[];
     precipitation_probability: (number | null)[];
-    condition: (Condition | null)[];
+    condition_code: (number | null)[];
   };
   daily: {
     time: number[];
-    condition: (Condition | null)[];
+    condition_code: (number | null)[];
     temperature_max_c: (number | null)[];
     temperature_min_c: (number | null)[];
     precipitation_mm: (number | null)[];
@@ -144,10 +103,23 @@ export function parseForecast(body: Json): Forecast {
     quarter;
   const days: Json[] = body.forecast.forecastday;
   const hours: Json[] = days.flatMap((day) => day.hour);
+  const current = body.current ?? {};
 
   return {
+    format: forecastFormat,
+    place: typeof location.name === "string" ? location.name : null,
+    region: typeof location.region === "string" ? location.region : null,
     timezone: location.tz_id,
     utc_offset_seconds: offset,
+    current: {
+      time: num(current.last_updated_epoch) ?? location.localtime_epoch,
+      temperature_c: num(current.temp_c),
+      feels_like_c: num(current.feelslike_c),
+      humidity: num(current.humidity),
+      wind_kmh: num(current.wind_kph),
+      precipitation_mm: num(current.precip_mm),
+      condition_code: num(current.condition?.code),
+    },
     hourly: {
       time: hours.map((h) => h.time_epoch),
       temperature_c: hours.map((h) => num(h.temp_c)),
@@ -156,11 +128,11 @@ export function parseForecast(body: Json): Forecast {
       precipitation_probability: hours.map((h) =>
         chance(h.chance_of_rain, h.chance_of_snow)
       ),
-      condition: hours.map((h) => conditionOf(h.condition?.code)),
+      condition_code: hours.map((h) => num(h.condition?.code)),
     },
     daily: {
       time: days.map((d) => d.date_epoch - offset),
-      condition: days.map((d) => conditionOf(d.day.condition?.code)),
+      condition_code: days.map((d) => num(d.day.condition?.code)),
       temperature_max_c: days.map((d) => num(d.day.maxtemp_c)),
       temperature_min_c: days.map((d) => num(d.day.mintemp_c)),
       precipitation_mm: days.map((d) => num(d.day.totalprecip_mm)),

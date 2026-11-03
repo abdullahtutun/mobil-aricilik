@@ -110,10 +110,33 @@ abstract final class AppRoutes {
 
   /// Görev ekleme ve düzenleme; Görevler sekmesinin içinde.
   static const taskNew = '/tasks/new';
+  static const taskDueParameter = 'due';
+  static const taskApiaryParameter = 'apiary';
+  static const taskTitleParameter = 'title';
+
+  /// Yeni görev önerilen günle (yerel takvim günü), arılıkla ve başlıkla.
+  static String taskNewSuggested({
+    required DateTime day,
+    String? apiaryId,
+    String? title,
+  }) => Uri(
+    path: taskNew,
+    queryParameters: {
+      taskDueParameter:
+          '${day.year.toString().padLeft(4, '0')}-'
+          '${day.month.toString().padLeft(2, '0')}-'
+          '${day.day.toString().padLeft(2, '0')}',
+      taskApiaryParameter: ?apiaryId,
+      taskTitleParameter: ?title,
+    },
+  ).toString();
   static String taskEdit(String id) => '/tasks/$id/edit';
 
   /// Bugün'deki "Dikkat isteyenler"in bir grubu; Bugün sekmesinin içinde.
   static String attention(AttentionKind kind) => '/attention/${kind.name}';
+
+  /// Arılığın havası (Bugün'deki hava kartından); sekmelerin üstünde açılır.
+  static String apiaryWeather(String apiaryId) => '/weather/$apiaryId';
 
   static const settings = '/more/settings';
 

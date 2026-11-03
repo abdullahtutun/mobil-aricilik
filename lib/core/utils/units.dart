@@ -32,6 +32,25 @@ enum TemperatureUnit {
   }
 }
 
+/// Hız birimi (rüzgar).
+enum SpeedUnit {
+  kilometersPerHour(1),
+
+  /// Uluslararası mil; tanım gereği tam olarak 1,609344 km.
+  milesPerHour(1.609344);
+
+  new(this._kilometersPerHour);
+
+  /// Bu birimin bir tanesi kaç km/s.
+  final double _kilometersPerHour;
+
+  /// [value]'yu bu birimden [to] birimine çevirir.
+  double convert(double value, {required SpeedUnit to}) {
+    if (to == this) return value;
+    return value * _kilometersPerHour / to._kilometersPerHour;
+  }
+}
+
 /// Hacim birimi.
 enum VolumeUnit {
   liter(1),

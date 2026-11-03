@@ -188,7 +188,94 @@ final class ApiaryWeatherProvider
   }
 }
 
-String _$apiaryWeatherHash() => r'd709328adc72ce1543624fedb689c70feb8fc6c3';
+String _$apiaryWeatherHash() => r'442d9eaff26f04403bd96687284c9e579b785ae1';
+
+/// Arılık silinmişse ya da yoksa null.
+
+@ProviderFor(apiaryWeatherDetail)
+final apiaryWeatherDetailProvider = ApiaryWeatherDetailFamily._();
+
+/// Arılık silinmişse ya da yoksa null.
+
+final class ApiaryWeatherDetailProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ApiaryWeatherDetail?>,
+          ApiaryWeatherDetail?,
+          FutureOr<ApiaryWeatherDetail?>
+        >
+    with
+        $FutureModifier<ApiaryWeatherDetail?>,
+        $FutureProvider<ApiaryWeatherDetail?> {
+  /// Arılık silinmişse ya da yoksa null.
+  ApiaryWeatherDetailProvider._({
+    required ApiaryWeatherDetailFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'apiaryWeatherDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$apiaryWeatherDetailHash();
+
+  @override
+  String toString() {
+    return r'apiaryWeatherDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<ApiaryWeatherDetail?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ApiaryWeatherDetail?> create(Ref ref) {
+    final argument = this.argument as String;
+    return apiaryWeatherDetail(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ApiaryWeatherDetailProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$apiaryWeatherDetailHash() =>
+    r'f6de24e9e138e055164b329341e99984b7116c58';
+
+/// Arılık silinmişse ya da yoksa null.
+
+final class ApiaryWeatherDetailFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<ApiaryWeatherDetail?>, String> {
+  ApiaryWeatherDetailFamily._()
+    : super(
+        retry: null,
+        name: r'apiaryWeatherDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Arılık silinmişse ya da yoksa null.
+
+  ApiaryWeatherDetailProvider call(String apiaryId) =>
+      ApiaryWeatherDetailProvider._(argument: apiaryId, from: this);
+
+  @override
+  String toString() => r'apiaryWeatherDetailProvider';
+}
 
 /// Paketi gerekince sunucudan yeniler ([weatherNeedsRefresh]). Ağ yoksa ya
 /// da sunucu hata verirse saklanan paket kalır; hata ekrana taşınmaz.

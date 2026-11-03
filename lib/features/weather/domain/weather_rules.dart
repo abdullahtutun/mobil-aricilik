@@ -1,78 +1,114 @@
 import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
 
-/// Kovan açmaya uygunluk: yeşil, sarı, kırmızı.
-enum HiveOpening { suitable, caution, unsuitable }
+/// Kovan açmaya uygunluk: uygun ya da uygunluğu bozan etken.
+enum HiveOpening { suitable, rain, wind, cold }
 
-/// Uygunluğu düşüren hava etkeni.
-enum WeatherConcern { rain, wind, cold }
+/// Kovan açma eşikleri; bu telefonun ayarı. Sıcaklık `minTemperatureC`'nin
+/// üstünde, rüzgar `maxWindKmh`'nin ve yağış olasılığı
+/// `maxPrecipitationProbability`'nin altında olmalı.
+typedef HiveOpeningThresholds = ({
+  double minTemperatureC,
+  double maxWindKmh,
+  double maxPrecipitationProbability,
+});
 
-/// `concern` uygunluğu belirleyen etken; [HiveOpening.suitable]'da null.
-typedef HiveOpeningAdvice = ({HiveOpening level, WeatherConcern? concern});
+/// Ayar yapılmamışsa: 15 °C üstü, rüzgar 25 km/s altı, yağış %40 altı.
+const HiveOpeningThresholds defaultHiveOpeningThresholds = (
+  minTemperatureC: 15,
+  maxWindKmh: 25,
+  maxPrecipitationProbability: 40,
+);
 
-/// Bu sıcaklığın altında kovan açılmaz; yavru üşür.
-const coldLimitC = 12.0;
+/// Ayarlarda seçilebilen eşikler (°C, km/s, %).
+const minTemperatureOptions = <double>[10, 12, 14, 15, 16, 18, 20];
+const maxWindOptions = <double>[15, 20, 25, 30, 35, 40];
+const maxPrecipitationOptions = <double>[20, 30, 40, 50, 60, 70];
 
-/// Kovan bu sıcaklıktan itibaren rahat açılır.
-const warmEnoughC = 16.0;
-
-/// Bu rüzgarda ve üstünde kovan açılmaz.
-const windLimitKmh = 30.0;
-
-/// Rüzgar bunun altındaysa sorun yok.
-const calmEnoughKmh = 20.0;
-
-/// Saatlik bu yağış ve üstü yağıyor sayılır.
+/// Saatlik bu yağış ve üstü yağıyor sayılır; olasılık düşük görünse de.
 const rainLimitMm = 0.5;
 
-/// Bu yağış olasılığında ve üstünde kovan açılmaz.
-const rainLikelyPercent = 60.0;
-
-/// Yağış olasılığı bunun altındaysa sorun yok.
-const rainUnlikelyPercent = 30.0;
-
-/// Bir saatin havasına göre kovan açmaya uygunluk. Kırmızı: sıcaklık
-/// [coldLimitC]'nin altında, rüzgar [windLimitKmh] ya da üstü, ya da yağış
-/// var ([rainLimitMm] mm/saat ya da olasılık [rainLikelyPercent]). Yeşil:
-/// en az [warmEnoughC], rüzgar [calmEnoughKmh]'nin altında, yağış yok ve
-/// olasılık [rainUnlikelyPercent]'nin altında. Arası sarı. Olasılık
-/// bilinmiyorsa yalnız yağış miktarına bakılır. Birden çok etken varsa en
-/// kötü düzeyi veren, eşitlikte yağış, rüzgar, soğuk sırasıyla.
-HiveOpeningAdvice hiveOpeningAdvice({
+/// [thresholds]'a göre kovan açmaya uygunluk. Yağış: olasılık eşikte ya da
+/// üstünde, ya da yağış [precipitationMm] en az [rainLimitMm]. Rüzgar:
+/// eşikte ya da üstünde. Soğuk: sıcaklık eşikte ya da altında. Bilinmeyen
+/// yağış sorun sayılmaz. Birden çok etken varsa yağış, rüzgar, soğuk
+/// sırasıyla ilki.
+HiveOpening hiveOpening({
   required double temperatureC,
   required double windKmh,
-  required double precipitationMm,
+  required HiveOpeningThresholds thresholds,
   double? precipitationProbability,
+  double? precipitationMm,
 }) {
-  final probability = precipitationProbability ?? 0;
-  final rain =
-      precipitationMm >= rainLimitMm || probability >= rainLikelyPercent
-      ? HiveOpening.unsuitable
-      : precipitationMm > 0 || probability >= rainUnlikelyPercent
-      ? HiveOpening.caution
-      : HiveOpening.suitable;
-  final wind = windKmh >= windLimitKmh
-      ? HiveOpening.unsuitable
-      : windKmh >= calmEnoughKmh
-      ? HiveOpening.caution
-      : HiveOpening.suitable;
-  final cold = temperatureC < coldLimitC
-      ? HiveOpening.unsuitable
-      : temperatureC < warmEnoughC
-      ? HiveOpening.caution
-      : HiveOpening.suitable;
-
-  var advice = (level: HiveOpening.suitable, concern: null as WeatherConcern?);
-  for (final (concern, level) in [
-    (WeatherConcern.rain, rain),
-    (WeatherConcern.wind, wind),
-    (WeatherConcern.cold, cold),
-  ]) {
-    if (level.index > advice.level.index) {
-      advice = (level: level, concern: concern);
-    }
+  if ((precipitationProbability ?? 0) >=
+          thresholds.maxPrecipitationProbability ||
+      (precipitationMm ?? 0) >= rainLimitMm) {
+    return HiveOpening.rain;
   }
-  return advice;
+  if (windKmh >= thresholds.maxWindKmh) return HiveOpening.wind;
+  if (temperatureC <= thresholds.minTemperatureC) return HiveOpening.cold;
+  return HiveOpening.suitable;
 }
+
+/// Saatin tahmininden uygunluk; sıcaklık ya da rüzgar eksikse null.
+HiveOpening? hourOpening(HourlyWeather hour, HiveOpeningThresholds thresholds) {
+  if (hour case (
+    temperatureC: final temperature?,
+    windKmh: final wind?,
+    :final precipitationMm,
+    :final precipitationProbability,
+    time: _,
+    conditionCode: _,
+  )) {
+    return hiveOpening(
+      temperatureC: temperature,
+      windKmh: wind,
+      thresholds: thresholds,
+      precipitationProbability: precipitationProbability,
+      precipitationMm: precipitationMm,
+    );
+  }
+  return null;
+}
+
+/// Günün tahmininden uygunluk (en yüksek sıcaklık, en sert rüzgar, en
+/// yüksek yağış olasılığı); sıcaklık ya da rüzgar eksikse null.
+HiveOpening? dayOpening(DailyWeather day, HiveOpeningThresholds thresholds) {
+  if (day case (
+    temperatureMaxC: final temperature?,
+    windMaxKmh: final wind?,
+    :final precipitationProbability,
+    day: _,
+    conditionCode: _,
+    temperatureMinC: _,
+  )) {
+    return hiveOpening(
+      temperatureC: temperature,
+      windKmh: wind,
+      thresholds: thresholds,
+      precipitationProbability: precipitationProbability,
+    );
+  }
+  return null;
+}
+
+/// [epochSeconds]'ın arılığın saat dilimindeki tarih ve saati (yalnız
+/// alanlar; telefonun saat diliminden bağımsız).
+DateTime forecastLocalTime(Forecast forecast, int epochSeconds) {
+  final utc = DateTime.fromMillisecondsSinceEpoch(
+    (epochSeconds + forecast.utcOffsetSeconds) * 1000,
+    isUtc: true,
+  );
+  return DateTime(utc.year, utc.month, utc.day, utc.hour, utc.minute);
+}
+
+HourlyWeather _hourAt(HourlySeries hourly, int i) => (
+  time: hourly.time[i],
+  temperatureC: hourly.temperatureC.elementAtOrNull(i),
+  windKmh: hourly.windKmh.elementAtOrNull(i),
+  precipitationMm: hourly.precipitationMm.elementAtOrNull(i),
+  precipitationProbability: hourly.precipitationProbability.elementAtOrNull(i),
+  conditionCode: hourly.conditionCode.elementAtOrNull(i),
+);
 
 /// [forecast]'ta [at] anının içinde olduğu saat; tahmin aralığı dışındaysa
 /// null.
@@ -81,36 +117,107 @@ HourlyWeather? forecastHourAt(Forecast forecast, DateTime at) {
   final hourly = forecast.hourly;
   for (final (i, start) in hourly.time.indexed) {
     if (start <= seconds && seconds < start + Duration.secondsPerHour) {
-      return (
-        temperatureC: hourly.temperatureC.elementAtOrNull(i),
-        windKmh: hourly.windKmh.elementAtOrNull(i),
-        precipitationMm: hourly.precipitationMm.elementAtOrNull(i),
-        precipitationProbability: hourly.precipitationProbability
-            .elementAtOrNull(i),
-        condition: hourly.condition.elementAtOrNull(i),
-      );
+      return _hourAt(hourly, i);
     }
   }
   return null;
 }
 
-/// Saatin tahmininden uygunluk; sıcaklık, rüzgar ya da yağış eksikse null.
-HiveOpeningAdvice? hourOpeningAdvice(HourlyWeather hour) {
-  if (hour case (
-    temperatureC: final temperature?,
-    windKmh: final wind?,
-    precipitationMm: final precipitation?,
-    :final precipitationProbability,
-    condition: _,
-  )) {
-    return hiveOpeningAdvice(
-      temperatureC: temperature,
-      windKmh: wind,
-      precipitationMm: precipitation,
-      precipitationProbability: precipitationProbability,
-    );
+/// Saat şeridi: önce [now]'ın saati, sonra arılığın saatiyle [stepHours]'ın
+/// katı olan saatler; en çok [count] sütun. [now] tahmin aralığı dışındaysa
+/// boş.
+List<HourlyWeather> hourlyStrip(
+  Forecast forecast,
+  DateTime now, {
+  int count = 5,
+  int stepHours = 3,
+}) {
+  final seconds = now.millisecondsSinceEpoch ~/ 1000;
+  final hourly = forecast.hourly;
+  final start = hourly.time.indexWhere(
+    (t) => t <= seconds && seconds < t + Duration.secondsPerHour,
+  );
+  if (start < 0) return const [];
+  return [
+    _hourAt(hourly, start),
+    for (var i = start + 1; i < hourly.time.length; i++)
+      if (forecastLocalTime(forecast, hourly.time[i]).hour % stepHours == 0)
+        _hourAt(hourly, i),
+  ].take(count).toList();
+}
+
+/// Tahmindeki günler, gelen sayıda (plan 3 de verse 7 de); [now]'dan
+/// önceki takvim günleri (eski paket) atlanır.
+List<DailyWeather> forecastDays(Forecast forecast, DateTime now) {
+  final daily = forecast.daily;
+  final today = _dateOnly(
+    forecastLocalTime(forecast, now.millisecondsSinceEpoch ~/ 1000),
+  );
+  return [
+    for (final (i, time) in daily.time.indexed)
+      if (_dateOnly(forecastLocalTime(forecast, time)) case final day
+          when !day.isBefore(today))
+        (
+          day: day,
+          conditionCode: daily.conditionCode.elementAtOrNull(i),
+          temperatureMaxC: daily.temperatureMaxC.elementAtOrNull(i),
+          temperatureMinC: daily.temperatureMinC.elementAtOrNull(i),
+          precipitationProbability: daily.precipitationProbabilityMax
+              .elementAtOrNull(i),
+          windMaxKmh: daily.windMaxKmh.elementAtOrNull(i),
+        ),
+  ];
+}
+
+DateTime _dateOnly(DateTime value) =>
+    DateTime(value.year, value.month, value.day);
+
+/// "Planla" önerisi: `from`–`to` arası yağışlı ya da rüzgarlı (`rain`,
+/// `wind`); muayeneler `day`'e alınsın.
+typedef InspectionPlan = ({
+  DateTime from,
+  DateTime to,
+  bool rain,
+  bool wind,
+  DateTime day,
+});
+
+/// [days]'teki ilk yağışlı ya da rüzgarlı günler dizisi ve ona en yakın
+/// uygun gün: önce gelen ve sonra gelen aynı uzaklıktaysa önce gelen.
+/// Dizi ilk günden başlıyorsa yağışlı günler atlanıp ilk uygun gün
+/// seçilir. Böyle bir dizi ya da uygun gün yoksa null.
+InspectionPlan? inspectionPlan(
+  List<DailyWeather> days,
+  HiveOpeningThresholds thresholds,
+) {
+  final openings = [for (final day in days) dayOpening(day, thresholds)];
+  bool bad(HiveOpening? opening) =>
+      opening == HiveOpening.rain || opening == HiveOpening.wind;
+
+  final first = openings.indexWhere(bad);
+  if (first < 0) return null;
+  var last = first;
+  while (last + 1 < openings.length && bad(openings[last + 1])) {
+    last++;
   }
-  return null;
+
+  int? target;
+  int? distance;
+  for (final (i, opening) in openings.indexed) {
+    if (opening != HiveOpening.suitable) continue;
+    final d = i < first ? first - i : i - last;
+    if (distance == null || d < distance) (target, distance) = (i, d);
+  }
+  if (target == null) return null;
+
+  final run = openings.sublist(first, last + 1);
+  return (
+    from: days[first].day,
+    to: days[last].day,
+    rain: run.contains(HiveOpening.rain),
+    wind: run.contains(HiveOpening.wind),
+    day: days[target].day,
+  );
 }
 
 /// Sunucu tahmini ~1 saat önbellekte tutar; daha sık sormak yeni veri

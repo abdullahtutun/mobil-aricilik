@@ -1,4 +1,4 @@
--- Hava sağlayıcısı Open-Meteo'dan WeatherAPI.com'a geçti. Tahminin biçimi
+-- Hava sağlayıcısı WeatherAPI.com oldu. Tahminin biçimi
 -- değişti (WMO `weather_code` yerine sağlayıcıdan bağımsız `condition`);
 -- eski biçimdeki önbellek satırları istemciye gitmesin diye silinir.
 -- Hücreler ilk çağrıda WeatherAPI'den yeniden dolar.

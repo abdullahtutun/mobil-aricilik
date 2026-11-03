@@ -1,5 +1,6 @@
-// weather-bundle: Çağıranın arılıkları için WeatherAPI.com tahmini (planın
-// verdiği kadar gün; ücretsiz 3, Starter 7) tek pakette. Konumlar
+// weather-bundle: Çağıranın arılıkları için WeatherAPI.com tahmini (şimdiki
+// durum, saatlik ve günlük; `WEATHERAPI_DAYS` gün, varsayılan 7, plan
+// daha azına izin veriyorsa o kadar) tek pakette. Konumlar
 // kullanıcının JWT'siyle (RLS) `weather_locations`'tan gelir; istemci
 // koordinat göndermez. Tahmin 0,01°'lik hücre başına `weather_cache`'te ~1
 // saat tutulur. Bir hücre alınamazsa eski önbelleği döner; hiç verisi
@@ -13,6 +14,8 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import {
   cellOf,
   type Forecast,
+  forecastDays,
+  forecastFormat,
   forecastUrl,
   parseForecast,
 } from "./weather_api.ts";
@@ -36,13 +39,14 @@ function json(body: unknown, status = 200): Response {
 async function fetchForecasts(
   cells: string[],
   key: string,
+  days: number,
 ): Promise<CacheRow[]> {
   const rows: CacheRow[] = [];
   const queue = [...cells];
   async function worker() {
     for (let cell = queue.shift(); cell; cell = queue.shift()) {
       try {
-        const response = await fetch(forecastUrl(cell, key), {
+        const response = await fetch(forecastUrl(cell, key, days), {
           signal: AbortSignal.timeout(10_000),
         });
         // Adres anahtarı taşır; yalnız durum ve gövde loglanır.
@@ -111,7 +115,11 @@ Deno.serve(async (request) => {
       .select("cell, forecast, fetched_at")
       .in("cell", cells);
     if (cacheError) console.error(cacheError);
-    for (const row of (cached ?? []) as CacheRow[]) byCell.set(row.cell, row);
+    // Eski biçimdeki satır yokmuş gibi yeniden alınır; alınamazsa da
+    // istemciye eski biçim gitmez.
+    for (const row of (cached ?? []) as CacheRow[]) {
+      if (row.forecast?.format === forecastFormat) byCell.set(row.cell, row);
+    }
   }
 
   const now = Date.now();
@@ -121,7 +129,11 @@ Deno.serve(async (request) => {
   });
 
   if (stale.length > 0) {
-    const fresh = await fetchForecasts(stale, key);
+    const fresh = await fetchForecasts(
+      stale,
+      key,
+      forecastDays(Deno.env.get("WEATHERAPI_DAYS")),
+    );
     for (const row of fresh) byCell.set(row.cell, row);
     if (fresh.length > 0) {
       const { error: upsertError } = await admin

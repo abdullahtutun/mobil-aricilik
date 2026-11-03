@@ -1,11 +1,11 @@
 -- Hava durumu: weather-bundle Edge Function'ının arılık konumları ve
--- Open-Meteo önbelleği. Senkronlanmaz; istemci paketi yerelde saklar.
+-- tahmin önbelleği. Senkronlanmaz; istemci paketi yerelde saklar.
 
 -- ---------------------------------------------------------------------------
 -- Önbellek
 -- ---------------------------------------------------------------------------
 
--- 0,01°'lik hücre (~1 km) başına Open-Meteo'dan alınan son tahmin. Hücre
+-- 0,01°'lik hücre (~1 km) başına hava sağlayıcısından alınan son tahmin. Hücre
 -- "enlem,boylam" iki ondalıkla ("37.11,28.39"); yakın arılıklar ve aynı
 -- yeri soran işletmeler tek kaydı paylaşır. Yalnız Edge Function
 -- (service_role) okur ve yazar; uygulama rolleri hiç erişemez.

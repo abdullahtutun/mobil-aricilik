@@ -100,6 +100,7 @@ import 'package:mobil_arici/features/team/presentation/team_screen.dart';
 import 'package:mobil_arici/features/today/domain/today_rules.dart';
 import 'package:mobil_arici/features/today/presentation/attention_screen.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
+import 'package:mobil_arici/features/weather/presentation/apiary_weather_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
@@ -186,6 +187,13 @@ GoRouter router(Ref ref) {
                         : null,
                     builder: (context, state) =>
                         AttentionScreen(kind: _attentionKindOf(state)!),
+                  ),
+                  GoRoute(
+                    path: 'weather/:$_apiaryId',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => ApiaryWeatherScreen(
+                      apiaryId: state.pathParameters[_apiaryId]!,
+                    ),
                   ),
                   // Prod'da bu rotalar hiç yok; derin linkle de açılamaz.
                   if (isDev)
@@ -417,7 +425,18 @@ GoRouter router(Ref ref) {
                   GoRoute(
                     path: 'new',
                     parentNavigatorKey: rootNavigatorKey,
-                    builder: (context, state) => const TaskFormScreen(),
+                    builder: (context, state) {
+                      final query = state.uri.queryParameters;
+                      // Bozuk gün yok sayılır; form varsayılan günle açılır.
+                      final due = DateTime.tryParse(
+                        query[AppRoutes.taskDueParameter] ?? '',
+                      );
+                      return TaskFormScreen(
+                        dueDay: due,
+                        apiaryId: query[AppRoutes.taskApiaryParameter],
+                        title: query[AppRoutes.taskTitleParameter],
+                      );
+                    },
                   ),
                   GoRoute(
                     path: ':$_taskId/edit',

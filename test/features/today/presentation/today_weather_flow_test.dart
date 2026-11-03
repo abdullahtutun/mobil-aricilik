@@ -10,7 +10,6 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
-import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 
 import '../../../helpers/fake_auth_service.dart';
@@ -20,6 +19,8 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 const _attribution = 'Powered by WeatherAPI.com';
+Finder _attributionText() =>
+    find.textContaining(_attribution, findRichText: true);
 
 Future<ProviderContainer> _open(
   WidgetTester tester, {
@@ -89,9 +90,9 @@ void main() {
     expect(find.text('Yayla'), findsOneWidget);
     expect(find.text('13°'), findsOneWidget);
     expect(find.text('Rüzgar 31 km/s'), findsOneWidget);
-    expect(_badge('Sert rüzgar'), findsOneWidget);
+    expect(_badge('Rüzgarlı'), findsOneWidget);
     expect(find.text('Ova'), findsNothing);
-    expect(find.text(_attribution), findsOneWidget);
+    expect(_attributionText(), findsOneWidget);
     expect(find.textContaining('itibarıyla'), findsNothing);
     // Paket telefonda saklandı.
     expect(await WeatherRepository(db).readBundle(), weather.bundle);
@@ -109,7 +110,7 @@ void main() {
             at: now.subtract(const Duration(hours: 3)),
             temperatureC: 10,
             precipitationMm: 1.2,
-            condition: WeatherCondition.rain,
+            conditionCode: rainCode,
           ),
         },
       ),
@@ -119,7 +120,7 @@ void main() {
 
     expect(weather.fetchCount, 1);
     expect(find.text('10°'), findsOneWidget);
-    expect(_badge('Yağışlı'), findsOneWidget);
+    expect(_badge('Yağmur'), findsOneWidget);
     expect(find.byIcon(Icons.water_drop_outlined), findsOneWidget);
     expect(find.textContaining('itibarıyla'), findsOneWidget);
     expect(find.byType(WeatherAttribution), findsOneWidget);
@@ -139,7 +140,7 @@ void main() {
     await _open(tester, db: db, weather: weather);
 
     expect(weather.fetchCount, 0);
-    expect(_badge('Serin'), findsOneWidget);
+    expect(_badge('Soğuk'), findsOneWidget);
   });
 
   testWidgets('paket yoksa hava ve atıf görünmez', (tester) async {
@@ -147,7 +148,7 @@ void main() {
     await _open(tester, db: db, weather: weather);
 
     expect(weather.fetchCount, 1);
-    expect(find.text(_attribution), findsNothing);
+    expect(_attributionText(), findsNothing);
     // Arılıklar var, kovan yok: kurulumun sıradaki adımı görünür.
     expect(find.text('KURULUM 1/3'), findsOneWidget);
     expect(find.text('Kovanlarını oluştur'), findsOneWidget);
@@ -171,7 +172,7 @@ void main() {
 
     expect(find.text('Kızılçam'), findsNothing);
     expect(find.text('Yayla'), findsNothing);
-    expect(find.text(_attribution), findsNothing);
+    expect(_attributionText(), findsNothing);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle kartlar taşmaz', (
@@ -199,13 +200,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
-    expect(_badge('Yağış olası'), findsOneWidget);
+    expect(_badge('Yağmur'), findsOneWidget);
     await tester.drag(
       find.byType(SingleChildScrollView).first,
       const Offset(-300, 0),
     );
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
-    expect(_badge('Sert rüzgar'), findsOneWidget);
+    expect(_badge('Rüzgarlı'), findsOneWidget);
   });
 }

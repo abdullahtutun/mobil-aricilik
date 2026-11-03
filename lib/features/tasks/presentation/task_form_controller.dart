@@ -66,14 +66,23 @@ extension TaskFormProgress on TaskFormState {
 
 /// Görev ekleme ([taskId] null) ve düzenleme formu. Ekran açık kaldığı
 /// sürece yaşar. Düzenlenecek görev yoksa ya da silinmişse durum null.
-/// Her şey yerel DB'ye yazılır.
+/// Her şey yerel DB'ye yazılır. Yeni görev önerilen günle ([dueDay]),
+/// arılıkla ve başlıkla açılabilir (ör. hava ekranındaki "Planla");
+/// kullanıcı kaydedene kadar görev yazılmaz.
 @riverpod
 class TaskFormController extends _$TaskFormController {
   @override
-  Future<TaskFormState?> build(String? taskId) async {
+  Future<TaskFormState?> build(
+    String? taskId, {
+    DateTime? dueDay,
+    String? apiaryId,
+    String? title,
+  }) async {
     if (taskId == null) {
       return TaskFormState(
-        dueAt: defaultTaskDueAt(clock.now()),
+        dueAt: suggestedTaskDueAt(clock.now(), dueDay),
+        title: title ?? '',
+        apiaryId: apiaryId,
         // Yeni görev önce kendime; hatırlatma ekibin her telefonunda
         // çalmasın.
         assignedTo: ref.read(currentUserIdProvider),

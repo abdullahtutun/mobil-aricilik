@@ -2655,16 +2655,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsExactAlarmsOff => 'Kapalı · birkaç dakika gecikebilir';
 
   @override
-  String get weatherAttribution => 'Powered by WeatherAPI.com';
-
-  @override
   String weatherTemperature(String value) {
     return '$value°';
-  }
-
-  @override
-  String weatherWind(String speed) {
-    return 'Rüzgar $speed km/s';
   }
 
   @override
@@ -2673,25 +2665,220 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String weatherWind(String speed) {
+    return 'Rüzgar $speed';
+  }
+
+  @override
+  String weatherSpeed(String value, String unit) {
+    return '$value $unit';
+  }
+
+  @override
+  String get unitKmh => 'km/s';
+
+  @override
+  String get unitMph => 'mph';
+
+  @override
+  String weatherPercent(String value) {
+    return '%$value';
+  }
+
+  @override
+  String weatherTemperatureRange(String max, String min) {
+    return '$max / $min';
+  }
+
+  @override
+  String get hiveOpeningRain => 'Yağmur';
+
+  @override
+  String get hiveOpeningWind => 'Rüzgarlı';
+
+  @override
+  String get hiveOpeningCold => 'Soğuk';
+
+  @override
+  String get hiveOpeningDaySuitable => 'Açılır';
+
+  @override
+  String get weatherConditionSunny => 'Güneşli';
+
+  @override
+  String get weatherConditionPartlyCloudy => 'Parçalı bulutlu';
+
+  @override
+  String get weatherConditionCloudy => 'Bulutlu';
+
+  @override
+  String get weatherConditionRainy => 'Yağmurlu';
+
+  @override
+  String get weatherConditionWindy => 'Rüzgarlı';
+
+  @override
+  String get weatherConditionOther => 'Kar, sis ya da fırtına';
+
+  @override
+  String weatherFeelsLike(String condition, String value) {
+    return '$condition · hissedilen $value';
+  }
+
+  @override
+  String get weatherWindLabel => 'Rüzgar';
+
+  @override
+  String get weatherHumidityLabel => 'Nem';
+
+  @override
+  String get weatherPrecipitationLabel => 'Yağış';
+
+  @override
+  String get weatherScreenTitle => 'Arılık havası';
+
+  @override
+  String weatherScreenSubtitle(String place, String days) {
+    return '$place · $days günlük hava';
+  }
+
+  @override
+  String weatherScreenSubtitleNoPlace(String days) {
+    return '$days günlük hava';
+  }
+
+  @override
+  String weatherUpdatedAt(String time) {
+    return 'Güncelleme $time';
+  }
+
+  @override
+  String get weatherNow => 'Şimdi';
+
+  @override
+  String get weatherToday => 'Bugün';
+
+  @override
+  String get weatherColumnDay => 'Gün';
+
+  @override
+  String get weatherColumnTemperature => 'Sıcaklık';
+
+  @override
+  String get weatherColumnPrecipitation => 'Yağış';
+
+  @override
+  String get weatherColumnHive => 'Kovan';
+
+  @override
+  String get weatherTodaySuitable => 'Bugün kovan açmaya uygun';
+
+  @override
+  String get weatherTodayRain => 'Bugün yağmur var; kovan açmaya uygun değil';
+
+  @override
+  String get weatherTodayWind => 'Bugün rüzgarlı; kovan açmaya uygun değil';
+
+  @override
+  String get weatherTodayCold => 'Bugün soğuk; kovan açmaya uygun değil';
+
+  @override
+  String weatherDayRange(String from, String to) {
+    return '$from–$to';
+  }
+
+  @override
+  String weatherPlanRain(String days) {
+    return '$days yağmur.';
+  }
+
+  @override
+  String weatherPlanWind(String days) {
+    return '$days rüzgarlı.';
+  }
+
+  @override
+  String weatherPlanRainWind(String days) {
+    return '$days yağmur ve rüzgar.';
+  }
+
+  @override
+  String weatherPlanMove(String day) {
+    return 'Muayeneleri $day gününe al.';
+  }
+
+  @override
+  String get weatherPlanAction => 'Planla';
+
+  @override
+  String weatherPlanTaskTitle(String apiary) {
+    return '$apiary muayenesi';
+  }
+
+  @override
+  String weatherThresholdsHint(
+    String temperature,
+    String wind,
+    String precipitation,
+  ) {
+    return 'Kovan açılır: $temperature üstü, rüzgar $wind altı, yağış $precipitation altı. Eşikleri Ayarlar\'dan değiştirebilirsin.';
+  }
+
+  @override
+  String get weatherEmptyTitle => 'Hava bilgisi yok';
+
+  @override
+  String get weatherEmptyMessage =>
+      'Bu arılığın tahmini henüz alınmadı. İnternete bağlanınca yenile.';
+
+  @override
+  String get weatherNoLocationMessage =>
+      'Arılığın konumu yok. Tahmin için arılığa konum ekle.';
+
+  @override
+  String get weatherRefresh => 'Yenile';
+
+  @override
+  String get weatherRefreshFailed =>
+      'Tahmin alınamadı. İnternet bağlantını kontrol et.';
+
+  @override
+  String get weatherApiaryNotFound => 'Arılık bulunamadı';
+
+  @override
+  String get weatherAttributionPrefix => 'Powered by ';
+
+  @override
+  String get weatherAttributionLink => 'WeatherAPI.com';
+
+  @override
+  String get settingsHiveOpening => 'Kovan açma eşikleri';
+
+  @override
+  String get settingsHiveOpeningTemperature => 'Sıcaklık';
+
+  @override
+  String settingsHiveOpeningTemperatureValue(String value) {
+    return '$value üstü';
+  }
+
+  @override
+  String get settingsHiveOpeningWind => 'Rüzgar';
+
+  @override
+  String get settingsHiveOpeningPrecipitation => 'Yağış olasılığı';
+
+  @override
+  String settingsHiveOpeningBelow(String value) {
+    return '$value altı';
+  }
+
+  @override
+  String get settingsHiveOpeningHint =>
+      'Hava ekranı ve Bugün kartları bu eşiklere göre \"Açılır\" der. Yalnız bu telefonda saklanır.';
+
+  @override
   String get hiveOpeningSuitable => 'Kovan açılır';
-
-  @override
-  String get hiveOpeningCautionRain => 'Yağış olası';
-
-  @override
-  String get hiveOpeningCautionWind => 'Rüzgarlı';
-
-  @override
-  String get hiveOpeningCautionCold => 'Serin';
-
-  @override
-  String get hiveOpeningUnsuitableRain => 'Yağışlı';
-
-  @override
-  String get hiveOpeningUnsuitableWind => 'Sert rüzgar';
-
-  @override
-  String get hiveOpeningUnsuitableCold => 'Çok soğuk';
 
   @override
   String get todayGreetingMorning => 'Günaydın';
