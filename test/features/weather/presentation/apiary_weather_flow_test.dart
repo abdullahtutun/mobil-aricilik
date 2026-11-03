@@ -395,6 +395,37 @@ void main() {
     );
   });
 
+  for (final width in [380.0, 390.0, 430.0]) {
+    testWidgets('${width.toInt()}dp tabloda başlık ve değerler tek satır', (
+      tester,
+    ) async {
+      tester.view
+        ..physicalSize = Size(width, 900)
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      final now = DateTime.now();
+      final weather = FakeWeatherService(
+        bundle: testBundle(
+          generatedAt: now,
+          forecasts: {
+            kizilcam.id: _forecast(now, [_ok, (17, 18, 100), _wind]),
+          },
+        ),
+      );
+      await open(tester, weather: weather);
+      await tester.scrollUntilVisible(find.text('SICAKLIK'), 200);
+
+      // Aynı biçimdeki tek satırlık hücreyle aynı yükseklikte olmalı.
+      double height(String text) => tester.getSize(find.text(text)).height;
+      final header = height('GÜN');
+      for (final text in ['SICAKLIK', 'YAĞIŞ', 'KM/S', 'KOVAN']) {
+        expect(height(text), header, reason: text);
+      }
+      expect(height('%100'), height('18'));
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   for (final mode in AppColorMode.values) {
     testWidgets('360dp, 1.5x yazı ve eldivenle taşmaz (${mode.name})', (
       tester,

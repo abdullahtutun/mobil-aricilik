@@ -609,16 +609,30 @@ class _TableRow extends StatelessWidget {
       children: [
         Expanded(flex: 5, child: day),
         gap,
-        Expanded(flex: 4, child: temperature),
+        Expanded(flex: 4, child: _OneLine(temperature)),
         gap,
-        Expanded(flex: 2, child: precipitation),
+        Expanded(flex: 3, child: _OneLine(precipitation)),
         gap,
-        Expanded(flex: 2, child: wind),
+        Expanded(flex: 2, child: _OneLine(wind)),
         gap,
-        Expanded(flex: 4, child: hive),
+        Expanded(flex: 4, child: _OneLine(hive)),
       ],
     );
   }
+}
+
+/// Sütuna sığmayan başlık ya da değer alt satıra geçmez, küçülür.
+class _OneLine extends StatelessWidget {
+  const new(this.child);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => FittedBox(
+    fit: BoxFit.scaleDown,
+    alignment: AlignmentDirectional.centerStart,
+    child: child,
+  );
 }
 
 class _DayRow extends StatelessWidget {
