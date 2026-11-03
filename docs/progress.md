@@ -615,6 +615,8 @@
   - "Planla": dizi aynı türden ardışık günler ("Salı–Çarşamba yağmur."; ardından gelen rüzgarlı gün ayrı), metin gün ekiyle ("Muayeneleri Pazartesi'ye al.", ARB `select`). Atıf eşik açıklamasıyla aynı paragrafın sonunda.
   - Testler: hava ekranı testleri kendi listesini kaydırıyor (alttaki Bugün listesini değil). Tam takımda 2101 test geçiyor, `flutter analyze` temiz.
 
+- Cihaz görüntüsündeki düzeltmeler (büyük sistem yazısı + eldiven modu, 411dp): Şimdiki durumda ölçüler artık hep sağda (Row; büyük yazıda sıcaklık küçülür, ölçüler kırılır). Tablo/iki satır eşiği saha modlarının büyük yazısını da hesaba katıyor; gün adı bölünmüyor ("Bugü / n" gibi). İki satırlı görünümde "Yağış %84 · Rüzgar 13 km/s" tek taban çizgisinde, rozet satırın sağında. Liste alt kenarı gezinme çubuğunun üstünde bitiyor. Ekran açıkken saat dönünce "Şimdi" ve saat şeridi yenileniyor (önce açılış saatinde kalıyordu; uzak önbellekte fark 10800 sn ve saatler doğruydu). "Diğer" grubunda kelime koda göre: Sisli, Gök gürültülü, Karla karışık yağmur, Karlı (simge aynı). Bugünün bandında yağmurda rozetle aynı "×". Tam takımda 2102 test geçiyor.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

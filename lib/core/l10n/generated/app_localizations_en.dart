@@ -2769,6 +2769,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weatherConditionOther => 'Snow, fog or storm';
 
   @override
+  String get weatherConditionFog => 'Foggy';
+
+  @override
+  String get weatherConditionThunder => 'Thunderstorms';
+
+  @override
+  String get weatherConditionSleet => 'Sleet';
+
+  @override
+  String get weatherConditionSnow => 'Snow';
+
+  @override
   String weatherFeelsLike(String condition, String value) {
     return '$condition · feels like $value';
   }

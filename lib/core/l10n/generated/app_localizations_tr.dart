@@ -2721,6 +2721,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get weatherConditionOther => 'Kar, sis ya da fırtına';
 
   @override
+  String get weatherConditionFog => 'Sisli';
+
+  @override
+  String get weatherConditionThunder => 'Gök gürültülü';
+
+  @override
+  String get weatherConditionSleet => 'Karla karışık yağmur';
+
+  @override
+  String get weatherConditionSnow => 'Karlı';
+
+  @override
   String weatherFeelsLike(String condition, String value) {
     return '$condition · hissedilen $value';
   }

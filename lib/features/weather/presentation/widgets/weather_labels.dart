@@ -36,6 +36,19 @@ String weatherIconLabel(AppLocalizations l10n, WeatherIcon icon) =>
       WeatherIcon.other => l10n.weatherConditionOther,
     };
 
+/// Durumun kelimesi: [weatherIconFor] grubunun adı; "diğer" grubunda
+/// kodun türü (sis, kar, karla karışık, gök gürültüsü).
+String weatherConditionLabel(AppLocalizations l10n, int? code) {
+  final icon = weatherIconFor(code);
+  if (icon != WeatherIcon.other) return weatherIconLabel(l10n, icon);
+  return switch (code) {
+    1030 || 1135 || 1147 => l10n.weatherConditionFog,
+    1087 || 1273 || 1276 || 1279 || 1282 => l10n.weatherConditionThunder,
+    1069 || 1204 || 1207 || 1249 || 1252 => l10n.weatherConditionSleet,
+    _ => l10n.weatherConditionSnow,
+  };
+}
+
 /// Uygunluğun durum rengi: uygun yeşil, yağmur mavi, rüzgar ve soğuk
 /// turuncu; kelime ve ikon rozetle birlikte gelir.
 AppStatus hiveOpeningStatus(HiveOpening opening) => switch (opening) {

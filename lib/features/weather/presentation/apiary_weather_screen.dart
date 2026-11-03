@@ -33,10 +33,31 @@ class ApiaryWeatherScreen extends ConsumerStatefulWidget {
 }
 
 class _ApiaryWeatherScreenState extends ConsumerState<ApiaryWeatherScreen> {
+  Timer? _hourTimer;
+
   @override
   void initState() {
     super.initState();
     unawaited(ref.read(weatherRefresherProvider).refreshIfStale());
+    _scheduleHourTick();
+  }
+
+  /// Ekran açıkken saat dönünce "Şimdi" ve bugünün satırı yeni saate
+  /// geçsin; paket değişmese de yeniden çizilir.
+  void _scheduleHourTick() {
+    final now = clock.now().toLocal();
+    final nextHour = DateTime(now.year, now.month, now.day, now.hour + 1);
+    _hourTimer = Timer(nextHour.difference(now), () {
+      if (!mounted) return;
+      setState(() {});
+      _scheduleHourTick();
+    });
+  }
+
+  @override
+  void dispose() {
+    _hourTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _refresh() async {
@@ -145,11 +166,12 @@ class _ForecastView extends ConsumerWidget {
     );
 
     return ListView(
+      // Alt kenar telefonun gezinme çubuğunun üstünde kalsın.
       padding: EdgeInsets.fromLTRB(
         spacing.sm,
         spacing.sm,
         spacing.lg,
-        spacing.lg,
+        spacing.lg + MediaQuery.paddingOf(context).bottom,
       ),
       children: [
         Row(
@@ -319,7 +341,10 @@ class _CurrentCard extends StatelessWidget {
     final wind = current.windKmh ?? hour?.windKmh;
     final precipitation = hour?.precipitationProbability;
     final icon = weatherIconFor(current.conditionCode ?? hour?.conditionCode);
-    final condition = weatherIconLabel(l10n, icon);
+    final condition = weatherConditionLabel(
+      l10n,
+      current.conditionCode ?? hour?.conditionCode,
+    );
     final opening = today == null ? null : dayOpening(today!, thresholds);
 
     // "Rüzgar 8 km/s": ad soluk, değer kalın; sağa yaslı.
@@ -346,67 +371,73 @@ class _CurrentCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Wrap(
-              spacing: spacing.lg,
-              runSpacing: spacing.md,
-              alignment: WrapAlignment.spaceBetween,
+            // Solda simge, sıcaklık ve durum; sağda üstte ölçüler (tasarım).
+            // Büyük yazıda sıcaklık küçülür, ölçüler alt satıra düşmez.
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        weatherGlyph(
-                          context,
-                          l10n,
-                          icon,
-                          size: context.sizes.illustrationIcon,
-                        ),
-                        SizedBox(width: spacing.md),
-                        // Büyük yazıda dar ekrana sığmazsa küçülür.
-                        if (temperature != null)
-                          Flexible(
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                units.temperature(temperature),
-                                style: typography.display,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          weatherGlyph(
+                            context,
+                            l10n,
+                            icon,
+                            size: context.sizes.illustrationIcon,
+                          ),
+                          SizedBox(width: spacing.md),
+                          // Büyük yazıda dar ekrana sığmazsa küçülür.
+                          if (temperature != null)
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  units.temperature(temperature),
+                                  style: typography.display,
+                                ),
                               ),
                             ),
+                        ],
+                      ),
+                      Text(
+                        switch (current.feelsLikeC) {
+                          final feels? => l10n.weatherFeelsLike(
+                            condition,
+                            units.temperature(feels),
                           ),
-                      ],
-                    ),
-                    Text(
-                      switch (current.feelsLikeC) {
-                        final feels? => l10n.weatherFeelsLike(
-                          condition,
-                          units.temperature(feels),
+                          null => condition,
+                        },
+                        style: typography.body.copyWith(
+                          color: colors.textSecondary,
                         ),
-                        null => condition,
-                      },
-                      style: typography.body.copyWith(
-                        color: colors.textSecondary,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    if (wind != null)
-                      measure(l10n.weatherWindLabel, units.speed(wind)),
-                    if (current.humidity case final humidity?)
-                      measure(
-                        l10n.weatherHumidityLabel,
-                        units.percent(humidity),
-                      ),
-                    if (precipitation != null)
-                      measure(
-                        l10n.weatherPrecipitationLabel,
-                        units.percent(precipitation),
-                      ),
-                  ],
+                SizedBox(width: spacing.md),
+                // Çok dar ekranda en çok yarısı; satırlar sağa yaslı kırılır.
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      if (wind != null)
+                        measure(l10n.weatherWindLabel, units.speed(wind)),
+                      if (current.humidity case final humidity?)
+                        measure(
+                          l10n.weatherHumidityLabel,
+                          units.percent(humidity),
+                        ),
+                      if (precipitation != null)
+                        measure(
+                          l10n.weatherPrecipitationLabel,
+                          units.percent(precipitation),
+                        ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -414,6 +445,7 @@ class _CurrentCard extends StatelessWidget {
               SizedBox(height: spacing.lg),
               _StatusBand(
                 status: hiveOpeningStatus(opening),
+                icon: hiveOpeningIcon(opening),
                 label: switch (opening) {
                   HiveOpening.suitable => l10n.weatherTodaySuitable,
                   HiveOpening.rain => l10n.weatherTodayRain,
@@ -431,10 +463,13 @@ class _CurrentCard extends StatelessWidget {
 
 /// Durumun zemininde tam genişlikte bant: ikon ve kelime.
 class _StatusBand extends StatelessWidget {
-  const new({required this.status, required this.label});
+  const new({required this.status, required this.label, this.icon});
 
   final AppStatus status;
   final String label;
+
+  /// Durumun varsayılan ikonunun yerine (rozetle aynı: yağmurda "×").
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +488,11 @@ class _StatusBand extends StatelessWidget {
         padding: EdgeInsets.all(spacing.md),
         child: Row(
           children: [
-            Icon(status.icon, size: context.sizes.icon, color: foreground),
+            Icon(
+              icon ?? status.icon,
+              size: context.sizes.icon,
+              color: foreground,
+            ),
             SizedBox(width: spacing.sm),
             Expanded(
               child: Text(
@@ -574,9 +613,13 @@ class _DailyList extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        // Saha modlarında (güneş, eldiven) yazı büyük; eşik de büyür.
+        final fieldScale =
+            typography.body.fontSize! / AppTypography.standard.body.fontSize!;
         final wide =
             constraints.maxWidth >=
-            MediaQuery.textScalerOf(context).scale(context.sizes.weatherTable);
+            MediaQuery.textScalerOf(context)
+                .scale(context.sizes.weatherTable * fieldScale);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -714,14 +757,17 @@ class _DayRow extends StatelessWidget {
       color: colors.textSecondary,
     );
 
+    // Gün adı ve tarih bölünmez ("Bugü / n" olmasın); sığmazsa küçülür.
     final dayLabel = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          isToday ? l10n.weatherToday : format.weekdayShort(day.day),
-          style: typography.subtitle,
+        _OneLine(
+          Text(
+            isToday ? l10n.weatherToday : format.weekdayShort(day.day),
+            style: typography.subtitle,
+          ),
         ),
-        Text(format.dayMonth(day.day), style: secondary),
+        _OneLine(Text(format.dayMonth(day.day), style: secondary)),
       ],
     );
     final temperature = Text.rich(
@@ -749,9 +795,9 @@ class _DayRow extends StatelessWidget {
         final p? => units.percent(p),
         null => '–',
       },
-      style: typography.body.copyWith(
-        color: rainy ? colors.statusInfo : null,
-        fontWeight: rainy ? FontWeight.w700 : null,
+      style: (wide ? typography.body : secondary).copyWith(
+        color: rainy ? colors.statusInfo : (wide ? null : colors.textPrimary),
+        fontWeight: rainy ? FontWeight.w700 : (wide ? null : FontWeight.w600),
       ),
     );
     final wind = Text(
@@ -759,9 +805,11 @@ class _DayRow extends StatelessWidget {
         final kmh? => units.speedValue(kmh),
         null => '–',
       },
-      style: typography.body.copyWith(
-        color: windy ? colors.statusWarning : null,
-        fontWeight: windy ? FontWeight.w700 : null,
+      style: (wide ? typography.body : secondary).copyWith(
+        color: windy
+            ? colors.statusWarning
+            : (wide ? null : colors.textPrimary),
+        fontWeight: windy ? FontWeight.w700 : (wide ? null : FontWeight.w600),
       ),
     );
     final badge = opening == null
@@ -813,29 +861,45 @@ class _DayRow extends StatelessWidget {
             ],
           ),
           SizedBox(height: spacing.sm),
-          Wrap(
-            spacing: spacing.md,
-            runSpacing: spacing.sm,
-            crossAxisAlignment: WrapCrossAlignment.center,
+          // Solda yağış ve rüzgar, sağda (sıcaklığın altında) kovan rozeti.
+          Row(
             children: [
-              Text.rich(
-                TextSpan(
-                  text: '${l10n.weatherPrecipitationLabel} ',
-                  style: secondary,
-                  children: [WidgetSpan(child: precipitation)],
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  text: '${l10n.weatherWindLabel} ',
-                  style: secondary,
+              Expanded(
+                child: Wrap(
+                  spacing: spacing.md,
+                  runSpacing: spacing.sm,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    WidgetSpan(child: wind),
-                    TextSpan(text: ' ${units.speedUnit}'),
+                    // Ad ve değer aynı satırda, aynı taban çizgisinde.
+                    Text.rich(
+                      TextSpan(
+                        text: '${l10n.weatherPrecipitationLabel} ',
+                        children: [
+                          TextSpan(
+                            text: precipitation.data,
+                            style: precipitation.style,
+                          ),
+                        ],
+                      ),
+                      style: secondary,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        text: '${l10n.weatherWindLabel} ',
+                        children: [
+                          TextSpan(
+                            text: '${wind.data} ${units.speedUnit}',
+                            style: wind.style,
+                          ),
+                        ],
+                      ),
+                      style: secondary,
+                    ),
                   ],
                 ),
               ),
-              if (opening != null)
+              if (opening != null) ...[
+                SizedBox(width: spacing.sm),
                 StatusBadge(
                   status: hiveOpeningStatus(opening),
                   icon: hiveOpeningIcon(opening),
@@ -846,6 +910,7 @@ class _DayRow extends StatelessWidget {
                     suitable: l10n.hiveOpeningDaySuitable,
                   ),
                 ),
+              ],
             ],
           ),
         ],

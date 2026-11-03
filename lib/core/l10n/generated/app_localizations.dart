@@ -4478,6 +4478,30 @@ abstract class AppLocalizations {
   /// **'Snow, fog or storm'**
   String get weatherConditionOther;
 
+  /// No description provided for @weatherConditionFog.
+  ///
+  /// In en, this message translates to:
+  /// **'Foggy'**
+  String get weatherConditionFog;
+
+  /// No description provided for @weatherConditionThunder.
+  ///
+  /// In en, this message translates to:
+  /// **'Thunderstorms'**
+  String get weatherConditionThunder;
+
+  /// No description provided for @weatherConditionSleet.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleet'**
+  String get weatherConditionSleet;
+
+  /// No description provided for @weatherConditionSnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Snow'**
+  String get weatherConditionSnow;
+
   /// No description provided for @weatherFeelsLike.
   ///
   /// In en, this message translates to:

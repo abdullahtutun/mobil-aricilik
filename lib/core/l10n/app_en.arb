@@ -2182,6 +2182,10 @@
   "@weatherConditionOther": {
     "description": "Any other sky condition (snow, sleet, fog, thunder)."
   },
+  "weatherConditionFog": "Foggy",
+  "weatherConditionThunder": "Thunderstorms",
+  "weatherConditionSleet": "Sleet",
+  "weatherConditionSnow": "Snow",
   "weatherFeelsLike": "{condition} · feels like {value}",
   "@weatherFeelsLike": {
     "placeholders": {
