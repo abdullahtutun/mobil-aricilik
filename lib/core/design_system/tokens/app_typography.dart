@@ -13,6 +13,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     required this.subtitle,
     required this.body,
     required this.bodySmall,
+    required this.caption,
     required this.label,
     required this.labelSmall,
     required this.button,
@@ -22,6 +23,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
   factory _scale({
     required double body,
     required double bodySmall,
+    required double caption,
     required double label,
     required double button,
   }) {
@@ -34,6 +36,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       subtitle: _style(16, FontWeight.w600, 1.35),
       body: _style(body, FontWeight.w400, 1.5),
       bodySmall: _style(bodySmall, FontWeight.w400, 1.45),
+      caption: _style(caption, FontWeight.w400, 1.4),
       label: _style(label, FontWeight.w600, 1.25),
       labelSmall: _style(bodySmall, FontWeight.w600, 1.45),
       button: _style(button, FontWeight.w700, 1.25),
@@ -47,6 +50,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
   static final standard = AppTypography._scale(
     body: 15,
     bodySmall: 13,
+    caption: 12,
     label: 15,
     button: 17,
   );
@@ -55,6 +59,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
   static final field = AppTypography._scale(
     body: 16,
     bodySmall: 14,
+    caption: 13,
     label: 16,
     button: 18,
   );
@@ -72,6 +77,9 @@ class AppTypography extends ThemeExtension<AppTypography> {
   final TextStyle subtitle;
   final TextStyle body;
   final TextStyle bodySmall;
+
+  /// Yoğun tablo başlıkları ve hücreleri; [bodySmall]'dan bir punto küçük.
+  final TextStyle caption;
 
   /// Buton ve chip etiketleri.
   final TextStyle label;
@@ -129,6 +137,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     TextStyle? subtitle,
     TextStyle? body,
     TextStyle? bodySmall,
+    TextStyle? caption,
     TextStyle? label,
     TextStyle? labelSmall,
     TextStyle? button,
@@ -143,6 +152,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       subtitle: subtitle ?? this.subtitle,
       body: body ?? this.body,
       bodySmall: bodySmall ?? this.bodySmall,
+      caption: caption ?? this.caption,
       label: label ?? this.label,
       labelSmall: labelSmall ?? this.labelSmall,
       button: button ?? this.button,
@@ -162,6 +172,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       subtitle: TextStyle.lerp(subtitle, other.subtitle, t)!,
       body: TextStyle.lerp(body, other.body, t)!,
       bodySmall: TextStyle.lerp(bodySmall, other.bodySmall, t)!,
+      caption: TextStyle.lerp(caption, other.caption, t)!,
       label: TextStyle.lerp(label, other.label, t)!,
       labelSmall: TextStyle.lerp(labelSmall, other.labelSmall, t)!,
       button: TextStyle.lerp(button, other.button, t)!,

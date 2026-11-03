@@ -609,7 +609,10 @@ class _DailyList extends StatelessWidget {
     final typography = context.typography;
     final colors = context.colors;
     final l10n = units.l10n;
-    final header = typography.labelSmall.copyWith(color: colors.textSecondary);
+    final header = typography.caption.copyWith(
+      color: colors.textSecondary,
+      fontWeight: FontWeight.w600,
+    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -753,9 +756,7 @@ class _DayRow extends StatelessWidget {
     final icon = weatherIconFor(day.conditionCode);
     final rainy = opening == HiveOpening.rain;
     final windy = opening == HiveOpening.wind;
-    final secondary = typography.bodySmall.copyWith(
-      color: colors.textSecondary,
-    );
+    final secondary = typography.caption.copyWith(color: colors.textSecondary);
 
     // Gün adı ve tarih bölünmez ("Bugü / n" olmasın); sığmazsa küçülür.
     final dayLabel = Column(
@@ -764,7 +765,7 @@ class _DayRow extends StatelessWidget {
         _OneLine(
           Text(
             isToday ? l10n.weatherToday : format.weekdayShort(day.day),
-            style: typography.subtitle,
+            style: typography.body.copyWith(fontWeight: FontWeight.w600),
           ),
         ),
         _OneLine(Text(format.dayMonth(day.day), style: secondary)),
@@ -777,7 +778,7 @@ class _DayRow extends StatelessWidget {
             text: day.temperatureMaxC == null
                 ? '–'
                 : units.temperature(day.temperatureMaxC!),
-            style: typography.subtitle,
+            style: typography.body.copyWith(fontWeight: FontWeight.w600),
           ),
           TextSpan(
             text:
@@ -795,7 +796,7 @@ class _DayRow extends StatelessWidget {
         final p? => units.percent(p),
         null => '–',
       },
-      style: (wide ? typography.body : secondary).copyWith(
+      style: (wide ? typography.bodySmall : secondary).copyWith(
         color: rainy ? colors.statusInfo : (wide ? null : colors.textPrimary),
         fontWeight: rainy ? FontWeight.w700 : (wide ? null : FontWeight.w600),
       ),
@@ -805,7 +806,7 @@ class _DayRow extends StatelessWidget {
         final kmh? => units.speedValue(kmh),
         null => '–',
       },
-      style: (wide ? typography.body : secondary).copyWith(
+      style: (wide ? typography.bodySmall : secondary).copyWith(
         color: windy
             ? colors.statusWarning
             : (wide ? null : colors.textPrimary),

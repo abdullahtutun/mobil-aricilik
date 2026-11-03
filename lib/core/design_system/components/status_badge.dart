@@ -29,7 +29,7 @@ class StatusBadge extends StatelessWidget {
     final spacing = context.spacing;
     final foreground = status.colorIn(colors);
     final style = dense
-        ? context.typography.labelSmall
+        ? context.typography.caption.copyWith(fontWeight: FontWeight.w600)
         : context.typography.label;
 
     return DecoratedBox(

@@ -617,6 +617,8 @@
 
 - Cihaz görüntüsündeki düzeltmeler (büyük sistem yazısı + eldiven modu, 411dp): Şimdiki durumda ölçüler artık hep sağda (Row; büyük yazıda sıcaklık küçülür, ölçüler kırılır). Tablo/iki satır eşiği saha modlarının büyük yazısını da hesaba katıyor; gün adı bölünmüyor ("Bugü / n" gibi). İki satırlı görünümde "Yağış %84 · Rüzgar 13 km/s" tek taban çizgisinde, rozet satırın sağında. Liste alt kenarı gezinme çubuğunun üstünde bitiyor. Ekran açıkken saat dönünce "Şimdi" ve saat şeridi yenileniyor (önce açılış saatinde kalıyordu; uzak önbellekte fark 10800 sn ve saatler doğruydu). "Diğer" grubunda kelime koda göre: Sisli, Gök gürültülü, Karla karışık yağmur, Karlı (simge aynı). Bugünün bandında yağmurda rozetle aynı "×". Tam takımda 2102 test geçiyor.
 
+- Yazı küçültme (kullanıcı isteği): Günlük tablonun başlıkları (GÜN, SICAKLIK, YAĞIŞ, KM/S, KOVAN), değerleri ve kovan rozeti bir punto küçüldü. Yeni `AppTypography.caption` tokenı (standart 12, saha 13; `bodySmall`'dan bir küçük). `StatusBadge.dense` artık `caption` kullanıyor (yalnız hava ekranında kullanılıyordu). Gün adı ve sıcaklığın üst değeri `subtitle` (16) yerine `body` kalın (15/16).
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
