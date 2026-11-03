@@ -18,7 +18,7 @@ class BasemapUnavailable implements Exception {
 abstract interface class Basemap {
   Widget tileLayer();
 
-  /// İndirilmiş paketlerden mi (internetsiz).
+  /// İndirilmiş arılık çevrelerinden mi (internetsiz).
   bool get offline;
 
   /// Açık dosyaları kapatır; altlık artık kullanılmaz.
@@ -26,7 +26,7 @@ abstract interface class Basemap {
 }
 
 /// Altlığı ağdan okur. Ağa giden çağrı; ekranlar buna provider üzerinden
-/// ulaşır. İnternet yoksa provider indirilmiş paketlere döner
+/// ulaşır. İnternet yoksa provider indirilmiş arılık çevrelerine döner
 /// (`OfflineBasemapService`).
 abstract interface class BasemapService {
   /// Hata [BasemapUnavailable] olarak gelir.

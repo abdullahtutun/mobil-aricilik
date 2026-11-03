@@ -265,16 +265,16 @@ class _MediaWifiOnlyTile extends ConsumerWidget {
   }
 }
 
-/// "Offline haritalar": indirilmiş bölge sayısı ve toplam boyut; dokununca
-/// paket ekranı açılır.
+/// "Offline haritalar": indirilmiş arılık çevresi sayısı ve toplam boyut;
+/// dokununca offline harita ekranı açılır.
 class _OfflineMapsRow extends ConsumerWidget {
   const new();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final installed = ref.watch(installedMapPacksProvider).value ?? const [];
-    final bytes = installed.fold(0, (sum, row) => sum + row.pack.bytes);
+    final installed = ref.watch(installedMapAreasProvider).value ?? const [];
+    final bytes = installed.fold(0, (sum, row) => sum + row.bytes);
 
     return ListRow(
       title: l10n.settingsOfflineMaps,

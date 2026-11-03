@@ -12,9 +12,13 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
+import 'package:mobil_arici/core/sync/map_area_downloader.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
+import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/migration/data/migration_repository.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area_rules.dart';
 import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 
@@ -26,24 +30,22 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
-const List<({String id, Map<String, String> name, List<double> bbox})> _packs =
-    [
-      (
-        id: 'tr-48',
-        name: {'tr': 'Muğla', 'en': 'Mugla'},
-        bbox: [27.2, 36.3, 29.6, 37.6],
-      ),
-      (
-        id: 'tr-33',
-        name: {'tr': 'Mersin', 'en': 'Mersin'},
-        bbox: [32.5, 36.0, 35.2, 37.5],
-      ),
-      (
-        id: 'tr-35',
-        name: {'tr': 'İzmir', 'en': 'Izmir'},
-        bbox: [26.2, 37.8, 28.5, 39.4],
-      ),
-    ];
+MapArea _area(Apiary apiary) => MapArea(
+  id: apiary.id,
+  name: apiary.name,
+  latitude: apiary.latitude!,
+  longitude: apiary.longitude!,
+);
+
+/// Satırdaki tahmini boyut, İngilizce: "≈ 2.8 MB".
+String _approx(MapArea area) {
+  final mb = estimateTileBytes(mapAreaTiles(area)) / (1024 * 1024);
+  final text = mb < 10 ? mb.toStringAsFixed(1) : mb.toStringAsFixed(0);
+  final trimmed = text.endsWith('.0')
+      ? text.substring(0, text.length - 2)
+      : text;
+  return '≈ $trimmed MB';
+}
 
 void main() {
   late AppDatabase db;
@@ -55,6 +57,14 @@ void main() {
     maps = FakeOfflineMaps();
     connectivity = FakeConnectivityService();
   });
+
+  Future<Apiary> addApiary(
+    String name, {
+    double? latitude = 37.1,
+    double? longitude = 28.4,
+  }) => ApiaryRepository(
+    db,
+  ).create(orgId: _orgId, name: name, latitude: latitude, longitude: longitude);
 
   /// Ayarlar'ı açar.
   Future<ProviderContainer> openSettings(WidgetTester tester) async {
@@ -79,50 +89,6 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  /// Ayarlar'dan offline haritalara geçer.
-  Future<ProviderContainer> openMaps(WidgetTester tester) async {
-    final container = await openSettings(tester);
-    // Küçük ekranda satır ilk görünümün altında kalır.
-    await tester.scrollUntilVisible(
-      find.text('Offline maps'),
-      200,
-      scrollable: find
-          .descendant(
-            of: find.byType(SettingsScreen),
-            matching: find.byType(Scrollable),
-          )
-          .first,
-    );
-    await tap(tester, find.text('Offline maps'));
-    expect(find.byType(OfflineMapsScreen), findsOneWidget);
-    return container;
-  }
-
-  Future<void> seedPlaces() async {
-    await ApiaryRepository(db)
-        .create(orgId: _orgId, name: 'Yayla', latitude: 37.1, longitude: 28.4);
-    final repository = MigrationRepository(db);
-    final migration = await repository.create(
-      orgId: _orgId,
-      year: 2026,
-      name: 'Göç',
-    );
-    await repository.stops.create(
-      orgId: _orgId,
-      migrationId: migration.id,
-      plan: (
-        position: 1,
-        name: 'Citrus',
-        place: 'Erdemli, Mersin',
-        plannedStartOn: DateTime(2027, 3),
-        plannedEndOn: DateTime(2027, 4),
-        apiaryId: null,
-        hiveCount: null,
-        status: MigrationStopStatus.planned,
-      ),
-    );
-  }
-
   /// İndirmenin sahte HTTP'de gerçek olay döngüsüne düşen adımlarını da
   /// bekler.
   Future<void> settle(WidgetTester tester) async {
@@ -134,26 +100,56 @@ void main() {
     }
   }
 
-  Future<void> scrollTo(WidgetTester tester, Finder finder) =>
+  Future<void> scrollTo(WidgetTester tester, Finder finder, Type screen) =>
       tester.scrollUntilVisible(
         finder,
         200,
         scrollable: find
             .descendant(
-              of: find.byType(OfflineMapsScreen),
+              of: find.byType(screen),
               matching: find.byType(Scrollable),
             )
             .first,
       );
 
+  /// Ayarlar'dan offline haritalara geçer.
+  Future<ProviderContainer> openMaps(WidgetTester tester) async {
+    final container = await openSettings(tester);
+    // Küçük ekranda satır ilk görünümün altında kalır.
+    await scrollTo(tester, find.text('Offline maps'), SettingsScreen);
+    await tap(tester, find.text('Offline maps'));
+    expect(find.byType(OfflineMapsScreen), findsOneWidget);
+    return container;
+  }
+
   Finder row(String title) =>
       find.ancestor(of: find.text(title), matching: find.byType(ListRow));
 
-  testWidgets('Ayarlar satırı; önerilen ve tüm bölgeler boyutla', (
-    tester,
-  ) async {
-    await seedPlaces();
-    maps.publish(_packs);
+  testWidgets('Ayarlar satırı; konumlu arılıklar tahmini boyut ve göç '
+      'durağıyla', (tester) async {
+    final yayla = await addApiary('Yayla');
+    final cam = await addApiary('Çam', latitude: 41, longitude: 37.6);
+    await addApiary('Ova', latitude: null, longitude: null);
+    final migrations = MigrationRepository(db);
+    final migration = await migrations.create(
+      orgId: _orgId,
+      year: 2026,
+      name: 'Göç',
+    );
+    await migrations.stops.create(
+      orgId: _orgId,
+      migrationId: migration.id,
+      plan: (
+        position: 1,
+        name: 'Citrus',
+        place: null,
+        plannedStartOn: DateTime(2027, 3),
+        plannedEndOn: DateTime(2027, 4),
+        apiaryId: cam.id,
+        hiveCount: null,
+        status: MigrationStopStatus.planned,
+      ),
+    );
     await openSettings(tester);
     expect(
       find.descendant(of: row('Offline maps'), matching: find.text('None')),
@@ -163,205 +159,212 @@ void main() {
     await tap(tester, find.text('Offline maps'));
     expect(
       find.text(
-        'Download the regions where your apiaries are; the map opens even '
-        'without signal.',
+        'Download the area around your apiaries; the map opens even without '
+        'signal.',
       ),
       findsOneWidget,
     );
     expect(
-      find.text('SUGGESTED · APIARIES AND MIGRATION PLAN'),
+      find.text(
+        'Each apiary gets 6 km around it in detail and 40 km as an overview.',
+      ),
       findsOneWidget,
     );
-    expect(find.text('1 apiary · ≈ 2 MB'), findsOneWidget);
-    expect(find.text('Citrus stop · ≈ 2 MB'), findsOneWidget);
-    expect(find.text('ALL REGIONS'), findsOneWidget);
+    expect(find.text('APIARIES TO DOWNLOAD'), findsOneWidget);
     expect(
-      find.descendant(of: row('Izmir'), matching: find.text('≈ 2 MB')),
+      find.descendant(
+        of: row('Yayla'),
+        matching: find.text(_approx(_area(yayla))),
+      ),
       findsOneWidget,
     );
-    expect(find.byTooltip('Download Mugla'), findsOneWidget);
+    expect(find.text('Citrus stop · ${_approx(_area(cam))}'), findsOneWidget);
+    expect(find.byTooltip('Download Ova'), findsNothing);
     await scrollTo(
       tester,
       find.text('Map data © OpenStreetMap contributors · OpenFreeMap'),
+      OfflineMapsScreen,
     );
   });
 
-  testWidgets(
-    'indirirken yüzde ve MB; bitince indirilmiş kart ve ayar satırı',
-    (tester) async {
-      await seedPlaces();
-      maps
-        ..publish(_packs)
-        ..hold = Completer<void>();
-      await openMaps(tester);
-
-      await tester.tap(find.byTooltip('Download Mugla'));
-      await tester.pump();
-      await tester.pump();
-      expect(find.text('50%'), findsOneWidget);
-      expect(find.text('Downloading on Wi‑Fi · 1 / 2 MB'), findsOneWidget);
-      expect(find.byTooltip('Download Mugla'), findsNothing);
-
-      maps.hold!.complete();
-      await settle(tester);
-      expect(find.text('Mugla downloaded'), findsOneWidget);
-      expect(find.text('Downloaded · 2 MB'), findsOneWidget);
-      expect(find.text('1 apiary · updated: Sep 2026'), findsOneWidget);
-      expect(find.byTooltip('Download Mugla'), findsNothing);
-      expect((await maps.store.packFile('tr-48')).existsSync(), isTrue);
-      expect(await maps.store.readStyle(), isNotNull);
-
-      await tap(tester, find.byTooltip('Back'));
-      expect(find.text('1 region · 2 MB'), findsOneWidget);
-    },
-  );
-
-  testWidgets('durdurulan indirme yarım dosya bırakmaz', (tester) async {
-    maps
-      ..publish(_packs)
-      ..hold = Completer<void>();
+  testWidgets('indirirken yüzde ve MB; bitince indirilmiş kart ve ayar '
+      'satırı; istekler User-Agent ile', (tester) async {
+    final yayla = await addApiary('Yayla');
+    maps.hold = Completer<void>();
     await openMaps(tester);
 
-    await tester.tap(find.byTooltip('Download Izmir'));
-    await tester.pump();
-    await tester.pump();
-    expect(find.text('50%'), findsOneWidget);
+    await tester.tap(find.byTooltip('Download Yayla'));
+    await settle(tester);
+    final total = mapAreaTiles(_area(yayla)).length;
+    final percent = (maps.holdAfter / total * 100).round();
+    expect(find.text('$percent%'), findsOneWidget);
+    expect(
+      find.text('Downloading on Wi‑Fi · 0.2 / ${_approx(_area(yayla))}'),
+      findsOneWidget,
+    );
+    expect(find.byTooltip('Download Yayla'), findsNothing);
+
+    maps.hold!.complete();
+    await settle(tester);
+    expect(find.text('Area around Yayla downloaded'), findsOneWidget);
+    expect(find.textContaining('Downloaded · '), findsOneWidget);
+    expect(find.textContaining('downloaded: '), findsOneWidget);
+    expect(find.byTooltip('Download Yayla'), findsNothing);
+    expect(
+      find.text('All apiaries with a location are downloaded.'),
+      findsOneWidget,
+    );
+    expect((await maps.store.areaFile(yayla.id)).existsSync(), isTrue);
+    expect(await maps.store.readStyle(), isNotNull);
+    expect((await maps.store.installed()).single.tileCount, total);
+    expect(
+      maps.requested.where((url) => url.startsWith('https://tiles.test/')),
+      hasLength(total),
+    );
+    expect(maps.userAgents, {MapAreaDownloader.defaultUserAgent});
+
+    await tap(tester, find.byTooltip('Back'));
+    expect(find.textContaining('1 apiary · '), findsOneWidget);
+  });
+
+  testWidgets('durdurulan indirme yarım dosya bırakmaz', (tester) async {
+    final yayla = await addApiary('Yayla');
+    maps.hold = Completer<void>();
+    await openMaps(tester);
+
+    await tester.tap(find.byTooltip('Download Yayla'));
+    await settle(tester);
+    expect(find.byTooltip('Stop download'), findsOneWidget);
 
     await tester.tap(find.byTooltip('Stop download'));
-    await tester.pumpAndSettle();
-    expect(find.text('50%'), findsNothing);
-    expect(find.byTooltip('Download Izmir'), findsOneWidget);
+    await settle(tester);
+    expect(find.byTooltip('Stop download'), findsNothing);
+    expect(find.byTooltip('Download Yayla'), findsOneWidget);
     expect(find.byType(SnackBar), findsNothing);
     expect(await maps.store.installed(), isEmpty);
-    expect((await maps.store.partialFile('tr-35')).existsSync(), isFalse);
+    expect((await maps.store.partialFile(yayla.id)).existsSync(), isFalse);
     maps.hold!.complete();
+    await settle(tester);
   });
 
   testWidgets('Wi‑Fi yokken başlamaz; seçenek kapatılınca mobil veriyle iner', (
     tester,
   ) async {
-    maps.publish(_packs);
+    await addApiary('Yayla');
     connectivity.unmetered = false;
     await openMaps(tester);
 
-    await tap(tester, find.byTooltip('Download Izmir'));
+    await tap(tester, find.byTooltip('Download Yayla'));
+    await settle(tester);
     expect(
       find.text('Connect to Wi‑Fi or turn off "Download on Wi‑Fi only".'),
       findsOneWidget,
     );
-    expect(await maps.store.installed(), isEmpty);
     expect(maps.requested, isEmpty);
 
     await tap(tester, find.text('Download on Wi‑Fi only'));
     expect(await LocalSettingsRepository(db).mapWifiOnly(), isFalse);
-    await tap(tester, find.byTooltip('Download Izmir'));
+    await tap(tester, find.byTooltip('Download Yayla'));
     await settle(tester);
-    expect(find.text('Izmir downloaded'), findsOneWidget);
-    expect(find.text('Downloaded · 2 MB'), findsOneWidget);
+    expect(find.text('Area around Yayla downloaded'), findsOneWidget);
   });
 
-  testWidgets('bozuk paket kurulmaz, hata söylenir', (tester) async {
-    maps.publish(_packs);
-    final url = maps.served.keys.firstWhere((url) => url.contains('tr-35'));
-    maps.served[url] = maps.served[url]!.sublist(1);
+  testWidgets('sunucu hatasında alan kurulmaz, hata söylenir', (tester) async {
+    final yayla = await addApiary('Yayla');
+    maps.tileStatus = 500;
     await openMaps(tester);
 
-    await tap(tester, find.byTooltip('Download Izmir'));
+    await tap(tester, find.byTooltip('Download Yayla'));
     await settle(tester);
     expect(
       find.text(
-        "Couldn't download Izmir. Check your connection and try again.",
+        "Couldn't download the area around Yayla. Check your connection and "
+        'try again.',
       ),
       findsOneWidget,
     );
     expect(await maps.store.installed(), isEmpty);
-    expect((await maps.store.partialFile('tr-35')).existsSync(), isFalse);
+    expect((await maps.store.partialFile(yayla.id)).existsSync(), isFalse);
+    expect(find.byTooltip('Download Yayla'), findsOneWidget);
   });
 
-  testWidgets('katalog yoksa mesaj ve yeniden dene; indirilen bölge listede', (
-    tester,
-  ) async {
-    await maps.install('tr-48');
+  testWidgets('taşınan arılık yeniden indirilmeye çıkar', (tester) async {
+    final yayla = await addApiary('Yayla');
+    await maps.install(_area(yayla).copyWith(latitude: 37.2));
     await openMaps(tester);
 
-    expect(find.text('Mugla'), findsOneWidget);
-    expect(find.text('Downloaded · 84 MB'), findsOneWidget);
-    expect(find.text("Couldn't load the region list"), findsOneWidget);
-
-    maps.publish(_packs);
-    await tap(tester, find.text('Try again'));
-    expect(find.text("Couldn't load the region list"), findsNothing);
-    expect(find.byTooltip('Download Izmir'), findsOneWidget);
-    // İndirilmiş bölge yeniden önerilmez.
-    expect(find.byTooltip('Download Mugla'), findsNothing);
+    expect(find.text('Downloaded · 3 MB'), findsOneWidget);
+    expect(
+      find.text('Apiary moved, download again · ${_approx(_area(yayla))}'),
+      findsOneWidget,
+    );
   });
 
-  testWidgets('yeniden denerken yükleniyor görünür; yine olmazsa mesaj', (
-    tester,
-  ) async {
+  testWidgets('konumlu arılık yoksa açıklama', (tester) async {
+    await addApiary('Ova', latitude: null, longitude: null);
     await openMaps(tester);
-    expect(find.text("Couldn't load the region list"), findsOneWidget);
-
-    maps.catalogHold = Completer<void>();
-    await tester.tap(find.text('Try again'));
-    await tester.pump();
-    expect(find.text("Couldn't load the region list"), findsNothing);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-    maps.catalogHold!.complete();
-    await tester.pumpAndSettle();
-    expect(find.byType(CircularProgressIndicator), findsNothing);
-    expect(find.text("Couldn't load the region list"), findsOneWidget);
+    expect(
+      find.text(
+        'No apiaries with a location. Add a location to an apiary and it '
+        'shows up here.',
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('silme onay ister; vazgeçince kalır', (tester) async {
-    await maps.install('tr-48');
-    maps.publish(_packs);
+    final yayla = await addApiary('Yayla');
+    await maps.install(_area(yayla));
     await openMaps(tester);
 
-    await tap(tester, find.byTooltip('Delete Mugla'));
-    expect(find.text('Delete Mugla?'), findsOneWidget);
+    await tap(tester, find.byTooltip('Delete Yayla'));
+    expect(find.text('Delete Yayla?'), findsOneWidget);
     await tap(tester, find.text('Cancel'));
-    expect(find.text('Downloaded · 84 MB'), findsOneWidget);
+    expect(find.text('Downloaded · 3 MB'), findsOneWidget);
 
-    await tap(tester, find.byTooltip('Delete Mugla'));
+    await tap(tester, find.byTooltip('Delete Yayla'));
     await tap(tester, find.widgetWithText(TextButton, 'Delete'));
-    expect(find.text('Downloaded · 84 MB'), findsNothing);
-    expect(find.byTooltip('Download Mugla'), findsOneWidget);
+    expect(find.text('Downloaded · 3 MB'), findsNothing);
+    expect(find.byTooltip('Download Yayla'), findsOneWidget);
     expect(await maps.store.installed(), isEmpty);
   });
 
   testWidgets('Türkçe metinler', (tester) async {
-    await seedPlaces();
-    await maps.install('tr-48');
-    maps.publish(_packs);
+    final yayla = await addApiary('Yayla');
+    await addApiary('Çam', latitude: 41, longitude: 37.6);
+    await maps.install(_area(yayla));
     final container = await openSettings(tester);
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    expect(find.text('1 bölge · 84 MB'), findsOneWidget);
+    expect(find.text('1 arılık · 3 MB'), findsOneWidget);
     await tap(tester, find.text('Offline haritalar'));
     expect(
       find.text(
-        'Arılıklarının olduğu bölgeyi indir; çekmeyen yerde de harita açılır.',
+        'Arılıklarının çevresini indir; çekmeyen yerde de harita açılır.',
       ),
       findsOneWidget,
     );
-    expect(find.text('Muğla'), findsOneWidget);
-    expect(find.text('İndirildi · 84 MB'), findsOneWidget);
-    expect(find.text('1 arılık · güncelleme: Eyl 2026'), findsOneWidget);
+    expect(
+      find.text(
+        'Her arılığın 6 km çevresi ayrıntılı, 40 km çevresi genel görünümle '
+        'iner.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('İndirildi · 3 MB'), findsOneWidget);
+    expect(find.text('indirildi: 2 Kas 2026'), findsOneWidget);
     expect(find.text("Sadece Wi‑Fi'da indir"), findsOneWidget);
-    expect(find.text('ÖNERİLEN · ARILIKLAR VE GÖÇ PLANI'), findsOneWidget);
-    expect(find.text('Citrus durağı · ≈ 2 MB'), findsOneWidget);
-    expect(find.text('TÜM BÖLGELER'), findsOneWidget);
-    expect(find.byTooltip('İzmir indir'), findsOneWidget);
+    expect(find.text('İNDİRİLECEK ARILIKLAR'), findsOneWidget);
+    expect(find.byTooltip('Çam indir'), findsOneWidget);
     await scrollTo(
       tester,
       find.text('Harita verisi © OpenStreetMap katkıcıları · OpenFreeMap'),
+      OfflineMapsScreen,
     );
 
-    await tap(tester, find.byTooltip('Muğla sil'));
-    expect(find.text('Muğla silinsin mi?'), findsOneWidget);
+    await tap(tester, find.byTooltip('Yayla sil'));
+    expect(find.text('Yayla silinsin mi?'), findsOneWidget);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {
@@ -371,27 +374,27 @@ void main() {
     tester.platformDispatcher.textScaleFactorTestValue = 1.5;
     addTearDown(tester.view.reset);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-    await seedPlaces();
-    await maps.install(
-      'tr-48',
-      name: {'en': 'Muğla – Köyceğiz ve Ortaca Kıyı Şeridi'},
-    );
-    maps
-      ..publish(_packs)
-      ..hold = Completer<void>();
+    final yayla = await addApiary('Yukarı Kocaçam Yaylası Kestane Arılığı');
+    await maps.install(_area(yayla).copyWith(latitude: 37.3));
+    const name = 'Ortaca Kıyı Şeridi Narenciye Bahçeleri';
+    await addApiary(name, latitude: 36.8);
+    maps.hold = Completer<void>();
     final container = await openMaps(tester);
     container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
 
-    await scrollTo(tester, find.byTooltip('Download Izmir'));
-    await tester.tap(find.byTooltip('Download Izmir'));
-    await tester.pump();
-    await tester.pump();
+    final download = find.byTooltip('Download $name');
+    await scrollTo(tester, download, OfflineMapsScreen);
+    await tester.ensureVisible(download);
+    await tester.pumpAndSettle();
+    await tester.tap(download);
+    await settle(tester);
+    expect(find.byTooltip('Stop download'), findsOneWidget);
     expect(tester.takeException(), isNull);
     maps.hold!.complete();
     await settle(tester);
     expect(tester.takeException(), isNull);
-    expect(find.text('Izmir downloaded'), findsOneWidget);
+    expect(find.text('Area around $name downloaded'), findsOneWidget);
   });
 }

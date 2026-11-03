@@ -6369,7 +6369,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get offlineMapsIntro =>
-      'Arılıklarının olduğu bölgeyi indir; çekmeyen yerde de harita açılır.';
+      'Arılıklarının çevresini indir; çekmeyen yerde de harita açılır.';
 
   @override
   String offlineMapsMegabytes(String size) {
@@ -6384,11 +6384,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String offlineMapsDownloaded(String size) {
     return 'İndirildi · $size';
-  }
-
-  @override
-  String offlineMapsUpdated(String date) {
-    return 'güncelleme: $date';
   }
 
   @override
@@ -6421,7 +6416,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get offlineMapsDeleteMessage =>
-      'İnternet yokken bu bölgenin haritası açılmaz. İstediğinde yeniden indirebilirsin.';
+      'İnternet yokken bu arılığın çevresinin haritası açılmaz. İstediğinde yeniden indirebilirsin.';
 
   @override
   String get offlineMapsDeleteConfirm => 'Sil';
@@ -6431,13 +6426,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get offlineMapsWifiOnlyHint =>
-      'Paketler onlarca MB; mobil veri harcanmaz.';
-
-  @override
-  String get offlineMapsSuggested => 'Önerilen · arılıklar ve göç planı';
-
-  @override
-  String get offlineMapsAll => 'Tüm bölgeler';
+      'Her arılık birkaç MB; mobil veri harcanmaz.';
 
   @override
   String offlineMapsStop(String name) {
@@ -6445,23 +6434,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get offlineMapsCatalogErrorTitle => 'Bölge listesi alınamadı';
-
-  @override
-  String get offlineMapsCatalogErrorMessage =>
-      'Listeyi görmek için internet gerekir. İndirdiğin bölgeler yine de açılır.';
-
-  @override
-  String get offlineMapsCatalogEmpty => 'Şu an indirilebilecek bölge yok.';
-
-  @override
   String offlineMapsDone(String name) {
-    return '$name indirildi';
+    return '$name çevresi indirildi';
   }
 
   @override
   String offlineMapsFailed(String name) {
-    return '$name indirilemedi. Bağlantını kontrol edip yeniden dene.';
+    return '$name çevresi indirilemedi. Bağlantını kontrol edip yeniden dene.';
   }
 
   @override
@@ -6480,9 +6459,32 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count bölge · $size',
+      other: '$count arılık · $size',
       zero: 'Yok',
     );
     return '$_temp0';
   }
+
+  @override
+  String get offlineMapsCoverage =>
+      'Her arılığın 6 km çevresi ayrıntılı, 40 km çevresi genel görünümle iner.';
+
+  @override
+  String offlineMapsDownloadedOn(String date) {
+    return 'indirildi: $date';
+  }
+
+  @override
+  String get offlineMapsToDownload => 'İndirilecek arılıklar';
+
+  @override
+  String get offlineMapsMoved => 'Arılık taşındı, yeniden indir';
+
+  @override
+  String get offlineMapsNoApiaries =>
+      'Konumu kayıtlı arılık yok. Arılığa konum ekleyince burada çıkar.';
+
+  @override
+  String get offlineMapsAllDownloaded =>
+      'Konumlu bütün arılıkların çevresi indirildi.';
 }

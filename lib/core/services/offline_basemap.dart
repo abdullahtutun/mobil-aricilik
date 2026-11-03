@@ -4,58 +4,68 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:mobil_arici/core/services/basemap_service.dart';
-import 'package:mobil_arici/features/offline_maps/data/map_pack_store.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack_rules.dart';
+import 'package:mobil_arici/features/offline_maps/data/map_area_store.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area_rules.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:vector_tile_renderer/vector_tile_renderer.dart'
     show SpriteIndexReader, ThemeReader;
 
-/// İndirilmiş paketlerden altlık. İnternet yokken haritanın açılması için;
+/// İndirilmiş alanlardan altlık. İnternet yokken haritanın açılması için;
 /// ekranlar buna provider üzerinden ulaşır.
 abstract interface class OfflineBasemapService {
-  /// İndirilmiş paket ve kaydedilmiş stil varsa altlık, yoksa null.
+  /// İndirilmiş alan ve kaydedilmiş stil varsa altlık, yoksa null.
   Future<Basemap?> load();
 }
 
-/// Paketler ve stil [MapPackStore]'da.
+/// Bir MBTiles dosyası ve kapladığı kutu ile zoom aralığı.
+typedef MbtilesSource = ({
+  String path,
+  MapBounds bounds,
+  int minZoom,
+  int maxZoom,
+});
+
+/// Alanlar ve stil [MapAreaStore]'da.
 class MbtilesBasemapService implements OfflineBasemapService {
   const new(this._store);
 
-  final MapPackStore _store;
+  final MapAreaStore _store;
 
   @override
   Future<Basemap?> load() async {
-    final List<InstalledMapPack> installed;
+    final List<InstalledMapArea> installed;
     final OfflineStyleFiles? style;
     try {
       installed = await _store.installed();
       style = await _store.readStyle();
     } on Exception {
-      // Klasör okunamadı; paket yok sayılır.
+      // Klasör okunamadı; alan yok sayılır.
       return null;
     }
     if (installed.isEmpty || style == null) return null;
     final sources = [
       for (final row in installed)
-        (pack: row.pack, path: (await _store.packFile(row.pack.id)).path),
+        (
+          path: (await _store.areaFile(row.area.id)).path,
+          bounds: mapAreaOverviewBounds(row.area),
+          minZoom: mapAreaOverviewZooms.min,
+          maxZoom: mapAreaDetailZooms.max,
+        ),
     ];
     return OfflineBasemap.open(style, sources);
   }
 }
 
-/// MBTiles paketlerinden çizilen altlık. Stil OpenFreeMap'inki; vektör
-/// kaynağı (`openmaptiles`) paketlerden okunur, başka kaynaklı katmanlar
-/// (Natural Earth gölgelendirmesi) atılır. Paket dışında kalan yer boş.
+/// MBTiles dosyalarından çizilen altlık. Stil OpenFreeMap'inki; vektör
+/// kaynağı (`openmaptiles`) dosyalardan okunur, başka kaynaklı katmanlar
+/// (Natural Earth gölgelendirmesi) atılır. İndirilmemiş yer boş.
 class OfflineBasemap implements Basemap {
   new _(this._style, this._provider);
 
   /// Stil okunamazsa [BasemapUnavailable] atar.
-  factory open(
-    OfflineStyleFiles files,
-    List<({MapPack pack, String path})> sources,
-  ) {
+  factory open(OfflineStyleFiles files, List<MbtilesSource> sources) {
     final MbtilesTileProvider provider;
     final Style style;
     try {
@@ -117,32 +127,30 @@ class OfflineBasemap implements Basemap {
   };
 }
 
-/// Karoları MBTiles dosyalarından okur. Karo birden çok paketteyse ilk
+/// Karoları MBTiles dosyalarından okur. Karo birden çok dosyadaysa ilk
 /// açılanınki kullanılır; hiçbirinde yoksa 404 (boş karo). Gzip'li PBF
 /// açılır.
 class MbtilesTileProvider extends VectorTileProvider {
   new _(this._packs);
 
   /// Dosyaları salt okunur açar.
-  factory open(List<({MapPack pack, String path})> sources) =>
-      MbtilesTileProvider._([
-        for (final source in sources)
-          (
-            pack: source.pack,
-            db: sqlite3.open(source.path, mode: OpenMode.readOnly),
-          ),
-      ]);
+  factory open(List<MbtilesSource> sources) => MbtilesTileProvider._([
+    for (final source in sources)
+      (source: source, db: sqlite3.open(source.path, mode: OpenMode.readOnly)),
+  ]);
 
-  final List<({MapPack pack, Database db})> _packs;
+  final List<({MbtilesSource source, Database db})> _packs;
 
   @override
-  int get maximumZoom =>
-      _packs.fold(0, (max, p) => p.pack.maxZoom > max ? p.pack.maxZoom : max);
+  int get maximumZoom => _packs.fold(
+    0,
+    (max, p) => p.source.maxZoom > max ? p.source.maxZoom : max,
+  );
 
   @override
   int get minimumZoom => _packs.fold(
     maximumZoom,
-    (min, p) => p.pack.minZoom < min ? p.pack.minZoom : min,
+    (min, p) => p.source.minZoom < min ? p.source.minZoom : min,
   );
 
   @override
@@ -151,9 +159,9 @@ class MbtilesTileProvider extends VectorTileProvider {
   @override
   Future<Uint8List> provide(TileIdentity tile) async {
     final bounds = tileBounds(tile.z, tile.x, tile.y);
-    for (final (:pack, :db) in _packs) {
-      if (tile.z < pack.minZoom || tile.z > pack.maxZoom) continue;
-      if (!boundsIntersect(pack.bounds, bounds)) continue;
+    for (final (:source, :db) in _packs) {
+      if (tile.z < source.minZoom || tile.z > source.maxZoom) continue;
+      if (!boundsIntersect(source.bounds, bounds)) continue;
       final rows = db.select(
         'SELECT tile_data FROM tiles '
         'WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?',
@@ -164,7 +172,7 @@ class MbtilesTileProvider extends VectorTileProvider {
       return _isGzip(data) ? Uint8List.fromList(gzip.decode(data)) : data;
     }
     throw ProviderException(
-      message: 'tile not in offline packs',
+      message: 'tile not in offline areas',
       retryable: Retryable.none,
       statusCode: 404,
     );
@@ -174,7 +182,7 @@ class MbtilesTileProvider extends VectorTileProvider {
       data.length > 2 && data[0] == 0x1f && data[1] == 0x8b;
 
   void dispose() {
-    for (final (pack: _, :db) in _packs) {
+    for (final (source: _, :db) in _packs) {
       db.close();
     }
   }

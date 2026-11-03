@@ -13,6 +13,7 @@ import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
 import 'package:mobil_arici/features/today/presentation/today_providers.dart';
 
 import '../../../helpers/fake_auth_service.dart';
@@ -124,17 +125,18 @@ void main() {
     expect(basemap.loadCount, 3);
   });
 
-  testWidgets('internet yokken bölge indirilmişse harita paketten açılır', (
-    tester,
-  ) async {
-    await apiaries.create(
+  testWidgets('internet yokken arılık çevresi indirilmişse harita ondan '
+      'açılır', (tester) async {
+    final yayla = await apiaries.create(
       orgId: _orgId,
       name: 'Yayla',
       latitude: 37.1,
       longitude: 28.4,
     );
     final maps = FakeOfflineMaps();
-    await maps.install('tr-48');
+    await maps.install(
+      MapArea(id: yayla.id, name: 'Yayla', latitude: 37.1, longitude: 28.4),
+    );
     await _openMap(
       tester,
       db: db,

@@ -2,47 +2,39 @@ import 'package:clock/clock.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/services/basemap_service_provider.dart';
 import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
-import 'package:mobil_arici/core/sync/map_pack_downloader.dart';
-import 'package:mobil_arici/core/sync/map_pack_downloader_provider.dart';
+import 'package:mobil_arici/core/sync/map_area_downloader.dart';
+import 'package:mobil_arici/core/sync/map_area_downloader_provider.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
 import 'package:mobil_arici/features/migration/presentation/migration_providers.dart';
-import 'package:mobil_arici/features/offline_maps/data/map_pack_store.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack_rules.dart';
+import 'package:mobil_arici/features/offline_maps/data/map_area_store.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area_rules.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'offline_maps_providers.g.dart';
 
-/// Paketlerin klasörü; testler geçici klasörle override eder.
+/// Alanların klasörü; testler geçici klasörle override eder.
 @Riverpod(keepAlive: true)
-MapPackStore mapPackStore(Ref ref) => MapPackStore.app();
+MapAreaStore mapAreaStore(Ref ref) => MapAreaStore.app();
 
-/// Storage'daki katalog (ağ). Hata kendiliğinden yeniden denenmez; ekran
-/// "Yeniden dene" ile yeniler.
-@Riverpod(retry: _noRetry)
-Future<MapPackCatalog> mapPackCatalog(Ref ref) =>
-    ref.watch(mapPackDownloaderProvider).catalog();
-
-Duration? _noRetry(int retryCount, Object error) => null;
-
-/// Bu telefona indirilmiş paketler, indirme sırasıyla.
+/// Bu telefona indirilmiş arılık çevreleri, indirme sırasıyla.
 @Riverpod(keepAlive: true)
-class InstalledMapPacks extends _$InstalledMapPacks {
+class InstalledMapAreas extends _$InstalledMapAreas {
   @override
-  Future<List<InstalledMapPack>> build() =>
-      ref.watch(mapPackStoreProvider).installed();
+  Future<List<InstalledMapArea>> build() =>
+      ref.watch(mapAreaStoreProvider).installed();
 
-  /// Paketi siler.
+  /// Alanı siler.
   Future<void> remove(String id) async {
-    await ref.read(mapPackStoreProvider).remove(id);
+    await ref.read(mapAreaStoreProvider).remove(id);
     changed();
   }
 
   /// Liste yeniden okunur; internetsiz açılmış (ya da açılamamış) harita
-  /// yeni paketlerle yeniden kurulur.
+  /// yeni alanlarla yeniden kurulur.
   void changed() {
     ref.invalidateSelf();
     if (!ref.exists(basemapProvider)) return;
@@ -62,40 +54,37 @@ Stream<List<MigrationStop>> upcomingMigrationStops(Ref ref) {
   return ref.watch(migrationRepositoryProvider).stops.watchUpcomingByOrg(orgId);
 }
 
-/// Arılıkların ve göç duraklarının içinde kaldığı, indirilmemiş paketler
-/// ([suggestMapPacks]). Katalogun hatasını taşır; o da kendiliğinden
-/// yeniden denenmez.
-@Riverpod(retry: _noRetry)
-Future<List<MapPackSuggestion>> mapPackSuggestions(Ref ref) async {
-  final catalog = await ref.watch(mapPackCatalogProvider.future);
-  final installed = await ref.watch(installedMapPacksProvider.future);
+/// İndirilmeye aday konumlu arılıklar ([mapAreaCandidates]); arılığa bağlı
+/// göç durakları adlarıyla.
+@riverpod
+Future<List<MapAreaCandidate>> mapAreaCandidateList(Ref ref) async {
   final summaries = await ref.watch(apiaryListProvider.future);
+  final installed = await ref.watch(installedMapAreasProvider.future);
   final stops = await ref.watch(upcomingMigrationStopsProvider.future);
-  final apiaryById = {
-    for (final summary in summaries) summary.apiary.id: summary.apiary,
-  };
-  return suggestMapPacks(
-    packs: catalog.packs,
-    installedIds: {for (final row in installed) row.pack.id},
+  final stopNames = <String, List<String>>{};
+  for (final stop in stops) {
+    if (stop.apiaryId case final apiaryId?) {
+      (stopNames[apiaryId] ??= []).add(stop.name);
+    }
+  }
+  return mapAreaCandidates(
     apiaries: [
       for (final summary in summaries)
-        if (summary.apiary case Apiary(:final latitude?, :final longitude?))
-          (latitude: latitude, longitude: longitude),
+        if (summary.apiary case Apiary(
+          :final id,
+          :final name,
+          :final latitude?,
+          :final longitude?,
+        ))
+          MapArea(id: id, name: name, latitude: latitude, longitude: longitude),
     ],
-    stops: [
-      for (final stop in stops)
-        (
-          name: stop.name,
-          place: stop.place,
-          latitude: apiaryById[stop.apiaryId]?.latitude,
-          longitude: apiaryById[stop.apiaryId]?.longitude,
-        ),
-    ],
+    installed: installed,
+    stopNamesByApiary: stopNames,
   );
 }
 
 /// İndirmeyi başlatmanın sonucu.
-enum MapPackDownloadOutcome {
+enum MapAreaDownloadOutcome {
   done,
   cancelled,
 
@@ -104,55 +93,52 @@ enum MapPackDownloadOutcome {
   failed,
 }
 
-/// Süren indirmeler: paket kimliğinden o ana kadar inen bayta. Uygulama
-/// açık kaldıkça sürer; ekrandan çıkınca durmaz.
-@Riverpod(keepAlive: true)
-class MapPackDownloads extends _$MapPackDownloads {
-  final _tokens = <String, MapPackCancelToken>{};
+/// Süren bir indirme: biten ve toplam karo, inen bayt.
+typedef MapAreaProgress = ({MapArea area, int done, int total, int bytes});
 
-  /// İlerleme bu kadar bayt değişmeden yayılmaz; her parçada ekran
-  /// yeniden çizilmesin.
-  static const int progressStep = 256 * 1024;
+/// Süren indirmeler, alan kimliğine göre. Uygulama açık kaldıkça sürer;
+/// ekrandan çıkınca durmaz.
+@Riverpod(keepAlive: true)
+class MapAreaDownloads extends _$MapAreaDownloads {
+  final _tokens = <String, MapAreaCancelToken>{};
 
   @override
-  Map<String, int> build() => const {};
+  Map<String, MapAreaProgress> build() => const {};
 
-  /// [pack]'i indirir: önce stil, sonra paket; boyut ve SHA-256
-  /// doğrulanınca kurulur. Aynı paket zaten iniyorsa bir şey yapmaz.
-  Future<MapPackDownloadOutcome> start(
-    MapPack pack,
-    MapPackCatalog catalog,
-  ) async {
-    if (_tokens.containsKey(pack.id)) return MapPackDownloadOutcome.cancelled;
-    final token = _tokens[pack.id] = MapPackCancelToken();
-    final store = ref.read(mapPackStoreProvider);
+  /// [area]'nın karolarını indirir; bitince kurulur (aynı alan varsa
+  /// yerine). Aynı alan zaten iniyorsa bir şey yapmaz.
+  Future<MapAreaDownloadOutcome> start(MapArea area) async {
+    if (_tokens.containsKey(area.id)) return MapAreaDownloadOutcome.cancelled;
+    final token = _tokens[area.id] = MapAreaCancelToken();
+    final store = ref.read(mapAreaStoreProvider);
+    final tiles = mapAreaTiles(area);
     try {
       if (await ref.read(localSettingsRepositoryProvider).mapWifiOnly() &&
           !await ref.read(connectivityServiceProvider).isUnmetered()) {
-        return MapPackDownloadOutcome.needsWifi;
+        return MapAreaDownloadOutcome.needsWifi;
       }
-      _progress(pack.id, 0);
-      final downloader = ref.read(mapPackDownloaderProvider);
+      _progress((area: area, done: 0, total: tiles.length, bytes: 0));
+      final downloader = ref.read(mapAreaDownloaderProvider);
       final style = await downloader.fetchStyle();
-      final partial = await store.partialFile(pack.id);
-      var shown = 0;
+      final partial = await store.partialFile(area.id);
       try {
         await downloader.download(
-          pack,
+          tiles,
           partial,
           cancel: token,
-          onProgress: (received) {
-            if (received - shown < progressStep) return;
-            shown = received;
-            _progress(pack.id, received);
-          },
+          onProgress: (done, bytes) => _progress((
+            area: area,
+            done: done,
+            total: tiles.length,
+            bytes: bytes,
+          )),
         );
         await store.saveStyle(style);
         await store.install(
-          InstalledMapPack(
-            pack: pack,
-            version: catalog.version,
-            generatedAt: catalog.generatedAt,
+          InstalledMapArea(
+            area: area,
+            tileCount: tiles.length,
+            bytes: partial.lengthSync(),
             downloadedAt: clock.now(),
           ),
           partial,
@@ -160,22 +146,22 @@ class MapPackDownloads extends _$MapPackDownloads {
       } finally {
         if (partial.existsSync()) partial.deleteSync();
       }
-      if (ref.mounted) ref.read(installedMapPacksProvider.notifier).changed();
-      return MapPackDownloadOutcome.done;
-    } on MapPackDownloadCancelled {
-      return MapPackDownloadOutcome.cancelled;
-    } on MapPackDownloadFailed {
-      return MapPackDownloadOutcome.failed;
+      if (ref.mounted) ref.read(installedMapAreasProvider.notifier).changed();
+      return MapAreaDownloadOutcome.done;
+    } on MapAreaDownloadCancelled {
+      return MapAreaDownloadOutcome.cancelled;
+    } on MapAreaDownloadFailed {
+      return MapAreaDownloadOutcome.failed;
     } finally {
-      _tokens.remove(pack.id);
-      if (ref.mounted) state = {...state}..remove(pack.id);
+      _tokens.remove(area.id);
+      if (ref.mounted) state = {...state}..remove(area.id);
     }
   }
 
   /// Süren indirmeyi durdurur; yarım dosya silinir.
   void cancel(String id) => _tokens[id]?.cancel();
 
-  void _progress(String id, int received) {
-    if (ref.mounted) state = {...state, id: received};
+  void _progress(MapAreaProgress progress) {
+    if (ref.mounted) state = {...state, progress.area.id: progress};
   }
 }

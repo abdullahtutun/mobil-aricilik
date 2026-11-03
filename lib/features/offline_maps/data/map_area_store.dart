@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:mobil_arici/features/offline_maps/domain/map_pack.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack_rules.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area_rules.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -15,14 +15,14 @@ typedef OfflineStyleFiles = ({
   Uint8List? spriteAtlas,
 });
 
-/// Bu telefona indirilen harita paketleri (uygulama destek klasöründe
-/// `maps/`): her paket `<id>.mbtiles`, liste `installed.json`, stil
-/// `style.json` (+ `sprite.json`, `sprite.png`). Senkronlanmaz; paketler
+/// Bu telefona indirilen arılık çevreleri (uygulama destek klasöründe
+/// `maps/`): her alan `<id>.mbtiles`, liste `installed.json`, stil
+/// `style.json` (+ `sprite.json`, `sprite.png`). Senkronlanmaz; alanlar
 /// yalnız bu telefonun.
-class MapPackStore {
+class MapAreaStore {
   new(this._root);
 
-  factory app() => MapPackStore(
+  factory app() => MapAreaStore(
     getApplicationSupportDirectory().then(
       (support) => Directory(p.join(support.path, 'maps')),
     ),
@@ -42,47 +42,47 @@ class MapPackStore {
   Future<File> _file(String name) async =>
       File(p.join((await _directory).path, name));
 
-  /// İndirilmiş paketler, indirme sırasıyla. Dosyası olmayan satır atlanır.
-  Future<List<InstalledMapPack>> installed() async {
+  /// İndirilmiş alanlar, indirme sırasıyla. Dosyası olmayan satır atlanır.
+  Future<List<InstalledMapArea>> installed() async {
     final index = await _file(indexFile);
     if (!index.existsSync()) return const [];
     try {
-      final rows = parseInstalledMapPacks(jsonDecode(index.readAsStringSync()));
+      final rows = parseInstalledMapAreas(jsonDecode(index.readAsStringSync()));
       return [
         for (final row in rows)
-          if ((await packFile(row.pack.id)).existsSync()) row,
+          if ((await areaFile(row.area.id)).existsSync()) row,
       ];
     } on FormatException {
       return const [];
     }
   }
 
-  /// Paketin MBTiles dosyası; henüz olmayabilir.
-  Future<File> packFile(String id) => _file('$id.mbtiles');
+  /// Alanın MBTiles dosyası; henüz olmayabilir.
+  Future<File> areaFile(String id) => _file('$id.mbtiles');
 
-  /// İndirmenin yazıldığı geçici dosya; bitmeden paket gibi görünmez.
+  /// İndirmenin yazıldığı geçici dosya; bitmeden alan gibi görünmez.
   Future<File> partialFile(String id) => _file('$id.mbtiles.part');
 
-  /// [partial]'ı paketin dosyası yapar ve listeye yazar (aynı kimlik varsa
+  /// [partial]'ı alanın dosyası yapar ve listeye yazar (aynı kimlik varsa
   /// yerine).
-  Future<void> install(InstalledMapPack installed, File partial) async {
-    partial.renameSync((await packFile(installed.pack.id)).path);
+  Future<void> install(InstalledMapArea installed, File partial) async {
+    partial.renameSync((await areaFile(installed.area.id)).path);
     final rows = [
       for (final row in await this.installed())
-        if (row.pack.id != installed.pack.id) row,
+        if (row.area.id != installed.area.id) row,
       installed,
     ];
     await _writeIndex(rows);
   }
 
-  /// Paketi ve listedeki satırını siler. Son paket gidince stil de silinir.
+  /// Alanı ve listedeki satırını siler. Son alan gidince stil de silinir.
   Future<void> remove(String id) async {
     final rows = [
       for (final row in await installed())
-        if (row.pack.id != id) row,
+        if (row.area.id != id) row,
     ];
     await _writeIndex(rows);
-    for (final file in [await packFile(id), await partialFile(id)]) {
+    for (final file in [await areaFile(id), await partialFile(id)]) {
       if (file.existsSync()) file.deleteSync();
     }
     if (rows.isEmpty) {
@@ -93,11 +93,11 @@ class MapPackStore {
     }
   }
 
-  Future<void> _writeIndex(List<InstalledMapPack> rows) async {
+  Future<void> _writeIndex(List<InstalledMapArea> rows) async {
     final index = await _file(indexFile);
     File('${index.path}.part')
       ..writeAsStringSync(
-        jsonEncode([for (final row in rows) installedMapPackToJson(row)]),
+        jsonEncode([for (final row in rows) installedMapAreaToJson(row)]),
         flush: true,
       )
       ..renameSync(index.path);

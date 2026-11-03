@@ -10502,7 +10502,7 @@ abstract class AppLocalizations {
   /// No description provided for @offlineMapsIntro.
   ///
   /// In en, this message translates to:
-  /// **'Download the regions where your apiaries are; the map opens even without signal.'**
+  /// **'Download the area around your apiaries; the map opens even without signal.'**
   String get offlineMapsIntro;
 
   /// Size of a map pack in megabytes.
@@ -10517,17 +10517,11 @@ abstract class AppLocalizations {
   /// **'≈ {size}'**
   String offlineMapsApproxSize(String size);
 
-  /// Badge of a downloaded region with its size.
+  /// Badge of a downloaded apiary area with its size.
   ///
   /// In en, this message translates to:
   /// **'Downloaded · {size}'**
   String offlineMapsDownloaded(String size);
-
-  /// Date of the map data, e.g. updated: Sep 2026.
-  ///
-  /// In en, this message translates to:
-  /// **'updated: {date}'**
-  String offlineMapsUpdated(String date);
 
   /// Progress line while downloading on Wi‑Fi only.
   ///
@@ -10541,7 +10535,7 @@ abstract class AppLocalizations {
   /// **'Downloading · {received} / {total}'**
   String offlineMapsDownloading(String received, String total);
 
-  /// Tooltip of the download button of a region.
+  /// Tooltip of the button that downloads the area around an apiary.
   ///
   /// In en, this message translates to:
   /// **'Download {name}'**
@@ -10553,7 +10547,7 @@ abstract class AppLocalizations {
   /// **'Stop download'**
   String get offlineMapsCancel;
 
-  /// Tooltip of the delete button of a downloaded region.
+  /// Tooltip of the delete button of a downloaded apiary area.
   ///
   /// In en, this message translates to:
   /// **'Delete {name}'**
@@ -10568,7 +10562,7 @@ abstract class AppLocalizations {
   /// No description provided for @offlineMapsDeleteMessage.
   ///
   /// In en, this message translates to:
-  /// **'Without internet, the map of this region won\'t open. You can download it again any time.'**
+  /// **'Without internet, the map around this apiary won\'t open. You can download it again any time.'**
   String get offlineMapsDeleteMessage;
 
   /// No description provided for @offlineMapsDeleteConfirm.
@@ -10586,55 +10580,25 @@ abstract class AppLocalizations {
   /// No description provided for @offlineMapsWifiOnlyHint.
   ///
   /// In en, this message translates to:
-  /// **'Packs are tens of MB; no mobile data is used.'**
+  /// **'A few MB per apiary; no mobile data is used.'**
   String get offlineMapsWifiOnlyHint;
 
-  /// No description provided for @offlineMapsSuggested.
-  ///
-  /// In en, this message translates to:
-  /// **'Suggested · apiaries and migration plan'**
-  String get offlineMapsSuggested;
-
-  /// No description provided for @offlineMapsAll.
-  ///
-  /// In en, this message translates to:
-  /// **'All regions'**
-  String get offlineMapsAll;
-
-  /// Migration plan stop inside a region; name is the forage source, e.g. Citrus stop.
+  /// Migration plan stop linked to the apiary; name is the forage source, e.g. Citrus stop.
   ///
   /// In en, this message translates to:
   /// **'{name} stop'**
   String offlineMapsStop(String name);
 
-  /// No description provided for @offlineMapsCatalogErrorTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t load the region list'**
-  String get offlineMapsCatalogErrorTitle;
-
-  /// No description provided for @offlineMapsCatalogErrorMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'The list needs internet. Regions you downloaded still open.'**
-  String get offlineMapsCatalogErrorMessage;
-
-  /// No description provided for @offlineMapsCatalogEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'No regions to download right now.'**
-  String get offlineMapsCatalogEmpty;
-
   /// No description provided for @offlineMapsDone.
   ///
   /// In en, this message translates to:
-  /// **'{name} downloaded'**
+  /// **'Area around {name} downloaded'**
   String offlineMapsDone(String name);
 
   /// No description provided for @offlineMapsFailed.
   ///
   /// In en, this message translates to:
-  /// **'Couldn\'t download {name}. Check your connection and try again.'**
+  /// **'Couldn\'t download the area around {name}. Check your connection and try again.'**
   String offlineMapsFailed(String name);
 
   /// No description provided for @offlineMapsNeedsWifi.
@@ -10655,11 +10619,47 @@ abstract class AppLocalizations {
   /// **'Offline maps'**
   String get settingsOfflineMaps;
 
-  /// Settings row value: number of downloaded regions and total size.
+  /// Settings row value: number of downloaded apiary areas and total size.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{None} =1{1 region · {size}} other{{count} regions · {size}}}'**
+  /// **'{count, plural, =0{None} =1{1 apiary · {size}} other{{count} apiaries · {size}}}'**
   String settingsOfflineMapsValue(int count, String size);
+
+  /// No description provided for @offlineMapsCoverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Each apiary gets 6 km around it in detail and 40 km as an overview.'**
+  String get offlineMapsCoverage;
+
+  /// Date the area around an apiary was downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'downloaded: {date}'**
+  String offlineMapsDownloadedOn(String date);
+
+  /// No description provided for @offlineMapsToDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiaries to download'**
+  String get offlineMapsToDownload;
+
+  /// No description provided for @offlineMapsMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary moved, download again'**
+  String get offlineMapsMoved;
+
+  /// No description provided for @offlineMapsNoApiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'No apiaries with a location. Add a location to an apiary and it shows up here.'**
+  String get offlineMapsNoApiaries;
+
+  /// No description provided for @offlineMapsAllDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'All apiaries with a location are downloaded.'**
+  String get offlineMapsAllDownloaded;
 }
 
 class _AppLocalizationsDelegate

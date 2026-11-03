@@ -54,12 +54,12 @@ final class BasemapServiceProvider
 
 String _$basemapServiceHash() => r'5b3f254ca0e26883dc22927ff89d0f358baaed02';
 
-/// İndirilmiş paketlerden altlık; testler override eder.
+/// İndirilmiş arılık çevrelerinden altlık; testler override eder.
 
 @ProviderFor(offlineBasemapService)
 final offlineBasemapServiceProvider = OfflineBasemapServiceProvider._();
 
-/// İndirilmiş paketlerden altlık; testler override eder.
+/// İndirilmiş arılık çevrelerinden altlık; testler override eder.
 
 final class OfflineBasemapServiceProvider
     extends
@@ -69,7 +69,7 @@ final class OfflineBasemapServiceProvider
           OfflineBasemapService
         >
     with $Provider<OfflineBasemapService> {
-  /// İndirilmiş paketlerden altlık; testler override eder.
+  /// İndirilmiş arılık çevrelerinden altlık; testler override eder.
   OfflineBasemapServiceProvider._()
     : super(
         from: null,
@@ -105,30 +105,30 @@ final class OfflineBasemapServiceProvider
 }
 
 String _$offlineBasemapServiceHash() =>
-    r'38d5e77fbf5b394ff64e28bdf67d3e39bc40d748';
+    r'7e2e074111f1db503240c62e336cf0e7df5d7647';
 
 /// Altlık uygulama açık kaldıkça bir kez okunur. Ağdan okunamazsa
-/// indirilmiş paketlerden açılır; paket de yoksa [BasemapUnavailable].
+/// indirilmiş arılık çevrelerinden açılır; o da yoksa [BasemapUnavailable].
 /// Hata kendiliğinden yeniden denenmez; ekran "Yeniden dene" ile ya da
-/// haritaya yeniden geçince yeniler. Paket inince ya da silinince
+/// haritaya yeniden geçince yeniler. Alan inince ya da silinince
 /// internetsiz altlık yeniden okunur.
 
 @ProviderFor(basemap)
 final basemapProvider = BasemapProvider._();
 
 /// Altlık uygulama açık kaldıkça bir kez okunur. Ağdan okunamazsa
-/// indirilmiş paketlerden açılır; paket de yoksa [BasemapUnavailable].
+/// indirilmiş arılık çevrelerinden açılır; o da yoksa [BasemapUnavailable].
 /// Hata kendiliğinden yeniden denenmez; ekran "Yeniden dene" ile ya da
-/// haritaya yeniden geçince yeniler. Paket inince ya da silinince
+/// haritaya yeniden geçince yeniler. Alan inince ya da silinince
 /// internetsiz altlık yeniden okunur.
 
 final class BasemapProvider
     extends $FunctionalProvider<AsyncValue<Basemap>, Basemap, FutureOr<Basemap>>
     with $FutureModifier<Basemap>, $FutureProvider<Basemap> {
   /// Altlık uygulama açık kaldıkça bir kez okunur. Ağdan okunamazsa
-  /// indirilmiş paketlerden açılır; paket de yoksa [BasemapUnavailable].
+  /// indirilmiş arılık çevrelerinden açılır; o da yoksa [BasemapUnavailable].
   /// Hata kendiliğinden yeniden denenmez; ekran "Yeniden dene" ile ya da
-  /// haritaya yeniden geçince yeniler. Paket inince ya da silinince
+  /// haritaya yeniden geçince yeniler. Alan inince ya da silinince
   /// internetsiz altlık yeniden okunur.
   BasemapProvider._()
     : super(

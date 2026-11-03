@@ -203,7 +203,7 @@ lib/
 | --- | --- | --- |
 | Kovan tanıma | QR (mobile\_scanner) + NFC (nfc\_manager) | QR içeriği: `mobilarici://h/<uuid>` — uygulama içinde açılır, internet gerektirmez. Etiket PDF'i cihazda üretilir (A4'e 24 etiket), UV'ye dayanıklı etiket önerisi. NFC tag kovan içine/kapak altına. |
 | Toplu kovan ekleme | "20 kovan oluştur, 101'den başla" | Etiketler toplu basılır, sahada okutularak eşleştirilir |
-| Harita | flutter\_map + OpenFreeMap (ücretsiz, OSM verisi) | Ayarlar → "Bölgemin haritasını indir" (zoom aralığı sınırlı, boyut önceden gösterilir). Online görünüm OpenFreeMap'in herkese açık sunucusundan gelir. Offline bölge paketleri, OpenFreeMap'in yayımladığı MBTiles dünya dosyasından bölge bölge kesilip kendi depolamamızdan sunulur; böylece ücretsiz genel sunucuya toplu indirme yükü bindirilmez. |
+| Harita | flutter\_map + OpenFreeMap (ücretsiz, OSM verisi) | Ayarlar → "Offline haritalar": il yerine her arılığın çevresi indirilir (6 km yarıçap zoom 11–14, 40 km yarıçap zoom 6–10; arılık başına ~100–130 karo, 2–4 MB; boyut önceden gösterilir). Online görünüm ve indirme OpenFreeMap'in herkese açık sunucusundan; telefon karoları doğrudan çekip kendi MBTiles dosyasına yazar, sunucumuz araya girmez. OpenFreeMap'in uygulama içi indirme koşulu: indirme başına en çok 3000 karo / 50 MB, en çok 4 paralel istek, uygulamayı tanıtan User-Agent. |
 | Konum | geolocator | Sadece arılık kaydı ve "yakınımdaki arılık" için; sürekli takip yok (pil) |
 | Sesli not | record (AAC, düşük bit hızı) | Kayıt her zaman offline. Metne çevirme: cihazın yerleşik Türkçe tanıma desteği varsa anında, yoksa senkron sonrası sunucuda (ileri faz). |
 | Sesli hızlı giriş (ileri faz) | Basit komut sözlüğü | "Ana var, yedi çerçeve, sakin" → form alanlarını doldurur |
@@ -435,7 +435,7 @@ Kaba tahmin: 1–2 Flutter geliştirici ile **7 sprint (2'şer hafta) ≈ 14 haf
 
 - [ ] Hostinger e-postası: gönderim adresi, SPF/DKIM/DMARC kayıtları ve planın günlük limitinin beklenen kayıt sayısına yetip yetmediği.
 - [ ] WeatherAPI.com planı: Ücretsiz plan ticari kullanıma açık; ayda 100 bin çağrı ve 3 günlük tahmin veriyor, atıf rica ediyor. 7 günlük tahmin ya da kullanıcı sayısı artınca daha fazla çağrı için Starter ve üstü plan gerekir.
-- [ ] Offline harita paketleri için bölge kesme ve barındırma (OpenFreeMap MBTiles → bölge paketleri → depolama).
+- [x] Offline harita: arılık çevresi telefondan doğrudan OpenFreeMap'ten indirilir (il paketi kesme ve barındırma vazgeçildi).
 - [ ] İngilizce mağaza adı ve açıklaması (Mobil Arıcı markası korunarak).
 - [ ] Pilot grup olmadığı için geri bildirim kanalı: Uygulama içi "Görüş bildir", beta yorumları ve kullanım analitiği ilk sürümden itibaren açık.
 - [ ] Tasarım sistemi ve ana ekranların tasarımı (TR ve EN metinlerle), sprint 1 bitmeden (Claude).

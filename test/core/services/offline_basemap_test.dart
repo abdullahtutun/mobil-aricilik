@@ -5,21 +5,13 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/services/basemap_service.dart';
 import 'package:mobil_arici/core/services/offline_basemap.dart';
-import 'package:mobil_arici/features/offline_maps/data/map_pack_store.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack.dart';
+import 'package:mobil_arici/features/offline_maps/data/map_area_store.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 
-MapPack _pack(String id, MapBounds bounds, {int minZoom = 6}) => MapPack(
-  id: id,
-  names: {'tr': id},
-  bounds: bounds,
-  minZoom: minZoom,
-  maxZoom: 14,
-  url: 'https://x/$id.mbtiles',
-  bytes: 1,
-  sha256: 'ab',
-);
+MbtilesSource _source(String path, MapBounds bounds, {int minZoom = 6}) =>
+    (path: path, bounds: bounds, minZoom: minZoom, maxZoom: 14);
 
 const _mugla = MapBounds(west: 27.2, south: 36.3, east: 29.6, north: 37.6);
 const _izmir = MapBounds(west: 26.2, south: 37.8, east: 28.5, north: 39.4);
@@ -91,12 +83,12 @@ void main() {
   group('MbtilesTileProvider', () {
     test('karo TMS satırından okunur, gzip açılır', () async {
       final provider = MbtilesTileProvider.open([
-        (
-          pack: _pack('tr-48', _mugla),
-          path: mbtiles('tr-48', {
+        _source(
+          mbtiles('a-1', {
             (_z, _x, _tmsY): gzip.encode([1, 2, 3]),
             (_z, _x + 1, _tmsY): [4, 5],
           }),
+          _mugla,
         ),
       ]);
       addTearDown(provider.dispose);
@@ -107,60 +99,69 @@ void main() {
       expect(provider.maximumZoom, 14);
     });
 
-    test('pakette olmayan karo 404; kutu dışındaki paket sorulmaz', () async {
-      final provider = MbtilesTileProvider.open([
-        // İzmir paketinde Muğla karosu var gibi; kutu dışı olduğu için
-        // okunmaz.
-        (
-          pack: _pack('tr-35', _izmir),
-          path: mbtiles('tr-35', {
-            (_z, _x, _tmsY): [9],
-          }),
-        ),
-        (
-          pack: _pack('tr-48', _mugla, minZoom: 11),
-          path: mbtiles('tr-48', {
-            (_z, _x, _tmsY): [7],
-          }),
-        ),
-      ]);
-      addTearDown(provider.dispose);
+    test(
+      'dosyada olmayan karo 404; kutu ya da zoom dışı dosya sorulmaz',
+      () async {
+        final provider = MbtilesTileProvider.open([
+          // İzmir dosyasında Muğla karosu var gibi; kutu dışı olduğu için
+          // okunmaz.
+          _source(
+            mbtiles('a-2', {
+              (_z, _x, _tmsY): [9],
+            }),
+            _izmir,
+          ),
+          _source(
+            mbtiles('a-1', {
+              (_z, _x, _tmsY): [7],
+            }),
+            _mugla,
+            minZoom: 11,
+          ),
+        ]);
+        addTearDown(provider.dispose);
 
-      await expectLater(
-        provider.provide(TileIdentity(_z, _x, _y)),
-        throwsA(
-          isA<ProviderException>().having((e) => e.statusCode, 'kod', 404),
-        ),
-      );
-      expect(provider.minimumZoom, 6);
-    });
+        await expectLater(
+          provider.provide(TileIdentity(_z, _x, _y)),
+          throwsA(
+            isA<ProviderException>().having((e) => e.statusCode, 'kod', 404),
+          ),
+        );
+        expect(provider.minimumZoom, 6);
+      },
+    );
   });
 
   group('MbtilesBasemapService', () {
-    late MapPackStore store;
+    late MapAreaStore store;
 
-    setUp(() => store = MapPackStore(Future.value(directory)));
+    setUp(() => store = MapAreaStore(Future.value(directory)));
 
     Future<void> install() async {
       final partial = File(mbtiles('indirilen', {}));
       await store.install(
-        InstalledMapPack(
-          pack: _pack('tr-48', _mugla),
-          version: '1',
-          generatedAt: DateTime.utc(2026, 9),
+        InstalledMapArea(
+          area: const MapArea(
+            id: 'a-1',
+            name: 'Yayla',
+            latitude: 37.1,
+            longitude: 28.4,
+          ),
+          tileCount: 1,
+          bytes: 1,
           downloadedAt: DateTime.utc(2026, 10),
         ),
         partial,
       );
     }
 
-    test('paket ya da stil yoksa null', () async {
+    test('alan ya da stil yoksa null', () async {
       expect(await MbtilesBasemapService(store).load(), isNull);
       await install();
       expect(await MbtilesBasemapService(store).load(), isNull);
     });
 
-    test('paket ve stille internetsiz altlık; raster katman atılır', () async {
+    test('alan ve stille internetsiz altlık; raster katman atılır', () async {
       await install();
       await store.saveStyle((
         style: _style,

@@ -578,6 +578,14 @@
 
 - Düzeltme: "Bölge listesi alınamadı" kartındaki "Yeniden dene" tepkisiz görünüyordu. Riverpod 3 yenilemede önceki hatayı `isLoading` ile tuttuğu için ekran hata kartını çizmeye devam ediyordu; artık yenilenirken yükleniyor gösteriliyor. Öneriler provider'ı katalog hatasını otomatik yeniden denemiyor. Uzak `map-packs` bucket'ında `catalog.json` yok (istek 400); paketler `cut_packs.py --upload` ile yüklenene kadar ekran bu mesajı göstermeye devam eder.
 
+### 2026-11-03 — Offline harita: il paketi yerine arılık çevresi (kullanıcı kararı)
+
+- İl kataloğu ve Supabase'teki paketler bırakıldı (dünya dosyası ~90 GB, Free planda dosya başına 50 MB ve çıkış trafiği kotası). Telefon her arılığın çevresini doğrudan OpenFreeMap'ten indirip `maps/<arılık id>.mbtiles` dosyasına yazıyor (`MapAreaDownloader`). OpenFreeMap bunu indirme başına en çok 3000 karo / 50 MB, en çok 4 paralel istek ve uygulamayı tanıtan User-Agent ile izin veriyor; indirici bu sınırları uyguluyor, karo adresini sürümlü TileJSON'dan okuyor, geçici hatada karoyu 3 kez deniyor.
+- Yarıçap (karar bende): ayrıntılı 6 km, zoom 11–14 (arıların uçuş alanı, çevredeki kaynaklar, en yakın köy ve arılık yolu); genel görünüm 40 km, zoom 6–10 (ilçe, ana yollar). Muğla/Ordu/Erzurum'da arılık başına 95–132 karo, tahmini 2–4 MB. Gerçek sunucuyla Ula'daki bir arılık denendi: 98 karo, 2,65 MB, 3,4 sn (tahmin 2,76 MB); dosya internetsiz altlık olarak açıldı. Kurallar `map_area_rules.dart`'ta (`mapAreaTiles`, `estimateTileBytes`, `mapAreaCandidates`).
+- Ekran: konumlu arılıklar "İndirilecek arılıklar"da tahmini boyutla; bağlı göç durağı adı ve indirildikten sonra 1 km'den fazla taşınan arılık için "Arılık taşındı, yeniden indir" yazıyor. Liste için internet gerekmediğinden "Bölge listesi alınamadı" durumu kalktı. Konumlu arılık yoksa ya da hepsi indirildiyse açıklama çıkıyor. İlerleme karoya göre, metinde inen MB / tahmini MB. Ayar satırı "1 arılık · 3 MB".
+- Testler: 6 kural, 4 depo, 5 indirici (TMS satırı, 204 karo, User-Agent, yeniden deneme, sınır, en çok 4 paralel istek, iptal), 5 altlık ve 10 ekran akışı; Arılıklar haritasının "internetsiz + indirilmiş alan" testi alana çevrildi. Tam takımda 2066 test geçiyor, `flutter analyze` temiz.
+- Bilinen: Ayrıntılı çevrenin dışında zoom 11 ve üstüne inilince harita boş (alt zoom karosuna dönülmüyor). Yakın arılıkların çevreleri ayrı dosyalarda ve üst üste iniyor. Silinen arılığın indirilmiş çevresi listede kalıyor, elle silinebilir. Konumu yalnız "yer" metni olan göç durakları (arılığa bağlı değilse) indirilemiyor; tasarımdaki "Haritada alan seç" yok. `tools/map-tiles/` betiği ve uzak `map-packs` bucket'ı (boş) artık kullanılmıyor; kaldırılmadı.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

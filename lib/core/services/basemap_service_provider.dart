@@ -9,15 +9,15 @@ part 'basemap_service_provider.g.dart';
 @Riverpod(keepAlive: true)
 BasemapService basemapService(Ref ref) => const OpenFreeMapService();
 
-/// İndirilmiş paketlerden altlık; testler override eder.
+/// İndirilmiş arılık çevrelerinden altlık; testler override eder.
 @Riverpod(keepAlive: true)
 OfflineBasemapService offlineBasemapService(Ref ref) =>
-    MbtilesBasemapService(ref.watch(mapPackStoreProvider));
+    MbtilesBasemapService(ref.watch(mapAreaStoreProvider));
 
 /// Altlık uygulama açık kaldıkça bir kez okunur. Ağdan okunamazsa
-/// indirilmiş paketlerden açılır; paket de yoksa [BasemapUnavailable].
+/// indirilmiş arılık çevrelerinden açılır; o da yoksa [BasemapUnavailable].
 /// Hata kendiliğinden yeniden denenmez; ekran "Yeniden dene" ile ya da
-/// haritaya yeniden geçince yeniler. Paket inince ya da silinince
+/// haritaya yeniden geçince yeniler. Alan inince ya da silinince
 /// internetsiz altlık yeniden okunur.
 @Riverpod(keepAlive: true, retry: _noRetry)
 Future<Basemap> basemap(Ref ref) async {

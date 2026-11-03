@@ -6551,7 +6551,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineMapsIntro =>
-      'Download the regions where your apiaries are; the map opens even without signal.';
+      'Download the area around your apiaries; the map opens even without signal.';
 
   @override
   String offlineMapsMegabytes(String size) {
@@ -6566,11 +6566,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String offlineMapsDownloaded(String size) {
     return 'Downloaded · $size';
-  }
-
-  @override
-  String offlineMapsUpdated(String date) {
-    return 'updated: $date';
   }
 
   @override
@@ -6603,7 +6598,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineMapsDeleteMessage =>
-      'Without internet, the map of this region won\'t open. You can download it again any time.';
+      'Without internet, the map around this apiary won\'t open. You can download it again any time.';
 
   @override
   String get offlineMapsDeleteConfirm => 'Delete';
@@ -6613,13 +6608,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineMapsWifiOnlyHint =>
-      'Packs are tens of MB; no mobile data is used.';
-
-  @override
-  String get offlineMapsSuggested => 'Suggested · apiaries and migration plan';
-
-  @override
-  String get offlineMapsAll => 'All regions';
+      'A few MB per apiary; no mobile data is used.';
 
   @override
   String offlineMapsStop(String name) {
@@ -6627,23 +6616,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get offlineMapsCatalogErrorTitle => 'Couldn\'t load the region list';
-
-  @override
-  String get offlineMapsCatalogErrorMessage =>
-      'The list needs internet. Regions you downloaded still open.';
-
-  @override
-  String get offlineMapsCatalogEmpty => 'No regions to download right now.';
-
-  @override
   String offlineMapsDone(String name) {
-    return '$name downloaded';
+    return 'Area around $name downloaded';
   }
 
   @override
   String offlineMapsFailed(String name) {
-    return 'Couldn\'t download $name. Check your connection and try again.';
+    return 'Couldn\'t download the area around $name. Check your connection and try again.';
   }
 
   @override
@@ -6662,10 +6641,33 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count regions · $size',
-      one: '1 region · $size',
+      other: '$count apiaries · $size',
+      one: '1 apiary · $size',
       zero: 'None',
     );
     return '$_temp0';
   }
+
+  @override
+  String get offlineMapsCoverage =>
+      'Each apiary gets 6 km around it in detail and 40 km as an overview.';
+
+  @override
+  String offlineMapsDownloadedOn(String date) {
+    return 'downloaded: $date';
+  }
+
+  @override
+  String get offlineMapsToDownload => 'Apiaries to download';
+
+  @override
+  String get offlineMapsMoved => 'Apiary moved, download again';
+
+  @override
+  String get offlineMapsNoApiaries =>
+      'No apiaries with a location. Add a location to an apiary and it shows up here.';
+
+  @override
+  String get offlineMapsAllDownloaded =>
+      'All apiaries with a location are downloaded.';
 }

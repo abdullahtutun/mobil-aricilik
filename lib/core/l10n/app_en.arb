@@ -6754,7 +6754,7 @@
   "seasonCsvYes": "Yes",
   "seasonCsvNo": "No",
   "offlineMapsTitle": "Offline maps",
-  "offlineMapsIntro": "Download the regions where your apiaries are; the map opens even without signal.",
+  "offlineMapsIntro": "Download the area around your apiaries; the map opens even without signal.",
   "offlineMapsMegabytes": "{size} MB",
   "@offlineMapsMegabytes": {
     "description": "Size of a map pack in megabytes.",
@@ -6775,18 +6775,9 @@
   },
   "offlineMapsDownloaded": "Downloaded · {size}",
   "@offlineMapsDownloaded": {
-    "description": "Badge of a downloaded region with its size.",
+    "description": "Badge of a downloaded apiary area with its size.",
     "placeholders": {
       "size": {
-        "type": "String"
-      }
-    }
-  },
-  "offlineMapsUpdated": "updated: {date}",
-  "@offlineMapsUpdated": {
-    "description": "Date of the map data, e.g. updated: Sep 2026.",
-    "placeholders": {
-      "date": {
         "type": "String"
       }
     }
@@ -6817,7 +6808,7 @@
   },
   "offlineMapsDownload": "Download {name}",
   "@offlineMapsDownload": {
-    "description": "Tooltip of the download button of a region.",
+    "description": "Tooltip of the button that downloads the area around an apiary.",
     "placeholders": {
       "name": {
         "type": "String"
@@ -6827,7 +6818,7 @@
   "offlineMapsCancel": "Stop download",
   "offlineMapsDelete": "Delete {name}",
   "@offlineMapsDelete": {
-    "description": "Tooltip of the delete button of a downloaded region.",
+    "description": "Tooltip of the delete button of a downloaded apiary area.",
     "placeholders": {
       "name": {
         "type": "String"
@@ -6842,25 +6833,20 @@
       }
     }
   },
-  "offlineMapsDeleteMessage": "Without internet, the map of this region won't open. You can download it again any time.",
+  "offlineMapsDeleteMessage": "Without internet, the map around this apiary won't open. You can download it again any time.",
   "offlineMapsDeleteConfirm": "Delete",
   "offlineMapsWifiOnly": "Download on Wi‑Fi only",
-  "offlineMapsWifiOnlyHint": "Packs are tens of MB; no mobile data is used.",
-  "offlineMapsSuggested": "Suggested · apiaries and migration plan",
-  "offlineMapsAll": "All regions",
+  "offlineMapsWifiOnlyHint": "A few MB per apiary; no mobile data is used.",
   "offlineMapsStop": "{name} stop",
   "@offlineMapsStop": {
-    "description": "Migration plan stop inside a region; name is the forage source, e.g. Citrus stop.",
+    "description": "Migration plan stop linked to the apiary; name is the forage source, e.g. Citrus stop.",
     "placeholders": {
       "name": {
         "type": "String"
       }
     }
   },
-  "offlineMapsCatalogErrorTitle": "Couldn't load the region list",
-  "offlineMapsCatalogErrorMessage": "The list needs internet. Regions you downloaded still open.",
-  "offlineMapsCatalogEmpty": "No regions to download right now.",
-  "offlineMapsDone": "{name} downloaded",
+  "offlineMapsDone": "Area around {name} downloaded",
   "@offlineMapsDone": {
     "placeholders": {
       "name": {
@@ -6868,7 +6854,7 @@
       }
     }
   },
-  "offlineMapsFailed": "Couldn't download {name}. Check your connection and try again.",
+  "offlineMapsFailed": "Couldn't download the area around {name}. Check your connection and try again.",
   "@offlineMapsFailed": {
     "placeholders": {
       "name": {
@@ -6882,9 +6868,9 @@
     "description": "Map data credit under the offline maps list. Keep the names as they are."
   },
   "settingsOfflineMaps": "Offline maps",
-  "settingsOfflineMapsValue": "{count, plural, =0{None} =1{1 region · {size}} other{{count} regions · {size}}}",
+  "settingsOfflineMapsValue": "{count, plural, =0{None} =1{1 apiary · {size}} other{{count} apiaries · {size}}}",
   "@settingsOfflineMapsValue": {
-    "description": "Settings row value: number of downloaded regions and total size.",
+    "description": "Settings row value: number of downloaded apiary areas and total size.",
     "placeholders": {
       "count": {
         "type": "int"
@@ -6893,5 +6879,19 @@
         "type": "String"
       }
     }
-  }
+  },
+  "offlineMapsCoverage": "Each apiary gets 6 km around it in detail and 40 km as an overview.",
+  "offlineMapsDownloadedOn": "downloaded: {date}",
+  "@offlineMapsDownloadedOn": {
+    "description": "Date the area around an apiary was downloaded.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMapsToDownload": "Apiaries to download",
+  "offlineMapsMoved": "Apiary moved, download again",
+  "offlineMapsNoApiaries": "No apiaries with a location. Add a location to an apiary and it shows up here.",
+  "offlineMapsAllDownloaded": "All apiaries with a location are downloaded."
 }

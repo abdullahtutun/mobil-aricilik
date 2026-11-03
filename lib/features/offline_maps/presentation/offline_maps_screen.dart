@@ -6,19 +6,16 @@ import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
-import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
-import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
-import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack.dart';
-import 'package:mobil_arici/features/offline_maps/domain/map_pack_rules.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
+import 'package:mobil_arici/features/offline_maps/domain/map_area_rules.dart';
 import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_providers.dart';
 
-/// Offline haritalar (docs/design "Offline harita indir"): indirilmiş
-/// bölgeler (boyut, içindeki arılıklar, verinin tarihi, sil), süren
-/// indirmeler (yüzde, çubuk, inen / toplam MB, durdur), "Sadece Wi‑Fi'da
-/// indir", katalogtan önerilen bölgeler (arılıkların ve geçmişte kalmamış
-/// göç duraklarının içinde kalan) ve geri kalan bölgeler, tahmini boyutla.
-/// Katalog internet ister; indirilmiş bölgeler internetsiz de listelenir.
+/// Offline haritalar (docs/design "Offline harita indir", il yerine arılık
+/// çevresi): indirilmiş arılık çevreleri (boyut, indirme günü, sil), süren
+/// indirmeler (yüzde, çubuk, inen / tahmini MB, durdur), "Sadece Wi‑Fi'da
+/// indir" ve indirilecek konumlu arılıklar (bağlı göç durağı, taşınmışsa
+/// uyarı, tahmini boyut). Her şey bu telefondan; liste için internet
+/// gerekmez.
 class OfflineMapsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -27,37 +24,19 @@ class OfflineMapsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final installed =
-        ref.watch(installedMapPacksProvider).value ??
-        const <InstalledMapPack>[];
-    final downloads = ref.watch(mapPackDownloadsProvider);
-    final catalog = ref.watch(mapPackCatalogProvider);
-    final suggestions =
-        ref.watch(mapPackSuggestionsProvider).value ??
-        const <MapPackSuggestion>[];
-    final apiaries = [
-      for (final summary
-          in ref.watch(apiaryListProvider).value ?? const <ApiarySummary>[])
-        if (summary.apiary case Apiary(:final latitude?, :final longitude?))
-          (latitude: latitude, longitude: longitude),
-    ];
-
-    final installedIds = {for (final row in installed) row.pack.id};
-    final suggestedIds = {for (final s in suggestions) s.pack.id};
-    final catalogPacks = catalog.value?.packs ?? const <MapPack>[];
-    final downloading = [
-      for (final pack in catalogPacks)
-        if (downloads.containsKey(pack.id)) pack,
-    ];
-    final others = [
-      for (final pack in catalogPacks)
-        if (!installedIds.contains(pack.id) &&
-            !suggestedIds.contains(pack.id) &&
-            !downloads.containsKey(pack.id))
-          pack,
+        ref.watch(installedMapAreasProvider).value ??
+        const <InstalledMapArea>[];
+    final downloads = ref.watch(mapAreaDownloadsProvider);
+    final candidates = ref.watch(mapAreaCandidateListProvider);
+    final waiting = [
+      for (final candidate in candidates.value ?? const <MapAreaCandidate>[])
+        if (!downloads.containsKey(candidate.area.id)) candidate,
     ];
     final gap = SizedBox(height: spacing.md);
     final sectionGap = SizedBox(height: spacing.xl);
-    final labelGap = SizedBox(height: spacing.sm);
+    final secondary = context.typography.bodySmall.copyWith(
+      color: context.colors.textSecondary,
+    );
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.offlineMapsTitle)),
@@ -70,130 +49,73 @@ class OfflineMapsScreen extends ConsumerWidget {
               color: context.colors.textSecondary,
             ),
           ),
-          for (final row in installed) ...[
+          SizedBox(height: spacing.xs),
+          Text(l10n.offlineMapsCoverage, style: secondary),
+          for (final row in installed)
+            if (!downloads.containsKey(row.area.id)) ...[
+              gap,
+              _InstalledCard(installed: row),
+            ],
+          for (final progress in downloads.values) ...[
             gap,
-            _InstalledCard(
-              installed: row,
-              apiaryCount: apiaryCountInPack(row.pack, apiaries),
-            ),
-          ],
-          for (final pack in downloading) ...[
-            gap,
-            _DownloadCard(pack: pack, received: downloads[pack.id] ?? 0),
+            _DownloadCard(progress: progress),
           ],
           gap,
           const ListGroup(children: [_WifiOnlyTile()]),
-          ...switch (catalog) {
-            // Yeniden denerken önceki hata da durumda kalır; önce yükleniyor
-            // gösterilir, yoksa "Yeniden dene" hiçbir şey yapmıyor gibi
-            // görünür.
-            AsyncValue(isLoading: true) => [
-              sectionGap,
-              const Center(child: CircularProgressIndicator()),
-            ],
-            AsyncData(:final value) => [
-              if (suggestions.isNotEmpty) ...[
-                sectionGap,
-                SectionLabel(l10n.offlineMapsSuggested),
-                labelGap,
-                ListGroup(
-                  children: [
-                    for (final suggestion in suggestions)
-                      if (!downloads.containsKey(suggestion.pack.id))
-                        _PackRow(
-                          pack: suggestion.pack,
-                          reason: _reason(l10n, suggestion),
-                          onDownload: () => unawaited(
-                            _download(context, ref, suggestion.pack, value),
-                          ),
-                        ),
-                  ],
-                ),
-              ],
-              if (others.isNotEmpty) ...[
-                sectionGap,
-                SectionLabel(l10n.offlineMapsAll),
-                labelGap,
-                ListGroup(
-                  children: [
-                    for (final pack in others)
-                      _PackRow(
-                        pack: pack,
-                        onDownload: () =>
-                            unawaited(_download(context, ref, pack, value)),
-                      ),
-                  ],
-                ),
-              ],
-              if (value.packs.isEmpty) ...[
-                sectionGap,
-                NoteCard(
-                  icon: Icons.map_outlined,
-                  message: l10n.offlineMapsCatalogEmpty,
-                ),
-              ],
-            ],
-            AsyncError() => [
-              sectionGap,
+          if (candidates case AsyncData(:final value)) ...[
+            sectionGap,
+            if (value.isEmpty && installed.isEmpty)
               NoteCard(
-                icon: Icons.cloud_off_rounded,
-                title: l10n.offlineMapsCatalogErrorTitle,
-                message: l10n.offlineMapsCatalogErrorMessage,
-                child: BigButton(
-                  label: l10n.actionRetry,
-                  icon: Icons.refresh_rounded,
-                  variant: BigButtonVariant.secondary,
-                  onPressed: () => ref.invalidate(mapPackCatalogProvider),
-                ),
+                icon: Icons.location_off_rounded,
+                message: l10n.offlineMapsNoApiaries,
+              )
+            else if (waiting.isEmpty && downloads.isEmpty)
+              NoteCard(
+                icon: Icons.check_circle_rounded,
+                message: l10n.offlineMapsAllDownloaded,
+              )
+            else if (waiting.isNotEmpty) ...[
+              SectionLabel(l10n.offlineMapsToDownload),
+              SizedBox(height: spacing.sm),
+              ListGroup(
+                children: [
+                  for (final candidate in waiting)
+                    _AreaRow(
+                      candidate: candidate,
+                      onDownload: () =>
+                          unawaited(_download(context, ref, candidate.area)),
+                    ),
+                ],
               ),
             ],
-            AsyncValue() => const [],
-          },
+          ],
           sectionGap,
-          Text(
-            l10n.offlineMapsAttribution,
-            style: context.typography.bodySmall.copyWith(
-              color: context.colors.textSecondary,
-            ),
-          ),
+          Text(l10n.offlineMapsAttribution, style: secondary),
         ],
       ),
     );
   }
 
-  /// [pack]'i indirir; sonucu alttan bildirimle söyler. Satır indirme
+  /// [area]'yı indirir; sonucu alttan bildirimle söyler. Satır indirme
   /// başlayınca listeden kalktığı için bildirim ekranın kendisinden.
   static Future<void> _download(
     BuildContext context,
     WidgetRef ref,
-    MapPack pack,
-    MapPackCatalog catalog,
+    MapArea area,
   ) async {
     final l10n = AppLocalizations.of(context);
-    final name = mapPackName(
-      pack,
-      Localizations.localeOf(context).languageCode,
-    );
     final outcome = await ref
-        .read(mapPackDownloadsProvider.notifier)
-        .start(pack, catalog);
+        .read(mapAreaDownloadsProvider.notifier)
+        .start(area);
     if (!context.mounted) return;
     final message = switch (outcome) {
-      MapPackDownloadOutcome.done => l10n.offlineMapsDone(name),
-      MapPackDownloadOutcome.needsWifi => l10n.offlineMapsNeedsWifi,
-      MapPackDownloadOutcome.failed => l10n.offlineMapsFailed(name),
-      MapPackDownloadOutcome.cancelled => null,
+      MapAreaDownloadOutcome.done => l10n.offlineMapsDone(area.name),
+      MapAreaDownloadOutcome.needsWifi => l10n.offlineMapsNeedsWifi,
+      MapAreaDownloadOutcome.failed => l10n.offlineMapsFailed(area.name),
+      MapAreaDownloadOutcome.cancelled => null,
     };
     if (message != null) showMessageSnackBar(context, message);
   }
-
-  /// "3 arılık · Narenciye durağı".
-  static String _reason(AppLocalizations l10n, MapPackSuggestion suggestion) =>
-      [
-        if (suggestion.apiaryCount > 0)
-          l10n.apiariesCount(suggestion.apiaryCount),
-        for (final stop in suggestion.stopNames) l10n.offlineMapsStop(stop),
-      ].join(' · ');
 }
 
 /// "84 MB".
@@ -201,28 +123,18 @@ String _megabytes(BuildContext context, int bytes) =>
     AppLocalizations.of(context)
         .offlineMapsMegabytes(AppFormat.of(context).megabytes(bytes));
 
-/// İndirilmiş bölge: ad, "İndirildi · 84 MB" rozeti, içindeki arılıklar ve
-/// verinin tarihi; çöp kutusu onay ister.
+/// İndirilmiş arılık çevresi: ad, "İndirildi · 3,2 MB" rozeti, indirme
+/// günü; çöp kutusu onay ister.
 class _InstalledCard extends ConsumerWidget {
-  const new({required this.installed, required this.apiaryCount});
+  const new({required this.installed});
 
-  final InstalledMapPack installed;
-  final int apiaryCount;
+  final InstalledMapArea installed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
-    final name = mapPackName(
-      installed.pack,
-      Localizations.localeOf(context).languageCode,
-    );
-    final details = [
-      if (apiaryCount > 0) l10n.apiariesCount(apiaryCount),
-      l10n.offlineMapsUpdated(
-        AppFormat.of(context).monthYear(installed.generatedAt),
-      ),
-    ].join(' · ');
+    final name = installed.area.name;
 
     return AppCard(
       child: Padding(
@@ -238,12 +150,14 @@ class _InstalledCard extends ConsumerWidget {
                   StatusBadge(
                     status: AppStatus.good,
                     label: l10n.offlineMapsDownloaded(
-                      _megabytes(context, installed.pack.bytes),
+                      _megabytes(context, installed.bytes),
                     ),
                   ),
                   SizedBox(height: spacing.xs),
                   Text(
-                    details,
+                    l10n.offlineMapsDownloadedOn(
+                      AppFormat.of(context).date(installed.downloadedAt),
+                    ),
                     style: context.typography.bodySmall.copyWith(
                       color: context.colors.textSecondary,
                     ),
@@ -281,18 +195,17 @@ class _InstalledCard extends ConsumerWidget {
     );
     if (!confirmed) return;
     await ref
-        .read(installedMapPacksProvider.notifier)
-        .remove(installed.pack.id);
+        .read(installedMapAreasProvider.notifier)
+        .remove(installed.area.id);
   }
 }
 
-/// Süren indirme: ad ve yüzde, çubuk, "Wi‑Fi ile indiriliyor · 41 / 66 MB"
-/// ve durdur.
+/// Süren indirme: ad ve yüzde (karoya göre), çubuk, "Wi‑Fi ile
+/// indiriliyor · 1,2 / ≈ 3,9 MB" ve durdur.
 class _DownloadCard extends ConsumerWidget {
-  const new({required this.pack, required this.received});
+  const new({required this.progress});
 
-  final MapPack pack;
-  final int received;
+  final MapAreaProgress progress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -301,10 +214,12 @@ class _DownloadCard extends ConsumerWidget {
     final spacing = context.spacing;
     final format = AppFormat.of(context);
     final wifiOnly = ref.watch(mapWifiOnlyProvider).value ?? true;
-    final ratio = pack.bytes == 0 ? 0.0 : (received / pack.bytes).clamp(0, 1);
-    final sizes = (
-      received: format.megabytes(received),
-      total: _megabytes(context, pack.bytes),
+    final ratio = progress.total == 0
+        ? 0.0
+        : (progress.done / progress.total).clamp(0.0, 1.0);
+    final received = format.megabytes(progress.bytes);
+    final total = l10n.offlineMapsApproxSize(
+      _megabytes(context, estimateTileBytes(mapAreaTiles(progress.area))),
     );
 
     return DecoratedBox(
@@ -325,15 +240,12 @@ class _DownloadCard extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          mapPackName(
-                            pack,
-                            Localizations.localeOf(context).languageCode,
-                          ),
+                          progress.area.name,
                           style: context.typography.title,
                         ),
                       ),
                       Text(
-                        format.percent(ratio.toDouble()),
+                        format.percent(ratio),
                         style: context.typography.title,
                       ),
                     ],
@@ -342,7 +254,7 @@ class _DownloadCard extends ConsumerWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(context.radii.pill),
                     child: LinearProgressIndicator(
-                      value: ratio.toDouble(),
+                      value: ratio,
                       minHeight: spacing.md,
                       color: colors.primary,
                       backgroundColor: colors.divider,
@@ -351,14 +263,8 @@ class _DownloadCard extends ConsumerWidget {
                   SizedBox(height: spacing.sm),
                   Text(
                     wifiOnly
-                        ? l10n.offlineMapsDownloadingWifi(
-                            sizes.received,
-                            sizes.total,
-                          )
-                        : l10n.offlineMapsDownloading(
-                            sizes.received,
-                            sizes.total,
-                          ),
+                        ? l10n.offlineMapsDownloadingWifi(received, total)
+                        : l10n.offlineMapsDownloading(received, total),
                     style: context.typography.bodySmall.copyWith(
                       color: colors.textSecondary,
                     ),
@@ -373,8 +279,9 @@ class _DownloadCard extends ConsumerWidget {
               constraints: BoxConstraints.tight(
                 Size.square(context.touchTargets.field),
               ),
-              onPressed: () =>
-                  ref.read(mapPackDownloadsProvider.notifier).cancel(pack.id),
+              onPressed: () => ref
+                  .read(mapAreaDownloadsProvider.notifier)
+                  .cancel(progress.area.id),
             ),
             SizedBox(width: spacing.sm),
           ],
@@ -384,31 +291,33 @@ class _DownloadCard extends ConsumerWidget {
   }
 }
 
-/// İndirilebilir bölge: ad, neden önerildiği ve tahmini boyut; sağda
-/// indir butonu.
-class _PackRow extends StatelessWidget {
-  const new({required this.pack, required this.onDownload, this.reason});
+/// İndirilecek arılık: ad; bağlı göç durağı ya da taşındı uyarısı ve
+/// tahmini boyut; sağda indir butonu.
+class _AreaRow extends StatelessWidget {
+  const new({required this.candidate, required this.onDownload});
 
-  final MapPack pack;
+  final MapAreaCandidate candidate;
   final VoidCallback onDownload;
-  final String? reason;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = context.colors;
-    final name = mapPackName(
-      pack,
-      Localizations.localeOf(context).languageCode,
+    final area = candidate.area;
+    final size = l10n.offlineMapsApproxSize(
+      _megabytes(context, estimateTileBytes(mapAreaTiles(area))),
     );
-    final size = l10n.offlineMapsApproxSize(_megabytes(context, pack.bytes));
     final buttonSize = context.touchTargets.button;
 
     return ListRow(
-      title: name,
-      subtitle: [?reason, size].join(' · '),
+      title: area.name,
+      subtitle: [
+        if (candidate.moved) l10n.offlineMapsMoved,
+        for (final stop in candidate.stopNames) l10n.offlineMapsStop(stop),
+        size,
+      ].join(' · '),
       trailing: IconButton(
-        tooltip: l10n.offlineMapsDownload(name),
+        tooltip: l10n.offlineMapsDownload(area.name),
         icon: const Icon(Icons.download_rounded),
         iconSize: context.sizes.icon,
         style: IconButton.styleFrom(
