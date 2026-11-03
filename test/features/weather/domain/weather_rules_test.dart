@@ -384,10 +384,9 @@ void main() {
       final days = _days([_ok, _ok, _ok, _rain, _rain, _wind, _ok]);
       final plan = inspectionPlan(days, _defaults)!;
       expect(plan.from, DateTime(2026, 10, 27));
-      // Yağmurdan hemen sonraki rüzgarlı gün de aynı diziye girer.
-      expect(plan.to, DateTime(2026, 10, 29));
-      expect(plan.rain, isTrue);
-      expect(plan.wind, isTrue);
+      // Yağmurdan sonraki rüzgarlı Perşembe ayrı dizi.
+      expect(plan.to, DateTime(2026, 10, 28));
+      expect(plan.concern, HiveOpening.rain);
       expect(plan.day, DateTime(2026, 10, 26));
     });
 
@@ -396,16 +395,14 @@ void main() {
       final plan = inspectionPlan(days, _defaults)!;
       expect(plan.from, DateTime(2026, 10, 24));
       expect(plan.to, DateTime(2026, 10, 25));
-      expect(plan.rain, isTrue);
-      expect(plan.wind, isFalse);
+      expect(plan.concern, HiveOpening.rain);
       expect(plan.day, DateTime(2026, 10, 27));
     });
 
     test('önce ve sonra aynı uzaklıkta uygun gün varsa önceki', () {
       final days = _days([_ok, _wind, _ok]);
       final plan = inspectionPlan(days, _defaults)!;
-      expect(plan.wind, isTrue);
-      expect(plan.rain, isFalse);
+      expect(plan.concern, HiveOpening.wind);
       expect(plan.day, DateTime(2026, 10, 24));
     });
 

@@ -172,20 +172,20 @@ List<DailyWeather> forecastDays(Forecast forecast, DateTime now) {
 DateTime _dateOnly(DateTime value) =>
     DateTime(value.year, value.month, value.day);
 
-/// "Planla" önerisi: `from`–`to` arası yağışlı ya da rüzgarlı (`rain`,
-/// `wind`); muayeneler `day`'e alınsın.
+/// "Planla" önerisi: `from`–`to` arası yağışlı (`concern` rain) ya da
+/// rüzgarlı (wind); muayeneler `day`'e alınsın.
 typedef InspectionPlan = ({
   DateTime from,
   DateTime to,
-  bool rain,
-  bool wind,
+  HiveOpening concern,
   DateTime day,
 });
 
-/// [days]'teki ilk yağışlı ya da rüzgarlı günler dizisi ve ona en yakın
-/// uygun gün: önce gelen ve sonra gelen aynı uzaklıktaysa önce gelen.
-/// Dizi ilk günden başlıyorsa yağışlı günler atlanıp ilk uygun gün
-/// seçilir. Böyle bir dizi ya da uygun gün yoksa null.
+/// [days]'teki ilk yağışlı ya da rüzgarlı günler dizisi (aynı türden ardışık
+/// günler; tasarımdaki gibi "Salı–Çarşamba yağmur") ve ona en yakın uygun
+/// gün: önce gelen ve sonra gelen aynı uzaklıktaysa önce gelen. Dizi ilk
+/// günden başlıyorsa yağışlı günler atlanıp ilk uygun gün seçilir. Böyle bir
+/// dizi ya da uygun gün yoksa null.
 InspectionPlan? inspectionPlan(
   List<DailyWeather> days,
   HiveOpeningThresholds thresholds,
@@ -196,8 +196,9 @@ InspectionPlan? inspectionPlan(
 
   final first = openings.indexWhere(bad);
   if (first < 0) return null;
+  final concern = openings[first]!;
   var last = first;
-  while (last + 1 < openings.length && bad(openings[last + 1])) {
+  while (last + 1 < openings.length && openings[last + 1] == concern) {
     last++;
   }
 
@@ -210,12 +211,10 @@ InspectionPlan? inspectionPlan(
   }
   if (target == null) return null;
 
-  final run = openings.sublist(first, last + 1);
   return (
     from: days[first].day,
     to: days[last].day,
-    rain: run.contains(HiveOpening.rain),
-    wind: run.contains(HiveOpening.wind),
+    concern: concern,
     day: days[target].day,
   );
 }

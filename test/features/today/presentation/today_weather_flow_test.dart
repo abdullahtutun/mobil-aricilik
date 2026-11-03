@@ -10,7 +10,9 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
+import 'package:mobil_arici/features/weather/domain/weather_icons.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/weather_glyph.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
@@ -121,7 +123,13 @@ void main() {
     expect(weather.fetchCount, 1);
     expect(find.text('10°'), findsOneWidget);
     expect(_badge('Yağmur'), findsOneWidget);
-    expect(find.byIcon(Icons.water_drop_outlined), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (w) => w is WeatherGlyph && w.icon == WeatherIcon.rainy,
+      ),
+      findsOneWidget,
+    );
+    expect(find.byIcon(Icons.close_rounded), findsOneWidget);
     expect(find.textContaining('itibarıyla'), findsOneWidget);
     expect(find.byType(WeatherAttribution), findsOneWidget);
   });

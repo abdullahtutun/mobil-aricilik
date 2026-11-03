@@ -2272,21 +2272,13 @@
       }
     }
   },
-  "weatherPlanRainWind": "Rain and wind on {days}.",
-  "@weatherPlanRainWind": {
-    "placeholders": {
-      "days": {
-        "type": "String",
-        "example": "Tuesday–Thursday"
-      }
-    }
-  },
-  "weatherPlanMove": "Move inspections to {day}.",
+  "weatherPlanMove": "{weekday, select, monday{Move inspections to Monday.} tuesday{Move inspections to Tuesday.} wednesday{Move inspections to Wednesday.} thursday{Move inspections to Thursday.} friday{Move inspections to Friday.} saturday{Move inspections to Saturday.} other{Move inspections to Sunday.}}",
   "@weatherPlanMove": {
+    "description": "Suggested day for inspections; weekday is monday to sunday.",
     "placeholders": {
-      "day": {
+      "weekday": {
         "type": "String",
-        "example": "Monday"
+        "example": "monday"
       }
     }
   },

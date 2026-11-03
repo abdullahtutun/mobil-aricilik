@@ -50,12 +50,7 @@ class ApiaryWeatherCard extends ConsumerWidget {
                 SizedBox(height: spacing.sm),
                 Row(
                   children: [
-                    Icon(
-                      weatherIconData(icon),
-                      size: context.sizes.icon,
-                      color: colors.primary,
-                      semanticLabel: weatherIconLabel(l10n, icon),
-                    ),
+                    weatherGlyph(context, l10n, icon, size: context.sizes.icon),
                     SizedBox(width: spacing.sm),
                     if (hour.temperatureC case final celsius?)
                       Flexible(
@@ -79,6 +74,7 @@ class ApiaryWeatherCard extends ConsumerWidget {
                   SizedBox(height: spacing.md),
                   StatusBadge(
                     status: hiveOpeningStatus(opening),
+                    icon: hiveOpeningIcon(opening),
                     label: hiveOpeningLabel(l10n, opening),
                   ),
                 ],

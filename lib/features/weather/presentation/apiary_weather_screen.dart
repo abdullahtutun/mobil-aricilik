@@ -51,19 +51,26 @@ class _ApiaryWeatherScreenState extends ConsumerState<ApiaryWeatherScreen> {
     final detail = ref.watch(apiaryWeatherDetailProvider(widget.apiaryId));
 
     return switch (detail) {
-      AsyncData(value: final detail?) => Scaffold(
-        appBar: AppBar(title: Text(detail.apiary.name)),
-        body: switch (detail.forecast) {
-          final forecast? => RefreshIndicator(
-            onRefresh: _refresh,
-            child: _ForecastView(detail: detail, forecast: forecast),
+      AsyncData(value: final detail?) => switch (detail.forecast) {
+        // Tasarımdaki gibi üst çubuk yok: geri, ad ve alt yazı, "Güncelleme"
+        // hapı sayfanın başında.
+        final forecast? => Scaffold(
+          body: SafeArea(
+            bottom: false,
+            child: RefreshIndicator(
+              onRefresh: _refresh,
+              child: _ForecastView(detail: detail, forecast: forecast),
+            ),
           ),
-          null => _NoForecast(
+        ),
+        null => Scaffold(
+          appBar: AppBar(title: Text(detail.apiary.name)),
+          body: _NoForecast(
             hasLocation: detail.apiary.latitude != null,
             onRefresh: _refresh,
           ),
-        },
-      ),
+        ),
+      },
       AsyncData() => Scaffold(
         appBar: AppBar(),
         body: Center(child: Text(l10n.weatherApiaryNotFound)),
@@ -138,64 +145,102 @@ class _ForecastView extends ConsumerWidget {
     );
 
     return ListView(
-      padding: EdgeInsets.all(spacing.lg),
+      padding: EdgeInsets.fromLTRB(
+        spacing.sm,
+        spacing.sm,
+        spacing.lg,
+        spacing.lg,
+      ),
       children: [
-        Wrap(
-          spacing: spacing.md,
-          runSpacing: spacing.sm,
-          alignment: WrapAlignment.spaceBetween,
-          crossAxisAlignment: WrapCrossAlignment.center,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              place.isEmpty
-                  ? l10n.weatherScreenSubtitleNoPlace('${days.length}')
-                  : l10n.weatherScreenSubtitle(place, '${days.length}'),
-              style: context.typography.body.copyWith(
-                color: colors.textSecondary,
+            const BackButton(),
+            SizedBox(width: spacing.xs),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(top: spacing.xs),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(detail.apiary.name, style: context.typography.title),
+                    // Tek satır; sığmazsa küçülür.
+                    _OneLine(
+                      Text(
+                        place.isEmpty
+                            ? l10n.weatherScreenSubtitleNoPlace(
+                                '${days.length}',
+                              )
+                            : l10n.weatherScreenSubtitle(
+                                place,
+                                '${days.length}',
+                              ),
+                        style: secondary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            if (detail.generatedAt case final generatedAt?)
-              _UpdatedPill(generatedAt.toLocal(), now: now),
+            if (detail.generatedAt case final generatedAt?) ...[
+              SizedBox(width: spacing.sm),
+              // Büyük yazıda adın yerini almasın; en çok yarısı, küçülür.
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.only(top: spacing.sm),
+                  child: _OneLine(
+                    _UpdatedPill(generatedAt.toLocal(), now: now),
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
-        SizedBox(height: spacing.lg),
-        _CurrentCard(
-          forecast: forecast,
-          now: now,
-          today: todayWeather,
-          thresholds: thresholds,
-          units: units,
-        ),
-        SizedBox(height: spacing.lg),
-        _HourlyStrip(
-          hours: hourlyStrip(forecast, now),
-          forecast: forecast,
-          thresholds: thresholds,
-          units: units,
-        ),
-        if (days.isNotEmpty) ...[
-          SizedBox(height: spacing.lg),
-          _DailyList(
-            days: days,
-            today: todayWeather,
-            thresholds: thresholds,
-            units: units,
+        // Sayfanın geri kalanı başlığın sağ ve sol boşluğuyla hizalı.
+        Padding(
+          padding: EdgeInsetsDirectional.only(start: spacing.sm),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: spacing.lg),
+              _CurrentCard(
+                forecast: forecast,
+                now: now,
+                today: todayWeather,
+                thresholds: thresholds,
+                units: units,
+              ),
+              SizedBox(height: spacing.lg),
+              _HourlyStrip(
+                hours: hourlyStrip(forecast, now),
+                forecast: forecast,
+                thresholds: thresholds,
+                units: units,
+              ),
+              if (days.isNotEmpty) ...[
+                SizedBox(height: spacing.lg),
+                _DailyList(
+                  days: days,
+                  today: todayWeather,
+                  thresholds: thresholds,
+                  units: units,
+                ),
+              ],
+              if (plan != null) ...[
+                SizedBox(height: spacing.lg),
+                _PlanBand(plan: plan, apiary: detail.apiary),
+              ],
+              SizedBox(height: spacing.md),
+              WeatherAttribution(
+                leading: l10n.weatherThresholdsHint(
+                  units.temperature(thresholds.minTemperatureC),
+                  units.speed(thresholds.maxWindKmh),
+                  units.percent(thresholds.maxPrecipitationProbability),
+                ),
+              ),
+            ],
           ),
-        ],
-        if (plan != null) ...[
-          SizedBox(height: spacing.lg),
-          _PlanBand(plan: plan, apiary: detail.apiary),
-        ],
-        SizedBox(height: spacing.lg),
-        Text(
-          l10n.weatherThresholdsHint(
-            units.temperature(thresholds.minTemperatureC),
-            units.speed(thresholds.maxWindKmh),
-            units.percent(thresholds.maxPrecipitationProbability),
-          ),
-          style: secondary,
         ),
-        const WeatherAttribution(),
       ],
     );
   }
@@ -236,7 +281,9 @@ class _UpdatedPill extends StatelessWidget {
           AppLocalizations.of(context).weatherUpdatedAt(
             sameDay ? format.time(generatedAt) : format.dateTime(generatedAt),
           ),
-          style: context.typography.label,
+          style: context.typography.bodySmall.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
@@ -271,15 +318,27 @@ class _CurrentCard extends StatelessWidget {
     final temperature = current.temperatureC ?? hour?.temperatureC;
     final wind = current.windKmh ?? hour?.windKmh;
     final precipitation = hour?.precipitationProbability;
-    final icon = weatherIconFor(
-      current.conditionCode ?? hour?.conditionCode,
-      windKmh: wind,
-      windLimitKmh: thresholds.maxWindKmh,
-    );
+    final icon = weatherIconFor(current.conditionCode ?? hour?.conditionCode);
     final condition = weatherIconLabel(l10n, icon);
     final opening = today == null ? null : dayOpening(today!, thresholds);
 
-    String measure(String label, String value) => '$label $value';
+    // "Rüzgar 8 km/s": ad soluk, değer kalın; sağa yaslı.
+    Widget measure(String label, String value) => Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: '$label ',
+            style: TextStyle(color: colors.textSecondary),
+          ),
+          TextSpan(
+            text: value,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
+      style: typography.body,
+      textAlign: TextAlign.end,
+    );
 
     return AppCard(
       child: Padding(
@@ -298,10 +357,11 @@ class _CurrentCard extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          weatherIconData(icon),
+                        weatherGlyph(
+                          context,
+                          l10n,
+                          icon,
                           size: context.sizes.illustrationIcon,
-                          color: colors.primary,
                         ),
                         SizedBox(width: spacing.md),
                         // Büyük yazıda dar ekrana sığmazsa küçülür.
@@ -332,28 +392,19 @@ class _CurrentCard extends StatelessWidget {
                   ],
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     if (wind != null)
-                      Text(
-                        measure(l10n.weatherWindLabel, units.speed(wind)),
-                        style: typography.body,
-                      ),
+                      measure(l10n.weatherWindLabel, units.speed(wind)),
                     if (current.humidity case final humidity?)
-                      Text(
-                        measure(
-                          l10n.weatherHumidityLabel,
-                          units.percent(humidity),
-                        ),
-                        style: typography.body,
+                      measure(
+                        l10n.weatherHumidityLabel,
+                        units.percent(humidity),
                       ),
                     if (precipitation != null)
-                      Text(
-                        measure(
-                          l10n.weatherPrecipitationLabel,
-                          units.percent(precipitation),
-                        ),
-                        style: typography.body,
+                      measure(
+                        l10n.weatherPrecipitationLabel,
+                        units.percent(precipitation),
                       ),
                   ],
                 ),
@@ -467,16 +518,11 @@ class _HourlyStrip extends StatelessWidget {
                             style: typography.label,
                           ),
                           SizedBox(height: spacing.xs),
-                          Icon(
-                            weatherIconData(
-                              weatherIconFor(
-                                hour.conditionCode,
-                                windKmh: hour.windKmh,
-                                windLimitKmh: thresholds.maxWindKmh,
-                              ),
-                            ),
+                          weatherGlyph(
+                            context,
+                            units.l10n,
+                            weatherIconFor(hour.conditionCode),
                             size: context.sizes.icon,
-                            color: colors.primary,
                           ),
                           SizedBox(height: spacing.xs),
                           Text(switch (hour.temperatureC) {
@@ -604,18 +650,20 @@ class _TableRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gap = SizedBox(width: context.spacing.sm);
+    final gap = SizedBox(width: context.spacing.xs);
     return Row(
       children: [
-        Expanded(flex: 5, child: day),
+        // Tasarımdaki sütun enleri (390dp'de ~80 / 70 / 40 / 40 / 90); kovan
+        // sütununa en geniş rozet ("! Rüzgarlı") küçülmeden sığar.
+        Expanded(flex: 8, child: day),
         gap,
-        Expanded(flex: 4, child: _OneLine(temperature)),
+        Expanded(flex: 7, child: _OneLine(temperature)),
         gap,
-        Expanded(flex: 3, child: _OneLine(precipitation)),
+        Expanded(flex: 4, child: _OneLine(precipitation)),
         gap,
-        Expanded(flex: 2, child: _OneLine(wind)),
+        Expanded(flex: 4, child: _OneLine(wind)),
         gap,
-        Expanded(flex: 4, child: _OneLine(hive)),
+        Expanded(flex: 9, child: _OneLine(hive)),
       ],
     );
   }
@@ -658,11 +706,8 @@ class _DayRow extends StatelessWidget {
     final colors = context.colors;
     final typography = context.typography;
     final opening = dayOpening(day, thresholds);
-    final icon = weatherIconFor(
-      day.conditionCode,
-      windKmh: day.windMaxKmh,
-      windLimitKmh: thresholds.maxWindKmh,
-    );
+    // Tasarımdaki gibi simge gökyüzünden; rüzgar rozette ve km/s'de.
+    final icon = weatherIconFor(day.conditionCode);
     final rainy = opening == HiveOpening.rain;
     final windy = opening == HiveOpening.wind;
     final secondary = typography.bodySmall.copyWith(
@@ -725,6 +770,8 @@ class _DayRow extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: StatusBadge(
               status: hiveOpeningStatus(opening),
+              icon: hiveOpeningIcon(opening),
+              dense: true,
               label: hiveOpeningLabel(
                 l10n,
                 opening,
@@ -732,11 +779,11 @@ class _DayRow extends StatelessWidget {
               ),
             ),
           );
-    final iconWidget = Icon(
-      weatherIconData(icon),
+    final iconWidget = weatherGlyph(
+      context,
+      l10n,
+      icon,
       size: context.sizes.icon,
-      color: colors.primary,
-      semanticLabel: weatherIconLabel(l10n, icon),
     );
 
     final Widget content;
@@ -791,6 +838,8 @@ class _DayRow extends StatelessWidget {
               if (opening != null)
                 StatusBadge(
                   status: hiveOpeningStatus(opening),
+                  icon: hiveOpeningIcon(opening),
+                  dense: true,
                   label: hiveOpeningLabel(
                     l10n,
                     opening,
@@ -824,7 +873,19 @@ class _DayRow extends StatelessWidget {
   }
 }
 
-/// "Salı–Çarşamba yağmur. Muayeneleri Pazartesi gününe al." ve "Planla":
+/// `weatherPlanMove`'un gün anahtarları; `DateTime.weekday` 1 (pazartesi)
+/// ile başlar.
+const _weekdays = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+];
+
+/// "Salı–Çarşamba yağmur. Muayeneleri Pazartesi'ye al." ve "Planla":
 /// görev formu önerilen günle açılır; görev kullanıcı kaydedince yazılır.
 class _PlanBand extends StatelessWidget {
   const new({required this.plan, required this.apiary});
@@ -844,11 +905,10 @@ class _PlanBand extends StatelessWidget {
             format.weekday(plan.from),
             format.weekday(plan.to),
           );
-    final problem = switch ((plan.rain, plan.wind)) {
-      (true, true) => l10n.weatherPlanRainWind(days),
-      (true, false) => l10n.weatherPlanRain(days),
-      _ => l10n.weatherPlanWind(days),
-    };
+    final problem = plan.concern == HiveOpening.wind
+        ? l10n.weatherPlanWind(days)
+        : l10n.weatherPlanRain(days);
+    final move = l10n.weatherPlanMove(_weekdays[plan.day.weekday - 1]);
     final foreground = AppStatus.info.colorIn(colors);
 
     return DecoratedBox(
@@ -864,7 +924,7 @@ class _PlanBand extends StatelessWidget {
         child: Row(
           children: [
             Icon(
-              Icons.event_outlined,
+              Icons.calendar_today_outlined,
               size: context.sizes.icon,
               color: foreground,
             ),
@@ -877,10 +937,7 @@ class _PlanBand extends StatelessWidget {
                       text: problem,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
-                    TextSpan(
-                      text:
-                          ' ${l10n.weatherPlanMove(format.weekday(plan.day))}',
-                    ),
+                    TextSpan(text: ' $move'),
                   ],
                 ),
                 style: context.typography.body,

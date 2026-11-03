@@ -7,8 +7,13 @@ import 'package:mobil_arici/core/services/url_launcher_service_provider.dart';
 /// WeatherAPI.com'un istediği atıf: "Powered by WeatherAPI.com",
 /// sağlayıcının adı sitesine bağlantı. Hava görünen her yerde; metin her
 /// dilde aynı. Dokunma hedefi en az `touchTargets.field` (56dp).
+///
+/// [leading] verilirse atıf aynı paragrafta onun ardından gelir (hava
+/// ekranında eşik açıklaması; docs/design).
 class WeatherAttribution extends ConsumerWidget {
-  const new({super.key});
+  const new({super.key, this.leading});
+
+  final String? leading;
 
   static final Uri url = Uri.parse('https://www.weatherapi.com/');
 
@@ -32,8 +37,9 @@ class WeatherAttribution extends ConsumerWidget {
             widthFactor: 1,
             child: Text.rich(
               TextSpan(
-                text: l10n.weatherAttributionPrefix,
                 children: [
+                  if (leading case final leading?) TextSpan(text: '$leading '),
+                  TextSpan(text: l10n.weatherAttributionPrefix),
                   TextSpan(
                     text: l10n.weatherAttributionLink,
                     style: style.copyWith(

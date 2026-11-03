@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
@@ -16,7 +17,10 @@ import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
+import 'package:mobil_arici/features/weather/domain/weather_icons.dart';
+import 'package:mobil_arici/features/weather/presentation/apiary_weather_screen.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/weather_glyph.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
@@ -51,6 +55,39 @@ Forecast _forecast(DateTime now, List<_Day> days) {
     ),
   );
 }
+
+/// Hava ekranının listesini [finder] görünene kadar kaydırır (altta kalan
+/// Bugün listesini değil).
+Future<void> _scrollTo(WidgetTester tester, Finder finder) async {
+  await tester.scrollUntilVisible(
+    finder,
+    200,
+    scrollable: find
+        .descendant(
+          of: find.byType(ApiaryWeatherScreen),
+          matching: find.byType(Scrollable),
+        )
+        .first,
+  );
+  // Önbellek alanında çizilmiş ama ekranın dışındaysa.
+  await tester.ensureVisible(finder);
+  await tester.pumpAndSettle();
+}
+
+/// [icon] simgesi.
+Finder _glyph(WeatherIcon icon) =>
+    find.byWidgetPredicate((w) => w is WeatherGlyph && w.icon == icon);
+
+/// Haftanın günü (`DateTime.weekday`) → "Pazartesi'ye".
+const Map<int, String> _trDative = {
+  DateTime.monday: "Pazartesi'ye",
+  DateTime.tuesday: "Salı'ya",
+  DateTime.wednesday: "Çarşamba'ya",
+  DateTime.thursday: "Perşembe'ye",
+  DateTime.friday: "Cuma'ya",
+  DateTime.saturday: "Cumartesi'ye",
+  DateTime.sunday: "Pazar'a",
+};
 
 void main() {
   late AppDatabase db;
@@ -131,25 +168,34 @@ void main() {
       expect(find.text('Bugün kovan açmaya uygun'), findsOneWidget);
       expect(find.text('Şimdi'), findsOneWidget);
 
-      await tester.scrollUntilVisible(find.text('Planla'), 200);
+      await _scrollTo(tester, find.text('Planla'));
       expect(find.text('Bugün'), findsOneWidget);
       expect(badge('Açılır'), findsNWidgets(4));
       expect(badge('Yağmur'), findsNWidgets(2));
       expect(badge('Rüzgarlı'), findsOneWidget);
+      // Rozet: ✓ Açılır, × Yağmur, ! Rüzgarlı (renk tek başına değil).
       expect(find.byIcon(Icons.check_rounded), findsWidgets);
-      expect(find.byIcon(Icons.info_outline_rounded), findsWidgets);
-      expect(find.byIcon(Icons.water_drop_outlined), findsNWidgets(2));
-      expect(find.byIcon(Icons.air_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.close_rounded), findsNWidgets(2));
+      expect(find.byIcon(Icons.priority_high_rounded), findsOneWidget);
+      // Simge gökyüzünden: yağmurlu iki gün; rüzgarlı gün bulut (tasarım).
+      expect(_glyph(WeatherIcon.rainy), findsNWidgets(2));
+      expect(_glyph(WeatherIcon.windy), findsNothing);
+      // Yağmurlu Salı–Çarşamba gibi iki gün; rüzgarlı gün ayrı dizi. En
+      // yakın uygun gün yağmurdan önceki gün.
+      final rainFrom = DateTime(now.year, now.month, now.day + 3);
+      final rainTo = DateTime(now.year, now.month, now.day + 4);
+      final target = DateTime(now.year, now.month, now.day + 2);
+      String weekday(DateTime day) => DateFormat.EEEE('tr').format(day);
       expect(
-        find.textContaining('yağmur ve rüzgar.', findRichText: true),
-        findsOneWidget,
-      );
-      expect(
-        find.textContaining('Muayeneleri ', findRichText: true),
+        find.text(
+          '${weekday(rainFrom)}–${weekday(rainTo)} yağmur. '
+          'Muayeneleri ${_trDative[target.weekday]} al.',
+          findRichText: true,
+        ),
         findsOneWidget,
       );
 
-      await tester.scrollUntilVisible(find.byType(WeatherAttribution), 200);
+      await _scrollTo(tester, find.byType(WeatherAttribution));
       expect(
         find.textContaining('15° üstü, rüzgar 25 km/s altı, yağış %40 altı'),
         findsOneWidget,
@@ -182,7 +228,7 @@ void main() {
       find.text('Bugün yağmur var; kovan açmaya uygun değil'),
       findsOneWidget,
     );
-    await tester.scrollUntilVisible(find.byType(WeatherAttribution), 200);
+    await _scrollTo(tester, find.byType(WeatherAttribution));
     expect(badge('Yağmur'), findsNWidgets(2));
     expect(badge('Rüzgarlı'), findsOneWidget);
     expect(badge('Açılır'), findsNothing);
@@ -269,7 +315,7 @@ void main() {
     );
     await open(tester, weather: weather);
 
-    await tester.scrollUntilVisible(find.text('Planla'), 200);
+    await _scrollTo(tester, find.text('Planla'));
     expect(await db.select(db.tasks).get(), isEmpty);
     await tester.tap(find.text('Planla'));
     await tester.pumpAndSettle();
@@ -306,7 +352,7 @@ void main() {
     await open(tester, weather: weather);
 
     expect(find.text('Bugün kovan açmaya uygun'), findsOneWidget);
-    await tester.scrollUntilVisible(find.byType(WeatherAttribution), 200);
+    await _scrollTo(tester, find.byType(WeatherAttribution));
     expect(badge('Rüzgarlı'), findsNothing);
     expect(find.textContaining('rüzgar 30 km/s altı'), findsOneWidget);
   });
@@ -387,7 +433,7 @@ void main() {
     expect(find.text('Wind 5 mph'), findsOneWidget);
     expect(find.text('Sunny · feels like 72°'), findsOneWidget);
     expect(find.text('Good day to open hives'), findsOneWidget);
-    await tester.scrollUntilVisible(find.byType(WeatherAttribution), 200);
+    await _scrollTo(tester, find.byType(WeatherAttribution));
     expect(badge('Rain'), findsOneWidget);
     expect(
       find.textContaining('above 59°', findRichText: true),
@@ -413,7 +459,7 @@ void main() {
         ),
       );
       await open(tester, weather: weather);
-      await tester.scrollUntilVisible(find.text('SICAKLIK'), 200);
+      await _scrollTo(tester, find.text('SICAKLIK'));
 
       // Aynı biçimdeki tek satırlık hücreyle aynı yükseklikte olmalı.
       double height(String text) => tester.getSize(find.text(text)).height;
@@ -460,13 +506,13 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
 
-      await tester.scrollUntilVisible(find.text('Planla'), 200);
+      await _scrollTo(tester, find.text('Planla'));
       expect(tester.takeException(), isNull);
       expect(
         tester.getSize(find.widgetWithText(TextButton, 'Planla')).height,
         greaterThanOrEqualTo(56),
       );
-      await tester.scrollUntilVisible(find.byType(WeatherAttribution), 200);
+      await _scrollTo(tester, find.byType(WeatherAttribution));
       expect(tester.takeException(), isNull);
       expect(
         tester.getSize(find.byType(WeatherAttribution)).height,

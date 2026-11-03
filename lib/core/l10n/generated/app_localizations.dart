@@ -4604,17 +4604,11 @@ abstract class AppLocalizations {
   /// **'Windy on {days}.'**
   String weatherPlanWind(String days);
 
-  /// No description provided for @weatherPlanRainWind.
+  /// Suggested day for inspections; weekday is monday to sunday.
   ///
   /// In en, this message translates to:
-  /// **'Rain and wind on {days}.'**
-  String weatherPlanRainWind(String days);
-
-  /// No description provided for @weatherPlanMove.
-  ///
-  /// In en, this message translates to:
-  /// **'Move inspections to {day}.'**
-  String weatherPlanMove(String day);
+  /// **'{weekday, select, monday{Move inspections to Monday.} tuesday{Move inspections to Tuesday.} wednesday{Move inspections to Wednesday.} thursday{Move inspections to Thursday.} friday{Move inspections to Friday.} saturday{Move inspections to Saturday.} other{Move inspections to Sunday.}}'**
+  String weatherPlanMove(String weekday);
 
   /// Opens the new task form on the suggested day.
   ///

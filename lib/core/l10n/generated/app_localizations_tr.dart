@@ -2798,13 +2798,17 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String weatherPlanRainWind(String days) {
-    return '$days yağmur ve rüzgar.';
-  }
-
-  @override
-  String weatherPlanMove(String day) {
-    return 'Muayeneleri $day gününe al.';
+  String weatherPlanMove(String weekday) {
+    String _temp0 = intl.Intl.selectLogic(weekday, {
+      'monday': 'Muayeneleri Pazartesi\'ye al.',
+      'tuesday': 'Muayeneleri Salı\'ya al.',
+      'wednesday': 'Muayeneleri Çarşamba\'ya al.',
+      'thursday': 'Muayeneleri Perşembe\'ye al.',
+      'friday': 'Muayeneleri Cuma\'ya al.',
+      'saturday': 'Muayeneleri Cumartesi\'ye al.',
+      'other': 'Muayeneleri Pazar\'a al.',
+    });
+    return '$_temp0';
   }
 
   @override

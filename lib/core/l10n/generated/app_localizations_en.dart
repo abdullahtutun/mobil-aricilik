@@ -2846,13 +2846,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String weatherPlanRainWind(String days) {
-    return 'Rain and wind on $days.';
-  }
-
-  @override
-  String weatherPlanMove(String day) {
-    return 'Move inspections to $day.';
+  String weatherPlanMove(String weekday) {
+    String _temp0 = intl.Intl.selectLogic(weekday, {
+      'monday': 'Move inspections to Monday.',
+      'tuesday': 'Move inspections to Tuesday.',
+      'wednesday': 'Move inspections to Wednesday.',
+      'thursday': 'Move inspections to Thursday.',
+      'friday': 'Move inspections to Friday.',
+      'saturday': 'Move inspections to Saturday.',
+      'other': 'Move inspections to Sunday.',
+    });
+    return '$_temp0';
   }
 
   @override

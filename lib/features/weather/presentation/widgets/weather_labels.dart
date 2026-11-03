@@ -6,16 +6,24 @@ import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/units.dart';
 import 'package:mobil_arici/features/weather/domain/weather_icons.dart';
 import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/weather_glyph.dart';
 
-/// Tasarımdaki simgenin çizgi ikonu.
-IconData weatherIconData(WeatherIcon icon) => switch (icon) {
-  WeatherIcon.sunny => Icons.wb_sunny_outlined,
-  WeatherIcon.partlyCloudy => Icons.wb_cloudy_outlined,
-  WeatherIcon.cloudy => Icons.cloud_outlined,
-  WeatherIcon.rainy => Icons.water_drop_outlined,
-  WeatherIcon.windy => Icons.air_rounded,
-  WeatherIcon.other => Icons.ac_unit_rounded,
-};
+/// Simgenin rengi: tasarımdaki gibi yağmur mavi, diğerleri bal.
+Color weatherIconColor(WeatherIcon icon, AppColors colors) =>
+    icon == WeatherIcon.rainy ? colors.statusInfo : colors.primary;
+
+/// Simge, kelimesiyle (ekran okuyucu) ve rengiyle.
+Widget weatherGlyph(
+  BuildContext context,
+  AppLocalizations l10n,
+  WeatherIcon icon, {
+  required double size,
+}) => WeatherGlyph(
+  icon,
+  size: size,
+  color: weatherIconColor(icon, context.colors),
+  semanticLabel: weatherIconLabel(l10n, icon),
+);
 
 /// Simgenin kelimesi ("Güneşli"); ekran okuyucu da bunu okur.
 String weatherIconLabel(AppLocalizations l10n, WeatherIcon icon) =>
@@ -35,6 +43,11 @@ AppStatus hiveOpeningStatus(HiveOpening opening) => switch (opening) {
   HiveOpening.rain => AppStatus.info,
   HiveOpening.wind || HiveOpening.cold => AppStatus.warning,
 };
+
+/// Rozetin ikonu: tasarımdaki gibi yağmurda "×", diğerlerinde durumun
+/// kendi ikonu (✓, !).
+IconData? hiveOpeningIcon(HiveOpening opening) =>
+    opening == HiveOpening.rain ? Icons.close_rounded : null;
 
 /// Rozet kelimesi: uygunsa [suitable] ("Kovan açılır" ya da kısa "Açılır"),
 /// değilse etkenin adı.

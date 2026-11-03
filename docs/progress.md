@@ -608,6 +608,13 @@
 
 - Düzeltme: Günlük tablonun SICAKLIK, YAĞIŞ, KM/S, KOVAN başlıkları ve yüzdeler (%100 gibi) dar sütunda alt satıra kayıyordu. Bu sütunlar artık tek satır; sığmazsa yazı küçülüyor (`FittedBox`), yağış sütunu biraz genişledi. 380/390/430dp testi düzeltmeden önce iki satır (38 px) gördü, sonra tek satır. Tam takımda 2101 test geçiyor.
 
+- Tasarıma birebir uyum (kullanıcı isteği; ekran tasarımdaki verilerle 390dp'de çizilip PNG olarak karşılaştırıldı):
+  - Başlık: üst çubuk yok; geri, ad ve "Ula, Muğla · 7 günlük hava" alt alta, "Güncelleme" hapı aynı satırda sağda. Şimdiki durumda "Rüzgar **8 km/s**" satırları sağa yaslı, değerler kalın.
+  - Simgeler: Material'da güneşli bulut ve yağmur bulutu olmadığı için `WeatherGlyph` (CustomPainter, 24'lük ızgara) çiziyor; yağmur mavi, diğerleri bal rengi. Hava ekranında simge yalnız gökyüzü kodundan: tasarımdaki gibi rüzgarlı gün bulut, rüzgar rozette ve km/s'de (Bugün kartları rüzgar simgesini koruyor).
+  - Rozetler: yağmurda "×" (`StatusBadge.icon`), tablo hücresinde küçük boy (`StatusBadge.dense`); sütun enleri tasarımdaki konumlarda, üç rozet aynı boyda.
+  - "Planla": dizi aynı türden ardışık günler ("Salı–Çarşamba yağmur."; ardından gelen rüzgarlı gün ayrı), metin gün ekiyle ("Muayeneleri Pazartesi'ye al.", ARB `select`). Atıf eşik açıklamasıyla aynı paragrafın sonunda.
+  - Testler: hava ekranı testleri kendi listesini kaydırıyor (alttaki Bugün listesini değil). Tam takımda 2101 test geçiyor, `flutter analyze` temiz.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
