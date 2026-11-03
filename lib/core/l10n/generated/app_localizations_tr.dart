@@ -1424,6 +1424,17 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String apiaryDetailSubtitlePlace(String hives, String visit, String place) {
+    return '$hives · $visit · $place';
+  }
+
+  @override
+  String get apiaryBulkFeed => 'Toplu besleme';
+
+  @override
+  String get apiaryBulkTreat => 'Toplu ilaçlama';
+
+  @override
   String get hiveCardKind => 'Kovan';
 
   @override

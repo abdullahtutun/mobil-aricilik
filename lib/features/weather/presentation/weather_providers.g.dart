@@ -141,6 +141,102 @@ final class WeatherBundleProvider
 
 String _$weatherBundleHash() => r'1dded6e8078d6d74d378649b0051f7c1c041db46';
 
+/// Arılığın il/ilçesi ("Ula, Muğla"): saklanan hava paketindeki yer adı ve
+/// bölge. Konumsuz arılıkta, paket henüz alınmadıysa ya da sağlayıcı yer adı
+/// vermediyse null.
+
+@ProviderFor(apiaryPlace)
+final apiaryPlaceProvider = ApiaryPlaceFamily._();
+
+/// Arılığın il/ilçesi ("Ula, Muğla"): saklanan hava paketindeki yer adı ve
+/// bölge. Konumsuz arılıkta, paket henüz alınmadıysa ya da sağlayıcı yer adı
+/// vermediyse null.
+
+final class ApiaryPlaceProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  /// Arılığın il/ilçesi ("Ula, Muğla"): saklanan hava paketindeki yer adı ve
+  /// bölge. Konumsuz arılıkta, paket henüz alınmadıysa ya da sağlayıcı yer adı
+  /// vermediyse null.
+  ApiaryPlaceProvider._({
+    required ApiaryPlaceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'apiaryPlaceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$apiaryPlaceHash();
+
+  @override
+  String toString() {
+    return r'apiaryPlaceProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    final argument = this.argument as String;
+    return apiaryPlace(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ApiaryPlaceProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$apiaryPlaceHash() => r'0ac5c5416df0e33a4155483ceee25cf91575c3ee';
+
+/// Arılığın il/ilçesi ("Ula, Muğla"): saklanan hava paketindeki yer adı ve
+/// bölge. Konumsuz arılıkta, paket henüz alınmadıysa ya da sağlayıcı yer adı
+/// vermediyse null.
+
+final class ApiaryPlaceFamily extends $Family
+    with $FunctionalFamilyOverride<String?, String> {
+  ApiaryPlaceFamily._()
+    : super(
+        retry: null,
+        name: r'apiaryPlaceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Arılığın il/ilçesi ("Ula, Muğla"): saklanan hava paketindeki yer adı ve
+  /// bölge. Konumsuz arılıkta, paket henüz alınmadıysa ya da sağlayıcı yer adı
+  /// vermediyse null.
+
+  ApiaryPlaceProvider call(String apiaryId) =>
+      ApiaryPlaceProvider._(argument: apiaryId, from: this);
+
+  @override
+  String toString() => r'apiaryPlaceProvider';
+}
+
 /// Saklanan paketten, arılık sırasıyla, şu anki saatin havası. Pakette
 /// olmayan, silinmiş ya da tahmin aralığı geçmiş arılık yer almaz.
 

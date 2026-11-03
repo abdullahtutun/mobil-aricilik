@@ -27,12 +27,15 @@ import 'package:mobil_arici/features/inventory/presentation/widgets/stock_use_fi
 /// kullanılan miktar düşülür. Kaydedince karta dönülür ve 6 sn geri
 /// alınabilir; Geri al stok çıkışını da siler.
 class FeedingFormScreen extends ConsumerWidget {
-  const new({required this.hiveId, super.key});
+  const new({required this.hiveId, this.wholeApiary = false, super.key});
 
   final String hiveId;
 
+  /// Form "arılığın tümü" seçili açılır.
+  final bool wholeApiary;
+
   FeedingFormControllerProvider get _provider =>
-      feedingFormControllerProvider(hiveId);
+      feedingFormControllerProvider(hiveId, wholeApiary: wholeApiary);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -2456,6 +2456,24 @@ abstract class AppLocalizations {
   /// **'{hives} · {visit}'**
   String apiaryDetailSubtitle(String hives, String visit);
 
+  /// No description provided for @apiaryDetailSubtitlePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'{hives} · {visit} · {place}'**
+  String apiaryDetailSubtitlePlace(String hives, String visit, String place);
+
+  /// Button on the apiary detail: feed every active hive in the apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk feeding'**
+  String get apiaryBulkFeed;
+
+  /// Button on the apiary detail: apply a treatment to every active hive in the apiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk treatment'**
+  String get apiaryBulkTreat;
+
   /// Small label above the big hive number on the hive card.
   ///
   /// In en, this message translates to:

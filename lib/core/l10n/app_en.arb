@@ -1046,6 +1046,29 @@
     }
   },
 
+  "apiaryDetailSubtitlePlace": "{hives} · {visit} · {place}",
+  "@apiaryDetailSubtitlePlace": {
+    "placeholders": {
+      "hives": {
+        "type": "String"
+      },
+      "visit": {
+        "type": "String"
+      },
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "apiaryBulkFeed": "Bulk feeding",
+  "@apiaryBulkFeed": {
+    "description": "Button on the apiary detail: feed every active hive in the apiary."
+  },
+  "apiaryBulkTreat": "Bulk treatment",
+  "@apiaryBulkTreat": {
+    "description": "Button on the apiary detail: apply a treatment to every active hive in the apiary."
+  },
+
   "hiveCardKind": "Hive",
   "@hiveCardKind": {
     "description": "Small label above the big hive number on the hive card."

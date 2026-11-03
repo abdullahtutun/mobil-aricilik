@@ -11,6 +11,8 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
+import 'package:mobil_arici/features/feeding/presentation/feeding_form_controller.dart';
+import 'package:mobil_arici/features/health/presentation/treatment_form_controller.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
@@ -18,9 +20,11 @@ import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_form_screen.dart';
+import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/fake_weather_service.dart';
 import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
@@ -178,7 +182,8 @@ void main() {
       expect(find.byType(HiveTile), findsNWidgets(20));
       // Üstteki aktif kovan sayısı.
       expect(find.text('20 hives · No visits yet'), findsOneWidget);
-      expect(find.widgetWithText(BigButton, 'Add hives'), findsOneWidget);
+      // Kovan ekle artık ⋮ menüsünde; üstte yalnız boş durumda buton var.
+      expect(find.widgetWithText(BigButton, 'Add hives'), findsNothing);
       final first = tester.getTopLeft(find.text('101'));
       final second = tester.getTopLeft(find.text('102'));
       final last = tester.getTopLeft(find.text('120'));
@@ -211,7 +216,7 @@ void main() {
       await createHive('101');
       await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
 
-      await _tap(tester, find.widgetWithText(BigButton, 'Add hives'));
+      await _menu(tester, 'Add hives');
       await _tap(tester, find.text('One hive'));
 
       expect(find.byType(HiveFormScreen), findsOneWidget);
@@ -527,6 +532,64 @@ void main() {
     });
   });
 
+  group('Arılık detayı eylemleri', () {
+    testWidgets(
+      'Toplu besleme ve ilaçlama formları arılığın tümü seçili açılır',
+      (tester) async {
+        await createHive('101');
+        await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
+
+        await _tap(tester, find.widgetWithText(BigButton, 'Bulk feeding'));
+        expect(
+          tester
+              .widget<SegmentedTabs<FeedingScope>>(
+                find.byType(SegmentedTabs<FeedingScope>),
+              )
+              .selected,
+          FeedingScope.apiary,
+        );
+        await _tap(tester, find.byType(CloseButton));
+
+        await _tap(tester, find.widgetWithText(BigButton, 'Bulk treatment'));
+        expect(
+          tester
+              .widget<SegmentedTabs<TreatmentScope>>(
+                find.byType(SegmentedTabs<TreatmentScope>),
+              )
+              .selected,
+          TreatmentScope.apiary,
+        );
+      },
+    );
+
+    testWidgets('aktif kovan yokken toplu eylemler görünmez', (tester) async {
+      await createHive('101', status: HiveStatus.dead);
+      await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
+
+      expect(find.widgetWithText(BigButton, 'Bulk feeding'), findsNothing);
+      expect(find.widgetWithText(BigButton, 'Bulk treatment'), findsNothing);
+    });
+
+    testWidgets('hava paketindeki il/ilçe adın altında görünür', (
+      tester,
+    ) async {
+      await createHive('101');
+      final now = DateTime.now();
+      await WeatherRepository(db).saveBundle(
+        testBundle(
+          generatedAt: now,
+          forecasts: {
+            yayla.id: testForecast(at: now)
+                .copyWith(place: 'Ula', region: 'Muğla'),
+          },
+        ),
+      );
+      await _open(tester, db: db, location: AppRoutes.apiary(yayla.id));
+
+      expect(find.text('1 hive · No visits yet · Ula, Muğla'), findsOneWidget);
+    });
+  });
+
   testWidgets('Türkçe metinler', (tester) async {
     final hive = await createHive('101');
     final container = await _open(
@@ -537,7 +600,9 @@ void main() {
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    expect(find.widgetWithText(BigButton, 'Kovan ekle'), findsOne);
+    expect(find.widgetWithText(BigButton, 'Kovan ekle'), findsNothing);
+    expect(find.widgetWithText(BigButton, 'Toplu besleme'), findsOne);
+    expect(find.widgetWithText(BigButton, 'Toplu ilaçlama'), findsOne);
     expect(find.text('Izgara'), findsOneWidget);
     await _tap(tester, find.text('Liste'));
     expect(find.text('Langstroth'), findsOneWidget);

@@ -11,6 +11,7 @@ part of 'feeding_form_controller.dart';
 /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
 /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif
 /// kovanlara (şurupta bal katı olanlar hariç) tek transaction'da.
+/// [wholeApiary] formu arılığın tümü seçili açar.
 
 @ProviderFor(FeedingFormController)
 final feedingFormControllerProvider = FeedingFormControllerFamily._();
@@ -18,14 +19,16 @@ final feedingFormControllerProvider = FeedingFormControllerFamily._();
 /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
 /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif
 /// kovanlara (şurupta bal katı olanlar hariç) tek transaction'da.
+/// [wholeApiary] formu arılığın tümü seçili açar.
 final class FeedingFormControllerProvider
     extends $AsyncNotifierProvider<FeedingFormController, FeedingFormState?> {
   /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
   /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif
   /// kovanlara (şurupta bal katı olanlar hariç) tek transaction'da.
+  /// [wholeApiary] formu arılığın tümü seçili açar.
   FeedingFormControllerProvider._({
     required FeedingFormControllerFamily super.from,
-    required String super.argument,
+    required (String, {bool wholeApiary}) super.argument,
   }) : super(
          retry: null,
          name: r'feedingFormControllerProvider',
@@ -41,7 +44,7 @@ final class FeedingFormControllerProvider
   String toString() {
     return r'feedingFormControllerProvider'
         ''
-        '($argument)';
+        '$argument';
   }
 
   @$internal
@@ -60,11 +63,12 @@ final class FeedingFormControllerProvider
 }
 
 String _$feedingFormControllerHash() =>
-    r'2b69265534aaa5320e4430b5d1d78def4dd130cc';
+    r'70031e335055aca1ca36fcb3a810aac945bf1aa0';
 
 /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
 /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif
 /// kovanlara (şurupta bal katı olanlar hariç) tek transaction'da.
+/// [wholeApiary] formu arılığın tümü seçili açar.
 
 final class FeedingFormControllerFamily extends $Family
     with
@@ -73,7 +77,7 @@ final class FeedingFormControllerFamily extends $Family
           AsyncValue<FeedingFormState?>,
           FeedingFormState?,
           FutureOr<FeedingFormState?>,
-          String
+          (String, {bool wholeApiary})
         > {
   FeedingFormControllerFamily._()
     : super(
@@ -87,9 +91,15 @@ final class FeedingFormControllerFamily extends $Family
   /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
   /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif
   /// kovanlara (şurupta bal katı olanlar hariç) tek transaction'da.
+  /// [wholeApiary] formu arılığın tümü seçili açar.
 
-  FeedingFormControllerProvider call(String hiveId) =>
-      FeedingFormControllerProvider._(argument: hiveId, from: this);
+  FeedingFormControllerProvider call(
+    String hiveId, {
+    bool wholeApiary = false,
+  }) => FeedingFormControllerProvider._(
+    argument: (hiveId, wholeApiary: wholeApiary),
+    from: this,
+  );
 
   @override
   String toString() => r'feedingFormControllerProvider';
@@ -98,13 +108,15 @@ final class FeedingFormControllerFamily extends $Family
 /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
 /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif
 /// kovanlara (şurupta bal katı olanlar hariç) tek transaction'da.
+/// [wholeApiary] formu arılığın tümü seçili açar.
 
 abstract class _$FeedingFormController
     extends $AsyncNotifier<FeedingFormState?> {
-  late final _$args = ref.$arg as String;
-  String get hiveId => _$args;
+  late final _$args = ref.$arg as (String, {bool wholeApiary});
+  String get hiveId => _$args.$1;
+  bool get wholeApiary => _$args.wholeApiary;
 
-  FutureOr<FeedingFormState?> build(String hiveId);
+  FutureOr<FeedingFormState?> build(String hiveId, {bool wholeApiary = false});
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
@@ -118,6 +130,9 @@ abstract class _$FeedingFormController
               Object?,
               Object?
             >;
-    return element.handleCreate(ref, () => build(_$args));
+    return element.handleCreate(
+      ref,
+      () => build(_$args.$1, wholeApiary: _$args.wholeApiary),
+    );
   }
 }

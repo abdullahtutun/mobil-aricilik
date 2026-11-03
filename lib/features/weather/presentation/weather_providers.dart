@@ -26,6 +26,21 @@ WeatherRepository weatherRepository(Ref ref) =>
 Stream<WeatherBundle?> weatherBundle(Ref ref) =>
     ref.watch(weatherRepositoryProvider).watchBundle();
 
+/// Arılığın il/ilçesi ("Ula, Muğla"): saklanan hava paketindeki yer adı ve
+/// bölge. Konumsuz arılıkta, paket henüz alınmadıysa ya da sağlayıcı yer adı
+/// vermediyse null.
+@riverpod
+String? apiaryPlace(Ref ref, String apiaryId) {
+  final bundle = ref.watch(weatherBundleProvider).value;
+  final forecast = bundle?.forecasts
+      .where((f) => f.apiaryId == apiaryId)
+      .firstOrNull
+      ?.forecast;
+  if (forecast == null) return null;
+  final place = [?forecast.place, ?forecast.region].join(', ');
+  return place.isEmpty ? null : place;
+}
+
 /// Bir arılığın şu anki saatinin havası. `opening` sıcaklık ya da rüzgar
 /// eksikse null; `thresholds` simgenin rüzgar sınırı için.
 typedef ApiaryWeather = ({

@@ -11,7 +11,8 @@ part of 'treatment_form_controller.dart';
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
 /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
-/// formun reçete fotoğrafı dosyası silinir.
+/// formun reçete fotoğrafı dosyası silinir. [wholeApiary] formu arılığın
+/// tümü seçili açar.
 
 @ProviderFor(TreatmentFormController)
 final treatmentFormControllerProvider = TreatmentFormControllerFamily._();
@@ -19,17 +20,19 @@ final treatmentFormControllerProvider = TreatmentFormControllerFamily._();
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
 /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
-/// formun reçete fotoğrafı dosyası silinir.
+/// formun reçete fotoğrafı dosyası silinir. [wholeApiary] formu arılığın
+/// tümü seçili açar.
 final class TreatmentFormControllerProvider
     extends
         $AsyncNotifierProvider<TreatmentFormController, TreatmentFormState?> {
   /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
   /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
   /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
-  /// formun reçete fotoğrafı dosyası silinir.
+  /// formun reçete fotoğrafı dosyası silinir. [wholeApiary] formu arılığın
+  /// tümü seçili açar.
   TreatmentFormControllerProvider._({
     required TreatmentFormControllerFamily super.from,
-    required String super.argument,
+    required (String, {bool wholeApiary}) super.argument,
   }) : super(
          retry: null,
          name: r'treatmentFormControllerProvider',
@@ -45,7 +48,7 @@ final class TreatmentFormControllerProvider
   String toString() {
     return r'treatmentFormControllerProvider'
         ''
-        '($argument)';
+        '$argument';
   }
 
   @$internal
@@ -65,12 +68,13 @@ final class TreatmentFormControllerProvider
 }
 
 String _$treatmentFormControllerHash() =>
-    r'cea22aeb06020fc1c5f2c6edda86d8d1f5955cfa';
+    r'436a6508b2924be74f1229088dbb5371e606c4ab';
 
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
 /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
-/// formun reçete fotoğrafı dosyası silinir.
+/// formun reçete fotoğrafı dosyası silinir. [wholeApiary] formu arılığın
+/// tümü seçili açar.
 
 final class TreatmentFormControllerFamily extends $Family
     with
@@ -79,7 +83,7 @@ final class TreatmentFormControllerFamily extends $Family
           AsyncValue<TreatmentFormState?>,
           TreatmentFormState?,
           FutureOr<TreatmentFormState?>,
-          String
+          (String, {bool wholeApiary})
         > {
   TreatmentFormControllerFamily._()
     : super(
@@ -93,10 +97,16 @@ final class TreatmentFormControllerFamily extends $Family
   /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
   /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
   /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
-  /// formun reçete fotoğrafı dosyası silinir.
+  /// formun reçete fotoğrafı dosyası silinir. [wholeApiary] formu arılığın
+  /// tümü seçili açar.
 
-  TreatmentFormControllerProvider call(String hiveId) =>
-      TreatmentFormControllerProvider._(argument: hiveId, from: this);
+  TreatmentFormControllerProvider call(
+    String hiveId, {
+    bool wholeApiary = false,
+  }) => TreatmentFormControllerProvider._(
+    argument: (hiveId, wholeApiary: wholeApiary),
+    from: this,
+  );
 
   @override
   String toString() => r'treatmentFormControllerProvider';
@@ -105,14 +115,19 @@ final class TreatmentFormControllerFamily extends $Family
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
 /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
-/// formun reçete fotoğrafı dosyası silinir.
+/// formun reçete fotoğrafı dosyası silinir. [wholeApiary] formu arılığın
+/// tümü seçili açar.
 
 abstract class _$TreatmentFormController
     extends $AsyncNotifier<TreatmentFormState?> {
-  late final _$args = ref.$arg as String;
-  String get hiveId => _$args;
+  late final _$args = ref.$arg as (String, {bool wholeApiary});
+  String get hiveId => _$args.$1;
+  bool get wholeApiary => _$args.wholeApiary;
 
-  FutureOr<TreatmentFormState?> build(String hiveId);
+  FutureOr<TreatmentFormState?> build(
+    String hiveId, {
+    bool wholeApiary = false,
+  });
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
@@ -126,6 +141,9 @@ abstract class _$TreatmentFormController
               Object?,
               Object?
             >;
-    return element.handleCreate(ref, () => build(_$args));
+    return element.handleCreate(
+      ref,
+      () => build(_$args.$1, wholeApiary: _$args.wholeApiary),
+    );
   }
 }

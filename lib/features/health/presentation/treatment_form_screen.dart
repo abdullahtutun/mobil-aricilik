@@ -40,14 +40,22 @@ const _maxBackdateDays = 60;
 /// görevle kurulur), toplam doz kalemden düşülür, karta dönülür ve 6 sn
 /// geri alınabilir; Geri al stok çıkışını da siler.
 class TreatmentFormScreen extends ConsumerWidget {
-  const new({required this.apiaryId, required this.hiveId, super.key});
+  const new({
+    required this.apiaryId,
+    required this.hiveId,
+    this.wholeApiary = false,
+    super.key,
+  });
 
   /// Yoldaki arılık; yeni ilaç rotası buna bağlı.
   final String apiaryId;
   final String hiveId;
 
+  /// Form "arılığın tümü" seçili açılır.
+  final bool wholeApiary;
+
   TreatmentFormControllerProvider get _provider =>
-      treatmentFormControllerProvider(hiveId);
+      treatmentFormControllerProvider(hiveId, wholeApiary: wholeApiary);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

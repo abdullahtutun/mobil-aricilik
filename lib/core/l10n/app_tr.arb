@@ -406,6 +406,9 @@
   "hiveLayoutGridShort": "Izgara",
   "hiveLayoutListShort": "Liste",
   "apiaryDetailSubtitle": "{hives} · {visit}",
+  "apiaryDetailSubtitlePlace": "{hives} · {visit} · {place}",
+  "apiaryBulkFeed": "Toplu besleme",
+  "apiaryBulkTreat": "Toplu ilaçlama",
 
   "hiveCardKind": "Kovan",
   "hiveLastInspection": "Son muayene",

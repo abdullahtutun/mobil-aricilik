@@ -45,15 +45,34 @@ abstract final class AppRoutes {
   static String hiveVarroa(String apiaryId, String hiveId) =>
       '/apiaries/$apiaryId/hives/$hiveId/varroa';
 
+  /// Besleme ve ilaç formlarının sorgusu: [scopeApiaryValue] formu "arılığın
+  /// tümü" seçili açar.
+  static const scopeParameter = 'scope';
+  static const scopeApiaryValue = 'apiary';
+
   /// Kovana ya da arılığının tümüne ilaç uygulaması; geri tuşu kovan
-  /// kartına döner.
-  static String hiveTreat(String apiaryId, String hiveId) =>
-      '/apiaries/$apiaryId/hives/$hiveId/treat';
+  /// kartına döner. [wholeApiary] formu arılığın tümü seçili açar (kovan,
+  /// arılıktaki bir aktif kovan).
+  static String hiveTreat(
+    String apiaryId,
+    String hiveId, {
+    bool wholeApiary = false,
+  }) => _withScope('/apiaries/$apiaryId/hives/$hiveId/treat', wholeApiary);
 
   /// Kovana ya da arılığının tümüne besleme; geri tuşu kovan kartına
-  /// döner.
-  static String hiveFeed(String apiaryId, String hiveId) =>
-      '/apiaries/$apiaryId/hives/$hiveId/feed';
+  /// döner. [wholeApiary] formu arılığın tümü seçili açar.
+  static String hiveFeed(
+    String apiaryId,
+    String hiveId, {
+    bool wholeApiary = false,
+  }) => _withScope('/apiaries/$apiaryId/hives/$hiveId/feed', wholeApiary);
+
+  static String _withScope(String path, bool wholeApiary) => wholeApiary
+      ? Uri(
+          path: path,
+          queryParameters: {scopeParameter: scopeApiaryValue},
+        ).toString()
+      : path;
 
   /// Arılığın hasadı; geri tuşu arılığa döner.
   static String apiaryHarvest(String apiaryId) => '/apiaries/$apiaryId/harvest';

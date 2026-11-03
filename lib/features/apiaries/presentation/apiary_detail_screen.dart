@@ -17,11 +17,15 @@ import 'package:mobil_arici/features/inspections/domain/inspection_rules.dart';
 import 'package:mobil_arici/features/inspections/presentation/tour_providers.dart';
 import 'package:mobil_arici/features/inspections/presentation/tour_screen.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
+import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
-/// Arılık detayı: büyük ad, altında aktif kovan sayısı ve son ziyaret;
-/// tur, kovan ekle ve hasat eylemleri, kovan ızgarası/listesi ve altında
-/// son varroa ölçümlerinin grafiği. Harita şeridi ve toplu besleme gibi
-/// eylemler kendi adımlarında gelecek.
+/// ⋮ menüsünde "Kovan ekle"; öbür öğelerin değeri rota yolu.
+const _addHivesValue = 'add-hives';
+
+/// Arılık detayı: büyük ad, altında aktif kovan sayısı, son ziyaret ve (hava
+/// paketinde varsa) il/ilçe; tur, toplu besleme, toplu ilaçlama ve hasat
+/// eylemleri, kovan ızgarası/listesi ve altında son varroa ölçümlerinin
+/// grafiği. Kovan ekle ⋮ menüsünde. Harita şeridi kendi adımında gelecek.
 class ApiaryDetailScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key});
 
@@ -34,9 +38,13 @@ class ApiaryDetailScreen extends ConsumerWidget {
     final hives = ref.watch(apiaryHivesProvider(apiaryId)).value ?? const [];
     final hasHives = hives.isNotEmpty;
     final canWrite = ref.watch(canWriteRecordsProvider);
-    final canTour = canWrite && hives.any(canInspect);
+    // Toplu besleme ve ilaçlama formları bir aktif kovanla açılır; arılığın
+    // tümü seçili gelir.
+    final anchorHive = hives.where(canInspect).firstOrNull;
+    final canTour = canWrite && anchorHive != null;
     final touring = ref.watch(currentTourProvider).value?.apiaryId == apiaryId;
     final padded = EdgeInsets.symmetric(horizontal: spacing.lg);
+    final place = ref.watch(apiaryPlaceProvider(apiaryId));
 
     return switch (ref.watch(apiarySummaryProvider(apiaryId))) {
       AsyncData(value: final summary?) => Scaffold(
@@ -45,8 +53,15 @@ class ApiaryDetailScreen extends ConsumerWidget {
             // Seyrek eylemler ⋮ menüsünde (docs/design "Arılık detayı").
             PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert_rounded),
-              onSelected: context.go,
+              onSelected: (value) => value == _addHivesValue
+                  ? openAddHives(context, apiaryId)
+                  : context.go(value),
               itemBuilder: (context) => [
+                if (canWrite)
+                  PopupMenuItem(
+                    value: _addHivesValue,
+                    child: Text(l10n.hivesAdd),
+                  ),
                 if (hasHives)
                   PopupMenuItem(
                     value: AppRoutes.hiveLabels(apiaryId),
@@ -64,7 +79,10 @@ class ApiaryDetailScreen extends ConsumerWidget {
         body: ListView(
           padding: EdgeInsets.symmetric(vertical: spacing.lg),
           children: [
-            Padding(padding: padded, child: _Header(summary)),
+            Padding(
+              padding: padded,
+              child: _Header(summary, place: place),
+            ),
             // Kovan yokken boş durumun kendi butonu var.
             if (hasHives) ...[
               SizedBox(height: spacing.lg),
@@ -84,15 +102,33 @@ class ApiaryDetailScreen extends ConsumerWidget {
                         expanded: false,
                         onPressed: () => openApiaryTour(context, ref, apiaryId),
                       ),
-                    if (canWrite)
+                    if (canTour) ...[
                       BigButton(
-                        variant: canTour
-                            ? BigButtonVariant.secondary
-                            : BigButtonVariant.primary,
-                        label: l10n.hivesAdd,
+                        variant: BigButtonVariant.secondary,
+                        label: l10n.apiaryBulkFeed,
                         expanded: false,
-                        onPressed: () => openAddHives(context, apiaryId),
+                        // push: kapanınca kovan kartına değil, arılığa dönülür.
+                        onPressed: () => context.push(
+                          AppRoutes.hiveFeed(
+                            apiaryId,
+                            anchorHive.id,
+                            wholeApiary: true,
+                          ),
+                        ),
                       ),
+                      BigButton(
+                        variant: BigButtonVariant.secondary,
+                        label: l10n.apiaryBulkTreat,
+                        expanded: false,
+                        onPressed: () => context.push(
+                          AppRoutes.hiveTreat(
+                            apiaryId,
+                            anchorHive.id,
+                            wholeApiary: true,
+                          ),
+                        ),
+                      ),
+                    ],
                     if (canWrite)
                       BigButton(
                         variant: BigButtonVariant.secondary,
@@ -136,9 +172,12 @@ class ApiaryDetailScreen extends ConsumerWidget {
 }
 
 class _Header extends StatelessWidget {
-  const new(this.summary);
+  const new(this.summary, {this.place});
 
   final ApiarySummary summary;
+
+  /// İl/ilçe; konum ya da hava paketi yoksa null.
+  final String? place;
 
   @override
   Widget build(BuildContext context) {
@@ -165,10 +204,17 @@ class _Header extends StatelessWidget {
         ),
         SizedBox(height: context.spacing.xs),
         Text(
-          l10n.apiaryDetailSubtitle(
-            l10n.apiaryHiveCount(summary.activeHiveCount),
-            visit,
-          ),
+          switch (place) {
+            final place? => l10n.apiaryDetailSubtitlePlace(
+              l10n.apiaryHiveCount(summary.activeHiveCount),
+              visit,
+              place,
+            ),
+            _ => l10n.apiaryDetailSubtitle(
+              l10n.apiaryHiveCount(summary.activeHiveCount),
+              visit,
+            ),
+          },
           style: context.typography.body.copyWith(
             color: context.colors.textSecondary,
           ),

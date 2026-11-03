@@ -67,7 +67,8 @@ extension TreatmentFormResult on TreatmentFormState {
 /// İlaç uygulaması formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa
 /// durum null. Uygulama yerel DB'ye yazılır; arılığın tümü seçiliyse
 /// arılıktaki her aktif kovana tek transaction'da. Kaydedilmeden kapanan
-/// formun reçete fotoğrafı dosyası silinir.
+/// formun reçete fotoğrafı dosyası silinir. [wholeApiary] formu arılığın
+/// tümü seçili açar.
 @riverpod
 class TreatmentFormController extends _$TreatmentFormController {
   /// Kaydedildi; reçete dosyası artık uygulamanın.
@@ -77,7 +78,10 @@ class TreatmentFormController extends _$TreatmentFormController {
   MediaCapture? _prescription;
 
   @override
-  Future<TreatmentFormState?> build(String hiveId) async {
+  Future<TreatmentFormState?> build(
+    String hiveId, {
+    bool wholeApiary = false,
+  }) async {
     // Kapanırken ref kullanılamaz; dosya deposu önceden alınır.
     final files = ref.read(mediaFileStoreProvider);
     ref.onDispose(() {
@@ -91,6 +95,7 @@ class TreatmentFormController extends _$TreatmentFormController {
     return TreatmentFormState(
       hive: hive,
       startedOn: DateTime(now.year, now.month, now.day),
+      scope: wholeApiary ? TreatmentScope.apiary : TreatmentScope.hive,
     );
   }
 

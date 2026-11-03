@@ -38,13 +38,20 @@ abstract class FeedingFormState with _$FeedingFormState {
 /// Besleme formu. Ekran açık kaldığı sürece yaşar. Kovan yoksa durum null.
 /// Besleme yerel DB'ye yazılır; arılığın tümü seçiliyse arılıktaki aktif
 /// kovanlara (şurupta bal katı olanlar hariç) tek transaction'da.
+/// [wholeApiary] formu arılığın tümü seçili açar.
 @riverpod
 class FeedingFormController extends _$FeedingFormController {
   @override
-  Future<FeedingFormState?> build(String hiveId) async {
+  Future<FeedingFormState?> build(
+    String hiveId, {
+    bool wholeApiary = false,
+  }) async {
     final hive = await ref.read(hiveRepositoryProvider).findById(hiveId);
     if (hive == null) return null;
-    return FeedingFormState(hive: hive);
+    return FeedingFormState(
+      hive: hive,
+      scope: wholeApiary ? FeedingScope.apiary : FeedingScope.hive,
+    );
   }
 
   void setScope(FeedingScope scope) =>

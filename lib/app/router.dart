@@ -107,6 +107,11 @@ part 'router.g.dart';
 
 const _apiaryId = 'apiaryId';
 const _hiveId = 'hiveId';
+
+/// Besleme ve ilaç formu "arılığın tümü" seçili mi açılıyor.
+bool _wholeApiary(GoRouterState state) =>
+    state.uri.queryParameters[AppRoutes.scopeParameter] ==
+    AppRoutes.scopeApiaryValue;
 const _mediaId = 'mediaId';
 const _taskId = 'taskId';
 const _documentId = 'documentId';
@@ -377,6 +382,7 @@ GoRouter router(Ref ref) {
                             builder: (context, state) => TreatmentFormScreen(
                               apiaryId: state.pathParameters[_apiaryId]!,
                               hiveId: state.pathParameters[_hiveId]!,
+                              wholeApiary: _wholeApiary(state),
                             ),
                             routes: [
                               // Eklenen ilaç pop ile uygulamaya döner.
@@ -394,6 +400,7 @@ GoRouter router(Ref ref) {
                             parentNavigatorKey: rootNavigatorKey,
                             builder: (context, state) => FeedingFormScreen(
                               hiveId: state.pathParameters[_hiveId]!,
+                              wholeApiary: _wholeApiary(state),
                             ),
                           ),
                           // Kartın üstünde alttan açılır; kart arkada

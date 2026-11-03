@@ -621,6 +621,14 @@
 
 - Tablo hizası (kullanıcı isteği): YAĞIŞ başlığı dar sütuna (`flex 4`) sığmadığı için `FittedBox` onu küçültüyordu, öbür başlıklar küçülmüyordu. Sütun payları 8 / 7 / 5 / 4 / 8 oldu (yağış büyüdü, kovan küçüldü). Gün dışındaki sütunlarda başlık, değer ve rozet sütunda ortalanıyor; gün sola yaslı. Cihazda (gerçek Inter) görülmedi; testteki Ahem yazı tipi geniş olduğu için orada küçülme ölçüsü gerçeği yansıtmıyor.
 
+### 2026-11-03 — Arılık detayı: toplu besleme / ilaçlama butonları ve il/ilçe (docs/design "Arılık detayı")
+
+- Eylem satırı tasarımdaki gibi: Tur başlat, **Toplu besleme**, **Toplu ilaçlama** (ardından Hasat). Toplu butonlar arılıkta en az bir aktif kovan varsa ve yazma yetkisi varsa görünür; mevcut besleme/ilaç formunu "arılığın tümü" seçili açar (`AppRoutes.hiveFeed` / `hiveTreat` `wholeApiary:` ile `?scope=apiary` sorgusu, controller'lara `wholeApiary` parametresi). Form, arılığın ilk aktif kovanıyla açılıyor; yeni rota ve şema yok. `context.push` ile açıldığı için kapanınca kovan kartına değil arılığa dönülür.
+- "Kovan ekle" butonu kalktı, sağ üstteki ⋮ menüsünün ilk öğesi oldu (yazma yetkisi gerekir). Kovan yokken boş durumun kendi "Kovan ekle" butonu duruyor.
+- Arılık adının altında "40 kovan · son ziyaret 3 gün önce · Ula, Muğla": il/ilçe yeni `apiaryPlaceProvider` ile bu telefonda saklanan hava paketinden (WeatherAPI'nin yer adı ve bölgesi) geliyor (kullanıcı kararı: yeni kolon yok, şema ve sunucu migration'ı değişmedi). Konumsuz arılıkta ya da hava paketi hiç alınmadıysa il/ilçe yazılmıyor; veri bu telefona özel, senkronlanmıyor.
+- ARB'ye `apiaryBulkFeed`, `apiaryBulkTreat`, `apiaryDetailSubtitlePlace` (TR + EN) eklendi.
+- Testler: `hives_flow_test.dart`'ta toplu butonların formu arılığın tümü seçili açıp arılığa döndüğü, aktif kovan yokken görünmedikleri, il/ilçenin alt yazıda çıktığı; "Kovan ekle" artık ⋮ menüsünden. İlgili klasörlerdeki 615 test geçiyor, `flutter analyze` temiz. Cihazda denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
