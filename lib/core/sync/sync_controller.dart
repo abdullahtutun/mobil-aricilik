@@ -83,7 +83,7 @@ class SyncController extends _$SyncController {
         state = SyncActivity(
           lastResult: finished,
           lastSyncedAt: finished.status == SyncStatus.done
-              ? DateTime.now()
+              ? clock.now()
               : state.lastSyncedAt,
         );
       }

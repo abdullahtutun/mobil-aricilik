@@ -67,11 +67,4 @@ void main() {
       expect(matches('dx', code: 'DE', name: 'Almanya'), isFalse);
     });
   });
-
-  group('foldForSearch', () {
-    test('küçük harfe çevirir, Türkçe harfleri ve aksanları sadeleştirir', () {
-      expect(foldForSearch('İĞÜŞÖÇ ığüşöç I'), 'igusoc igusoc i');
-      expect(foldForSearch('Réunion São Tomé'), 'reunion sao tome');
-    });
-  });
 }

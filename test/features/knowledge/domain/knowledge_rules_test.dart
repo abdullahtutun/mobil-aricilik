@@ -322,12 +322,6 @@ void main() {
   });
 
   group('arama', () {
-    test('büyük/küçük harf ve Türkçe harf farkı yok', () {
-      expect(foldForSearch('KİREÇ Hastalığı'), 'kirec hastaligi');
-      expect(foldForSearch('IŞIK'), 'isik');
-      expect(foldForSearch('Ağaç ÖĞÜT'), 'agac ogut');
-    });
-
     final articles = [
       _article(id: 'govde', title: 'Kışlatma', body: 'Kireç önlemi'),
       _article(id: 'baslik', title: 'Kireç hastalığı', summary: 'Mantar'),

@@ -14,6 +14,7 @@ export 'components/choice_chip_group.dart';
 export 'components/confirm_dialog.dart';
 export 'components/count_tile.dart';
 export 'components/critical_lock_card.dart';
+export 'components/date_field.dart';
 export 'components/empty_state.dart';
 export 'components/hive_tile.dart';
 export 'components/inline_field.dart';

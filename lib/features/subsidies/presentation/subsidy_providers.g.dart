@@ -104,7 +104,7 @@ final class SupportPeriodsProvider
   }
 }
 
-String _$supportPeriodsHash() => r'016b1479e716d6538728e69c083a3580fa5bac5e';
+String _$supportPeriodsHash() => r'd40f0613d35f8f0a733d11d3ab98101b7ec73fe4';
 
 /// İşletmenin aktif kovan sayısı; işletme yoksa 0.
 

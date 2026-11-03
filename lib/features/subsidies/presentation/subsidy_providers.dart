@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
@@ -18,7 +19,7 @@ SupportPeriodRepository supportPeriodRepository(Ref ref) =>
 Stream<List<SupportPeriod>> supportPeriods(Ref ref) => ref
     .watch(supportPeriodRepositoryProvider)
     .watchAll()
-    .map((periods) => sortSupportPeriods(periods, DateTime.now()));
+    .map((periods) => sortSupportPeriods(periods, clock.now()));
 
 /// Başvuru öncesi kontrol: uygulamadaki aktif kovan sayısı, AKS'de beyan
 /// edilen sayı ve karşılaştırma.

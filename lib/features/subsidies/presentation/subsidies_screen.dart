@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -147,10 +148,7 @@ class _PeriodCard extends ConsumerWidget {
     final format = AppFormat.of(context);
     final description = period.description;
     final source = Uri.tryParse(period.sourceUrl ?? '');
-    final (status, label) = switch (supportPeriodPhase(
-      period,
-      DateTime.now(),
-    )) {
+    final (status, label) = switch (supportPeriodPhase(period, clock.now())) {
       SupportPeriodPhase.open => (AppStatus.good, l10n.subsidiesPhaseOpen),
       SupportPeriodPhase.upcoming => (
         AppStatus.info,

@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -307,7 +308,7 @@ class _TreatmentFormFieldsState extends ConsumerState<_TreatmentFormFields> {
             Expanded(
               child: LabeledField(
                 label: l10n.treatmentStartedOn,
-                child: _DateField(
+                child: DateField(
                   text: format.date(form.startedOn),
                   onTap: () => _pickStart(context),
                 ),
@@ -413,7 +414,7 @@ class _TreatmentFormFieldsState extends ConsumerState<_TreatmentFormFields> {
   }
 
   Future<void> _pickStart(BuildContext context) async {
-    final today = DateTime.now();
+    final today = clock.now();
     final day = await showDatePicker(
       context: context,
       initialDate: widget.form.startedOn,
@@ -490,29 +491,6 @@ class _DrugCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Metin alanı görünümünde tarih; dokununca takvim açılır.
-class _DateField extends StatelessWidget {
-  const new({required this.text, required this.onTap});
-
-  final String text;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(context.radii.button),
-        child: InputDecorator(
-          decoration: const InputDecoration(),
-          child: Text(text, style: context.typography.body),
         ),
       ),
     );

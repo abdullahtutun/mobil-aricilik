@@ -44,4 +44,25 @@ void main() {
     expect(await thresholds.first, (percent: 3.0, perDay: 20.0));
     expect(await readOutbox(db), isEmpty);
   });
+
+  test('JSON değer yazılır, okunur, akar ve silinir; bozuk değer null, '
+      'outbox’a gitmez', () async {
+    final db = openTestDatabase();
+    final settings = LocalSettingsRepository(db);
+    Map<String, Object?> decode(Map<String, Object?> json) => json;
+
+    final values = settings.watchJson('k', decode);
+    expect(await values.first, isNull);
+
+    await settings.writeJson('k', {'a': 1});
+    expect(await settings.readJson('k', decode), {'a': 1});
+    expect(await values.first, {'a': 1});
+
+    await settings.writeValue('k', '{bozuk');
+    expect(await settings.readJson('k', decode), isNull);
+
+    await settings.removeValue('k');
+    expect(await settings.readValue('k'), isNull);
+    expect(await readOutbox(db), isEmpty);
+  });
 }

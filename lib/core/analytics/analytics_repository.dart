@@ -10,9 +10,12 @@ import 'package:mobil_arici/core/utils/uuid.dart';
 /// buraya yazılır, ağ gelince `TelemetryUploadService` gönderir ve siler.
 /// Analitik kapalıyken olay yazılmaz.
 class AnalyticsRepository {
-  new(this.db, {this.clock = DateTime.now});
+  new(this.db, {this.clock = DateTime.now})
+    : _settings = LocalSettingsRepository(db);
 
   final AppDatabase db;
+
+  final LocalSettingsRepository _settings;
 
   final DateTime Function() clock;
 
@@ -25,7 +28,7 @@ class AnalyticsRepository {
     Map<String, Object?> props = const {},
   ]) async {
     try {
-      if (!await LocalSettingsRepository(db).analyticsEnabled()) return;
+      if (!await _settings.analyticsEnabled()) return;
       await db.transaction(() async {
         await db
             .into(db.analyticsQueue)
@@ -52,14 +55,10 @@ class AnalyticsRepository {
   /// "Kullanım verisi paylaş". Kapatınca bekleyen olaylar silinir;
   /// yeniden açınca kurulum kimliği yenilenir, eski olaylarla bağ kurulmaz.
   Future<void> setEnabled({required bool enabled}) => db.transaction(() async {
-    await db
-        .into(db.localSettings)
-        .insertOnConflictUpdate(
-          LocalSettingsCompanion.insert(
-            key: LocalSettingsRepository.analyticsEnabledKey,
-            value: '$enabled',
-          ),
-        );
+    await _settings.writeValue(
+      LocalSettingsRepository.analyticsEnabledKey,
+      '$enabled',
+    );
     if (enabled) {
       await _writeInstallId(generateId());
     } else {
@@ -69,13 +68,10 @@ class AnalyticsRepository {
 
   /// Bu kurulumun analitik kimliği; yoksa üretip saklar.
   Future<String> installId() => db.transaction(() async {
-    final row =
-        await (db.select(db.localSettings)..where(
-              (t) =>
-                  t.key.equals(LocalSettingsRepository.analyticsInstallIdKey),
-            ))
-            .getSingleOrNull();
-    if (row != null) return row.value;
+    final stored = await _settings.readValue(
+      LocalSettingsRepository.analyticsInstallIdKey,
+    );
+    if (stored != null) return stored;
     final id = generateId();
     await _writeInstallId(id);
     return id;
@@ -97,12 +93,6 @@ class AnalyticsRepository {
   Future<void> remove(Iterable<String> ids) =>
       (db.delete(db.analyticsQueue)..where((t) => t.id.isIn(ids))).go();
 
-  Future<void> _writeInstallId(String id) => db
-      .into(db.localSettings)
-      .insertOnConflictUpdate(
-        LocalSettingsCompanion.insert(
-          key: LocalSettingsRepository.analyticsInstallIdKey,
-          value: id,
-        ),
-      );
+  Future<void> _writeInstallId(String id) =>
+      _settings.writeValue(LocalSettingsRepository.analyticsInstallIdKey, id);
 }

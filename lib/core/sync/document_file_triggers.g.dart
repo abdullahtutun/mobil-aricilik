@@ -8,44 +8,23 @@ part of 'document_file_triggers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Uygulama açıkken belge dosyalarını yükler ve eksikleri indirir:
-///
-/// - açılış: oturum ve işletme hazır olunca,
-/// - yeni dosyadan [documentUploadDebounce] sonra (yalnız yükleme),
-/// - ağ geri gelince,
-/// - her senkron turu bitince (başka telefonda eklenen belge inmiş olabilir).
-///
-/// İndirilen dosya olursa kasadaki "internetsiz açılır" durumu yenilenir.
-/// Arka plan görevi yok; uygulama kapalıyken dosyalar bekler. `bootstrap`
-/// uygulama boyunca dinler.
+/// Uygulama açıkken belge dosyalarını yükler ve eksikleri indirir; anlar
+/// [listenStorageFileSync]'te. İndirilen dosya olursa kasadaki "internetsiz
+/// açılır" durumu yenilenir. `bootstrap` uygulama boyunca dinler.
 
 @ProviderFor(documentFileTriggers)
 final documentFileTriggersProvider = DocumentFileTriggersProvider._();
 
-/// Uygulama açıkken belge dosyalarını yükler ve eksikleri indirir:
-///
-/// - açılış: oturum ve işletme hazır olunca,
-/// - yeni dosyadan [documentUploadDebounce] sonra (yalnız yükleme),
-/// - ağ geri gelince,
-/// - her senkron turu bitince (başka telefonda eklenen belge inmiş olabilir).
-///
-/// İndirilen dosya olursa kasadaki "internetsiz açılır" durumu yenilenir.
-/// Arka plan görevi yok; uygulama kapalıyken dosyalar bekler. `bootstrap`
-/// uygulama boyunca dinler.
+/// Uygulama açıkken belge dosyalarını yükler ve eksikleri indirir; anlar
+/// [listenStorageFileSync]'te. İndirilen dosya olursa kasadaki "internetsiz
+/// açılır" durumu yenilenir. `bootstrap` uygulama boyunca dinler.
 
 final class DocumentFileTriggersProvider
     extends $FunctionalProvider<void, void, void>
     with $Provider<void> {
-  /// Uygulama açıkken belge dosyalarını yükler ve eksikleri indirir:
-  ///
-  /// - açılış: oturum ve işletme hazır olunca,
-  /// - yeni dosyadan [documentUploadDebounce] sonra (yalnız yükleme),
-  /// - ağ geri gelince,
-  /// - her senkron turu bitince (başka telefonda eklenen belge inmiş olabilir).
-  ///
-  /// İndirilen dosya olursa kasadaki "internetsiz açılır" durumu yenilenir.
-  /// Arka plan görevi yok; uygulama kapalıyken dosyalar bekler. `bootstrap`
-  /// uygulama boyunca dinler.
+  /// Uygulama açıkken belge dosyalarını yükler ve eksikleri indirir; anlar
+  /// [listenStorageFileSync]'te. İndirilen dosya olursa kasadaki "internetsiz
+  /// açılır" durumu yenilenir. `bootstrap` uygulama boyunca dinler.
   DocumentFileTriggersProvider._()
     : super(
         from: null,
@@ -80,4 +59,4 @@ final class DocumentFileTriggersProvider
 }
 
 String _$documentFileTriggersHash() =>
-    r'1aa32e40daf19784222ab4476fcd1347ce55e74a';
+    r'179c6e5f1db0718b33442948bc62763d9aada503';

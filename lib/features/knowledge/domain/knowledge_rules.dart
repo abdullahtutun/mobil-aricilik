@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
+import 'package:mobil_arici/core/utils/text_fold.dart';
 import 'package:mobil_arici/features/knowledge/domain/knowledge_article.dart';
 
 /// Bu uygulamanın okuyabildiği paket biçimi. Biçim değişirse eski
@@ -203,26 +204,6 @@ KnowledgeArticle? monthKnowledgeArticle(
           : null) ??
       candidates.firstOrNull;
 }
-
-/// Aramada büyük/küçük harf ve Türkçe harf farkı yok: "KİREÇ", "kirec" ve
-/// "Kireç" aynı. Türkçe I/İ önce kendi küçük harfine çevrilir.
-String foldForSearch(String text) => text
-    .replaceAll('I', 'ı')
-    .replaceAll('İ', 'i')
-    .toLowerCase()
-    .replaceAllMapped(RegExp('[çğıöşüâîû]'), (match) => _folds[match[0]]!);
-
-const _folds = {
-  'ç': 'c',
-  'ğ': 'g',
-  'ı': 'i',
-  'ö': 'o',
-  'ş': 's',
-  'ü': 'u',
-  'â': 'a',
-  'î': 'i',
-  'û': 'u',
-};
 
 /// Tam metin arama: sorgunun her kelimesi başlık, özet ya da metinde
 /// geçmeli. Başlıkta geçen önce, sonra özette geçen; eşitse başlık sırası.

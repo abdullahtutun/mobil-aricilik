@@ -9,28 +9,22 @@ part of 'receipt_file_triggers.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// Uygulama açıkken fiş fotoğraflarını yükler ve eksikleri indirir; belge
-/// dosyalarıyla aynı anlarda (`documentFileTriggers`): açılışta, yeni
-/// fişten [receiptUploadDebounce] sonra, ağ geri gelince ve her senkron
-/// turu bitince. Finansı göremeyen rolde (worker, viewer) hiç çalışmaz.
-/// `bootstrap` uygulama boyunca dinler.
+/// dosyalarıyla aynı anlarda ([listenStorageFileSync]). Finansı göremeyen
+/// rolde (worker, viewer) hiç çalışmaz. `bootstrap` uygulama boyunca dinler.
 
 @ProviderFor(receiptFileTriggers)
 final receiptFileTriggersProvider = ReceiptFileTriggersProvider._();
 
 /// Uygulama açıkken fiş fotoğraflarını yükler ve eksikleri indirir; belge
-/// dosyalarıyla aynı anlarda (`documentFileTriggers`): açılışta, yeni
-/// fişten [receiptUploadDebounce] sonra, ağ geri gelince ve her senkron
-/// turu bitince. Finansı göremeyen rolde (worker, viewer) hiç çalışmaz.
-/// `bootstrap` uygulama boyunca dinler.
+/// dosyalarıyla aynı anlarda ([listenStorageFileSync]). Finansı göremeyen
+/// rolde (worker, viewer) hiç çalışmaz. `bootstrap` uygulama boyunca dinler.
 
 final class ReceiptFileTriggersProvider
     extends $FunctionalProvider<void, void, void>
     with $Provider<void> {
   /// Uygulama açıkken fiş fotoğraflarını yükler ve eksikleri indirir; belge
-  /// dosyalarıyla aynı anlarda (`documentFileTriggers`): açılışta, yeni
-  /// fişten [receiptUploadDebounce] sonra, ağ geri gelince ve her senkron
-  /// turu bitince. Finansı göremeyen rolde (worker, viewer) hiç çalışmaz.
-  /// `bootstrap` uygulama boyunca dinler.
+  /// dosyalarıyla aynı anlarda ([listenStorageFileSync]). Finansı göremeyen
+  /// rolde (worker, viewer) hiç çalışmaz. `bootstrap` uygulama boyunca dinler.
   ReceiptFileTriggersProvider._()
     : super(
         from: null,
@@ -65,4 +59,4 @@ final class ReceiptFileTriggersProvider
 }
 
 String _$receiptFileTriggersHash() =>
-    r'7861ae7e68d126ebd988b0f7a14369ae4ec1238f';
+    r'12b27b11454f1f20ed3baea9a38ac1aef3f2c5be';

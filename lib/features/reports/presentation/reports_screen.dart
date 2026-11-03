@@ -315,7 +315,7 @@ class _Period extends StatelessWidget {
         Expanded(
           child: LabeledField(
             label: l10n.reportFrom,
-            child: _DateField(
+            child: DateField(
               text: format.date(form.from),
               onTap: () async {
                 if (await pick(form.from) case final day?) {
@@ -328,7 +328,7 @@ class _Period extends StatelessWidget {
         Expanded(
           child: LabeledField(
             label: l10n.reportTo,
-            child: _DateField(
+            child: DateField(
               text: format.date(form.to),
               onTap: () async {
                 if (await pick(form.to) case final day?) controller.setTo(day);
@@ -337,28 +337,6 @@ class _Period extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _DateField extends StatelessWidget {
-  const new({required this.text, required this.onTap});
-
-  final String text;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(context.radii.button),
-        child: InputDecorator(
-          decoration: const InputDecoration(),
-          child: Text(text, style: context.typography.body),
-        ),
-      ),
     );
   }
 }

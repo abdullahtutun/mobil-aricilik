@@ -912,6 +912,24 @@ void main() {
     });
   });
 
+  group('DateField', () {
+    testWidgets('tarihi gösterir, dokununca çağırır, düğme okunur', (
+      tester,
+    ) async {
+      var taps = 0;
+      await tester.pumpWidget(
+        _app(DateField(text: '3 Kas 2026', onTap: () => taps++)),
+      );
+
+      await tester.tap(find.text('3 Kas 2026'));
+      expect(taps, 1);
+      expect(
+        tester.getSemantics(find.byType(DateField)),
+        isSemantics(label: '3 Kas 2026', isButton: true),
+      );
+    });
+  });
+
   group('LabeledField', () {
     testWidgets('tek alanda ad alanla birlikte okunur', (tester) async {
       await tester.pumpWidget(

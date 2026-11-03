@@ -10,6 +10,7 @@ import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/services/pdf_page_renderer.dart';
 import 'package:mobil_arici/core/sync/document_sync_service.dart';
 import 'package:mobil_arici/core/sync/document_sync_service_provider.dart';
+import 'package:mobil_arici/core/sync/storage_file_sync.dart';
 
 import 'fake_media.dart';
 
@@ -93,14 +94,14 @@ class FakeDocumentSyncService implements DocumentSyncService {
   DateTime Function() get clock => DateTime.now;
 
   @override
-  Future<DocumentSyncResult> uploadPending() async {
+  Future<FileSyncResult> uploadPending() async {
     uploadCount++;
-    return const DocumentSyncResult();
+    return const FileSyncResult();
   }
 
   @override
-  Future<DocumentSyncResult> downloadMissing(String orgId) async {
+  Future<FileSyncResult> downloadMissing(String orgId) async {
     downloads.add(orgId);
-    return const DocumentSyncResult();
+    return const FileSyncResult();
   }
 }

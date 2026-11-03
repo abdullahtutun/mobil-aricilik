@@ -588,6 +588,16 @@
 
 - Kaldırılanlar: `tools/map-tiles/` (kesme betiği) ve `map_packs_bucket` pgTAP testi silindi. `20261110120000_drop_map_packs_bucket.sql` boş `map-packs` bucket'ını kaldırıyor; Supabase'in storage tablolarından doğrudan silme korumasını (`storage.protect_delete`) yalnız bu işlemde `storage.allow_delete_query` ile açıyor, bucket'ta dosya varsa hiçbir şey silmeden duruyor. Yerelde `supabase db reset` ile bütün migration'lar baştan uygulandı (yerel DB'de 2 Kasım bilgi bankası denemesinden kalan iki nesne `knowledge_bucket` testini düşürüyordu; reset temizledi), 36 dosyada 518 pgTAP testi geçti. `db push` ile uzak projeye uygulandı; `map-packs` adresi artık "Bucket not found" dönüyor.
 
+### 2026-11-03 — CLAUDE.md denetimi: kural ihlalleri ve tekrar eden kod
+
+- Saat: `sync_controller`, destek dönemleri sıralaması/aşaması ve ilaçlama formundaki tarih seçici `DateTime.now()` yerine `clock.now()` kullanıyor.
+- `DateField` (`core/design_system/components/date_field.dart`): ilaçlama formu ve raporlardaki birebir aynı iki `_DateField` yerine; CLAUDE.md bileşen listesine eklendi.
+- `foldForSearch` tek yerde (`core/utils/text_fold.dart`): ülke araması ve bilgi bankası araması ayrı tablolarla ayrı kopyalar tutuyordu; tablo ikisinin birleşimi, testi `text_fold_test.dart`'ta.
+- `LocalSettingsRepository` ham ve JSON değer okuma/yazma yardımcılarını açtı (`watchValue`, `readValue`, `writeValue`, `removeValue`, `watchJson`, `readJson`, `writeJson`). `TourRepository`, `WeatherRepository` ve `AnalyticsRepository` artık `local_settings`'e kendi sorgularıyla değil bunlarla yazıyor; bozuk JSON eskisi gibi null.
+- `StorageFileSync` (`core/sync/storage_file_sync.dart`): belge ve fiş dosyalarının yükleme/indirme turu (409 = yüklendi, geçici hata erteleme, kalıcı hata `failed`, indirmede atlama) tek yerde. `DocumentSyncService` ve `ReceiptSyncService` yalnız bucket, kuyruk sorgusu, satır güncellemesi ve indirilecek yolları veriyor. `DocumentSyncResult` → `FileSyncResult`.
+- `listenStorageFileSync` (`core/sync/storage_file_triggers.dart`): belge ve fiş tetikleyicilerinin ortak akışı (açılış, debounce, ağ, senkron turu sonu). Fişte ek koşul `canSeeFinance` parametre olarak. Medya tetikleyicisi (Wi‑Fi ayarı, isolate portu) ayrı kaldı.
+- Davranış değişmedi; mevcut servis ve tetikleyici testleri değişmeden geçiyor. Yeni testler: `DateField`, JSON yardımcıları, birleşik harf katlama. Tam takımda 2067 test geçiyor, `flutter analyze` temiz.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

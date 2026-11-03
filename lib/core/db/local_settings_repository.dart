@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
@@ -13,65 +15,69 @@ class LocalSettingsRepository {
   static const mediaWifiOnlyKey = 'media_wifi_only';
 
   Stream<bool> watchMediaWifiOnly() =>
-      _watch(mediaWifiOnlyKey).map((value) => value == 'true');
+      watchValue(mediaWifiOnlyKey).map((value) => value == 'true');
 
-  Future<bool> mediaWifiOnly() async => await _read(mediaWifiOnlyKey) == 'true';
+  Future<bool> mediaWifiOnly() async =>
+      await readValue(mediaWifiOnlyKey) == 'true';
 
   Future<void> setMediaWifiOnly({required bool enabled}) =>
-      _write(mediaWifiOnlyKey, '$enabled');
+      writeValue(mediaWifiOnlyKey, '$enabled');
 
   /// Offline harita paketleri yalnız Wi‑Fi'da (kotasız ağda) insin;
   /// varsayılan açık (paketler onlarca MB).
   static const mapWifiOnlyKey = 'map_wifi_only';
 
   Stream<bool> watchMapWifiOnly() =>
-      _watch(mapWifiOnlyKey).map((value) => value != 'false');
+      watchValue(mapWifiOnlyKey).map((value) => value != 'false');
 
-  Future<bool> mapWifiOnly() async => await _read(mapWifiOnlyKey) != 'false';
+  Future<bool> mapWifiOnly() async =>
+      await readValue(mapWifiOnlyKey) != 'false';
 
   Future<void> setMapWifiOnly({required bool enabled}) =>
-      _write(mapWifiOnlyKey, '$enabled');
+      writeValue(mapWifiOnlyKey, '$enabled');
 
   /// Tam zamanlı alarm izninin neden gerektiği bu telefonda bir kez
   /// anlatıldı; sonra yalnız Ayarlar'dan istenir.
   static const exactAlarmPromptedKey = 'exact_alarm_prompted';
 
   Future<bool> exactAlarmPrompted() async =>
-      await _read(exactAlarmPromptedKey) == 'true';
+      await readValue(exactAlarmPromptedKey) == 'true';
 
-  Future<void> setExactAlarmPrompted() => _write(exactAlarmPromptedKey, 'true');
+  Future<void> setExactAlarmPrompted() =>
+      writeValue(exactAlarmPromptedKey, 'true');
 
   /// "Kullanım verisi paylaş"; varsayılan açık (teknik.md §13: analitik
   /// ilk sürümden açık). Kapalıyken olay yazılmaz ve gönderilmez.
   static const analyticsEnabledKey = 'analytics_enabled';
 
   Stream<bool> watchAnalyticsEnabled() =>
-      _watch(analyticsEnabledKey).map((value) => value != 'false');
+      watchValue(analyticsEnabledKey).map((value) => value != 'false');
 
   Future<bool> analyticsEnabled() async =>
-      await _read(analyticsEnabledKey) != 'false';
+      await readValue(analyticsEnabledKey) != 'false';
 
   /// "Görev bildirimleri" (push); varsayılan açık. Kapalıyken bu telefonun
   /// token'ı sunucudan silinir, atanan görev için bildirim gelmez.
   static const pushEnabledKey = 'push_enabled';
 
   Stream<bool> watchPushEnabled() =>
-      _watch(pushEnabledKey).map((value) => value != 'false');
+      watchValue(pushEnabledKey).map((value) => value != 'false');
 
-  Future<bool> pushEnabled() async => await _read(pushEnabledKey) != 'false';
+  Future<bool> pushEnabled() async =>
+      await readValue(pushEnabledKey) != 'false';
 
   Future<void> setPushEnabled({required bool enabled}) =>
-      _write(pushEnabledKey, '$enabled');
+      writeValue(pushEnabledKey, '$enabled');
 
   /// Bildirim izni bu telefonda bir kez soruldu; sonra yalnız ayardan
   /// açılınca sorulur.
   static const pushPermissionAskedKey = 'push_permission_asked';
 
   Future<bool> pushPermissionAsked() async =>
-      await _read(pushPermissionAskedKey) == 'true';
+      await readValue(pushPermissionAskedKey) == 'true';
 
   Future<void> setPushPermissionAsked() =>
-      _write(pushPermissionAskedKey, 'true');
+      writeValue(pushPermissionAskedKey, 'true');
 
   /// Bu kurulumun analitik kimliği; analitik yeniden açılınca yenilenir.
   static const analyticsInstallIdKey = 'analytics_install_id';
@@ -101,22 +107,55 @@ class LocalSettingsRepository {
           });
 
   Future<void> setVarroaPercentThreshold(double percent) =>
-      _write(varroaPercentKey, '$percent');
+      writeValue(varroaPercentKey, '$percent');
 
   Future<void> setVarroaPerDayThreshold(double perDay) =>
-      _write(varroaPerDayKey, '$perDay');
+      writeValue(varroaPerDayKey, '$perDay');
 
-  Stream<String?> _watch(String key) =>
+  /// [key]'in ham değeri; yoksa null. Tipli ayarlar ve başka özelliklerin
+  /// yalnız bu telefonda tuttuğu kayıtlar (tur, hava paketi) bunun üstünde.
+  Stream<String?> watchValue(String key) =>
       _select(key).map((row) => row.value).watchSingleOrNull();
 
-  Future<String?> _read(String key) =>
+  Future<String?> readValue(String key) =>
       _select(key).map((row) => row.value).getSingleOrNull();
 
-  Future<void> _write(String key, String value) => db
+  /// Önceki değerin yerine yazar.
+  Future<void> writeValue(String key, String value) => db
       .into(db.localSettings)
       .insertOnConflictUpdate(
         LocalSettingsCompanion.insert(key: key, value: value),
       );
+
+  Future<void> removeValue(String key) =>
+      (db.delete(db.localSettings)..where((t) => t.key.equals(key))).go();
+
+  /// [key]'deki JSON nesnesi; yoksa ya da okunamıyorsa (eski sürümün ya da
+  /// bozuk bir yazmanın bıraktığı değer) null.
+  Stream<T?> watchJson<T>(
+    String key,
+    T Function(Map<String, Object?>) fromJson,
+  ) => watchValue(key).map((value) => _decodeJson(value, fromJson));
+
+  Future<T?> readJson<T>(
+    String key,
+    T Function(Map<String, Object?>) fromJson,
+  ) async => _decodeJson(await readValue(key), fromJson);
+
+  Future<void> writeJson(String key, Object? json) =>
+      writeValue(key, jsonEncode(json));
+
+  static T? _decodeJson<T>(
+    String? value,
+    T Function(Map<String, Object?>) fromJson,
+  ) {
+    if (value == null) return null;
+    try {
+      return fromJson(jsonDecode(value) as Map<String, Object?>);
+    } on Object {
+      return null;
+    }
+  }
 
   SimpleSelectStatement<$LocalSettingsTable, LocalSetting> _select(
     String key,
