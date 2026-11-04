@@ -17,9 +17,9 @@ import 'package:mobil_arici/features/knowledge/presentation/widgets/knowledge_wi
 
 /// Bilgi bankası (docs/design "Bilgi bankası"): üstte internetsiz tam metin
 /// arama; arama boşken "Bu ay yapılacaklar" kartı (ay, bölge ve
-/// yarımküreye göre), teşhis yardımcısı, kategoriler ve hesaplayıcılar.
-/// Mevzuat yalnız TR profilinde. Açılınca içerik güncellemesine bakılır;
-/// yeni paket inerse ekran kendiliğinden yenilenir.
+/// yarımküreye göre), teşhis yardımcısı ve hesaplayıcılar. Açılınca
+/// içerik güncellemesine bakılır; yeni paket inerse ekran kendiliğinden
+/// yenilenir.
 class KnowledgeScreen extends ConsumerStatefulWidget {
   const new({super.key});
 
@@ -97,10 +97,6 @@ class _KnowledgeScreenState extends ConsumerState<KnowledgeScreen> {
       hemisphere: region.hemisphere,
       profile: region.profile,
     );
-    int count(KnowledgeCategory category) =>
-        articles.where((article) => article.category == category).length;
-    void open(KnowledgeCategory category) =>
-        unawaited(context.push(AppRoutes.knowledgeCategory(category)));
 
     return [
       if (month != null) ...[
@@ -112,31 +108,9 @@ class _KnowledgeScreenState extends ConsumerState<KnowledgeScreen> {
       ListGroup(
         children: [
           ListRow(
-            title: l10n.knowledgeAtlasTitle,
-            subtitle: l10n.knowledgeTopicCount(count(KnowledgeCategory.atlas)),
-            onTap: () => open(KnowledgeCategory.atlas),
-          ),
-          ListRow(
-            title: l10n.knowledgeGuidesTitle,
-            subtitle: l10n.knowledgeGuidesSubtitle,
-            onTap: () => open(KnowledgeCategory.guides),
-          ),
-          ListRow(
             title: l10n.knowledgeCalculatorsTitle,
             subtitle: l10n.knowledgeCalculatorsSubtitle,
             onTap: () => unawaited(context.push(AppRoutes.calculators)),
-          ),
-          if (region.features.regulations)
-            ListRow(
-              title: l10n.knowledgeRegulationsTitle,
-              subtitle: l10n.knowledgeRegulationsSubtitle,
-              trailing: const _TrBadge(),
-              onTap: () => open(KnowledgeCategory.regulations),
-            ),
-          ListRow(
-            title: l10n.knowledgeFirstYearTitle,
-            subtitle: l10n.knowledgeFirstYearSubtitle,
-            onTap: () => open(KnowledgeCategory.firstYear),
           ),
         ],
       ),
@@ -261,36 +235,6 @@ class _DiagnosisCard extends StatelessWidget {
                 color: colors.textSecondary,
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Yalnız Türkiye'ye özel içeriğin "TR" etiketi.
-class _TrBadge extends StatelessWidget {
-  const new();
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final spacing = context.spacing;
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.surfaceContainer,
-        borderRadius: BorderRadius.circular(context.radii.pill),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.sm,
-          vertical: spacing.xs,
-        ),
-        child: Text(
-          AppLocalizations.of(context).knowledgeTrBadge,
-          style: context.typography.labelSmall.copyWith(
-            color: colors.textSecondary,
           ),
         ),
       ),

@@ -84,8 +84,8 @@ const _summaryTr =
 void main() {
   setUpAll(initializeDateFormatting);
 
-  testWidgets("TR'de Daha fazla'dan açılır: ay kartı, teşhis, kategoriler, "
-      'hesaplayıcılar, TR rozetli mevzuat; güncellemeye bakılır', (
+  testWidgets("TR'de Daha fazla'dan açılır: ay kartı, teşhis, hesaplayıcılar; "
+      'atlas, rehber, mevzuat ve ilk yıl satırları yok; güncellemeye bakılır', (
     tester,
   ) async {
     tester.view
@@ -105,16 +105,18 @@ void main() {
         _summaryEn,
         'Diagnosis helper',
         'Pick a sign, see possible causes',
-        'Diseases and pests atlas',
-        '1 topic',
-        'Technical guides',
         'Calculators',
-        'Regulation summaries',
-        'TR',
-        'My first year',
         'All content opens offline',
       ]) {
         expect(find.text(text), findsOneWidget, reason: text);
+      }
+      for (final text in [
+        'Diseases and pests atlas',
+        'Technical guides',
+        'Regulation summaries',
+        'My first year',
+      ]) {
+        expect(find.text(text), findsNothing, reason: text);
       }
       expect(find.textContaining('NOVEMBER · T'), findsOneWidget);
 
@@ -145,7 +147,7 @@ void main() {
     await tester.enterText(find.byType(TextField), 'KIREC');
     await tester.pumpAndSettle();
     expect(find.text('Kireç hastalığı'), findsOneWidget);
-    expect(find.text('Hastalık ve zararlı atlası'), findsNothing);
+    expect(find.text('Hesaplayıcılar'), findsNothing);
 
     await tester.enterText(find.byType(TextField), 'kafes ana');
     await tester.pumpAndSettle();
@@ -162,21 +164,20 @@ void main() {
 
     await tester.enterText(find.byType(TextField), '');
     await tester.pumpAndSettle();
-    expect(find.text('Hastalık ve zararlı atlası'), findsOneWidget);
+    expect(find.text('Hesaplayıcılar'), findsOneWidget);
   });
 
   testWidgets('kategori makaleleri listeler; boş kategori, tanınmayan '
       'kategori ve makale boş durum gösterir', (tester) async {
     final container = await _open(tester, location: AppRoutes.knowledge);
 
-    await _tap(tester, find.text('Diseases and pests atlas'));
+    await _go(container, tester, '/more/knowledge/category/atlas');
     expect(find.byType(KnowledgeCategoryScreen), findsOneWidget);
     expect(find.text('Chalkbrood'), findsOneWidget);
     await _tap(tester, find.text('Chalkbrood'));
     expect(find.text('Signs'), findsOneWidget);
 
-    await _go(container, tester, AppRoutes.knowledge);
-    await _tap(tester, find.text('Regulation summaries'));
+    await _go(container, tester, '/more/knowledge/category/regulations');
     expect(find.text('No articles yet'), findsOneWidget);
 
     await _go(container, tester, '/more/knowledge/category/recipes');
@@ -195,10 +196,9 @@ void main() {
         location: AppRoutes.knowledge,
         region: resolveRegionConfig('DE'),
       );
-      expect(find.text('Regulation summaries'), findsNothing);
       // Kasım makalesi TR etiketli; GLOBAL takvim makalesi yok.
       expect(find.text('To do this month'), findsNothing);
-      expect(find.text('Diseases and pests atlas'), findsOneWidget);
+      expect(find.text('Calculators'), findsOneWidget);
 
       await tester.enterText(find.byType(TextField), 'winter');
       await tester.pumpAndSettle();
@@ -241,15 +241,14 @@ void main() {
           'title: Fresh guide\nsummary: From the update.\n---\n'
           '[Source](https://example.com/source)\n',
     });
-    await _open(
+    final container = await _open(
       tester,
       location: AppRoutes.knowledge,
       knowledge: knowledge,
       urlLauncher: launcher,
     );
-    expect(find.text('0 topics'), findsOneWidget);
 
-    await _tap(tester, find.text('Technical guides'));
+    await _go(container, tester, '/more/knowledge/category/guides');
     expect(find.text('Fresh guide'), findsOneWidget);
     expect(find.text('Introducing a queen'), findsNothing);
 
@@ -282,19 +281,19 @@ void main() {
         _summaryTr,
         'Teşhis yardımcısı',
         'Belirtiyi seç, olası nedenleri gör',
-        'Hastalık ve zararlı atlası',
-        '1 konu',
-        'Teknik rehberler',
-        'Bölme, ana verme, birleştirme, kışlatma',
         'Hesaplayıcılar',
         'Şurup, ilaç dozu, ana takvimi, verim',
-        'Mevzuat özetleri',
-        'Yönetmelik, gezginci, bal tebliği',
-        'İlk yılım',
-        'Yeni başlayanlar için adım adım',
         'Tüm içerik internetsiz açılır',
       ]) {
         expect(find.text(text), findsOneWidget, reason: text);
+      }
+      for (final text in [
+        'Hastalık ve zararlı atlası',
+        'Teknik rehberler',
+        'Mevzuat özetleri',
+        'İlk yılım',
+      ]) {
+        expect(find.text(text), findsNothing, reason: text);
       }
       expect(find.text('Yakında'), findsNothing);
       final hint = tester.widget<TextField>(find.byType(TextField));

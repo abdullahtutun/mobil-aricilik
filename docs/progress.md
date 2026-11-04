@@ -629,6 +629,14 @@
 - ARB'ye `apiaryBulkFeed`, `apiaryBulkTreat`, `apiaryDetailSubtitlePlace` (TR + EN) eklendi.
 - Testler: `hives_flow_test.dart`'ta toplu butonların formu arılığın tümü seçili açıp arılığa döndüğü, aktif kovan yokken görünmedikleri, il/ilçenin alt yazıda çıktığı; "Kovan ekle" artık ⋮ menüsünden. İlgili klasörlerdeki 615 test geçiyor, `flutter analyze` temiz. Cihazda denenmedi.
 
+### 2026-11-04 — Bilgi bankası: kategori satırları kaldırıldı
+
+- Bilgi bankası ana ekranından Hastalık ve zarar atlası, Teknik rehberler, Mevzuat özetleri ve İlk yılım satırları çıkarıldı. Ekranda ay kartı, teşhis yardımcısı, Hesaplayıcılar satırı ve arama duruyor. Yalnız ekran değişti: makaleler, kategori rotaları (`/more/knowledge/category/...`), kategori ekranı ve ARB anahtarları olduğu gibi duruyor. Arama bu kategorilerin makalelerini hâlâ buluyor.
+- Yalnız mevzuat satırına ait `_TrBadge` ve kullanılmayan sayaç/açma yardımcıları ekrandan silindi; `region.features.regulations` artık bu ekranda kullanılmıyor.
+- `knowledge_flow_test.dart` güncellendi: dört satırın görünmediği (TR ve EN), diğer bölge ve Türkçe metin testlerinde Hesaplayıcılar satırının görünmesi; kategori ve rehber makalesi testleri satıra dokunmak yerine rotaya gidiyor.
+- `knowledge` klasörü testleri (54) geçiyor, `flutter analyze` temiz. Cihazda denenmedi.
+- Bilinen: kategori ekranlarına ana ekrandan giden yol kalmadı; rotalar yalnız derin linkle ya da arama sonucundan açılabilir.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
