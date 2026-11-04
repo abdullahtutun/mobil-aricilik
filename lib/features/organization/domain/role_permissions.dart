@@ -15,6 +15,11 @@ bool canSeeFinance(MembershipRole? role) =>
     role == MembershipRole.owner ||
     role == MembershipRole.partner;
 
+/// Arılık ve kovan silme: yalnız owner ve partner (kullanıcı kararı). Rol
+/// bilinmiyorsa gösterilmez; geri dönüşü olmayan bir eylem.
+bool canDeleteApiariesAndHives(MembershipRole? role) =>
+    role == MembershipRole.owner || role == MembershipRole.partner;
+
 /// Davet kodu üretme: owner ve partner.
 bool canInvite(MembershipRole? role) =>
     role == MembershipRole.owner || role == MembershipRole.partner;

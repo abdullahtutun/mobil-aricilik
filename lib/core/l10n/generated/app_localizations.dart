@@ -302,6 +302,36 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get apiaryEdit;
 
+  /// No description provided for @apiaryDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete apiary'**
+  String get apiaryDelete;
+
+  /// No description provided for @apiaryDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this apiary?'**
+  String get apiaryDeleteTitle;
+
+  /// No description provided for @apiaryDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The apiary will be removed from every phone.'**
+  String get apiaryDeleteMessage;
+
+  /// No description provided for @apiaryDeleteWithHivesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{This apiary has 1 hive. The apiary and its hive will be removed from every phone.} other{This apiary has {count} hives. The apiary and its hives will be removed from every phone.}}'**
+  String apiaryDeleteWithHivesMessage(int count);
+
+  /// No description provided for @apiaryDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary deleted'**
+  String get apiaryDeleted;
+
   /// No description provided for @apiaryNotFoundTitle.
   ///
   /// In en, this message translates to:
@@ -769,6 +799,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get hiveEdit;
+
+  /// No description provided for @hiveDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete hive'**
+  String get hiveDelete;
+
+  /// No description provided for @hiveDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete hive {number}?'**
+  String hiveDeleteTitle(String number);
+
+  /// No description provided for @hiveDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The hive and its records will be removed from every phone.'**
+  String get hiveDeleteMessage;
+
+  /// No description provided for @hiveDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number} deleted'**
+  String hiveDeleted(String number);
 
   /// Screen reader text for the apiary under the big hive number.
   ///
@@ -1405,6 +1459,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get actionCancel;
+
+  /// No description provided for @actionDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get actionDelete;
 
   /// No description provided for @actionRetry.
   ///

@@ -681,6 +681,14 @@
 - ARB'ye `apiaryMapDirectionsChooseApp` (TR + EN) eklendi. Sahte `FakeDirectionsService` `signedIn()`'e eklendi; `apiaries_map_flow_test.dart`: uygulama yoksa Google bağlantısı, birden çoksa seçim sayfası ve seçilenin açılması, sayfa kapatılınca hiçbir şey açılmaması, açılamayınca mesaj, tek uygulamada sayfasız açılma.
 - apiaries, today ve app testleri (136) geçiyor, `flutter analyze` temiz; dev debug APK ve iOS (imzasız) derlemesi başarılı (paket SPM destekli). Cihazda denenmedi: uygulama tespiti ve açılış gerçek telefonda doğrulanmalı.
 
+### 2026-11-04 — Arılık ve kovan silme
+
+- Arılık detayı ve kovan kartının ⋮ menüsüne "Arılığı sil" / "Kovanı sil" eklendi; silmeden önce `showConfirmDialog` onay istiyor, silinince mesaj gösterilip Arılıklar'a (arılıkta) ya da arılığa (kovanda) dönülüyor. Silme yumuşak (`deleted_at`) ve outbox'a `delete` olarak yazılıyor; sunucu `sync_push` bunu zaten kabul ediyordu, şema ve migration değişmedi.
+- Kullanıcı kararıyla kovanlı arılık kovanlarıyla birlikte siliniyor: onay penceresi "Bu arılıkta N kovan var…" diye hatırlatıyor. `ApiaryRepository.deleteWithHives` arılığı ve içindeki her durumdaki silinmemiş kovanları tek transaction'da siliyor.
+- Kullanıcı kararıyla silme yalnız owner ve partner'da görünüyor: `canDeleteApiariesAndHives` kuralı ve provider'ı; rol bilinmiyorsa (üyelik henüz inmediyse) de gizli. Sunucu RLS'si worker'ın `deleted_at` yazmasını hâlâ kabul ediyor; kısıt yalnız arayüzde.
+- ARB'ye `actionDelete`, `apiaryDelete…`, `hiveDelete…` anahtarları (TR + EN) eklendi. Testler: `delete_flow_test.dart` (onay, vazgeç, kovanlı/kovansız arılık, kovan, worker ve bilinmeyen rolde gizli, Türkçe, 360dp'de 1.5x yazı ve eldiven), `apiary_repository_test.dart` (birlikte silme ve outbox), `team_rules_test.dart`. apiaries, hives, team ve app testleri (336) geçiyor, `flutter analyze` temiz.
+- Bilinen: geri al yok. Silinen kovanın ana arısı, görevleri ve olay kayıtları (muayene, besleme vb.) silinmiyor, yalnız kovan görünmediği için ekranlarda kalkıyor; ana arı kaydı başka kovana atanabilir durumda kalabilir. Cihazda denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

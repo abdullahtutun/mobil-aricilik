@@ -4,6 +4,7 @@ import 'package:mobil_arici/core/db/base_repository.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
+import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 
@@ -134,5 +135,20 @@ class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
       await _tasks.remindAksUpdate(apiary.orgId);
     }
     return updated;
+  });
+
+  /// Arılığı ve içindeki bütün (silinmemiş, her durumdaki) kovanları tek
+  /// transaction'da yumuşak siler; silinen kovan sayısını döner. Kovanlar
+  /// silinmemiş arılıkta kalmasın. Arılık yoksa ya da silinmişse bir şey
+  /// yazmaz ve 0 döner.
+  Future<int> deleteWithHives(String apiaryId) => db.transaction(() async {
+    if (await findById(apiaryId) == null) return 0;
+    final hives = HiveRepository(db, clock: clock);
+    final inApiary = await hives.findByApiary(apiaryId);
+    for (final hive in inApiary) {
+      await hives.delete(hive.id);
+    }
+    await delete(apiaryId);
+    return inApiary.length;
   });
 }

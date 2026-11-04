@@ -150,6 +150,53 @@ final class CanWriteRecordsProvider
 
 String _$canWriteRecordsHash() => r'749e91e4170bee7861898672e01bcae11d572c5b';
 
+/// Arılık ve kovan silme menüde görünsün mü (yalnız owner ve partner).
+
+@ProviderFor(canDeleteApiariesAndHives)
+final canDeleteApiariesAndHivesProvider = CanDeleteApiariesAndHivesProvider._();
+
+/// Arılık ve kovan silme menüde görünsün mü (yalnız owner ve partner).
+
+final class CanDeleteApiariesAndHivesProvider
+    extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// Arılık ve kovan silme menüde görünsün mü (yalnız owner ve partner).
+  CanDeleteApiariesAndHivesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'canDeleteApiariesAndHivesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$canDeleteApiariesAndHivesHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    return canDeleteApiariesAndHives(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$canDeleteApiariesAndHivesHash() =>
+    r'200fff38d9008fcb2654a0f76777580b11477c56';
+
 /// Finans menüsü görünsün mü (worker ve viewer görmez).
 
 @ProviderFor(canSeeFinance)

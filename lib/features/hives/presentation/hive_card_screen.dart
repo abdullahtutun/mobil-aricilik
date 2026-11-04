@@ -57,6 +57,7 @@ class HiveCardScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final canWrite = ref.watch(canWriteRecordsProvider);
+    final canDelete = ref.watch(canDeleteApiariesAndHivesProvider);
 
     return switch (ref.watch(hiveProvider(hiveId))) {
       AsyncData(value: final hive?) => Scaffold(
@@ -100,6 +101,11 @@ class HiveCardScreen extends ConsumerWidget {
                         context.go(AppRoutes.hiveEdit(apiaryId, hiveId)),
                     child: Text(l10n.hiveEdit),
                   ),
+                  if (canDelete)
+                    PopupMenuItem(
+                      value: () => _delete(context, ref, hive),
+                      child: Text(l10n.hiveDelete),
+                    ),
                 ],
               ),
           ],
@@ -185,6 +191,22 @@ class HiveCardScreen extends ConsumerWidget {
       },
       onUndo: () => actions.undoAdd(media, capture),
     );
+  }
+
+  /// Onay alınca kovanı siler ve arılığa döner.
+  Future<void> _delete(BuildContext context, WidgetRef ref, Hive hive) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l10n.hiveDeleteTitle(hive.number),
+      message: l10n.hiveDeleteMessage,
+      confirmLabel: l10n.actionDelete,
+    );
+    if (!confirmed || !context.mounted) return;
+    await ref.read(hiveRepositoryProvider).delete(hive.id);
+    if (!context.mounted) return;
+    showMessageSnackBar(context, l10n.hiveDeleted(hive.number));
+    context.go(AppRoutes.apiary(apiaryId));
   }
 
   /// Arılık seçilince hemen taşır; Geri al kovanı eski arılığına döndürür.

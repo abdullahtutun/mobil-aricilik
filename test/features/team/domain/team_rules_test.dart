@@ -41,6 +41,15 @@ void main() {
       }
     });
 
+    test('arılık ve kovanı yalnız owner ve partner siler', () {
+      expect(canDeleteApiariesAndHives(MembershipRole.owner), isTrue);
+      expect(canDeleteApiariesAndHives(MembershipRole.partner), isTrue);
+      expect(canDeleteApiariesAndHives(MembershipRole.worker), isFalse);
+      expect(canDeleteApiariesAndHives(MembershipRole.viewer), isFalse);
+      // Rol bilinmiyorsa geri dönüşsüz eylem gösterilmez.
+      expect(canDeleteApiariesAndHives(null), isFalse);
+    });
+
     test('finansı yalnız owner ve partner görür', () {
       expect(canSeeFinance(MembershipRole.owner), isTrue);
       expect(canSeeFinance(MembershipRole.partner), isTrue);

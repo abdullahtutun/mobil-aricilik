@@ -152,6 +152,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apiaryEdit => 'Edit';
 
   @override
+  String get apiaryDelete => 'Delete apiary';
+
+  @override
+  String get apiaryDeleteTitle => 'Delete this apiary?';
+
+  @override
+  String get apiaryDeleteMessage =>
+      'The apiary will be removed from every phone.';
+
+  @override
+  String apiaryDeleteWithHivesMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'This apiary has $count hives. The apiary and its hives will be removed from every phone.',
+      one: 'This apiary has 1 hive. The apiary and its hive will be removed from every phone.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get apiaryDeleted => 'Apiary deleted';
+
+  @override
   String get apiaryNotFoundTitle => 'Apiary not found';
 
   @override
@@ -422,6 +447,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hiveEdit => 'Edit';
+
+  @override
+  String get hiveDelete => 'Delete hive';
+
+  @override
+  String hiveDeleteTitle(String number) {
+    return 'Delete hive $number?';
+  }
+
+  @override
+  String get hiveDeleteMessage =>
+      'The hive and its records will be removed from every phone.';
+
+  @override
+  String hiveDeleted(String number) {
+    return 'Hive $number deleted';
+  }
 
   @override
   String hiveCardApiary(String name) {
@@ -820,6 +862,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionCancel => 'Cancel';
+
+  @override
+  String get actionDelete => 'Delete';
 
   @override
   String get actionRetry => 'Try again';

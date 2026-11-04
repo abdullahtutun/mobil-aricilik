@@ -19,8 +19,10 @@ import 'package:mobil_arici/features/inspections/presentation/tour_screen.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
-/// ⋮ menüsünde "Kovan ekle"; öbür öğelerin değeri rota yolu.
+/// ⋮ menüsünde "Kovan ekle" ve "Arılığı sil"; öbür öğelerin değeri rota
+/// yolu.
 const _addHivesValue = 'add-hives';
+const _deleteValue = 'delete';
 
 /// Arılık detayı: büyük ad, altında aktif kovan sayısı, son ziyaret ve (hava
 /// paketinde varsa) il/ilçe; tur, toplu besleme, toplu ilaçlama ve hasat
@@ -38,6 +40,7 @@ class ApiaryDetailScreen extends ConsumerWidget {
     final hives = ref.watch(apiaryHivesProvider(apiaryId)).value ?? const [];
     final hasHives = hives.isNotEmpty;
     final canWrite = ref.watch(canWriteRecordsProvider);
+    final canDelete = ref.watch(canDeleteApiariesAndHivesProvider);
     // Toplu besleme ve ilaçlama formları bir aktif kovanla açılır; arılığın
     // tümü seçili gelir.
     final anchorHive = hives.where(canInspect).firstOrNull;
@@ -53,9 +56,11 @@ class ApiaryDetailScreen extends ConsumerWidget {
             // Seyrek eylemler ⋮ menüsünde (docs/design "Arılık detayı").
             PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert_rounded),
-              onSelected: (value) => value == _addHivesValue
-                  ? openAddHives(context, apiaryId)
-                  : context.go(value),
+              onSelected: (value) => switch (value) {
+                _addHivesValue => openAddHives(context, apiaryId),
+                _deleteValue => _delete(context, ref, hives.length),
+                _ => context.go(value),
+              },
               itemBuilder: (context) => [
                 if (canWrite)
                   PopupMenuItem(
@@ -71,6 +76,11 @@ class ApiaryDetailScreen extends ConsumerWidget {
                   PopupMenuItem(
                     value: AppRoutes.apiaryEdit(apiaryId),
                     child: Text(l10n.apiaryEdit),
+                  ),
+                if (canDelete)
+                  PopupMenuItem(
+                    value: _deleteValue,
+                    child: Text(l10n.apiaryDelete),
                   ),
               ],
             ),
@@ -168,6 +178,29 @@ class ApiaryDetailScreen extends ConsumerWidget {
       // Yerel DB'den okunuyor; hemen gelir.
       AsyncValue() => Scaffold(appBar: AppBar()),
     };
+  }
+
+  /// Onay alınca arılığı ve içindeki [hiveCount] kovanı siler, Arılıklar'a
+  /// döner.
+  Future<void> _delete(
+    BuildContext context,
+    WidgetRef ref,
+    int hiveCount,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l10n.apiaryDeleteTitle,
+      message: hiveCount == 0
+          ? l10n.apiaryDeleteMessage
+          : l10n.apiaryDeleteWithHivesMessage(hiveCount),
+      confirmLabel: l10n.actionDelete,
+    );
+    if (!confirmed || !context.mounted) return;
+    await ref.read(apiaryRepositoryProvider).deleteWithHives(apiaryId);
+    if (!context.mounted) return;
+    showMessageSnackBar(context, l10n.apiaryDeleted);
+    context.go(AppRoutes.apiaries);
   }
 }
 

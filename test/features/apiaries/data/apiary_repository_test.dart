@@ -59,6 +59,44 @@ void main() {
     },
   );
 
+  test('deleteWithHives arılığı ve bütün kovanlarını birlikte siler', () async {
+    final hives = HiveRepository(db, clock: TestClock().call);
+    final yayla = await repository.create(orgId: 'org-1', name: 'Yayla');
+    final ova = await repository.create(orgId: 'org-1', name: 'Ova');
+    Future<Hive> hive(String number, String apiaryId) => hives.create(
+      orgId: 'org-1',
+      number: number,
+      type: HiveType.local,
+      apiaryId: apiaryId,
+    );
+    final h1 = await hive('1', yayla.id);
+    final h2 = await hive('2', yayla.id);
+    final h3 = await hive('3', ova.id);
+    await hives.setStatus(h2.id, HiveStatus.dead);
+    final outboxBefore = (await readOutbox(db)).length;
+
+    expect(await repository.deleteWithHives(yayla.id), 2);
+
+    expect(await repository.findById(yayla.id), isNull);
+    expect(await hives.findById(h1.id), isNull);
+    expect(await hives.findById(h2.id), isNull);
+    expect(await hives.findById(h3.id), isNotNull);
+    expect(await repository.findById(ova.id), isNotNull);
+    final added = (await readOutbox(db)).skip(outboxBefore);
+    expect(
+      [for (final e in added) (e.recordTable, e.recordId, e.operation)],
+      unorderedEquals([
+        ('hives', h1.id, OutboxOperation.delete),
+        ('hives', h2.id, OutboxOperation.delete),
+        ('apiaries', yayla.id, OutboxOperation.delete),
+      ]),
+    );
+
+    // Silinmiş arılık yeniden silinmez.
+    expect(await repository.deleteWithHives(yayla.id), 0);
+    expect(await readOutbox(db), hasLength(outboxBefore + 3));
+  });
+
   test('tüm alanlar yazılıp aynen okunur', () async {
     final created = await repository.create(
       orgId: 'org-1',

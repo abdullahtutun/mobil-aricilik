@@ -39,6 +39,11 @@ MembershipRole? currentRole(Ref ref) {
 bool canWriteRecords(Ref ref) =>
     permissions.canWriteRecords(ref.watch(currentRoleProvider));
 
+/// Arılık ve kovan silme menüde görünsün mü (yalnız owner ve partner).
+@riverpod
+bool canDeleteApiariesAndHives(Ref ref) =>
+    permissions.canDeleteApiariesAndHives(ref.watch(currentRoleProvider));
+
 /// Finans menüsü görünsün mü (worker ve viewer görmez).
 @riverpod
 bool canSeeFinance(Ref ref) =>

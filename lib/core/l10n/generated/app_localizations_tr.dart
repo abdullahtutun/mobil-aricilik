@@ -150,6 +150,23 @@ class AppLocalizationsTr extends AppLocalizations {
   String get apiaryEdit => 'Düzenle';
 
   @override
+  String get apiaryDelete => 'Arılığı sil';
+
+  @override
+  String get apiaryDeleteTitle => 'Arılık silinsin mi?';
+
+  @override
+  String get apiaryDeleteMessage => 'Arılık bütün telefonlardan kalkar.';
+
+  @override
+  String apiaryDeleteWithHivesMessage(int count) {
+    return 'Bu arılıkta $count kovan var. Arılık, kovanlarıyla birlikte bütün telefonlardan kalkar.';
+  }
+
+  @override
+  String get apiaryDeleted => 'Arılık silindi';
+
+  @override
   String get apiaryNotFoundTitle => 'Arılık bulunamadı';
 
   @override
@@ -419,6 +436,23 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get hiveEdit => 'Düzenle';
+
+  @override
+  String get hiveDelete => 'Kovanı sil';
+
+  @override
+  String hiveDeleteTitle(String number) {
+    return '$number numaralı kovan silinsin mi?';
+  }
+
+  @override
+  String get hiveDeleteMessage =>
+      'Kovan ve kayıtları bütün telefonlardan kalkar.';
+
+  @override
+  String hiveDeleted(String number) {
+    return '$number numaralı kovan silindi';
+  }
 
   @override
   String hiveCardApiary(String name) {
@@ -814,6 +848,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get actionCancel => 'Vazgeç';
+
+  @override
+  String get actionDelete => 'Sil';
 
   @override
   String get actionRetry => 'Yeniden dene';
