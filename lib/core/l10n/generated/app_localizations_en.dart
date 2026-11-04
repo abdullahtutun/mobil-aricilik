@@ -2724,6 +2724,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get weatherNoLocationTitle => 'No location';
+
+  @override
+  String get weatherNoLocationAction => 'Add a location for weather';
+
+  @override
   String weatherWind(String speed) {
     return 'Wind $speed';
   }

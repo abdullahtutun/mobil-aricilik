@@ -4400,6 +4400,18 @@ abstract class AppLocalizations {
   /// **'Forecast as of {time}'**
   String weatherForecastAsOf(String time);
 
+  /// Weather strip on Today: card of an apiary without a location.
+  ///
+  /// In en, this message translates to:
+  /// **'No location'**
+  String get weatherNoLocationTitle;
+
+  /// On the no-location card; tapping opens the apiary edit form.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a location for weather'**
+  String get weatherNoLocationAction;
+
   /// No description provided for @weatherWind.
   ///
   /// In en, this message translates to:

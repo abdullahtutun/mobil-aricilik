@@ -41,6 +41,14 @@ String? apiaryPlace(Ref ref, String apiaryId) {
   return place.isEmpty ? null : place;
 }
 
+/// Konumu girilmemiş arılıklar, arılık sırasıyla. Bunların havası olmaz;
+/// Bugün'deki şeritte "konum ekle" kartı olarak görünürler.
+@riverpod
+Future<List<Apiary>> unlocatedApiaries(Ref ref) async => [
+  for (final summary in await ref.watch(apiaryListProvider.future))
+    if (summary.apiary.latitude == null) summary.apiary,
+];
+
 /// Bir arılığın şu anki saatinin havası. `opening` sıcaklık ya da rüzgar
 /// eksikse null; `thresholds` simgenin rüzgar sınırı için.
 typedef ApiaryWeather = ({

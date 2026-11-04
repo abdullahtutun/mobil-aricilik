@@ -744,6 +744,8 @@
   "weatherTemperature": "{value}°",
   "weatherForecastAsOf": "Tahmin {time} itibarıyla",
   "weatherWind": "Rüzgar {speed}",
+  "weatherNoLocationTitle": "Konum yok",
+  "weatherNoLocationAction": "Hava için konum ekle",
   "weatherSpeed": "{value} {unit}",
   "unitKmh": "km/s",
   "unitMph": "mph",

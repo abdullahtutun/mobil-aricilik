@@ -638,6 +638,13 @@
 - Bilinen: kategori ekranlarına ana ekrandan giden yol kalmadı; rotalar yalnız derin linkle açılabilir.
 - Ardından aramadan da kaldırıldı: `hiddenKnowledgeCategories` (atlas, guides, regulations, first_year) makaleleri `searchKnowledgeArticles`'ta atlanıyor; aramada yalnız takvim makaleleri çıkıyor. Arama ipucu "Kışlık stok, varroa…" / "Winter stores, varroa…" oldu. Makale dosyaları ve rotalar silinmedi. Kural testi ve akış testi güncellendi; `knowledge` testleri (55) geçiyor.
 
+### 2026-11-04 — Bugün: hava şeridinde konumsuz arılık kartı
+
+- Sorun: 3 arılıktan biri konumsuzdu. Konumsuz arılığın hava tahmini olmadığı için şeritte kartı çıkmıyordu; kalan iki kart ekrana tam sığdığı için şerit de kaymıyordu.
+- Kullanıcı kararıyla konumsuz arılıklar şeridin sonuna `ApiaryNoLocationCard` olarak eklendi: ad, ikon + "Konum yok", yazma yetkisi varsa "Hava için konum ekle". Kart dokununca `/apiaries/:id/edit` formunu açıyor; yetkisi olmayan kullanıcıda dokunulmuyor. Veri yeni `unlocatedApiariesProvider`'dan geliyor, şema değişmedi.
+- Şerit artık hava paketi yokken de konumsuz kartlarla görünüyor; WeatherAPI atfı ve "itibarıyla" satırı yalnız hava kartı varken çıkıyor. ARB'ye `weatherNoLocationTitle` ve `weatherNoLocationAction` (TR + EN) eklendi.
+- `today_weather_flow_test.dart`: konumsuz kart görünüyor, iki konumlu + bir konumsuz arılıkta şerit kayıyor ve kart formu açıyor, EN metinler, 360dp'de 1.5x yazı ve eldivenle taşma yok. today, weather, apiaries, hives, onboarding ve app testleri geçiyor (363), `flutter analyze` temiz. Cihazda denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

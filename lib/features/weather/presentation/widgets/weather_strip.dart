@@ -6,11 +6,12 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/apiary_no_location_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/apiary_weather_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 
 /// Bugün'ün üstündeki yatay kayan arılık hava kartları ve WeatherAPI.com
-/// atfı.
+/// atfı. Konumsuz arılıklar sonda "konum ekle" kartıyla yer alır.
 /// Saklanan paket [weatherRefreshInterval]'den eskiyse tahminin zamanı da
 /// yazar (çevrimdışı). Gösterilecek arılık yoksa hiç yer kaplamaz.
 class WeatherStrip extends ConsumerWidget {
@@ -19,7 +20,12 @@ class WeatherStrip extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weather = ref.watch(apiaryWeatherProvider).value ?? const [];
-    if (weather.isEmpty) return const SizedBox.shrink();
+    final unlocated = ref.watch(unlocatedApiariesProvider).value ?? const [];
+    final cards = [
+      for (final item in weather) ApiaryWeatherCard(weather: item),
+      for (final apiary in unlocated) ApiaryNoLocationCard(apiary: apiary),
+    ];
+    if (cards.isEmpty) return const SizedBox.shrink();
     final generatedAt = ref.watch(weatherBundleProvider).value?.generatedAt;
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
@@ -35,7 +41,7 @@ class WeatherStrip extends ConsumerWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             final available = constraints.maxWidth - 2 * spacing.lg;
-            final cardWidth = weather.length == 1
+            final cardWidth = cards.length == 1
                 ? available
                 : (available - spacing.md) / 2;
             return SingleChildScrollView(
@@ -46,35 +52,33 @@ class WeatherStrip extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   spacing: spacing.md,
                   children: [
-                    for (final item in weather)
-                      SizedBox(
-                        width: cardWidth,
-                        child: ApiaryWeatherCard(weather: item),
-                      ),
+                    for (final card in cards)
+                      SizedBox(width: cardWidth, child: card),
                   ],
                 ),
               ),
             );
           },
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(spacing.lg, spacing.sm, spacing.lg, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (stale)
-                Text(
-                  l10n.weatherForecastAsOf(
-                    AppFormat.of(context).dateTime(generatedAt.toLocal()),
+        if (weather.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.fromLTRB(spacing.lg, spacing.sm, spacing.lg, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (stale)
+                  Text(
+                    l10n.weatherForecastAsOf(
+                      AppFormat.of(context).dateTime(generatedAt.toLocal()),
+                    ),
+                    style: context.typography.bodySmall.copyWith(
+                      color: context.colors.textSecondary,
+                    ),
                   ),
-                  style: context.typography.bodySmall.copyWith(
-                    color: context.colors.textSecondary,
-                  ),
-                ),
-              const WeatherAttribution(),
-            ],
+                const WeatherAttribution(),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }

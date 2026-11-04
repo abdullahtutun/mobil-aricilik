@@ -9,6 +9,7 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 import 'package:mobil_arici/features/weather/domain/weather_icons.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
@@ -65,7 +66,7 @@ void main() {
       latitude: 39.93,
       longitude: 32.86,
     );
-    // Konumsuz arılığın havası olmaz.
+    // Konumsuz arılığın havası olmaz; şeritte "konum ekle" kartı olur.
     await apiaries.create(orgId: _orgId, name: 'Ova');
   });
 
@@ -93,7 +94,8 @@ void main() {
     expect(find.text('13°'), findsOneWidget);
     expect(find.text('Rüzgar 31 km/s'), findsOneWidget);
     expect(_badge('Rüzgarlı'), findsOneWidget);
-    expect(find.text('Ova'), findsNothing);
+    expect(find.text('Ova'), findsOneWidget);
+    expect(find.text('Konum yok'), findsOneWidget);
     expect(_attributionText(), findsOneWidget);
     expect(find.textContaining('itibarıyla'), findsNothing);
     // Paket telefonda saklandı.
@@ -157,6 +159,9 @@ void main() {
 
     expect(weather.fetchCount, 1);
     expect(_attributionText(), findsNothing);
+    expect(find.text('Kızılçam'), findsNothing);
+    // Konumsuz arılığın kartı paket olmadan da görünür.
+    expect(find.text('Ova'), findsOneWidget);
     // Arılıklar var, kovan yok: kurulumun sıradaki adımı görünür.
     expect(find.text('KURULUM 1/3'), findsOneWidget);
     expect(find.text('Kovanlarını oluştur'), findsOneWidget);
@@ -216,5 +221,51 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
     expect(_badge('Rüzgarlı'), findsOneWidget);
+    await tester.drag(
+      find.byType(SingleChildScrollView).first,
+      const Offset(-300, 0),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('Hava için konum ekle'), findsOneWidget);
+  });
+
+  testWidgets('iki konumlu ve bir konumsuz arılıkta şerit kayar; konumsuz '
+      'kart düzenleme formunu açar', (tester) async {
+    final now = DateTime.now();
+    final weather = FakeWeatherService(
+      bundle: testBundle(
+        generatedAt: now,
+        forecasts: {
+          kizilcam.id: testForecast(at: now),
+          yayla.id: testForecast(at: now),
+        },
+      ),
+    );
+    await _open(tester, db: db, weather: weather);
+
+    final strip = find.byType(SingleChildScrollView).first;
+    final card = find.text('Ova');
+    expect(card, findsOneWidget);
+    final before = tester.getTopLeft(card);
+    await tester.drag(strip, const Offset(-400, 0));
+    await tester.pumpAndSettle();
+    expect(tester.getTopLeft(card).dx, lessThan(before.dx));
+
+    await tester.tap(card);
+    await tester.pumpAndSettle();
+    expect(find.byType(ApiaryFormScreen), findsOneWidget);
+  });
+
+  testWidgets('İngilizce: konumsuz kart metinleri', (tester) async {
+    final container = await _open(
+      tester,
+      db: db,
+      weather: FakeWeatherService()..fail = true,
+    );
+    container.read(languageProvider.notifier).language = AppLanguage.english;
+    await tester.pumpAndSettle();
+    expect(find.text('No location'), findsOneWidget);
+    expect(find.text('Add a location for weather'), findsOneWidget);
   });
 }

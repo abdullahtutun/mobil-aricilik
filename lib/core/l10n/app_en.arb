@@ -2128,6 +2128,14 @@
       }
     }
   },
+  "weatherNoLocationTitle": "No location",
+  "@weatherNoLocationTitle": {
+    "description": "Weather strip on Today: card of an apiary without a location."
+  },
+  "weatherNoLocationAction": "Add a location for weather",
+  "@weatherNoLocationAction": {
+    "description": "On the no-location card; tapping opens the apiary edit form."
+  },
   "weatherWind": "Wind {speed}",
   "@weatherWind": {
     "placeholders": {
