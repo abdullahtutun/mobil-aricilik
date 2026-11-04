@@ -429,6 +429,10 @@ enabled = true
 [functions.notify]
 verify_jwt = false
 
+# Webhook gizli anahtarıyla doğrular, JWT taşımaz.
+[functions.feedback-mail]
+verify_jwt = false
+
 # Herkese açık lot sayfası; QR'ı okutan müşteri oturumsuz açar.
 [functions.lot-page]
 verify_jwt = false

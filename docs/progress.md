@@ -650,6 +650,14 @@
 - Düzeltme: (1) `apiariesWithoutWeatherProvider` (eski `unlocatedApiaries`) havası olmayan her arılığı veriyor; konumlu ama tahmini gelmemiş arılık `ApiaryNoWeatherCard` ile "Hava bilgisi yok · Bağlantı gelince gelir" olarak görünüyor ve dokununca hava ekranını açıyor. Paket yokken ya da tahmin aralığı geçmişken de arılıklar şeritte kalıyor. (2) Bugün her senkron turu bitince `refreshIfStale` çağırıyor; sunucu konumu ancak senkronla öğreniyor. (3) `weatherNeedsRefresh` artık `locatedApiaries` (kimlik → `updated_at`) alıyor: pakette eksik arılık paketten sonra değiştiyse 10 dakika beklemeden soruyor. Repository'de `locatedIds` → `locatedUpdatedAt`. ARB'ye `weatherPendingHint` (TR + EN) eklendi.
 - Bilinen: konumlu bir arılığın konumu değişirse paket tahmini eski konumdan göstermeye devam eder, 1 saatlik yenilemeyi bekler.
 
+### 2026-11-04 — Görüş bildir: mesajlar e-postayla gelir
+
+- Sorun: Görüşler yalnız `feedback` tablosuna yazılıyordu, kimseye bildirim gitmiyordu (uzakta tek kayıt vardı: 27 Ekim'deki "Deneme").
+- Migration `20261111120000_feedback_mail.sql`: `feedback`'e eklenen her satırda `private.notify_feedback_mail` tetikleyicisi pg_net ile `feedback-mail` Edge Function'ını çağırıyor (`notify` kalıbı). Adres ve paylaşılan anahtar Vault'ta (`feedback_mail_url`, `feedback_mail_secret`); yoksa ya da çağrı bozulursa görüş yine yazılıyor. pgTAP `feedback_mail.test.sql` (5 test) ve `feedback_analytics.test.sql` yerelde geçiyor.
+- Edge Function `feedback-mail`: maili Hostinger SMTP ile (`smtp.hostinger.com`, 465/SSL; Edge'de 25 ve 587 kapalı) `FEEDBACK_TO_EMAIL`'e yolluyor. Konu `[Mobil Arıcı] <tür> — <işletme>`; gövde düz metin: mesaj, gönderenin e-postası, cihaz bilgisi, ekran görüntüsünün 7 gün geçerli linki. Yanıtla gönderen kullanıcıya gider. `verify_jwt = false`, `x-webhook-secret` ile doğruluyor.
+- Uzakta: migration `db push` ile uygulandı, fonksiyon deploy edildi, Vault ve `FEEDBACK_MAIL_SECRET` kaydedildi, yetkisiz çağrı 401 dönüyor. Uygulama kodu değişmedi.
+- Bekleyen: `SMTP_USER`, `SMTP_PASS` ve `FEEDBACK_TO_EMAIL` secret'ları kullanıcı tarafından girilecek; girilene kadar fonksiyon 503 döner. Uçtan uca mail henüz denenmedi. Deno yok, TS yerelde tip denetlenmedi (deploy paketlemesi geçti). Mail gönderilemezse yeniden deneme yok, görüş tabloda kalır.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
