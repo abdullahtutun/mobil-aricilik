@@ -94,7 +94,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get apiariesMapNoLocation =>
-      'Henüz konumu olan arılık yok. Arılıktayken arılığı düzenleyip konumu GPS\'ten alın.';
+      'Henüz konumu olan arılık yok. Arılığı düzenleyip konumu GPS\'ten alın ya da haritada seçin.';
 
   @override
   String get apiariesMapAttribution =>
@@ -161,7 +161,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get apiaryFormLocationNone =>
-      'Konum yok. Arılıktaysan GPS\'ten al; internet gerekmez.';
+      'Konum yok. Arılıktaysan GPS\'ten al, internet gerekmez; değilsen haritada seç.';
 
   @override
   String get apiaryFormLocationTake => 'Konumu GPS\'ten al';
@@ -171,6 +171,39 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get apiaryFormLocationClear => 'Konumu kaldır';
+
+  @override
+  String get apiaryFormLocationPickOnMap => 'Haritada seç';
+
+  @override
+  String get locationPickerTitle => 'Haritada konum seç';
+
+  @override
+  String get locationPickerSearchHint => 'İl, ilçe ya da köy ara';
+
+  @override
+  String get locationPickerSearch => 'Ara';
+
+  @override
+  String get locationPickerHint =>
+      'Haritayı kaydırıp iğneyi arılığın yerine getir.';
+
+  @override
+  String get locationPickerPinLabel => 'Seçilen konum';
+
+  @override
+  String get locationPickerConfirm => 'Bu konumu seç';
+
+  @override
+  String get locationPickerNoResults => 'Sonuç bulunamadı. Başka bir ad dene.';
+
+  @override
+  String get locationPickerSearchOffline =>
+      'Arama yapılamadı. Arama için internet gerekiyor.';
+
+  @override
+  String get locationPickerMapOfflineMessage =>
+      'Harita için internet gerekiyor. Arılıktaysan konumu GPS\'ten alabilirsin.';
 
   @override
   String get apiaryFormLocating =>

@@ -658,6 +658,14 @@
 - Uzakta: migration `db push` ile uygulandı, fonksiyon deploy edildi, Vault ve `FEEDBACK_MAIL_SECRET` kaydedildi, yetkisiz çağrı 401 dönüyor. Uygulama kodu değişmedi.
 - Bekleyen: `SMTP_USER`, `SMTP_PASS` ve `FEEDBACK_TO_EMAIL` secret'ları kullanıcı tarafından girilecek; girilene kadar fonksiyon 503 döner. Uçtan uca mail henüz denenmedi. Deno yok, TS yerelde tip denetlenmedi (deploy paketlemesi geçti). Mail gönderilemezse yeniden deneme yok, görüş tabloda kalır.
 
+### 2026-11-04 — Arılık konumu haritada seçilir, il/ilçe aranır
+
+- Arılık formunun konum kartına "Haritada seç" eklendi (yeni arılık, düzenleme ve onboarding'in ilk arılık adımı). Kabuk dışındaki `/location-picker` rotası (`ApiaryLocationPickerScreen`) formdaki konumla ya da konum yoksa dünya görünümüyle açılıyor; ortada sabit iğne var, harita kaydırılınca iğnenin altındaki nokta seçiliyor, "Bu konumu seç" `LatLng`'i `pop` ile döndürüyor. Seçilen konumun doğruluğu bilinmediği için yazılmıyor (`ApiaryFormController.setPickedLocation`). Onboarding'deki kurulum aşamasında `sessionRedirect` bu rotaya izin veriyor.
+- Arama kullanıcı kararıyla çevrimiçi: `NominatimPlaceSearchService` (OpenStreetMap Nominatim, anahtarsız, `User-Agent` ile) `placeSearchServiceProvider` üzerinden; sonuçlar işletmenin ülkesiyle (`regionConfig.countryCode`) sınırlı ve arayüz dilinde. Kullanım koşulları gereği yazarken değil yalnız arama tuşuyla soruyor. Sonuca dokununca harita yerin sınır kutusuna sığıyor (yoksa 13 yakınlık). Durum `PlaceSearchController`'da.
+- İnternet yokken arama "Arama için internet gerekiyor", harita açılamazsa "Yeniden dene" gösteriyor ve seçme butonu kapalı; GPS'ten alma eskisi gibi çalışıyor. ARB'ye `apiaryFormLocationPickOnMap` ve `locationPicker…` anahtarları (TR + EN) eklendi; "konum yok" metinleri haritayı da anıyor.
+- Testler: `place_search_service_test.dart` (sorgu parametreleri, ayrıştırma, hata), `apiary_location_picker_flow_test.dart` (ara → seç → kaydet, kayıtlı konumla açılma, internetsiz arama ve harita, Türkçe, 360dp'de 1.5x yazı ve eldiven), `session_redirect_test.dart`. Sahte `FakePlaceSearchService` `signedIn()`'e eklendi. apiaries, onboarding, app ve core/services testleri (146) geçiyor, `flutter analyze` temiz.
+- Bilinen: cihazda ve gerçek Nominatim'e karşı denenmedi. Konumsuz arılıkta seçici dünya görünümüyle açılıyor; önce arama gerekiyor. Arılık çevresi indirilmişse internetsiz harita yalnız o çevreyi gösterir, arama yine internet ister.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

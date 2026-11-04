@@ -104,6 +104,21 @@ class ApiaryFormController extends _$ApiaryFormController {
     _update((form) => form.copyWith(locating: false));
   }
 
+  /// Haritada seçilen noktayı konum yapar; bekleyen GPS isteği bırakılır.
+  /// Doğruluk bilinmez.
+  void setPickedLocation(double latitude, double longitude) {
+    _locateRequest++;
+    _update(
+      (form) => form.copyWith(
+        locating: false,
+        latitude: latitude,
+        longitude: longitude,
+        accuracyM: null,
+        locationFailure: null,
+      ),
+    );
+  }
+
   void clearLocation() => _update(
     (form) => form.copyWith(
       latitude: null,

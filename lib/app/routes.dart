@@ -298,6 +298,23 @@ abstract final class AppRoutes {
   /// Ortadaki butonun açtığı tam ekran; sekmelerin üstünde açılır.
   static const scan = '/scan';
 
+  /// Arılık konumunu haritada seçme; sekmelerin üstünde açılır, seçilen
+  /// nokta `pop` ile döner. Onboarding'in ilk arılık adımından da açılır.
+  static const locationPicker = '/location-picker';
+  static const locationPickerLatitudeParameter = 'lat';
+  static const locationPickerLongitudeParameter = 'lng';
+
+  /// Seçici [latitude], [longitude] doluysa o noktada açılır.
+  static String locationPickerAt({double? latitude, double? longitude}) => Uri(
+    path: locationPicker,
+    queryParameters: latitude == null || longitude == null
+        ? null
+        : {
+            locationPickerLatitudeParameter: '$latitude',
+            locationPickerLongitudeParameter: '$longitude',
+          },
+  ).toString();
+
   /// Üst bardaki senkron ikonunun açtığı ayrıntı; sekmelerin üstünde açılır.
   static const sync = '/sync';
 

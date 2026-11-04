@@ -233,7 +233,7 @@ abstract class AppLocalizations {
   /// No description provided for @apiariesMapNoLocation.
   ///
   /// In en, this message translates to:
-  /// **'No apiary has a location yet. Edit an apiary at its site to take the location from GPS.'**
+  /// **'No apiary has a location yet. Edit an apiary to take the location from GPS or pick it on the map.'**
   String get apiariesMapNoLocation;
 
   /// Map data credit, always visible on the map. Keep the names as they are.
@@ -323,7 +323,7 @@ abstract class AppLocalizations {
   /// No description provided for @apiaryFormLocationNone.
   ///
   /// In en, this message translates to:
-  /// **'No location yet. If you\'re at the apiary, take it from GPS; no internet needed.'**
+  /// **'No location yet. If you\'re at the apiary, take it from GPS, no internet needed; otherwise pick it on the map.'**
   String get apiaryFormLocationNone;
 
   /// No description provided for @apiaryFormLocationTake.
@@ -343,6 +343,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove location'**
   String get apiaryFormLocationClear;
+
+  /// No description provided for @apiaryFormLocationPickOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick on map'**
+  String get apiaryFormLocationPickOnMap;
+
+  /// No description provided for @locationPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick location on map'**
+  String get locationPickerTitle;
+
+  /// No description provided for @locationPickerSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a town or place'**
+  String get locationPickerSearchHint;
+
+  /// No description provided for @locationPickerSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get locationPickerSearch;
+
+  /// No description provided for @locationPickerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Move the map to put the pin on the apiary.'**
+  String get locationPickerHint;
+
+  /// No description provided for @locationPickerPinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected location'**
+  String get locationPickerPinLabel;
+
+  /// No description provided for @locationPickerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get locationPickerConfirm;
+
+  /// No description provided for @locationPickerNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No places found. Try another name.'**
+  String get locationPickerNoResults;
+
+  /// No description provided for @locationPickerSearchOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t search. Search needs internet.'**
+  String get locationPickerSearchOffline;
+
+  /// No description provided for @locationPickerMapOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The map needs internet. If you\'re at the apiary, take the location from GPS.'**
+  String get locationPickerMapOfflineMessage;
 
   /// No description provided for @apiaryFormLocating.
   ///

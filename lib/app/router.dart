@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart' show LatLng;
 import 'package:mobil_arici/app/deep_link.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/routes.dart';
@@ -15,6 +16,7 @@ import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.dart';
+import 'package:mobil_arici/features/apiaries/presentation/apiary_location_picker_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_code_screen.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
@@ -867,6 +869,23 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.scan,
         builder: (context, state) => const ScanScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.locationPicker,
+        builder: (context, state) {
+          final query = state.uri.queryParameters;
+          final latitude = double.tryParse(
+            query[AppRoutes.locationPickerLatitudeParameter] ?? '',
+          );
+          final longitude = double.tryParse(
+            query[AppRoutes.locationPickerLongitudeParameter] ?? '',
+          );
+          return ApiaryLocationPickerScreen(
+            initial: latitude == null || longitude == null
+                ? null
+                : LatLng(latitude, longitude),
+          );
+        },
       ),
       // Kabuğun dışında: geri tuşu ikona dokunulan sekmeye döner.
       GoRoute(

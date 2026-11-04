@@ -94,7 +94,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get apiariesMapNoLocation =>
-      'No apiary has a location yet. Edit an apiary at its site to take the location from GPS.';
+      'No apiary has a location yet. Edit an apiary to take the location from GPS or pick it on the map.';
 
   @override
   String get apiariesMapAttribution =>
@@ -163,7 +163,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get apiaryFormLocationNone =>
-      'No location yet. If you\'re at the apiary, take it from GPS; no internet needed.';
+      'No location yet. If you\'re at the apiary, take it from GPS, no internet needed; otherwise pick it on the map.';
 
   @override
   String get apiaryFormLocationTake => 'Take location from GPS';
@@ -173,6 +173,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get apiaryFormLocationClear => 'Remove location';
+
+  @override
+  String get apiaryFormLocationPickOnMap => 'Pick on map';
+
+  @override
+  String get locationPickerTitle => 'Pick location on map';
+
+  @override
+  String get locationPickerSearchHint => 'Search for a town or place';
+
+  @override
+  String get locationPickerSearch => 'Search';
+
+  @override
+  String get locationPickerHint => 'Move the map to put the pin on the apiary.';
+
+  @override
+  String get locationPickerPinLabel => 'Selected location';
+
+  @override
+  String get locationPickerConfirm => 'Use this location';
+
+  @override
+  String get locationPickerNoResults => 'No places found. Try another name.';
+
+  @override
+  String get locationPickerSearchOffline =>
+      'Couldn\'t search. Search needs internet.';
+
+  @override
+  String get locationPickerMapOfflineMessage =>
+      'The map needs internet. If you\'re at the apiary, take the location from GPS.';
 
   @override
   String get apiaryFormLocating =>

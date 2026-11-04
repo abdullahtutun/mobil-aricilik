@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart' show LatLng;
+import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/services/location_service.dart';
@@ -133,9 +136,9 @@ ButtonStyle _locationActionStyle(BuildContext context) => TextButton.styleFrom(
 );
 
 /// Konum: solda konum işareti, yanında kayıtlı koordinat ve doğruluğu ya da
-/// "konum yok"; altında GPS'ten alma ve kaldırma. Konum ancak dokununca
-/// alınır; arıcı arılıkta değilken (ör. evde) yanlış nokta kendiliğinden
-/// yazılmasın.
+/// "konum yok"; altında GPS'ten alma, haritada seçme ve kaldırma. Konum
+/// ancak dokununca alınır; arıcı arılıkta değilken (ör. evde) yanlış nokta
+/// kendiliğinden yazılmasın.
 class _LocationSection extends ConsumerWidget {
   const new({required this.apiaryId});
 
@@ -201,6 +204,12 @@ class _LocationSection extends ConsumerWidget {
                 ? l10n.apiaryFormLocationRetake
                 : l10n.apiaryFormLocationTake,
           ),
+        ),
+        TextButton.icon(
+          style: action,
+          onPressed: () => _pickOnMap(context, ref, form),
+          icon: const Icon(Icons.map_rounded),
+          label: Text(l10n.apiaryFormLocationPickOnMap),
         ),
         if (form.hasLocation)
           TextButton(
@@ -274,6 +283,24 @@ class _LocationSection extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Harita seçiciyi formdaki konumla açar; seçilen nokta konum olur.
+  Future<void> _pickOnMap(
+    BuildContext context,
+    WidgetRef ref,
+    ApiaryFormState form,
+  ) async {
+    final picked = await context.push<LatLng>(
+      AppRoutes.locationPickerAt(
+        latitude: form.latitude,
+        longitude: form.longitude,
+      ),
+    );
+    if (picked == null || !context.mounted) return;
+    ref
+        .read(apiaryFormControllerProvider(apiaryId).notifier)
+        .setPickedLocation(picked.latitude, picked.longitude);
   }
 }
 

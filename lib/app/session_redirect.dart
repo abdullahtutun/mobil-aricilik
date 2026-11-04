@@ -51,6 +51,8 @@ String? sessionRedirect({required SessionStage stage, required Uri location}) {
     case SessionStage.needsOrganization:
       return _gateStep(AppRoutes.onboarding, location);
     case SessionStage.settingUp:
+      // İlk arılığın konumu haritada seçilebilsin.
+      if (path == AppRoutes.locationPicker) return null;
       return _gateStep(AppRoutes.onboardingApiary, location);
     case SessionStage.initialSync:
       return _gateStep(AppRoutes.initialSync, location);

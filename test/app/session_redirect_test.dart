@@ -40,6 +40,32 @@ void main() {
       );
     });
 
+    test('ilk arılık adımında yalnız harita seçici açılabilir', () {
+      expect(
+        sessionRedirect(
+          stage: SessionStage.settingUp,
+          location: Uri.parse(
+            AppRoutes.locationPickerAt(latitude: 39.5, longitude: 38.5),
+          ),
+        ),
+        isNull,
+      );
+      expect(
+        sessionRedirect(
+          stage: SessionStage.settingUp,
+          location: Uri.parse(AppRoutes.apiaries),
+        ),
+        startsWith(AppRoutes.onboardingApiary),
+      );
+      expect(
+        sessionRedirect(
+          stage: SessionStage.needsOrganization,
+          location: Uri.parse(AppRoutes.locationPicker),
+        ),
+        startsWith(AppRoutes.onboarding),
+      );
+    });
+
     test('ilk tam çekme bitmeden sekmeler açılmaz; kurulum önce gelir', () {
       expect(
         sessionStageOf(
