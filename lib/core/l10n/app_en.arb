@@ -103,6 +103,9 @@
       }
     }
   },
+  "apiaryMapDirections": "Directions",
+  "apiaryMapShow": "Show",
+  "apiaryMapDirectionsFailed": "Couldn't open a maps app.",
   "apiaryHiveCount": "{count, plural, =0{No hives} =1{1 hive} other{{count} hives}}",
   "@apiaryHiveCount": {
     "description": "Active hives in an apiary, on the apiary list.",

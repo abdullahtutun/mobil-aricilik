@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart' show kDoubleTapTimeout;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,7 @@ import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
+import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_map.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/offline_maps/domain/map_area.dart';
@@ -20,6 +22,7 @@ import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_basemap_service.dart';
 import '../../../helpers/fake_offline_maps.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/fake_url_launcher.dart';
 import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
@@ -30,11 +33,17 @@ Future<ProviderContainer> _openMap(
   required AppDatabase db,
   required FakeBasemapService basemap,
   FakeOfflineMaps? offlineMaps,
+  FakeUrlLauncher? urlLauncher,
   List<Override> overrides = const [],
 }) async {
   final container = ProviderContainer.test(
     overrides: [
-      ...signedIn(db: db, basemap: basemap, offlineMaps: offlineMaps),
+      ...signedIn(
+        db: db,
+        basemap: basemap,
+        offlineMaps: offlineMaps,
+        urlLauncher: urlLauncher,
+      ),
       ...overrides,
     ],
   );
@@ -151,7 +160,7 @@ void main() {
     expect(find.bySemanticsLabel('Yayla, No hives'), findsOneWidget);
   });
 
-  testWidgets('konumlu arılıklar pin olur; uyarı rozeti, dokununca arılık', (
+  testWidgets('konumlu arılıklar pin olur; uyarı rozeti, dokununca kart', (
     tester,
   ) async {
     final yayla = await apiaries.create(
@@ -198,8 +207,58 @@ void main() {
     expect(pin.height, greaterThanOrEqualTo(56));
 
     await _tap(tester, find.text('3'));
+    expect(find.byType(ApiaryDetailScreen), findsNothing);
+    expect(find.text('Yayla'), findsOneWidget);
+    expect(
+      find.text('3 hives · 2 hives need attention · No visits yet'),
+      findsOneWidget,
+    );
+
+    // Başka pine dokununca kart o arılığa geçer; boş yere dokununca kapanır.
+    await _tap(tester, find.text('1'));
+    expect(find.text('Yayla'), findsNothing);
+    expect(find.text('Dere'), findsOneWidget);
+    await tester.tapAt(
+      tester.getTopLeft(find.byType(FlutterMap)) + const Offset(20, 20),
+    );
+    // Harita çift dokunmayı bekledikten sonra tek dokunmayı verir.
+    await tester.pump(kDoubleTapTimeout);
+    await tester.pumpAndSettle();
+    expect(find.text('Dere'), findsNothing);
+    expect(find.text('Directions'), findsNothing);
+
+    await _tap(tester, find.text('3'));
+    await _tap(tester, find.text('Show'));
     expect(find.byType(ApiaryDetailScreen), findsOneWidget);
     expect(find.text('Yayla'), findsOneWidget);
+  });
+
+  testWidgets('Yol tarifi telefonun harita uygulamasını açar', (tester) async {
+    await apiaries.create(
+      orgId: _orgId,
+      name: 'Yayla',
+      latitude: 37.1,
+      longitude: 28.4,
+    );
+    final launcher = FakeUrlLauncher();
+    await _openMap(
+      tester,
+      db: db,
+      basemap: FakeBasemapService(fail: false),
+      urlLauncher: launcher,
+    );
+
+    await _tap(tester, find.text('0'));
+    await _tap(tester, find.text('Directions'));
+    expect(launcher.opened, [apiaryDirectionsUri(37.1, 28.4)]);
+    expect(
+      launcher.opened.single.toString(),
+      'https://www.google.com/maps/dir/?api=1&destination=37.1%2C28.4',
+    );
+
+    launcher.available = false;
+    await _tap(tester, find.text('Directions'));
+    expect(find.text("Couldn't open a maps app."), findsOneWidget);
   });
 
   testWidgets('konumlu arılık yoksa harita üstünde açıklama', (tester) async {
@@ -238,6 +297,11 @@ void main() {
       findsOneWidget,
     );
     expect(find.bySemanticsLabel('Yayla, Kovan yok'), findsOneWidget);
+
+    await _tap(tester, find.text('0'));
+    expect(find.text('Yol tarifi'), findsOneWidget);
+    expect(find.text('Göster'), findsOneWidget);
+    expect(find.text('Kovan yok · Henüz ziyaret yok'), findsOneWidget);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {
@@ -276,5 +340,10 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.byIcon(Icons.error_rounded), findsOneWidget);
     expect(find.text(_attribution), findsOneWidget);
+
+    await _tap(tester, find.text('1'));
+    expect(tester.takeException(), isNull);
+    expect(find.text('Directions'), findsOneWidget);
+    expect(find.text('Show'), findsOneWidget);
   });
 }

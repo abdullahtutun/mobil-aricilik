@@ -117,6 +117,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get apiaryMapDirections => 'Directions';
+
+  @override
+  String get apiaryMapShow => 'Show';
+
+  @override
+  String get apiaryMapDirectionsFailed => 'Couldn\'t open a maps app.';
+
+  @override
   String apiaryHiveCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

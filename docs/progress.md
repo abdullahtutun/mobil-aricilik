@@ -666,6 +666,14 @@
 - Testler: `place_search_service_test.dart` (sorgu parametreleri, ayrıştırma, hata), `apiary_location_picker_flow_test.dart` (ara → seç → kaydet, kayıtlı konumla açılma, internetsiz arama ve harita, Türkçe, 360dp'de 1.5x yazı ve eldiven), `session_redirect_test.dart`. Sahte `FakePlaceSearchService` `signedIn()`'e eklendi. apiaries, onboarding, app ve core/services testleri (146) geçiyor, `flutter analyze` temiz.
 - Bilinen: cihazda ve gerçek Nominatim'e karşı denenmedi. Konumsuz arılıkta seçici dünya görünümüyle açılıyor; önce arama gerekiyor. Arılık çevresi indirilmişse internetsiz harita yalnız o çevreyi gösterir, arama yine internet ister.
 
+### 2026-11-04 — Arılıklar haritası: pine dokununca alt kart (docs/design "Arılıklar – harita")
+
+- Pine dokunmak artık arılığı açmıyor; haritanın altında arılığın kartı açılıyor: ad, "3 kovan · 2 kovan dikkat istiyor · Son ziyaret …" (dikkat yoksa o parça yazılmıyor). Başka pine dokununca kart o arılığa geçiyor, haritanın boş yerine dokununca kapanıyor. Atıf kartın altında duruyor.
+- Tasarımdaki "Yol tarifi"ne ek olarak yanında "Göster" var (kullanıcı isteği): Yol tarifi Google Haritalar'ın evrensel bağlantısını (`apiaryDirectionsUri`, `/maps/dir/?api=1&destination=lat,lng`) `urlLauncherServiceProvider` ile açıyor, uygulama açılamazsa mesaj gösteriyor; Göster arılığın sayfasına gidiyor. İki buton yan yana, eşit genişlikte.
+- ARB'ye `apiaryMapDirections`, `apiaryMapShow`, `apiaryMapDirectionsFailed` (TR + EN) eklendi; şema değişmedi.
+- `apiaries_map_flow_test.dart`: kartın açılması, pinler arası geçiş, boş yere dokununca kapanma, Göster ile detay, Yol tarifi adresi ve açılamayınca mesaj, Türkçe metinler, 360dp'de 1.5x yazı ve eldivenle taşma yok. apiaries, today ve app testleri (134) geçiyor, `flutter analyze` temiz.
+- Bilinen: cihazda denenmedi. Tasarımdaki seçili pinin vurgusu, "arılık ara" kutusu ve konumum butonu yapılmadı. Yol tarifi internet ve Google Haritalar (ya da tarayıcı) istiyor.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

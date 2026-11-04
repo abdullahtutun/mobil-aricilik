@@ -254,6 +254,24 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 hive needs attention} other{{count} hives need attention}}'**
   String apiaryMapPinAttention(int count);
 
+  /// No description provided for @apiaryMapDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get apiaryMapDirections;
+
+  /// No description provided for @apiaryMapShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get apiaryMapShow;
+
+  /// No description provided for @apiaryMapDirectionsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open a maps app.'**
+  String get apiaryMapDirectionsFailed;
+
   /// Active hives in an apiary, on the apiary list.
   ///
   /// In en, this message translates to:
