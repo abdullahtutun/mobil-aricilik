@@ -635,7 +635,8 @@
 - Yalnız mevzuat satırına ait `_TrBadge` ve kullanılmayan sayaç/açma yardımcıları ekrandan silindi; `region.features.regulations` artık bu ekranda kullanılmıyor.
 - `knowledge_flow_test.dart` güncellendi: dört satırın görünmediği (TR ve EN), diğer bölge ve Türkçe metin testlerinde Hesaplayıcılar satırının görünmesi; kategori ve rehber makalesi testleri satıra dokunmak yerine rotaya gidiyor.
 - `knowledge` klasörü testleri (54) geçiyor, `flutter analyze` temiz. Cihazda denenmedi.
-- Bilinen: kategori ekranlarına ana ekrandan giden yol kalmadı; rotalar yalnız derin linkle ya da arama sonucundan açılabilir.
+- Bilinen: kategori ekranlarına ana ekrandan giden yol kalmadı; rotalar yalnız derin linkle açılabilir.
+- Ardından aramadan da kaldırıldı: `hiddenKnowledgeCategories` (atlas, guides, regulations, first_year) makaleleri `searchKnowledgeArticles`'ta atlanıyor; aramada yalnız takvim makaleleri çıkıyor. Arama ipucu "Kışlık stok, varroa…" / "Winter stores, varroa…" oldu. Makale dosyaları ve rotalar silinmedi. Kural testi ve akış testi güncellendi; `knowledge` testleri (55) geçiyor.
 
 ## Sona bırakılanlar
 

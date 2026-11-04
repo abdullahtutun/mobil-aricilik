@@ -6223,7 +6223,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get knowledgeTitle => 'Knowledge base';
 
   @override
-  String get knowledgeSearchHint => 'Chalkbrood, introducing a queen…';
+  String get knowledgeSearchHint => 'Winter stores, varroa…';
 
   @override
   String knowledgeMonthLabel(String month, String place) {

@@ -322,11 +322,42 @@ void main() {
   });
 
   group('arama', () {
+    const calendar = KnowledgeCategory.calendar;
     final articles = [
-      _article(id: 'govde', title: 'Kışlatma', body: 'Kireç önlemi'),
-      _article(id: 'baslik', title: 'Kireç hastalığı', summary: 'Mantar'),
-      _article(id: 'ozet', title: 'Atlas', summary: 'kireç ve diğerleri'),
+      _article(
+        id: 'govde',
+        category: calendar,
+        title: 'Kışlatma',
+        body: 'Kireç önlemi',
+      ),
+      _article(
+        id: 'baslik',
+        category: calendar,
+        title: 'Kireç hastalığı',
+        summary: 'Mantar',
+      ),
+      _article(
+        id: 'ozet',
+        category: calendar,
+        title: 'Atlas',
+        summary: 'kireç ve diğerleri',
+      ),
     ];
+
+    test('kaldırılan kategorilerin makaleleri çıkmaz', () {
+      final hidden = [
+        for (final category in hiddenKnowledgeCategories)
+          _article(id: category.value, category: category, title: 'Kireç'),
+      ];
+      expect(hidden, hasLength(4));
+      expect(
+        searchKnowledgeArticles([
+          ...hidden,
+          ...articles,
+        ], 'kirec').map((a) => a.id),
+        ['baslik', 'ozet', 'govde'],
+      );
+    });
 
     test('başlıkta geçen önce, sonra özet, sonra metin', () {
       expect(searchKnowledgeArticles(articles, 'kirec').map((a) => a.id), [

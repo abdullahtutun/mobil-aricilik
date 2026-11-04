@@ -6048,7 +6048,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get knowledgeTitle => 'Bilgi bankası';
 
   @override
-  String get knowledgeSearchHint => 'Kireç hastalığı, ana verme…';
+  String get knowledgeSearchHint => 'Kışlık stok, varroa…';
 
   @override
   String knowledgeMonthLabel(String month, String place) {

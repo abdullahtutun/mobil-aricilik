@@ -138,24 +138,27 @@ void main() {
     });
   });
 
-  testWidgets('arama: Türkçe harf farkı yok, sonuç makaleyi açar, sonuçsuzda '
-      'boş durum', (tester) async {
+  testWidgets('arama: Türkçe harf farkı yok, sonuç makaleyi açar, kaldırılan '
+      'kategoriler çıkmaz, sonuçsuzda boş durum', (tester) async {
     final container = await _open(tester, location: AppRoutes.knowledge);
     container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField), 'KIREC');
-    await tester.pumpAndSettle();
-    expect(find.text('Kireç hastalığı'), findsOneWidget);
-    expect(find.text('Hesaplayıcılar'), findsNothing);
-
-    await tester.enterText(find.byType(TextField), 'kafes ana');
-    await tester.pumpAndSettle();
-    expect(find.text('Ana verme'), findsOneWidget);
+    // Atlas ve rehber makaleleri ekrandan kaldırıldı, aramada da yok.
+    for (final query in ['KIREC', 'kafes ana']) {
+      await tester.enterText(find.byType(TextField), query);
+      await tester.pumpAndSettle();
+      expect(find.text('Sonuç yok'), findsOneWidget, reason: query);
+    }
     expect(find.text('Kireç hastalığı'), findsNothing);
-    await _tap(tester, find.text('Ana verme'));
+    expect(find.text('Ana verme'), findsNothing);
+
+    await tester.enterText(find.byType(TextField), 'KISLIK STOK');
+    await tester.pumpAndSettle();
+    expect(find.text("Kasım'da yapılacaklar"), findsOneWidget);
+    expect(find.text('Hesaplayıcılar'), findsNothing);
+    await _tap(tester, find.text("Kasım'da yapılacaklar"));
     expect(find.byType(KnowledgeArticleScreen), findsOneWidget);
-    expect(find.text('Kafesle verme'), findsOneWidget);
 
     await _go(container, tester, AppRoutes.knowledge);
     await tester.enterText(find.byType(TextField), 'zzz');
@@ -205,7 +208,7 @@ void main() {
       expect(find.text('No results'), findsOneWidget);
       await tester.enterText(find.byType(TextField), 'chalk');
       await tester.pumpAndSettle();
-      expect(find.text('Chalkbrood'), findsOneWidget);
+      expect(find.text('No results'), findsOneWidget);
     });
   });
 
@@ -297,7 +300,7 @@ void main() {
       }
       expect(find.text('Yakında'), findsNothing);
       final hint = tester.widget<TextField>(find.byType(TextField));
-      expect(hint.decoration?.hintText, 'Kireç hastalığı, ana verme…');
+      expect(hint.decoration?.hintText, 'Kışlık stok, varroa…');
 
       await _go(container, tester, '/more/knowledge/category/regulations');
       expect(find.text('Henüz makale yok'), findsOneWidget);

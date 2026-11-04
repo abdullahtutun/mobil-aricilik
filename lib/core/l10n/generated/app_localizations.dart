@@ -9918,7 +9918,7 @@ abstract class AppLocalizations {
   /// Knowledge base search field hint.
   ///
   /// In en, this message translates to:
-  /// **'Chalkbrood, introducing a queen…'**
+  /// **'Winter stores, varroa…'**
   String get knowledgeSearchHint;
 
   /// Overline of the this-month card, e.g. NOVEMBER · TÜRKİYE.

@@ -205,9 +205,18 @@ KnowledgeArticle? monthKnowledgeArticle(
       candidates.firstOrNull;
 }
 
+/// Bilgi bankası ekranından kaldırılan kategoriler; makaleleri aramada da
+/// çıkmaz (kullanıcı kararı, 2026-11-04).
+const Set<KnowledgeCategory> hiddenKnowledgeCategories = {
+  KnowledgeCategory.atlas,
+  KnowledgeCategory.guides,
+  KnowledgeCategory.regulations,
+  KnowledgeCategory.firstYear,
+};
+
 /// Tam metin arama: sorgunun her kelimesi başlık, özet ya da metinde
 /// geçmeli. Başlıkta geçen önce, sonra özette geçen; eşitse başlık sırası.
-/// Boş sorguda boş liste.
+/// [hiddenKnowledgeCategories] makaleleri atlanır. Boş sorguda boş liste.
 List<KnowledgeArticle> searchKnowledgeArticles(
   List<KnowledgeArticle> articles,
   String query,
@@ -219,6 +228,7 @@ List<KnowledgeArticle> searchKnowledgeArticles(
 
   final scored = <(KnowledgeArticle, int, String)>[];
   for (final article in articles) {
+    if (hiddenKnowledgeCategories.contains(article.category)) continue;
     final title = foldForSearch(article.title);
     final summary = foldForSearch(article.summary);
     final body = foldForSearch(article.body);
