@@ -32,15 +32,18 @@ class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
   );
 
   /// İşletmenin konumu olan, silinmemiş arılıklarının kimlikleri.
-  Future<Set<String>> locatedIds(String orgId) async {
+  Future<Map<String, DateTime>> locatedUpdatedAt(String orgId) async {
     final query = db.selectOnly(table)
-      ..addColumns([table.id])
+      ..addColumns([table.id, table.updatedAt])
       ..where(
         table.orgId.equals(orgId) &
             table.deletedAt.isNull() &
             table.latitude.isNotNull(),
       );
-    return {for (final row in await query.get()) row.read(table.id)!};
+    return {
+      for (final row in await query.get())
+        row.read(table.id)!: row.read(table.updatedAt)!,
+    };
   }
 
   /// İşletmenin arılıkları aktif kovan sayılarıyla, ada göre (SQLite

@@ -7,12 +7,13 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
+import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 import 'package:mobil_arici/features/weather/domain/weather_icons.dart';
-import 'package:mobil_arici/features/weather/presentation/widgets/apiary_no_location_card.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/apiary_no_weather_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_glyph.dart';
 
@@ -49,6 +50,7 @@ void main() {
   late AppDatabase db;
   late Apiary kizilcam;
   late Apiary yayla;
+  late Apiary ova;
 
   setUpAll(initializeDateFormatting);
 
@@ -68,7 +70,7 @@ void main() {
       longitude: 32.86,
     );
     // Konumsuz arılığın havası olmaz; şeritte "konum ekle" kartı olur.
-    await apiaries.create(orgId: _orgId, name: 'Ova');
+    ova = await apiaries.create(orgId: _orgId, name: 'Ova');
   });
 
   testWidgets('açılışta paket alınır; kartlar, rozetler ve atıf görünür', (
@@ -154,23 +156,26 @@ void main() {
     expect(_badge('Soğuk'), findsOneWidget);
   });
 
-  testWidgets('paket yoksa hava ve atıf görünmez', (tester) async {
+  testWidgets('paket yoksa hava ve atıf görünmez; arılıklar kartla kalır', (
+    tester,
+  ) async {
     final weather = FakeWeatherService()..fail = true;
     await _open(tester, db: db, weather: weather);
 
     expect(weather.fetchCount, 1);
     expect(_attributionText(), findsNothing);
-    expect(find.text('Kızılçam'), findsNothing);
-    // Konumsuz arılığın kartı paket olmadan da görünür.
+    expect(find.text('22°'), findsNothing);
+    // Konumlu arılıklar "Hava bilgisi yok", konumsuz "Konum yok" kartıyla.
+    expect(find.text('Kızılçam'), findsOneWidget);
+    expect(find.text('Hava bilgisi yok'), findsNWidgets(2));
     expect(find.text('Ova'), findsOneWidget);
     // Arılıklar var, kovan yok: kurulumun sıradaki adımı görünür.
     expect(find.text('KURULUM 1/3'), findsOneWidget);
     expect(find.text('Kovanlarını oluştur'), findsOneWidget);
   });
 
-  testWidgets('tahmin aralığı geçmiş ve silinmiş arılık gösterilmez', (
-    tester,
-  ) async {
+  testWidgets('tahmin aralığı geçmiş arılık havasız kartla, silinmiş arılık '
+      'hiç gösterilmez', (tester) async {
     final now = DateTime.now();
     await ApiaryRepository(db).delete(yayla.id);
     final weather = FakeWeatherService(
@@ -184,9 +189,54 @@ void main() {
     );
     await _open(tester, db: db, weather: weather);
 
-    expect(find.text('Kızılçam'), findsNothing);
+    expect(find.text('Kızılçam'), findsOneWidget);
+    expect(find.text('Hava bilgisi yok'), findsOneWidget);
     expect(find.text('Yayla'), findsNothing);
     expect(_attributionText(), findsNothing);
+  });
+
+  testWidgets('konum eklenen arılık kaybolmaz; senkron turundan sonra havası '
+      'gelir', (tester) async {
+    final now = DateTime.now();
+    final covered = {
+      kizilcam.id: testForecast(at: now),
+      yayla.id: testForecast(at: now),
+    };
+    await WeatherRepository(db).saveBundle(
+      testBundle(
+        generatedAt: now.subtract(const Duration(minutes: 2)),
+        forecasts: covered,
+      ),
+    );
+    final weather = FakeWeatherService();
+    final container = await _open(tester, db: db, weather: weather);
+    expect(weather.fetchCount, 0);
+    expect(find.text('Konum yok'), findsOneWidget);
+
+    // Kullanıcı Ova'ya konum ekler; sunucu onu senkronla öğrenecek.
+    await tester.runAsync(
+      () =>
+          ApiaryRepository(db)
+              .update(ova.copyWith(latitude: 38.4, longitude: 27.1)),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Ova'), findsOneWidget);
+    expect(find.text('Konum yok'), findsNothing);
+    expect(find.text('Hava bilgisi yok'), findsOneWidget);
+    expect(find.text('Bağlantı gelince gelir'), findsOneWidget);
+
+    weather.bundle = testBundle(
+      generatedAt: now,
+      forecasts: {
+        ...covered,
+        ova.id: testForecast(at: now, temperatureC: 9),
+      },
+    );
+    await container.read(syncControllerProvider.notifier).sync();
+    await tester.pumpAndSettle();
+    expect(weather.fetchCount, 1);
+    expect(find.text('9°'), findsOneWidget);
+    expect(find.text('Hava bilgisi yok'), findsNothing);
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle kartlar taşmaz', (
@@ -251,7 +301,7 @@ void main() {
     // Kaydırmadan önce üçüncü kartın ucu sağ kenarda görünür.
     final screenWidth =
         tester.view.physicalSize.width / tester.view.devicePixelRatio;
-    final third = tester.getRect(find.byType(ApiaryNoLocationCard));
+    final third = tester.getRect(find.byType(ApiaryNoWeatherCard));
     expect(third.left, lessThan(screenWidth));
     expect(third.right, greaterThan(screenWidth));
     final before = tester.getTopLeft(card);

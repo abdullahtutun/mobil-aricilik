@@ -4412,6 +4412,12 @@ abstract class AppLocalizations {
   /// **'Add a location for weather'**
   String get weatherNoLocationAction;
 
+  /// Weather strip on Today: apiary has a location but its forecast hasn't arrived yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrives once you\'re online'**
+  String get weatherPendingHint;
+
   /// No description provided for @weatherWind.
   ///
   /// In en, this message translates to:

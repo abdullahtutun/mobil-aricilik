@@ -9,6 +9,7 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
@@ -45,6 +46,16 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
         unawaited(ref.read(weatherRefresherProvider).refreshIfStale());
       }
     }, fireImmediately: true);
+    // Arılık konumu yeni eklendiyse sunucu onu senkron gönderilince bilir;
+    // her tur bitince bakılır (gerekmiyorsa sunucuya sorulmaz).
+    ref.listenManual(
+      syncControllerProvider.select((activity) => activity.lastResult),
+      (previous, result) {
+        if (result != null && !identical(previous, result)) {
+          unawaited(ref.read(weatherRefresherProvider).refreshIfStale());
+        }
+      },
+    );
   }
 
   @override

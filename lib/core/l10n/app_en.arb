@@ -2136,6 +2136,10 @@
   "@weatherNoLocationAction": {
     "description": "On the no-location card; tapping opens the apiary edit form."
   },
+  "weatherPendingHint": "Arrives once you're online",
+  "@weatherPendingHint": {
+    "description": "Weather strip on Today: apiary has a location but its forecast hasn't arrived yet."
+  },
   "weatherWind": "Wind {speed}",
   "@weatherWind": {
     "placeholders": {

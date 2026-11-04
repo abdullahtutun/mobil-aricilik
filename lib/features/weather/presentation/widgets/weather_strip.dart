@@ -6,12 +6,13 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
-import 'package:mobil_arici/features/weather/presentation/widgets/apiary_no_location_card.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/apiary_no_weather_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/apiary_weather_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 
 /// Bugün'ün üstündeki yatay kayan arılık hava kartları ve WeatherAPI.com
-/// atfı. Konumsuz arılıklar sonda "konum ekle" kartıyla yer alır.
+/// atfı. Havası olmayan arılıklar (konumsuz ya da tahmini henüz gelmemiş)
+/// sonda kendi kartlarıyla yer alır; hiçbir arılık şeritten kaybolmaz.
 /// Saklanan paket [weatherRefreshInterval]'den eskiyse tahminin zamanı da
 /// yazar (çevrimdışı). Gösterilecek arılık yoksa hiç yer kaplamaz.
 class WeatherStrip extends ConsumerWidget {
@@ -20,10 +21,10 @@ class WeatherStrip extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weather = ref.watch(apiaryWeatherProvider).value ?? const [];
-    final unlocated = ref.watch(unlocatedApiariesProvider).value ?? const [];
+    final without = ref.watch(apiariesWithoutWeatherProvider).value ?? const [];
     final cards = [
       for (final item in weather) ApiaryWeatherCard(weather: item),
-      for (final apiary in unlocated) ApiaryNoLocationCard(apiary: apiary),
+      for (final apiary in without) ApiaryNoWeatherCard(apiary: apiary),
     ];
     if (cards.isEmpty) return const SizedBox.shrink();
     final generatedAt = ref.watch(weatherBundleProvider).value?.generatedAt;

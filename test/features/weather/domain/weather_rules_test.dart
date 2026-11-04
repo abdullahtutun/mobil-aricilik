@@ -433,6 +433,8 @@ void main() {
 
   group('weatherNeedsRefresh', () {
     final now = DateTime.utc(2026, 10, 26, 12);
+    // Arılıklar paketten önce değişmiş.
+    final old = now.subtract(const Duration(days: 1));
     WeatherBundle bundle(Duration age, List<String> apiaryIds) => testBundle(
       generatedAt: now.subtract(age),
       forecasts: {for (final id in apiaryIds) id: testForecast(at: now)},
@@ -440,21 +442,25 @@ void main() {
 
     test('konumlu arılık yoksa sormaz', () {
       expect(
-        weatherNeedsRefresh(bundle: null, now: now, locatedApiaryIds: {}),
+        weatherNeedsRefresh(bundle: null, now: now, locatedApiaries: const {}),
         isFalse,
       );
     });
 
     test('paket yoksa ya da 1 saatten eskiyse sorar', () {
       expect(
-        weatherNeedsRefresh(bundle: null, now: now, locatedApiaryIds: {'a'}),
+        weatherNeedsRefresh(
+          bundle: null,
+          now: now,
+          locatedApiaries: {'a': old},
+        ),
         isTrue,
       );
       expect(
         weatherNeedsRefresh(
           bundle: bundle(const Duration(minutes: 59), ['a']),
           now: now,
-          locatedApiaryIds: {'a'},
+          locatedApiaries: {'a': old},
         ),
         isFalse,
       );
@@ -462,7 +468,7 @@ void main() {
         weatherNeedsRefresh(
           bundle: bundle(const Duration(hours: 1), ['a']),
           now: now,
-          locatedApiaryIds: {'a'},
+          locatedApiaries: {'a': old},
         ),
         isTrue,
       );
@@ -473,7 +479,7 @@ void main() {
         weatherNeedsRefresh(
           bundle: bundle(const Duration(minutes: 9), ['a']),
           now: now,
-          locatedApiaryIds: {'a', 'b'},
+          locatedApiaries: {'a': old, 'b': old},
         ),
         isFalse,
       );
@@ -481,9 +487,30 @@ void main() {
         weatherNeedsRefresh(
           bundle: bundle(const Duration(minutes: 10), ['a']),
           now: now,
-          locatedApiaryIds: {'a', 'b'},
+          locatedApiaries: {'a': old, 'b': old},
         ),
         isTrue,
+      );
+    });
+
+    test('konumu paketten sonra eklenen arılık için hemen sorar', () {
+      final fresh = bundle(const Duration(minutes: 2), ['a']);
+      expect(
+        weatherNeedsRefresh(
+          bundle: fresh,
+          now: now,
+          locatedApiaries: {'a': old, 'b': now},
+        ),
+        isTrue,
+      );
+      // Pakette olan arılığın değişmesi yeni istek gerektirmez.
+      expect(
+        weatherNeedsRefresh(
+          bundle: fresh,
+          now: now,
+          locatedApiaries: {'a': now},
+        ),
+        isFalse,
       );
     });
   });

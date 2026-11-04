@@ -228,20 +228,26 @@ const weatherRefreshInterval = Duration(hours: 1);
 /// için.
 const weatherMissingRetryInterval = Duration(minutes: 10);
 
-/// Paket yenilenmeli mi: konumlu arılık ([locatedApiaryIds]) yoksa hayır.
-/// Varsa paket hiç yoksa, [weatherRefreshInterval]'den eskiyse ya da konumlu
-/// bir arılık pakette yoksa ve paket [weatherMissingRetryInterval]'den
-/// eskiyse evet.
+/// Paket yenilenmeli mi: konumlu arılık ([locatedApiaries], kimlik →
+/// `updated_at`) yoksa hayır. Varsa paket hiç yoksa ya da
+/// [weatherRefreshInterval]'den eskiyse evet. Konumlu bir arılık pakette
+/// yoksa: arılık paketten sonra değiştiyse (ör. konumu yeni eklendi) hemen,
+/// değilse paket [weatherMissingRetryInterval]'den eskiyse evet.
 bool weatherNeedsRefresh({
   required WeatherBundle? bundle,
   required DateTime now,
-  required Set<String> locatedApiaryIds,
+  required Map<String, DateTime> locatedApiaries,
 }) {
-  if (locatedApiaryIds.isEmpty) return false;
+  if (locatedApiaries.isEmpty) return false;
   if (bundle == null) return true;
   final age = now.difference(bundle.generatedAt);
   if (age >= weatherRefreshInterval) return true;
   final covered = {for (final f in bundle.forecasts) f.apiaryId};
-  return age >= weatherMissingRetryInterval &&
-      !covered.containsAll(locatedApiaryIds);
+  final missing = [
+    for (final MapEntry(:key, :value) in locatedApiaries.entries)
+      if (!covered.contains(key)) value,
+  ];
+  if (missing.isEmpty) return false;
+  return age >= weatherMissingRetryInterval ||
+      missing.any((updatedAt) => updatedAt.isAfter(bundle.generatedAt));
 }

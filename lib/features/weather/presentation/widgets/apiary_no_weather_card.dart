@@ -7,10 +7,12 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
-/// Konumu olmayan arılığın şeritteki kartı: ad, "Konum yok" ve yazma yetkisi
-/// varsa "Hava için konum ekle". Dokununca arılığın düzenleme formu açılır;
-/// yetki yoksa dokunulmaz. Ekran okuyucu kartı tek öğe olarak okur.
-class ApiaryNoLocationCard extends ConsumerWidget {
+/// Şu anki havası olmayan arılığın şeritteki kartı. Konumsuzsa ad,
+/// "Konum yok" ve yazma yetkisi varsa "Hava için konum ekle"; dokununca
+/// düzenleme formu açılır, yetki yoksa dokunulmaz. Konumluysa (tahmin henüz
+/// gelmedi) "Hava bilgisi yok · Bağlantı gelince gelir"; dokununca arılığın
+/// hava ekranı açılır. Ekran okuyucu kartı tek öğe olarak okur.
+class ApiaryNoWeatherCard extends ConsumerWidget {
   const new({required this.apiary, super.key});
 
   final Apiary apiary;
@@ -21,13 +23,20 @@ class ApiaryNoLocationCard extends ConsumerWidget {
     final spacing = context.spacing;
     final typography = context.typography;
     final colors = context.colors;
+    final hasLocation = apiary.latitude != null;
     final canWrite = ref.watch(canWriteRecordsProvider);
+    final hint = hasLocation
+        ? l10n.weatherPendingHint
+        : (canWrite ? l10n.weatherNoLocationAction : null);
+    final onTap = hasLocation
+        ? () => context.push(AppRoutes.apiaryWeather(apiary.id))
+        : (canWrite
+              ? () => context.push(AppRoutes.apiaryEdit(apiary.id))
+              : null);
 
     return MergeSemantics(
       child: AppCard(
-        onTap: canWrite
-            ? () => context.push(AppRoutes.apiaryEdit(apiary.id))
-            : null,
+        onTap: onTap,
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: context.touchTargets.field),
           child: Padding(
@@ -40,24 +49,28 @@ class ApiaryNoLocationCard extends ConsumerWidget {
                 Row(
                   children: [
                     Icon(
-                      Icons.location_off_rounded,
+                      hasLocation
+                          ? Icons.cloud_off_outlined
+                          : Icons.location_off_rounded,
                       size: context.sizes.icon,
                       color: colors.textSecondary,
                     ),
                     SizedBox(width: spacing.sm),
                     Expanded(
                       child: Text(
-                        l10n.weatherNoLocationTitle,
+                        hasLocation
+                            ? l10n.weatherEmptyTitle
+                            : l10n.weatherNoLocationTitle,
                         style: typography.body,
                       ),
                     ),
                   ],
                 ),
-                if (canWrite) ...[
+                if (hint != null) ...[
                   SizedBox(height: spacing.sm),
                   Text(
-                    l10n.weatherNoLocationAction,
-                    style: typography.body.copyWith(
+                    hint,
+                    style: typography.bodySmall.copyWith(
                       color: colors.textSecondary,
                     ),
                   ),

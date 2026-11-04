@@ -2730,6 +2730,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weatherNoLocationAction => 'Add a location for weather';
 
   @override
+  String get weatherPendingHint => 'Arrives once you\'re online';
+
+  @override
   String weatherWind(String speed) {
     return 'Wind $speed';
   }

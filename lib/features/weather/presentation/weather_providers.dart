@@ -41,13 +41,20 @@ String? apiaryPlace(Ref ref, String apiaryId) {
   return place.isEmpty ? null : place;
 }
 
-/// Konumu girilmemiş arılıklar, arılık sırasıyla. Bunların havası olmaz;
-/// Bugün'deki şeritte "konum ekle" kartı olarak görünürler.
+/// Şu anki saatin havası olmayan arılıklar, arılık sırasıyla: konumu
+/// girilmemiş olanlar ve konumlu olup tahmini henüz gelmemiş (ya da
+/// tahmin aralığı geçmiş) olanlar. Bugün'deki şeritte kayıp olmasınlar diye
+/// [apiaryWeather]'ın yanında kendi kartlarıyla görünürler.
 @riverpod
-Future<List<Apiary>> unlocatedApiaries(Ref ref) async => [
-  for (final summary in await ref.watch(apiaryListProvider.future))
-    if (summary.apiary.latitude == null) summary.apiary,
-];
+Future<List<Apiary>> apiariesWithoutWeather(Ref ref) async {
+  final summaries = await ref.watch(apiaryListProvider.future);
+  final weather = await ref.watch(apiaryWeatherProvider.future);
+  final covered = {for (final item in weather) item.apiary.id};
+  return [
+    for (final summary in summaries)
+      if (!covered.contains(summary.apiary.id)) summary.apiary,
+  ];
+}
 
 /// Bir arılığın şu anki saatinin havası. `opening` sıcaklık ya da rüzgar
 /// eksikse null; `thresholds` simgenin rüzgar sınırı için.
@@ -148,9 +155,9 @@ class WeatherRefresher {
         weatherNeedsRefresh(
           bundle: await repository.readBundle(),
           now: clock.now(),
-          locatedApiaryIds: await _ref
+          locatedApiaries: await _ref
               .read(apiaryRepositoryProvider)
-              .locatedIds(orgId),
+              .locatedUpdatedAt(orgId),
         );
     if (!needsRefresh) return true;
     try {

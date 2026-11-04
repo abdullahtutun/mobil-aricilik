@@ -746,6 +746,7 @@
   "weatherWind": "Rüzgar {speed}",
   "weatherNoLocationTitle": "Konum yok",
   "weatherNoLocationAction": "Hava için konum ekle",
+  "weatherPendingHint": "Bağlantı gelince gelir",
   "weatherSpeed": "{value} {unit}",
   "unitKmh": "km/s",
   "unitMph": "mph",

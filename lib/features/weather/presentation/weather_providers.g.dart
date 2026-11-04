@@ -237,16 +237,20 @@ final class ApiaryPlaceFamily extends $Family
   String toString() => r'apiaryPlaceProvider';
 }
 
-/// Konumu girilmemiş arılıklar, arılık sırasıyla. Bunların havası olmaz;
-/// Bugün'deki şeritte "konum ekle" kartı olarak görünürler.
+/// Şu anki saatin havası olmayan arılıklar, arılık sırasıyla: konumu
+/// girilmemiş olanlar ve konumlu olup tahmini henüz gelmemiş (ya da
+/// tahmin aralığı geçmiş) olanlar. Bugün'deki şeritte kayıp olmasınlar diye
+/// [apiaryWeather]'ın yanında kendi kartlarıyla görünürler.
 
-@ProviderFor(unlocatedApiaries)
-final unlocatedApiariesProvider = UnlocatedApiariesProvider._();
+@ProviderFor(apiariesWithoutWeather)
+final apiariesWithoutWeatherProvider = ApiariesWithoutWeatherProvider._();
 
-/// Konumu girilmemiş arılıklar, arılık sırasıyla. Bunların havası olmaz;
-/// Bugün'deki şeritte "konum ekle" kartı olarak görünürler.
+/// Şu anki saatin havası olmayan arılıklar, arılık sırasıyla: konumu
+/// girilmemiş olanlar ve konumlu olup tahmini henüz gelmemiş (ya da
+/// tahmin aralığı geçmiş) olanlar. Bugün'deki şeritte kayıp olmasınlar diye
+/// [apiaryWeather]'ın yanında kendi kartlarıyla görünürler.
 
-final class UnlocatedApiariesProvider
+final class ApiariesWithoutWeatherProvider
     extends
         $FunctionalProvider<
           AsyncValue<List<Apiary>>,
@@ -254,21 +258,23 @@ final class UnlocatedApiariesProvider
           FutureOr<List<Apiary>>
         >
     with $FutureModifier<List<Apiary>>, $FutureProvider<List<Apiary>> {
-  /// Konumu girilmemiş arılıklar, arılık sırasıyla. Bunların havası olmaz;
-  /// Bugün'deki şeritte "konum ekle" kartı olarak görünürler.
-  UnlocatedApiariesProvider._()
+  /// Şu anki saatin havası olmayan arılıklar, arılık sırasıyla: konumu
+  /// girilmemiş olanlar ve konumlu olup tahmini henüz gelmemiş (ya da
+  /// tahmin aralığı geçmiş) olanlar. Bugün'deki şeritte kayıp olmasınlar diye
+  /// [apiaryWeather]'ın yanında kendi kartlarıyla görünürler.
+  ApiariesWithoutWeatherProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'unlocatedApiariesProvider',
+        name: r'apiariesWithoutWeatherProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$unlocatedApiariesHash();
+  String debugGetCreateSourceHash() => _$apiariesWithoutWeatherHash();
 
   @$internal
   @override
@@ -278,11 +284,12 @@ final class UnlocatedApiariesProvider
 
   @override
   FutureOr<List<Apiary>> create(Ref ref) {
-    return unlocatedApiaries(ref);
+    return apiariesWithoutWeather(ref);
   }
 }
 
-String _$unlocatedApiariesHash() => r'35815fea559beef42b1599c0217b064661eddda9';
+String _$apiariesWithoutWeatherHash() =>
+    r'5e4d7f49135861ba299403a041347b121e89a643';
 
 /// Saklanan paketten, arılık sırasıyla, şu anki saatin havası. Pakette
 /// olmayan, silinmiş ya da tahmin aralığı geçmiş arılık yer almaz.

@@ -2682,6 +2682,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get weatherNoLocationAction => 'Hava için konum ekle';
 
   @override
+  String get weatherPendingHint => 'Bağlantı gelince gelir';
+
+  @override
   String weatherWind(String speed) {
     return 'Rüzgar $speed';
   }
