@@ -61,6 +61,7 @@ dependencies:
   json_annotation: ^4.12.0
   just_audio: ^0.10.6
   latlong2: ^0.10.1
+  map_launcher: ^7.0.0
   mobile_scanner: ^7.4.2
   package_info_plus: ^10.2.2
   path: ^1.9.1

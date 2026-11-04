@@ -125,6 +125,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get apiaryMapDirectionsFailed => 'Harita uygulaması açılamadı.';
 
   @override
+  String get apiaryMapDirectionsChooseApp => 'Yol tarifi için uygulama seç';
+
+  @override
   String apiaryHiveCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

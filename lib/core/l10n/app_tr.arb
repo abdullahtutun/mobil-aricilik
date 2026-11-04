@@ -31,6 +31,7 @@
   "apiaryMapDirections": "Yol tarifi",
   "apiaryMapShow": "Göster",
   "apiaryMapDirectionsFailed": "Harita uygulaması açılamadı.",
+  "apiaryMapDirectionsChooseApp": "Yol tarifi için uygulama seç",
   "apiaryHiveCount": "{count, plural, =0{Kovan yok} other{{count} kovan}}",
   "apiaryLastVisit": "Son ziyaret {date}",
   "apiaryNoVisit": "Henüz ziyaret yok",

@@ -8,6 +8,8 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/services/basemap_service.dart';
+import 'package:mobil_arici/core/services/directions_service.dart';
+import 'package:mobil_arici/core/services/directions_service_provider.dart';
 import 'package:mobil_arici/core/services/url_launcher_service_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/relative_date.dart';
@@ -225,17 +227,59 @@ class _ApiaryMapCard extends ConsumerWidget {
     );
   }
 
-  /// Telefonun harita uygulamasında arılığa yol tarifi; Android'de ve
-  /// iOS'ta Google Haritalar, yoksa tarayıcı açar.
+  /// Arılığa yol tarifi. Telefonda kurulu birden çok harita uygulaması
+  /// varsa hangisiyle açılacağı sorulur; tek uygulama doğrudan açılır. Hiç
+  /// bulunamazsa Google Haritalar bağlantısı (uygulama ya da tarayıcı).
   Future<void> _openDirections(BuildContext context, WidgetRef ref) async {
-    final opened = await ref
-        .read(urlLauncherServiceProvider)
-        .open(apiaryDirectionsUri(point.latitude, point.longitude));
+    final l10n = AppLocalizations.of(context);
+    final directions = ref.read(directionsServiceProvider);
+    final apps = await directions.installedApps(
+      point.latitude,
+      point.longitude,
+    );
+    if (!context.mounted) return;
+
+    final bool opened;
+    if (apps.isEmpty) {
+      opened = await ref
+          .read(urlLauncherServiceProvider)
+          .open(apiaryDirectionsUri(point.latitude, point.longitude));
+    } else {
+      final app = apps.length == 1
+          ? apps.single
+          : await showOptionSheet<DirectionsApp>(
+              context,
+              (context) => OptionSheet(
+                title: l10n.apiaryMapDirectionsChooseApp,
+                options: [
+                  for (final app in apps)
+                    SheetOption(
+                      value: app,
+                      icon: Icons.directions_rounded,
+                      label: app.name,
+                    ),
+                ],
+              ),
+            );
+      // Sayfa kapatıldı.
+      if (app == null) return;
+      try {
+        await directions.open(
+          app,
+          point.latitude,
+          point.longitude,
+          title: summary.apiary.name,
+        );
+        opened = true;
+      } on DirectionsUnavailable {
+        if (context.mounted) {
+          showMessageSnackBar(context, l10n.apiaryMapDirectionsFailed);
+        }
+        return;
+      }
+    }
     if (!opened && context.mounted) {
-      showMessageSnackBar(
-        context,
-        AppLocalizations.of(context).apiaryMapDirectionsFailed,
-      );
+      showMessageSnackBar(context, l10n.apiaryMapDirectionsFailed);
     }
   }
 }

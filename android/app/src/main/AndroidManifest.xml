@@ -86,5 +86,19 @@
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="tel"/>
         </intent>
+        <!-- map_launcher: yol tarifi için kurulu harita uygulamaları. -->
+        <package android:name="com.google.android.apps.maps" />
+        <package android:name="com.google.android.apps.mapslite" />
+        <package android:name="ru.yandex.yandexnavi" />
+        <package android:name="ru.yandex.yandexmaps" />
+        <package android:name="com.waze" />
+        <package android:name="com.huawei.maps.app" />
+        <package android:name="com.here.app.maps" />
+        <package android:name="net.osmand" />
+        <package android:name="net.osmand.plus" />
+        <package android:name="com.mapswithme.maps.pro" />
+        <package android:name="com.generalmagic.magicearth" />
+        <package android:name="com.tomtom.gplay.navapp" />
+        <package android:name="com.sygic.truck" />
     </queries>
 </manifest>

@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Couldn\'t open a maps app.'**
   String get apiaryMapDirectionsFailed;
 
+  /// No description provided for @apiaryMapDirectionsChooseApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Get directions with'**
+  String get apiaryMapDirectionsChooseApp;
+
   /// Active hives in an apiary, on the apiary list.
   ///
   /// In en, this message translates to:

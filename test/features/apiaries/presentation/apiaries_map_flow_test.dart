@@ -10,6 +10,7 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
+import 'package:mobil_arici/core/services/directions_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_map.dart';
@@ -20,6 +21,7 @@ import 'package:mobil_arici/features/today/presentation/today_providers.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_basemap_service.dart';
+import '../../../helpers/fake_directions_service.dart';
 import '../../../helpers/fake_offline_maps.dart';
 import '../../../helpers/fake_organization_service.dart';
 import '../../../helpers/fake_url_launcher.dart';
@@ -34,6 +36,7 @@ Future<ProviderContainer> _openMap(
   required FakeBasemapService basemap,
   FakeOfflineMaps? offlineMaps,
   FakeUrlLauncher? urlLauncher,
+  FakeDirectionsService? directions,
   List<Override> overrides = const [],
 }) async {
   final container = ProviderContainer.test(
@@ -43,6 +46,7 @@ Future<ProviderContainer> _openMap(
         basemap: basemap,
         offlineMaps: offlineMaps,
         urlLauncher: urlLauncher,
+        directions: directions,
       ),
       ...overrides,
     ],
@@ -233,7 +237,9 @@ void main() {
     expect(find.text('Yayla'), findsOneWidget);
   });
 
-  testWidgets('Yol tarifi telefonun harita uygulamasını açar', (tester) async {
+  testWidgets('kurulu harita uygulaması yoksa Google Haritalar bağlantısı', (
+    tester,
+  ) async {
     await apiaries.create(
       orgId: _orgId,
       name: 'Yayla',
@@ -259,6 +265,76 @@ void main() {
     launcher.available = false;
     await _tap(tester, find.text('Directions'));
     expect(find.text("Couldn't open a maps app."), findsOneWidget);
+  });
+
+  testWidgets('birden çok harita uygulaması varsa hangisi olacağı sorulur', (
+    tester,
+  ) async {
+    await apiaries.create(
+      orgId: _orgId,
+      name: 'Yayla',
+      latitude: 37.1,
+      longitude: 28.4,
+    );
+    const apple = DirectionsApp(id: 'apple', name: 'Apple Maps');
+    const yandex = DirectionsApp(id: 'yandexNavi', name: 'Yandex Navigator');
+    final directions = FakeDirectionsService(apps: [apple, yandex]);
+    final launcher = FakeUrlLauncher();
+    await _openMap(
+      tester,
+      db: db,
+      basemap: FakeBasemapService(fail: false),
+      directions: directions,
+      urlLauncher: launcher,
+    );
+
+    await _tap(tester, find.text('0'));
+    await _tap(tester, find.text('Directions'));
+    expect(find.text('Get directions with'), findsOneWidget);
+    expect(find.text('Apple Maps'), findsOneWidget);
+    expect(find.text('Yandex Navigator'), findsOneWidget);
+
+    await _tap(tester, find.text('Yandex Navigator'));
+    expect(find.text('Get directions with'), findsNothing);
+    expect(directions.opened.single.app, yandex);
+    expect(directions.opened.single.latitude, 37.1);
+    expect(directions.opened.single.longitude, 28.4);
+    expect(directions.opened.single.title, 'Yayla');
+    expect(launcher.opened, isEmpty);
+
+    // Sayfa kapatılırsa hiçbir şey açılmaz.
+    await _tap(tester, find.text('Directions'));
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    expect(find.text('Get directions with'), findsNothing);
+    expect(directions.opened, hasLength(1));
+
+    directions.fail = true;
+    await _tap(tester, find.text('Directions'));
+    await _tap(tester, find.text('Apple Maps'));
+    expect(find.text("Couldn't open a maps app."), findsOneWidget);
+  });
+
+  testWidgets('tek harita uygulaması doğrudan açılır', (tester) async {
+    await apiaries.create(
+      orgId: _orgId,
+      name: 'Yayla',
+      latitude: 37.1,
+      longitude: 28.4,
+    );
+    const apple = DirectionsApp(id: 'apple', name: 'Apple Maps');
+    final directions = FakeDirectionsService(apps: [apple]);
+    await _openMap(
+      tester,
+      db: db,
+      basemap: FakeBasemapService(fail: false),
+      directions: directions,
+    );
+
+    await _tap(tester, find.text('0'));
+    await _tap(tester, find.text('Directions'));
+    expect(find.text('Get directions with'), findsNothing);
+    expect(directions.opened.single.app, apple);
   });
 
   testWidgets('konumlu arılık yoksa harita üstünde açıklama', (tester) async {

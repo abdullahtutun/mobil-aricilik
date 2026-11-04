@@ -674,6 +674,13 @@
 - `apiaries_map_flow_test.dart`: kartın açılması, pinler arası geçiş, boş yere dokununca kapanma, Göster ile detay, Yol tarifi adresi ve açılamayınca mesaj, Türkçe metinler, 360dp'de 1.5x yazı ve eldivenle taşma yok. apiaries, today ve app testleri (134) geçiyor, `flutter analyze` temiz.
 - Bilinen: cihazda denenmedi. Tasarımdaki seçili pinin vurgusu, "arılık ara" kutusu ve konumum butonu yapılmadı. Yol tarifi internet ve Google Haritalar (ya da tarayıcı) istiyor.
 
+### 2026-11-04 — Yol tarifi: telefondaki harita uygulamaları önerilir
+
+- Yol tarifi artık yalnız Google Haritalar'ı açmıyor: `map_launcher` 7.0.0 ile cihazda kurulu harita uygulamaları bulunuyor (`DirectionsService` / `MapLauncherDirectionsService`, `directionsServiceProvider`). Birden çok uygulama varsa "Yol tarifi için uygulama seç" sayfası (`OptionSheet`) açılıyor; tek uygulama (ör. yalnız Apple Haritalar olan iPhone) doğrudan açılıyor; hiç bulunamazsa eski Google Haritalar bağlantısı. Hedef adı arılığın adı.
+- Sorgulanan uygulamalar: Apple Haritalar, Google Haritalar (+ Go), Yandex Navigasyon ve Haritalar, Waze, Petal Maps, HERE WeGo, OsmAnd (+), MAPS.ME, Magic Earth, TomTom GO, Sygic Truck. iOS'ta `Info.plist`'e `LSApplicationQueriesSchemes`, Android'de manifest `<queries>`'e paket adları eklendi; listede olmayan uygulama kurulu olsa da önerilmez. Uygulama adları paketten gelir, çevrilmez (ör. "Apple Maps").
+- ARB'ye `apiaryMapDirectionsChooseApp` (TR + EN) eklendi. Sahte `FakeDirectionsService` `signedIn()`'e eklendi; `apiaries_map_flow_test.dart`: uygulama yoksa Google bağlantısı, birden çoksa seçim sayfası ve seçilenin açılması, sayfa kapatılınca hiçbir şey açılmaması, açılamayınca mesaj, tek uygulamada sayfasız açılma.
+- apiaries, today ve app testleri (136) geçiyor, `flutter analyze` temiz; dev debug APK ve iOS (imzasız) derlemesi başarılı (paket SPM destekli). Cihazda denenmedi: uygulama tespiti ve açılış gerçek telefonda doğrulanmalı.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

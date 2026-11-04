@@ -6,6 +6,7 @@ import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/services/app_info_service_provider.dart';
 import 'package:mobil_arici/core/services/basemap_service_provider.dart';
 import 'package:mobil_arici/core/services/code_scanner_provider.dart';
+import 'package:mobil_arici/core/services/directions_service_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/services/place_search_service_provider.dart';
 import 'package:mobil_arici/core/services/print_service_provider.dart';
@@ -23,6 +24,7 @@ import 'package:mobil_arici/features/weather/presentation/weather_providers.dart
 import 'fake_app_info_service.dart';
 import 'fake_basemap_service.dart';
 import 'fake_code_scanner.dart';
+import 'fake_directions_service.dart';
 import 'fake_documents.dart';
 import 'fake_knowledge.dart';
 import 'fake_media.dart';
@@ -115,6 +117,7 @@ List<Override> signedIn({
   FakeScreenAwake? screenAwake,
   FakeBasemapService? basemap,
   FakePlaceSearchService? placeSearch,
+  FakeDirectionsService? directions,
   FakeAppInfoService? appInfo,
   FakePushService? push,
   FakeDeviceTokenService? deviceTokens,
@@ -145,6 +148,9 @@ List<Override> signedIn({
   basemapServiceProvider.overrideWithValue(basemap ?? FakeBasemapService()),
   placeSearchServiceProvider.overrideWithValue(
     placeSearch ?? FakePlaceSearchService(),
+  ),
+  directionsServiceProvider.overrideWithValue(
+    directions ?? FakeDirectionsService(),
   ),
   appInfoServiceProvider.overrideWithValue(appInfo ?? FakeAppInfoService()),
   pushServiceProvider.overrideWithValue(push ?? FakePushService()),

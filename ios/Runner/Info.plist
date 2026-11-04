@@ -94,5 +94,18 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>yandexnavi</string>
+		<string>yandexmaps</string>
+		<string>waze</string>
+		<string>here-location</string>
+		<string>osmandmaps</string>
+		<string>mapswithme</string>
+		<string>magicearth</string>
+		<string>tomtomgo</string>
+		<string>com.sygic.aura</string>
+	</array>
 </dict>
 </plist>
