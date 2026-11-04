@@ -36,14 +36,17 @@ class WeatherStrip extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Tek arılık ekranın enini kaplar; birden çoksa ikisi yan yana
-        // sığar, üçüncüsünden sonrası yana kaydırılır.
+        // Tek arılık ekranın enini kaplar; iki arılık yan yana sığar. Üç ve
+        // fazlasında kartlar daralır ve sağ kenarda üçüncü kartın ucu
+        // görünür (tasarımdaki gibi), böylece şeridin kaydığı anlaşılır.
         LayoutBuilder(
           builder: (context, constraints) {
-            final available = constraints.maxWidth - 2 * spacing.lg;
-            final cardWidth = cards.length == 1
-                ? available
-                : (available - spacing.md) / 2;
+            final width = constraints.maxWidth;
+            final cardWidth = switch (cards.length) {
+              1 => width - 2 * spacing.lg,
+              2 => (width - 2 * spacing.lg - spacing.md) / 2,
+              _ => (width - spacing.lg - 2 * spacing.md - spacing.xxl) / 2,
+            };
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.symmetric(horizontal: spacing.lg),

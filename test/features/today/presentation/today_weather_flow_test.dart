@@ -12,6 +12,7 @@ import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 import 'package:mobil_arici/features/weather/domain/weather_icons.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/apiary_no_location_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_glyph.dart';
 
@@ -247,6 +248,12 @@ void main() {
     final strip = find.byType(SingleChildScrollView).first;
     final card = find.text('Ova');
     expect(card, findsOneWidget);
+    // Kaydırmadan önce üçüncü kartın ucu sağ kenarda görünür.
+    final screenWidth =
+        tester.view.physicalSize.width / tester.view.devicePixelRatio;
+    final third = tester.getRect(find.byType(ApiaryNoLocationCard));
+    expect(third.left, lessThan(screenWidth));
+    expect(third.right, greaterThan(screenWidth));
     final before = tester.getTopLeft(card);
     await tester.drag(strip, const Offset(-400, 0));
     await tester.pumpAndSettle();
