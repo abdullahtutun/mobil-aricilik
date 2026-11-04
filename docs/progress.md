@@ -645,6 +645,7 @@
 - Şerit artık hava paketi yokken de konumsuz kartlarla görünüyor; WeatherAPI atfı ve "itibarıyla" satırı yalnız hava kartı varken çıkıyor. ARB'ye `weatherNoLocationTitle` ve `weatherNoLocationAction` (TR + EN) eklendi.
 - `today_weather_flow_test.dart`: konumsuz kart görünüyor, iki konumlu + bir konumsuz arılıkta şerit kayıyor ve kart formu açıyor, EN metinler, 360dp'de 1.5x yazı ve eldivenle taşma yok. today, weather, apiaries, hives, onboarding ve app testleri geçiyor (363), `flutter analyze` temiz. Cihazda denenmedi.
 - Ardından, kaydırılabildiği anlaşılsın diye: üç ve daha fazla kartta kartlar daralıyor ve sağ kenarda üçüncü kartın `spacing.xxl` (32dp) kadarlık ucu görünüyor. Ok ya da ikon eklenmedi: `docs/design/Bugün.png`'de de ikinci kart sağ kenarda kesik, ikon da eldivenle dokunulacak küçük bir hedef olurdu. Bir ve iki kartta düzen değişmedi. Akış testi kaydırmadan önce üçüncü kartın sağ kenarda yarım göründüğünü denetliyor; today ve weather testleri (86) geçiyor.
+- Hava kartındaki rüzgar satırı ("Rüzgar 27 km/s") `body` yerine bir alt boy `bodySmall` ile yazılıyor (kullanıcı isteği).
 
 ## Sona bırakılanlar
 

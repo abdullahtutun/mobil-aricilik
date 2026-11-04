@@ -65,7 +65,7 @@ class ApiaryWeatherCard extends ConsumerWidget {
                   SizedBox(height: spacing.sm),
                   Text(
                     l10n.weatherWind(units.speed(kmh)),
-                    style: typography.body.copyWith(
+                    style: typography.bodySmall.copyWith(
                       color: colors.textSecondary,
                     ),
                   ),
