@@ -55,6 +55,15 @@ enum AccountDeletionFailure {
 
   /// Oturum geçersiz ya da yetki yok.
   forbidden,
+
+  /// Silme kodu yanlış ya da süresi dolmuş.
+  invalidCode,
+
+  /// Kod 5 kez yanlış girildi; yeni kod istenmeli.
+  tooManyAttempts,
+
+  /// Talep için son 15 dakikada doğrulanmış kod yok; yeniden doğrulanmalı.
+  codeRequired,
   unknown,
 }
 

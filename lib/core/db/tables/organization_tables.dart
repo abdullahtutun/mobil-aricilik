@@ -51,6 +51,11 @@ class Memberships extends Table with SyncColumns, OrgColumns {
 
   /// Üyenin adı soyadı; yalnız üyenin kendisi yazar.
   TextColumn get fullName => text().nullable()();
+
+  /// Üye hesabını silmeyi onayladıysa kalıcı silme zamanı; vazgeçerse
+  /// boşalır. Yalnız sunucu yazar. Doluyken rolü değiştirilmez, ekipten
+  /// çıkarılmaz.
+  DateTimeColumn get deletionScheduledFor => dateTime().nullable()();
 }
 
 /// İşletme logosunun yükleme kuyruğu; yalnız bu telefonda. Dosya

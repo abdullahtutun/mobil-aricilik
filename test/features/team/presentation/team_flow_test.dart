@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart' show Variable;
+import 'package:drift/drift.dart' show Value, Variable;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -214,6 +214,58 @@ void main() {
       // Rol değişmedi: üye satırında hâlâ işçi.
       expect(_inList('İşçi'), findsOneWidget);
       expect(_inList('Ortak'), findsNothing);
+    });
+
+    testWidgets('hesabını silen üye işaretli; rolü değişmez, çıkarılamaz', (
+      tester,
+    ) async {
+      final (:team, :db, container: _) = await _openTeam(
+        tester,
+        seed: (db) =>
+            (db.update(
+              db.memberships,
+            )..where((t) => t.userId.equals('worker-1'))).write(
+              MembershipsCompanion(
+                deletionScheduledFor: Value(DateTime.utc(2026, 11, 12, 9)),
+              ),
+            ),
+      );
+
+      // Renk tek başına değil: ikon ve kelime.
+      expect(find.text('Hesabını siliyor · 12 Kas 2026'), findsOneWidget);
+      expect(find.byIcon(Icons.hourglass_top_rounded), findsOneWidget);
+
+      await _tap(tester, find.text('mustafa@example.com'));
+      expect(find.text('Ekipten çıkar'), findsNothing);
+      expect(team.roleChanges, isEmpty);
+      expect(team.removed, isEmpty);
+
+      // Silmeden vazgeçince (senkronla işaret kalkar) yeniden yönetilir.
+      await (db.update(db.memberships)
+            ..where((t) => t.userId.equals('worker-1')))
+          .write(const MembershipsCompanion(deletionScheduledFor: Value(null)));
+      await tester.pumpAndSettle();
+      expect(find.text('Hesabını siliyor · 12 Kas 2026'), findsNothing);
+      await _tap(tester, find.text('mustafa@example.com'));
+      expect(find.text('Ekipten çıkar'), findsOneWidget);
+    });
+
+    testWidgets('sunucu üyenin silindiğini söylerse anlaşılır mesaj', (
+      tester,
+    ) async {
+      final (:team, container: _, db: _) = await _openTeam(tester);
+      team.failure = TeamFailure.memberLeaving;
+
+      await _tap(tester, find.text('mustafa@example.com'));
+      await _tap(tester, find.text('Ortak').last);
+
+      expect(
+        find.text(
+          'Bu kişi hesabını siliyor; bekleme süresinde rolü değiştirilemez ve '
+          'ekipten çıkarılamaz.',
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('owner satırı ve kendi satırı dokunulmaz', (tester) async {

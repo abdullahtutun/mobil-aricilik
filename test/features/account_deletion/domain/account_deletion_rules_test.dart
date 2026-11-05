@@ -7,8 +7,13 @@ import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 Member _member(String userId, MembershipRole role) =>
     (userId: userId, role: role);
 
-MemberProfile _profile(String userId, MembershipRole role) =>
-    (membershipId: 'm-$userId', userId: userId, role: role, fullName: null);
+MemberProfile _profile(String userId, MembershipRole role) => (
+  membershipId: 'm-$userId',
+  userId: userId,
+  role: role,
+  fullName: null,
+  deletionScheduledFor: null,
+);
 
 void main() {
   group('deletionScenarioOf', () {

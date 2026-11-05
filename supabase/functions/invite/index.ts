@@ -13,6 +13,7 @@
 //  - set_role { org_id, user_id, role }  Yalnız owner; owner'ın rolü ve
 //             owner'ın kendisi değişmez (işletme owner'sız kalmasın).
 //  - remove   { org_id, user_id }        Yalnız owner; üyelik yumuşak silinir.
+//             Hesap silme talebi bekleyen üyede ikisi de 409 member_leaving.
 //
 // Üyelik yazmaları service role ile yapılır; çağıranın yetkisi önce kendi
 // JWT'siyle (RLS) doğrulanır.
@@ -193,7 +194,7 @@ Deno.serve(async (request) => {
       }
       const { data: membership } = await admin
         .from("memberships")
-        .select("id, role")
+        .select("id, role, deletion_scheduled_for")
         .eq("org_id", orgId)
         .eq("user_id", target)
         .is("deleted_at", null)
@@ -201,6 +202,11 @@ Deno.serve(async (request) => {
       if (!membership) return json({ error: "not_found" }, 404);
       if (membership.role === "owner") {
         return json({ error: "owner_locked" }, 409);
+      }
+      // Hesabını silmeyi onaylamış üye bekleme süresince değiştirilmez ya da
+      // çıkarılmaz; vazgeçerse işaret kalkar.
+      if (membership.deletion_scheduled_for !== null) {
+        return json({ error: "member_leaving" }, 409);
       }
       const change = body.action === "set_role"
         ? { role: body.role }

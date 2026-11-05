@@ -14,10 +14,36 @@ class FakeAccountDeletionService implements AccountDeletionService {
   /// Talebin kalıcı silme zamanı.
   DateTime scheduledFor = DateTime.utc(2026, 11, 12, 9, 30);
 
+  /// Gönderilen silme kodu; [verifyCode] yalnız bunu kabul eder.
+  String code = '482913';
+  AccountDeletionFailure? sendFailure;
+  int sentCodes = 0;
+  final verifiedCodes = <String>[];
+
+  /// Sunucuda doğrulanmış kod var mı; yoksa [request] codeRequired atar.
+  bool codeVerified = false;
+
   final requests =
       <({String orgId, bool deleteOrganization, String? transferTo})>[];
   int pendingCalls = 0;
   int cancelCalls = 0;
+
+  @override
+  Future<void> sendCode() async {
+    sentCodes++;
+    if (sendFailure case final failure?) {
+      throw AccountDeletionException(failure);
+    }
+  }
+
+  @override
+  Future<void> verifyCode(String code) async {
+    verifiedCodes.add(code);
+    if (code != this.code) {
+      throw const AccountDeletionException(AccountDeletionFailure.invalidCode);
+    }
+    codeVerified = true;
+  }
 
   @override
   Future<DeletionRequestInfo> request({
@@ -33,6 +59,10 @@ class FakeAccountDeletionService implements AccountDeletionService {
     if (requestFailure case final failure?) {
       throw AccountDeletionException(failure);
     }
+    if (!codeVerified) {
+      throw const AccountDeletionException(AccountDeletionFailure.codeRequired);
+    }
+    codeVerified = false;
     final request = (
       scheduledFor: scheduledFor,
       kind: deleteOrganization

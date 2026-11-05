@@ -252,6 +252,7 @@ void main() {
             userId: 'user-1',
             role: MembershipRole.worker,
             fullName: 'Mehmet Kaya',
+            deletionScheduledFor: null,
           ),
         ]);
       },

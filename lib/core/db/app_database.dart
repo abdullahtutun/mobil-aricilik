@@ -111,7 +111,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 24;
+  int get schemaVersion => 25;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -322,6 +322,12 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(schema.organizations, schema.organizations.logoPath);
         await m.addColumn(schema.memberships, schema.memberships.fullName);
         await m.createTable(schema.logoUploads);
+      },
+      from24To25: (m, schema) async {
+        await m.addColumn(
+          schema.memberships,
+          schema.memberships.deletionScheduledFor,
+        );
       },
     ),
   );

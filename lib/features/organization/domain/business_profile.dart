@@ -32,12 +32,14 @@ typedef BusinessCounts = ({int hives, int apiaries, int inspections});
 /// Sabite geçerken gizlenecek gezginci kayıtları.
 typedef MigratoryRecordCounts = ({int plans, int stops});
 
-/// Ekip kartı ve profil için üye: kimlik, rol ve (yazdıysa) adı soyadı.
+/// Ekip kartı ve profil için üye: kimlik, rol, (yazdıysa) adı soyadı ve
+/// hesabını silmeyi onayladıysa kalıcı silme zamanı.
 typedef MemberProfile = ({
   String membershipId,
   String userId,
   MembershipRole role,
   String? fullName,
+  DateTime? deletionScheduledFor,
 });
 
 /// Logo yokken varsayılan avatar rengi (çam yeşili; docs/design).

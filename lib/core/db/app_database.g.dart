@@ -1075,6 +1075,17 @@ class $MembershipsTable extends Memberships
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _deletionScheduledForMeta =
+      const VerificationMeta('deletionScheduledFor');
+  @override
+  late final GeneratedColumn<DateTime> deletionScheduledFor =
+      GeneratedColumn<DateTime>(
+        'deletion_scheduled_for',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1087,6 +1098,7 @@ class $MembershipsTable extends Memberships
     userId,
     role,
     fullName,
+    deletionScheduledFor,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1161,6 +1173,15 @@ class $MembershipsTable extends Memberships
         fullName.isAcceptableOrUnknown(data['full_name']!, _fullNameMeta),
       );
     }
+    if (data.containsKey('deletion_scheduled_for')) {
+      context.handle(
+        _deletionScheduledForMeta,
+        deletionScheduledFor.isAcceptableOrUnknown(
+          data['deletion_scheduled_for']!,
+          _deletionScheduledForMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1212,6 +1233,10 @@ class $MembershipsTable extends Memberships
         DriftSqlType.string,
         data['${effectivePrefix}full_name'],
       ),
+      deletionScheduledFor: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deletion_scheduled_for'],
+      ),
     );
   }
 
@@ -1246,6 +1271,11 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
 
   /// Üyenin adı soyadı; yalnız üyenin kendisi yazar.
   final String? fullName;
+
+  /// Üye hesabını silmeyi onayladıysa kalıcı silme zamanı; vazgeçerse
+  /// boşalır. Yalnız sunucu yazar. Doluyken rolü değiştirilmez, ekipten
+  /// çıkarılmaz.
+  final DateTime? deletionScheduledFor;
   const MembershipRow({
     required this.id,
     required this.createdAt,
@@ -1257,6 +1287,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     required this.userId,
     required this.role,
     this.fullName,
+    this.deletionScheduledFor,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1283,6 +1314,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     if (!nullToAbsent || fullName != null) {
       map['full_name'] = Variable<String>(fullName);
     }
+    if (!nullToAbsent || deletionScheduledFor != null) {
+      map['deletion_scheduled_for'] = Variable<DateTime>(deletionScheduledFor);
+    }
     return map;
   }
 
@@ -1306,6 +1340,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       fullName: fullName == null && nullToAbsent
           ? const Value.absent()
           : Value(fullName),
+      deletionScheduledFor: deletionScheduledFor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletionScheduledFor),
     );
   }
 
@@ -1325,6 +1362,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       userId: serializer.fromJson<String>(json['userId']),
       role: serializer.fromJson<MembershipRole>(json['role']),
       fullName: serializer.fromJson<String?>(json['fullName']),
+      deletionScheduledFor: serializer.fromJson<DateTime?>(
+        json['deletionScheduledFor'],
+      ),
     );
   }
   @override
@@ -1341,6 +1381,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       'userId': serializer.toJson<String>(userId),
       'role': serializer.toJson<MembershipRole>(role),
       'fullName': serializer.toJson<String?>(fullName),
+      'deletionScheduledFor': serializer.toJson<DateTime?>(
+        deletionScheduledFor,
+      ),
     };
   }
 
@@ -1355,6 +1398,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     String? userId,
     MembershipRole? role,
     Value<String?> fullName = const Value.absent(),
+    Value<DateTime?> deletionScheduledFor = const Value.absent(),
   }) => MembershipRow(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -1366,6 +1410,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     userId: userId ?? this.userId,
     role: role ?? this.role,
     fullName: fullName.present ? fullName.value : this.fullName,
+    deletionScheduledFor: deletionScheduledFor.present
+        ? deletionScheduledFor.value
+        : this.deletionScheduledFor,
   );
   MembershipRow copyWithCompanion(MembershipsCompanion data) {
     return MembershipRow(
@@ -1379,6 +1426,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       userId: data.userId.present ? data.userId.value : this.userId,
       role: data.role.present ? data.role.value : this.role,
       fullName: data.fullName.present ? data.fullName.value : this.fullName,
+      deletionScheduledFor: data.deletionScheduledFor.present
+          ? data.deletionScheduledFor.value
+          : this.deletionScheduledFor,
     );
   }
 
@@ -1394,7 +1444,8 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
           ..write('orgId: $orgId, ')
           ..write('userId: $userId, ')
           ..write('role: $role, ')
-          ..write('fullName: $fullName')
+          ..write('fullName: $fullName, ')
+          ..write('deletionScheduledFor: $deletionScheduledFor')
           ..write(')'))
         .toString();
   }
@@ -1411,6 +1462,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     userId,
     role,
     fullName,
+    deletionScheduledFor,
   );
   @override
   bool operator ==(Object other) =>
@@ -1425,7 +1477,8 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
           other.orgId == this.orgId &&
           other.userId == this.userId &&
           other.role == this.role &&
-          other.fullName == this.fullName);
+          other.fullName == this.fullName &&
+          other.deletionScheduledFor == this.deletionScheduledFor);
 }
 
 class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
@@ -1439,6 +1492,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
   final Value<String> userId;
   final Value<MembershipRole> role;
   final Value<String?> fullName;
+  final Value<DateTime?> deletionScheduledFor;
   final Value<int> rowid;
   const MembershipsCompanion({
     this.id = const Value.absent(),
@@ -1451,6 +1505,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     this.userId = const Value.absent(),
     this.role = const Value.absent(),
     this.fullName = const Value.absent(),
+    this.deletionScheduledFor = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   MembershipsCompanion.insert({
@@ -1464,6 +1519,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     required String userId,
     required MembershipRole role,
     this.fullName = const Value.absent(),
+    this.deletionScheduledFor = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -1482,6 +1538,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     Expression<String>? userId,
     Expression<String>? role,
     Expression<String>? fullName,
+    Expression<DateTime>? deletionScheduledFor,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1495,6 +1552,8 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
       if (userId != null) 'user_id': userId,
       if (role != null) 'role': role,
       if (fullName != null) 'full_name': fullName,
+      if (deletionScheduledFor != null)
+        'deletion_scheduled_for': deletionScheduledFor,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1510,6 +1569,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     Value<String>? userId,
     Value<MembershipRole>? role,
     Value<String?>? fullName,
+    Value<DateTime?>? deletionScheduledFor,
     Value<int>? rowid,
   }) {
     return MembershipsCompanion(
@@ -1523,6 +1583,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
       userId: userId ?? this.userId,
       role: role ?? this.role,
       fullName: fullName ?? this.fullName,
+      deletionScheduledFor: deletionScheduledFor ?? this.deletionScheduledFor,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1562,6 +1623,11 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     if (fullName.present) {
       map['full_name'] = Variable<String>(fullName.value);
     }
+    if (deletionScheduledFor.present) {
+      map['deletion_scheduled_for'] = Variable<DateTime>(
+        deletionScheduledFor.value,
+      );
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1581,6 +1647,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
           ..write('userId: $userId, ')
           ..write('role: $role, ')
           ..write('fullName: $fullName, ')
+          ..write('deletionScheduledFor: $deletionScheduledFor, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -26094,6 +26161,7 @@ typedef $$MembershipsTableCreateCompanionBuilder =
       required String userId,
       required MembershipRole role,
       Value<String?> fullName,
+      Value<DateTime?> deletionScheduledFor,
       Value<int> rowid,
     });
 typedef $$MembershipsTableUpdateCompanionBuilder =
@@ -26108,6 +26176,7 @@ typedef $$MembershipsTableUpdateCompanionBuilder =
       Value<String> userId,
       Value<MembershipRole> role,
       Value<String?> fullName,
+      Value<DateTime?> deletionScheduledFor,
       Value<int> rowid,
     });
 
@@ -26170,6 +26239,11 @@ class $$MembershipsTableFilterComposer
     column: $table.fullName,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnFilters<DateTime> get deletionScheduledFor => $composableBuilder(
+    column: $table.deletionScheduledFor,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$MembershipsTableOrderingComposer
@@ -26230,6 +26304,11 @@ class $$MembershipsTableOrderingComposer
     column: $table.fullName,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get deletionScheduledFor => $composableBuilder(
+    column: $table.deletionScheduledFor,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$MembershipsTableAnnotationComposer
@@ -26270,6 +26349,11 @@ class $$MembershipsTableAnnotationComposer
 
   GeneratedColumn<String> get fullName =>
       $composableBuilder(column: $table.fullName, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletionScheduledFor => $composableBuilder(
+    column: $table.deletionScheduledFor,
+    builder: (column) => column,
+  );
 }
 
 class $$MembershipsTableTableManager
@@ -26313,6 +26397,7 @@ class $$MembershipsTableTableManager
                 Value<String> userId = const Value.absent(),
                 Value<MembershipRole> role = const Value.absent(),
                 Value<String?> fullName = const Value.absent(),
+                Value<DateTime?> deletionScheduledFor = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembershipsCompanion(
                 id: id,
@@ -26325,6 +26410,7 @@ class $$MembershipsTableTableManager
                 userId: userId,
                 role: role,
                 fullName: fullName,
+                deletionScheduledFor: deletionScheduledFor,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -26339,6 +26425,7 @@ class $$MembershipsTableTableManager
                 required String userId,
                 required MembershipRole role,
                 Value<String?> fullName = const Value.absent(),
+                Value<DateTime?> deletionScheduledFor = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembershipsCompanion.insert(
                 id: id,
@@ -26351,6 +26438,7 @@ class $$MembershipsTableTableManager
                 userId: userId,
                 role: role,
                 fullName: fullName,
+                deletionScheduledFor: deletionScheduledFor,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

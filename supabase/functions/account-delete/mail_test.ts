@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { completedMail, formatDeletionDate, mailLocale, requestedMail } from "./mail.ts";
+import { codeMail, completedMail, formatDeletionDate, mailLocale, requestedMail } from "./mail.ts";
 
 Deno.test("dil user_metadata.locale'den gelir, varsayılan Türkçe", () => {
   assertEquals(mailLocale("en"), "en");
@@ -31,4 +31,14 @@ Deno.test("talep e-postası tarihi ve giriş yapıp onaylayarak vazgeçmeyi söy
 Deno.test("tamamlanma e-postası kısa onaydır", () => {
   assertEquals(completedMail("tr").subject, "Mobil Arıcı hesabın silindi");
   assertEquals(completedMail("en").subject, "Your Mobil Arıcı account has been deleted");
+});
+
+Deno.test("silme kodu e-postası giriş kodundan ayrı", () => {
+  const tr = codeMail("482913", "tr");
+  assertEquals(tr.subject, "Mobil Arıcı hesap silme kodun");
+  assert(tr.text.includes("482913"));
+  assert(tr.text.includes("hesabın silinmez"));
+  const en = codeMail("482913", "en");
+  assertEquals(en.subject, "Your Mobil Arıcı account deletion code");
+  assert(en.text.includes("482913"));
 });

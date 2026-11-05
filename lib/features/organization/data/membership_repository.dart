@@ -36,6 +36,7 @@ class MembershipRepository {
           userId: row.userId,
           role: row.role,
           fullName: row.fullName,
+          deletionScheduledFor: row.deletionScheduledFor,
         ),
       )
       .watch();

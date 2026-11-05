@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/domain/sign_in_rules.dart';
-import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/widgets/auth_failure_message.dart';
 import 'package:mobil_arici/features/auth/presentation/widgets/otp_code_field.dart';
 
 /// Kod doğrulamanın altındaki metin düğmesi ("E-postayı değiştir").
 typedef CodeFormAction = ({String label, VoidCallback onPressed});
 
+/// Kod formunun durumu: kodun gittiği adres, yeni kod istenebilene kadar
+/// kalan saniye, gönderiliyor/doğrulanıyor ve son hata.
+typedef CodeFormState = ({
+  String? email,
+  int resendSeconds,
+  bool busy,
+  AuthFailure? failure,
+});
+
 /// E-postaya gelen 6 haneli kodun formu: alan, hata, yeniden gönder,
 /// yapıştır, spam notu ve Doğrula. Kod tamamlanınca kendiliğinden doğrulanır.
-/// Kodu [signInControllerProvider] gönderir ve doğrular; giriş ekranı ve hesap
-/// silmedeki kimlik doğrulama bu formu paylaşır. Doğrulanınca [onVerified].
-class SignInCodeForm extends ConsumerStatefulWidget {
+/// Giriş ekranı (giriş kodu) ve hesap silmedeki kimlik doğrulama (silme
+/// kodu) bu formu paylaşır; kodu gönderen ve doğrulayan [onVerify] /
+/// [onResend]'i veren denetleyicidir. Doğrulanınca [onVerified].
+class CodeEntryForm extends StatefulWidget {
   const new({
     required this.heading,
+    required this.state,
+    required this.onVerify,
+    required this.onResend,
     super.key,
     this.overline,
     this.verifyLabel,
@@ -27,6 +38,13 @@ class SignInCodeForm extends ConsumerStatefulWidget {
   });
 
   final String heading;
+  final CodeFormState state;
+
+  /// Kodu doğrular; doğrulandıysa true.
+  final Future<bool> Function(String code) onVerify;
+
+  /// Yeni kod ister; gönderildiyse true.
+  final Future<bool> Function() onResend;
 
   /// Başlığın üstündeki küçük satır (ör. "Adım 3/4"); null ise yok.
   final String? overline;
@@ -39,10 +57,10 @@ class SignInCodeForm extends ConsumerStatefulWidget {
   final VoidCallback? onVerified;
 
   @override
-  ConsumerState<SignInCodeForm> createState() => _SignInCodeFormState();
+  State<CodeEntryForm> createState() => _CodeEntryFormState();
 }
 
-class _SignInCodeFormState extends ConsumerState<SignInCodeForm> {
+class _CodeEntryFormState extends State<CodeEntryForm> {
   final _code = TextEditingController();
   final _focus = FocusNode();
 
@@ -53,20 +71,25 @@ class _SignInCodeFormState extends ConsumerState<SignInCodeForm> {
     super.dispose();
   }
 
-  String get _locale => Localizations.localeOf(context).languageCode;
+  @override
+  void didUpdateWidget(CodeEntryForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Yanlış kodda alan boşalır, yeniden yazmaya hazır olur.
+    if (widget.state.failure == AuthFailure.invalidCode &&
+        oldWidget.state.failure != AuthFailure.invalidCode) {
+      _code.clear();
+      _focus.requestFocus();
+    }
+  }
 
   Future<void> _verify() async {
-    final verified = await ref
-        .read(signInControllerProvider.notifier)
-        .verifyCode(_code.text, locale: _locale);
+    final verified = await widget.onVerify(_code.text);
     if (verified && mounted) widget.onVerified?.call();
   }
 
   Future<void> _resend() async {
     final l10n = AppLocalizations.of(context);
-    final sent = await ref
-        .read(signInControllerProvider.notifier)
-        .resendCode(locale: _locale);
+    final sent = await widget.onResend();
     if (!sent || !mounted) return;
     _code.clear();
     _focus.requestFocus();
@@ -93,17 +116,10 @@ class _SignInCodeFormState extends ConsumerState<SignInCodeForm> {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final colors = context.colors;
-    final state = ref.watch(signInControllerProvider);
+    final state = widget.state;
     final failure = state.failure;
     final secondary = widget.secondaryAction;
     final overline = widget.overline;
-
-    // Yanlış kodda alan boşalır, yeniden yazmaya hazır olur.
-    ref.listen(signInControllerProvider.select((s) => s.failure), (_, next) {
-      if (next != AuthFailure.invalidCode) return;
-      _code.clear();
-      _focus.requestFocus();
-    });
 
     final textAction = TextButton.styleFrom(
       minimumSize: Size(

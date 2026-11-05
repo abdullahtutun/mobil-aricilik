@@ -96,7 +96,7 @@ class DeletionFlowController extends _$DeletionFlowController {
     return true;
   }
 
-  /// Kod doğrulandı; son onaya geçilir.
+  /// Kod sunucuda doğrulandı; son onaya geçilir.
   void codeVerified() {
     if (state.step != DeletionStep.verify) return;
     state = state.copyWith(verified: true, step: DeletionStep.confirm);
@@ -129,7 +129,14 @@ class DeletionFlowController extends _$DeletionFlowController {
           );
     } on AccountDeletionException catch (error) {
       if (ref.mounted) {
-        state = state.copyWith(busy: false, failure: error.failure);
+        // Kodun 15 dakikası doldu: yeniden doğrulamaya dönülür.
+        final again = error.failure == AccountDeletionFailure.codeRequired;
+        state = state.copyWith(
+          busy: false,
+          failure: error.failure,
+          verified: !again && state.verified,
+          step: again ? DeletionStep.verify : state.step,
+        );
       }
       return false;
     }

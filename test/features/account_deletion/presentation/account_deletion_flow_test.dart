@@ -13,10 +13,9 @@ import 'package:mobil_arici/features/account_deletion/domain/account_deletion.da
 import 'package:mobil_arici/features/account_deletion/presentation/account_deleted_screen.dart';
 import 'package:mobil_arici/features/account_deletion/presentation/account_deletion_screen.dart';
 import 'package:mobil_arici/features/account_deletion/presentation/deletion_pending_screen.dart';
-import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/domain/sign_in_rules.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
-import 'package:mobil_arici/features/auth/presentation/widgets/sign_in_code_form.dart';
+import 'package:mobil_arici/features/auth/presentation/widgets/code_entry_form.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
@@ -126,7 +125,7 @@ BigButton _bigButton(WidgetTester tester, String label) =>
     tester.widget<BigButton>(_button(label));
 
 Finder get _codeField => find.descendant(
-  of: find.byType(SignInCodeForm),
+  of: find.byType(CodeEntryForm),
   matching: find.byType(TextField),
 );
 
@@ -324,7 +323,9 @@ void main() {
       final app = await _open(tester);
       await _toVerify(tester);
 
-      expect(app.auth.sentCodes.single.email, testUser.email);
+      // Silme kodu: giriş kodu (OTP) gönderilmez, yeni oturum açılmaz.
+      expect(app.deletion.sentCodes, 1);
+      expect(app.auth.sentCodes, isEmpty);
       expect(find.text('Adım 3/4'), findsOneWidget);
       expect(find.textContaining(testUser.email!), findsOneWidget);
       expect(_button('Kodu doğrula'), findsOneWidget);
@@ -335,18 +336,43 @@ void main() {
     testWidgets('kod doğrulanmadan son onaya geçilmez', (tester) async {
       final app = await _open(tester);
       await _toVerify(tester);
-      app.auth.verifyFailure = AuthFailure.invalidCode;
 
       await _enterCode(tester, '111111');
 
+      expect(app.deletion.verifiedCodes, ['111111']);
       expect(find.text('Son onay'), findsNothing);
       expect(find.text('Kimliğini doğrula'), findsOneWidget);
+      expect(
+        find.text(
+          'Kod yanlış ya da süresi dolmuş. Yeniden dene ya da yeni kod iste.',
+        ),
+        findsOneWidget,
+      );
       expect(find.byType(LabeledField), findsNothing);
       expect(app.deletion.requests, isEmpty);
 
-      app.auth.verifyFailure = null;
       await _enterCode(tester, '482913');
       expect(find.text('Son onay'), findsOneWidget);
+      expect(app.auth.verifiedCodes, isEmpty);
+    });
+
+    testWidgets('sunucu doğrulamanın süresi doldu derse koda dönülür', (
+      tester,
+    ) async {
+      final app = await _open(tester);
+      await _toVerify(tester);
+      await _enterCode(tester, '482913');
+      // 15 dakika geçti: sunucu kodu artık kabul etmiyor.
+      app.deletion.codeVerified = false;
+      await tester.enterText(_confirmField, 'Yılmaz Arıcılık');
+      await _settle(tester);
+
+      await _tap(tester, _button(_deleteWithOrganization));
+
+      expect(find.text('Kimliğini doğrula'), findsOneWidget);
+      expect(find.byType(AccountDeletedScreen), findsNothing);
+      expect(app.auth.signOutCount, 0);
+      await tester.pump(resendCooldown);
     });
 
     testWidgets('geri tuşu önceki adıma döner, doğrulama kalır', (

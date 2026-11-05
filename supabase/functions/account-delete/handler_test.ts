@@ -30,6 +30,12 @@ class FakeBackend {
   requestResponse: unknown = null;
   requestError: RpcError | null = null;
   pendingRequest: Record<string, unknown> | null = null;
+  /// Son 15 dakikada doğrulanmış silme kodu var mı.
+  codeVerified = true;
+  codeConsumed = 0;
+  /// account_deletion_verify_code yanıtı.
+  verifyResult = "ok";
+  sendCodeError: RpcError | null = null;
   failDeleteUser = 0;
   failComplete = 0;
   logs: unknown[][] = [];
@@ -96,6 +102,17 @@ class FakeBackend {
         return { data: true, error: null };
       case "account_deletion_pending":
         return { data: this.pendingRequest, error: null };
+      case "account_deletion_code_verified":
+        return { data: this.codeVerified, error: null };
+      case "account_deletion_consume_code":
+        this.codeConsumed++;
+        return { data: null, error: null };
+      case "account_deletion_send_code":
+        return this.sendCodeError
+          ? { data: null, error: this.sendCodeError }
+          : { data: "482913", error: null };
+      case "account_deletion_verify_code":
+        return { data: this.verifyResult, error: null };
       case "account_deletion_due":
         return {
           data: this.requests.filter((r) => r.status === "bekliyor").map((r) => ({ id: r.id })),
@@ -235,7 +252,12 @@ Deno.test("talep JWT'nin kullanıcısı için açılır, oturumlar kapanır, e-p
 
   assertEquals(response.status, 200);
   assertEquals(await response.json(), pendingResponse);
-  assertEquals(backend.rpcCalls, [{
+  assertEquals(backend.rpcCalls.map((c) => c.fn), [
+    "account_deletion_code_verified",
+    "account_deletion_request",
+    "account_deletion_consume_code",
+  ]);
+  assertEquals(backend.rpcCalls.slice(1, 2), [{
     fn: "account_deletion_request",
     args: {
       p_user_id: workerId,
@@ -265,8 +287,9 @@ Deno.test("sahiplik devri ortağın kimliğiyle RPC'ye gider", async () => {
   ));
 
   assertEquals(response.status, 200);
-  assertEquals(backend.rpcCalls[0].args.p_transfer_to, otherId);
-  assertEquals(backend.rpcCalls[0].args.p_delete_organization, false);
+  const call = backend.rpcCalls.find((c) => c.fn === "account_deletion_request")!;
+  assertEquals(call.args.p_transfer_to, otherId);
+  assertEquals(call.args.p_delete_organization, false);
 });
 
 Deno.test("devir hedefi uygun değilse 422 alır, oturumlar kapanmaz", async () => {
@@ -480,4 +503,88 @@ Deno.test("silinemeyen Storage dosyası talebi tamamlatmaz", async () => {
   assertEquals(await response.json(), { completed: 0, failed: 1 });
   assertEquals(request.status, "bekliyor");
   assertEquals(backend.deletedUsers, []);
+});
+
+// ---------------------------------------------------------------------------
+// Silme kodu
+// ---------------------------------------------------------------------------
+
+Deno.test("doğrulanmış kod yoksa talep açılmaz, oturumlar kapanmaz", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  backend.codeVerified = false;
+  const handle = createHandler(backend.deps());
+
+  const response = await handle(post({ action: "request" }, { Authorization: "Bearer jwt" }));
+
+  assertEquals(response.status, 403);
+  assertEquals(await response.json(), { error: "code_required" });
+  assertEquals(backend.rpcCalls.map((c) => c.fn), ["account_deletion_code_verified"]);
+  assertEquals(backend.signOuts.length, 0);
+  assertEquals(backend.codeConsumed, 0);
+});
+
+Deno.test("reddedilen talepte kod tüketilmez", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  backend.requestError = { code: "DL409", message: "ekip var", details: orgId };
+  const handle = createHandler(backend.deps());
+
+  await handle(post({ action: "request" }, { Authorization: "Bearer jwt" }));
+
+  assertEquals(backend.codeConsumed, 0);
+});
+
+Deno.test("kod silme e-postasıyla gider, giriş kodu demez", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  const handle = createHandler(backend.deps());
+
+  const response = await handle(post({ action: "send_code" }, { Authorization: "Bearer jwt" }));
+
+  assertEquals(response.status, 200);
+  assertEquals(backend.rpcCalls[0], {
+    fn: "account_deletion_send_code",
+    args: { p_user_id: workerId },
+  });
+  const { to, mail } = backend.mails[0];
+  assertEquals(to, "3333@test.local");
+  assertEquals(mail.subject, "Mobil Arıcı hesap silme kodun");
+  assert(mail.text.includes("482913"));
+  assert(!mail.text.toLowerCase().includes("giriş kod"));
+});
+
+Deno.test("sık kod isteği 429 alır, e-posta gitmez", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  backend.sendCodeError = { code: "DL429", message: "çok sık" };
+  const handle = createHandler(backend.deps());
+
+  const response = await handle(post({ action: "send_code" }, { Authorization: "Bearer jwt" }));
+
+  assertEquals(response.status, 429);
+  assertEquals(backend.mails.length, 0);
+});
+
+Deno.test("kod doğrulama: doğru, yanlış, kilitli, biçimsiz", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  const handle = createHandler(backend.deps());
+  const auth = { Authorization: "Bearer jwt" };
+
+  const ok = await handle(post({ action: "verify_code", code: "482913" }, auth));
+  assertEquals(ok.status, 200);
+  assertEquals(await ok.json(), { verified: true });
+  assertEquals(backend.rpcCalls[0].args, { p_user_id: workerId, p_code: "482913" });
+
+  backend.verifyResult = "invalid";
+  assertEquals((await handle(post({ action: "verify_code", code: "111111" }, auth))).status, 400);
+  backend.verifyResult = "expired";
+  assertEquals((await handle(post({ action: "verify_code", code: "111111" }, auth))).status, 400);
+  backend.verifyResult = "too_many";
+  assertEquals((await handle(post({ action: "verify_code", code: "111111" }, auth))).status, 429);
+
+  const calls = backend.rpcCalls.length;
+  assertEquals((await handle(post({ action: "verify_code", code: "12ab" }, auth))).status, 400);
+  assertEquals(backend.rpcCalls.length, calls);
 });

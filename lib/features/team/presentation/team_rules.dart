@@ -25,6 +25,7 @@ String failureMessage(AppLocalizations l10n, TeamFailure failure) =>
       TeamFailure.alreadyMember => l10n.teamErrorAlreadyMember,
       TeamFailure.forbidden => l10n.teamErrorForbidden,
       TeamFailure.ownerLocked => l10n.teamErrorOwnerLocked,
+      TeamFailure.memberLeaving => l10n.teamErrorMemberLeaving,
       TeamFailure.unknown => l10n.teamErrorUnknown,
     };
 
@@ -61,3 +62,17 @@ String activityAgeText(
     ActivityAgeUnit.date => format.dayMonth(at.toLocal()),
   };
 }
+
+/// Owner bu üyenin rolünü değiştirip onu ekipten çıkarabilir mi: kendisi
+/// değil, owner değil ve hesabını silmeyi onaylamamış (bekleme süresinde
+/// dokunulmaz; sunucu da 409 member_leaving ile reddeder).
+bool canChangeMember({
+  required bool manage,
+  required bool isSelf,
+  required MembershipRole role,
+  required DateTime? deletionScheduledFor,
+}) =>
+    manage &&
+    !isSelf &&
+    role != MembershipRole.owner &&
+    deletionScheduledFor == null;

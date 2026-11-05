@@ -8,9 +8,10 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
-import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/organization/presentation/business_profile_providers.dart';
 import 'package:mobil_arici/features/team/domain/activity_rules.dart';
 import 'package:mobil_arici/features/team/domain/invite.dart';
 import 'package:mobil_arici/features/team/domain/team_failure.dart';
@@ -22,7 +23,9 @@ import 'package:mobil_arici/features/team/presentation/team_rules.dart';
 /// çıkarma, owner ve partner için davet kodu, herkes için "Koda sahibim",
 /// altta "Son işlemler". Davet ve üyelik işlemleri online çalışır;
 /// çevrimdışıyken ne yapılacağı yazılır. Son işlemler yerel DB'den gelir.
-/// Tasarımdaki son görülme yok: karşılığı olan veri henüz yok.
+/// Tasarımdaki son görülme yok: karşılığı olan veri henüz yok. Hesabını
+/// silmeyi onaylamış üye "Hesabını siliyor · tarih" diye görünür; bekleme
+/// süresinde rolü değiştirilmez, ekipten çıkarılamaz.
 class TeamScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -31,7 +34,7 @@ class TeamScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final role = ref.watch(currentRoleProvider);
-    final members = ref.watch(organizationMembersProvider).value ?? const [];
+    final members = ref.watch(memberProfilesProvider).value ?? const [];
     final emails = ref.watch(memberEmailsProvider).value ?? const {};
     final selfId = ref.watch(currentUserProvider.select((user) => user?.id));
     final selfEmail = ref.watch(currentUserProvider.select((u) => u?.email));
@@ -70,9 +73,12 @@ class TeamScreen extends ConsumerWidget {
                           ? selfEmail
                           : emails[member.userId],
                       onTap:
-                          manage &&
-                              member.userId != selfId &&
-                              member.role != MembershipRole.owner
+                          canChangeMember(
+                            manage: manage,
+                            isSelf: member.userId == selfId,
+                            role: member.role,
+                            deletionScheduledFor: member.deletionScheduledFor,
+                          )
                           ? () => _openMemberActions(
                               context,
                               ref,
@@ -105,7 +111,7 @@ class TeamScreen extends ConsumerWidget {
   Future<void> _openMemberActions(
     BuildContext context,
     WidgetRef ref,
-    Member member,
+    MemberProfile member,
     String? email,
   ) async {
     final l10n = AppLocalizations.of(context);
@@ -204,7 +210,7 @@ class _MemberRow extends StatelessWidget {
     required this.onTap,
   });
 
-  final Member member;
+  final MemberProfile member;
   final bool isSelf;
   final String? email;
   final VoidCallback? onTap;
@@ -257,6 +263,31 @@ class _MemberRow extends StatelessWidget {
                       l10n.teamRoleViewerSubtitle,
                       style: context.typography.bodySmall.copyWith(
                         color: colors.textSecondary,
+                      ),
+                    ),
+                  // Renk tek başına kalmaz: ikon ve kelimeyle.
+                  if (member.deletionScheduledFor case final scheduled?)
+                    Padding(
+                      padding: EdgeInsets.only(top: spacing.xs),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.hourglass_top_rounded,
+                            size: context.sizes.iconSmall,
+                            color: colors.statusWarning,
+                          ),
+                          SizedBox(width: spacing.xs),
+                          Flexible(
+                            child: Text(
+                              l10n.teamMemberLeaving(
+                                AppFormat.of(context).date(scheduled.toLocal()),
+                              ),
+                              style: context.typography.bodySmall.copyWith(
+                                color: colors.statusWarning,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                 ],

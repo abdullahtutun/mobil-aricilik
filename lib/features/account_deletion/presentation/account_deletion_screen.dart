@@ -15,9 +15,9 @@ import 'package:mobil_arici/features/account_deletion/domain/account_deletion.da
 import 'package:mobil_arici/features/account_deletion/domain/account_deletion_rules.dart';
 import 'package:mobil_arici/features/account_deletion/presentation/account_deletion_controller.dart';
 import 'package:mobil_arici/features/account_deletion/presentation/account_deletion_providers.dart';
+import 'package:mobil_arici/features/account_deletion/presentation/deletion_code_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
-import 'package:mobil_arici/features/auth/presentation/sign_in_controller.dart';
-import 'package:mobil_arici/features/auth/presentation/widgets/sign_in_code_form.dart';
+import 'package:mobil_arici/features/auth/presentation/widgets/code_entry_form.dart';
 import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
 import 'package:mobil_arici/features/organization/presentation/business_profile_providers.dart';
@@ -437,29 +437,25 @@ class _VerifyStepState extends ConsumerState<_VerifyStep> {
   @override
   void initState() {
     super.initState();
-    // Adım açılınca kod hesabın e-postasına gider; form çizildikten sonra
-    // (denetleyici dinlenirken) istenir.
+    // Adım açılınca silme kodu hesabın e-postasına gider; form çizildikten
+    // sonra (denetleyici dinlenirken) istenir.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final email = ref.read(currentUserProvider)?.email;
-      if (!mounted || email == null) return;
-      unawaited(
-        ref
-            .read(signInControllerProvider.notifier)
-            .sendCode(
-              email,
-              locale: Localizations.localeOf(context).languageCode,
-            ),
-      );
+      if (!mounted) return;
+      unawaited(ref.read(deletionCodeControllerProvider.notifier).send());
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return SignInCodeForm(
+    final controller = ref.read(deletionCodeControllerProvider.notifier);
+    return CodeEntryForm(
       overline: l10n.deletionStepCounter(3, _stepCount),
       heading: l10n.deletionVerifyTitle,
       verifyLabel: l10n.deletionVerifyButton,
+      state: ref.watch(deletionCodeControllerProvider),
+      onVerify: controller.verify,
+      onResend: controller.send,
       onVerified: ref
           .read(deletionFlowControllerProvider.notifier)
           .codeVerified,
@@ -630,6 +626,9 @@ class _ConfirmStepState extends ConsumerState<_ConfirmStep> {
       l10n.deletionFailureInvalidTransfer,
     AccountDeletionFailure.rateLimited => l10n.deletionFailureRateLimited,
     AccountDeletionFailure.forbidden => l10n.deletionFailureForbidden,
+    AccountDeletionFailure.codeRequired => l10n.deletionFailureCodeRequired,
+    AccountDeletionFailure.invalidCode => l10n.authErrorInvalidCode,
+    AccountDeletionFailure.tooManyAttempts => l10n.authErrorTooManyRequests,
     AccountDeletionFailure.unknown => l10n.deletionFailureUnknown,
   };
 }

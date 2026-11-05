@@ -5,8 +5,13 @@
 // JWT auth sunucusunda doğrulanır; oturumsuz ve anonim çağrı reddedilir.
 // İşlemler hep JWT'nin kullanıcısı için yapılır; gövdedeki kullanıcı
 // kimliği yok sayılır.
+//  - send_code  6 haneli silme kodunu e-postaya yollar ("hesap silme
+//      kodun"; giriş kodu değil). → 200 { sent }. 429 rate_limited.
+//  - verify_code { code }  → 200 { verified }. 400 invalid_code (yanlış ya da
+//      süresi dolmuş), 429 too_many_attempts.
 //  - request { org_id?, delete_organization?, transfer_to?, channel? }
-//      Silme talebi. `transfer_to` işletmenin ortağına (partner) sahipliği
+//      Silme talebi; son 15 dakikada doğrulanmış kod ister (yoksa 403
+//      code_required) ve talep açılınca kodu tüketir. `transfer_to` işletmenin ortağına (partner) sahipliği
 //      devreder; `org_id` ister, `delete_organization` ile birlikte olmaz.
 //      → 200 { request, counts, already_pending }. Hatalar: 409
 //      owner_must_transfer { org_ids }, 422 invalid_transfer_target, 429
@@ -23,7 +28,7 @@
 // talep yarıda kesilirse sonraki turda aynı adımlar yeniden çalışır ve
 // kaldığı yerden tamamlanır.
 
-import { completedMail, type Mail, mailLocale, requestedMail } from "./mail.ts";
+import { codeMail, completedMail, type Mail, mailLocale, requestedMail } from "./mail.ts";
 
 export interface AuthUser {
   id: string;
@@ -212,6 +217,15 @@ async function requestDeletion(
     return json({ error: "bad_request" }, 400);
   }
 
+  const verified = await deps.rpc<boolean>("account_deletion_code_verified", {
+    p_user_id: user.id,
+  });
+  if (verified.error) {
+    deps.log("account-delete: code_verified", verified.error);
+    return json({ error: "server" }, 500);
+  }
+  if (verified.data !== true) return json({ error: "code_required" }, 403);
+
   const { data, error } = await deps.rpc<RequestResult>("account_deletion_request", {
     p_user_id: user.id,
     p_email: user.email,
@@ -240,6 +254,11 @@ async function requestDeletion(
         return json({ error: "server" }, 500);
     }
   }
+
+  const consumed = await deps.rpc<null>("account_deletion_consume_code", {
+    p_user_id: user.id,
+  });
+  if (consumed.error) deps.log("account-delete: consume_code", consumed.error);
 
   // Tüm oturumlar kapanır. Başarısızsa istemci yeniden dener; bekleyen
   // talep yeniden yazılmaz, yalnız oturum kapatma tekrarlanır.
@@ -297,6 +316,45 @@ export function createHandler(deps: Deps): (request: Request) => Promise<Respons
     switch (body.action) {
       case "request":
         return requestDeletion(deps, user, jwt, body);
+      case "send_code": {
+        if (!user.email) return json({ error: "no_email" }, 400);
+        const { data, error } = await deps.rpc<string>("account_deletion_send_code", {
+          p_user_id: user.id,
+        });
+        if (error || typeof data !== "string") {
+          if (error?.code === "DL429") return json({ error: "rate_limited" }, 429);
+          deps.log("account-delete: send_code", error);
+          return json({ error: "server" }, 500);
+        }
+        try {
+          await deps.sendMail(user.email, codeMail(data, mailLocale(user.locale)));
+        } catch (mailError) {
+          deps.log("account-delete: code mail failed", mailError);
+          return json({ error: "mail_failed" }, 502);
+        }
+        return json({ sent: true });
+      }
+      case "verify_code": {
+        if (typeof body.code !== "string" || !/^[0-9]{6}$/.test(body.code)) {
+          return json({ error: "invalid_code" }, 400);
+        }
+        const { data, error } = await deps.rpc<string>("account_deletion_verify_code", {
+          p_user_id: user.id,
+          p_code: body.code,
+        });
+        if (error) {
+          deps.log("account-delete: verify_code", error);
+          return json({ error: "server" }, 500);
+        }
+        switch (data) {
+          case "ok":
+            return json({ verified: true });
+          case "too_many":
+            return json({ error: "too_many_attempts" }, 429);
+          default:
+            return json({ error: "invalid_code" }, 400);
+        }
+      }
       case "status": {
         const { data, error } = await deps.rpc<Record<string, unknown> | null>(
           "account_deletion_pending",

@@ -7849,6 +7849,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session has ended. Sign in again and retry.';
 
   @override
+  String get deletionFailureCodeRequired =>
+      'Your confirmation has expired. Get a new code and verify again.';
+
+  @override
   String get deletionFailureUnknown =>
       'The request couldn\'t be sent. Try again in a little while.';
 
@@ -7897,4 +7901,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deletionPendingCancelFailed =>
       'The deletion couldn\'t be cancelled. Check your connection and try again.';
+
+  @override
+  String teamMemberLeaving(String date) {
+    return 'Deleting their account · $date';
+  }
+
+  @override
+  String get teamErrorMemberLeaving =>
+      'This person is deleting their account; during the waiting period their role can\'t be changed and they can\'t be removed.';
 }

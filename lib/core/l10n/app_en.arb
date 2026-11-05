@@ -7604,6 +7604,7 @@
   "deletionFailureInvalidTransfer": "The person you chose is no longer a partner. Choose another partner.",
   "deletionFailureRateLimited": "Too many attempts in a short time. Try again tomorrow.",
   "deletionFailureForbidden": "Your session has ended. Sign in again and retry.",
+  "deletionFailureCodeRequired": "Your confirmation has expired. Get a new code and verify again.",
   "deletionFailureUnknown": "The request couldn't be sent. Try again in a little while.",
   "deletionDoneTitle": "We've received your request",
   "deletionDoneDate": "Your account will be permanently deleted on {date}.",
@@ -7633,5 +7634,15 @@
   "deletionPendingContinue": "Continue and keep my account",
   "deletionPendingSignOut": "Sign out and keep the deletion",
   "deletionPendingCancelled": "Deletion cancelled. Welcome back!",
-  "deletionPendingCancelFailed": "The deletion couldn't be cancelled. Check your connection and try again."
+  "deletionPendingCancelFailed": "The deletion couldn't be cancelled. Check your connection and try again.",
+  "teamMemberLeaving": "Deleting their account · {date}",
+  "@teamMemberLeaving": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Nov 2026"
+      }
+    }
+  },
+  "teamErrorMemberLeaving": "This person is deleting their account; during the waiting period their role can't be changed and they can't be removed."
 }

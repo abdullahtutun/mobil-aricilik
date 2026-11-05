@@ -72,6 +72,34 @@ export function requestedMail(
   };
 }
 
+/// Silme isteğini onaylama kodu (giriş kodu değil).
+export function codeMail(code: string, locale: MailLocale): Mail {
+  if (locale === "en") {
+    return {
+      subject: "Your Mobil Arıcı account deletion code",
+      text: [
+        "You asked to delete your Mobil Arıcı account.",
+        "",
+        `To confirm, enter this code in the app: ${code}`,
+        "",
+        "The code is valid for 10 minutes and can be used once. Don't share it with anyone.",
+        "If you didn't ask for this, ignore this email; your account will not be deleted.",
+      ].join("\n"),
+    };
+  }
+  return {
+    subject: "Mobil Arıcı hesap silme kodun",
+    text: [
+      "Mobil Arıcı hesabını silmek istedin.",
+      "",
+      `Onaylamak için bu kodu uygulamaya gir: ${code}`,
+      "",
+      "Kod 10 dakika geçerli ve bir kez kullanılabilir. Kodu kimseyle paylaşma.",
+      "Bunu sen istemediysen bu e-postayı yok say; hesabın silinmez.",
+    ].join("\n"),
+  };
+}
+
 /// Silme tamamlandı: kısa onay.
 export function completedMail(locale: MailLocale): Mail {
   if (locale === "en") {

@@ -12465,6 +12465,12 @@ abstract class AppLocalizations {
   /// **'Your session has ended. Sign in again and retry.'**
   String get deletionFailureForbidden;
 
+  /// No description provided for @deletionFailureCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your confirmation has expired. Get a new code and verify again.'**
+  String get deletionFailureCodeRequired;
+
   /// No description provided for @deletionFailureUnknown.
   ///
   /// In en, this message translates to:
@@ -12548,6 +12554,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The deletion couldn\'t be cancelled. Check your connection and try again.'**
   String get deletionPendingCancelFailed;
+
+  /// No description provided for @teamMemberLeaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting their account · {date}'**
+  String teamMemberLeaving(String date);
+
+  /// No description provided for @teamErrorMemberLeaving.
+  ///
+  /// In en, this message translates to:
+  /// **'This person is deleting their account; during the waiting period their role can\'t be changed and they can\'t be removed.'**
+  String get teamErrorMemberLeaving;
 }
 
 class _AppLocalizationsDelegate

@@ -5,7 +5,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// Ağa doğrudan giden çağrı; ekranlar buna provider üzerinden ulaşır. Hepsi
 /// online çalışır, hatalar [AccountDeletionException] olarak gelir.
 abstract interface class AccountDeletionService {
+  /// Hesabın e-postasına 6 haneli silme kodu gönderir ("hesap silme kodun";
+  /// giriş kodu değil). Yeni oturum açılmaz.
+  Future<void> sendCode();
+
+  /// Kodu sunucuda doğrular; [request] bundan sonraki 15 dakikada kabul
+  /// edilir.
+  Future<void> verifyCode(String code);
+
   /// Oturumdaki kullanıcının silme talebini açar; kalıcı silme 7 gün sonra.
+  /// Önce [verifyCode] gerekir; yoksa [AccountDeletionFailure.codeRequired].
   /// [deleteOrganization] ekipli işletmeyi tümüyle siler; [transferTo]
   /// sahipliği o ortağa devreder. Sunucu talepte bütün oturumları kapatır.
   Future<DeletionRequestInfo> request({
@@ -50,6 +59,16 @@ class SupabaseAccountDeletionService implements AccountDeletionService {
       return error.request;
     }
     return _requestOf(data['request'])!;
+  }
+
+  @override
+  Future<void> sendCode() async {
+    await _call({'action': 'send_code'});
+  }
+
+  @override
+  Future<void> verifyCode(String code) async {
+    await _call({'action': 'verify_code', 'code': code});
   }
 
   @override
@@ -100,7 +119,10 @@ class SupabaseAccountDeletionService implements AccountDeletionService {
       (409, 'owner_must_transfer') => AccountDeletionFailure.ownerMustTransfer,
       (422, 'invalid_transfer_target') =>
         AccountDeletionFailure.invalidTransferTarget,
+      (400, 'invalid_code') => AccountDeletionFailure.invalidCode,
+      (429, 'too_many_attempts') => AccountDeletionFailure.tooManyAttempts,
       (429, _) => AccountDeletionFailure.rateLimited,
+      (403, 'code_required') => AccountDeletionFailure.codeRequired,
       (401 || 403, _) => AccountDeletionFailure.forbidden,
       // Bağlantı kurulamadı (FunctionsFetchException): durum kodu 0.
       (0 || >= 500, _) => AccountDeletionFailure.network,

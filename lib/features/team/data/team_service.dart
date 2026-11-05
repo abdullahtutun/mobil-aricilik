@@ -112,6 +112,7 @@ class SupabaseTeamService implements TeamService {
       (404, 'invalid_code') => TeamFailure.invalidCode,
       (409, 'already_member') => TeamFailure.alreadyMember,
       (409, 'owner_locked') => TeamFailure.ownerLocked,
+      (409, 'member_leaving') => TeamFailure.memberLeaving,
       (401 || 403, _) => TeamFailure.forbidden,
       // Bağlantı kurulamadı (FunctionsFetchException): durum kodu 0.
       (0 || >= 500, _) => TeamFailure.network,

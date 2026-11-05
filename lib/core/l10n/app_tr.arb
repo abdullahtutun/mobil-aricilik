@@ -2104,6 +2104,7 @@
   "deletionFailureInvalidTransfer": "Seçtiğin kişi artık ortak değil. Başka bir ortak seç.",
   "deletionFailureRateLimited": "Kısa sürede çok fazla deneme oldu. Yarın yeniden dene.",
   "deletionFailureForbidden": "Oturumun kapanmış. Yeniden giriş yapıp dene.",
+  "deletionFailureCodeRequired": "Doğrulamanın süresi doldu. Yeni kod alıp yeniden doğrula.",
   "deletionFailureUnknown": "Talep gönderilemedi. Biraz sonra yeniden dene.",
   "deletionDoneTitle": "Silme talebin alındı",
   "deletionDoneDate": "Hesabın {date} tarihinde kalıcı olarak silinecek.",
@@ -2117,5 +2118,7 @@
   "deletionPendingContinue": "Devam et, hesabımı koru",
   "deletionPendingSignOut": "Çıkış yap, silme sürsün",
   "deletionPendingCancelled": "Silme iptal edildi. Tekrar hoş geldin!",
-  "deletionPendingCancelFailed": "Silme iptal edilemedi. Bağlantını kontrol edip yeniden dene."
+  "deletionPendingCancelFailed": "Silme iptal edilemedi. Bağlantını kontrol edip yeniden dene.",
+  "teamMemberLeaving": "Hesabını siliyor · {date}",
+  "teamErrorMemberLeaving": "Bu kişi hesabını siliyor; bekleme süresinde rolü değiştirilemez ve ekipten çıkarılamaz."
 }

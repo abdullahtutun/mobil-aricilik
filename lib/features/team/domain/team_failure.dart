@@ -15,6 +15,10 @@ enum TeamFailure {
   /// Owner'ın rolü değişmez, owner çıkarılamaz.
   ownerLocked,
 
+  /// Üye hesabını silmeyi onayladı; bekleme süresinde rolü değişmez,
+  /// ekipten çıkarılamaz.
+  memberLeaving,
+
   unknown,
 }
 

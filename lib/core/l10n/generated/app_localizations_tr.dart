@@ -7605,6 +7605,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Oturumun kapanmış. Yeniden giriş yapıp dene.';
 
   @override
+  String get deletionFailureCodeRequired =>
+      'Doğrulamanın süresi doldu. Yeni kod alıp yeniden doğrula.';
+
+  @override
   String get deletionFailureUnknown =>
       'Talep gönderilemedi. Biraz sonra yeniden dene.';
 
@@ -7654,4 +7658,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get deletionPendingCancelFailed =>
       'Silme iptal edilemedi. Bağlantını kontrol edip yeniden dene.';
+
+  @override
+  String teamMemberLeaving(String date) {
+    return 'Hesabını siliyor · $date';
+  }
+
+  @override
+  String get teamErrorMemberLeaving =>
+      'Bu kişi hesabını siliyor; bekleme süresinde rolü değiştirilemez ve ekipten çıkarılamaz.';
 }
