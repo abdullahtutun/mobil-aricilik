@@ -231,6 +231,7 @@
   "settingsColorModeSun": "Güneş",
   "settingsAccount": "Hesap",
   "settingsSignedInAs": "{email} ile giriş yapıldı",
+  "settingsVersion": "Sürüm {version}",
   "settingsSignOut": "Çıkış yap",
   "settingsSignOutConfirmTitle": "Çıkış yapılsın mı?",
   "settingsSignOutConfirmMessage": "Yeniden girmek için e-postana yeni bir kod gelmesi gerekir; bunun için internet lazım.",

@@ -21,6 +21,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     required this.mapPin,
     required this.stopDot,
     required this.weatherTable,
+    required this.navIcon,
   });
 
   static const standard = AppSizes(
@@ -40,6 +41,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     mapPin: 120,
     stopDot: 20,
     weatherTable: 340,
+    navIcon: 32,
   );
 
   /// Rozet ve chip içindeki ikonlar.
@@ -96,6 +98,10 @@ class AppSizes extends ThemeExtension<AppSizes> {
   /// dar ya da büyük yazıda her gün iki satır.
   final double weatherTable;
 
+  /// Üst çubuğun geri ve kapat ikonu; eldivenle de seçilsin diye [icon]'dan
+  /// büyük.
+  final double navIcon;
+
   @override
   AppSizes copyWith({
     double? iconSmall,
@@ -114,6 +120,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
     double? mapPin,
     double? stopDot,
     double? weatherTable,
+    double? navIcon,
   }) {
     return AppSizes(
       iconSmall: iconSmall ?? this.iconSmall,
@@ -132,6 +139,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       mapPin: mapPin ?? this.mapPin,
       stopDot: stopDot ?? this.stopDot,
       weatherTable: weatherTable ?? this.weatherTable,
+      navIcon: navIcon ?? this.navIcon,
     );
   }
 
@@ -159,6 +167,7 @@ class AppSizes extends ThemeExtension<AppSizes> {
       mapPin: lerpDouble(mapPin, other.mapPin, t)!,
       stopDot: lerpDouble(stopDot, other.stopDot, t)!,
       weatherTable: lerpDouble(weatherTable, other.weatherTable, t)!,
+      navIcon: lerpDouble(navIcon, other.navIcon, t)!,
     );
   }
 }

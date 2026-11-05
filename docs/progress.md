@@ -697,6 +697,14 @@
 - Testler: kurallar, xlsx, repository (bekleyenler, en eski kayıt, dışa aktarma), çalışma kitabı, hatırlatma, senkron/Bugün/Ayarlar akışları (Türkçe, 360dp 1.5x + eldiven). İlgili takımlar (app, core/sync, core/utils, core/db, today, settings, export, team, hatırlatmalar) 734 test geçiyor, `flutter analyze` temiz; tam takım koşulmadı.
 - Bilinen: cihazda denenmedi (bildirim, paylaşma, dosyanın Excel/Sheets/Numbers'ta açılması). Uygulama kapalıyken arka plan turu kayıtları gönderirse kurulu bildirim uygulama açılana kadar kalkmaz ve yine de çalabilir. Uyarı kartı süre geçişini ancak bekleyenler değişince ya da ekran yeniden kurulunca fark eder. Dışa aktarma geri yüklenemez (içe aktarma yok); fotoğraf, ses, belge, lot ve göç kayıtları dosyada yok.
 
+### 2026-11-05 — Alt sistem çubuğu, büyük geri oku, sürüm
+
+- Android'de bazı sayfaların sonu (ör. Ayarlar) telefonun alt tuşlarının altında kalıyordu. Artık uygulamanın kökünde tek `SystemBarsSafeArea` (design_system) bütün sayfaları, sayfaları ve diyalogları alt sistem çubuğunun üstünde bitiriyor; alttaki şerit sayfa zemini renginde. Üst kenar ekranlara kalıyor; içerideki `SafeArea`'lar alta ikinci boşluk koymuyor.
+- Üst çubuğun geri ve kapat ikonu 24'ten 32dp'ye büyüdü (`AppSizes.navIcon`, `actionIconTheme`).
+- Ayarların en altında uygulama sürümü yazıyor ("Sürüm 1.0.0+1"; `appVersionProvider`, `settingsVersion` TR/EN).
+- Hava ekranındaki saatlik şeritte saat yazısı küçültüldü (önceden commit'lenmemiş değişiklik).
+- Testler: Ayarlar (sürüm TR/EN, 48dp alt tuşla sayfa sonu tuşların üstünde, geri oku boyu), app, design_system, weather geçiyor; `flutter analyze` temiz. Cihazda denenmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

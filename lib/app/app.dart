@@ -24,7 +24,9 @@ class App extends ConsumerWidget {
       routerConfig: ref.watch(routerProvider),
       // Bildirim ve klavye açıkken dışına dokunulunca kapanır.
       builder: (context, child) => KeyboardDismissArea(
-        child: SnackBarDismissArea(child: child ?? const SizedBox.shrink()),
+        child: SnackBarDismissArea(
+          child: SystemBarsSafeArea(child: child ?? const SizedBox.shrink()),
+        ),
       ),
     );
   }

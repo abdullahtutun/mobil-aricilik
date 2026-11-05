@@ -851,6 +851,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String settingsVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
   String get settingsSignOut => 'Sign out';
 
   @override

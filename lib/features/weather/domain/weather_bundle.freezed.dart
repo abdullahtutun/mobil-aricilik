@@ -592,8 +592,8 @@ $ForecastCopyWith<$Res> get forecast {
 /// @nodoc
 mixin _$Forecast {
 
- String get timezone; int get utcOffsetSeconds; CurrentWeather get current;/// WeatherAPI'nin yer adı (genelde ilçe) ve bölgesi (il).
- String? get place; String? get region; HourlySeries get hourly; DailySeries get daily;
+ String get timezone; int get utcOffsetSeconds; CurrentWeather get current; HourlySeries get hourly; DailySeries get daily;/// WeatherAPI'nin yer adı (genelde ilçe) ve bölgesi (il).
+ String? get place; String? get region;
 /// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -607,20 +607,20 @@ $ForecastCopyWith<Forecast> get copyWith => _$ForecastCopyWithImpl<Forecast>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as Forecast;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Forecast&&(identical(other.timezone, _this.timezone) || other.timezone == _this.timezone)&&(identical(other.utcOffsetSeconds, _this.utcOffsetSeconds) || other.utcOffsetSeconds == _this.utcOffsetSeconds)&&(identical(other.current, _this.current) || other.current == _this.current)&&(identical(other.place, _this.place) || other.place == _this.place)&&(identical(other.region, _this.region) || other.region == _this.region)&&(identical(other.hourly, _this.hourly) || other.hourly == _this.hourly)&&(identical(other.daily, _this.daily) || other.daily == _this.daily));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Forecast&&(identical(other.timezone, _this.timezone) || other.timezone == _this.timezone)&&(identical(other.utcOffsetSeconds, _this.utcOffsetSeconds) || other.utcOffsetSeconds == _this.utcOffsetSeconds)&&(identical(other.current, _this.current) || other.current == _this.current)&&(identical(other.hourly, _this.hourly) || other.hourly == _this.hourly)&&(identical(other.daily, _this.daily) || other.daily == _this.daily)&&(identical(other.place, _this.place) || other.place == _this.place)&&(identical(other.region, _this.region) || other.region == _this.region));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Forecast;
-  return Object.hash(runtimeType,_this.timezone,_this.utcOffsetSeconds,_this.current,_this.place,_this.region,_this.hourly,_this.daily);
+  return Object.hash(runtimeType,_this.timezone,_this.utcOffsetSeconds,_this.current,_this.hourly,_this.daily,_this.place,_this.region);
 }
 
 @override
 String toString() {
   final _this = this as Forecast;
-  return 'Forecast(timezone: ${_this.timezone}, utcOffsetSeconds: ${_this.utcOffsetSeconds}, current: ${_this.current}, place: ${_this.place}, region: ${_this.region}, hourly: ${_this.hourly}, daily: ${_this.daily})';
+  return 'Forecast(timezone: ${_this.timezone}, utcOffsetSeconds: ${_this.utcOffsetSeconds}, current: ${_this.current}, hourly: ${_this.hourly}, daily: ${_this.daily}, place: ${_this.place}, region: ${_this.region})';
 }
 
 
@@ -631,7 +631,7 @@ abstract mixin class $ForecastCopyWith<$Res>  {
   factory $ForecastCopyWith(Forecast value, $Res Function(Forecast) _then) = _$ForecastCopyWithImpl;
 @useResult
 $Res call({
- String timezone, int utcOffsetSeconds, CurrentWeather current, String? place, String? region, HourlySeries hourly, DailySeries daily
+ String timezone, int utcOffsetSeconds, CurrentWeather current, HourlySeries hourly, DailySeries daily, String? place, String? region
 });
 
 
@@ -648,16 +648,16 @@ class _$ForecastCopyWithImpl<$Res>
 
 /// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? current = null,Object? place = freezed,Object? region = freezed,Object? hourly = null,Object? daily = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? current = null,Object? hourly = null,Object? daily = null,Object? place = freezed,Object? region = freezed,}) {
   return _then(Forecast(
 timezone: null == timezone ? _self.timezone : timezone // ignore: cast_nullable_to_non_nullable
 as String,utcOffsetSeconds: null == utcOffsetSeconds ? _self.utcOffsetSeconds : utcOffsetSeconds // ignore: cast_nullable_to_non_nullable
 as int,current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
-as CurrentWeather,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
-as String?,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
-as String?,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
+as CurrentWeather,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
 as HourlySeries,daily: null == daily ? _self.daily : daily // ignore: cast_nullable_to_non_nullable
-as DailySeries,
+as DailySeries,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
+as String?,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of Forecast
@@ -769,10 +769,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  String? place,  String? region,  HourlySeries hourly,  DailySeries daily)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  HourlySeries hourly,  DailySeries daily,  String? place,  String? region)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Forecast() when $default != null:
-return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,_that.region,_that.hourly,_that.daily);case _:
+return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.hourly,_that.daily,_that.place,_that.region);case _:
   return orElse();
 
 }
@@ -790,10 +790,10 @@ return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  String? place,  String? region,  HourlySeries hourly,  DailySeries daily)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  HourlySeries hourly,  DailySeries daily,  String? place,  String? region)  $default,) {final _that = this;
 switch (_that) {
 case _Forecast():
-return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,_that.region,_that.hourly,_that.daily);case _:
+return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.hourly,_that.daily,_that.place,_that.region);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -810,10 +810,10 @@ return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  String? place,  String? region,  HourlySeries hourly,  DailySeries daily)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String timezone,  int utcOffsetSeconds,  CurrentWeather current,  HourlySeries hourly,  DailySeries daily,  String? place,  String? region)?  $default,) {final _that = this;
 switch (_that) {
 case _Forecast() when $default != null:
-return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,_that.region,_that.hourly,_that.daily);case _:
+return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.hourly,_that.daily,_that.place,_that.region);case _:
   return null;
 
 }
@@ -825,17 +825,17 @@ return $default(_that.timezone,_that.utcOffsetSeconds,_that.current,_that.place,
 @JsonSerializable()
 
 class _Forecast implements Forecast {
-  const _Forecast({required this.timezone, required this.utcOffsetSeconds, required this.current, this.place, this.region, required this.hourly, required this.daily});
+  const _Forecast({required this.timezone, required this.utcOffsetSeconds, required this.current, required this.hourly, required this.daily, this.place, this.region});
   factory _Forecast.fromJson(Map<String, dynamic> json) => _$ForecastFromJson(json);
 
 @override final  String timezone;
 @override final  int utcOffsetSeconds;
 @override final  CurrentWeather current;
+@override final  HourlySeries hourly;
+@override final  DailySeries daily;
 /// WeatherAPI'nin yer adı (genelde ilçe) ve bölgesi (il).
 @override final  String? place;
 @override final  String? region;
-@override final  HourlySeries hourly;
-@override final  DailySeries daily;
 
 /// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
@@ -850,18 +850,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Forecast&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.utcOffsetSeconds, utcOffsetSeconds) || other.utcOffsetSeconds == utcOffsetSeconds)&&(identical(other.current, current) || other.current == current)&&(identical(other.place, place) || other.place == place)&&(identical(other.region, region) || other.region == region)&&(identical(other.hourly, hourly) || other.hourly == hourly)&&(identical(other.daily, daily) || other.daily == daily));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Forecast&&(identical(other.timezone, timezone) || other.timezone == timezone)&&(identical(other.utcOffsetSeconds, utcOffsetSeconds) || other.utcOffsetSeconds == utcOffsetSeconds)&&(identical(other.current, current) || other.current == current)&&(identical(other.hourly, hourly) || other.hourly == hourly)&&(identical(other.daily, daily) || other.daily == daily)&&(identical(other.place, place) || other.place == place)&&(identical(other.region, region) || other.region == region));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,timezone,utcOffsetSeconds,current,place,region,hourly,daily);
+    return Object.hash(runtimeType,timezone,utcOffsetSeconds,current,hourly,daily,place,region);
 }
 
 @override
 String toString() {
-    return 'Forecast(timezone: $timezone, utcOffsetSeconds: $utcOffsetSeconds, current: $current, place: $place, region: $region, hourly: $hourly, daily: $daily)';
+    return 'Forecast(timezone: $timezone, utcOffsetSeconds: $utcOffsetSeconds, current: $current, hourly: $hourly, daily: $daily, place: $place, region: $region)';
 }
 
 
@@ -872,7 +872,7 @@ abstract mixin class _$ForecastCopyWith<$Res> implements $ForecastCopyWith<$Res>
   factory _$ForecastCopyWith(_Forecast value, $Res Function(_Forecast) _then) = __$ForecastCopyWithImpl;
 @override @useResult
 $Res call({
- String timezone, int utcOffsetSeconds, CurrentWeather current, String? place, String? region, HourlySeries hourly, DailySeries daily
+ String timezone, int utcOffsetSeconds, CurrentWeather current, HourlySeries hourly, DailySeries daily, String? place, String? region
 });
 
 
@@ -889,16 +889,16 @@ class __$ForecastCopyWithImpl<$Res>
 
 /// Create a copy of Forecast
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? current = null,Object? place = freezed,Object? region = freezed,Object? hourly = null,Object? daily = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? timezone = null,Object? utcOffsetSeconds = null,Object? current = null,Object? hourly = null,Object? daily = null,Object? place = freezed,Object? region = freezed,}) {
   return _then(_Forecast(
 timezone: null == timezone ? _self.timezone : timezone // ignore: cast_nullable_to_non_nullable
 as String,utcOffsetSeconds: null == utcOffsetSeconds ? _self.utcOffsetSeconds : utcOffsetSeconds // ignore: cast_nullable_to_non_nullable
 as int,current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
-as CurrentWeather,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
-as String?,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
-as String?,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
+as CurrentWeather,hourly: null == hourly ? _self.hourly : hourly // ignore: cast_nullable_to_non_nullable
 as HourlySeries,daily: null == daily ? _self.daily : daily // ignore: cast_nullable_to_non_nullable
-as DailySeries,
+as DailySeries,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
+as String?,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

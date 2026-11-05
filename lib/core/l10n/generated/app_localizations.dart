@@ -1436,6 +1436,12 @@ abstract class AppLocalizations {
   /// **'Signed in as {email}'**
   String settingsSignedInAs(String email);
 
+  /// App version at the bottom of Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String settingsVersion(String version);
+
   /// No description provided for @settingsSignOut.
   ///
   /// In en, this message translates to:

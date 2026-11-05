@@ -221,5 +221,72 @@ void main() {
       expect(auth.signOutCount, 0);
       expect(find.byType(SettingsScreen), findsOneWidget);
     });
+
+    testWidgets('en altta uygulama sürümü yazar', (tester) async {
+      await _pumpSettings(tester);
+      final version = _inSettings(find.text('Version 1.0.0+1'));
+      await tester.scrollUntilVisible(
+        version,
+        200,
+        scrollable: _inSettings(find.byType(Scrollable)).first,
+      );
+      expect(version, findsOneWidget);
+    });
+
+    testWidgets('Türkçe sürüm metni', (tester) async {
+      final container = await _pumpSettings(tester);
+      container.read(languageProvider.notifier).language = AppLanguage.turkish;
+      await tester.pumpAndSettle();
+      final version = _inSettings(find.text('Sürüm 1.0.0+1'));
+      await tester.scrollUntilVisible(
+        version,
+        200,
+        scrollable: _inSettings(find.byType(Scrollable)).first,
+      );
+      expect(version, findsOneWidget);
+    });
+
+    testWidgets('sayfanın sonu telefonun alt tuşlarının üstünde biter; geri '
+        'oku büyük', (tester) async {
+      // Android'in alttaki geri / ana ekran tuşları: 48dp.
+      const navBar = 48.0;
+      tester.view.padding = FakeViewPadding(
+        bottom: navBar * tester.view.devicePixelRatio,
+      );
+      addTearDown(tester.view.resetPadding);
+      await _pumpSettings(tester);
+
+      final version = _inSettings(find.text('Version 1.0.0+1'));
+      await tester.scrollUntilVisible(
+        version,
+        200,
+        scrollable: _inSettings(find.byType(Scrollable)).first,
+      );
+      // Liste sonuna kadar kaydırılınca son satır tuşların üstünde kalır.
+      await tester.drag(
+        _inSettings(find.byType(Scrollable)).first,
+        const Offset(0, -2000),
+      );
+      await tester.pumpAndSettle();
+      final screenHeight =
+          tester.view.physicalSize.height / tester.view.devicePixelRatio;
+      expect(
+        tester.getRect(version).bottom,
+        lessThanOrEqualTo(screenHeight - navBar),
+      );
+      expect(
+        tester.getRect(find.byType(SettingsScreen)).bottom,
+        screenHeight - navBar,
+      );
+
+      final back = tester.widget<Icon>(
+        find.descendant(
+          of: find.byType(BackButton),
+          matching: find.byType(Icon),
+        ),
+      );
+      expect(back.size, AppSizes.standard.navIcon);
+      expect(AppSizes.standard.navIcon, greaterThan(AppSizes.standard.icon));
+    });
   });
 }

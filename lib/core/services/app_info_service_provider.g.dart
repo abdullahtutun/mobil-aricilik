@@ -53,3 +53,41 @@ final class AppInfoServiceProvider
 }
 
 String _$appInfoServiceHash() => r'5c089ffb347bc95887ba6d337350070f17dcf7b5';
+
+/// Ayarların altında gösterilen sürüm (`1.0.0+1`).
+
+@ProviderFor(appVersion)
+final appVersionProvider = AppVersionProvider._();
+
+/// Ayarların altında gösterilen sürüm (`1.0.0+1`).
+
+final class AppVersionProvider
+    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+    with $FutureModifier<String>, $FutureProvider<String> {
+  /// Ayarların altında gösterilen sürüm (`1.0.0+1`).
+  AppVersionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appVersionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appVersionHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String> create(Ref ref) {
+    return appVersion(ref);
+  }
+}
+
+String _$appVersionHash() => r'84316fdce65a5c068519e408dd05574aa4b42357';

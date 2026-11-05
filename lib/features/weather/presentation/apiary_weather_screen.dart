@@ -554,7 +554,9 @@ class _HourlyStrip extends StatelessWidget {
                                 : units.format.time(
                                     forecastLocalTime(forecast, hour.time),
                                   ),
-                            style: typography.label,
+                            style: typography.caption.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           SizedBox(height: spacing.xs),
                           weatherGlyph(

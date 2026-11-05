@@ -12,6 +12,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/core/services/app_info_service_provider.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
@@ -176,6 +177,16 @@ class SettingsScreen extends ConsumerWidget {
             label: l10n.settingsSignOut,
             onPressed: () => _confirmSignOut(context, ref, pending: pending),
           ),
+          if (ref.watch(appVersionProvider).value case final version?) ...[
+            sectionGap,
+            Text(
+              l10n.settingsVersion(version),
+              textAlign: TextAlign.center,
+              style: context.typography.bodySmall.copyWith(
+                color: context.colors.textSecondary,
+              ),
+            ),
+          ],
         ],
       ),
     );

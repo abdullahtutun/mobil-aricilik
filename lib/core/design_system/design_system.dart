@@ -32,6 +32,7 @@ export 'components/status_badge.dart';
 export 'components/status_message.dart';
 export 'components/strength_dots.dart';
 export 'components/summary_tile.dart';
+export 'components/system_bars_safe_area.dart';
 export 'components/timeline_tile.dart';
 export 'theme_context.dart';
 export 'tokens/app_colors.dart';

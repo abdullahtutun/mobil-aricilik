@@ -40,20 +40,20 @@ _Forecast _$ForecastFromJson(Map<String, dynamic> json) => _Forecast(
   timezone: json['timezone'] as String,
   utcOffsetSeconds: (json['utc_offset_seconds'] as num).toInt(),
   current: CurrentWeather.fromJson(json['current'] as Map<String, dynamic>),
-  place: json['place'] as String?,
-  region: json['region'] as String?,
   hourly: HourlySeries.fromJson(json['hourly'] as Map<String, dynamic>),
   daily: DailySeries.fromJson(json['daily'] as Map<String, dynamic>),
+  place: json['place'] as String?,
+  region: json['region'] as String?,
 );
 
 Map<String, dynamic> _$ForecastToJson(_Forecast instance) => <String, dynamic>{
   'timezone': instance.timezone,
   'utc_offset_seconds': instance.utcOffsetSeconds,
   'current': instance.current,
-  'place': instance.place,
-  'region': instance.region,
   'hourly': instance.hourly,
   'daily': instance.daily,
+  'place': instance.place,
+  'region': instance.region,
 };
 
 _CurrentWeather _$CurrentWeatherFromJson(Map<String, dynamic> json) =>

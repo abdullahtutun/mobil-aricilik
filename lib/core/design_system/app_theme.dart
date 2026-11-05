@@ -154,10 +154,12 @@ abstract final class AppTheme {
         backgroundColor: colors.surface,
         dragHandleColor: colors.divider,
       ),
+      // Geri ve kapat ikonu büyük; dokunma alanı da onunla büyür.
       actionIconTheme: ActionIconThemeData(
         backButtonIconBuilder: (context) =>
-            const Icon(Icons.chevron_left_rounded),
-        closeButtonIconBuilder: (context) => const Icon(Icons.close_rounded),
+            Icon(Icons.chevron_left_rounded, size: sizes.navIcon),
+        closeButtonIconBuilder: (context) =>
+            Icon(Icons.close_rounded, size: sizes.navIcon),
       ),
       dividerTheme: DividerThemeData(
         color: colors.divider,

@@ -673,6 +673,16 @@
       }
     }
   },
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "description": "App version at the bottom of Settings.",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.0.0+1"
+      }
+    }
+  },
   "settingsSignOut": "Sign out",
   "settingsSignOutConfirmTitle": "Sign out?",
   "settingsSignOutConfirmMessage": "To sign back in you'll need a new code sent to your email, which needs internet.",
