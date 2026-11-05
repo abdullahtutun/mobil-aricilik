@@ -9,9 +9,11 @@ import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
 import 'package:mobil_arici/app/sync/initial_sync_screen.dart';
+import 'package:mobil_arici/app/sync/sync_overdue_card.dart';
 import 'package:mobil_arici/app/sync/sync_screen.dart';
 import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
@@ -59,9 +61,12 @@ void main() {
   }
 
   /// Outbox'a bir arılık kaydı yazar; [rejectedAs] verilirse sunucu onu o
-  /// nedenle reddetmiş sayılır.
-  Future<void> writeApiary({String? rejectedAs}) async {
-    await ApiaryRepository(db).create(orgId: 'org-1', name: 'Yayla');
+  /// nedenle reddetmiş sayılır. [at] verilirse kayıt o anda yazılmış olur.
+  Future<void> writeApiary({String? rejectedAs, DateTime? at}) async {
+    await ApiaryRepository(
+      db,
+      clock: () => at ?? DateTime.now(),
+    ).create(orgId: 'org-1', name: 'Yayla');
     if (rejectedAs != null) {
       await db
           .update(db.outbox)
@@ -208,13 +213,117 @@ void main() {
 
       expect(find.text('Eşitleme'), findsOneWidget);
       expect(find.text('1 kayıt gönderilmeyi bekliyor.'), findsOneWidget);
+      expect(find.text('GÖNDERİLMEYİ BEKLEYEN · 1'), findsOneWidget);
       expect(find.text('GÖNDERİLEMEYEN KAYITLAR (1)'), findsOneWidget);
-      expect(find.text('Arılık'), findsOneWidget);
+      // Bekleyenlerde ve reddedilenlerde birer kez.
+      expect(find.text('Arılık'), findsNWidgets(2));
       expect(
         find.textContaining('Bu kaydı değiştirme yetkin yok · '),
         findsOneWidget,
       );
       expect(find.text('Şimdi eşitle'), findsOneWidget);
+    });
+  });
+
+  group('Yedek güvencesi', () {
+    testWidgets('bekleyen kayıtlar türe göre, çoktan aza sayılır', (
+      tester,
+    ) async {
+      await writeApiary();
+      await writeApiary();
+      await db
+          .into(db.outbox)
+          .insert(
+            OutboxCompanion.insert(
+              recordTable: 'tasks',
+              recordId: 'task-1',
+              operation: OutboxOperation.upsert,
+              payload: const {'id': 'task-1'},
+              createdAt: DateTime.now(),
+            ),
+          );
+      final container = await open(tester);
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+
+      expect(find.text('WAITING TO BE SENT · 3'), findsOneWidget);
+      final apiaryRow = find.widgetWithText(ListRow, 'Apiary');
+      final taskRow = find.widgetWithText(ListRow, 'Task');
+      expect(
+        find.descendant(of: apiaryRow, matching: find.text('2')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: taskRow, matching: find.text('1')),
+        findsOneWidget,
+      );
+      expect(
+        tester.getTopLeft(apiaryRow).dy,
+        lessThan(tester.getTopLeft(taskRow).dy),
+      );
+    });
+
+    testWidgets('son eşitleme kalıcı kayıttan: kaç gün önce ve ne zaman; '
+        'arka plan turu da yazar', (tester) async {
+      await LocalSettingsRepository(db)
+          .setLastSyncedAt(DateTime.now().subtract(const Duration(days: 3)));
+      final container = await open(tester);
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Last synced 3 days ago · '), findsOneWidget);
+    });
+
+    testWidgets('kayıt 3 günden uzun süredir gönderilemediyse Bugün uyarır; '
+        'dokununca senkron ekranı açılır, orada da uyarı var', (tester) async {
+      await writeApiary(at: DateTime.now().subtract(const Duration(days: 4)));
+      await writeApiary();
+      await open(tester);
+
+      expect(find.text('Not backed up for 3+ days'), findsOneWidget);
+      expect(
+        find.text(
+          "2 records are only on this phone. If the phone is lost, they're "
+          'lost too. Connect to the internet and sync.',
+        ),
+        findsOneWidget,
+      );
+      await tap(tester, find.byType(SyncOverdueCard));
+
+      expect(find.byType(SyncScreen), findsOneWidget);
+      expect(find.byType(SyncOverdueCard), findsOneWidget);
+    });
+
+    testWidgets('3 günden yeni bekleyen kayıt uyarı göstermez', (tester) async {
+      await writeApiary(
+        at: DateTime.now().subtract(const Duration(days: 2, hours: 23)),
+      );
+      final container = await open(tester);
+      expect(find.byType(SyncOverdueCard), findsNothing);
+
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+      expect(find.byType(SyncOverdueCard), findsNothing);
+    });
+
+    testWidgets('Türkçe uyarı ve son eşitleme', (tester) async {
+      tester.platformDispatcher.localesTestValue = const [Locale('tr')];
+      addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+      await LocalSettingsRepository(db)
+          .setLastSyncedAt(DateTime.now().subtract(const Duration(days: 1)));
+      await writeApiary(at: DateTime.now().subtract(const Duration(days: 5)));
+      await open(tester);
+
+      expect(find.text('3 günden uzun süredir yedeklenmedi'), findsOneWidget);
+      expect(
+        find.text(
+          '1 kayıt yalnız bu telefonda. Telefon kaybolursa bunlar da '
+          'kaybolur. İnternete bağlanıp eşitle.',
+        ),
+        findsOneWidget,
+      );
+      await tap(tester, find.byType(SyncOverdueCard));
+      expect(find.textContaining('Son eşitleme dün · '), findsOneWidget);
     });
   });
 
@@ -303,10 +412,12 @@ void main() {
     tester.platformDispatcher.textScaleFactorTestValue = 1.5;
     addTearDown(tester.view.reset);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-    for (var i = 0; i < 12; i++) {
-      await writeApiary();
-    }
+    // Önce reddedilen: işaretleme o anki bütün outbox'a uygulanır.
     await writeApiary(rejectedAs: 'missing_reference: apiary');
+    final old = DateTime.now().subtract(const Duration(days: 4));
+    for (var i = 0; i < 12; i++) {
+      await writeApiary(at: old);
+    }
     sync
       ..gate = Completer<void>()
       ..progress = const [
@@ -336,10 +447,15 @@ void main() {
       container.read(routerProvider).go(AppRoutes.today);
       await tester.pumpAndSettle();
       expect(inAppBar('Error'), findsOneWidget);
+      expect(find.byType(SyncOverdueCard), findsOneWidget);
       expect(tester.takeException(), isNull);
 
       await tap(tester, inAppBar('Error'));
-      await tester.scrollUntilVisible(find.text('Apiary'), 100);
+      expect(find.byType(SyncOverdueCard), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.textContaining('A record it belongs to is missing on the server'),
+        100,
+      );
       expect(tester.takeException(), isNull);
       await tester.pageBack();
       await tester.pumpAndSettle();

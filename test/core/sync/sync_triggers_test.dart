@@ -35,6 +35,12 @@ class _FakeSyncRepository implements SyncRepository {
   Stream<int> watchPendingCount() => throw UnimplementedError();
 
   @override
+  Stream<Map<String, int>> watchPendingByTable() => throw UnimplementedError();
+
+  @override
+  Stream<DateTime?> watchOldestPendingAt() => throw UnimplementedError();
+
+  @override
   Stream<List<RejectedRecord>> watchRejected() => throw UnimplementedError();
 
   @override

@@ -7184,5 +7184,158 @@
   "offlineMapsToDownload": "Apiaries to download",
   "offlineMapsMoved": "Apiary moved, download again",
   "offlineMapsNoApiaries": "No apiaries with a location. Add a location to an apiary and it shows up here.",
-  "offlineMapsAllDownloaded": "All apiaries with a location are downloaded."
+  "offlineMapsAllDownloaded": "All apiaries with a location are downloaded.",
+
+  "syncReminderTitle": "Your records aren't backed up yet",
+  "syncReminderBody": "{count, plural, =1{1 record hasn't reached the server for 3 days. Open the app when you're online.} other{{count} records haven't reached the server for 3 days. Open the app when you're online.}}",
+  "@syncReminderBody": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "syncOverdueTitle": "Not backed up for 3+ days",
+  "syncOverdueMessage": "{count, plural, =1{1 record is only on this phone. If the phone is lost, it's lost too. Connect to the internet and sync.} other{{count} records are only on this phone. If the phone is lost, they're lost too. Connect to the internet and sync.}}",
+  "@syncOverdueMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "syncDaysAgo": "{days, plural, =0{today} =1{yesterday} other{{days} days ago}}",
+  "@syncDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "syncLastSyncedAgo": "Last synced {ago} · {when}",
+  "@syncLastSyncedAgo": {
+    "placeholders": {
+      "ago": {
+        "type": "String",
+        "example": "3 days ago"
+      },
+      "when": {
+        "type": "String",
+        "example": "Oct 21, 6:40 PM"
+      }
+    }
+  },
+  "syncPendingTitle": "Waiting to be sent · {count}",
+  "@syncPendingTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "47"
+      }
+    }
+  },
+  "settingsSignOutPendingMessage": "{count, plural, =1{1 record hasn't been sent to the server yet and is only on this phone. If you sign out, it won't be sent. Connect to the internet and sync first.} other{{count} records haven't been sent to the server yet and are only on this phone. If you sign out, they won't be sent. Connect to the internet and sync first.}}",
+  "@settingsSignOutPendingMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "settingsSignOutAnyway": "Sign out anyway",
+  "settingsExport": "Export data",
+  "settingsExportValue": "Excel",
+  "settingsExportHint": "All your records in one Excel file; share or save it anywhere.",
+  "exportPreparing": "Preparing…",
+  "exportFailed": "Couldn't prepare the file. Try again.",
+  "exportFileName": "Mobil Arıcı {date}",
+  "@exportFileName": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "2026-11-05"
+      }
+    }
+  },
+  "exportYes": "Yes",
+  "exportNo": "No",
+  "exportSheetApiaries": "Apiaries",
+  "exportSheetHives": "Hives",
+  "exportSheetQueens": "Queens",
+  "exportSheetInspections": "Inspections",
+  "exportSheetFeedings": "Feedings",
+  "exportSheetTreatments": "Treatments",
+  "exportSheetMiteCounts": "Varroa counts",
+  "exportSheetHarvests": "Harvests",
+  "exportSheetTasks": "Tasks",
+  "exportSheetInventory": "Stock",
+  "exportSheetFinance": "Income and expenses",
+  "exportColName": "Name",
+  "exportColLatitude": "Latitude",
+  "exportColLongitude": "Longitude",
+  "exportColAltitude": "Altitude (m)",
+  "exportColLandowner": "Landowner",
+  "exportColLandownerPhone": "Landowner phone",
+  "exportColWaterSource": "Water source",
+  "exportColVehicleDistance": "Distance from vehicle (m)",
+  "exportColRoadNotes": "Road notes",
+  "exportColNotes": "Notes",
+  "exportColActiveHives": "Active hives",
+  "exportColCreated": "Added",
+  "exportColApiary": "Apiary",
+  "exportColHive": "Hive",
+  "exportColType": "Type",
+  "exportColStatus": "Status",
+  "exportColBoxes": "Boxes",
+  "exportColFrames": "Frames",
+  "exportColSource": "Source",
+  "exportColMarking": "Marking",
+  "exportColTag": "Label code",
+  "exportColQuarantine": "Quarantine",
+  "exportColQueen": "Queen",
+  "exportColYear": "Year",
+  "exportColColor": "Mark color",
+  "exportColBreed": "Breed",
+  "exportColLine": "Line",
+  "exportColWingClipped": "Wing clipped",
+  "exportColDate": "Date",
+  "exportColQueenState": "Queen",
+  "exportColBeeFrames": "Frames of bees",
+  "exportColBroodFrames": "Brood frames",
+  "exportColHoneyFrames": "Honey frames",
+  "exportColTemperament": "Temperament",
+  "exportColSwarmSigns": "Swarm signs",
+  "exportColQueenCells": "Queen cells",
+  "exportColDisease": "Disease suspected",
+  "exportColActions": "Done",
+  "exportColAmount": "Amount",
+  "exportColUnit": "Unit",
+  "exportColProduct": "Product",
+  "exportColActiveIngredient": "Active ingredient",
+  "exportColDose": "Dose",
+  "exportColWithdrawal": "Withdrawal (days)",
+  "exportColBatch": "Batch no.",
+  "exportColPlannedRemoval": "Planned removal",
+  "exportColMethod": "Method",
+  "exportColMites": "Mites",
+  "exportColSampleBees": "Sample bees",
+  "exportColDays": "Days",
+  "exportColResult": "Result",
+  "exportColHoneyKind": "Honey",
+  "exportColUnitCount": "Count",
+  "exportColNetKg": "Net (kg)",
+  "exportColHiveCount": "Hives",
+  "exportColDue": "Due",
+  "exportColTitle": "Title",
+  "exportColCompleted": "Completed",
+  "exportColCategory": "Category",
+  "exportColPlace": "Place",
+  "exportColStock": "In stock",
+  "exportColThreshold": "Alert below",
+  "exportColCurrency": "Currency",
+  "exportColDescription": "Description"
 }

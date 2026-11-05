@@ -12,20 +12,24 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
+import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/export/presentation/export_providers.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_providers.dart';
+import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 import 'package:mobil_arici/features/weather/domain/weather_rules.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_labels.dart';
 
 /// Görünüm (tema chip'leri ve eldiven modu), genel (dil; işletmeden gelen
 /// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar, "kullanım
-/// verisi paylaş", offline haritalar ve PDF raporları), varroa ve kovan
+/// verisi paylaş", offline haritalar, Excel'e dışa aktarma), varroa ve kovan
 /// açma eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
 /// dokununca sistem ayarı açılır) ve hesap. Görünüm ve dil şimdilik
 /// yalnızca bellekte; Wi‑Fi seçimi, analitik ve eşikler bu telefonun yerel
@@ -44,6 +48,7 @@ class SettingsScreen extends ConsumerWidget {
     final countryName = countryNamesFor(
       Localizations.localeOf(context).languageCode,
     )[region.countryCode];
+    final pending = ref.watch(syncPendingCountProvider).value ?? 0;
     final sectionGap = SizedBox(height: spacing.xl);
     final labelGap = SizedBox(height: spacing.sm);
 
@@ -123,6 +128,7 @@ class SettingsScreen extends ConsumerWidget {
               _OfflineMapsRow(),
               _PushTile(),
               _AnalyticsTile(),
+              _ExportRow(),
             ],
           ),
           sectionGap,
@@ -168,7 +174,7 @@ class SettingsScreen extends ConsumerWidget {
           BigButton(
             variant: BigButtonVariant.secondary,
             label: l10n.settingsSignOut,
-            onPressed: () => _confirmSignOut(context, ref),
+            onPressed: () => _confirmSignOut(context, ref, pending: pending),
           ),
         ],
       ),
@@ -204,16 +210,23 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   /// Onaylanırsa yerel oturum silinir; router giriş ekranına geçer.
+  /// Gönderilmeyi bekleyen kayıt varsa ([pending]) onay penceresi bunların
+  /// yalnız bu telefonda olduğunu söyler.
   static Future<void> _confirmSignOut(
     BuildContext context,
-    WidgetRef ref,
-  ) async {
+    WidgetRef ref, {
+    required int pending,
+  }) async {
     final l10n = AppLocalizations.of(context);
     final confirmed = await showConfirmDialog(
       context,
       title: l10n.settingsSignOutConfirmTitle,
-      message: l10n.settingsSignOutConfirmMessage,
-      confirmLabel: l10n.settingsSignOut,
+      message: pending > 0
+          ? l10n.settingsSignOutPendingMessage(pending)
+          : l10n.settingsSignOutConfirmMessage,
+      confirmLabel: pending > 0
+          ? l10n.settingsSignOutAnyway
+          : l10n.settingsSignOut,
     );
     if (!confirmed) return;
     // Oturum kapanınca sunucu çağrısı yetkisiz kalır; önce token silinir.
@@ -538,6 +551,38 @@ class _HiveOpeningThresholds extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// "Verileri dışa aktar · Excel": tüm ana kayıtlar tek dosyada, paylaşma
+/// sayfasıyla; gelir/gider yalnız owner ve partner'da. Hazırlanırken satır
+/// pasif; hazırlanamazsa mesaj gösterilir.
+class _ExportRow extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final busy = ref.watch(dataExportProvider);
+    // Dinlenir ki üyelik inince rol hazır olsun.
+    final includeFinance = canExportFinance(ref.watch(currentRoleProvider));
+
+    Future<void> export() async {
+      try {
+        await ref
+            .read(dataExportProvider.notifier)
+            .export(l10n, includeFinance: includeFinance);
+      } on Object {
+        if (context.mounted) showMessageSnackBar(context, l10n.exportFailed);
+      }
+    }
+
+    return ListRow(
+      title: l10n.settingsExport,
+      subtitle: l10n.settingsExportHint,
+      value: busy ? l10n.exportPreparing : l10n.settingsExportValue,
+      onTap: busy ? null : () => unawaited(export()),
     );
   }
 }

@@ -15,6 +15,11 @@ bool canSeeFinance(MembershipRole? role) =>
     role == MembershipRole.owner ||
     role == MembershipRole.partner;
 
+/// Dışa aktarılan Excel'e gelir/gider girer mi: yalnız owner ve partner.
+/// Dosya telefondan çıktığı için rol bilinmiyorsa da girmez.
+bool canExportFinance(MembershipRole? role) =>
+    role == MembershipRole.owner || role == MembershipRole.partner;
+
 /// Arılık ve kovan silme: yalnız owner ve partner (kullanıcı kararı). Rol
 /// bilinmiyorsa gösterilmez; geri dönüşü olmayan bir eylem.
 bool canDeleteApiariesAndHives(MembershipRole? role) =>

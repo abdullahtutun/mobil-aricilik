@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -110,6 +111,10 @@ class SyncService {
     final pushed = await push();
     if (pushed.status != SyncStatus.done) return pushed;
     final pulled = await pull(onProgress: onProgress);
+    if (pulled.status == SyncStatus.done) {
+      // Arka plan turu da yazar; senkron ekranı ve hatırlatma bunu okur.
+      await LocalSettingsRepository(_db).setLastSyncedAt(clock());
+    }
     return pulled.copyWith(pushed: pushed.pushed, rejected: pushed.rejected);
   }
 

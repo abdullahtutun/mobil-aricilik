@@ -50,6 +50,16 @@ void main() {
       expect(canDeleteApiariesAndHives(null), isFalse);
     });
 
+    test("dışa aktarılan Excel'e gelir/gider yalnız owner ve partner'da "
+        'girer', () {
+      expect(canExportFinance(MembershipRole.owner), isTrue);
+      expect(canExportFinance(MembershipRole.partner), isTrue);
+      expect(canExportFinance(MembershipRole.worker), isFalse);
+      expect(canExportFinance(MembershipRole.viewer), isFalse);
+      // Dosya telefondan çıkar; rol bilinmiyorsa girmez.
+      expect(canExportFinance(null), isFalse);
+    });
+
     test('finansı yalnız owner ve partner görür', () {
       expect(canSeeFinance(MembershipRole.owner), isTrue);
       expect(canSeeFinance(MembershipRole.partner), isTrue);

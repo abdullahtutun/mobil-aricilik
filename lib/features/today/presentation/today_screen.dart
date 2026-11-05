@@ -6,10 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/sync/sync_overdue_card.dart';
 import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/sync/sync_controller.dart';
+import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
@@ -23,7 +25,8 @@ import 'package:mobil_arici/features/weather/presentation/weather_providers.dart
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_strip.dart';
 
 /// Bugün paneli (teknik.md §9, docs/design "Bugün"): tarih ve selam, yanında
-/// senkron durumu; arılık hava kartları; "Dikkat isteyenler" (anasız,
+/// senkron durumu; kayıtlar 3 günden uzun süredir gönderilemediyse uyarı
+/// kartı; arılık hava kartları; "Dikkat isteyenler" (anasız,
 /// zayıf, oğul eğilimli, ilacı çıkarılacak; dokununca filtreli liste) ve
 /// bugünün görevleri arılığa göre. Kurulum bitmediyse adımları; hiç arılık
 /// yoksa yalnız "İlk arılığını ekle". Hepsi yerel DB'deki mevcut veriden
@@ -67,6 +70,7 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
     final setup = ref.watch(setupProgressProvider).value;
     final completed = setup?.completed ?? const <SetupStep>{};
     final hasApiary = completed.contains(SetupStep.apiary);
+    final pending = ref.watch(syncPendingCountProvider).value ?? 0;
 
     final padded = EdgeInsets.symmetric(horizontal: spacing.lg);
     return Scaffold(
@@ -99,6 +103,16 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
               ],
             ),
           ),
+          if (ref.watch(syncOverdueProvider) && pending > 0) ...[
+            SizedBox(height: spacing.lg),
+            Padding(
+              padding: padded,
+              child: SyncOverdueCard(
+                pending: pending,
+                onTap: () => context.push(AppRoutes.sync),
+              ),
+            ),
+          ],
           SizedBox(height: spacing.lg),
           const WeatherStrip(),
           // Arılık DB'den hemen gelir; gelmeden boş durum yanıp sönmesin.

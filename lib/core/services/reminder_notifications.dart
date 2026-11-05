@@ -15,6 +15,9 @@ abstract final class ReminderGroups {
 
   /// Belge süre dolumları.
   static const documents = 'documents';
+
+  /// Günlerdir gönderilemeyen kayıtlar.
+  static const sync = 'sync';
 }
 
 /// Bu telefonda ileri bir zamana kurulan hatırlatma bildirimleri (görev

@@ -11156,6 +11156,558 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All apiaries with a location are downloaded.'**
   String get offlineMapsAllDownloaded;
+
+  /// No description provided for @syncReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your records aren\'t backed up yet'**
+  String get syncReminderTitle;
+
+  /// No description provided for @syncReminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record hasn\'t reached the server for 3 days. Open the app when you\'re online.} other{{count} records haven\'t reached the server for 3 days. Open the app when you\'re online.}}'**
+  String syncReminderBody(int count);
+
+  /// No description provided for @syncOverdueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not backed up for 3+ days'**
+  String get syncOverdueTitle;
+
+  /// No description provided for @syncOverdueMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record is only on this phone. If the phone is lost, it\'s lost too. Connect to the internet and sync.} other{{count} records are only on this phone. If the phone is lost, they\'re lost too. Connect to the internet and sync.}}'**
+  String syncOverdueMessage(int count);
+
+  /// No description provided for @syncDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{today} =1{yesterday} other{{days} days ago}}'**
+  String syncDaysAgo(int days);
+
+  /// No description provided for @syncLastSyncedAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced {ago} · {when}'**
+  String syncLastSyncedAgo(String ago, String when);
+
+  /// No description provided for @syncPendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to be sent · {count}'**
+  String syncPendingTitle(int count);
+
+  /// No description provided for @settingsSignOutPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record hasn\'t been sent to the server yet and is only on this phone. If you sign out, it won\'t be sent. Connect to the internet and sync first.} other{{count} records haven\'t been sent to the server yet and are only on this phone. If you sign out, they won\'t be sent. Connect to the internet and sync first.}}'**
+  String settingsSignOutPendingMessage(int count);
+
+  /// No description provided for @settingsSignOutAnyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out anyway'**
+  String get settingsSignOutAnyway;
+
+  /// No description provided for @settingsExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get settingsExport;
+
+  /// No description provided for @settingsExportValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Excel'**
+  String get settingsExportValue;
+
+  /// No description provided for @settingsExportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'All your records in one Excel file; share or save it anywhere.'**
+  String get settingsExportHint;
+
+  /// No description provided for @exportPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing…'**
+  String get exportPreparing;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t prepare the file. Try again.'**
+  String get exportFailed;
+
+  /// No description provided for @exportFileName.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobil Arıcı {date}'**
+  String exportFileName(String date);
+
+  /// No description provided for @exportYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get exportYes;
+
+  /// No description provided for @exportNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get exportNo;
+
+  /// No description provided for @exportSheetApiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiaries'**
+  String get exportSheetApiaries;
+
+  /// No description provided for @exportSheetHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get exportSheetHives;
+
+  /// No description provided for @exportSheetQueens.
+  ///
+  /// In en, this message translates to:
+  /// **'Queens'**
+  String get exportSheetQueens;
+
+  /// No description provided for @exportSheetInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get exportSheetInspections;
+
+  /// No description provided for @exportSheetFeedings.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedings'**
+  String get exportSheetFeedings;
+
+  /// No description provided for @exportSheetTreatments.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatments'**
+  String get exportSheetTreatments;
+
+  /// No description provided for @exportSheetMiteCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Varroa counts'**
+  String get exportSheetMiteCounts;
+
+  /// No description provided for @exportSheetHarvests.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvests'**
+  String get exportSheetHarvests;
+
+  /// No description provided for @exportSheetTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get exportSheetTasks;
+
+  /// No description provided for @exportSheetInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get exportSheetInventory;
+
+  /// No description provided for @exportSheetFinance.
+  ///
+  /// In en, this message translates to:
+  /// **'Income and expenses'**
+  String get exportSheetFinance;
+
+  /// No description provided for @exportColName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get exportColName;
+
+  /// No description provided for @exportColLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get exportColLatitude;
+
+  /// No description provided for @exportColLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get exportColLongitude;
+
+  /// No description provided for @exportColAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude (m)'**
+  String get exportColAltitude;
+
+  /// No description provided for @exportColLandowner.
+  ///
+  /// In en, this message translates to:
+  /// **'Landowner'**
+  String get exportColLandowner;
+
+  /// No description provided for @exportColLandownerPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Landowner phone'**
+  String get exportColLandownerPhone;
+
+  /// No description provided for @exportColWaterSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Water source'**
+  String get exportColWaterSource;
+
+  /// No description provided for @exportColVehicleDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance from vehicle (m)'**
+  String get exportColVehicleDistance;
+
+  /// No description provided for @exportColRoadNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Road notes'**
+  String get exportColRoadNotes;
+
+  /// No description provided for @exportColNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get exportColNotes;
+
+  /// No description provided for @exportColActiveHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Active hives'**
+  String get exportColActiveHives;
+
+  /// No description provided for @exportColCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get exportColCreated;
+
+  /// No description provided for @exportColApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiary'**
+  String get exportColApiary;
+
+  /// No description provided for @exportColHive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive'**
+  String get exportColHive;
+
+  /// No description provided for @exportColType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get exportColType;
+
+  /// No description provided for @exportColStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get exportColStatus;
+
+  /// No description provided for @exportColBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes'**
+  String get exportColBoxes;
+
+  /// No description provided for @exportColFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Frames'**
+  String get exportColFrames;
+
+  /// No description provided for @exportColSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get exportColSource;
+
+  /// No description provided for @exportColMarking.
+  ///
+  /// In en, this message translates to:
+  /// **'Marking'**
+  String get exportColMarking;
+
+  /// No description provided for @exportColTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Label code'**
+  String get exportColTag;
+
+  /// No description provided for @exportColQuarantine.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarantine'**
+  String get exportColQuarantine;
+
+  /// No description provided for @exportColQueen.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen'**
+  String get exportColQueen;
+
+  /// No description provided for @exportColYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get exportColYear;
+
+  /// No description provided for @exportColColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark color'**
+  String get exportColColor;
+
+  /// No description provided for @exportColBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get exportColBreed;
+
+  /// No description provided for @exportColLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Line'**
+  String get exportColLine;
+
+  /// No description provided for @exportColWingClipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Wing clipped'**
+  String get exportColWingClipped;
+
+  /// No description provided for @exportColDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get exportColDate;
+
+  /// No description provided for @exportColQueenState.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen'**
+  String get exportColQueenState;
+
+  /// No description provided for @exportColBeeFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Frames of bees'**
+  String get exportColBeeFrames;
+
+  /// No description provided for @exportColBroodFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Brood frames'**
+  String get exportColBroodFrames;
+
+  /// No description provided for @exportColHoneyFrames.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey frames'**
+  String get exportColHoneyFrames;
+
+  /// No description provided for @exportColTemperament.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperament'**
+  String get exportColTemperament;
+
+  /// No description provided for @exportColSwarmSigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Swarm signs'**
+  String get exportColSwarmSigns;
+
+  /// No description provided for @exportColQueenCells.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen cells'**
+  String get exportColQueenCells;
+
+  /// No description provided for @exportColDisease.
+  ///
+  /// In en, this message translates to:
+  /// **'Disease suspected'**
+  String get exportColDisease;
+
+  /// No description provided for @exportColActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get exportColActions;
+
+  /// No description provided for @exportColAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get exportColAmount;
+
+  /// No description provided for @exportColUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get exportColUnit;
+
+  /// No description provided for @exportColProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get exportColProduct;
+
+  /// No description provided for @exportColActiveIngredient.
+  ///
+  /// In en, this message translates to:
+  /// **'Active ingredient'**
+  String get exportColActiveIngredient;
+
+  /// No description provided for @exportColDose.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose'**
+  String get exportColDose;
+
+  /// No description provided for @exportColWithdrawal.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal (days)'**
+  String get exportColWithdrawal;
+
+  /// No description provided for @exportColBatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch no.'**
+  String get exportColBatch;
+
+  /// No description provided for @exportColPlannedRemoval.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned removal'**
+  String get exportColPlannedRemoval;
+
+  /// No description provided for @exportColMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Method'**
+  String get exportColMethod;
+
+  /// No description provided for @exportColMites.
+  ///
+  /// In en, this message translates to:
+  /// **'Mites'**
+  String get exportColMites;
+
+  /// No description provided for @exportColSampleBees.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample bees'**
+  String get exportColSampleBees;
+
+  /// No description provided for @exportColDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get exportColDays;
+
+  /// No description provided for @exportColResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get exportColResult;
+
+  /// No description provided for @exportColHoneyKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey'**
+  String get exportColHoneyKind;
+
+  /// No description provided for @exportColUnitCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Count'**
+  String get exportColUnitCount;
+
+  /// No description provided for @exportColNetKg.
+  ///
+  /// In en, this message translates to:
+  /// **'Net (kg)'**
+  String get exportColNetKg;
+
+  /// No description provided for @exportColHiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get exportColHiveCount;
+
+  /// No description provided for @exportColDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get exportColDue;
+
+  /// No description provided for @exportColTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get exportColTitle;
+
+  /// No description provided for @exportColCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get exportColCompleted;
+
+  /// No description provided for @exportColCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get exportColCategory;
+
+  /// No description provided for @exportColPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get exportColPlace;
+
+  /// No description provided for @exportColStock.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock'**
+  String get exportColStock;
+
+  /// No description provided for @exportColThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert below'**
+  String get exportColThreshold;
+
+  /// No description provided for @exportColCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get exportColCurrency;
+
+  /// No description provided for @exportColDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get exportColDescription;
 }
 
 class _AppLocalizationsDelegate

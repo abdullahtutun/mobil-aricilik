@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
@@ -1628,6 +1629,27 @@ void main() {
       expect(requests.first.url.path, '/rest/v1/rpc/sync_push');
       expect(requests.skip(1).every(_isPull), isTrue);
       expect(requests.skip(1), hasLength(service.pullTables.length));
+    });
+
+    test('biten tur son eşitleme anını bu telefona kalıcı yazar', () async {
+      handler = _server({});
+      final settings = LocalSettingsRepository(db);
+
+      await service.sync();
+
+      expect(
+        await settings.watchLastSyncedAt().first,
+        DateTime.utc(2026, 10, 23, 9),
+      );
+    });
+
+    test('bitmeyen tur son eşitleme anını değiştirmez', () async {
+      await enqueue(1);
+      handler = (_) => throw const SocketException('çevrimdışı');
+
+      await service.sync();
+
+      expect(await LocalSettingsRepository(db).watchLastSyncedAt().first, null);
     });
 
     test('gönderme bitmezse çekmez', () async {

@@ -1,6 +1,9 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ProviderListenableSelect;
 import 'package:mobil_arici/core/db/app_database_provider.dart';
+import 'package:mobil_arici/core/db/local_settings_provider.dart';
+import 'package:mobil_arici/core/sync/sync_backup_rules.dart';
 import 'package:mobil_arici/core/sync/sync_repository.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
@@ -16,6 +19,30 @@ SyncRepository syncRepository(Ref ref) =>
 @riverpod
 Stream<int> syncPendingCount(Ref ref) =>
     ref.watch(syncRepositoryProvider).watchPendingCount();
+
+/// Gönderilmeyi bekleyen kayıtların tabloya göre sayısı.
+@riverpod
+Stream<Map<String, int>> syncPendingByTable(Ref ref) =>
+    ref.watch(syncRepositoryProvider).watchPendingByTable();
+
+/// Gönderilmeyi bekleyen en eski kaydın yazıldığı an; yoksa null.
+@riverpod
+Stream<DateTime?> syncOldestPendingAt(Ref ref) =>
+    ref.watch(syncRepositoryProvider).watchOldestPendingAt();
+
+/// Son başarılı senkron turunun bittiği an (bu telefonda, kalıcı).
+@riverpod
+Stream<DateTime?> lastSyncedAt(Ref ref) =>
+    ref.watch(localSettingsRepositoryProvider).watchLastSyncedAt();
+
+/// Bekleyen kayıt [syncOverdueAfter]'dan uzun süredir gönderilemedi;
+/// Bugün ve senkron ekranı uyarır. Süre bekleyenler değişince yeniden
+/// hesaplanır.
+@riverpod
+bool syncOverdue(Ref ref) => isSyncOverdue(
+  oldestPendingAt: ref.watch(syncOldestPendingAtProvider).value,
+  now: clock.now(),
+);
 
 /// Sunucunun reddettiği kayıtlar.
 @riverpod

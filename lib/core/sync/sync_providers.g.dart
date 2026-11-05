@@ -88,6 +88,181 @@ final class SyncPendingCountProvider
 
 String _$syncPendingCountHash() => r'3e8aa963cf6f81370a1554b0e3c41f7ece6be9c7';
 
+/// Gönderilmeyi bekleyen kayıtların tabloya göre sayısı.
+
+@ProviderFor(syncPendingByTable)
+final syncPendingByTableProvider = SyncPendingByTableProvider._();
+
+/// Gönderilmeyi bekleyen kayıtların tabloya göre sayısı.
+
+final class SyncPendingByTableProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<String, int>>,
+          Map<String, int>,
+          Stream<Map<String, int>>
+        >
+    with $FutureModifier<Map<String, int>>, $StreamProvider<Map<String, int>> {
+  /// Gönderilmeyi bekleyen kayıtların tabloya göre sayısı.
+  SyncPendingByTableProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'syncPendingByTableProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$syncPendingByTableHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<Map<String, int>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<Map<String, int>> create(Ref ref) {
+    return syncPendingByTable(ref);
+  }
+}
+
+String _$syncPendingByTableHash() =>
+    r'a21998f536e3a298e6fc22ebe23220f4bcc66451';
+
+/// Gönderilmeyi bekleyen en eski kaydın yazıldığı an; yoksa null.
+
+@ProviderFor(syncOldestPendingAt)
+final syncOldestPendingAtProvider = SyncOldestPendingAtProvider._();
+
+/// Gönderilmeyi bekleyen en eski kaydın yazıldığı an; yoksa null.
+
+final class SyncOldestPendingAtProvider
+    extends
+        $FunctionalProvider<AsyncValue<DateTime?>, DateTime?, Stream<DateTime?>>
+    with $FutureModifier<DateTime?>, $StreamProvider<DateTime?> {
+  /// Gönderilmeyi bekleyen en eski kaydın yazıldığı an; yoksa null.
+  SyncOldestPendingAtProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'syncOldestPendingAtProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$syncOldestPendingAtHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<DateTime?> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<DateTime?> create(Ref ref) {
+    return syncOldestPendingAt(ref);
+  }
+}
+
+String _$syncOldestPendingAtHash() =>
+    r'f4b6afb3f464b1726724e8a6c273c3cd27325ae1';
+
+/// Son başarılı senkron turunun bittiği an (bu telefonda, kalıcı).
+
+@ProviderFor(lastSyncedAt)
+final lastSyncedAtProvider = LastSyncedAtProvider._();
+
+/// Son başarılı senkron turunun bittiği an (bu telefonda, kalıcı).
+
+final class LastSyncedAtProvider
+    extends
+        $FunctionalProvider<AsyncValue<DateTime?>, DateTime?, Stream<DateTime?>>
+    with $FutureModifier<DateTime?>, $StreamProvider<DateTime?> {
+  /// Son başarılı senkron turunun bittiği an (bu telefonda, kalıcı).
+  LastSyncedAtProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lastSyncedAtProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lastSyncedAtHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<DateTime?> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<DateTime?> create(Ref ref) {
+    return lastSyncedAt(ref);
+  }
+}
+
+String _$lastSyncedAtHash() => r'88be5176ef82f767aa990d115e32163262fd0344';
+
+/// Bekleyen kayıt [syncOverdueAfter]'dan uzun süredir gönderilemedi;
+/// Bugün ve senkron ekranı uyarır. Süre bekleyenler değişince yeniden
+/// hesaplanır.
+
+@ProviderFor(syncOverdue)
+final syncOverdueProvider = SyncOverdueProvider._();
+
+/// Bekleyen kayıt [syncOverdueAfter]'dan uzun süredir gönderilemedi;
+/// Bugün ve senkron ekranı uyarır. Süre bekleyenler değişince yeniden
+/// hesaplanır.
+
+final class SyncOverdueProvider extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// Bekleyen kayıt [syncOverdueAfter]'dan uzun süredir gönderilemedi;
+  /// Bugün ve senkron ekranı uyarır. Süre bekleyenler değişince yeniden
+  /// hesaplanır.
+  SyncOverdueProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'syncOverdueProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$syncOverdueHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    return syncOverdue(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$syncOverdueHash() => r'0053496e4c99370c0111a094c9f916364b34d7d7';
+
 /// Sunucunun reddettiği kayıtlar.
 
 @ProviderFor(syncRejected)

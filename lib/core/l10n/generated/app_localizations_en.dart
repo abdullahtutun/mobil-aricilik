@@ -6982,4 +6982,323 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offlineMapsAllDownloaded =>
       'All apiaries with a location are downloaded.';
+
+  @override
+  String get syncReminderTitle => 'Your records aren\'t backed up yet';
+
+  @override
+  String syncReminderBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count records haven\'t reached the server for 3 days. Open the app when you\'re online.',
+      one: '1 record hasn\'t reached the server for 3 days. Open the app when you\'re online.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncOverdueTitle => 'Not backed up for 3+ days';
+
+  @override
+  String syncOverdueMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count records are only on this phone. If the phone is lost, they\'re lost too. Connect to the internet and sync.',
+      one: '1 record is only on this phone. If the phone is lost, it\'s lost too. Connect to the internet and sync.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String syncDaysAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days ago',
+      one: 'yesterday',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String syncLastSyncedAgo(String ago, String when) {
+    return 'Last synced $ago · $when';
+  }
+
+  @override
+  String syncPendingTitle(int count) {
+    return 'Waiting to be sent · $count';
+  }
+
+  @override
+  String settingsSignOutPendingMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count records haven\'t been sent to the server yet and are only on this phone. If you sign out, they won\'t be sent. Connect to the internet and sync first.',
+      one: '1 record hasn\'t been sent to the server yet and is only on this phone. If you sign out, it won\'t be sent. Connect to the internet and sync first.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsSignOutAnyway => 'Sign out anyway';
+
+  @override
+  String get settingsExport => 'Export data';
+
+  @override
+  String get settingsExportValue => 'Excel';
+
+  @override
+  String get settingsExportHint =>
+      'All your records in one Excel file; share or save it anywhere.';
+
+  @override
+  String get exportPreparing => 'Preparing…';
+
+  @override
+  String get exportFailed => 'Couldn\'t prepare the file. Try again.';
+
+  @override
+  String exportFileName(String date) {
+    return 'Mobil Arıcı $date';
+  }
+
+  @override
+  String get exportYes => 'Yes';
+
+  @override
+  String get exportNo => 'No';
+
+  @override
+  String get exportSheetApiaries => 'Apiaries';
+
+  @override
+  String get exportSheetHives => 'Hives';
+
+  @override
+  String get exportSheetQueens => 'Queens';
+
+  @override
+  String get exportSheetInspections => 'Inspections';
+
+  @override
+  String get exportSheetFeedings => 'Feedings';
+
+  @override
+  String get exportSheetTreatments => 'Treatments';
+
+  @override
+  String get exportSheetMiteCounts => 'Varroa counts';
+
+  @override
+  String get exportSheetHarvests => 'Harvests';
+
+  @override
+  String get exportSheetTasks => 'Tasks';
+
+  @override
+  String get exportSheetInventory => 'Stock';
+
+  @override
+  String get exportSheetFinance => 'Income and expenses';
+
+  @override
+  String get exportColName => 'Name';
+
+  @override
+  String get exportColLatitude => 'Latitude';
+
+  @override
+  String get exportColLongitude => 'Longitude';
+
+  @override
+  String get exportColAltitude => 'Altitude (m)';
+
+  @override
+  String get exportColLandowner => 'Landowner';
+
+  @override
+  String get exportColLandownerPhone => 'Landowner phone';
+
+  @override
+  String get exportColWaterSource => 'Water source';
+
+  @override
+  String get exportColVehicleDistance => 'Distance from vehicle (m)';
+
+  @override
+  String get exportColRoadNotes => 'Road notes';
+
+  @override
+  String get exportColNotes => 'Notes';
+
+  @override
+  String get exportColActiveHives => 'Active hives';
+
+  @override
+  String get exportColCreated => 'Added';
+
+  @override
+  String get exportColApiary => 'Apiary';
+
+  @override
+  String get exportColHive => 'Hive';
+
+  @override
+  String get exportColType => 'Type';
+
+  @override
+  String get exportColStatus => 'Status';
+
+  @override
+  String get exportColBoxes => 'Boxes';
+
+  @override
+  String get exportColFrames => 'Frames';
+
+  @override
+  String get exportColSource => 'Source';
+
+  @override
+  String get exportColMarking => 'Marking';
+
+  @override
+  String get exportColTag => 'Label code';
+
+  @override
+  String get exportColQuarantine => 'Quarantine';
+
+  @override
+  String get exportColQueen => 'Queen';
+
+  @override
+  String get exportColYear => 'Year';
+
+  @override
+  String get exportColColor => 'Mark color';
+
+  @override
+  String get exportColBreed => 'Breed';
+
+  @override
+  String get exportColLine => 'Line';
+
+  @override
+  String get exportColWingClipped => 'Wing clipped';
+
+  @override
+  String get exportColDate => 'Date';
+
+  @override
+  String get exportColQueenState => 'Queen';
+
+  @override
+  String get exportColBeeFrames => 'Frames of bees';
+
+  @override
+  String get exportColBroodFrames => 'Brood frames';
+
+  @override
+  String get exportColHoneyFrames => 'Honey frames';
+
+  @override
+  String get exportColTemperament => 'Temperament';
+
+  @override
+  String get exportColSwarmSigns => 'Swarm signs';
+
+  @override
+  String get exportColQueenCells => 'Queen cells';
+
+  @override
+  String get exportColDisease => 'Disease suspected';
+
+  @override
+  String get exportColActions => 'Done';
+
+  @override
+  String get exportColAmount => 'Amount';
+
+  @override
+  String get exportColUnit => 'Unit';
+
+  @override
+  String get exportColProduct => 'Product';
+
+  @override
+  String get exportColActiveIngredient => 'Active ingredient';
+
+  @override
+  String get exportColDose => 'Dose';
+
+  @override
+  String get exportColWithdrawal => 'Withdrawal (days)';
+
+  @override
+  String get exportColBatch => 'Batch no.';
+
+  @override
+  String get exportColPlannedRemoval => 'Planned removal';
+
+  @override
+  String get exportColMethod => 'Method';
+
+  @override
+  String get exportColMites => 'Mites';
+
+  @override
+  String get exportColSampleBees => 'Sample bees';
+
+  @override
+  String get exportColDays => 'Days';
+
+  @override
+  String get exportColResult => 'Result';
+
+  @override
+  String get exportColHoneyKind => 'Honey';
+
+  @override
+  String get exportColUnitCount => 'Count';
+
+  @override
+  String get exportColNetKg => 'Net (kg)';
+
+  @override
+  String get exportColHiveCount => 'Hives';
+
+  @override
+  String get exportColDue => 'Due';
+
+  @override
+  String get exportColTitle => 'Title';
+
+  @override
+  String get exportColCompleted => 'Completed';
+
+  @override
+  String get exportColCategory => 'Category';
+
+  @override
+  String get exportColPlace => 'Place';
+
+  @override
+  String get exportColStock => 'In stock';
+
+  @override
+  String get exportColThreshold => 'Alert below';
+
+  @override
+  String get exportColCurrency => 'Currency';
+
+  @override
+  String get exportColDescription => 'Description';
 }

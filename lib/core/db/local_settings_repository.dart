@@ -83,6 +83,17 @@ class LocalSettingsRepository {
   /// Bu kurulumun analitik kimliği; analitik yeniden açılınca yenilenir.
   static const analyticsInstallIdKey = 'analytics_install_id';
 
+  /// Son başarılı senkron turunun bittiği an (UTC, ISO 8601). Uygulamadaki
+  /// ve arka plandaki tur yazar; yeniden açılışta da görünür.
+  static const lastSyncedAtKey = 'sync_last_synced_at';
+
+  Stream<DateTime?> watchLastSyncedAt() =>
+      watchValue(lastSyncedAtKey)
+          .map((value) => value == null ? null : DateTime.tryParse(value));
+
+  Future<void> setLastSyncedAt(DateTime at) =>
+      writeValue(lastSyncedAtKey, at.toUtc().toIso8601String());
+
   /// Varroa uyarı eşikleri; ayar yoksa ya da okunamıyorsa
   /// [defaultVarroaThresholds].
   static const varroaPercentKey = 'varroa_threshold_percent';

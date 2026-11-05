@@ -6792,4 +6792,320 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get offlineMapsAllDownloaded =>
       'Konumlu bütün arılıkların çevresi indirildi.';
+
+  @override
+  String get syncReminderTitle => 'Kayıtların henüz yedeklenmedi';
+
+  @override
+  String syncReminderBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count kayıt 3 gündür sunucuya gönderilemedi. İnternete bağlanınca uygulamayı aç.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncOverdueTitle => '3 günden uzun süredir yedeklenmedi';
+
+  @override
+  String syncOverdueMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count kayıt yalnız bu telefonda. Telefon kaybolursa bunlar da kaybolur. İnternete bağlanıp eşitle.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String syncDaysAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days gün önce',
+      one: 'dün',
+      zero: 'bugün',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String syncLastSyncedAgo(String ago, String when) {
+    return 'Son eşitleme $ago · $when';
+  }
+
+  @override
+  String syncPendingTitle(int count) {
+    return 'Gönderilmeyi bekleyen · $count';
+  }
+
+  @override
+  String settingsSignOutPendingMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count kayıt henüz sunucuya gönderilmedi ve yalnız bu telefonda. Çıkış yaparsan gönderilmezler. Önce internete bağlanıp eşitle.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsSignOutAnyway => 'Yine de çıkış yap';
+
+  @override
+  String get settingsExport => 'Verileri dışa aktar';
+
+  @override
+  String get settingsExportValue => 'Excel';
+
+  @override
+  String get settingsExportHint =>
+      'Tüm kayıtların tek Excel dosyasında; istediğin yere gönder ya da kaydet.';
+
+  @override
+  String get exportPreparing => 'Hazırlanıyor…';
+
+  @override
+  String get exportFailed => 'Dosya hazırlanamadı. Yeniden dene.';
+
+  @override
+  String exportFileName(String date) {
+    return 'Mobil Arıcı $date';
+  }
+
+  @override
+  String get exportYes => 'Evet';
+
+  @override
+  String get exportNo => 'Hayır';
+
+  @override
+  String get exportSheetApiaries => 'Arılıklar';
+
+  @override
+  String get exportSheetHives => 'Kovanlar';
+
+  @override
+  String get exportSheetQueens => 'Ana arılar';
+
+  @override
+  String get exportSheetInspections => 'Muayeneler';
+
+  @override
+  String get exportSheetFeedings => 'Beslemeler';
+
+  @override
+  String get exportSheetTreatments => 'İlaçlamalar';
+
+  @override
+  String get exportSheetMiteCounts => 'Varroa ölçümleri';
+
+  @override
+  String get exportSheetHarvests => 'Hasatlar';
+
+  @override
+  String get exportSheetTasks => 'Görevler';
+
+  @override
+  String get exportSheetInventory => 'Stok';
+
+  @override
+  String get exportSheetFinance => 'Gelir ve gider';
+
+  @override
+  String get exportColName => 'Ad';
+
+  @override
+  String get exportColLatitude => 'Enlem';
+
+  @override
+  String get exportColLongitude => 'Boylam';
+
+  @override
+  String get exportColAltitude => 'Rakım (m)';
+
+  @override
+  String get exportColLandowner => 'Arazi sahibi';
+
+  @override
+  String get exportColLandownerPhone => 'Arazi sahibinin telefonu';
+
+  @override
+  String get exportColWaterSource => 'Su kaynağı';
+
+  @override
+  String get exportColVehicleDistance => 'Araca uzaklık (m)';
+
+  @override
+  String get exportColRoadNotes => 'Yol notu';
+
+  @override
+  String get exportColNotes => 'Not';
+
+  @override
+  String get exportColActiveHives => 'Aktif kovan';
+
+  @override
+  String get exportColCreated => 'Eklenme';
+
+  @override
+  String get exportColApiary => 'Arılık';
+
+  @override
+  String get exportColHive => 'Kovan';
+
+  @override
+  String get exportColType => 'Tür';
+
+  @override
+  String get exportColStatus => 'Durum';
+
+  @override
+  String get exportColBoxes => 'Kutu sayısı';
+
+  @override
+  String get exportColFrames => 'Çerçeve sayısı';
+
+  @override
+  String get exportColSource => 'Kaynak';
+
+  @override
+  String get exportColMarking => 'İşaret';
+
+  @override
+  String get exportColTag => 'Etiket kodu';
+
+  @override
+  String get exportColQuarantine => 'Karantina';
+
+  @override
+  String get exportColQueen => 'Ana arı';
+
+  @override
+  String get exportColYear => 'Yıl';
+
+  @override
+  String get exportColColor => 'İşaret rengi';
+
+  @override
+  String get exportColBreed => 'Irk';
+
+  @override
+  String get exportColLine => 'Hat';
+
+  @override
+  String get exportColWingClipped => 'Kanat kesik';
+
+  @override
+  String get exportColDate => 'Tarih';
+
+  @override
+  String get exportColQueenState => 'Ana durumu';
+
+  @override
+  String get exportColBeeFrames => 'Arılı çerçeve';
+
+  @override
+  String get exportColBroodFrames => 'Yavrulu çerçeve';
+
+  @override
+  String get exportColHoneyFrames => 'Ballı çerçeve';
+
+  @override
+  String get exportColTemperament => 'Huy';
+
+  @override
+  String get exportColSwarmSigns => 'Oğul belirtisi';
+
+  @override
+  String get exportColQueenCells => 'Ana memesi';
+
+  @override
+  String get exportColDisease => 'Hastalık şüphesi';
+
+  @override
+  String get exportColActions => 'Yapılanlar';
+
+  @override
+  String get exportColAmount => 'Miktar';
+
+  @override
+  String get exportColUnit => 'Birim';
+
+  @override
+  String get exportColProduct => 'Ürün';
+
+  @override
+  String get exportColActiveIngredient => 'Etken madde';
+
+  @override
+  String get exportColDose => 'Doz';
+
+  @override
+  String get exportColWithdrawal => 'Bekleme süresi (gün)';
+
+  @override
+  String get exportColBatch => 'Parti no';
+
+  @override
+  String get exportColPlannedRemoval => 'Planlanan çıkarma';
+
+  @override
+  String get exportColMethod => 'Yöntem';
+
+  @override
+  String get exportColMites => 'Akar';
+
+  @override
+  String get exportColSampleBees => 'Örnek arı';
+
+  @override
+  String get exportColDays => 'Gün';
+
+  @override
+  String get exportColResult => 'Sonuç';
+
+  @override
+  String get exportColHoneyKind => 'Bal türü';
+
+  @override
+  String get exportColUnitCount => 'Adet';
+
+  @override
+  String get exportColNetKg => 'Net (kg)';
+
+  @override
+  String get exportColHiveCount => 'Kovan sayısı';
+
+  @override
+  String get exportColDue => 'Son tarih';
+
+  @override
+  String get exportColTitle => 'Başlık';
+
+  @override
+  String get exportColCompleted => 'Tamamlandı';
+
+  @override
+  String get exportColCategory => 'Kategori';
+
+  @override
+  String get exportColPlace => 'Yer';
+
+  @override
+  String get exportColStock => 'Mevcut';
+
+  @override
+  String get exportColThreshold => 'Uyarı eşiği';
+
+  @override
+  String get exportColCurrency => 'Para birimi';
+
+  @override
+  String get exportColDescription => 'Açıklama';
 }

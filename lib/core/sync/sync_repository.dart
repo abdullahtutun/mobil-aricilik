@@ -38,6 +38,32 @@ class SyncRepository {
     return query.map((row) => row.read(count)!).watchSingle();
   }
 
+  /// Gönderilmeyi bekleyen kayıtların tabloya göre sayısı (sunucudaki
+  /// tablo adı → sayı); reddedilenler sayılmaz.
+  Stream<Map<String, int>> watchPendingByTable() {
+    final count = _db.outbox.id.count();
+    final query = _db.selectOnly(_db.outbox)
+      ..addColumns([_db.outbox.recordTable, count])
+      ..where(_db.outbox.lastError.isNull())
+      ..groupBy([_db.outbox.recordTable]);
+    return query.watch().map(
+      (rows) => {
+        for (final row in rows)
+          row.read(_db.outbox.recordTable)!: row.read(count)!,
+      },
+    );
+  }
+
+  /// Gönderilmeyi bekleyen en eski kaydın yazıldığı an (UTC); bekleyen
+  /// yoksa null. Reddedilenler sayılmaz.
+  Stream<DateTime?> watchOldestPendingAt() {
+    final oldest = _db.outbox.createdAt.min();
+    final query = _db.selectOnly(_db.outbox)
+      ..addColumns([oldest])
+      ..where(_db.outbox.lastError.isNull());
+    return query.map((row) => row.read(oldest)).watchSingle();
+  }
+
   /// Sunucunun kalıcı olarak reddettiği kayıtlar, oluşturulma sırasıyla.
   Stream<List<RejectedRecord>> watchRejected() =>
       (_db.select(_db.outbox)

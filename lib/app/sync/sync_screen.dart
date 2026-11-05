@@ -1,18 +1,23 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/app/sync/sync_messages.dart';
+import 'package:mobil_arici/app/sync/sync_overdue_card.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/sync/sync_backup_rules.dart';
 import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/core/sync/sync_indicator.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 
-/// Senkron ayrıntısı: üstte durum kartı (ikon, durum, son eşitleme,
-/// bekleyenler ya da turun sorunu), altında sunucunun reddettiği kayıtlar;
-/// en altta sabit "Şimdi eşitle".
+/// Senkron ayrıntısı (docs/design "Senkron durumu"): üstte durum kartı
+/// (ikon, durum, kaç gün önce ve ne zaman eşitlendiği, bekleyenler ya da
+/// turun sorunu); kayıtlar günlerdir gönderilemediyse uyarı; bekleyen
+/// kayıtlar türe göre; sunucunun reddettiği kayıtlar; en altta sabit
+/// "Şimdi eşitle".
 class SyncScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -28,7 +33,13 @@ class SyncScreen extends ConsumerWidget {
     final rejected = ref.watch(syncRejectedProvider).value ?? const [];
     final activity = ref.watch(syncControllerProvider);
     final lastResult = activity.lastResult;
-    final lastSyncedAt = activity.lastSyncedAt;
+    // Bu oturumdaki tur kalıcı kayıttan yenidir; arka plan turu yalnız
+    // kalıcı kaydı yazar.
+    final lastSyncedAt =
+        activity.lastSyncedAt ?? ref.watch(lastSyncedAtProvider).value;
+    final pendingByTable =
+        ref.watch(syncPendingByTableProvider).value ?? const {};
+    final overdue = ref.watch(syncOverdueProvider);
     final problem = lastResult == null
         ? null
         : syncProblemText(l10n, lastResult.status);
@@ -87,8 +98,11 @@ class SyncScreen extends ConsumerWidget {
                               ),
                               if (lastSyncedAt != null)
                                 Text(
-                                  l10n.syncLastSynced(
-                                    format.time(lastSyncedAt),
+                                  l10n.syncLastSyncedAgo(
+                                    l10n.syncDaysAgo(
+                                      daysSince(lastSyncedAt, clock.now()),
+                                    ),
+                                    format.dateTime(lastSyncedAt.toLocal()),
                                   ),
                                   style: secondary,
                                 ),
@@ -113,6 +127,26 @@ class SyncScreen extends ConsumerWidget {
                 ),
               ),
             ),
+            if (overdue && pending > 0) ...[
+              SizedBox(height: spacing.lg),
+              SyncOverdueCard(pending: pending),
+            ],
+            if (pendingByTable.isNotEmpty) ...[
+              SizedBox(height: spacing.xl),
+              SectionLabel(l10n.syncPendingTitle(pending)),
+              SizedBox(height: spacing.sm),
+              ListGroup(
+                children: [
+                  for (final MapEntry(key: table, value: count) in _byCountDesc(
+                    pendingByTable,
+                  ))
+                    ListRow(
+                      title: syncTableLabel(l10n, table),
+                      value: format.number(count),
+                    ),
+                ],
+              ),
+            ],
             if (rejected.isNotEmpty) ...[
               SizedBox(height: spacing.xl),
               SectionLabel(
@@ -179,4 +213,12 @@ class SyncScreen extends ConsumerWidget {
       ),
     );
   }
+
+  /// Bekleyen türler çoktan aza; eşitse ada göre (sıra kararlı kalsın).
+  static List<MapEntry<String, int>> _byCountDesc(Map<String, int> counts) =>
+      counts.entries.toList()..sort(
+        (a, b) => b.value != a.value
+            ? b.value.compareTo(a.value)
+            : a.key.compareTo(b.key),
+      );
 }

@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/sync/sync_repository.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
+import 'package:mobil_arici/features/hives/data/hive_repository.dart';
+import 'package:mobil_arici/features/hives/domain/hive.dart';
 
 import '../../helpers/test_database.dart';
 
@@ -41,6 +43,50 @@ void main() {
 
     expect(counts, [0, 1, 2, 1]);
   });
+
+  test('bekleyenler tabloya göre sayılır, reddedilenler sayılmaz', () async {
+    final apiary = await apiaries.create(orgId: 'org-1', name: 'Yayla');
+    await apiaries.create(orgId: 'org-1', name: 'Ova');
+    await HiveRepository(db).create(
+      orgId: 'org-1',
+      apiaryId: apiary.id,
+      number: '1',
+      type: HiveType.langstroth,
+    );
+    await reject(1, 'forbidden: RLS');
+
+    expect(await repository.watchPendingByTable().first, {
+      'apiaries': 1,
+      'hives': 1,
+      'hive_location_history': 1,
+    });
+  });
+
+  test(
+    'en eski bekleyen kaydın anı; reddedilen ve gönderilen sayılmaz',
+    () async {
+      expect(await repository.watchOldestPendingAt().first, isNull);
+
+      final clock = TestClock(DateTime.utc(2026, 10, 20, 9));
+      final repo = ApiaryRepository(db, clock: clock.call);
+      await repo.create(orgId: 'org-1', name: 'Yayla');
+      clock.advance(const Duration(days: 1));
+      await repo.create(orgId: 'org-1', name: 'Ova');
+      expect(
+        await repository.watchOldestPendingAt().first,
+        DateTime.utc(2026, 10, 20, 9),
+      );
+
+      await reject(1, 'invalid: bad');
+      expect(
+        await repository.watchOldestPendingAt().first,
+        DateTime.utc(2026, 10, 21, 9),
+      );
+
+      await db.delete(db.outbox).go();
+      expect(await repository.watchOldestPendingAt().first, isNull);
+    },
+  );
 
   test('reddedilen kayıtlar sırasıyla, tablo ve nedeniyle gelir', () async {
     final first = await apiaries.create(orgId: 'org-1', name: 'Yayla');

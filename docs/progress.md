@@ -689,6 +689,14 @@
 - ARB'ye `actionDelete`, `apiaryDelete…`, `hiveDelete…` anahtarları (TR + EN) eklendi. Testler: `delete_flow_test.dart` (onay, vazgeç, kovanlı/kovansız arılık, kovan, worker ve bilinmeyen rolde gizli, Türkçe, 360dp'de 1.5x yazı ve eldiven), `apiary_repository_test.dart` (birlikte silme ve outbox), `team_rules_test.dart`. apiaries, hives, team ve app testleri (336) geçiyor, `flutter analyze` temiz.
 - Bilinen: geri al yok. Silinen kovanın ana arısı, görevleri ve olay kayıtları (muayene, besleme vb.) silinmiyor, yalnız kovan görünmediği için ekranlarda kalkıyor; ana arı kaydı başka kovana atanabilir durumda kalabilir. Cihazda denenmedi.
 
+### 2026-11-05 — Yedek güvencesi ve Excel'e dışa aktarma (kullanıcı kararı: Google Drive yedeği yerine)
+
+- Son başarılı eşitleme artık kalıcı: `SyncService` tur bitince `local_settings`'e yazıyor (arka plan turu da). Senkron ekranında "Son eşitleme 3 gün önce · tarih" ve docs/design'daki gibi "Gönderilmeyi bekleyen · N" altında türe göre sayılar (`SyncRepository.watchPendingByTable`).
+- En eski bekleyen kayıt 3 günü geçince (`sync_backup_rules.dart`: `isSyncOverdue`, `syncReminderAt`) Bugün'de ve senkron ekranında uyarı kartı (`SyncOverdueCard`) çıkıyor. Ayrıca `SyncReminder` o ana tek yerel bildirim kuruyor (gece düşerse 09:00'a kayar, `ReminderGroups.sync`); kayıtlar gidince bildirim kalkıyor. Bekleyen kayıt varken Çıkış yap onayı sayıyı söylüyor ve "Yine de çıkış yap" diyor.
+- Ayarlar > Veri > "Verileri dışa aktar · Excel": ana kayıtlar (arılık, kovan, ana arı, muayene, besleme, ilaçlama, varroa, hasat, görev, stok, gelir/gider) tek .xlsx dosyasında, arayüz dilinde başlıklar, kimlik yerine ad/numara, çevrilmiş seçenekler; paylaşma sayfasıyla Drive/e-posta/WhatsApp'a gider. `excel` paketi `pdf` ile xml sürümünde çakıştığı için kendi küçük yazıcımız `core/utils/xlsx.dart` (`archive` doğrudan bağımlılık oldu). Gelir/gider yalnız owner ve partner'da (`canExportFinance`; rol bilinmiyorsa girmez).
+- Testler: kurallar, xlsx, repository (bekleyenler, en eski kayıt, dışa aktarma), çalışma kitabı, hatırlatma, senkron/Bugün/Ayarlar akışları (Türkçe, 360dp 1.5x + eldiven). İlgili takımlar (app, core/sync, core/utils, core/db, today, settings, export, team, hatırlatmalar) 734 test geçiyor, `flutter analyze` temiz; tam takım koşulmadı.
+- Bilinen: cihazda denenmedi (bildirim, paylaşma, dosyanın Excel/Sheets/Numbers'ta açılması). Uygulama kapalıyken arka plan turu kayıtları gönderirse kurulu bildirim uygulama açılana kadar kalkmaz ve yine de çalabilir. Uyarı kartı süre geçişini ancak bekleyenler değişince ya da ekran yeniden kurulunca fark eder. Dışa aktarma geri yüklenemez (içe aktarma yok); fotoğraf, ses, belge, lot ve göç kayıtları dosyada yok.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
