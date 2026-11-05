@@ -736,6 +736,11 @@
 - Testler: pgTAP 41 dosya / 638 test (yeni `account_deletion_code.test.sql`), Deno 28 test, Drift v24→v25 migration testi, akış ve ekip testleri; `flutter analyze` temiz. Tam takım 2329 test: yerel saatle hava ekranından 1, UTC'de 3 test kırık; aynıları temiz HEAD'de de kırılıyor (saate bağlı, bu adımla ilgisiz; dünkü 3 görev testi gibi).
 - Migration uzak projeye uygulandı ve doğrulandı (kolon, tetikleyici, 4 kod fonksiyonu yalnız service role'de, `sync_push` 25). `account-delete` (sürüm 3, `verify_jwt = false`) ve `invite` (sürüm 6) deploy edildi; oturumsuz `send_code` 401. Gerçek hesapla kod e-postası ve ekipteki rozet canlıda denenmedi. Bilinen: `invite`'ın Deno testi yok; işaret yalnız etkin üyeliklere yazılıyor, talepten sonra katılınan işletmede görünmez.
 
+### 2026-11-06 — Uygulama e-postaları tutunsoft.com'dan
+
+- `account-delete` (silme kodu, silinecek/silindi bilgilendirmesi) kendi posta kutusunu okuyor: `ACCOUNT_MAIL_SMTP_USER` = noreply@tutunsoft.com + `ACCOUNT_MAIL_SMTP_PASS`; `feedback-mail` `FEEDBACK_SMTP_USER` = feedback@tutunsoft.com + `FEEDBACK_SMTP_PASS`, alıcı `FEEDBACK_TO_EMAIL` = feedback@tutunsoft.com. Gönderen adresi giriş yapılan kutu. Kullanıcı ve şifre birlikte yoksa ortak `SMTP_USER`/`SMTP_PASS` kullanılıyor; sunucu smtp.hostinger.com:465. Giriş kodu e-postası Supabase Auth SMTP'sinde (kullanıcı ayarladı).
+- İki fonksiyon deploy edildi; kullanıcı adları ve alıcı secret olarak girildi. **Şifreler (`ACCOUNT_MAIL_SMTP_PASS`, `FEEDBACK_SMTP_PASS`) kullanıcı tarafından girilecek**; girilene kadar mailler eski kutudan çıkıyor (görüşler artık feedback@tutunsoft.com'a geliyor). Gönderim canlıda denenmedi. Deno 28 test ve tip denetimi geçti.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

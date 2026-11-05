@@ -5,8 +5,10 @@
 // `x-webhook-secret` başlığında paylaşılan gizli anahtarı (secret
 // FEEDBACK_MAIL_SECRET) taşımalı; JWT yok (`verify_jwt = false`).
 //
-// Secret'lar: FEEDBACK_MAIL_SECRET, SMTP_USER (gönderen posta kutusu, ör.
-// bildirim@alanadi.com), SMTP_PASS, FEEDBACK_TO_EMAIL (alıcı). İsteğe bağlı:
+// Secret'lar: FEEDBACK_MAIL_SECRET, FEEDBACK_SMTP_USER + FEEDBACK_SMTP_PASS
+// (gönderen posta kutusu, feedback@tutunsoft.com; ikisi birlikte yoksa ortak
+// SMTP_USER + SMTP_PASS), FEEDBACK_TO_EMAIL (alıcı, feedback@tutunsoft.com).
+// İsteğe bağlı:
 // SMTP_HOST (varsayılan smtp.hostinger.com), SMTP_PORT (varsayılan 465, SSL;
 // Edge Function'lardan 25 ve 587 kapalı). SMTP kurulmamışsa 503 döner;
 // görüş yazmasını etkilemez.
@@ -43,8 +45,13 @@ Deno.serve(async (request) => {
     return json({ error: "unauthorized" }, 401);
   }
 
-  const smtpUser = Deno.env.get("SMTP_USER");
-  const smtpPass = Deno.env.get("SMTP_PASS");
+  // Kendi posta kutusu ancak kullanıcı ve şifre birlikte girilince
+  // kullanılır; yarım ayar eski kutudan göndermeyi bozmasın.
+  const ownUser = Deno.env.get("FEEDBACK_SMTP_USER");
+  const ownPass = Deno.env.get("FEEDBACK_SMTP_PASS");
+  const [smtpUser, smtpPass] = ownUser && ownPass
+    ? [ownUser, ownPass]
+    : [Deno.env.get("SMTP_USER"), Deno.env.get("SMTP_PASS")];
   const to = Deno.env.get("FEEDBACK_TO_EMAIL");
   if (!smtpUser || !smtpPass || !to) {
     return json({ error: "mail_not_configured" }, 503);

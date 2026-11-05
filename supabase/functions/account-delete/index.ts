@@ -5,9 +5,11 @@
 // doğrulanır; pg_cron çağrısı JWT değil `x-cron-secret` taşır.
 //
 // Secret'lar: ACCOUNT_DELETE_CRON_SECRET (Vault'taki account_delete_secret
-// ile aynı), SMTP_USER, SMTP_PASS; isteğe bağlı SMTP_HOST (varsayılan
-// smtp.hostinger.com), SMTP_PORT (varsayılan 465). SMTP kurulmamışsa e-posta
-// atlanır, silme yine çalışır.
+// ile aynı), ACCOUNT_MAIL_SMTP_USER + ACCOUNT_MAIL_SMTP_PASS (silme kodu ve
+// bilgilendirme e-postalarının posta kutusu, noreply@tutunsoft.com; gönderen
+// de bu adres). İkisi birlikte yoksa ortak SMTP_USER + SMTP_PASS kullanılır.
+// İsteğe bağlı SMTP_HOST (varsayılan smtp.hostinger.com), SMTP_PORT
+// (varsayılan 465). SMTP kurulmamışsa e-posta atlanır, silme yine çalışır.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import nodemailer from "npm:nodemailer@6.9.16";
@@ -29,8 +31,13 @@ function toAuthUser(user: any): AuthUser {
   };
 }
 
-const smtpUser = Deno.env.get("SMTP_USER");
-const smtpPass = Deno.env.get("SMTP_PASS");
+// Kendi posta kutusu ancak kullanıcı ve şifre birlikte girilince kullanılır;
+// yarım ayar eski kutudan göndermeyi bozmasın.
+const ownUser = Deno.env.get("ACCOUNT_MAIL_SMTP_USER");
+const ownPass = Deno.env.get("ACCOUNT_MAIL_SMTP_PASS");
+const [smtpUser, smtpPass] = ownUser && ownPass
+  ? [ownUser, ownPass]
+  : [Deno.env.get("SMTP_USER"), Deno.env.get("SMTP_PASS")];
 const smtpPort = Number(Deno.env.get("SMTP_PORT") ?? "465");
 const transport = smtpUser && smtpPass
   ? nodemailer.createTransport({
