@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobil_arici/core/business/business_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
@@ -98,6 +99,9 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
         .firstOrNull
         ?.apiary
         .name;
+    final migratory = ref.watch(
+      businessConfigProvider.select((config) => config.features.migratory),
+    );
     final transports = ref.watch(transportChoicesProvider).value ?? const [];
     final transport = transports
         .where((t) => t.id == form.transportId)
@@ -285,7 +289,8 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
                     ),
                   ),
                 ),
-              if (widget.kind == TransactionKind.expense)
+              // Taşıma gezginci modülünün; sabit işletmede gizli.
+              if (widget.kind == TransactionKind.expense && migratory)
                 ListRow(
                   title: l10n.financeFormTransport,
                   value: transport == null

@@ -7306,4 +7306,290 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportColDescription => 'Description';
+
+  @override
+  String get businessTitle => 'Business';
+
+  @override
+  String get businessEdit => 'Edit';
+
+  @override
+  String get businessEditTitle => 'Edit business';
+
+  @override
+  String get businessCancel => 'Cancel';
+
+  @override
+  String get businessSave => 'Save';
+
+  @override
+  String get businessSaveError =>
+      'Couldn\'t save; the business isn\'t on this phone yet.';
+
+  @override
+  String get businessMissingTitle => 'No business details';
+
+  @override
+  String get businessMissingMessage =>
+      'They\'ll appear here once the business reaches this phone.';
+
+  @override
+  String businessPersonRole(String person, String role) {
+    return '$person · $role';
+  }
+
+  @override
+  String get businessDetailSeparator => ' · ';
+
+  @override
+  String businessRegionBadge(String country, String profile) {
+    return '$country · $profile';
+  }
+
+  @override
+  String get businessRegionTr => 'TR profile';
+
+  @override
+  String get businessRegionOther => 'General profile';
+
+  @override
+  String get businessPendingSync => 'Not synced yet';
+
+  @override
+  String businessCountHives(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'hives',
+      one: 'hive',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String businessCountApiaries(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'apiaries',
+      one: 'apiary',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String businessCountInspections(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'inspections',
+      one: 'inspection',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get businessSectionBusiness => 'Business';
+
+  @override
+  String get businessSectionAccount => 'Account';
+
+  @override
+  String get businessType => 'Type';
+
+  @override
+  String get businessTypeMigratory => 'Migratory';
+
+  @override
+  String get businessTypeStationary => 'Stationary';
+
+  @override
+  String get businessTypeHelp =>
+      'Stationary hides migration plans and moves; records aren\'t deleted.';
+
+  @override
+  String get businessCurrency => 'Currency';
+
+  @override
+  String businessCurrencyValue(String symbol, String code) {
+    return '$symbol $code';
+  }
+
+  @override
+  String get businessCurrencyNote =>
+      'Past records aren\'t converted; the new currency applies only to records from now on.';
+
+  @override
+  String businessTeamTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Team · $count people',
+      one: 'Team · 1 person',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get businessTeamSolo => 'No team members yet';
+
+  @override
+  String businessRoleCountOwner(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count owners',
+      one: '1 owner',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String businessRoleCountPartner(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count partners',
+      one: '1 partner',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String businessRoleCountWorker(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count workers',
+      one: '1 worker',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String businessRoleCountViewer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count advisors',
+      one: '1 advisor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get businessEmail => 'Sign-in email';
+
+  @override
+  String get businessEmailSoon => 'Changing your email is coming soon.';
+
+  @override
+  String get businessFirstRecord => 'First record';
+
+  @override
+  String businessFirstRecordValue(String date, int season) {
+    return '$date · season $season';
+  }
+
+  @override
+  String get businessSettingsShortcut =>
+      'Language, units, theme and data settings';
+
+  @override
+  String get businessNameLabel => 'Business name';
+
+  @override
+  String get businessFullNameLabel => 'Full name';
+
+  @override
+  String get businessFullNameHelp => 'Your team sees you by this name.';
+
+  @override
+  String get businessAvatarLabel => 'Avatar';
+
+  @override
+  String get businessAvatarHelp =>
+      'Without a logo, your initials appear in the color you pick.';
+
+  @override
+  String get businessAvatarPine => 'Pine';
+
+  @override
+  String get businessAvatarHoney => 'Honey';
+
+  @override
+  String get businessAvatarSky => 'Sky';
+
+  @override
+  String get businessAvatarSlate => 'Slate';
+
+  @override
+  String get businessLogoUpload => 'Upload logo';
+
+  @override
+  String get businessLogoRemove => 'Remove logo';
+
+  @override
+  String get businessDiscardTitle => 'Discard changes?';
+
+  @override
+  String get businessDiscardMessage => 'Your unsaved changes will be lost.';
+
+  @override
+  String get businessDiscardAction => 'Discard';
+
+  @override
+  String get businessTypeConfirmTitle => 'Switch to stationary?';
+
+  @override
+  String businessTypeConfirmMessage(int plans, int stops) {
+    String _temp0 = intl.Intl.pluralLogic(
+      plans,
+      locale: localeName,
+      other: '$plans migration plans',
+      one: '1 migration plan',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      stops,
+      locale: localeName,
+      other: '$stops stops',
+      one: '1 stop',
+    );
+    return '$_temp0 and $_temp1 will be hidden. Records aren\'t deleted; you can undo this.';
+  }
+
+  @override
+  String get businessTypeConfirmAction => 'Switch';
+
+  @override
+  String get businessReadOnly =>
+      'Only the owner and partners can change business details.';
+
+  @override
+  String get financeOtherCurrencies => 'Other currencies';
+
+  @override
+  String financeOtherCurrencyLine(String currency, String amount) {
+    return '$currency · net $amount';
+  }
+
+  @override
+  String get migratoryHiddenTitle => 'Migratory module is off';
+
+  @override
+  String get migratoryHiddenMessage =>
+      'Your business is stationary. Migration plans and moves aren\'t deleted; they come back if you switch to migratory.';
+
+  @override
+  String get onboardingMigratoryTitle => 'Do you move your hives (migratory)?';
+
+  @override
+  String get onboardingMigratoryMessage =>
+      'If not, migration plans and moves are hidden; change it anytime in the business profile.';
+
+  @override
+  String get onboardingMigratoryYes => 'Yes';
+
+  @override
+  String get onboardingMigratoryNo => 'No, stationary';
 }

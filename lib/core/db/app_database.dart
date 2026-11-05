@@ -96,6 +96,7 @@ part 'app_database.g.dart';
     LotSales,
     Transactions,
     ReceiptUploads,
+    LogoUploads,
     Customers,
     CustomerPayments,
     RefSupportPeriods,
@@ -110,7 +111,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 23;
+  int get schemaVersion => 24;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -306,6 +307,21 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(schema.hiveStatusEvents);
         await m.create(schema.hiveStatusEventsOrgIdIdx);
         await m.create(schema.hiveStatusEventsHiveIdIdx);
+      },
+      // İşletme profili: tür, avatar rengi, logo, üyenin adı; logo yükleme
+      // kuyruğu yalnız bu telefonda.
+      from23To24: (m, schema) async {
+        await m.addColumn(
+          schema.organizations,
+          schema.organizations.operationType,
+        );
+        await m.addColumn(
+          schema.organizations,
+          schema.organizations.avatarColor,
+        );
+        await m.addColumn(schema.organizations, schema.organizations.logoPath);
+        await m.addColumn(schema.memberships, schema.memberships.fullName);
+        await m.createTable(schema.logoUploads);
       },
     ),
   );

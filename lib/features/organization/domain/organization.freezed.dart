@@ -19,7 +19,8 @@ mixin _$Organization {
 /// İstemcide üretilen UUIDv7.
  String get id; String get name;/// ISO 3166-1 alpha-2, büyük harf.
  String get countryCode;/// ISO 4217.
- String get currency; HiveCountRange? get hiveCountRange;
+ String get currency; HiveCountRange? get hiveCountRange;/// Eski önbellekte yok; o zaman gezginci (sunucunun varsayılanı).
+ OperationType get operationType;
 /// Create a copy of Organization
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -33,20 +34,20 @@ $OrganizationCopyWith<Organization> get copyWith => _$OrganizationCopyWithImpl<O
 @override
 bool operator ==(Object other) {
   final _this = this as Organization;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Organization&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.countryCode, _this.countryCode) || other.countryCode == _this.countryCode)&&(identical(other.currency, _this.currency) || other.currency == _this.currency)&&(identical(other.hiveCountRange, _this.hiveCountRange) || other.hiveCountRange == _this.hiveCountRange));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Organization&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.countryCode, _this.countryCode) || other.countryCode == _this.countryCode)&&(identical(other.currency, _this.currency) || other.currency == _this.currency)&&(identical(other.hiveCountRange, _this.hiveCountRange) || other.hiveCountRange == _this.hiveCountRange)&&(identical(other.operationType, _this.operationType) || other.operationType == _this.operationType));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Organization;
-  return Object.hash(runtimeType,_this.id,_this.name,_this.countryCode,_this.currency,_this.hiveCountRange);
+  return Object.hash(runtimeType,_this.id,_this.name,_this.countryCode,_this.currency,_this.hiveCountRange,_this.operationType);
 }
 
 @override
 String toString() {
   final _this = this as Organization;
-  return 'Organization(id: ${_this.id}, name: ${_this.name}, countryCode: ${_this.countryCode}, currency: ${_this.currency}, hiveCountRange: ${_this.hiveCountRange})';
+  return 'Organization(id: ${_this.id}, name: ${_this.name}, countryCode: ${_this.countryCode}, currency: ${_this.currency}, hiveCountRange: ${_this.hiveCountRange}, operationType: ${_this.operationType})';
 }
 
 
@@ -57,7 +58,7 @@ abstract mixin class $OrganizationCopyWith<$Res>  {
   factory $OrganizationCopyWith(Organization value, $Res Function(Organization) _then) = _$OrganizationCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String countryCode, String currency, HiveCountRange? hiveCountRange
+ String id, String name, String countryCode, String currency, HiveCountRange? hiveCountRange, OperationType operationType
 });
 
 
@@ -74,14 +75,15 @@ class _$OrganizationCopyWithImpl<$Res>
 
 /// Create a copy of Organization
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? countryCode = null,Object? currency = null,Object? hiveCountRange = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? countryCode = null,Object? currency = null,Object? hiveCountRange = freezed,Object? operationType = null,}) {
   return _then(Organization(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,countryCode: null == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,hiveCountRange: freezed == hiveCountRange ? _self.hiveCountRange : hiveCountRange // ignore: cast_nullable_to_non_nullable
-as HiveCountRange?,
+as HiveCountRange?,operationType: null == operationType ? _self.operationType : operationType // ignore: cast_nullable_to_non_nullable
+as OperationType,
   ));
 }
 
@@ -166,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String countryCode,  String currency,  HiveCountRange? hiveCountRange)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String countryCode,  String currency,  HiveCountRange? hiveCountRange,  OperationType operationType)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Organization() when $default != null:
-return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveCountRange);case _:
+return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveCountRange,_that.operationType);case _:
   return orElse();
 
 }
@@ -187,10 +189,10 @@ return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveC
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String countryCode,  String currency,  HiveCountRange? hiveCountRange)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String countryCode,  String currency,  HiveCountRange? hiveCountRange,  OperationType operationType)  $default,) {final _that = this;
 switch (_that) {
 case _Organization():
-return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveCountRange);case _:
+return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveCountRange,_that.operationType);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +209,10 @@ return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveC
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String countryCode,  String currency,  HiveCountRange? hiveCountRange)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String countryCode,  String currency,  HiveCountRange? hiveCountRange,  OperationType operationType)?  $default,) {final _that = this;
 switch (_that) {
 case _Organization() when $default != null:
-return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveCountRange);case _:
+return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveCountRange,_that.operationType);case _:
   return null;
 
 }
@@ -222,7 +224,7 @@ return $default(_that.id,_that.name,_that.countryCode,_that.currency,_that.hiveC
 @JsonSerializable()
 
 class _Organization implements Organization {
-  const _Organization({required this.id, required this.name, required this.countryCode, required this.currency, this.hiveCountRange});
+  const _Organization({required this.id, required this.name, required this.countryCode, required this.currency, this.hiveCountRange, this.operationType = OperationType.migratory});
   factory _Organization.fromJson(Map<String, dynamic> json) => _$OrganizationFromJson(json);
 
 /// İstemcide üretilen UUIDv7.
@@ -233,6 +235,8 @@ class _Organization implements Organization {
 /// ISO 4217.
 @override final  String currency;
 @override final  HiveCountRange? hiveCountRange;
+/// Eski önbellekte yok; o zaman gezginci (sunucunun varsayılanı).
+@override@JsonKey() final  OperationType operationType;
 
 /// Create a copy of Organization
 /// with the given fields replaced by the non-null parameter values.
@@ -247,18 +251,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Organization&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.hiveCountRange, hiveCountRange) || other.hiveCountRange == hiveCountRange));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Organization&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.hiveCountRange, hiveCountRange) || other.hiveCountRange == hiveCountRange)&&(identical(other.operationType, operationType) || other.operationType == operationType));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,name,countryCode,currency,hiveCountRange);
+    return Object.hash(runtimeType,id,name,countryCode,currency,hiveCountRange,operationType);
 }
 
 @override
 String toString() {
-    return 'Organization(id: $id, name: $name, countryCode: $countryCode, currency: $currency, hiveCountRange: $hiveCountRange)';
+    return 'Organization(id: $id, name: $name, countryCode: $countryCode, currency: $currency, hiveCountRange: $hiveCountRange, operationType: $operationType)';
 }
 
 
@@ -269,7 +273,7 @@ abstract mixin class _$OrganizationCopyWith<$Res> implements $OrganizationCopyWi
   factory _$OrganizationCopyWith(_Organization value, $Res Function(_Organization) _then) = __$OrganizationCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String countryCode, String currency, HiveCountRange? hiveCountRange
+ String id, String name, String countryCode, String currency, HiveCountRange? hiveCountRange, OperationType operationType
 });
 
 
@@ -286,14 +290,15 @@ class __$OrganizationCopyWithImpl<$Res>
 
 /// Create a copy of Organization
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? countryCode = null,Object? currency = null,Object? hiveCountRange = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? countryCode = null,Object? currency = null,Object? hiveCountRange = freezed,Object? operationType = null,}) {
   return _then(_Organization(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,countryCode: null == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,hiveCountRange: freezed == hiveCountRange ? _self.hiveCountRange : hiveCountRange // ignore: cast_nullable_to_non_nullable
-as HiveCountRange?,
+as HiveCountRange?,operationType: null == operationType ? _self.operationType : operationType // ignore: cast_nullable_to_non_nullable
+as OperationType,
   ));
 }
 

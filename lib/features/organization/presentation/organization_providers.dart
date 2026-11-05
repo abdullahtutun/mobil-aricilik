@@ -10,6 +10,7 @@ import 'package:mobil_arici/features/organization/data/membership_repository.dar
 import 'package:mobil_arici/features/organization/data/organization_cache.dart';
 import 'package:mobil_arici/features/organization/data/organization_repository.dart';
 import 'package:mobil_arici/features/organization/data/organization_service.dart';
+import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
@@ -68,6 +69,7 @@ class CurrentOrganization extends _$CurrentOrganization {
     required String name,
     required String countryCode,
     HiveCountRange? hiveCountRange,
+    OperationType operationType = OperationType.migratory,
   }) async {
     final userId = ref.read(currentUserProvider)?.id;
     if (userId == null) return;
@@ -80,6 +82,7 @@ class CurrentOrganization extends _$CurrentOrganization {
             countryCode: countryCode,
             currency: resolveRegionConfig(countryCode).currencyCode,
             hiveCountRange: hiveCountRange,
+            operationType: operationType,
           ),
         );
     if (!ref.mounted) return;
@@ -119,6 +122,31 @@ OrganizationRepository organizationRepository(Ref ref) =>
 @Riverpod(keepAlive: true)
 MembershipRepository membershipRepository(Ref ref) =>
     MembershipRepository(ref.watch(appDatabaseProvider));
+
+/// Oturumdaki işletmenin yerel satırındaki profil (ad, tür, para birimi,
+/// avatar, logo); işletme yoksa ya da satır henüz inmemişse null.
+@Riverpod(keepAlive: true)
+Stream<OrganizationProfile?> localOrganizationProfile(Ref ref) {
+  final orgId = ref.watch(currentOrgIdProvider);
+  if (orgId == null) return Stream.value(null);
+  return ref.watch(organizationRepositoryProvider).watchProfile(orgId);
+}
+
+/// İşletmenin para birimi: yerel satırdaki (profilde değişince hemen),
+/// satır inmemişse cihazdaki işletme kopyasındaki. Yeni kayıtlar bununla
+/// yazılır; eski kayıtlar kendi para birimini taşır.
+@riverpod
+String? organizationCurrency(Ref ref) =>
+    ref.watch(
+      localOrganizationProfileProvider.select(
+        (profile) => profile.value?.currency,
+      ),
+    ) ??
+    ref.watch(
+      currentOrganizationProvider.select(
+        (organization) => organization.value?.currency,
+      ),
+    );
 
 /// Oturumdaki işletmenin üyeleri (görev atama); işletme yoksa boş.
 @riverpod

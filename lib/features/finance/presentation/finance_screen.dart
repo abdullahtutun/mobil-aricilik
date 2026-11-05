@@ -82,6 +82,8 @@ class FinanceScreen extends ConsumerWidget {
 
 /// Ters zeminde sezon neti (büyük, bal sarısı) ve altında gelir, gider,
 /// kovan başı maliyet. Dar ekranda ve büyük yazıda üçlü alt alta kayar.
+/// Başka para biriminde hareket varsa (para birimi değişmeden önceki
+/// kayıtlar) netleri altta para birimine göre ayrı yazılır, toplanmaz.
 class _SeasonCard extends ConsumerWidget {
   const new();
 
@@ -92,6 +94,7 @@ class _SeasonCard extends ConsumerWidget {
     final spacing = context.spacing;
     final currency = ref.watch(financeCurrencyProvider);
     final season = ref.watch(financeSeasonProvider).value;
+    final others = ref.watch(financeOtherCurrenciesProvider).value ?? const {};
     if (currency == null || season == null) return const SizedBox.shrink();
 
     String money(double amount) => financeMoney(context, amount, currency);
@@ -158,6 +161,26 @@ class _SeasonCard extends ConsumerWidget {
                 ),
               ],
             ),
+            if (others.isNotEmpty) ...[
+              SizedBox(height: spacing.lg),
+              Text(l10n.financeOtherCurrencies, style: labelStyle),
+              for (final MapEntry(key: code, value: other) in others.entries)
+                MergeSemantics(
+                  child: Text(
+                    l10n.financeOtherCurrencyLine(
+                      code,
+                      other.net < 0
+                          ? l10n.financeMinus(
+                              financeMoney(context, -other.net, code),
+                            )
+                          : l10n.financePlus(
+                              financeMoney(context, other.net, code),
+                            ),
+                    ),
+                    style: valueStyle,
+                  ),
+                ),
+            ],
           ],
         ),
       ),

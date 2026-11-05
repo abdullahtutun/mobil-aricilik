@@ -36,6 +36,10 @@ abstract class OnboardingState with _$OnboardingState {
     @Default('') String name,
     HiveCountRange? hiveCountRange,
 
+    /// "Gezginci arıcılık yapıyor musun?"; profildeki işletme türüyle aynı
+    /// alana (`organizations.operation_type`) yazılır.
+    @Default(OperationType.migratory) OperationType operationType,
+
     /// İşletme kuruluyor.
     @Default(false) bool busy,
     OrganizationFailure? failure,
@@ -97,6 +101,10 @@ class OnboardingController extends _$OnboardingController {
     state = state.copyWith(name: name, failure: null);
   }
 
+  void selectOperationType(OperationType type) {
+    state = state.copyWith(operationType: type, failure: null);
+  }
+
   void selectHiveCountRange(HiveCountRange? range) {
     state = state.copyWith(hiveCountRange: range, failure: null);
   }
@@ -118,6 +126,7 @@ class OnboardingController extends _$OnboardingController {
             name: state.name.trim(),
             countryCode: countryCode,
             hiveCountRange: state.hiveCountRange,
+            operationType: state.operationType,
           );
     } on OrganizationServiceException catch (error) {
       if (ref.mounted) {

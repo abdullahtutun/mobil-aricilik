@@ -35,6 +35,10 @@ class AppFormat {
   /// Günsüz ay ve yıl; uzak tarihler için. `May 2027`, `May 2027`
   String monthYear(DateTime value) => DateFormat.yMMM(locale).format(value);
 
+  /// Ayın tam adıyla: `Mart 2026` / `March 2026`.
+  String monthYearLong(DateTime value) =>
+      DateFormat.yMMMM(locale).format(value);
+
   /// Haftanın günü. `Pazartesi`, `Monday`
   String weekday(DateTime value) => DateFormat.EEEE(locale).format(value);
 

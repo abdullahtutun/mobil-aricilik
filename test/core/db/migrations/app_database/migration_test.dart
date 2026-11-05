@@ -20,6 +20,7 @@ import 'generated/schema_v20.dart' as v20;
 import 'generated/schema_v21.dart' as v21;
 import 'generated/schema_v22.dart' as v22;
 import 'generated/schema_v23.dart' as v23;
+import 'generated/schema_v24.dart' as v24;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
@@ -936,6 +937,54 @@ void main() {
         final hive = (await newDb.select(newDb.hives).get()).single;
         expect(hive.status, 'dead');
         expect(await newDb.select(newDb.hiveStatusEvents).get(), isEmpty);
+      },
+    );
+  });
+
+  test('v23 → v24 işletmeyi gezginci, üyeliği adsız korur; logo kuyruğu '
+      'boş gelir', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 23,
+      newVersion: 24,
+      createOld: v23.DatabaseAtV23.new,
+      createNew: v24.DatabaseAtV24.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(
+            oldDb.organizations,
+            v23.OrganizationsCompanion.insert(
+              id: 'org-1',
+              createdAt: '2026-11-05T09:00:00.000Z',
+              updatedAt: '2026-11-05T09:00:00.000Z',
+              name: 'Petek Arıcılık',
+              countryCode: 'TR',
+              currency: 'TRY',
+            ),
+          )
+          ..insert(
+            oldDb.memberships,
+            v23.MembershipsCompanion.insert(
+              id: 'membership-1',
+              createdAt: '2026-11-05T09:00:00.000Z',
+              updatedAt: '2026-11-05T09:00:00.000Z',
+              orgId: 'org-1',
+              userId: 'user-1',
+              role: 'owner',
+            ),
+          );
+      },
+      validateItems: (newDb) async {
+        final organization =
+            (await newDb.select(newDb.organizations).get()).single;
+        expect(organization.name, 'Petek Arıcılık');
+        expect(organization.operationType, 'migratory');
+        expect(organization.avatarColor, null);
+        expect(organization.logoPath, null);
+        final membership = (await newDb.select(newDb.memberships).get()).single;
+        expect(membership.role, 'owner');
+        expect(membership.fullName, null);
+        expect(await newDb.select(newDb.logoUploads).get(), isEmpty);
       },
     );
   });

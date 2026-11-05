@@ -49,7 +49,7 @@ bool canDeleteApiariesAndHives(Ref ref) =>
 bool canSeeFinance(Ref ref) =>
     permissions.canSeeFinance(ref.watch(currentRoleProvider));
 
-/// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+/// İşletme bilgileri değiştirilebilsin mi (owner ve partner).
 @riverpod
 bool canEditOrganization(Ref ref) =>
     permissions.canEditOrganization(ref.watch(currentRoleProvider));

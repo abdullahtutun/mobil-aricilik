@@ -30,10 +30,8 @@ void main() {
   });
 
   group('syncReminderAt', () {
-    DateTime? at(DateTime oldest, {DateTime? now}) => syncReminderAt(
-      oldestPendingAt: oldest,
-      now: now ?? DateTime(2026, 11),
-    );
+    DateTime? at(DateTime oldest, {DateTime? now}) =>
+        syncReminderAt(oldestPendingAt: oldest, now: now ?? DateTime(2026, 11));
 
     test('bekleyen yoksa bildirim yok', () {
       expect(

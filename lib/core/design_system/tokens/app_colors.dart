@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart'
     show HoneyKind;
+import 'package:mobil_arici/features/organization/domain/organization.dart'
+    show OrgAvatarColor;
 import 'package:mobil_arici/features/queens/domain/queen.dart'
     show QueenMarkColor;
 
@@ -238,6 +240,15 @@ class AppColors extends ThemeExtension<AppColors> {
     HoneyKind.chestnut => honeyChestnut,
     HoneyKind.citrus => honeyCitrus,
     HoneyKind.other => honeyOther,
+  };
+
+  /// İşletme ve üye avatarının zemini ve üstündeki baş harflerin rengi.
+  /// Yeni renk açılmaz; kontrastı zaten test edilen çiftler kullanılır.
+  (Color, Color) orgAvatar(OrgAvatarColor color) => switch (color) {
+    OrgAvatarColor.pine => (secondary, onSecondary),
+    OrgAvatarColor.honey => (primary, onPrimary),
+    OrgAvatarColor.sky => (statusInfo, onStatus),
+    OrgAvatarColor.slate => (inverseSurface, onInverseSurface),
   };
 
   Color queenMark(QueenMarkColor mark) {

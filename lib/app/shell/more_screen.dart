@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/core/business/business_provider.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
-import 'package:mobil_arici/core/utils/app_format.dart';
-import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/organization/domain/business_profile.dart';
+import 'package:mobil_arici/features/organization/presentation/business_profile_providers.dart';
+import 'package:mobil_arici/features/organization/presentation/widgets/business_avatar.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
+import 'package:mobil_arici/features/team/presentation/team_rules.dart';
 
 /// Seyrek kullanılan modüllerin girişi (docs/design "Daha fazla"): üstte
-/// işletme kartı, altında bölüm bölüm iki sütunlu modül karoları. Arılık:
-/// yaşlı analar, gezginci, ana yetiştirme, hasat ve lotlar; işletme: ekip,
-/// raporlar, sezon raporu, belge kasası, malzeme ve stok, finans (yalnız
-/// owner ve partner), destekler (yalnız TR profilinde); yardım: bilgi bankası,
+/// işletme kartı (işletme profilini açar), altında bölüm bölüm iki sütunlu
+/// modül karoları. Arılık: yaşlı analar, gezginci (yalnız gezginci
+/// işletmede), ana yetiştirme, hasat ve lotlar; işletme: ekip, raporlar,
+/// sezon raporu, belge kasası, malzeme ve stok, finans (yalnız owner ve
+/// partner), destekler (yalnız TR profilinde); yardım: bilgi bankası,
 /// görüş bildir, ayarlar, senkron. Diğer modüller geldikçe kendi
 /// bölümlerine eklenir.
 class MoreScreen extends ConsumerWidget {
@@ -25,7 +30,10 @@ class MoreScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final colors = context.colors;
-    final organization = ref.watch(currentOrganizationProvider).value;
+    final profile = ref.watch(businessProfileProvider);
+    final migratory = ref.watch(
+      businessConfigProvider.select((config) => config.features.migratory),
+    );
     final canSeeFinance = ref.watch(canSeeFinanceProvider);
     final subsidies = ref.watch(
       regionConfigProvider.select((region) => region.features.subsidies),
@@ -37,11 +45,8 @@ class MoreScreen extends ConsumerWidget {
         child: ListView(
           padding: EdgeInsets.all(spacing.lg),
           children: [
-            if (organization != null) ...[
-              _OrganizationCard(
-                name: organization.name,
-                countryCode: organization.countryCode,
-              ),
+            if (profile != null) ...[
+              _OrganizationCard(profile: profile),
               SizedBox(height: spacing.xl),
             ],
             _ModuleSection(
@@ -53,11 +58,13 @@ class MoreScreen extends ConsumerWidget {
                   label: l10n.oldQueensTitle,
                   onTap: () => context.go(AppRoutes.oldQueens),
                 ),
-                _ModuleTile(
-                  icon: Icons.local_shipping_outlined,
-                  label: l10n.moreMigratory,
-                  onTap: () => context.go(AppRoutes.migrations),
-                ),
+                // Sabit işletmede gizli; kayıtları silinmez.
+                if (migratory)
+                  _ModuleTile(
+                    icon: Icons.local_shipping_outlined,
+                    label: l10n.moreMigratory,
+                    onTap: () => context.go(AppRoutes.migrations),
+                  ),
                 _ModuleTile(
                   icon: Icons.egg_outlined,
                   label: l10n.moreRearing,
@@ -204,70 +211,64 @@ class _ModuleTone extends InheritedWidget {
   bool updateShouldNotify(_ModuleTone oldWidget) => tone != oldWidget.tone;
 }
 
-/// İşletmenin adı ve ülkesi; solda baş harfleri çam yeşili dairede.
-class _OrganizationCard extends StatelessWidget {
-  const new({required this.name, required this.countryCode});
+/// İşletmenin adı, altında "ad soyad · rol · ülke"; solda avatar (logo ya
+/// da baş harfler). Dokununca işletme profili açılır.
+class _OrganizationCard extends ConsumerWidget {
+  const new({required this.profile});
 
-  final String name;
-  final String countryCode;
+  final OrganizationProfile profile;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final colors = context.colors;
     final spacing = context.spacing;
-    final format = AppFormat.of(context);
-    final initials = format.upperCase(
-      name
-          .split(RegExp(r'\s+'))
-          .where((word) => word.isNotEmpty)
-          .take(2)
-          .map((word) => word.characters.first)
-          .join(),
-    );
+    final member = ref.watch(ownMemberProfileProvider);
+    final email = ref.watch(currentUserProvider.select((user) => user?.email));
     final country = countryNamesFor(
       Localizations.localeOf(context).languageCode,
-    )[countryCode];
+    )[profile.countryCode];
+    final person = member?.fullName ?? activityName(email);
+    final role = member?.role;
+    final details = [
+      ?person,
+      if (role != null) roleLabel(l10n, role),
+      ?country,
+    ].join(l10n.businessDetailSeparator);
 
     return MergeSemantics(
       child: AppCard(
+        onTap: () => context.go(AppRoutes.business),
         child: Padding(
           padding: EdgeInsets.all(spacing.lg),
           child: Row(
             children: [
-              ExcludeSemantics(
-                child: SizedBox.square(
-                  dimension: context.touchTargets.field,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: colors.secondary,
-                    ),
-                    child: Center(
-                      child: Text(
-                        initials,
-                        style: context.typography.title.copyWith(
-                          color: colors.onSecondary,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              BusinessAvatar(
+                name: profile.name,
+                color: profile.avatarColor,
+                logoPath: profile.logoPath,
+                dimension: context.touchTargets.field,
               ),
               SizedBox(width: spacing.lg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style: context.typography.title),
-                    if (country != null)
+                    Text(profile.name, style: context.typography.title),
+                    if (details.isNotEmpty)
                       Text(
-                        country,
+                        details,
                         style: context.typography.body.copyWith(
                           color: colors.textSecondary,
                         ),
                       ),
                   ],
                 ),
+              ),
+              Icon(
+                Icons.chevron_right_rounded,
+                size: context.sizes.icon,
+                color: colors.textSecondary,
               ),
             ],
           ),

@@ -106,6 +106,28 @@ SeasonSummary seasonSummary(
   );
 }
 
+/// [year] yılındaki hareketlerin para birimine göre ayrı özetleri; farklı
+/// para birimleri birbirine eklenmez ve dönüştürülmez. Kovan başı maliyet
+/// burada hesaplanmaz (null). Sıra para birimi koduna göre.
+Map<String, SeasonSummary> seasonSummariesByCurrency(
+  Iterable<FinanceTransaction> transactions, {
+  required int year,
+}) {
+  final currencies = {
+    for (final transaction in transactions)
+      if (transaction.occurredOn.year == year) transaction.currency,
+  }.toList()..sort();
+  return {
+    for (final currency in currencies)
+      currency: seasonSummary(
+        transactions,
+        year: year,
+        currency: currency,
+        activeHives: 0,
+      ),
+  };
+}
+
 /// Liste sırası: yeni gün önce, aynı günde son eklenen önce.
 int compareTransactions(FinanceTransaction a, FinanceTransaction b) {
   final byDay = b.occurredOn.compareTo(a.occurredOn);

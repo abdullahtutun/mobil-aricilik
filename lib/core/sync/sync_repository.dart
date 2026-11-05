@@ -38,6 +38,25 @@ class SyncRepository {
     return query.map((row) => row.read(count)!).watchSingle();
   }
 
+  /// [records] (sunucudaki tablo adı, kayıt kimliği) içinden en az biri
+  /// gönderilmeyi bekliyor mu ("eşitlenecek" rozeti); reddedilenler
+  /// sayılmaz.
+  Stream<bool> watchAnyPending(List<(String table, String id)> records) {
+    if (records.isEmpty) return Stream.value(false);
+    final outbox = _db.outbox;
+    final count = outbox.id.count();
+    final query = _db.selectOnly(outbox)
+      ..addColumns([count])
+      ..where(
+        outbox.lastError.isNull() &
+            Expression.or([
+              for (final (table, id) in records)
+                outbox.recordTable.equals(table) & outbox.recordId.equals(id),
+            ]),
+      );
+    return query.map((row) => row.read(count)! > 0).watchSingle();
+  }
+
   /// Gönderilmeyi bekleyen kayıtların tabloya göre sayısı (sunucudaki
   /// tablo adı → sayı); reddedilenler sayılmaz.
   Stream<Map<String, int>> watchPendingByTable() {

@@ -48,7 +48,7 @@ final class OnboardingControllerProvider
 }
 
 String _$onboardingControllerHash() =>
-    r'71156d28232c36820445f652e6a1dd042610d2e5';
+    r'b4fca1ca1031a79e03319e5c6e551318b6e9334c';
 
 /// Dil ve ülke → işletme adı ve kovan sayısı akışı. Ekran açık kaldığı sürece
 /// yaşar. İşletme kurulunca yönlendirmeyi (ilk arılık adımına) router yapar.

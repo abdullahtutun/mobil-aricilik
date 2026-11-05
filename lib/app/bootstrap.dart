@@ -12,6 +12,7 @@ import 'package:mobil_arici/app/supabase_setup.dart';
 import 'package:mobil_arici/app/sync/sync_reminder.dart';
 import 'package:mobil_arici/core/sync/document_file_triggers.dart';
 import 'package:mobil_arici/core/sync/knowledge_update_triggers.dart';
+import 'package:mobil_arici/core/sync/logo_file_triggers.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/receipt_file_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
@@ -46,16 +47,17 @@ Future<void> bootstrap(Flavor flavor) async {
 
     final container =
         ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])
-          // Senkron, medya, görüş ve kullanım olayı gönderimi, belge ve fiş
-          // dosyalarının yüklenip indirilmesi, bilgi bankası güncellemesi,
-          // görev, belge ve gönderilemeyen kayıt hatırlatmalarının
-          // eşitlemesi, push token kaydı ve bildirimden görev açma uygulama
-          // açık kaldıkça çalışır.
+          // Senkron, medya, görüş ve kullanım olayı gönderimi; belge, fiş
+          // ve işletme logosu dosyalarının yüklenip indirilmesi; bilgi
+          // bankası güncellemesi; görev, belge ve gönderilemeyen kayıt
+          // hatırlatmalarının eşitlemesi; push token kaydı ve bildirimden
+          // görev açma uygulama açık kaldıkça çalışır.
           ..listen(syncTriggersProvider, (_, _) {})
           ..listen(mediaUploadTriggersProvider, (_, _) {})
           ..listen(telemetryUploadTriggersProvider, (_, _) {})
           ..listen(documentFileTriggersProvider, (_, _) {})
           ..listen(receiptFileTriggersProvider, (_, _) {})
+          ..listen(logoFileTriggersProvider, (_, _) {})
           ..listen(knowledgeUpdateTriggersProvider, (_, _) {})
           ..listen(taskRemindersProvider, (_, _) {})
           ..listen(documentRemindersProvider, (_, _) {})

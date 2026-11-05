@@ -7113,4 +7113,245 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get exportColDescription => 'Açıklama';
+
+  @override
+  String get businessTitle => 'İşletme';
+
+  @override
+  String get businessEdit => 'Düzenle';
+
+  @override
+  String get businessEditTitle => 'İşletmeyi düzenle';
+
+  @override
+  String get businessCancel => 'İptal';
+
+  @override
+  String get businessSave => 'Kaydet';
+
+  @override
+  String get businessSaveError =>
+      'Kaydedilemedi; işletme bu telefonda henüz yok.';
+
+  @override
+  String get businessMissingTitle => 'İşletme bilgisi yok';
+
+  @override
+  String get businessMissingMessage =>
+      'İşletme bu telefona indiğinde burada görünür.';
+
+  @override
+  String businessPersonRole(String person, String role) {
+    return '$person · $role';
+  }
+
+  @override
+  String get businessDetailSeparator => ' · ';
+
+  @override
+  String businessRegionBadge(String country, String profile) {
+    return '$country · $profile';
+  }
+
+  @override
+  String get businessRegionTr => 'TR profili';
+
+  @override
+  String get businessRegionOther => 'Genel profil';
+
+  @override
+  String get businessPendingSync => 'Eşitlenecek';
+
+  @override
+  String businessCountHives(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'kovan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String businessCountApiaries(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'arılık',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String businessCountInspections(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'muayene',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get businessSectionBusiness => 'İşletme';
+
+  @override
+  String get businessSectionAccount => 'Hesap';
+
+  @override
+  String get businessType => 'Tür';
+
+  @override
+  String get businessTypeMigratory => 'Gezginci';
+
+  @override
+  String get businessTypeStationary => 'Sabit';
+
+  @override
+  String get businessTypeHelp =>
+      'Sabitte göç planı ve taşıma gizlenir; kayıtlar silinmez.';
+
+  @override
+  String get businessCurrency => 'Para birimi';
+
+  @override
+  String businessCurrencyValue(String symbol, String code) {
+    return '$symbol $code';
+  }
+
+  @override
+  String get businessCurrencyNote =>
+      'Geçmiş kayıtlar dönüştürülmez; yeni para birimi yalnız bundan sonraki kayıtlara uygulanır.';
+
+  @override
+  String businessTeamTitle(int count) {
+    return 'Ekip · $count kişi';
+  }
+
+  @override
+  String get businessTeamSolo => 'Henüz ekip üyesi yok';
+
+  @override
+  String businessRoleCountOwner(int count) {
+    return '$count sahip';
+  }
+
+  @override
+  String businessRoleCountPartner(int count) {
+    return '$count ortak';
+  }
+
+  @override
+  String businessRoleCountWorker(int count) {
+    return '$count işçi';
+  }
+
+  @override
+  String businessRoleCountViewer(int count) {
+    return '$count danışman';
+  }
+
+  @override
+  String get businessEmail => 'Giriş e-postası';
+
+  @override
+  String get businessEmailSoon => 'E-postayı değiştirme yakında gelecek.';
+
+  @override
+  String get businessFirstRecord => 'İlk kayıt';
+
+  @override
+  String businessFirstRecordValue(String date, int season) {
+    return '$date · $season. sezon';
+  }
+
+  @override
+  String get businessSettingsShortcut => 'Dil, birim, tema ve veri ayarları';
+
+  @override
+  String get businessNameLabel => 'İşletme adı';
+
+  @override
+  String get businessFullNameLabel => 'Ad soyad';
+
+  @override
+  String get businessFullNameHelp => 'Ekipte bu adla görünürsün.';
+
+  @override
+  String get businessAvatarLabel => 'Avatar';
+
+  @override
+  String get businessAvatarHelp =>
+      'Logo yoksa baş harfler seçtiğin renkte görünür.';
+
+  @override
+  String get businessAvatarPine => 'Çam';
+
+  @override
+  String get businessAvatarHoney => 'Bal';
+
+  @override
+  String get businessAvatarSky => 'Gök';
+
+  @override
+  String get businessAvatarSlate => 'Arduvaz';
+
+  @override
+  String get businessLogoUpload => 'Logo yükle';
+
+  @override
+  String get businessLogoRemove => 'Logoyu kaldır';
+
+  @override
+  String get businessDiscardTitle => 'Değişiklikler atılsın mı?';
+
+  @override
+  String get businessDiscardMessage =>
+      'Kaydetmediğin değişiklikler kaybolacak.';
+
+  @override
+  String get businessDiscardAction => 'At';
+
+  @override
+  String get businessTypeConfirmTitle => 'Sabit işletmeye geçilsin mi?';
+
+  @override
+  String businessTypeConfirmMessage(int plans, int stops) {
+    return '$plans göç planı ve $stops durak kaydı gizlenecek. Kayıtlar silinmez, geri alabilirsin.';
+  }
+
+  @override
+  String get businessTypeConfirmAction => 'Sabite geç';
+
+  @override
+  String get businessReadOnly =>
+      'İşletme bilgilerini yalnız sahip ve ortak değiştirebilir.';
+
+  @override
+  String get financeOtherCurrencies => 'Diğer para birimleri';
+
+  @override
+  String financeOtherCurrencyLine(String currency, String amount) {
+    return '$currency · net $amount';
+  }
+
+  @override
+  String get migratoryHiddenTitle => 'Gezginci modülü kapalı';
+
+  @override
+  String get migratoryHiddenMessage =>
+      'İşletme türü sabit. Göç planların ve taşımaların silinmedi; türü Gezginci yaparsan geri gelir.';
+
+  @override
+  String get onboardingMigratoryTitle => 'Gezginci arıcılık yapıyor musun?';
+
+  @override
+  String get onboardingMigratoryMessage =>
+      'Sabitse göç planı ve taşıma gizlenir; İşletme profilinden değiştirebilirsin.';
+
+  @override
+  String get onboardingMigratoryYes => 'Evet';
+
+  @override
+  String get onboardingMigratoryNo => 'Hayır, sabit';
 }

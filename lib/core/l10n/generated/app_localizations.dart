@@ -11714,6 +11714,384 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Description'**
   String get exportColDescription;
+
+  /// No description provided for @businessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get businessTitle;
+
+  /// No description provided for @businessEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get businessEdit;
+
+  /// No description provided for @businessEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit business'**
+  String get businessEditTitle;
+
+  /// No description provided for @businessCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get businessCancel;
+
+  /// No description provided for @businessSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get businessSave;
+
+  /// No description provided for @businessSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save; the business isn\'t on this phone yet.'**
+  String get businessSaveError;
+
+  /// No description provided for @businessMissingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No business details'**
+  String get businessMissingTitle;
+
+  /// No description provided for @businessMissingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They\'ll appear here once the business reaches this phone.'**
+  String get businessMissingMessage;
+
+  /// No description provided for @businessPersonRole.
+  ///
+  /// In en, this message translates to:
+  /// **'{person} · {role}'**
+  String businessPersonRole(String person, String role);
+
+  /// No description provided for @businessDetailSeparator.
+  ///
+  /// In en, this message translates to:
+  /// **' · '**
+  String get businessDetailSeparator;
+
+  /// No description provided for @businessRegionBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{country} · {profile}'**
+  String businessRegionBadge(String country, String profile);
+
+  /// No description provided for @businessRegionTr.
+  ///
+  /// In en, this message translates to:
+  /// **'TR profile'**
+  String get businessRegionTr;
+
+  /// No description provided for @businessRegionOther.
+  ///
+  /// In en, this message translates to:
+  /// **'General profile'**
+  String get businessRegionOther;
+
+  /// No description provided for @businessPendingSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Not synced yet'**
+  String get businessPendingSync;
+
+  /// No description provided for @businessCountHives.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{hive} other{hives}}'**
+  String businessCountHives(int count);
+
+  /// No description provided for @businessCountApiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{apiary} other{apiaries}}'**
+  String businessCountApiaries(int count);
+
+  /// No description provided for @businessCountInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{inspection} other{inspections}}'**
+  String businessCountInspections(int count);
+
+  /// No description provided for @businessSectionBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get businessSectionBusiness;
+
+  /// No description provided for @businessSectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get businessSectionAccount;
+
+  /// No description provided for @businessType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get businessType;
+
+  /// No description provided for @businessTypeMigratory.
+  ///
+  /// In en, this message translates to:
+  /// **'Migratory'**
+  String get businessTypeMigratory;
+
+  /// No description provided for @businessTypeStationary.
+  ///
+  /// In en, this message translates to:
+  /// **'Stationary'**
+  String get businessTypeStationary;
+
+  /// No description provided for @businessTypeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Stationary hides migration plans and moves; records aren\'t deleted.'**
+  String get businessTypeHelp;
+
+  /// No description provided for @businessCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get businessCurrency;
+
+  /// No description provided for @businessCurrencyValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{symbol} {code}'**
+  String businessCurrencyValue(String symbol, String code);
+
+  /// No description provided for @businessCurrencyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Past records aren\'t converted; the new currency applies only to records from now on.'**
+  String get businessCurrencyNote;
+
+  /// No description provided for @businessTeamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Team · 1 person} other{Team · {count} people}}'**
+  String businessTeamTitle(int count);
+
+  /// No description provided for @businessTeamSolo.
+  ///
+  /// In en, this message translates to:
+  /// **'No team members yet'**
+  String get businessTeamSolo;
+
+  /// No description provided for @businessRoleCountOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 owner} other{{count} owners}}'**
+  String businessRoleCountOwner(int count);
+
+  /// No description provided for @businessRoleCountPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 partner} other{{count} partners}}'**
+  String businessRoleCountPartner(int count);
+
+  /// No description provided for @businessRoleCountWorker.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 worker} other{{count} workers}}'**
+  String businessRoleCountWorker(int count);
+
+  /// No description provided for @businessRoleCountViewer.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 advisor} other{{count} advisors}}'**
+  String businessRoleCountViewer(int count);
+
+  /// No description provided for @businessEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in email'**
+  String get businessEmail;
+
+  /// No description provided for @businessEmailSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing your email is coming soon.'**
+  String get businessEmailSoon;
+
+  /// No description provided for @businessFirstRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'First record'**
+  String get businessFirstRecord;
+
+  /// No description provided for @businessFirstRecordValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · season {season}'**
+  String businessFirstRecordValue(String date, int season);
+
+  /// No description provided for @businessSettingsShortcut.
+  ///
+  /// In en, this message translates to:
+  /// **'Language, units, theme and data settings'**
+  String get businessSettingsShortcut;
+
+  /// No description provided for @businessNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business name'**
+  String get businessNameLabel;
+
+  /// No description provided for @businessFullNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get businessFullNameLabel;
+
+  /// No description provided for @businessFullNameHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Your team sees you by this name.'**
+  String get businessFullNameHelp;
+
+  /// No description provided for @businessAvatarLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get businessAvatarLabel;
+
+  /// No description provided for @businessAvatarHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Without a logo, your initials appear in the color you pick.'**
+  String get businessAvatarHelp;
+
+  /// No description provided for @businessAvatarPine.
+  ///
+  /// In en, this message translates to:
+  /// **'Pine'**
+  String get businessAvatarPine;
+
+  /// No description provided for @businessAvatarHoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey'**
+  String get businessAvatarHoney;
+
+  /// No description provided for @businessAvatarSky.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky'**
+  String get businessAvatarSky;
+
+  /// No description provided for @businessAvatarSlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Slate'**
+  String get businessAvatarSlate;
+
+  /// No description provided for @businessLogoUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload logo'**
+  String get businessLogoUpload;
+
+  /// No description provided for @businessLogoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove logo'**
+  String get businessLogoRemove;
+
+  /// No description provided for @businessDiscardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get businessDiscardTitle;
+
+  /// No description provided for @businessDiscardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your unsaved changes will be lost.'**
+  String get businessDiscardMessage;
+
+  /// No description provided for @businessDiscardAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get businessDiscardAction;
+
+  /// No description provided for @businessTypeConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to stationary?'**
+  String get businessTypeConfirmTitle;
+
+  /// No description provided for @businessTypeConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{plans, plural, =1{1 migration plan} other{{plans} migration plans}} and {stops, plural, =1{1 stop} other{{stops} stops}} will be hidden. Records aren\'t deleted; you can undo this.'**
+  String businessTypeConfirmMessage(int plans, int stops);
+
+  /// No description provided for @businessTypeConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch'**
+  String get businessTypeConfirmAction;
+
+  /// No description provided for @businessReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the owner and partners can change business details.'**
+  String get businessReadOnly;
+
+  /// No description provided for @financeOtherCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Other currencies'**
+  String get financeOtherCurrencies;
+
+  /// No description provided for @financeOtherCurrencyLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{currency} · net {amount}'**
+  String financeOtherCurrencyLine(String currency, String amount);
+
+  /// No description provided for @migratoryHiddenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Migratory module is off'**
+  String get migratoryHiddenTitle;
+
+  /// No description provided for @migratoryHiddenMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your business is stationary. Migration plans and moves aren\'t deleted; they come back if you switch to migratory.'**
+  String get migratoryHiddenMessage;
+
+  /// No description provided for @onboardingMigratoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you move your hives (migratory)?'**
+  String get onboardingMigratoryTitle;
+
+  /// No description provided for @onboardingMigratoryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'If not, migration plans and moves are hidden; change it anytime in the business profile.'**
+  String get onboardingMigratoryMessage;
+
+  /// No description provided for @onboardingMigratoryYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get onboardingMigratoryYes;
+
+  /// No description provided for @onboardingMigratoryNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No, stationary'**
+  String get onboardingMigratoryNo;
 }
 
 class _AppLocalizationsDelegate

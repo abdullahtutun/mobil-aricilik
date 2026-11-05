@@ -102,7 +102,9 @@ class _OnboardingFlow extends ConsumerWidget {
       },
       child: Scaffold(
         body: BottomActionLayout(
+          // Her adım baştan açılır; önceki adımın kaydırma konumu taşınmaz.
           body: ListView(
+            key: ValueKey(state.step),
             padding: EdgeInsets.all(spacing.lg),
             children: [
               OnboardingStepper(

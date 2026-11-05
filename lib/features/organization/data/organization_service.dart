@@ -19,7 +19,8 @@ class SupabaseOrganizationService implements OrganizationService {
 
   final SupabaseClient _client;
 
-  static const _columns = 'id, name, country_code, currency, hive_count_range';
+  static const _columns =
+      'id, name, country_code, currency, hive_count_range, operation_type';
 
   @override
   Future<Organization?> fetchCurrent() async {
@@ -48,6 +49,7 @@ class SupabaseOrganizationService implements OrganizationService {
           'country_code': organization.countryCode,
           'currency': organization.currency,
           'hive_count_range': organization.hiveCountRange?.value,
+          'operation_type': organization.operationType.value,
         },
       ),
     );

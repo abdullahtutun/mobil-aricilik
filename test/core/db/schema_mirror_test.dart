@@ -175,6 +175,8 @@ void main() {
       'transaction_kind': values(TransactionKind.values),
       'transaction_category': values(TransactionCategory.values),
       'hive_loss_reason': values(HiveLossReason.values),
+      'operation_type': values(OperationType.values),
+      'org_avatar_color': values(OrgAvatarColor.values),
     };
 
     expect(local, server.enums);

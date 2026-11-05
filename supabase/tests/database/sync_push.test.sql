@@ -360,12 +360,13 @@ select results_eq(
 
 -- Diğer redler
 
--- 17: kendini owner yapmaya çalışan üyelik. 18: bilinmeyen kovan tipi.
+-- 17: senkronla yazılamayan tablo (davetler; üyeliğin yalnız adı yazılır,
+-- rolü yok sayılır: business_profile.test.sql). 18: bilinmeyen kovan tipi.
 -- 19: boylamsız konum.
 select results_eq(
   $$select * from pg_temp.outcomes(public.sync_push(
       jsonb_build_array(
-        jsonb_build_object('id', 17, 'table', 'memberships', 'operation', 'upsert',
+        jsonb_build_object('id', 17, 'table', 'invites', 'operation', 'upsert',
           'payload', jsonb_build_object(
             'id', 'c0000000-0000-0000-0000-000000000003',
             'org_id', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',

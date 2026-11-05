@@ -199,6 +199,22 @@ void main() {
       expect(find.text('I have a code'), findsNothing);
     });
 
+    testWidgets('"Hayır, sabit" işletme türü olarak kurulumla gider', (
+      tester,
+    ) async {
+      final service = FakeOrganizationService();
+      await _pumpApp(tester, service: service);
+
+      await _continue(tester);
+      await tester.enterText(_nameField(), 'Golden Comb');
+      await _tap(tester, find.text('None yet'));
+      expect(find.text('DO YOU MOVE YOUR HIVES (MIGRATORY)?'), findsOneWidget);
+      await _tap(tester, find.text('No, stationary'));
+      await _tap(tester, find.text('Set up business'));
+
+      expect(service.created.single.operationType, OperationType.stationary);
+    });
+
     testWidgets('iki adım tamamlanınca işletme kurulur, ilk arılık açılır', (
       tester,
     ) async {
@@ -233,6 +249,7 @@ void main() {
           countryCode: 'DE',
           currency: 'EUR',
           hiveCountRange: HiveCountRange.upTo50,
+          // Varsayılan: gezginci.
         ),
       );
       expect(created.id, matches(RegExp('^[0-9a-f-]{14}7')));

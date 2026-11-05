@@ -1,4 +1,5 @@
--- organizations RLS: üye olmayan göremez, owner dışında kimse güncelleyemez.
+-- organizations RLS: üye olmayan göremez, owner ve partner dışında kimse
+-- güncelleyemez.
 begin;
 create extension if not exists pgtap with schema extensions;
 select plan(9);
@@ -65,9 +66,11 @@ select throws_ok(
 -- Partner
 set local request.jwt.claims = '{"sub": "22222222-2222-2222-2222-222222222222"}';
 
-select is_empty(
-  $$update public.organizations set name = 'Partner adı' returning id$$,
-  'partner işletmeyi güncelleyemez'
+select results_eq(
+  $$update public.organizations set operation_type = 'stationary'
+    returning operation_type::text$$,
+  $$values ('stationary')$$,
+  'partner işletmeyi günceller'
 );
 
 -- Owner

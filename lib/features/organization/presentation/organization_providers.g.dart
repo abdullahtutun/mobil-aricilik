@@ -152,7 +152,7 @@ final class CurrentOrganizationProvider
 }
 
 String _$currentOrganizationHash() =>
-    r'ecbbcd68d2590f309afd0a3363cf8eb8852ba359';
+    r'180da058827cd735bad8f4bb0e3d5aa33c2b9346';
 
 /// Oturumdaki kullanıcının işletmesi; null ise işletmesi yok ve onboarding
 /// açılır.
@@ -323,6 +323,109 @@ final class MembershipRepositoryProvider
 
 String _$membershipRepositoryHash() =>
     r'6e035224bba38334ffb356a8cfb29fdea350752f';
+
+/// Oturumdaki işletmenin yerel satırındaki profil (ad, tür, para birimi,
+/// avatar, logo); işletme yoksa ya da satır henüz inmemişse null.
+
+@ProviderFor(localOrganizationProfile)
+final localOrganizationProfileProvider = LocalOrganizationProfileProvider._();
+
+/// Oturumdaki işletmenin yerel satırındaki profil (ad, tür, para birimi,
+/// avatar, logo); işletme yoksa ya da satır henüz inmemişse null.
+
+final class LocalOrganizationProfileProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<OrganizationProfile?>,
+          OrganizationProfile?,
+          Stream<OrganizationProfile?>
+        >
+    with
+        $FutureModifier<OrganizationProfile?>,
+        $StreamProvider<OrganizationProfile?> {
+  /// Oturumdaki işletmenin yerel satırındaki profil (ad, tür, para birimi,
+  /// avatar, logo); işletme yoksa ya da satır henüz inmemişse null.
+  LocalOrganizationProfileProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'localOrganizationProfileProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$localOrganizationProfileHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<OrganizationProfile?> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<OrganizationProfile?> create(Ref ref) {
+    return localOrganizationProfile(ref);
+  }
+}
+
+String _$localOrganizationProfileHash() =>
+    r'5f49b00228139740de536aee5de388d2a3a958f7';
+
+/// İşletmenin para birimi: yerel satırdaki (profilde değişince hemen),
+/// satır inmemişse cihazdaki işletme kopyasındaki. Yeni kayıtlar bununla
+/// yazılır; eski kayıtlar kendi para birimini taşır.
+
+@ProviderFor(organizationCurrency)
+final organizationCurrencyProvider = OrganizationCurrencyProvider._();
+
+/// İşletmenin para birimi: yerel satırdaki (profilde değişince hemen),
+/// satır inmemişse cihazdaki işletme kopyasındaki. Yeni kayıtlar bununla
+/// yazılır; eski kayıtlar kendi para birimini taşır.
+
+final class OrganizationCurrencyProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  /// İşletmenin para birimi: yerel satırdaki (profilde değişince hemen),
+  /// satır inmemişse cihazdaki işletme kopyasındaki. Yeni kayıtlar bununla
+  /// yazılır; eski kayıtlar kendi para birimini taşır.
+  OrganizationCurrencyProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'organizationCurrencyProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$organizationCurrencyHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return organizationCurrency(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$organizationCurrencyHash() =>
+    r'fb46fce35a5cf22af877fad089b8742a41e4a7c8';
 
 /// Oturumdaki işletmenin üyeleri (görev atama); işletme yoksa boş.
 

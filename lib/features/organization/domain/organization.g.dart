@@ -16,6 +16,9 @@ _Organization _$OrganizationFromJson(Map<String, dynamic> json) =>
         _$HiveCountRangeEnumMap,
         json['hive_count_range'],
       ),
+      operationType:
+          $enumDecodeNullable(_$OperationTypeEnumMap, json['operation_type']) ??
+          OperationType.migratory,
     );
 
 Map<String, dynamic> _$OrganizationToJson(_Organization instance) =>
@@ -25,6 +28,7 @@ Map<String, dynamic> _$OrganizationToJson(_Organization instance) =>
       'country_code': instance.countryCode,
       'currency': instance.currency,
       'hive_count_range': _$HiveCountRangeEnumMap[instance.hiveCountRange],
+      'operation_type': _$OperationTypeEnumMap[instance.operationType]!,
     };
 
 const _$HiveCountRangeEnumMap = {
@@ -33,4 +37,9 @@ const _$HiveCountRangeEnumMap = {
   HiveCountRange.upTo50: 'up_to_50',
   HiveCountRange.upTo200: 'up_to_200',
   HiveCountRange.over200: 'over_200',
+};
+
+const _$OperationTypeEnumMap = {
+  OperationType.migratory: 'migratory',
+  OperationType.stationary: 'stationary',
 };

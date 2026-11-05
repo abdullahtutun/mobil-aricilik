@@ -171,6 +171,10 @@ abstract final class AppRoutes {
   /// Ekip: üyeler ve davet; Daha fazla'dan açılır.
   static const team = '/more/team';
 
+  /// İşletme profili ve düzenlemesi; Daha fazla'daki işletme kartından.
+  static const business = '/more/business';
+  static const businessEdit = '/more/business/edit';
+
   /// "Görüş bildir"; Daha fazla'dan açılır.
   static const feedback = '/more/feedback';
 

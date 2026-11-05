@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:clock/clock.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'
-    show ProviderListenableSelect;
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/services/receipt_file_store_provider.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
@@ -51,14 +49,10 @@ Stream<List<TransportChoice>> transportChoices(Ref ref) {
   return ref.watch(transactionRepositoryProvider).watchTransportChoices(orgId);
 }
 
-/// İşletmenin para birimi; hareketler bununla yazılır. İşletme henüz
-/// yüklenmediyse null.
+/// İşletmenin para birimi; yeni hareketler bununla yazılır, eskiler kendi
+/// para birimini taşır. İşletme henüz yüklenmediyse null.
 @riverpod
-String? financeCurrency(Ref ref) => ref.watch(
-  currentOrganizationProvider.select(
-    (organization) => organization.value?.currency,
-  ),
-);
+String? financeCurrency(Ref ref) => ref.watch(organizationCurrencyProvider);
 
 /// Bu sezonun (takvim yılı) özeti: işletmenin para birimindeki gelir,
 /// gider, net ve aktif kovan başı maliyet.
@@ -74,6 +68,19 @@ Future<SeasonSummary?> financeSeason(Ref ref) async {
     currency: currency,
     activeHives: apiaries.fold(0, (sum, item) => sum + item.activeHiveCount),
   );
+}
+
+/// Bu sezonun işletmenin para birimi dışındaki hareketleri, para birimine
+/// göre ayrı özetler (para birimi değişmeden önceki kayıtlar
+/// dönüştürülmez); yoksa boş.
+@riverpod
+Future<Map<String, SeasonSummary>> financeOtherCurrencies(Ref ref) async {
+  final currency = ref.watch(financeCurrencyProvider);
+  if (currency == null) return const {};
+  final rows = await ref.watch(transactionRowsProvider.future);
+  return seasonSummariesByCurrency([
+    for (final row in rows) row.transaction,
+  ], year: clock.now().year)..remove(currency);
 }
 
 /// Bu sezonun konaklama noktası (arılık) kârları, büyük net önce

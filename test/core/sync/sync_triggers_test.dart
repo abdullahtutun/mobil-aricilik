@@ -38,6 +38,10 @@ class _FakeSyncRepository implements SyncRepository {
   Stream<Map<String, int>> watchPendingByTable() => throw UnimplementedError();
 
   @override
+  Stream<bool> watchAnyPending(List<(String, String)> records) =>
+      throw UnimplementedError();
+
+  @override
   Stream<DateTime?> watchOldestPendingAt() => throw UnimplementedError();
 
   @override

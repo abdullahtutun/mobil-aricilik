@@ -5,7 +5,8 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_controller.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 
-/// İkinci adım: işletme adı ve yaklaşık kovan sayısı (kovan oluşturmaz).
+/// İkinci adım: işletme adı, yaklaşık kovan sayısı (kovan oluşturmaz) ve
+/// gezginci mi sabit mi (işletme profilindeki türle aynı alan).
 class BusinessStep extends ConsumerStatefulWidget {
   const new({super.key});
 
@@ -32,6 +33,9 @@ class _BusinessStepState extends ConsumerState<BusinessStep> {
     final controller = ref.read(onboardingControllerProvider.notifier);
     final range = ref.watch(
       onboardingControllerProvider.select((state) => state.hiveCountRange),
+    );
+    final operationType = ref.watch(
+      onboardingControllerProvider.select((state) => state.operationType),
     );
 
     return Column(
@@ -74,6 +78,32 @@ class _BusinessStepState extends ConsumerState<BusinessStep> {
             selected: {?range},
             onChanged: (ranges) =>
                 controller.selectHiveCountRange(ranges.singleOrNull),
+          ),
+        ),
+        SizedBox(height: spacing.xl),
+        LabeledField(
+          label: l10n.onboardingMigratoryTitle,
+          group: true,
+          helper: l10n.onboardingMigratoryMessage,
+          child: ChoiceChipGroup<OperationType>(
+            columns: 2,
+            options: [
+              ChoiceChipOption(
+                value: OperationType.migratory,
+                label: l10n.onboardingMigratoryYes,
+              ),
+              ChoiceChipOption(
+                value: OperationType.stationary,
+                label: l10n.onboardingMigratoryNo,
+              ),
+            ],
+            selected: {operationType},
+            // Tek seçim; seçili olana yeniden dokunmak seçimi kaldırmaz.
+            onChanged: (types) {
+              if (types.singleOrNull case final type?) {
+                controller.selectOperationType(type);
+              }
+            },
           ),
         ),
       ],

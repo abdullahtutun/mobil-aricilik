@@ -11,6 +11,7 @@ import 'package:mobil_arici/app/shell/more_screen.dart';
 import 'package:mobil_arici/app/shell/scan_screen.dart';
 import 'package:mobil_arici/app/sync/initial_sync_screen.dart';
 import 'package:mobil_arici/app/sync/sync_screen.dart';
+import 'package:mobil_arici/core/business/migratory_gate.dart';
 import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
@@ -83,6 +84,8 @@ import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_scre
 import 'package:mobil_arici/features/onboarding/presentation/first_apiary_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:mobil_arici/features/onboarding/presentation/setup_in_progress.dart';
+import 'package:mobil_arici/features/organization/presentation/business_profile_edit_screen.dart';
+import 'package:mobil_arici/features/organization/presentation/business_profile_screen.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/queens/presentation/old_queens_screen.dart';
 import 'package:mobil_arici/features/queens/presentation/queen_card_screen.dart';
@@ -486,6 +489,19 @@ GoRouter router(Ref ref) {
                     builder: (context, state) => const OldQueensScreen(),
                   ),
                   GoRoute(
+                    path: 'business',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) => const BusinessProfileScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'edit',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) =>
+                            const BusinessProfileEditScreen(),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
                     path: 'team',
                     parentNavigatorKey: rootNavigatorKey,
                     builder: (context, state) => const TeamScreen(),
@@ -795,65 +811,76 @@ GoRouter router(Ref ref) {
                   GoRoute(
                     path: 'migrations',
                     parentNavigatorKey: rootNavigatorKey,
-                    builder: (context, state) => const MigrationsScreen(),
+                    builder: (context, state) =>
+                        const MigratoryGate(child: MigrationsScreen()),
                     routes: [
                       // Sabit yollar `:id`'den önce.
                       GoRoute(
                         path: 'new',
                         parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) =>
-                            const MigrationFormScreen(),
+                            const MigratoryGate(child: MigrationFormScreen()),
                       ),
                       GoRoute(
                         path: ':$_migrationId',
                         parentNavigatorKey: rootNavigatorKey,
-                        builder: (context, state) => MigrationScreen(
-                          migrationId: state.pathParameters[_migrationId]!,
+                        builder: (context, state) => MigratoryGate(
+                          child: MigrationScreen(
+                            migrationId: state.pathParameters[_migrationId]!,
+                          ),
                         ),
                         routes: [
                           GoRoute(
                             path: 'edit',
                             parentNavigatorKey: rootNavigatorKey,
-                            builder: (context, state) => MigrationFormScreen(
-                              migrationId: state.pathParameters[_migrationId],
+                            builder: (context, state) => MigratoryGate(
+                              child: MigrationFormScreen(
+                                migrationId: state.pathParameters[_migrationId],
+                              ),
                             ),
                           ),
                           GoRoute(
                             path: 'move',
                             parentNavigatorKey: rootNavigatorKey,
-                            builder: (context, state) => MoveScreen(
-                              migrationId: state.pathParameters[_migrationId]!,
+                            builder: (context, state) => MigratoryGate(
+                              child: MoveScreen(
+                                migrationId:
+                                    state.pathParameters[_migrationId]!,
+                              ),
                             ),
                             routes: [
                               GoRoute(
                                 path: ':$_transportId/scan',
                                 parentNavigatorKey: rootNavigatorKey,
-                                builder: (context, state) =>
-                                    TransportScanScreen(
-                                      transportId:
-                                          state.pathParameters[_transportId]!,
-                                    ),
+                                builder: (context, state) => MigratoryGate(
+                                  child: TransportScanScreen(
+                                    transportId:
+                                        state.pathParameters[_transportId]!,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                           GoRoute(
                             path: 'stops/new',
                             parentNavigatorKey: rootNavigatorKey,
-                            builder: (context, state) =>
-                                MigrationStopFormScreen(
-                                  migrationId:
-                                      state.pathParameters[_migrationId]!,
-                                ),
+                            builder: (context, state) => MigratoryGate(
+                              child: MigrationStopFormScreen(
+                                migrationId:
+                                    state.pathParameters[_migrationId]!,
+                              ),
+                            ),
                           ),
                           GoRoute(
                             path: 'stops/:$_stopId/edit',
                             parentNavigatorKey: rootNavigatorKey,
-                            builder: (context, state) =>
-                                MigrationStopFormScreen(
-                                  migrationId:
-                                      state.pathParameters[_migrationId]!,
-                                  stopId: state.pathParameters[_stopId],
-                                ),
+                            builder: (context, state) => MigratoryGate(
+                              child: MigrationStopFormScreen(
+                                migrationId:
+                                    state.pathParameters[_migrationId]!,
+                                stopId: state.pathParameters[_stopId],
+                              ),
+                            ),
                           ),
                         ],
                       ),

@@ -1,4 +1,7 @@
 import 'package:clock/clock.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ProviderListenableSelect;
+import 'package:mobil_arici/core/business/business_provider.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/services/basemap_service_provider.dart';
 import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
@@ -50,7 +53,11 @@ class InstalledMapAreas extends _$InstalledMapAreas {
 @riverpod
 Stream<List<MigrationStop>> upcomingMigrationStops(Ref ref) {
   final orgId = ref.watch(currentOrgIdProvider);
-  if (orgId == null) return Stream.value(const []);
+  // Sabit işletmede göç durakları gösterilmez (kayıtlar silinmez).
+  final migratory = ref.watch(
+    businessConfigProvider.select((config) => config.features.migratory),
+  );
+  if (orgId == null || !migratory) return Stream.value(const []);
   return ref.watch(migrationRepositoryProvider).stops.watchUpcomingByOrg(orgId);
 }
 

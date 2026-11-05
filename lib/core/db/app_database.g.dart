@@ -150,6 +150,36 @@ class $OrganizationsTable extends Organizations
     requiredDuringInsert: false,
   );
   @override
+  late final GeneratedColumnWithTypeConverter<OperationType, String>
+  operationType = GeneratedColumn<String>(
+    'operation_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: Constant(OperationType.migratory.value),
+  ).withConverter<OperationType>($OrganizationsTable.$converteroperationType);
+  @override
+  late final GeneratedColumnWithTypeConverter<OrgAvatarColor?, String>
+  avatarColor = GeneratedColumn<String>(
+    'avatar_color',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<OrgAvatarColor?>($OrganizationsTable.$converteravatarColorn);
+  static const VerificationMeta _logoPathMeta = const VerificationMeta(
+    'logoPath',
+  );
+  @override
+  late final GeneratedColumn<String> logoPath = GeneratedColumn<String>(
+    'logo_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     createdAt,
@@ -164,6 +194,9 @@ class $OrganizationsTable extends Organizations
     trAksNo,
     hiveCountRange,
     trAksHiveCount,
+    operationType,
+    avatarColor,
+    logoPath,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -267,6 +300,12 @@ class $OrganizationsTable extends Organizations
         ),
       );
     }
+    if (data.containsKey('logo_path')) {
+      context.handle(
+        _logoPathMeta,
+        logoPath.isAcceptableOrUnknown(data['logo_path']!, _logoPathMeta),
+      );
+    }
     return context;
   }
 
@@ -330,6 +369,22 @@ class $OrganizationsTable extends Organizations
         DriftSqlType.int,
         data['${effectivePrefix}tr_aks_hive_count'],
       ),
+      operationType: $OrganizationsTable.$converteroperationType.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}operation_type'],
+        )!,
+      ),
+      avatarColor: $OrganizationsTable.$converteravatarColorn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}avatar_color'],
+        ),
+      ),
+      logoPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}logo_path'],
+      ),
     );
   }
 
@@ -342,6 +397,12 @@ class $OrganizationsTable extends Organizations
       const ServerEnumConverter(HiveCountRange.values);
   static TypeConverter<HiveCountRange?, String?> $converterhiveCountRangen =
       NullAwareTypeConverter.wrap($converterhiveCountRange);
+  static TypeConverter<OperationType, String> $converteroperationType =
+      const ServerEnumConverter(OperationType.values);
+  static TypeConverter<OrgAvatarColor, String> $converteravatarColor =
+      const ServerEnumConverter(OrgAvatarColor.values);
+  static TypeConverter<OrgAvatarColor?, String?> $converteravatarColorn =
+      NullAwareTypeConverter.wrap($converteravatarColor);
 }
 
 class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
@@ -376,6 +437,13 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
   /// AKS'de beyan edilen kovan sayısı; başvuru öncesi kontrol bunu aktif
   /// kovan sayısıyla karşılaştırır. Owner girer.
   final int? trAksHiveCount;
+
+  /// Gezginci ya da sabit; sabitte gezginci modülleri gizlenir.
+  final OperationType operationType;
+  final OrgAvatarColor? avatarColor;
+
+  /// `org-logos` bucket'ındaki yol (`org_id/uuid.jpg`); logo yoksa boş.
+  final String? logoPath;
   const OrganizationRow({
     required this.id,
     required this.createdAt,
@@ -390,6 +458,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     this.trAksNo,
     this.hiveCountRange,
     this.trAksHiveCount,
+    required this.operationType,
+    this.avatarColor,
+    this.logoPath,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -423,6 +494,19 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     if (!nullToAbsent || trAksHiveCount != null) {
       map['tr_aks_hive_count'] = Variable<int>(trAksHiveCount);
     }
+    {
+      map['operation_type'] = Variable<String>(
+        $OrganizationsTable.$converteroperationType.toSql(operationType),
+      );
+    }
+    if (!nullToAbsent || avatarColor != null) {
+      map['avatar_color'] = Variable<String>(
+        $OrganizationsTable.$converteravatarColorn.toSql(avatarColor),
+      );
+    }
+    if (!nullToAbsent || logoPath != null) {
+      map['logo_path'] = Variable<String>(logoPath);
+    }
     return map;
   }
 
@@ -455,6 +539,13 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
       trAksHiveCount: trAksHiveCount == null && nullToAbsent
           ? const Value.absent()
           : Value(trAksHiveCount),
+      operationType: Value(operationType),
+      avatarColor: avatarColor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(avatarColor),
+      logoPath: logoPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(logoPath),
     );
   }
 
@@ -479,6 +570,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
         json['hiveCountRange'],
       ),
       trAksHiveCount: serializer.fromJson<int?>(json['trAksHiveCount']),
+      operationType: serializer.fromJson<OperationType>(json['operationType']),
+      avatarColor: serializer.fromJson<OrgAvatarColor?>(json['avatarColor']),
+      logoPath: serializer.fromJson<String?>(json['logoPath']),
     );
   }
   @override
@@ -498,6 +592,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
       'trAksNo': serializer.toJson<String?>(trAksNo),
       'hiveCountRange': serializer.toJson<HiveCountRange?>(hiveCountRange),
       'trAksHiveCount': serializer.toJson<int?>(trAksHiveCount),
+      'operationType': serializer.toJson<OperationType>(operationType),
+      'avatarColor': serializer.toJson<OrgAvatarColor?>(avatarColor),
+      'logoPath': serializer.toJson<String?>(logoPath),
     };
   }
 
@@ -515,6 +612,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     Value<String?> trAksNo = const Value.absent(),
     Value<HiveCountRange?> hiveCountRange = const Value.absent(),
     Value<int?> trAksHiveCount = const Value.absent(),
+    OperationType? operationType,
+    Value<OrgAvatarColor?> avatarColor = const Value.absent(),
+    Value<String?> logoPath = const Value.absent(),
   }) => OrganizationRow(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -535,6 +635,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     trAksHiveCount: trAksHiveCount.present
         ? trAksHiveCount.value
         : this.trAksHiveCount,
+    operationType: operationType ?? this.operationType,
+    avatarColor: avatarColor.present ? avatarColor.value : this.avatarColor,
+    logoPath: logoPath.present ? logoPath.value : this.logoPath,
   );
   OrganizationRow copyWithCompanion(OrganizationsCompanion data) {
     return OrganizationRow(
@@ -559,6 +662,13 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
       trAksHiveCount: data.trAksHiveCount.present
           ? data.trAksHiveCount.value
           : this.trAksHiveCount,
+      operationType: data.operationType.present
+          ? data.operationType.value
+          : this.operationType,
+      avatarColor: data.avatarColor.present
+          ? data.avatarColor.value
+          : this.avatarColor,
+      logoPath: data.logoPath.present ? data.logoPath.value : this.logoPath,
     );
   }
 
@@ -577,7 +687,10 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
           ..write('trRegistrationNo: $trRegistrationNo, ')
           ..write('trAksNo: $trAksNo, ')
           ..write('hiveCountRange: $hiveCountRange, ')
-          ..write('trAksHiveCount: $trAksHiveCount')
+          ..write('trAksHiveCount: $trAksHiveCount, ')
+          ..write('operationType: $operationType, ')
+          ..write('avatarColor: $avatarColor, ')
+          ..write('logoPath: $logoPath')
           ..write(')'))
         .toString();
   }
@@ -597,6 +710,9 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
     trAksNo,
     hiveCountRange,
     trAksHiveCount,
+    operationType,
+    avatarColor,
+    logoPath,
   );
   @override
   bool operator ==(Object other) =>
@@ -614,7 +730,10 @@ class OrganizationRow extends DataClass implements Insertable<OrganizationRow> {
           other.trRegistrationNo == this.trRegistrationNo &&
           other.trAksNo == this.trAksNo &&
           other.hiveCountRange == this.hiveCountRange &&
-          other.trAksHiveCount == this.trAksHiveCount);
+          other.trAksHiveCount == this.trAksHiveCount &&
+          other.operationType == this.operationType &&
+          other.avatarColor == this.avatarColor &&
+          other.logoPath == this.logoPath);
 }
 
 class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
@@ -631,6 +750,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
   final Value<String?> trAksNo;
   final Value<HiveCountRange?> hiveCountRange;
   final Value<int?> trAksHiveCount;
+  final Value<OperationType> operationType;
+  final Value<OrgAvatarColor?> avatarColor;
+  final Value<String?> logoPath;
   final Value<int> rowid;
   const OrganizationsCompanion({
     this.id = const Value.absent(),
@@ -646,6 +768,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     this.trAksNo = const Value.absent(),
     this.hiveCountRange = const Value.absent(),
     this.trAksHiveCount = const Value.absent(),
+    this.operationType = const Value.absent(),
+    this.avatarColor = const Value.absent(),
+    this.logoPath = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   OrganizationsCompanion.insert({
@@ -662,6 +787,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     this.trAksNo = const Value.absent(),
     this.hiveCountRange = const Value.absent(),
     this.trAksHiveCount = const Value.absent(),
+    this.operationType = const Value.absent(),
+    this.avatarColor = const Value.absent(),
+    this.logoPath = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -683,6 +811,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     Expression<String>? trAksNo,
     Expression<String>? hiveCountRange,
     Expression<int>? trAksHiveCount,
+    Expression<String>? operationType,
+    Expression<String>? avatarColor,
+    Expression<String>? logoPath,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -699,6 +830,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
       if (trAksNo != null) 'tr_aks_no': trAksNo,
       if (hiveCountRange != null) 'hive_count_range': hiveCountRange,
       if (trAksHiveCount != null) 'tr_aks_hive_count': trAksHiveCount,
+      if (operationType != null) 'operation_type': operationType,
+      if (avatarColor != null) 'avatar_color': avatarColor,
+      if (logoPath != null) 'logo_path': logoPath,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -717,6 +851,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     Value<String?>? trAksNo,
     Value<HiveCountRange?>? hiveCountRange,
     Value<int?>? trAksHiveCount,
+    Value<OperationType>? operationType,
+    Value<OrgAvatarColor?>? avatarColor,
+    Value<String?>? logoPath,
     Value<int>? rowid,
   }) {
     return OrganizationsCompanion(
@@ -733,6 +870,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
       trAksNo: trAksNo ?? this.trAksNo,
       hiveCountRange: hiveCountRange ?? this.hiveCountRange,
       trAksHiveCount: trAksHiveCount ?? this.trAksHiveCount,
+      operationType: operationType ?? this.operationType,
+      avatarColor: avatarColor ?? this.avatarColor,
+      logoPath: logoPath ?? this.logoPath,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -783,6 +923,19 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
     if (trAksHiveCount.present) {
       map['tr_aks_hive_count'] = Variable<int>(trAksHiveCount.value);
     }
+    if (operationType.present) {
+      map['operation_type'] = Variable<String>(
+        $OrganizationsTable.$converteroperationType.toSql(operationType.value),
+      );
+    }
+    if (avatarColor.present) {
+      map['avatar_color'] = Variable<String>(
+        $OrganizationsTable.$converteravatarColorn.toSql(avatarColor.value),
+      );
+    }
+    if (logoPath.present) {
+      map['logo_path'] = Variable<String>(logoPath.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -805,6 +958,9 @@ class OrganizationsCompanion extends UpdateCompanion<OrganizationRow> {
           ..write('trAksNo: $trAksNo, ')
           ..write('hiveCountRange: $hiveCountRange, ')
           ..write('trAksHiveCount: $trAksHiveCount, ')
+          ..write('operationType: $operationType, ')
+          ..write('avatarColor: $avatarColor, ')
+          ..write('logoPath: $logoPath, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -908,6 +1064,17 @@ class $MembershipsTable extends Memberships
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<MembershipRole>($MembershipsTable.$converterrole);
+  static const VerificationMeta _fullNameMeta = const VerificationMeta(
+    'fullName',
+  );
+  @override
+  late final GeneratedColumn<String> fullName = GeneratedColumn<String>(
+    'full_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -919,6 +1086,7 @@ class $MembershipsTable extends Memberships
     orgId,
     userId,
     role,
+    fullName,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -987,6 +1155,12 @@ class $MembershipsTable extends Memberships
     } else if (isInserting) {
       context.missing(_userIdMeta);
     }
+    if (data.containsKey('full_name')) {
+      context.handle(
+        _fullNameMeta,
+        fullName.isAcceptableOrUnknown(data['full_name']!, _fullNameMeta),
+      );
+    }
     return context;
   }
 
@@ -1034,6 +1208,10 @@ class $MembershipsTable extends Memberships
           data['${effectivePrefix}role'],
         )!,
       ),
+      fullName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}full_name'],
+      ),
     );
   }
 
@@ -1065,6 +1243,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
   final String orgId;
   final String userId;
   final MembershipRole role;
+
+  /// Üyenin adı soyadı; yalnız üyenin kendisi yazar.
+  final String? fullName;
   const MembershipRow({
     required this.id,
     required this.createdAt,
@@ -1075,6 +1256,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     required this.orgId,
     required this.userId,
     required this.role,
+    this.fullName,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1098,6 +1280,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
         $MembershipsTable.$converterrole.toSql(role),
       );
     }
+    if (!nullToAbsent || fullName != null) {
+      map['full_name'] = Variable<String>(fullName);
+    }
     return map;
   }
 
@@ -1118,6 +1303,9 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       orgId: Value(orgId),
       userId: Value(userId),
       role: Value(role),
+      fullName: fullName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fullName),
     );
   }
 
@@ -1136,6 +1324,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       orgId: serializer.fromJson<String>(json['orgId']),
       userId: serializer.fromJson<String>(json['userId']),
       role: serializer.fromJson<MembershipRole>(json['role']),
+      fullName: serializer.fromJson<String?>(json['fullName']),
     );
   }
   @override
@@ -1151,6 +1340,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       'orgId': serializer.toJson<String>(orgId),
       'userId': serializer.toJson<String>(userId),
       'role': serializer.toJson<MembershipRole>(role),
+      'fullName': serializer.toJson<String?>(fullName),
     };
   }
 
@@ -1164,6 +1354,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     String? orgId,
     String? userId,
     MembershipRole? role,
+    Value<String?> fullName = const Value.absent(),
   }) => MembershipRow(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -1174,6 +1365,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     orgId: orgId ?? this.orgId,
     userId: userId ?? this.userId,
     role: role ?? this.role,
+    fullName: fullName.present ? fullName.value : this.fullName,
   );
   MembershipRow copyWithCompanion(MembershipsCompanion data) {
     return MembershipRow(
@@ -1186,6 +1378,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       orgId: data.orgId.present ? data.orgId.value : this.orgId,
       userId: data.userId.present ? data.userId.value : this.userId,
       role: data.role.present ? data.role.value : this.role,
+      fullName: data.fullName.present ? data.fullName.value : this.fullName,
     );
   }
 
@@ -1200,7 +1393,8 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
           ..write('serverSeq: $serverSeq, ')
           ..write('orgId: $orgId, ')
           ..write('userId: $userId, ')
-          ..write('role: $role')
+          ..write('role: $role, ')
+          ..write('fullName: $fullName')
           ..write(')'))
         .toString();
   }
@@ -1216,6 +1410,7 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     orgId,
     userId,
     role,
+    fullName,
   );
   @override
   bool operator ==(Object other) =>
@@ -1229,7 +1424,8 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
           other.serverSeq == this.serverSeq &&
           other.orgId == this.orgId &&
           other.userId == this.userId &&
-          other.role == this.role);
+          other.role == this.role &&
+          other.fullName == this.fullName);
 }
 
 class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
@@ -1242,6 +1438,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
   final Value<String> orgId;
   final Value<String> userId;
   final Value<MembershipRole> role;
+  final Value<String?> fullName;
   final Value<int> rowid;
   const MembershipsCompanion({
     this.id = const Value.absent(),
@@ -1253,6 +1450,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     this.orgId = const Value.absent(),
     this.userId = const Value.absent(),
     this.role = const Value.absent(),
+    this.fullName = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   MembershipsCompanion.insert({
@@ -1265,6 +1463,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     required String orgId,
     required String userId,
     required MembershipRole role,
+    this.fullName = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -1282,6 +1481,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     Expression<String>? orgId,
     Expression<String>? userId,
     Expression<String>? role,
+    Expression<String>? fullName,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1294,6 +1494,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
       if (orgId != null) 'org_id': orgId,
       if (userId != null) 'user_id': userId,
       if (role != null) 'role': role,
+      if (fullName != null) 'full_name': fullName,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1308,6 +1509,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     Value<String>? orgId,
     Value<String>? userId,
     Value<MembershipRole>? role,
+    Value<String?>? fullName,
     Value<int>? rowid,
   }) {
     return MembershipsCompanion(
@@ -1320,6 +1522,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
       orgId: orgId ?? this.orgId,
       userId: userId ?? this.userId,
       role: role ?? this.role,
+      fullName: fullName ?? this.fullName,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1356,6 +1559,9 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
         $MembershipsTable.$converterrole.toSql(role.value),
       );
     }
+    if (fullName.present) {
+      map['full_name'] = Variable<String>(fullName.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1374,6 +1580,7 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
           ..write('orgId: $orgId, ')
           ..write('userId: $userId, ')
           ..write('role: $role, ')
+          ..write('fullName: $fullName, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -21108,6 +21315,497 @@ class ReceiptUploadsCompanion extends UpdateCompanion<ReceiptUpload> {
   }
 }
 
+class $LogoUploadsTable extends LogoUploads
+    with TableInfo<$LogoUploadsTable, LogoUpload> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LogoUploadsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _storagePathMeta = const VerificationMeta(
+    'storagePath',
+  );
+  @override
+  late final GeneratedColumn<String> storagePath = GeneratedColumn<String>(
+    'storage_path',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orgIdMeta = const VerificationMeta('orgId');
+  @override
+  late final GeneratedColumn<String> orgId = GeneratedColumn<String>(
+    'org_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<MediaUploadStatus, String>
+  uploadStatus = GeneratedColumn<String>(
+    'upload_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<MediaUploadStatus>($LogoUploadsTable.$converteruploadStatus);
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _nextAttemptAtMeta = const VerificationMeta(
+    'nextAttemptAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> nextAttemptAt =
+      GeneratedColumn<DateTime>(
+        'next_attempt_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
+  @override
+  late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
+    'last_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    storagePath,
+    orgId,
+    uploadStatus,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'logo_uploads';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LogoUpload> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('storage_path')) {
+      context.handle(
+        _storagePathMeta,
+        storagePath.isAcceptableOrUnknown(
+          data['storage_path']!,
+          _storagePathMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_storagePathMeta);
+    }
+    if (data.containsKey('org_id')) {
+      context.handle(
+        _orgIdMeta,
+        orgId.isAcceptableOrUnknown(data['org_id']!, _orgIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orgIdMeta);
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    }
+    if (data.containsKey('next_attempt_at')) {
+      context.handle(
+        _nextAttemptAtMeta,
+        nextAttemptAt.isAcceptableOrUnknown(
+          data['next_attempt_at']!,
+          _nextAttemptAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_error')) {
+      context.handle(
+        _lastErrorMeta,
+        lastError.isAcceptableOrUnknown(data['last_error']!, _lastErrorMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {storagePath};
+  @override
+  LogoUpload map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LogoUpload(
+      storagePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}storage_path'],
+      )!,
+      orgId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}org_id'],
+      )!,
+      uploadStatus: $LogoUploadsTable.$converteruploadStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}upload_status'],
+        )!,
+      ),
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      nextAttemptAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}next_attempt_at'],
+      ),
+      lastError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_error'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $LogoUploadsTable createAlias(String alias) {
+    return $LogoUploadsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<MediaUploadStatus, String, String>
+  $converteruploadStatus = const EnumNameConverter<MediaUploadStatus>(
+    MediaUploadStatus.values,
+  );
+}
+
+class LogoUpload extends DataClass implements Insertable<LogoUpload> {
+  final String storagePath;
+  final String orgId;
+  final MediaUploadStatus uploadStatus;
+  final int attempts;
+
+  /// Boşsa hemen denenir.
+  final DateTime? nextAttemptAt;
+  final String? lastError;
+  final DateTime createdAt;
+  const LogoUpload({
+    required this.storagePath,
+    required this.orgId,
+    required this.uploadStatus,
+    required this.attempts,
+    this.nextAttemptAt,
+    this.lastError,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['storage_path'] = Variable<String>(storagePath);
+    map['org_id'] = Variable<String>(orgId);
+    {
+      map['upload_status'] = Variable<String>(
+        $LogoUploadsTable.$converteruploadStatus.toSql(uploadStatus),
+      );
+    }
+    map['attempts'] = Variable<int>(attempts);
+    if (!nullToAbsent || nextAttemptAt != null) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt);
+    }
+    if (!nullToAbsent || lastError != null) {
+      map['last_error'] = Variable<String>(lastError);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  LogoUploadsCompanion toCompanion(bool nullToAbsent) {
+    return LogoUploadsCompanion(
+      storagePath: Value(storagePath),
+      orgId: Value(orgId),
+      uploadStatus: Value(uploadStatus),
+      attempts: Value(attempts),
+      nextAttemptAt: nextAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextAttemptAt),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory LogoUpload.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LogoUpload(
+      storagePath: serializer.fromJson<String>(json['storagePath']),
+      orgId: serializer.fromJson<String>(json['orgId']),
+      uploadStatus: $LogoUploadsTable.$converteruploadStatus.fromJson(
+        serializer.fromJson<String>(json['uploadStatus']),
+      ),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      nextAttemptAt: serializer.fromJson<DateTime?>(json['nextAttemptAt']),
+      lastError: serializer.fromJson<String?>(json['lastError']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'storagePath': serializer.toJson<String>(storagePath),
+      'orgId': serializer.toJson<String>(orgId),
+      'uploadStatus': serializer.toJson<String>(
+        $LogoUploadsTable.$converteruploadStatus.toJson(uploadStatus),
+      ),
+      'attempts': serializer.toJson<int>(attempts),
+      'nextAttemptAt': serializer.toJson<DateTime?>(nextAttemptAt),
+      'lastError': serializer.toJson<String?>(lastError),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  LogoUpload copyWith({
+    String? storagePath,
+    String? orgId,
+    MediaUploadStatus? uploadStatus,
+    int? attempts,
+    Value<DateTime?> nextAttemptAt = const Value.absent(),
+    Value<String?> lastError = const Value.absent(),
+    DateTime? createdAt,
+  }) => LogoUpload(
+    storagePath: storagePath ?? this.storagePath,
+    orgId: orgId ?? this.orgId,
+    uploadStatus: uploadStatus ?? this.uploadStatus,
+    attempts: attempts ?? this.attempts,
+    nextAttemptAt: nextAttemptAt.present
+        ? nextAttemptAt.value
+        : this.nextAttemptAt,
+    lastError: lastError.present ? lastError.value : this.lastError,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  LogoUpload copyWithCompanion(LogoUploadsCompanion data) {
+    return LogoUpload(
+      storagePath: data.storagePath.present
+          ? data.storagePath.value
+          : this.storagePath,
+      orgId: data.orgId.present ? data.orgId.value : this.orgId,
+      uploadStatus: data.uploadStatus.present
+          ? data.uploadStatus.value
+          : this.uploadStatus,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      nextAttemptAt: data.nextAttemptAt.present
+          ? data.nextAttemptAt.value
+          : this.nextAttemptAt,
+      lastError: data.lastError.present ? data.lastError.value : this.lastError,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LogoUpload(')
+          ..write('storagePath: $storagePath, ')
+          ..write('orgId: $orgId, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    storagePath,
+    orgId,
+    uploadStatus,
+    attempts,
+    nextAttemptAt,
+    lastError,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LogoUpload &&
+          other.storagePath == this.storagePath &&
+          other.orgId == this.orgId &&
+          other.uploadStatus == this.uploadStatus &&
+          other.attempts == this.attempts &&
+          other.nextAttemptAt == this.nextAttemptAt &&
+          other.lastError == this.lastError &&
+          other.createdAt == this.createdAt);
+}
+
+class LogoUploadsCompanion extends UpdateCompanion<LogoUpload> {
+  final Value<String> storagePath;
+  final Value<String> orgId;
+  final Value<MediaUploadStatus> uploadStatus;
+  final Value<int> attempts;
+  final Value<DateTime?> nextAttemptAt;
+  final Value<String?> lastError;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const LogoUploadsCompanion({
+    this.storagePath = const Value.absent(),
+    this.orgId = const Value.absent(),
+    this.uploadStatus = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LogoUploadsCompanion.insert({
+    required String storagePath,
+    required String orgId,
+    required MediaUploadStatus uploadStatus,
+    this.attempts = const Value.absent(),
+    this.nextAttemptAt = const Value.absent(),
+    this.lastError = const Value.absent(),
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : storagePath = Value(storagePath),
+       orgId = Value(orgId),
+       uploadStatus = Value(uploadStatus),
+       createdAt = Value(createdAt);
+  static Insertable<LogoUpload> custom({
+    Expression<String>? storagePath,
+    Expression<String>? orgId,
+    Expression<String>? uploadStatus,
+    Expression<int>? attempts,
+    Expression<DateTime>? nextAttemptAt,
+    Expression<String>? lastError,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (storagePath != null) 'storage_path': storagePath,
+      if (orgId != null) 'org_id': orgId,
+      if (uploadStatus != null) 'upload_status': uploadStatus,
+      if (attempts != null) 'attempts': attempts,
+      if (nextAttemptAt != null) 'next_attempt_at': nextAttemptAt,
+      if (lastError != null) 'last_error': lastError,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LogoUploadsCompanion copyWith({
+    Value<String>? storagePath,
+    Value<String>? orgId,
+    Value<MediaUploadStatus>? uploadStatus,
+    Value<int>? attempts,
+    Value<DateTime?>? nextAttemptAt,
+    Value<String?>? lastError,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return LogoUploadsCompanion(
+      storagePath: storagePath ?? this.storagePath,
+      orgId: orgId ?? this.orgId,
+      uploadStatus: uploadStatus ?? this.uploadStatus,
+      attempts: attempts ?? this.attempts,
+      nextAttemptAt: nextAttemptAt ?? this.nextAttemptAt,
+      lastError: lastError ?? this.lastError,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (storagePath.present) {
+      map['storage_path'] = Variable<String>(storagePath.value);
+    }
+    if (orgId.present) {
+      map['org_id'] = Variable<String>(orgId.value);
+    }
+    if (uploadStatus.present) {
+      map['upload_status'] = Variable<String>(
+        $LogoUploadsTable.$converteruploadStatus.toSql(uploadStatus.value),
+      );
+    }
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
+    }
+    if (nextAttemptAt.present) {
+      map['next_attempt_at'] = Variable<DateTime>(nextAttemptAt.value);
+    }
+    if (lastError.present) {
+      map['last_error'] = Variable<String>(lastError.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LogoUploadsCompanion(')
+          ..write('storagePath: $storagePath, ')
+          ..write('orgId: $orgId, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('attempts: $attempts, ')
+          ..write('nextAttemptAt: $nextAttemptAt, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $CustomersTable extends Customers
     with TableInfo<$CustomersTable, Customer> {
   @override
@@ -24510,6 +25208,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $LotSalesTable lotSales = $LotSalesTable(this);
   late final $TransactionsTable transactions = $TransactionsTable(this);
   late final $ReceiptUploadsTable receiptUploads = $ReceiptUploadsTable(this);
+  late final $LogoUploadsTable logoUploads = $LogoUploadsTable(this);
   late final $CustomersTable customers = $CustomersTable(this);
   late final $CustomerPaymentsTable customerPayments = $CustomerPaymentsTable(
     this,
@@ -24858,6 +25557,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     lotSales,
     transactions,
     receiptUploads,
+    logoUploads,
     customers,
     customerPayments,
     refSupportPeriods,
@@ -24961,6 +25661,9 @@ typedef $$OrganizationsTableCreateCompanionBuilder =
       Value<String?> trAksNo,
       Value<HiveCountRange?> hiveCountRange,
       Value<int?> trAksHiveCount,
+      Value<OperationType> operationType,
+      Value<OrgAvatarColor?> avatarColor,
+      Value<String?> logoPath,
       Value<int> rowid,
     });
 typedef $$OrganizationsTableUpdateCompanionBuilder =
@@ -24978,6 +25681,9 @@ typedef $$OrganizationsTableUpdateCompanionBuilder =
       Value<String?> trAksNo,
       Value<HiveCountRange?> hiveCountRange,
       Value<int?> trAksHiveCount,
+      Value<OperationType> operationType,
+      Value<OrgAvatarColor?> avatarColor,
+      Value<String?> logoPath,
       Value<int> rowid,
     });
 
@@ -25055,6 +25761,23 @@ class $$OrganizationsTableFilterComposer
     column: $table.trAksHiveCount,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnWithTypeConverterFilters<OperationType, OperationType, String>
+  get operationType => $composableBuilder(
+    column: $table.operationType,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<OrgAvatarColor?, OrgAvatarColor, String>
+  get avatarColor => $composableBuilder(
+    column: $table.avatarColor,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get logoPath => $composableBuilder(
+    column: $table.logoPath,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$OrganizationsTableOrderingComposer
@@ -25130,6 +25853,21 @@ class $$OrganizationsTableOrderingComposer
     column: $table.trAksHiveCount,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get operationType => $composableBuilder(
+    column: $table.operationType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get avatarColor => $composableBuilder(
+    column: $table.avatarColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get logoPath => $composableBuilder(
+    column: $table.logoPath,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$OrganizationsTableAnnotationComposer
@@ -25188,6 +25926,21 @@ class $$OrganizationsTableAnnotationComposer
     column: $table.trAksHiveCount,
     builder: (column) => column,
   );
+
+  GeneratedColumnWithTypeConverter<OperationType, String> get operationType =>
+      $composableBuilder(
+        column: $table.operationType,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<OrgAvatarColor?, String> get avatarColor =>
+      $composableBuilder(
+        column: $table.avatarColor,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get logoPath =>
+      $composableBuilder(column: $table.logoPath, builder: (column) => column);
 }
 
 class $$OrganizationsTableTableManager
@@ -25234,6 +25987,9 @@ class $$OrganizationsTableTableManager
                 Value<String?> trAksNo = const Value.absent(),
                 Value<HiveCountRange?> hiveCountRange = const Value.absent(),
                 Value<int?> trAksHiveCount = const Value.absent(),
+                Value<OperationType> operationType = const Value.absent(),
+                Value<OrgAvatarColor?> avatarColor = const Value.absent(),
+                Value<String?> logoPath = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => OrganizationsCompanion(
                 id: id,
@@ -25249,6 +26005,9 @@ class $$OrganizationsTableTableManager
                 trAksNo: trAksNo,
                 hiveCountRange: hiveCountRange,
                 trAksHiveCount: trAksHiveCount,
+                operationType: operationType,
+                avatarColor: avatarColor,
+                logoPath: logoPath,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -25266,6 +26025,9 @@ class $$OrganizationsTableTableManager
                 Value<String?> trAksNo = const Value.absent(),
                 Value<HiveCountRange?> hiveCountRange = const Value.absent(),
                 Value<int?> trAksHiveCount = const Value.absent(),
+                Value<OperationType> operationType = const Value.absent(),
+                Value<OrgAvatarColor?> avatarColor = const Value.absent(),
+                Value<String?> logoPath = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => OrganizationsCompanion.insert(
                 id: id,
@@ -25281,6 +26043,9 @@ class $$OrganizationsTableTableManager
                 trAksNo: trAksNo,
                 hiveCountRange: hiveCountRange,
                 trAksHiveCount: trAksHiveCount,
+                operationType: operationType,
+                avatarColor: avatarColor,
+                logoPath: logoPath,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -25328,6 +26093,7 @@ typedef $$MembershipsTableCreateCompanionBuilder =
       required String orgId,
       required String userId,
       required MembershipRole role,
+      Value<String?> fullName,
       Value<int> rowid,
     });
 typedef $$MembershipsTableUpdateCompanionBuilder =
@@ -25341,6 +26107,7 @@ typedef $$MembershipsTableUpdateCompanionBuilder =
       Value<String> orgId,
       Value<String> userId,
       Value<MembershipRole> role,
+      Value<String?> fullName,
       Value<int> rowid,
     });
 
@@ -25398,6 +26165,11 @@ class $$MembershipsTableFilterComposer
     column: $table.role,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
+
+  ColumnFilters<String> get fullName => $composableBuilder(
+    column: $table.fullName,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$MembershipsTableOrderingComposer
@@ -25453,6 +26225,11 @@ class $$MembershipsTableOrderingComposer
     column: $table.role,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get fullName => $composableBuilder(
+    column: $table.fullName,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$MembershipsTableAnnotationComposer
@@ -25490,6 +26267,9 @@ class $$MembershipsTableAnnotationComposer
 
   GeneratedColumnWithTypeConverter<MembershipRole, String> get role =>
       $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<String> get fullName =>
+      $composableBuilder(column: $table.fullName, builder: (column) => column);
 }
 
 class $$MembershipsTableTableManager
@@ -25532,6 +26312,7 @@ class $$MembershipsTableTableManager
                 Value<String> orgId = const Value.absent(),
                 Value<String> userId = const Value.absent(),
                 Value<MembershipRole> role = const Value.absent(),
+                Value<String?> fullName = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembershipsCompanion(
                 id: id,
@@ -25543,6 +26324,7 @@ class $$MembershipsTableTableManager
                 orgId: orgId,
                 userId: userId,
                 role: role,
+                fullName: fullName,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -25556,6 +26338,7 @@ class $$MembershipsTableTableManager
                 required String orgId,
                 required String userId,
                 required MembershipRole role,
+                Value<String?> fullName = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembershipsCompanion.insert(
                 id: id,
@@ -25567,6 +26350,7 @@ class $$MembershipsTableTableManager
                 orgId: orgId,
                 userId: userId,
                 role: role,
+                fullName: fullName,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -38283,6 +39067,261 @@ typedef $$ReceiptUploadsTableProcessedTableManager =
       ReceiptUpload,
       PrefetchHooks Function()
     >;
+typedef $$LogoUploadsTableCreateCompanionBuilder =
+    LogoUploadsCompanion Function({
+      required String storagePath,
+      required String orgId,
+      required MediaUploadStatus uploadStatus,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$LogoUploadsTableUpdateCompanionBuilder =
+    LogoUploadsCompanion Function({
+      Value<String> storagePath,
+      Value<String> orgId,
+      Value<MediaUploadStatus> uploadStatus,
+      Value<int> attempts,
+      Value<DateTime?> nextAttemptAt,
+      Value<String?> lastError,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$LogoUploadsTableFilterComposer
+    extends Composer<_$AppDatabase, $LogoUploadsTable> {
+  $$LogoUploadsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<MediaUploadStatus, MediaUploadStatus, String>
+  get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LogoUploadsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LogoUploadsTable> {
+  $$LogoUploadsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get orgId => $composableBuilder(
+    column: $table.orgId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LogoUploadsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LogoUploadsTable> {
+  $$LogoUploadsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get storagePath => $composableBuilder(
+    column: $table.storagePath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get orgId =>
+      $composableBuilder(column: $table.orgId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<MediaUploadStatus, String>
+  get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get nextAttemptAt => $composableBuilder(
+    column: $table.nextAttemptAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastError =>
+      $composableBuilder(column: $table.lastError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$LogoUploadsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LogoUploadsTable,
+          LogoUpload,
+          $$LogoUploadsTableFilterComposer,
+          $$LogoUploadsTableOrderingComposer,
+          $$LogoUploadsTableAnnotationComposer,
+          $$LogoUploadsTableCreateCompanionBuilder,
+          $$LogoUploadsTableUpdateCompanionBuilder,
+          (
+            LogoUpload,
+            BaseReferences<_$AppDatabase, $LogoUploadsTable, LogoUpload>,
+          ),
+          LogoUpload,
+          PrefetchHooks Function()
+        > {
+  $$LogoUploadsTableTableManager(_$AppDatabase db, $LogoUploadsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LogoUploadsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LogoUploadsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LogoUploadsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> storagePath = const Value.absent(),
+                Value<String> orgId = const Value.absent(),
+                Value<MediaUploadStatus> uploadStatus = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LogoUploadsCompanion(
+                storagePath: storagePath,
+                orgId: orgId,
+                uploadStatus: uploadStatus,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String storagePath,
+                required String orgId,
+                required MediaUploadStatus uploadStatus,
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime?> nextAttemptAt = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => LogoUploadsCompanion.insert(
+                storagePath: storagePath,
+                orgId: orgId,
+                uploadStatus: uploadStatus,
+                attempts: attempts,
+                nextAttemptAt: nextAttemptAt,
+                lastError: lastError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LogoUploadsTable, LogoUpload>(table),
+                  BaseReferences<_$AppDatabase, $LogoUploadsTable, LogoUpload>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LogoUploadsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LogoUploadsTable,
+      LogoUpload,
+      $$LogoUploadsTableFilterComposer,
+      $$LogoUploadsTableOrderingComposer,
+      $$LogoUploadsTableAnnotationComposer,
+      $$LogoUploadsTableCreateCompanionBuilder,
+      $$LogoUploadsTableUpdateCompanionBuilder,
+      (
+        LogoUpload,
+        BaseReferences<_$AppDatabase, $LogoUploadsTable, LogoUpload>,
+      ),
+      LogoUpload,
+      PrefetchHooks Function()
+    >;
 typedef $$CustomersTableCreateCompanionBuilder = CustomersCompanion Function({
   required String id,
   required DateTime createdAt,
@@ -40423,6 +41462,8 @@ class $AppDatabaseManager {
       $$TransactionsTableTableManager(_db, _db.transactions);
   $$ReceiptUploadsTableTableManager get receiptUploads =>
       $$ReceiptUploadsTableTableManager(_db, _db.receiptUploads);
+  $$LogoUploadsTableTableManager get logoUploads =>
+      $$LogoUploadsTableTableManager(_db, _db.logoUploads);
   $$CustomersTableTableManager get customers =>
       $$CustomersTableTableManager(_db, _db.customers);
   $$CustomerPaymentsTableTableManager get customerPayments =>

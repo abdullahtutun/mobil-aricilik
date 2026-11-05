@@ -242,17 +242,17 @@ final class CanSeeFinanceProvider extends $FunctionalProvider<bool, bool, bool>
 
 String _$canSeeFinanceHash() => r'9b9a6ba77fde5941a6ae22ca7464796e8bb592e0';
 
-/// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+/// İşletme bilgileri değiştirilebilsin mi (owner ve partner).
 
 @ProviderFor(canEditOrganization)
 final canEditOrganizationProvider = CanEditOrganizationProvider._();
 
-/// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+/// İşletme bilgileri değiştirilebilsin mi (owner ve partner).
 
 final class CanEditOrganizationProvider
     extends $FunctionalProvider<bool, bool, bool>
     with $Provider<bool> {
-  /// İşletme bilgileri değiştirilebilsin mi (yalnız owner).
+  /// İşletme bilgileri değiştirilebilsin mi (owner ve partner).
   CanEditOrganizationProvider._()
     : super(
         from: null,

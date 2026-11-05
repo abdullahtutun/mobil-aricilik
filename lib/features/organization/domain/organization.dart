@@ -21,6 +21,36 @@ enum HiveCountRange implements ServerEnum {
   final String value;
 }
 
+/// İşletmenin türü (`public.operation_type`). Tek kaynak: sabit işletmede
+/// gezginci modülleri (göç planı, taşıma) gizlenir, kayıtları silinmez
+/// (`BusinessConfig`).
+@JsonEnum(valueField: 'value')
+enum OperationType implements ServerEnum {
+  migratory('migratory'),
+  stationary('stationary');
+
+  new(this.value);
+
+  @override
+  final String value;
+}
+
+/// Logo yokken işletmenin baş harflerinin zemini
+/// (`public.org_avatar_color`). Renk tasarım sistemindeki `AppColors`'tan
+/// gelir.
+@JsonEnum(valueField: 'value')
+enum OrgAvatarColor implements ServerEnum {
+  pine('pine'),
+  honey('honey'),
+  sky('sky'),
+  slate('slate');
+
+  new(this.value);
+
+  @override
+  final String value;
+}
+
 /// Kullanıcının işletmesi (`organizations`). Bölge profili ülkeyi buradan
 /// alır.
 @freezed
@@ -36,6 +66,9 @@ abstract class Organization with _$Organization {
     /// ISO 4217.
     required String currency,
     HiveCountRange? hiveCountRange,
+
+    /// Eski önbellekte yok; o zaman gezginci (sunucunun varsayılanı).
+    @Default(OperationType.migratory) OperationType operationType,
   }) = _Organization;
 
   factory fromJson(Map<String, Object?> json) => _$OrganizationFromJson(json);

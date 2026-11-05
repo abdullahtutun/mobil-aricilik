@@ -158,7 +158,7 @@ final class UpcomingMigrationStopsProvider
 }
 
 String _$upcomingMigrationStopsHash() =>
-    r'ac9af9a0bb6702ff5f1ce50e918487fb2efebb49';
+    r'd1a80e7d637b89f22ceb3be665913e6494c64d4c';
 
 /// İndirilmeye aday konumlu arılıklar ([mapAreaCandidates]); arılığa bağlı
 /// göç durakları adlarıyla.

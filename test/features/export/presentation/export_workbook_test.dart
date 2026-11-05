@@ -157,20 +157,26 @@ void main() {
   test('arılıklar ada göre, aktif kovan sayısıyla', () {
     final rows = sheet(exportSheets(data, tr), 'Arılıklar').rows;
     expect(rows.first.take(2), ['Ad', 'Aktif kovan']);
-    expect([for (final row in rows.skip(1)) row.take(2).toList()], [
-      ['Ova', 2],
-      ['Yayla', 0],
-    ]);
+    expect(
+      [for (final row in rows.skip(1)) row.take(2).toList()],
+      [
+        ['Ova', 2],
+        ['Yayla', 0],
+      ],
+    );
   });
 
   test('kovanlar arılık ve doğal numara sırasıyla; kimlik yerine ad, '
       'durum ve ana çevrilmiş', () {
     final rows = sheet(exportSheets(data, tr), 'Kovanlar').rows.skip(1);
-    expect([for (final row in rows) row.take(2).toList()], [
-      ['Ova', 2],
-      ['Ova', 10],
-      ['Yayla', 3],
-    ]);
+    expect(
+      [for (final row in rows) row.take(2).toList()],
+      [
+        ['Ova', 2],
+        ['Ova', 10],
+        ['Yayla', 3],
+      ],
+    );
     final first = rows.first;
     expect(first[3], 'Aktif');
     expect(first[10], '2025 · Yeşil');
@@ -201,10 +207,7 @@ void main() {
 
   test('görev başlığı: elle açılanda yazılan, otomatikte üretilen', () {
     final rows = sheet(exportSheets(data, tr), 'Görevler').rows.skip(1);
-    expect(rows.map((row) => row[1]), [
-      'Kek al',
-      tr.taskInspectionTitle('2'),
-    ]);
+    expect(rows.map((row) => row[1]), ['Kek al', tr.taskInspectionTitle('2')]);
   });
 
   test('gelir/gider yalnız gün, türü çevrilmiş', () {

@@ -85,7 +85,8 @@ void main() {
         expect(request.method, 'GET');
         expect(request.url.path, '/rest/v1/organizations');
         expect(request.url.queryParameters, {
-          'select': 'id,name,country_code,currency,hive_count_range',
+          'select':
+              'id,name,country_code,currency,hive_count_range,operation_type',
           'deleted_at': 'is.null',
           'order': 'created_at.asc.nullslast',
           'limit': '1',
@@ -160,9 +161,24 @@ void main() {
             'country_code': 'DE',
             'currency': 'EUR',
             'hive_count_range': 'up_to_200',
+            'operation_type': 'migratory',
           });
         },
       );
+
+      test('sabit işletme türü RPC’ye gider ve yanıttan okunur', () async {
+        handler = (_) => _json({..._row, 'operation_type': 'stationary'});
+
+        final created = await service.create(
+          _organization.copyWith(operationType: OperationType.stationary),
+        );
+
+        expect(
+          (jsonDecode(requests.single.body) as Map)['operation_type'],
+          'stationary',
+        );
+        expect(created.operationType, OperationType.stationary);
+      });
 
       test('kovan sayısı verilmezse null gönderilir', () async {
         handler = (_) => _json({..._row, 'hive_count_range': null});

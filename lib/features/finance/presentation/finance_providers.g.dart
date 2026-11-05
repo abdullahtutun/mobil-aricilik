@@ -329,20 +329,20 @@ final class TransportChoicesProvider
 
 String _$transportChoicesHash() => r'dbf6bedc55aa0dc4069d7346e1274bfb5d05b4db';
 
-/// İşletmenin para birimi; hareketler bununla yazılır. İşletme henüz
-/// yüklenmediyse null.
+/// İşletmenin para birimi; yeni hareketler bununla yazılır, eskiler kendi
+/// para birimini taşır. İşletme henüz yüklenmediyse null.
 
 @ProviderFor(financeCurrency)
 final financeCurrencyProvider = FinanceCurrencyProvider._();
 
-/// İşletmenin para birimi; hareketler bununla yazılır. İşletme henüz
-/// yüklenmediyse null.
+/// İşletmenin para birimi; yeni hareketler bununla yazılır, eskiler kendi
+/// para birimini taşır. İşletme henüz yüklenmediyse null.
 
 final class FinanceCurrencyProvider
     extends $FunctionalProvider<String?, String?, String?>
     with $Provider<String?> {
-  /// İşletmenin para birimi; hareketler bununla yazılır. İşletme henüz
-  /// yüklenmediyse null.
+  /// İşletmenin para birimi; yeni hareketler bununla yazılır, eskiler kendi
+  /// para birimini taşır. İşletme henüz yüklenmediyse null.
   FinanceCurrencyProvider._()
     : super(
         from: null,
@@ -376,7 +376,7 @@ final class FinanceCurrencyProvider
   }
 }
 
-String _$financeCurrencyHash() => r'edd1e57ef2194328c6f0aad6e333e5d0e7910b61';
+String _$financeCurrencyHash() => r'2283b8da634e1aa0e7e38b3644634f930da9bbfc';
 
 /// Bu sezonun (takvim yılı) özeti: işletmenin para birimindeki gelir,
 /// gider, net ve aktif kovan başı maliyet.
@@ -424,6 +424,59 @@ final class FinanceSeasonProvider
 }
 
 String _$financeSeasonHash() => r'7d0657c83b447f31ec42f66b553bf4f0bff30718';
+
+/// Bu sezonun işletmenin para birimi dışındaki hareketleri, para birimine
+/// göre ayrı özetler (para birimi değişmeden önceki kayıtlar
+/// dönüştürülmez); yoksa boş.
+
+@ProviderFor(financeOtherCurrencies)
+final financeOtherCurrenciesProvider = FinanceOtherCurrenciesProvider._();
+
+/// Bu sezonun işletmenin para birimi dışındaki hareketleri, para birimine
+/// göre ayrı özetler (para birimi değişmeden önceki kayıtlar
+/// dönüştürülmez); yoksa boş.
+
+final class FinanceOtherCurrenciesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<String, SeasonSummary>>,
+          Map<String, SeasonSummary>,
+          FutureOr<Map<String, SeasonSummary>>
+        >
+    with
+        $FutureModifier<Map<String, SeasonSummary>>,
+        $FutureProvider<Map<String, SeasonSummary>> {
+  /// Bu sezonun işletmenin para birimi dışındaki hareketleri, para birimine
+  /// göre ayrı özetler (para birimi değişmeden önceki kayıtlar
+  /// dönüştürülmez); yoksa boş.
+  FinanceOtherCurrenciesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'financeOtherCurrenciesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$financeOtherCurrenciesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Map<String, SeasonSummary>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Map<String, SeasonSummary>> create(Ref ref) {
+    return financeOtherCurrencies(ref);
+  }
+}
+
+String _$financeOtherCurrenciesHash() =>
+    r'9b06e406a4c7115dc05dcca79c3b8f38903d5ccb';
 
 /// Bu sezonun konaklama noktası (arılık) kârları, büyük net önce
 /// ([apiaryProfits]); işletmenin para birimindeki hareketlerden.
