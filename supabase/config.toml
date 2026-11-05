@@ -436,3 +436,8 @@ verify_jwt = false
 # Herkese açık lot sayfası; QR'ı okutan müşteri oturumsuz açar.
 [functions.lot-page]
 verify_jwt = false
+
+# Kullanıcı JWT'sini fonksiyon kendisi auth sunucusunda doğrular (anonimi de
+# reddeder); pg_cron JWT yerine x-cron-secret taşır.
+[functions.account-delete]
+verify_jwt = false
