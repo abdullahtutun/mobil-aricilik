@@ -13,6 +13,7 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/app_info_service_provider.dart';
+import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
@@ -32,9 +33,9 @@ import 'package:mobil_arici/features/weather/presentation/widgets/weather_labels
 /// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar, "kullanım
 /// verisi paylaş", offline haritalar, Excel'e dışa aktarma), varroa ve kovan
 /// açma eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
-/// dokununca sistem ayarı açılır) ve hesap. Görünüm ve dil şimdilik
-/// yalnızca bellekte; Wi‑Fi seçimi, analitik ve eşikler bu telefonun yerel
-/// DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
+/// dokununca sistem ayarı açılır) ve hesap (çıkış, Hesabımı sil). Görünüm
+/// ve dil şimdilik yalnızca bellekte; Wi‑Fi seçimi, analitik ve eşikler bu
+/// telefonun yerel DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -177,6 +178,13 @@ class SettingsScreen extends ConsumerWidget {
             label: l10n.settingsSignOut,
             onPressed: () => _confirmSignOut(context, ref, pending: pending),
           ),
+          SizedBox(height: spacing.md),
+          BigButton(
+            variant: BigButtonVariant.dangerOutlined,
+            icon: Icons.delete_outline_rounded,
+            label: l10n.settingsDeleteAccount,
+            onPressed: () => unawaited(_openAccountDeletion(context, ref)),
+          ),
           if (ref.watch(appVersionProvider).value case final version?) ...[
             sectionGap,
             Text(
@@ -245,6 +253,22 @@ class SettingsScreen extends ConsumerWidget {
         .read(pushRegistrationProvider.notifier)
         .unregister(deleteDeviceToken: true);
     await ref.read(currentUserProvider.notifier).signOut();
+  }
+
+  /// Hesap silme internet ister; bağlantı yoksa akış açılmaz, nedeni tek
+  /// cümleyle söylenir.
+  static Future<void> _openAccountDeletion(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final online = await ref.read(connectivityServiceProvider).isOnline();
+    if (!context.mounted) return;
+    if (!online) {
+      showMessageSnackBar(context, l10n.settingsDeleteAccountOffline);
+      return;
+    }
+    context.go(AppRoutes.deleteAccount);
   }
 
   static String _languageLabel(AppLocalizations l10n, AppLanguage language) {

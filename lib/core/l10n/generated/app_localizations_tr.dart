@@ -7354,4 +7354,304 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get onboardingMigratoryNo => 'Hayır, sabit';
+
+  @override
+  String get settingsDeleteAccount => 'Hesabımı sil';
+
+  @override
+  String get settingsDeleteAccountOffline =>
+      'Hesabı silmek için internet gerekiyor; bağlanınca yeniden dene.';
+
+  @override
+  String get deletionTitle => 'Hesabımı sil';
+
+  @override
+  String deletionStepCounter(int current, int total) {
+    return 'Adım $current/$total';
+  }
+
+  @override
+  String get deletionContinue => 'Devam';
+
+  @override
+  String get deletionSoloTitle => 'Hesabın ve işletmen silinecek';
+
+  @override
+  String deletionSoloMessage(String organization) {
+    return '$organization işletmesinde tek kişi sensin. Hesabınla birlikte işletme ve tüm kayıtları da silinir.';
+  }
+
+  @override
+  String get deletionCountsLabel => 'Silinecek kayıtlar';
+
+  @override
+  String get deletionCountHives => 'Kovan';
+
+  @override
+  String get deletionCountApiaries => 'Arılık';
+
+  @override
+  String get deletionCountInspections => 'Muayene';
+
+  @override
+  String get deletionCountHarvests => 'Hasat';
+
+  @override
+  String get deletionCountDocuments => 'Belge';
+
+  @override
+  String get deletionCountPhotos => 'Fotoğraf';
+
+  @override
+  String get deletionLotWarningTitle => 'QR kodları çalışmayacak.';
+
+  @override
+  String deletionLotWarningMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count herkese açık lot sayfası silinecek, kavanozlardaki QR kodları çalışmayacak.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionTeamTitle => 'Ekibin var: işletme için bir seçim yap';
+
+  @override
+  String deletionTeamMessage(int count, String organization) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$organization işletmesinin sahibisin; ekipte $count kişi daha var.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionChoiceTransfer => 'Sahipliği devret ve ayrıl';
+
+  @override
+  String get deletionChoiceTransferHint =>
+      'İşletme ve kayıtları kalır. Seçtiğin ortak yeni sahip olur; yalnız senin hesabın silinir.';
+
+  @override
+  String get deletionChoiceDelete => 'İşletmeyi ve tüm kayıtları sil';
+
+  @override
+  String deletionChoiceDeleteHint(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ekipteki $count kişi de işletmeye erişemez.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionTransferPick => 'Yeni sahip';
+
+  @override
+  String get deletionTransferNoPartner =>
+      'Devretmek için ekipte bir ortak olmalı. Ekip ekranından bir üyeyi ortak yapabilir ya da işletmeyi silebilirsin.';
+
+  @override
+  String get deletionPartnerFallbackName => 'Ortak';
+
+  @override
+  String get deletionMemberTitle => 'Yalnız hesabın silinecek';
+
+  @override
+  String deletionMemberMessage(String organization) {
+    return '$organization işletmesi ve kayıtları silinmez. Girdiğin kayıtlar işletmede kalır; adın ekip listesinden kaldırılır.';
+  }
+
+  @override
+  String get deletionUnknownMessage =>
+      'Üyelik bilgin bu telefona henüz inmedi. Eşitleme bitince yeniden dene.';
+
+  @override
+  String get deletionGraceNote =>
+      'Silme 7 gün sonra kesinleşir; bu sürede giriş yapıp vazgeçebilirsin.';
+
+  @override
+  String get deletionBackupTitle => 'Önce verini al';
+
+  @override
+  String get deletionBackupMessage =>
+      'Silinen kayıtlar geri getirilemez. Silmeden önce bir kopyasını almanı öneririz.';
+
+  @override
+  String get deletionBackupReports => 'PDF raporları';
+
+  @override
+  String get deletionBackupReportsHint => 'Hazır raporları PDF olarak indir.';
+
+  @override
+  String get deletionBackupJson => 'Tüm kayıtlar';
+
+  @override
+  String get deletionBackupJsonValue => 'JSON';
+
+  @override
+  String get deletionBackupJsonHint =>
+      'Bütün kayıtların tek dosyada; istediğin yere kaydet.';
+
+  @override
+  String get deletionBackupSaved => 'Kaydedildi';
+
+  @override
+  String get deletionBackupDownload => 'Kayıtlarımı indir';
+
+  @override
+  String get deletionBackupSkip => 'Atla';
+
+  @override
+  String deletionBackupFileName(String date) {
+    return 'mobil-arici-kayitlar-$date';
+  }
+
+  @override
+  String get deletionVerifyTitle => 'Kimliğini doğrula';
+
+  @override
+  String get deletionVerifyButton => 'Kodu doğrula';
+
+  @override
+  String get deletionConfirmTitle => 'Son onay';
+
+  @override
+  String get deletionConfirmIntro => 'Onaylarsan:';
+
+  @override
+  String deletionConsequenceAccount(String date) {
+    return 'Hesabın $date tarihinde kalıcı olarak silinir.';
+  }
+
+  @override
+  String deletionConsequenceOrganization(String organization) {
+    return '$organization işletmesi ve tüm kayıtları da silinir.';
+  }
+
+  @override
+  String deletionConsequenceTransfer(String name, String organization) {
+    return '$name, $organization işletmesinin yeni sahibi olur.';
+  }
+
+  @override
+  String get deletionConsequenceRecordsStay => 'İşletmenin kayıtları silinmez.';
+
+  @override
+  String deletionConsequenceLots(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lot sayfası kapanır; QR kodları çalışmaz.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionConsequenceSignOut =>
+      'Oturumun kapanır ve bu telefondaki veriler silinir.';
+
+  @override
+  String get deletionConsequenceCancel =>
+      'Bu tarihe kadar giriş yaparsan silmeyi iptal edebilirsin.';
+
+  @override
+  String deletionConfirmTypeName(String organization) {
+    return 'Onaylamak için işletmenin adını yaz: $organization';
+  }
+
+  @override
+  String deletionConfirmTypeKeyword(String keyword) {
+    return 'Onaylamak için $keyword yaz';
+  }
+
+  @override
+  String get deletionKeyword => 'SİL';
+
+  @override
+  String get deletionConfirmButton => 'Hesabımı sil';
+
+  @override
+  String get deletionConfirmButtonWithOrganization =>
+      'Hesabımı ve işletmemi sil';
+
+  @override
+  String get deletionSubmitting => 'Gönderiliyor…';
+
+  @override
+  String get deletionFailureNetwork =>
+      'Sunucuya ulaşılamadı. Bağlantını kontrol edip yeniden dene.';
+
+  @override
+  String get deletionFailureOwnerMustTransfer =>
+      'Ekipli başka bir işletmenin de sahibisin. Önce oradaki sahipliği devret.';
+
+  @override
+  String get deletionFailureInvalidTransfer =>
+      'Seçtiğin kişi artık ortak değil. Başka bir ortak seç.';
+
+  @override
+  String get deletionFailureRateLimited =>
+      'Kısa sürede çok fazla deneme oldu. Yarın yeniden dene.';
+
+  @override
+  String get deletionFailureForbidden =>
+      'Oturumun kapanmış. Yeniden giriş yapıp dene.';
+
+  @override
+  String get deletionFailureUnknown =>
+      'Talep gönderilemedi. Biraz sonra yeniden dene.';
+
+  @override
+  String get deletionDoneTitle => 'Silme talebin alındı';
+
+  @override
+  String deletionDoneDate(String date) {
+    return 'Hesabın $date tarihinde kalıcı olarak silinecek.';
+  }
+
+  @override
+  String get deletionDoneCancelHint =>
+      'Fikrini değiştirirsen bu tarihe kadar giriş yap; silme iptal olur.';
+
+  @override
+  String get deletionDoneEmail => 'Ayrıntıları e-postana da gönderdik.';
+
+  @override
+  String get deletionDoneClearing => 'Bu telefondaki veriler siliniyor…';
+
+  @override
+  String get deletionDoneSignedOut =>
+      'Oturumun kapatıldı ve bu telefondaki verilerin silindi.';
+
+  @override
+  String get deletionDoneAction => 'Tamam';
+
+  @override
+  String get deletionPendingTitle => 'Hesabın silinmek üzere';
+
+  @override
+  String deletionPendingMessage(String date) {
+    return 'Hesabın $date tarihinde silinecek. Devam edersen silme iptal olur.';
+  }
+
+  @override
+  String get deletionPendingContinue => 'Devam et, hesabımı koru';
+
+  @override
+  String get deletionPendingSignOut => 'Çıkış yap, silme sürsün';
+
+  @override
+  String get deletionPendingCancelled =>
+      'Silme iptal edildi. Tekrar hoş geldin!';
+
+  @override
+  String get deletionPendingCancelFailed =>
+      'Silme iptal edilemedi. Bağlantını kontrol edip yeniden dene.';
 }

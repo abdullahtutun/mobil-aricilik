@@ -52,6 +52,10 @@ abstract interface class ReminderNotifications {
     required String channelName,
     required String group,
   });
+
+  /// Bütün grupların kurulu bildirimlerini kaldırır (hesap silindikten
+  /// sonra cihaz temizliği).
+  Future<void> cancelAll();
 }
 
 /// flutter_local_notifications ile. Eklenti ve saat dilimi ilk kullanımda
@@ -159,6 +163,12 @@ class DeviceReminderNotifications implements ReminderNotifications {
         payload: group,
       );
     }
+  }
+
+  @override
+  Future<void> cancelAll() async {
+    await (_ready ??= _init());
+    await _plugin.cancelAll();
   }
 
   Future<void> _init() async {

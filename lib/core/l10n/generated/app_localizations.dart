@@ -12092,6 +12092,462 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No, stationary'**
   String get onboardingMigratoryNo;
+
+  /// No description provided for @settingsDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account'**
+  String get settingsDeleteAccount;
+
+  /// No description provided for @settingsDeleteAccountOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account needs an internet connection; try again once you\'re online.'**
+  String get settingsDeleteAccountOffline;
+
+  /// No description provided for @deletionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account'**
+  String get deletionTitle;
+
+  /// No description provided for @deletionStepCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String deletionStepCounter(int current, int total);
+
+  /// No description provided for @deletionContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get deletionContinue;
+
+  /// No description provided for @deletionSoloTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account and your business will be deleted'**
+  String get deletionSoloTitle;
+
+  /// No description provided for @deletionSoloMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re the only person in {organization}. Deleting your account also deletes the business and all of its records.'**
+  String deletionSoloMessage(String organization);
+
+  /// No description provided for @deletionCountsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Records that will be deleted'**
+  String get deletionCountsLabel;
+
+  /// No description provided for @deletionCountHives.
+  ///
+  /// In en, this message translates to:
+  /// **'Hives'**
+  String get deletionCountHives;
+
+  /// No description provided for @deletionCountApiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Apiaries'**
+  String get deletionCountApiaries;
+
+  /// No description provided for @deletionCountInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get deletionCountInspections;
+
+  /// No description provided for @deletionCountHarvests.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvests'**
+  String get deletionCountHarvests;
+
+  /// No description provided for @deletionCountDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get deletionCountDocuments;
+
+  /// No description provided for @deletionCountPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get deletionCountPhotos;
+
+  /// No description provided for @deletionLotWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'QR codes will stop working.'**
+  String get deletionLotWarningTitle;
+
+  /// No description provided for @deletionLotWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 public lot page will be deleted, and the QR codes on your jars will stop working.} other{{count} public lot pages will be deleted, and the QR codes on your jars will stop working.}}'**
+  String deletionLotWarningMessage(int count);
+
+  /// No description provided for @deletionTeamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You have a team: choose what happens to the business'**
+  String get deletionTeamTitle;
+
+  /// No description provided for @deletionTeamMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You own {organization}, and 1 other person is on the team.} other{You own {organization}, and {count} other people are on the team.}}'**
+  String deletionTeamMessage(int count, String organization);
+
+  /// No description provided for @deletionChoiceTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer ownership and leave'**
+  String get deletionChoiceTransfer;
+
+  /// No description provided for @deletionChoiceTransferHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The business and its records stay. The partner you choose becomes the owner; only your account is deleted.'**
+  String get deletionChoiceTransferHint;
+
+  /// No description provided for @deletionChoiceDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete the business and all records'**
+  String get deletionChoiceDelete;
+
+  /// No description provided for @deletionChoiceDeleteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{The other person on the team loses access too.} other{The {count} other people on the team lose access too.}}'**
+  String deletionChoiceDeleteHint(int count);
+
+  /// No description provided for @deletionTransferPick.
+  ///
+  /// In en, this message translates to:
+  /// **'New owner'**
+  String get deletionTransferPick;
+
+  /// No description provided for @deletionTransferNoPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'To transfer, someone on the team must be a partner. Make a member a partner on the Team screen, or delete the business.'**
+  String get deletionTransferNoPartner;
+
+  /// No description provided for @deletionPartnerFallbackName.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner'**
+  String get deletionPartnerFallbackName;
+
+  /// No description provided for @deletionMemberTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Only your account will be deleted'**
+  String get deletionMemberTitle;
+
+  /// No description provided for @deletionMemberMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{organization} and its records are not deleted. The records you entered stay with the business; your name is removed from the team.'**
+  String deletionMemberMessage(String organization);
+
+  /// No description provided for @deletionUnknownMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your membership hasn\'t reached this phone yet. Try again after syncing.'**
+  String get deletionUnknownMessage;
+
+  /// No description provided for @deletionGraceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletion becomes final after 7 days; until then you can sign in and change your mind.'**
+  String get deletionGraceNote;
+
+  /// No description provided for @deletionBackupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your data first'**
+  String get deletionBackupTitle;
+
+  /// No description provided for @deletionBackupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted records can\'t be restored. We recommend saving a copy first.'**
+  String get deletionBackupMessage;
+
+  /// No description provided for @deletionBackupReports.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF reports'**
+  String get deletionBackupReports;
+
+  /// No description provided for @deletionBackupReportsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Download ready-made reports as PDF.'**
+  String get deletionBackupReportsHint;
+
+  /// No description provided for @deletionBackupJson.
+  ///
+  /// In en, this message translates to:
+  /// **'All records'**
+  String get deletionBackupJson;
+
+  /// No description provided for @deletionBackupJsonValue.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON'**
+  String get deletionBackupJsonValue;
+
+  /// No description provided for @deletionBackupJsonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'All your records in one file; save it wherever you like.'**
+  String get deletionBackupJsonHint;
+
+  /// No description provided for @deletionBackupSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get deletionBackupSaved;
+
+  /// No description provided for @deletionBackupDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download my records'**
+  String get deletionBackupDownload;
+
+  /// No description provided for @deletionBackupSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get deletionBackupSkip;
+
+  /// No description provided for @deletionBackupFileName.
+  ///
+  /// In en, this message translates to:
+  /// **'mobil-arici-records-{date}'**
+  String deletionBackupFileName(String date);
+
+  /// No description provided for @deletionVerifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm it\'s you'**
+  String get deletionVerifyTitle;
+
+  /// No description provided for @deletionVerifyButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify code'**
+  String get deletionVerifyButton;
+
+  /// No description provided for @deletionConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Final confirmation'**
+  String get deletionConfirmTitle;
+
+  /// No description provided for @deletionConfirmIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'If you confirm:'**
+  String get deletionConfirmIntro;
+
+  /// No description provided for @deletionConsequenceAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is permanently deleted on {date}.'**
+  String deletionConsequenceAccount(String date);
+
+  /// No description provided for @deletionConsequenceOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'{organization} and all of its records are deleted too.'**
+  String deletionConsequenceOrganization(String organization);
+
+  /// No description provided for @deletionConsequenceTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} becomes the new owner of {organization}.'**
+  String deletionConsequenceTransfer(String name, String organization);
+
+  /// No description provided for @deletionConsequenceRecordsStay.
+  ///
+  /// In en, this message translates to:
+  /// **'The business records are not deleted.'**
+  String get deletionConsequenceRecordsStay;
+
+  /// No description provided for @deletionConsequenceLots.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 lot page closes; its QR codes stop working.} other{{count} lot pages close; their QR codes stop working.}}'**
+  String deletionConsequenceLots(int count);
+
+  /// No description provided for @deletionConsequenceSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re signed out and the data on this phone is removed.'**
+  String get deletionConsequenceSignOut;
+
+  /// No description provided for @deletionConsequenceCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'If you sign in before then, you can cancel the deletion.'**
+  String get deletionConsequenceCancel;
+
+  /// No description provided for @deletionConfirmTypeName.
+  ///
+  /// In en, this message translates to:
+  /// **'To confirm, type the business name: {organization}'**
+  String deletionConfirmTypeName(String organization);
+
+  /// No description provided for @deletionConfirmTypeKeyword.
+  ///
+  /// In en, this message translates to:
+  /// **'To confirm, type {keyword}'**
+  String deletionConfirmTypeKeyword(String keyword);
+
+  /// No description provided for @deletionKeyword.
+  ///
+  /// In en, this message translates to:
+  /// **'DELETE'**
+  String get deletionKeyword;
+
+  /// No description provided for @deletionConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account'**
+  String get deletionConfirmButton;
+
+  /// No description provided for @deletionConfirmButtonWithOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account and business'**
+  String get deletionConfirmButtonWithOrganization;
+
+  /// No description provided for @deletionSubmitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending…'**
+  String get deletionSubmitting;
+
+  /// No description provided for @deletionFailureNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach the server. Check your connection and try again.'**
+  String get deletionFailureNetwork;
+
+  /// No description provided for @deletionFailureOwnerMustTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'You also own another business with a team. Transfer ownership there first.'**
+  String get deletionFailureOwnerMustTransfer;
+
+  /// No description provided for @deletionFailureInvalidTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'The person you chose is no longer a partner. Choose another partner.'**
+  String get deletionFailureInvalidTransfer;
+
+  /// No description provided for @deletionFailureRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts in a short time. Try again tomorrow.'**
+  String get deletionFailureRateLimited;
+
+  /// No description provided for @deletionFailureForbidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has ended. Sign in again and retry.'**
+  String get deletionFailureForbidden;
+
+  /// No description provided for @deletionFailureUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'The request couldn\'t be sent. Try again in a little while.'**
+  String get deletionFailureUnknown;
+
+  /// No description provided for @deletionDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve received your request'**
+  String get deletionDoneTitle;
+
+  /// No description provided for @deletionDoneDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account will be permanently deleted on {date}.'**
+  String deletionDoneDate(String date);
+
+  /// No description provided for @deletionDoneCancelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'If you change your mind, sign in before then and the deletion is cancelled.'**
+  String get deletionDoneCancelHint;
+
+  /// No description provided for @deletionDoneEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve also sent the details to your email.'**
+  String get deletionDoneEmail;
+
+  /// No description provided for @deletionDoneClearing.
+  ///
+  /// In en, this message translates to:
+  /// **'Removing the data on this phone…'**
+  String get deletionDoneClearing;
+
+  /// No description provided for @deletionDoneSignedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve been signed out and the data on this phone has been removed.'**
+  String get deletionDoneSignedOut;
+
+  /// No description provided for @deletionDoneAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get deletionDoneAction;
+
+  /// No description provided for @deletionPendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is about to be deleted'**
+  String get deletionPendingTitle;
+
+  /// No description provided for @deletionPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account will be deleted on {date}. If you continue, the deletion is cancelled.'**
+  String deletionPendingMessage(String date);
+
+  /// No description provided for @deletionPendingContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue and keep my account'**
+  String get deletionPendingContinue;
+
+  /// No description provided for @deletionPendingSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out and keep the deletion'**
+  String get deletionPendingSignOut;
+
+  /// No description provided for @deletionPendingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletion cancelled. Welcome back!'**
+  String get deletionPendingCancelled;
+
+  /// No description provided for @deletionPendingCancelFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The deletion couldn\'t be cancelled. Check your connection and try again.'**
+  String get deletionPendingCancelFailed;
 }
 
 class _AppLocalizationsDelegate

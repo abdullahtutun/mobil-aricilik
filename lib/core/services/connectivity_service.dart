@@ -13,6 +13,10 @@ abstract interface class ConnectivityService {
 
   /// Şu an kotasız ağda mı (mobil veri harcanmaz).
   Future<bool> isUnmetered();
+
+  /// Şu an bir ağa bağlı mı. İnternete ulaşıldığını garanti etmez; yalnız
+  /// internet isteyen akışı (hesap silme) hiç başlatmamak için.
+  Future<bool> isOnline();
 }
 
 class PlusConnectivityService implements ConnectivityService {
@@ -35,6 +39,10 @@ class PlusConnectivityService implements ConnectivityService {
   @override
   Future<bool> isUnmetered() async =>
       _unmetered(await _connectivity.checkConnectivity());
+
+  @override
+  Future<bool> isOnline() async => (await _connectivity.checkConnectivity())
+      .any((result) => result != ConnectivityResult.none);
 
   static bool _unmetered(List<ConnectivityResult> results) => results.any(
     (result) =>

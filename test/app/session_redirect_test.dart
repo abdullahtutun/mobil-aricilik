@@ -25,6 +25,53 @@ void main() {
       );
     });
 
+    test('bekleyen silme talebi işletmeden önce sorulur', () {
+      expect(
+        sessionStageOf(
+          signedIn: true,
+          hasOrganization: true,
+          deletionPending: true,
+        ),
+        SessionStage.deletionPending,
+      );
+      expect(
+        sessionStageOf(
+          signedIn: false,
+          hasOrganization: true,
+          deletionPending: true,
+        ),
+        SessionStage.signedOut,
+      );
+    });
+
+    test('bekleyen silmede her konum silme kararına gider', () {
+      expect(
+        _redirect(SessionStage.deletionPending, AppRoutes.today),
+        AppRoutes.deletionPending,
+      );
+      expect(
+        _redirect(SessionStage.deletionPending, AppRoutes.deletionPending),
+        isNull,
+      );
+      // Karar verilince (talep iptal) kapı geçilir, Bugün açılır.
+      expect(
+        _redirect(SessionStage.ready, AppRoutes.deletionPending),
+        AppRoutes.today,
+      );
+    });
+
+    test('silme bitiş ekranı oturum kapanınca da açık kalır', () {
+      expect(
+        _redirect(SessionStage.signedOut, AppRoutes.accountDeleted),
+        isNull,
+      );
+      expect(_redirect(SessionStage.ready, AppRoutes.accountDeleted), isNull);
+      expect(
+        _redirect(SessionStage.signedOut, AppRoutes.deleteAccount),
+        AppRoutes.signIn,
+      );
+    });
+
     test('kurulum yalnız işletme varken sürer', () {
       expect(
         sessionStageOf(signedIn: true, hasOrganization: true, settingUp: true),

@@ -14,10 +14,10 @@ Deno.test("tarih Türkçede Türkiye saatiyle, İngilizcede UTC ile yazılır", 
   assertEquals(formatDeletionDate("2026-11-12T21:30:00Z", "en"), "12 November 2026 at 21:30 UTC");
 });
 
-Deno.test("talep e-postası tarihi ve giriş yaparak vazgeçmeyi söyler", () => {
+Deno.test("talep e-postası tarihi ve giriş yapıp onaylayarak vazgeçmeyi söyler", () => {
   const tr = requestedMail("2026-11-12T09:30:00Z", false, "tr");
   assert(tr.text.includes("12 Kasım 2026 12:30 (TSİ) tarihinde kalıcı olarak silinecek"));
-  assert(tr.text.includes("giriş yapman yeterli"));
+  assert(tr.text.includes("giriş yap ve hesabını korumak istediğini onayla"));
   assert(tr.text.includes("işletmede kalır"));
 
   const trOrg = requestedMail("2026-11-12T09:30:00Z", true, "tr");

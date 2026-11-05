@@ -7424,5 +7424,214 @@
   "onboardingMigratoryTitle": "Do you move your hives (migratory)?",
   "onboardingMigratoryMessage": "If not, migration plans and moves are hidden; change it anytime in the business profile.",
   "onboardingMigratoryYes": "Yes",
-  "onboardingMigratoryNo": "No, stationary"
+  "onboardingMigratoryNo": "No, stationary",
+
+  "settingsDeleteAccount": "Delete my account",
+  "settingsDeleteAccountOffline": "Deleting your account needs an internet connection; try again once you're online.",
+  "deletionTitle": "Delete my account",
+  "deletionStepCounter": "Step {current} of {total}",
+  "@deletionStepCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "deletionContinue": "Continue",
+  "deletionSoloTitle": "Your account and your business will be deleted",
+  "deletionSoloMessage": "You're the only person in {organization}. Deleting your account also deletes the business and all of its records.",
+  "@deletionSoloMessage": {
+    "placeholders": {
+      "organization": {
+        "type": "String",
+        "example": "Petek Arıcılık"
+      }
+    }
+  },
+  "deletionCountsLabel": "Records that will be deleted",
+  "deletionCountHives": "Hives",
+  "deletionCountApiaries": "Apiaries",
+  "deletionCountInspections": "Inspections",
+  "deletionCountHarvests": "Harvests",
+  "deletionCountDocuments": "Documents",
+  "deletionCountPhotos": "Photos",
+  "deletionLotWarningTitle": "QR codes will stop working.",
+  "deletionLotWarningMessage": "{count, plural, =1{1 public lot page will be deleted, and the QR codes on your jars will stop working.} other{{count} public lot pages will be deleted, and the QR codes on your jars will stop working.}}",
+  "@deletionLotWarningMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "deletionTeamTitle": "You have a team: choose what happens to the business",
+  "deletionTeamMessage": "{count, plural, =1{You own {organization}, and 1 other person is on the team.} other{You own {organization}, and {count} other people are on the team.}}",
+  "@deletionTeamMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "organization": {
+        "type": "String",
+        "example": "Petek Arıcılık"
+      }
+    }
+  },
+  "deletionChoiceTransfer": "Transfer ownership and leave",
+  "deletionChoiceTransferHint": "The business and its records stay. The partner you choose becomes the owner; only your account is deleted.",
+  "deletionChoiceDelete": "Delete the business and all records",
+  "deletionChoiceDeleteHint": "{count, plural, =1{The other person on the team loses access too.} other{The {count} other people on the team lose access too.}}",
+  "@deletionChoiceDeleteHint": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "deletionTransferPick": "New owner",
+  "deletionTransferNoPartner": "To transfer, someone on the team must be a partner. Make a member a partner on the Team screen, or delete the business.",
+  "deletionPartnerFallbackName": "Partner",
+  "deletionMemberTitle": "Only your account will be deleted",
+  "deletionMemberMessage": "{organization} and its records are not deleted. The records you entered stay with the business; your name is removed from the team.",
+  "@deletionMemberMessage": {
+    "placeholders": {
+      "organization": {
+        "type": "String",
+        "example": "Petek Arıcılık"
+      }
+    }
+  },
+  "deletionUnknownMessage": "Your membership hasn't reached this phone yet. Try again after syncing.",
+  "deletionGraceNote": "Deletion becomes final after 7 days; until then you can sign in and change your mind.",
+  "deletionBackupTitle": "Save your data first",
+  "deletionBackupMessage": "Deleted records can't be restored. We recommend saving a copy first.",
+  "deletionBackupReports": "PDF reports",
+  "deletionBackupReportsHint": "Download ready-made reports as PDF.",
+  "deletionBackupJson": "All records",
+  "deletionBackupJsonValue": "JSON",
+  "deletionBackupJsonHint": "All your records in one file; save it wherever you like.",
+  "deletionBackupSaved": "Saved",
+  "deletionBackupDownload": "Download my records",
+  "deletionBackupSkip": "Skip",
+  "deletionBackupFileName": "mobil-arici-records-{date}",
+  "@deletionBackupFileName": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "2026-11-05"
+      }
+    }
+  },
+  "deletionVerifyTitle": "Confirm it's you",
+  "deletionVerifyButton": "Verify code",
+  "deletionConfirmTitle": "Final confirmation",
+  "deletionConfirmIntro": "If you confirm:",
+  "deletionConsequenceAccount": "Your account is permanently deleted on {date}.",
+  "@deletionConsequenceAccount": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Nov 2026"
+      }
+    }
+  },
+  "deletionConsequenceOrganization": "{organization} and all of its records are deleted too.",
+  "@deletionConsequenceOrganization": {
+    "placeholders": {
+      "organization": {
+        "type": "String",
+        "example": "Petek Arıcılık"
+      }
+    }
+  },
+  "deletionConsequenceTransfer": "{name} becomes the new owner of {organization}.",
+  "@deletionConsequenceTransfer": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Ayşe Yılmaz"
+      },
+      "organization": {
+        "type": "String",
+        "example": "Petek Arıcılık"
+      }
+    }
+  },
+  "deletionConsequenceRecordsStay": "The business records are not deleted.",
+  "deletionConsequenceLots": "{count, plural, =1{1 lot page closes; its QR codes stop working.} other{{count} lot pages close; their QR codes stop working.}}",
+  "@deletionConsequenceLots": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "deletionConsequenceSignOut": "You're signed out and the data on this phone is removed.",
+  "deletionConsequenceCancel": "If you sign in before then, you can cancel the deletion.",
+  "deletionConfirmTypeName": "To confirm, type the business name: {organization}",
+  "@deletionConfirmTypeName": {
+    "placeholders": {
+      "organization": {
+        "type": "String",
+        "example": "Petek Arıcılık"
+      }
+    }
+  },
+  "deletionConfirmTypeKeyword": "To confirm, type {keyword}",
+  "@deletionConfirmTypeKeyword": {
+    "placeholders": {
+      "keyword": {
+        "type": "String",
+        "example": "DELETE"
+      }
+    }
+  },
+  "deletionKeyword": "DELETE",
+  "deletionConfirmButton": "Delete my account",
+  "deletionConfirmButtonWithOrganization": "Delete my account and business",
+  "deletionSubmitting": "Sending…",
+  "deletionFailureNetwork": "Couldn't reach the server. Check your connection and try again.",
+  "deletionFailureOwnerMustTransfer": "You also own another business with a team. Transfer ownership there first.",
+  "deletionFailureInvalidTransfer": "The person you chose is no longer a partner. Choose another partner.",
+  "deletionFailureRateLimited": "Too many attempts in a short time. Try again tomorrow.",
+  "deletionFailureForbidden": "Your session has ended. Sign in again and retry.",
+  "deletionFailureUnknown": "The request couldn't be sent. Try again in a little while.",
+  "deletionDoneTitle": "We've received your request",
+  "deletionDoneDate": "Your account will be permanently deleted on {date}.",
+  "@deletionDoneDate": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Nov 2026"
+      }
+    }
+  },
+  "deletionDoneCancelHint": "If you change your mind, sign in before then and the deletion is cancelled.",
+  "deletionDoneEmail": "We've also sent the details to your email.",
+  "deletionDoneClearing": "Removing the data on this phone…",
+  "deletionDoneSignedOut": "You've been signed out and the data on this phone has been removed.",
+  "deletionDoneAction": "Done",
+  "deletionPendingTitle": "Your account is about to be deleted",
+  "deletionPendingMessage": "Your account will be deleted on {date}. If you continue, the deletion is cancelled.",
+  "@deletionPendingMessage": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Nov 2026"
+      }
+    }
+  },
+  "deletionPendingContinue": "Continue and keep my account",
+  "deletionPendingSignOut": "Sign out and keep the deletion",
+  "deletionPendingCancelled": "Deletion cancelled. Welcome back!",
+  "deletionPendingCancelFailed": "The deletion couldn't be cancelled. Check your connection and try again."
 }

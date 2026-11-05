@@ -58,6 +58,16 @@ class MapAreaStore {
   }
 
   /// Alanın MBTiles dosyası; henüz olmayabilir.
+  /// İndirilmiş her alanı, listeyi ve stili siler (hesap silindikten sonra
+  /// cihaz temizliği); eşzamanlı.
+  Future<void> clear() async {
+    final directory = await _root;
+    if (!directory.existsSync()) return;
+    for (final entity in directory.listSync()) {
+      entity.deleteSync(recursive: true);
+    }
+  }
+
   Future<File> areaFile(String id) => _file('$id.mbtiles');
 
   /// İndirmenin yazıldığı geçici dosya; bitmeden alan gibi görünmez.

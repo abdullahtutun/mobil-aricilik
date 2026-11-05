@@ -29,6 +29,7 @@ class FakeBackend {
   deletedUsers: string[] = [];
   requestResponse: unknown = null;
   requestError: RpcError | null = null;
+  pendingRequest: Record<string, unknown> | null = null;
   failDeleteUser = 0;
   failComplete = 0;
   logs: unknown[][] = [];
@@ -93,6 +94,8 @@ class FakeBackend {
         return { data: this.requestResponse, error: this.requestError };
       case "account_deletion_cancel":
         return { data: true, error: null };
+      case "account_deletion_pending":
+        return { data: this.pendingRequest, error: null };
       case "account_deletion_due":
         return {
           data: this.requests.filter((r) => r.status === "bekliyor").map((r) => ({ id: r.id })),
@@ -240,13 +243,65 @@ Deno.test("talep JWT'nin kullanıcısı için açılır, oturumlar kapanır, e-p
       p_org_id: orgId,
       p_delete_organization: false,
       p_channel: "uygulama",
+      p_transfer_to: null,
     },
   }]);
   assertEquals(backend.signOuts, ["jwt"]);
   assertEquals(backend.mails.length, 1);
   assertEquals(backend.mails[0].to, "3333@test.local");
   assert(backend.mails[0].mail.text.includes("12 Kasım 2026 12:30 (TSİ)"));
-  assert(backend.mails[0].mail.text.includes("giriş yap"));
+  assert(backend.mails[0].mail.text.includes("giriş yap ve hesabını korumak istediğini onayla"));
+});
+
+Deno.test("sahiplik devri ortağın kimliğiyle RPC'ye gider", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  backend.requestResponse = pendingResponse;
+  const handle = createHandler(backend.deps());
+
+  const response = await handle(post(
+    { action: "request", org_id: orgId, transfer_to: otherId },
+    { Authorization: "Bearer jwt" },
+  ));
+
+  assertEquals(response.status, 200);
+  assertEquals(backend.rpcCalls[0].args.p_transfer_to, otherId);
+  assertEquals(backend.rpcCalls[0].args.p_delete_organization, false);
+});
+
+Deno.test("devir hedefi uygun değilse 422 alır, oturumlar kapanmaz", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  backend.requestError = { code: "DL422", message: "ortak değil" };
+  const handle = createHandler(backend.deps());
+
+  const response = await handle(post(
+    { action: "request", org_id: orgId, transfer_to: otherId },
+    { Authorization: "Bearer jwt" },
+  ));
+
+  assertEquals(response.status, 422);
+  assertEquals(await response.json(), { error: "invalid_transfer_target" });
+  assertEquals(backend.signOuts.length, 0);
+  assertEquals(backend.mails.length, 0);
+});
+
+Deno.test("status bekleyen talebi ya da null döner, talebi iptal etmez", async () => {
+  const backend = new FakeBackend();
+  backend.addUser(workerId, "jwt");
+  const handle = createHandler(backend.deps());
+  const auth = { Authorization: "Bearer jwt" };
+
+  const none = await handle(post({ action: "status" }, auth));
+  assertEquals(none.status, 200);
+  assertEquals(await none.json(), { request: null });
+
+  backend.pendingRequest = { id: "r1", status: "bekliyor", scheduled_for: "2026-11-12T09:30:00Z" };
+  const pending = await handle(post({ action: "status" }, auth));
+  assertEquals(await pending.json(), { request: backend.pendingRequest });
+  assertEquals(backend.rpcCalls.map((c) => c.fn), ["account_deletion_pending", "account_deletion_pending"]);
+  assertEquals(backend.rpcCalls[0].args, { p_user_id: workerId });
+  assertEquals(backend.signOuts.length, 0);
 });
 
 Deno.test("bekleyen talep tekrar istenirse e-posta yinelenmez, oturumlar yine kapanır", async () => {
@@ -299,6 +354,9 @@ Deno.test("geçersiz girdi 400 alır", async () => {
       { action: "request", delete_organization: true },
       { action: "request", org_id: "bozuk" },
       { action: "request", channel: "sms" },
+      { action: "request", transfer_to: otherId },
+      { action: "request", org_id: orgId, transfer_to: "bozuk" },
+      { action: "request", org_id: orgId, transfer_to: otherId, delete_organization: true },
       { action: "bilinmeyen" },
     ]
   ) {

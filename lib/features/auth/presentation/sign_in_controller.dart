@@ -59,9 +59,10 @@ class SignInController extends _$SignInController {
     return await _send(email, locale);
   }
 
-  Future<void> verifyCode(String code, {required String locale}) async {
+  /// Kod doğrulanıp oturum açıldıysa true.
+  Future<bool> verifyCode(String code, {required String locale}) async {
     final email = state.email;
-    if (email == null || state.busy || code.length != otpLength) return;
+    if (email == null || state.busy || code.length != otpLength) return false;
     state = state.copyWith(busy: true, failure: null);
     try {
       await ref
@@ -71,9 +72,10 @@ class SignInController extends _$SignInController {
       if (ref.mounted) {
         state = state.copyWith(busy: false, failure: error.failure);
       }
-      return;
+      return false;
     }
     if (ref.mounted) state = state.copyWith(busy: false);
+    return true;
   }
 
   void clearFailure() {

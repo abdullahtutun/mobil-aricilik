@@ -7592,4 +7592,309 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingMigratoryNo => 'No, stationary';
+
+  @override
+  String get settingsDeleteAccount => 'Delete my account';
+
+  @override
+  String get settingsDeleteAccountOffline =>
+      'Deleting your account needs an internet connection; try again once you\'re online.';
+
+  @override
+  String get deletionTitle => 'Delete my account';
+
+  @override
+  String deletionStepCounter(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get deletionContinue => 'Continue';
+
+  @override
+  String get deletionSoloTitle =>
+      'Your account and your business will be deleted';
+
+  @override
+  String deletionSoloMessage(String organization) {
+    return 'You\'re the only person in $organization. Deleting your account also deletes the business and all of its records.';
+  }
+
+  @override
+  String get deletionCountsLabel => 'Records that will be deleted';
+
+  @override
+  String get deletionCountHives => 'Hives';
+
+  @override
+  String get deletionCountApiaries => 'Apiaries';
+
+  @override
+  String get deletionCountInspections => 'Inspections';
+
+  @override
+  String get deletionCountHarvests => 'Harvests';
+
+  @override
+  String get deletionCountDocuments => 'Documents';
+
+  @override
+  String get deletionCountPhotos => 'Photos';
+
+  @override
+  String get deletionLotWarningTitle => 'QR codes will stop working.';
+
+  @override
+  String deletionLotWarningMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count public lot pages will be deleted, and the QR codes on your jars will stop working.',
+      one: '1 public lot page will be deleted, and the QR codes on your jars will stop working.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionTeamTitle =>
+      'You have a team: choose what happens to the business';
+
+  @override
+  String deletionTeamMessage(int count, String organization) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You own $organization, and $count other people are on the team.',
+      one: 'You own $organization, and 1 other person is on the team.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionChoiceTransfer => 'Transfer ownership and leave';
+
+  @override
+  String get deletionChoiceTransferHint =>
+      'The business and its records stay. The partner you choose becomes the owner; only your account is deleted.';
+
+  @override
+  String get deletionChoiceDelete => 'Delete the business and all records';
+
+  @override
+  String deletionChoiceDeleteHint(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'The $count other people on the team lose access too.',
+      one: 'The other person on the team loses access too.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionTransferPick => 'New owner';
+
+  @override
+  String get deletionTransferNoPartner =>
+      'To transfer, someone on the team must be a partner. Make a member a partner on the Team screen, or delete the business.';
+
+  @override
+  String get deletionPartnerFallbackName => 'Partner';
+
+  @override
+  String get deletionMemberTitle => 'Only your account will be deleted';
+
+  @override
+  String deletionMemberMessage(String organization) {
+    return '$organization and its records are not deleted. The records you entered stay with the business; your name is removed from the team.';
+  }
+
+  @override
+  String get deletionUnknownMessage =>
+      'Your membership hasn\'t reached this phone yet. Try again after syncing.';
+
+  @override
+  String get deletionGraceNote =>
+      'Deletion becomes final after 7 days; until then you can sign in and change your mind.';
+
+  @override
+  String get deletionBackupTitle => 'Save your data first';
+
+  @override
+  String get deletionBackupMessage =>
+      'Deleted records can\'t be restored. We recommend saving a copy first.';
+
+  @override
+  String get deletionBackupReports => 'PDF reports';
+
+  @override
+  String get deletionBackupReportsHint => 'Download ready-made reports as PDF.';
+
+  @override
+  String get deletionBackupJson => 'All records';
+
+  @override
+  String get deletionBackupJsonValue => 'JSON';
+
+  @override
+  String get deletionBackupJsonHint =>
+      'All your records in one file; save it wherever you like.';
+
+  @override
+  String get deletionBackupSaved => 'Saved';
+
+  @override
+  String get deletionBackupDownload => 'Download my records';
+
+  @override
+  String get deletionBackupSkip => 'Skip';
+
+  @override
+  String deletionBackupFileName(String date) {
+    return 'mobil-arici-records-$date';
+  }
+
+  @override
+  String get deletionVerifyTitle => 'Confirm it\'s you';
+
+  @override
+  String get deletionVerifyButton => 'Verify code';
+
+  @override
+  String get deletionConfirmTitle => 'Final confirmation';
+
+  @override
+  String get deletionConfirmIntro => 'If you confirm:';
+
+  @override
+  String deletionConsequenceAccount(String date) {
+    return 'Your account is permanently deleted on $date.';
+  }
+
+  @override
+  String deletionConsequenceOrganization(String organization) {
+    return '$organization and all of its records are deleted too.';
+  }
+
+  @override
+  String deletionConsequenceTransfer(String name, String organization) {
+    return '$name becomes the new owner of $organization.';
+  }
+
+  @override
+  String get deletionConsequenceRecordsStay =>
+      'The business records are not deleted.';
+
+  @override
+  String deletionConsequenceLots(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lot pages close; their QR codes stop working.',
+      one: '1 lot page closes; its QR codes stop working.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deletionConsequenceSignOut =>
+      'You\'re signed out and the data on this phone is removed.';
+
+  @override
+  String get deletionConsequenceCancel =>
+      'If you sign in before then, you can cancel the deletion.';
+
+  @override
+  String deletionConfirmTypeName(String organization) {
+    return 'To confirm, type the business name: $organization';
+  }
+
+  @override
+  String deletionConfirmTypeKeyword(String keyword) {
+    return 'To confirm, type $keyword';
+  }
+
+  @override
+  String get deletionKeyword => 'DELETE';
+
+  @override
+  String get deletionConfirmButton => 'Delete my account';
+
+  @override
+  String get deletionConfirmButtonWithOrganization =>
+      'Delete my account and business';
+
+  @override
+  String get deletionSubmitting => 'Sending…';
+
+  @override
+  String get deletionFailureNetwork =>
+      'Couldn\'t reach the server. Check your connection and try again.';
+
+  @override
+  String get deletionFailureOwnerMustTransfer =>
+      'You also own another business with a team. Transfer ownership there first.';
+
+  @override
+  String get deletionFailureInvalidTransfer =>
+      'The person you chose is no longer a partner. Choose another partner.';
+
+  @override
+  String get deletionFailureRateLimited =>
+      'Too many attempts in a short time. Try again tomorrow.';
+
+  @override
+  String get deletionFailureForbidden =>
+      'Your session has ended. Sign in again and retry.';
+
+  @override
+  String get deletionFailureUnknown =>
+      'The request couldn\'t be sent. Try again in a little while.';
+
+  @override
+  String get deletionDoneTitle => 'We\'ve received your request';
+
+  @override
+  String deletionDoneDate(String date) {
+    return 'Your account will be permanently deleted on $date.';
+  }
+
+  @override
+  String get deletionDoneCancelHint =>
+      'If you change your mind, sign in before then and the deletion is cancelled.';
+
+  @override
+  String get deletionDoneEmail => 'We\'ve also sent the details to your email.';
+
+  @override
+  String get deletionDoneClearing => 'Removing the data on this phone…';
+
+  @override
+  String get deletionDoneSignedOut =>
+      'You\'ve been signed out and the data on this phone has been removed.';
+
+  @override
+  String get deletionDoneAction => 'Done';
+
+  @override
+  String get deletionPendingTitle => 'Your account is about to be deleted';
+
+  @override
+  String deletionPendingMessage(String date) {
+    return 'Your account will be deleted on $date. If you continue, the deletion is cancelled.';
+  }
+
+  @override
+  String get deletionPendingContinue => 'Continue and keep my account';
+
+  @override
+  String get deletionPendingSignOut => 'Sign out and keep the deletion';
+
+  @override
+  String get deletionPendingCancelled => 'Deletion cancelled. Welcome back!';
+
+  @override
+  String get deletionPendingCancelFailed =>
+      'The deletion couldn\'t be cancelled. Check your connection and try again.';
 }

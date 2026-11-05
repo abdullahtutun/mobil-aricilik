@@ -162,6 +162,17 @@ abstract final class AppRoutes {
   /// Offline harita paketleri; Ayarlar'dan açılır.
   static const offlineMaps = '/more/settings/maps';
 
+  /// Hesabımı sil: adımlı akış; Ayarlar'dan açılır (Daha fazla → Ayarlar →
+  /// Hesabımı sil, üç dokunuş).
+  static const deleteAccount = '/more/settings/delete-account';
+
+  /// Silme talebinden sonraki bitiş ekranı; oturum kapandıktan sonra da
+  /// açık kalır.
+  static const accountDeleted = '/account-deleted';
+
+  /// Bekleme süresinde giriş yapan kullanıcıya "Hesabın silinmek üzere".
+  static const deletionPending = '/account-deletion-pending';
+
   /// PDF raporları; Daha fazla'dan açılır.
   static const reports = '/more/reports';
 

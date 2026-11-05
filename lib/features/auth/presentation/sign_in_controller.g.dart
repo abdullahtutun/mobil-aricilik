@@ -50,7 +50,7 @@ final class SignInControllerProvider
   }
 }
 
-String _$signInControllerHash() => r'532d5211384644863446eecd4d874da91b1e3645';
+String _$signInControllerHash() => r'5f79a5cfdc58ee188fa5d74dd69d19f502792ecc';
 
 /// E-posta → kod → giriş akışı. İki giriş ekranı da dinlediği sürece yaşar;
 /// giriş tamamlanınca ekranlar kapanır, durum da silinir. Başarılı girişten

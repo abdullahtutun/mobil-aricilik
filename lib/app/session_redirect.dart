@@ -5,6 +5,10 @@ enum SessionStage {
   /// Giriş yapılmamış.
   signedOut,
 
+  /// Giriş yapılmış ama hesabın silme talebi bekliyor; kullanıcı önce
+  /// silmeyi iptal etmeyi ya da çıkmayı seçer.
+  deletionPending,
+
   /// Giriş yapılmış ama işletme yok ya da henüz bilinmiyor (yükleniyor,
   /// çevrimdışı ilk açılış).
   needsOrganization,
@@ -23,10 +27,12 @@ enum SessionStage {
 SessionStage sessionStageOf({
   required bool signedIn,
   required bool hasOrganization,
+  bool deletionPending = false,
   bool settingUp = false,
   bool fullPullDone = true,
 }) {
   if (!signedIn) return SessionStage.signedOut;
+  if (deletionPending) return SessionStage.deletionPending;
   if (!hasOrganization) return SessionStage.needsOrganization;
   if (settingUp) return SessionStage.settingUp;
   return fullPullDone ? SessionStage.ready : SessionStage.initialSync;
@@ -36,18 +42,25 @@ SessionStage sessionStageOf({
 /// konum.
 const onboardingFromParameter = 'from';
 
-/// Oturuma göre yönlendirme: giriş yapılmamışsa her konum giriş ekranına,
-/// işletme yoksa onboarding'e, işletme yeni kurulduysa ilk arılık adımına,
-/// kayıtlar henüz inmediyse ilk çekme ekranına gider. Her şey hazırsa giriş
-/// ekranları Bugün'e, onboarding ve ilk çekme asıl açılmak istenen konuma
-/// gider (işletme cihazdan okunurken gelen derin link kaybolmasın).
-/// Değişiklik yoksa null.
+/// Oturuma göre yönlendirme: giriş yapılmamışsa her konum giriş ekranına
+/// (hesap silmenin bitiş ekranı hariç), silme talebi bekliyorsa "Hesabın
+/// silinmek üzere" ekranına, işletme yoksa onboarding'e, işletme yeni
+/// kurulduysa ilk arılık adımına, kayıtlar henüz inmediyse ilk çekme
+/// ekranına gider. Her şey hazırsa giriş ekranları Bugün'e, onboarding ve
+/// ilk çekme asıl açılmak istenen konuma gider (işletme cihazdan okunurken
+/// gelen derin link kaybolmasın). Değişiklik yoksa null.
 String? sessionRedirect({required SessionStage stage, required Uri location}) {
   final path = location.path;
   final onSignIn = _isUnder(AppRoutes.signIn, path);
   switch (stage) {
     case SessionStage.signedOut:
-      return onSignIn ? null : AppRoutes.signIn;
+      return onSignIn || path == AppRoutes.accountDeleted
+          ? null
+          : AppRoutes.signIn;
+    case SessionStage.deletionPending:
+      return path == AppRoutes.deletionPending
+          ? null
+          : AppRoutes.deletionPending;
     case SessionStage.needsOrganization:
       return _gateStep(AppRoutes.onboarding, location);
     case SessionStage.settingUp:
@@ -92,10 +105,12 @@ String? _returnLocation(Uri gate) {
   return from;
 }
 
-/// Onboarding adımları ve ilk çekme: oturum hazır olana kadar tutulan
-/// ekranlar.
+/// Onboarding adımları, ilk çekme ve bekleyen silme: oturum hazır olana
+/// kadar tutulan ekranlar.
 bool _isGate(String path) =>
-    _isUnder(AppRoutes.onboarding, path) || path == AppRoutes.initialSync;
+    _isUnder(AppRoutes.onboarding, path) ||
+    path == AppRoutes.initialSync ||
+    path == AppRoutes.deletionPending;
 
 bool _isUnder(String route, String path) =>
     path == route || path.startsWith('$route/');

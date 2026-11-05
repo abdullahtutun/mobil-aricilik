@@ -5,13 +5,17 @@
 // JWT auth sunucusunda doğrulanır; oturumsuz ve anonim çağrı reddedilir.
 // İşlemler hep JWT'nin kullanıcısı için yapılır; gövdedeki kullanıcı
 // kimliği yok sayılır.
-//  - request { org_id?, delete_organization?, channel? }  Silme talebi.
+//  - request { org_id?, delete_organization?, transfer_to?, channel? }
+//      Silme talebi. `transfer_to` işletmenin ortağına (partner) sahipliği
+//      devreder; `org_id` ister, `delete_organization` ile birlikte olmaz.
 //      → 200 { request, counts, already_pending }. Hatalar: 409
-//      owner_must_transfer { org_ids }, 429 rate_limited, 403 forbidden,
-//      400 bad_request. Talepte tüm oturumlar kapanır (bekleyen talepte de
-//      yeniden denenir); yeni talepte "silinecek" e-postası gider.
-//  - cancel  → 200 { cancelled }. Giriş yapmak da talebi iptal eder
-//      (auth.sessions tetikleyicisi); bu, oturum açıkken iptal yoludur.
+//      owner_must_transfer { org_ids }, 422 invalid_transfer_target, 429
+//      rate_limited, 403 forbidden, 400 bad_request. Talepte tüm oturumlar
+//      kapanır (bekleyen talepte de yeniden denenir); yeni talepte
+//      "silinecek" e-postası gider.
+//  - status  → 200 { request | null }. Bekleme süresinde giriş yapan
+//      kullanıcıya uygulama önce bunu sorar; giriş talebi iptal etmez.
+//  - cancel  → 200 { cancelled }. Kullanıcı "devam et" deyince çağrılır.
 //
 // Kalıcı silme: pg_cron `x-cron-secret` başlığıyla POST { action:
 // "purge_due" } yollar. Süresi dolan her talep için sırayla: kayıtlar, Storage
@@ -194,9 +198,13 @@ async function requestDeletion(
 ): Promise<Response> {
   const orgId = body.org_id ?? null;
   const deleteOrganization = body.delete_organization ?? false;
+  const transferTo = body.transfer_to ?? null;
   const channel = body.channel ?? "uygulama";
   if (
     (orgId !== null && (typeof orgId !== "string" || !uuid.test(orgId))) ||
+    (transferTo !== null &&
+      (typeof transferTo !== "string" || !uuid.test(transferTo) ||
+        orgId === null || deleteOrganization === true)) ||
     typeof deleteOrganization !== "boolean" ||
     !channels.has(channel) ||
     (deleteOrganization && orgId === null)
@@ -210,6 +218,7 @@ async function requestDeletion(
     p_org_id: orgId,
     p_delete_organization: deleteOrganization,
     p_channel: channel,
+    p_transfer_to: transferTo,
   });
   if (error || !data) {
     switch (error?.code) {
@@ -218,6 +227,8 @@ async function requestDeletion(
           error: "owner_must_transfer",
           org_ids: (error.details ?? "").split(",").filter(Boolean),
         }, 409);
+      case "DL422":
+        return json({ error: "invalid_transfer_target" }, 422);
       case "DL429":
         return json({ error: "rate_limited" }, 429);
       case "42501":
@@ -286,6 +297,17 @@ export function createHandler(deps: Deps): (request: Request) => Promise<Respons
     switch (body.action) {
       case "request":
         return requestDeletion(deps, user, jwt, body);
+      case "status": {
+        const { data, error } = await deps.rpc<Record<string, unknown> | null>(
+          "account_deletion_pending",
+          { p_user_id: user.id },
+        );
+        if (error) {
+          deps.log("account-delete: status", error);
+          return json({ error: "server" }, 500);
+        }
+        return json({ request: data ?? null });
+      }
       case "cancel": {
         const { data, error } = await deps.rpc<boolean>("account_deletion_cancel", {
           p_user_id: user.id,

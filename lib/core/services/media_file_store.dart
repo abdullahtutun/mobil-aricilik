@@ -53,4 +53,14 @@ class MediaFileStore {
     final file = File(await pathOf(fileName));
     if (file.existsSync()) file.deleteSync();
   }
+
+  /// Klasördeki her dosyayı siler (hesap silindikten sonra cihaz
+  /// temizliği). Klasör hiç açılmadıysa bir şey yapmaz; eşzamanlı.
+  Future<void> clear() async {
+    final directory = await _root;
+    if (!directory.existsSync()) return;
+    for (final entity in directory.listSync()) {
+      entity.deleteSync(recursive: true);
+    }
+  }
 }

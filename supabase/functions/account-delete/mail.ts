@@ -34,7 +34,8 @@ export function formatDeletionDate(iso: string, locale: MailLocale): string {
   return `${text} UTC`;
 }
 
-/// Talep alındı: "<tarih> tarihinde silinecek, vazgeçmek için giriş yap".
+/// Talep alındı: "<tarih> tarihinde silinecek, vazgeçmek için giriş yapıp
+/// onayla".
 export function requestedMail(
   scheduledFor: string,
   withOrganization: boolean,
@@ -51,7 +52,7 @@ export function requestedMail(
           ? `Your account, your business and all of its records will be permanently deleted on ${when}.`
           : `Your account will be permanently deleted on ${when}. The business records you entered stay with the business.`,
         "",
-        "Changed your mind? Just sign in to the app before that date and the request is cancelled automatically.",
+        "Changed your mind? Sign in to the app before that date and confirm that you want to keep your account.",
         "If you did not make this request, sign in now.",
       ].join("\n"),
     };
@@ -65,7 +66,7 @@ export function requestedMail(
         ? `Hesabın, işletmen ve işletmenin tüm kayıtları ${when} tarihinde kalıcı olarak silinecek.`
         : `Hesabın ${when} tarihinde kalıcı olarak silinecek. Girdiğin işletme kayıtları işletmede kalır.`,
       "",
-      "Vazgeçtiysen bu tarihten önce uygulamaya giriş yapman yeterli; talep kendiliğinden iptal olur.",
+      "Vazgeçtiysen bu tarihten önce uygulamaya giriş yap ve hesabını korumak istediğini onayla.",
       "Bu talebi sen yapmadıysan hemen giriş yap.",
     ].join("\n"),
   };

@@ -6,6 +6,7 @@ import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/services/app_info_service_provider.dart';
 import 'package:mobil_arici/core/services/basemap_service_provider.dart';
 import 'package:mobil_arici/core/services/code_scanner_provider.dart';
+import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
 import 'package:mobil_arici/core/services/directions_service_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/services/place_search_service_provider.dart';
@@ -14,6 +15,8 @@ import 'package:mobil_arici/core/services/push_service_provider.dart';
 import 'package:mobil_arici/core/services/screen_awake.dart';
 import 'package:mobil_arici/core/services/share_service_provider.dart';
 import 'package:mobil_arici/core/services/url_launcher_service_provider.dart';
+import 'package:mobil_arici/features/account_deletion/data/device_data_wiper.dart';
+import 'package:mobil_arici/features/account_deletion/presentation/account_deletion_providers.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
@@ -21,9 +24,11 @@ import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
+import 'fake_account_deletion_service.dart';
 import 'fake_app_info_service.dart';
 import 'fake_basemap_service.dart';
 import 'fake_code_scanner.dart';
+import 'fake_connectivity_service.dart';
 import 'fake_directions_service.dart';
 import 'fake_documents.dart';
 import 'fake_knowledge.dart';
@@ -98,9 +103,12 @@ class FakeAuthService implements AuthService {
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
 /// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, paylaşma, adres
 /// açıcı, senkron, medya (foto, ses, Storage), belge dosyaları (PDF seçici,
-/// çizici, Storage), fiş klasörü, hava servisi ve ekranı açık tutma sahte;
-/// hava servisi verilmezse çevrimdışı gibi hata atar. İlk tam çekme bitmiş
-/// sayılır ([fullPullDone] yanlışsa DB'den okunur).
+/// çizici, Storage), fiş klasörü, hava servisi, ekranı açık tutma, ağ
+/// bağlantısı ve hesap silme servisi sahte; hava servisi verilmezse
+/// çevrimdışı gibi hata atar. Hesap silmedeki cihaz temizliği gerçek: DB'yi
+/// ve sahte medya, belge, fiş ve harita klasörlerini boşaltır; güvenli depo
+/// yerine [secureStorageWipe] sayılır. İlk tam çekme bitmiş sayılır
+/// ([fullPullDone] yanlışsa DB'den okunur).
 List<Override> signedIn({
   FakeAuthService? auth,
   AppDatabase? db,
@@ -123,40 +131,68 @@ List<Override> signedIn({
   FakeDeviceTokenService? deviceTokens,
   FakeKnowledge? knowledge,
   FakeOfflineMaps? offlineMaps,
+  FakeConnectivityService? connectivity,
+  FakeAccountDeletionService? accountDeletion,
+  FakeSecureStorageWipe? secureStorageWipe,
   bool fullPullDone = true,
-}) => [
-  authServiceProvider.overrideWithValue(
-    auth ?? FakeAuthService(user: testUser),
-  ),
-  ...organizationOverrides(),
-  appDatabaseProvider.overrideWithValue(db ?? openTestDatabase()),
-  codeScannerProvider.overrideWithValue((scanner ?? FakeCodeScanner()).builder),
-  printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
-  shareServiceProvider.overrideWithValue(share ?? FakeShareService()),
-  urlLauncherServiceProvider.overrideWithValue(
-    urlLauncher ?? FakeUrlLauncher(),
-  ),
-  ...syncOverrides(service: sync, fullPullDone: fullPullDone),
-  ...(media ?? FakeMedia()).overrides,
-  ...(documents ?? FakeDocuments()).overrides,
-  ...(receipts ?? FakeReceipts()).overrides,
-  reminderNotificationsProvider.overrideWithValue(
-    reminders ?? FakeReminderNotifications(),
-  ),
-  weatherServiceProvider.overrideWithValue(weather ?? FakeWeatherService()),
-  screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
-  basemapServiceProvider.overrideWithValue(basemap ?? FakeBasemapService()),
-  placeSearchServiceProvider.overrideWithValue(
-    placeSearch ?? FakePlaceSearchService(),
-  ),
-  directionsServiceProvider.overrideWithValue(
-    directions ?? FakeDirectionsService(),
-  ),
-  appInfoServiceProvider.overrideWithValue(appInfo ?? FakeAppInfoService()),
-  pushServiceProvider.overrideWithValue(push ?? FakePushService()),
-  deviceTokenServiceProvider.overrideWithValue(
-    deviceTokens ?? FakeDeviceTokenService(),
-  ),
-  ...(knowledge ?? FakeKnowledge()).overrides,
-  ...(offlineMaps ?? FakeOfflineMaps()).overrides,
-];
+}) {
+  final database = db ?? openTestDatabase();
+  final fakeMedia = media ?? FakeMedia();
+  final fakeDocuments = documents ?? FakeDocuments();
+  final fakeReceipts = receipts ?? FakeReceipts();
+  final fakeReminders = reminders ?? FakeReminderNotifications();
+  final fakeMaps = offlineMaps ?? FakeOfflineMaps();
+  final secureWipe = secureStorageWipe ?? FakeSecureStorageWipe();
+  return [
+    authServiceProvider.overrideWithValue(
+      auth ?? FakeAuthService(user: testUser),
+    ),
+    ...organizationOverrides(),
+    appDatabaseProvider.overrideWithValue(database),
+    codeScannerProvider.overrideWithValue(
+      (scanner ?? FakeCodeScanner()).builder,
+    ),
+    printServiceProvider.overrideWithValue(printer ?? FakePrintService()),
+    shareServiceProvider.overrideWithValue(share ?? FakeShareService()),
+    urlLauncherServiceProvider.overrideWithValue(
+      urlLauncher ?? FakeUrlLauncher(),
+    ),
+    ...syncOverrides(service: sync, fullPullDone: fullPullDone),
+    ...fakeMedia.overrides,
+    ...fakeDocuments.overrides,
+    ...fakeReceipts.overrides,
+    reminderNotificationsProvider.overrideWithValue(fakeReminders),
+    weatherServiceProvider.overrideWithValue(weather ?? FakeWeatherService()),
+    screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
+    basemapServiceProvider.overrideWithValue(basemap ?? FakeBasemapService()),
+    placeSearchServiceProvider.overrideWithValue(
+      placeSearch ?? FakePlaceSearchService(),
+    ),
+    directionsServiceProvider.overrideWithValue(
+      directions ?? FakeDirectionsService(),
+    ),
+    appInfoServiceProvider.overrideWithValue(appInfo ?? FakeAppInfoService()),
+    pushServiceProvider.overrideWithValue(push ?? FakePushService()),
+    deviceTokenServiceProvider.overrideWithValue(
+      deviceTokens ?? FakeDeviceTokenService(),
+    ),
+    ...(knowledge ?? FakeKnowledge()).overrides,
+    ...fakeMaps.overrides,
+    connectivityServiceProvider.overrideWithValue(
+      connectivity ?? FakeConnectivityService(),
+    ),
+    accountDeletionServiceProvider.overrideWithValue(
+      accountDeletion ?? FakeAccountDeletionService(),
+    ),
+    deviceDataWiperProvider.overrideWithValue(
+      DeviceDataWiper(
+        db: database,
+        fileStores: [fakeMedia.store, fakeDocuments.store, fakeReceipts.store],
+        mapAreas: fakeMaps.store,
+        reminders: fakeReminders,
+        clearSecureStorage: secureWipe.call,
+        temporaryDirectory: () async => null,
+      ),
+    ),
+  ];
+}

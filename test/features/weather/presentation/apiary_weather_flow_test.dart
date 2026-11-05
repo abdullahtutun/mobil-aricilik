@@ -391,6 +391,9 @@ void main() {
       (windRow, '30 km/s altı'),
       (rainRow, '%60 altı'),
     ]) {
+      // Ayarlar listesi uzun; satır üst çubuğun altında kalmasın.
+      await tester.ensureVisible(row);
+      await tester.pumpAndSettle();
       await tester.tap(row);
       await tester.pumpAndSettle();
       await tester.tap(find.text(option).last);

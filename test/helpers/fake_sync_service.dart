@@ -46,6 +46,15 @@ class FakeSyncService implements SyncService {
   }
 
   @override
+  Future<void> whenIdle() async {
+    try {
+      await _running;
+    } on Object {
+      // Yalnız bitmesi beklenir.
+    }
+  }
+
+  @override
   Future<SyncResult> push() => throw UnimplementedError();
 
   @override

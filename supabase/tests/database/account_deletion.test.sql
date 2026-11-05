@@ -4,7 +4,7 @@
 -- 4444 B'nin tek kişilik owner'ı, 9999 hiçbir işletmede değil.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(58);
+select plan(61);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'owner@test.local'),
@@ -290,14 +290,30 @@ select ok(
 );
 
 -- ---------------------------------------------------------------------------
--- 7 gün içinde giriş talebi iptal eder
+-- 7 gün içinde giriş talebi iptal etmez; kullanıcı onaylayınca iptal olur
+-- (20261114120000_account_deletion_app_flow)
 -- ---------------------------------------------------------------------------
 
 insert into auth.sessions (id, user_id, created_at, updated_at)
 values (gen_random_uuid(), '44444444-4444-4444-4444-444444444444', now(), now());
 select is(
   (select status from public.deletion_requests where id = (select (r #>> '{request,id}')::uuid from solo_request)),
-  'iptal', 'giriş yapınca talep iptal olur'
+  'bekliyor', 'giriş talebi kendiliğinden iptal etmez; uygulama önce sorar'
+);
+set local role service_role;
+select is(
+  public.account_deletion_pending('44444444-4444-4444-4444-444444444444') ->> 'id',
+  (select r #>> '{request,id}' from solo_request),
+  'bekleyen talep sorulabilir'
+);
+select ok(
+  public.account_deletion_cancel('44444444-4444-4444-4444-444444444444'),
+  'kullanıcı devam etmeyi onaylayınca talep iptal olur'
+);
+reset role;
+select is(
+  (select status from public.deletion_requests where id = (select (r #>> '{request,id}')::uuid from solo_request)),
+  'iptal', 'iptal edilen talep iptal durumunda'
 );
 select is(pg_temp.org_rows('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb') > 0, true, 'iptalde veriler durur');
 
@@ -425,7 +441,7 @@ select lives_ok(
 );
 reset role;
 
--- Silme başladıktan sonra giriş talebi iptal etmez.
+-- Silme başladıktan sonra giriş talebi iptal etmez (artık hiçbir zaman).
 insert into auth.sessions (id, user_id, created_at, updated_at)
 values (gen_random_uuid(), '33333333-3333-3333-3333-333333333333', now(), now());
 select is(

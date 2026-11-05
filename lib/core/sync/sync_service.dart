@@ -98,6 +98,21 @@ class SyncService {
     _db.refSupportPeriods,
   ];
 
+  /// Süren tur (tam tur, gönderme ya da çekme) bitene kadar bekler; tur
+  /// yoksa hemen döner. Turun hatası buraya geçmez. Hesap silindikten sonra
+  /// cihaz temizlenmeden önce, süren bir çekmenin yerel DB'ye yeniden
+  /// yazmaması için.
+  Future<void> whenIdle() async {
+    for (final turn in [_syncing, _pushing, _pulling]) {
+      if (turn == null) continue;
+      try {
+        await turn;
+      } on Object {
+        // Tur kendi sonucunu çağırana verir; burada yalnız bitmesi beklenir.
+      }
+    }
+  }
+
   /// Tam tur: önce outbox gönderilir, gönderme bitince her tablo çekilir.
   /// Gönderme bitmezse (ağ yok, oturum yok, güncelleme gerekli) çekme
   /// yapılmaz ve gönderme sonucu döner. [onProgress] çekmenin ilerleyişini

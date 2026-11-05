@@ -9,6 +9,9 @@ class FakeConnectivityService implements ConnectivityService {
 
   bool unmetered = true;
 
+  /// Bir ağa bağlı mı; false ise internet isteyen akışlar başlamaz.
+  bool online = true;
+
   void reconnect() => _reconnected.add(null);
 
   /// Wi‑Fi'a geçer.
@@ -25,4 +28,7 @@ class FakeConnectivityService implements ConnectivityService {
 
   @override
   Future<bool> isUnmetered() async => unmetered;
+
+  @override
+  Future<bool> isOnline() async => online;
 }

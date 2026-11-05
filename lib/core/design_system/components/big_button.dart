@@ -7,6 +7,14 @@ enum BigButtonVariant {
 
   /// Yanındaki ikincil eylem; beyaz zeminde koyu bal çerçeveli.
   secondary,
+
+  /// Geri alınamayan son eylem (Hesabımı sil): kritik renkte dolu. Renk tek
+  /// başına anlatmasın diye ikon ve açık bir kelimeyle kullanılır.
+  danger,
+
+  /// Kritik eyleme götüren giriş (Ayarlar'daki Hesabımı sil): zeminde
+  /// kritik renkte yazı ve çerçeve.
+  dangerOutlined,
 }
 
 /// Saha eylemleri için büyük buton (`touchTargets.button`, 60dp; eldivende
@@ -74,6 +82,28 @@ class BigButton extends StatelessWidget {
           foregroundColor: colors.primary,
           side: BorderSide(
             color: onPressed == null ? colors.divider : colors.primary,
+            width: context.strokes.focus,
+          ),
+        ).merge(style),
+        icon: iconWidget,
+        label: labelWidget,
+      ),
+      BigButtonVariant.danger => FilledButton.icon(
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(
+          backgroundColor: colors.statusCritical,
+          foregroundColor: colors.onStatus,
+        ).merge(style),
+        icon: iconWidget,
+        label: labelWidget,
+      ),
+      BigButtonVariant.dangerOutlined => OutlinedButton.icon(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: colors.tile,
+          foregroundColor: colors.statusCritical,
+          side: BorderSide(
+            color: onPressed == null ? colors.divider : colors.statusCritical,
             width: context.strokes.focus,
           ),
         ).merge(style),

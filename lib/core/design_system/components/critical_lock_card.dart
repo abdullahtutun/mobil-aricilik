@@ -10,13 +10,21 @@ const _titleSeparator = ' ';
 /// Renk tek başına kalmaz: ikon ve kelimeler birlikte. Ekran okuyucu kart
 /// çıkınca kendiliğinden okur.
 class CriticalLockCard extends StatelessWidget {
-  const new({required this.title, required this.message, super.key});
+  const new({
+    required this.title,
+    required this.message,
+    super.key,
+    this.icon = Icons.lock_outline_rounded,
+  });
 
   /// Kısa durum adı ("Bekleme süresinde.").
   final String title;
 
   /// Neyin neden engellendiği, tek cümle.
   final String message;
+
+  /// Soldaki ikon; varsayılan kilit (ör. QR uyarısında QR ikonu).
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,7 @@ class CriticalLockCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
-                Icons.lock_outline_rounded,
+                icon,
                 size: context.sizes.icon,
                 color: colors.statusCritical,
               ),

@@ -11,7 +11,6 @@ import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
-import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
 import 'package:mobil_arici/core/sync/map_area_downloader.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
@@ -70,8 +69,7 @@ void main() {
   Future<ProviderContainer> openSettings(WidgetTester tester) async {
     final container = ProviderContainer.test(
       overrides: [
-        ...signedIn(db: db, offlineMaps: maps),
-        connectivityServiceProvider.overrideWithValue(connectivity),
+        ...signedIn(db: db, offlineMaps: maps, connectivity: connectivity),
       ],
     );
     await tester.pumpWidget(

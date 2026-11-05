@@ -14,6 +14,10 @@ import 'package:mobil_arici/app/sync/sync_screen.dart';
 import 'package:mobil_arici/core/business/migratory_gate.dart';
 import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
+import 'package:mobil_arici/features/account_deletion/presentation/account_deleted_screen.dart';
+import 'package:mobil_arici/features/account_deletion/presentation/account_deletion_providers.dart';
+import 'package:mobil_arici/features/account_deletion/presentation/account_deletion_screen.dart';
+import 'package:mobil_arici/features/account_deletion/presentation/deletion_pending_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiaries_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_detail_screen.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.dart';
@@ -148,6 +152,7 @@ GoRouter router(Ref ref) {
   // değerlendirilir.
   SessionStage stage() => sessionStageOf(
     signedIn: ref.read(currentUserProvider) != null,
+    deletionPending: ref.read(pendingDeletionProvider).value != null,
     hasOrganization: ref.read(currentOrganizationProvider).value != null,
     settingUp: ref.read(setupInProgressProvider),
     fullPullDone: ref.read(fullPullDoneProvider).value ?? false,
@@ -155,6 +160,7 @@ GoRouter router(Ref ref) {
   final session = ValueNotifier(stage());
   ref
     ..listen(currentUserProvider, (_, _) => session.value = stage())
+    ..listen(pendingDeletionProvider, (_, _) => session.value = stage())
     ..listen(currentOrganizationProvider, (_, _) => session.value = stage())
     ..listen(setupInProgressProvider, (_, _) => session.value = stage())
     ..listen(fullPullDoneProvider, (_, _) => session.value = stage())
@@ -475,6 +481,12 @@ GoRouter router(Ref ref) {
                         path: 'maps',
                         parentNavigatorKey: rootNavigatorKey,
                         builder: (context, state) => const OfflineMapsScreen(),
+                      ),
+                      GoRoute(
+                        path: 'delete-account',
+                        parentNavigatorKey: rootNavigatorKey,
+                        builder: (context, state) =>
+                            const AccountDeletionScreen(),
                       ),
                     ],
                   ),
@@ -977,6 +989,16 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.initialSync,
         builder: (context, state) => const InitialSyncScreen(),
+      ),
+      // Kabuğun dışında: hesap silmenin bitişi oturum kapandıktan sonra da
+      // açık kalır; bekleyen silme kararı verilene kadar sekmeler yok.
+      GoRoute(
+        path: AppRoutes.accountDeleted,
+        builder: (context, state) => const AccountDeletedScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.deletionPending,
+        builder: (context, state) => const DeletionPendingScreen(),
       ),
     ],
   );

@@ -57,4 +57,7 @@ class FakeReminderNotifications implements ReminderNotifications {
     this.channelName = channelName;
     groups[group] = {for (final r in reminders) r.id: r};
   }
+
+  @override
+  Future<void> cancelAll() async => groups.clear();
 }
