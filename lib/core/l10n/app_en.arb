@@ -648,14 +648,6 @@
     "description": "Choice that follows the device setting, for both language and theme."
   },
   "settingsLanguage": "Language",
-  "languageTurkish": "Türkçe",
-  "@languageTurkish": {
-    "description": "Name of the Turkish language, always written in Turkish."
-  },
-  "languageEnglish": "English",
-  "@languageEnglish": {
-    "description": "Name of the English language, always written in English."
-  },
   "settingsColorMode": "Theme",
   "settingsColorModeLight": "Light",
   "settingsColorModeDark": "Dark",
@@ -2979,8 +2971,6 @@
   "reportHive": "Hive",
   "reportAllHives": "All hives",
   "reportLanguage": "PDF language",
-  "reportLanguageTurkish": "Türkçe",
-  "reportLanguageEnglish": "English",
   "reportRegistrationNo": "Holding registration no.",
   "reportAksNo": "AKS no.",
   "reportRecordNo": "Registration number",

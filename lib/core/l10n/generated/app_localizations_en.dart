@@ -825,12 +825,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLanguage => 'Language';
 
   @override
-  String get languageTurkish => 'Türkçe';
-
-  @override
-  String get languageEnglish => 'English';
-
-  @override
   String get settingsColorMode => 'Theme';
 
   @override
@@ -3644,12 +3638,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportLanguage => 'PDF language';
-
-  @override
-  String get reportLanguageTurkish => 'Türkçe';
-
-  @override
-  String get reportLanguageEnglish => 'English';
 
   @override
   String get reportRegistrationNo => 'Holding registration no.';

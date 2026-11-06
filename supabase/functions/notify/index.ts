@@ -13,7 +13,7 @@
 // etkilemez.
 //
 // Alıcı atandığı işletmenin etkin üyesi olmalı. Bildirim dili kullanıcının
-// `user_metadata.locale` değeri (yoksa Türkçe). Bildirime dokununca
+// `user_metadata.locale` değeri (yoksa İngilizce). Bildirime dokununca
 // uygulama `data.task_id` ile görevi açar. Geçersiz token'lar silinir.
 
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";

@@ -1,5 +1,7 @@
 // notify'ın saf kuralları: webhook gövdesinden bildirim üretir.
 
+import { type AppLocale, pickLocale } from "../_shared/locale.ts";
+
 export interface TaskRecord {
   id: string;
   org_id: string;
@@ -32,11 +34,32 @@ export function assignedTask(payload: WebhookPayload): TaskRecord | null {
   return task;
 }
 
-export type Locale = "tr" | "en";
+export type Locale = AppLocale;
 
-export function localeOf(value: unknown): Locale {
-  return value === "en" ? "en" : "tr";
-}
+/// Kullanıcının `user_metadata.locale` değerinden bildirim dili; yoksa ya
+/// da desteklenmiyorsa İngilizce.
+export const localeOf = pickLocale;
+
+/// Dillere göre bildirim metinleri. `last` destek döneminin son günü.
+const text: Record<Locale, {
+  taskTitle: string;
+  taskBody: string;
+  supportTitle: string;
+  supportBody: (name: string, last: string) => string;
+}> = {
+  tr: {
+    taskTitle: "Sana yeni görev atandı",
+    taskBody: "Bir görev sana atandı.",
+    supportTitle: "Destek başvurusu açıldı",
+    supportBody: (name, last) => `${name} · son gün ${last}`,
+  },
+  en: {
+    taskTitle: "New task for you",
+    taskBody: "A task was assigned to you.",
+    supportTitle: "Support application is open",
+    supportBody: (name, last) => `${name} · last day ${last}`,
+  },
+};
 
 /// Bildirim metni. Otomatik görevin başlığı yoktur; genel metin gösterilir.
 export function notificationText(
@@ -44,15 +67,9 @@ export function notificationText(
   locale: Locale,
 ): { title: string; body: string } {
   const title = task.title?.trim();
-  if (locale === "en") {
-    return {
-      title: "New task for you",
-      body: title ? title : "A task was assigned to you.",
-    };
-  }
   return {
-    title: "Sana yeni görev atandı",
-    body: title ? title : "Bir görev sana atandı.",
+    title: text[locale].taskTitle,
+    body: title ? title : text[locale].taskBody,
   };
 }
 
@@ -83,10 +100,10 @@ export function openedSupportPeriod(
   return { period: record, recipients };
 }
 
-/// "2026-12-31" → "31.12.2026" (TR) ya da "2026-12-31" (EN).
+/// "2026-12-31" → "31.12.2026" (TR) ya da "2026-12-31" (diğer diller).
 function formatDay(day: string, locale: Locale): string {
   const [year, month, date] = day.split("-");
-  if (locale === "en" || !year || !month || !date) return day;
+  if (locale !== "tr" || !year || !month || !date) return day;
   return `${date}.${month}.${year}`;
 }
 
@@ -96,14 +113,8 @@ export function supportPeriodText(
   locale: Locale,
 ): { title: string; body: string } {
   const last = formatDay(period.application_ends_on, locale);
-  if (locale === "en") {
-    return {
-      title: "Support application is open",
-      body: `${period.name} · last day ${last}`,
-    };
-  }
   return {
-    title: "Destek başvurusu açıldı",
-    body: `${period.name} · son gün ${last}`,
+    title: text[locale].supportTitle,
+    body: text[locale].supportBody(period.name, last),
   };
 }

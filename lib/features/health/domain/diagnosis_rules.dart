@@ -104,10 +104,19 @@ List<String> _ruleSymptoms(Object? value, Set<String> known) {
   return ids;
 }
 
+/// TR ve EN zorunlu; diğer diller (dil kodu → metin) isteğe bağlı, eksik
+/// dilde [localizedText] EN'e düşer.
 LocalizedText _text(Object? value) => switch (value) {
-  {'tr': final String tr, 'en': final String en}
+  {'tr': final String tr, 'en': final String en} &&
+          final Map<String, Object?> map
       when tr.trim().isNotEmpty && en.trim().isNotEmpty =>
-    {'tr': tr, 'en': en},
+    {
+      for (final MapEntry(:key, :value) in map.entries)
+        key: switch (value) {
+          final String text when text.trim().isNotEmpty => text,
+          _ => throw FormatException('Boş ya da geçersiz metin', key),
+        },
+    },
   _ => throw FormatException('Metin TR ve EN birlikte olmalı', value),
 };
 

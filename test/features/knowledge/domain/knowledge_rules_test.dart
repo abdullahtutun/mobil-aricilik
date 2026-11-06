@@ -212,7 +212,9 @@ void main() {
       _article(id: 'tr-only', region: KnowledgeRegion.tr, title: 'Zirai'),
       _article(id: 'global', title: 'İlaç'),
       _article(id: 'ç', title: 'Çıta'),
-      _article(id: 'en', language: 'en', title: 'Queen'),
+      _article(id: 'global', language: 'en', title: 'Drug'),
+      _article(id: 'ç', language: 'en', title: 'Bar'),
+      _article(id: 'ç', language: 'de', title: 'Leiste'),
     ];
 
     test('TR profilinde TR ve GLOBAL, Türkçe harfler doğru sırada', () {
@@ -240,8 +242,30 @@ void main() {
           articles,
           language: 'en',
           profile: RegionProfile.other,
-        ).map((a) => a.id),
-        ['en'],
+        ).map((a) => a.title),
+        ['Bar', 'Drug'],
+      );
+    });
+
+    test('çevirisi olmayan makale İngilizcesiyle gelir', () {
+      expect(
+        visibleKnowledgeArticles(
+          articles,
+          language: 'de',
+          profile: RegionProfile.other,
+        ).map((a) => (a.language, a.title)),
+        [('en', 'Drug'), ('de', 'Leiste')],
+      );
+    });
+
+    test('İngilizcesi de olmayan makale görünmez', () {
+      expect(
+        visibleKnowledgeArticles(
+          [_article(id: 'x', title: 'X')],
+          language: 'de',
+          profile: RegionProfile.other,
+        ),
+        isEmpty,
       );
     });
   });

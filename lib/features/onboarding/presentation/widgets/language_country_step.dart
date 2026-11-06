@@ -25,11 +25,9 @@ class LanguageCountryStep extends ConsumerWidget {
     final names = countryNamesFor(Localizations.localeOf(context).languageCode);
     final countryName = countryCode == null ? null : names[countryCode];
     // "Sistem" seçiliyse cihazdan çözülen dil seçili görünür.
-    final current =
-        Localizations.localeOf(context).languageCode ==
-            AppLanguage.turkish.locale!.languageCode
-        ? AppLanguage.turkish
-        : AppLanguage.english;
+    final current = AppLanguage.fromLanguageCode(
+      Localizations.localeOf(context).languageCode,
+    );
     final device = resolveAppLocale(
       WidgetsBinding.instance.platformDispatcher.locales,
       AppLocalizations.supportedLocales,
@@ -66,13 +64,10 @@ class LanguageCountryStep extends ConsumerWidget {
           group: true,
           child: RadioCardGroup<AppLanguage>(
             options: [
-              for (final (language, label) in [
-                (AppLanguage.turkish, l10n.languageTurkish),
-                (AppLanguage.english, l10n.languageEnglish),
-              ])
+              for (final language in AppLanguage.selectable)
                 RadioCardOption(
                   value: language,
-                  label: label,
+                  label: language.nativeName,
                   hint: deviceHint(language),
                 ),
             ],

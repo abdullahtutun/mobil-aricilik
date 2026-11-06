@@ -1,12 +1,14 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import { codeMail, completedMail, formatDeletionDate, mailLocale, requestedMail } from "./mail.ts";
 
-Deno.test("dil user_metadata.locale'den gelir, varsayılan Türkçe", () => {
+Deno.test("dil user_metadata.locale'den gelir, varsayılan İngilizce", () => {
   assertEquals(mailLocale("en"), "en");
   assertEquals(mailLocale("en-GB"), "en");
   assertEquals(mailLocale("tr"), "tr");
-  assertEquals(mailLocale(undefined), "tr");
-  assertEquals(mailLocale(42), "tr");
+  assertEquals(mailLocale("tr-TR"), "tr");
+  assertEquals(mailLocale("xx"), "en");
+  assertEquals(mailLocale(undefined), "en");
+  assertEquals(mailLocale(42), "en");
 });
 
 Deno.test("tarih Türkçede Türkiye saatiyle, İngilizcede UTC ile yazılır", () => {

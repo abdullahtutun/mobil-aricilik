@@ -1388,18 +1388,6 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get settingsLanguage;
 
-  /// Name of the Turkish language, always written in Turkish.
-  ///
-  /// In en, this message translates to:
-  /// **'Türkçe'**
-  String get languageTurkish;
-
-  /// Name of the English language, always written in English.
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get languageEnglish;
-
   /// No description provided for @settingsColorMode.
   ///
   /// In en, this message translates to:
@@ -5745,18 +5733,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PDF language'**
   String get reportLanguage;
-
-  /// No description provided for @reportLanguageTurkish.
-  ///
-  /// In en, this message translates to:
-  /// **'Türkçe'**
-  String get reportLanguageTurkish;
-
-  /// No description provided for @reportLanguageEnglish.
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get reportLanguageEnglish;
 
   /// No description provided for @reportRegistrationNo.
   ///

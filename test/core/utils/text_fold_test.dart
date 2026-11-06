@@ -12,5 +12,23 @@ void main() {
       expect(foldForSearch('Hâlâ îmân ûmran'), 'hala iman umran');
       expect(foldForSearch('Côte d’Ivoire'), "cote d'ivoire");
     });
+
+    test('Almanca, İspanyolca ve Portekizce harfler', () {
+      expect(foldForSearch('Bienenstöcke Größe'), 'bienenstocke grosse');
+      expect(foldForSearch('Colmena ÑANDÚ'), 'colmena nandu');
+      expect(foldForSearch('Própolis Ação'), 'propolis acao');
+    });
+
+    test('Kiril: küçük harf, ё → е', () {
+      expect(foldForSearch('МЁД Улей'), 'мед улей');
+      expect(foldForSearch('Вулик ЇЖАК'), 'вулик їжак');
+    });
+
+    test('Farsça: Arapça klavye harfleri Farsça karşılığına', () {
+      expect(foldForSearch('كندو'), foldForSearch('کندو'));
+      expect(foldForSearch('ملكه'), 'ملکه');
+      expect(foldForSearch('عسلي'), 'عسلی');
+      expect(foldForSearch('آب'), 'اب');
+    });
   });
 }

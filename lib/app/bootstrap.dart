@@ -17,6 +17,7 @@ import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/receipt_file_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_triggers.dart';
+import 'package:mobil_arici/features/auth/presentation/locale_sync.dart';
 import 'package:mobil_arici/features/documents/presentation/document_reminders.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
@@ -51,7 +52,8 @@ Future<void> bootstrap(Flavor flavor) async {
           // ve işletme logosu dosyalarının yüklenip indirilmesi; bilgi
           // bankası güncellemesi; görev, belge ve gönderilemeyen kayıt
           // hatırlatmalarının eşitlemesi; push token kaydı ve bildirimden
-          // görev açma uygulama açık kaldıkça çalışır.
+          // görev açma; arayüz dilinin hesaba yazılması uygulama açık
+          // kaldıkça çalışır.
           ..listen(syncTriggersProvider, (_, _) {})
           ..listen(mediaUploadTriggersProvider, (_, _) {})
           ..listen(telemetryUploadTriggersProvider, (_, _) {})
@@ -63,7 +65,8 @@ Future<void> bootstrap(Flavor flavor) async {
           ..listen(documentRemindersProvider, (_, _) {})
           ..listen(syncReminderProvider, (_, _) {})
           ..listen(pushRegistrationProvider, (_, _) {})
-          ..listen(pushTaskLinksProvider, (_, _) {});
+          ..listen(pushTaskLinksProvider, (_, _) {})
+          ..listen(localeSyncProvider, (_, _) {});
 
     runApp(UncontrolledProviderScope(container: container, child: const App()));
 

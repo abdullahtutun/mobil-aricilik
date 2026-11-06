@@ -64,6 +64,9 @@ class FakeAuthService implements AuthService {
   final verifiedCodes = <({String email, String code, String locale})>[];
   int signOutCount = 0;
 
+  /// [updateLocale] ile yazılan diller, sırayla.
+  final updatedLocales = <String>[];
+
   /// Sunucudan gelen oturum değişikliğini taklit eder.
   void emit(AppUser? user) {
     _user = user;
@@ -92,6 +95,9 @@ class FakeAuthService implements AuthService {
     if (verifyFailure case final failure?) throw AuthServiceException(failure);
     emit(AppUser(id: testUser.id, email: email));
   }
+
+  @override
+  Future<void> updateLocale(String locale) async => updatedLocales.add(locale);
 
   @override
   Future<void> signOut() async {

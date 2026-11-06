@@ -24,6 +24,11 @@ abstract interface class AuthService {
     required String locale,
   });
 
+  /// Oturumdaki kullanıcının dilini [locale] yapar; sunucunun gönderdiği
+  /// bildirim ve e-postalar bu dilde gider. Dil zaten buysa ağa gitmez.
+  /// Hata atmaz: çevrimdışıysa sonraki denemede düzelir.
+  Future<void> updateLocale(String locale);
+
   /// Yerel oturumu siler; çevrimdışı da çalışır.
   Future<void> signOut();
 }
@@ -63,12 +68,20 @@ class SupabaseAuthService implements AuthService {
     final response = await _guard(
       () => _auth.verifyOTP(type: OtpType.email, email: email, token: code),
     );
-    final user = response.user;
+    if (response.user == null) return;
+    // Giriş yine geçerli; dil yazılamazsa sonraki denemede düzelir.
+    await updateLocale(locale);
+  }
+
+  @override
+  Future<void> updateLocale(String locale) async {
+    final user = _auth.currentUser;
     if (user == null || user.userMetadata?[localeKey] == locale) return;
     try {
       await _auth.updateUser(UserAttributes(data: {localeKey: locale}));
-    } on AuthException {
-      // Giriş yine geçerli; e-posta dili bir sonraki girişte düzelir.
+    } on Exception {
+      // Çevrimdışı ya da sunucu hatası; dil ya da oturum değişince ya da
+      // sonraki açılışta yeniden denenir.
     }
   }
 

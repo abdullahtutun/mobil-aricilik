@@ -2,7 +2,9 @@
 // Saf fonksiyonlar; veri `public.lot_public_page`'ten gelir ve yalnız
 // owner'ın seçtiği alanları taşır. Dış kaynak yok: CSS ve desen satır içi.
 
-export type Lang = "tr" | "en";
+import { type AppLocale, pickAcceptLanguage } from "../_shared/locale.ts";
+
+export type Lang = AppLocale;
 
 export interface LotPageData {
   number: string;
@@ -22,6 +24,7 @@ export interface LotPageData {
   report?: { document_id: string; file_kind: "pdf" | "photo" };
 }
 
+// `satisfies`: her desteklenen dilin metni olmalı.
 const text = {
   tr: {
     lot: "Lot",
@@ -71,13 +74,10 @@ const text = {
     notFoundHint:
       "The page may have been removed or the address may be wrong. Contact the producer about the product.",
   },
-};
+} satisfies Record<Lang, unknown>;
 
-/// Accept-Language'ın ilk dili Türkçeyse tr, değilse en.
-export function pickLang(acceptLanguage: string | null): Lang {
-  const first = (acceptLanguage ?? "").split(",")[0].trim().toLowerCase();
-  return first.startsWith("tr") ? "tr" : "en";
-}
+/// Accept-Language'da sırayla ilk desteklenen dil; yoksa İngilizce.
+export const pickLang = pickAcceptLanguage;
 
 export function escapeHtml(value: string): string {
   return value

@@ -124,14 +124,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               child: ChoiceChipGroup<AppLanguage>(
                 columns: 2,
                 options: [
-                  ChoiceChipOption(
-                    value: AppLanguage.turkish,
-                    label: l10n.reportLanguageTurkish,
-                  ),
-                  ChoiceChipOption(
-                    value: AppLanguage.english,
-                    label: l10n.reportLanguageEnglish,
-                  ),
+                  for (final option in AppLanguage.selectable)
+                    ChoiceChipOption(value: option, label: option.nativeName),
                 ],
                 selected: {language},
                 onChanged: (selected) {
@@ -282,10 +276,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
 
 /// Uygulamanın o anki dili; PDF dili seçilmediyse bu.
 AppLanguage _appLanguage(BuildContext context) =>
-    switch (Localizations.localeOf(context).languageCode) {
-      'tr' => AppLanguage.turkish,
-      _ => AppLanguage.english,
-    };
+    AppLanguage.fromLanguageCode(Localizations.localeOf(context).languageCode);
 
 /// Başlangıç ve bitiş günü yan yana.
 class _Period extends StatelessWidget {

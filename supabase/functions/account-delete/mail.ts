@@ -1,19 +1,17 @@
 // account-delete'in e-posta metinleri (TR ve EN). Saf fonksiyonlar.
 
-export type MailLocale = "tr" | "en";
+import { type AppLocale, pickLocale } from "../_shared/locale.ts";
+
+export type MailLocale = AppLocale;
 
 export interface Mail {
   subject: string;
   text: string;
 }
 
-/// Kullanıcının dili: `user_metadata.locale` "en…" ise İngilizce, değilse
-/// Türkçe.
-export function mailLocale(locale: unknown): MailLocale {
-  return typeof locale === "string" && locale.toLowerCase().startsWith("en")
-    ? "en"
-    : "tr";
-}
+/// Kullanıcının dili `user_metadata.locale`'den; yoksa ya da
+/// desteklenmiyorsa İngilizce.
+export const mailLocale = pickLocale;
 
 /// Silme anı: Türkçede Türkiye saatiyle, İngilizcede UTC.
 export function formatDeletionDate(iso: string, locale: MailLocale): string {

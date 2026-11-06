@@ -160,23 +160,31 @@ KnowledgeLibrary verifyKnowledgePackage(
 }
 
 /// Arayüz dilindeki ve bölgede görünen makaleler: TR profilinde TR ve
-/// GLOBAL, diğer bölgelerde yalnız GLOBAL. Başlığa göre sıralı.
+/// GLOBAL, diğer bölgelerde yalnız GLOBAL. Arayüz dilinde çevirisi
+/// olmayan makale İngilizcesiyle gelir. Başlığa göre sıralı.
 List<KnowledgeArticle> visibleKnowledgeArticles(
   List<KnowledgeArticle> articles, {
   required String language,
   required RegionProfile profile,
-}) =>
-    articles
-        .where(
-          (article) =>
-              article.language == language &&
-              (article.region == KnowledgeRegion.global ||
-                  profile == RegionProfile.tr),
-        )
-        .toList()
-      ..sort(
-        (a, b) => foldForSearch(a.title).compareTo(foldForSearch(b.title)),
-      );
+}) {
+  final byId = <String, KnowledgeArticle>{};
+  for (final article in articles) {
+    if (article.region != KnowledgeRegion.global &&
+        profile != RegionProfile.tr) {
+      continue;
+    }
+    if (article.language == language) {
+      byId[article.id] = article;
+    } else if (article.language == _fallbackLanguage) {
+      byId.putIfAbsent(article.id, () => article);
+    }
+  }
+  return byId.values.toList()
+    ..sort((a, b) => foldForSearch(a.title).compareTo(foldForSearch(b.title)));
+}
+
+/// Çevirisi olmayan makalenin dili.
+const _fallbackLanguage = 'en';
 
 /// [month]'un Kuzey yarımküredeki karşılığı; Güney'de mevsimler 6 ay
 /// kayar (Güney'de Ocak, Kuzey'de Temmuz'dur).

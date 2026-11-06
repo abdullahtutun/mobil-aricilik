@@ -272,11 +272,9 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   static String _languageLabel(AppLocalizations l10n, AppLanguage language) {
-    return switch (language) {
-      AppLanguage.system => l10n.settingsSystemDefault,
-      AppLanguage.turkish => l10n.languageTurkish,
-      AppLanguage.english => l10n.languageEnglish,
-    };
+    return language == AppLanguage.system
+        ? l10n.settingsSystemDefault
+        : language.nativeName;
   }
 
   static String _colorModeLabel(AppLocalizations l10n, AppColorMode mode) {
