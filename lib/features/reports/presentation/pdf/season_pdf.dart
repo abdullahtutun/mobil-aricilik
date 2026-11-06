@@ -86,6 +86,7 @@ pw.Document seasonDocument(
 
   document.addPage(
     pw.MultiPage(
+      textDirection: pdfTextDirection(l10n.localeName),
       pageFormat: PdfPageFormat.a4,
       margin: const pw.EdgeInsets.all(ReportPdfStyle.margin),
       footer: (context) => reportPdfFooter(context, l10n, format, createdAt),

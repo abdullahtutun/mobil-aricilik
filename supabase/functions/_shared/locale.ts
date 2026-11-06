@@ -3,9 +3,12 @@
 // Yeni dil uygulamaya eklenince buraya da eklenir; metin tabloları
 // `Record<AppLocale, …>` olduğundan eksik çeviri tür hatası verir.
 
-export const supportedLocales = ["tr", "en", "de", "es", "pt", "ru", "uk"] as const;
+export const supportedLocales = ["tr", "en", "de", "es", "pt", "ru", "uk", "fa"] as const;
 
 export type AppLocale = typeof supportedLocales[number];
+
+/// Sağdan sola yazılan diller; HTML'de `dir="rtl"`.
+export const rtlLocales: ReadonlySet<AppLocale> = new Set(["fa"]);
 
 /// Desteklenmeyen ya da bilinmeyen dilde kullanılan dil.
 export const fallbackLocale: AppLocale = "en";

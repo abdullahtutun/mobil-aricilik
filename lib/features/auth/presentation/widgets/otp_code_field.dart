@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/auth/domain/sign_in_rules.dart';
 
 /// Tek tek kutularda görünen [otpLength] haneli kod alanı.
@@ -101,7 +102,10 @@ class _OtpCodeFieldState extends State<OtpCodeField> {
                 autofillHints: const [AutofillHints.oneTimeCode],
                 autocorrect: false,
                 enableSuggestions: false,
-                inputFormatters: [_OtpCodeFormatter()],
+                inputFormatters: [
+                  const AsciiDigitsFormatter(),
+                  _OtpCodeFormatter(),
+                ],
                 decoration: const InputDecoration.collapsed(hintText: null),
                 onChanged: (value) {
                   if (value.length == otpLength) widget.onCompleted(value);

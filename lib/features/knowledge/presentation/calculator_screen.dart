@@ -6,6 +6,7 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/core/utils/units.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding.dart';
 import 'package:mobil_arici/features/feeding/domain/feeding_rules.dart';
@@ -303,7 +304,10 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
     field: TextField(
       controller: _hives,
       keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      inputFormatters: [
+        const AsciiDigitsFormatter(),
+        FilteringTextInputFormatter.digitsOnly,
+      ],
       textAlign: TextAlign.center,
       style: context.typography.number,
       onChanged: (_) => setState(() => _hivesEdited = true),
@@ -317,6 +321,7 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
           controller: _amount,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           inputFormatters: [
+            const AsciiDigitsFormatter(),
             FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
           ],
           textAlign: TextAlign.center,

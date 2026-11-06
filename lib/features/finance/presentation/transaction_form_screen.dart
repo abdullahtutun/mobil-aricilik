@@ -11,6 +11,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/camera_service.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/feeding/presentation/widgets/feeding_labels.dart';
 import 'package:mobil_arici/features/finance/domain/finance_rules.dart';
@@ -156,6 +157,7 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
                 decimal: true,
               ),
               inputFormatters: [
+                const AsciiDigitsFormatter(),
                 FilteringTextInputFormatter.allow(RegExp('[0-9., ]')),
               ],
               textInputAction: TextInputAction.next,
@@ -355,6 +357,7 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
             controller: _sale,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
+              const AsciiDigitsFormatter(),
               FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
             ],
             style: context.typography.number,
@@ -386,6 +389,7 @@ class _TransactionFormBodyState extends ConsumerState<_TransactionFormBody> {
           controller: _paidNow,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           inputFormatters: [
+            const AsciiDigitsFormatter(),
             FilteringTextInputFormatter.allow(RegExp('[0-9., ]')),
           ],
           style: context.typography.number,

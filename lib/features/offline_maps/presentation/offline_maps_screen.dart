@@ -138,7 +138,12 @@ class _InstalledCard extends ConsumerWidget {
 
     return AppCard(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, 0, spacing.md),
+        padding: EdgeInsetsDirectional.fromSTEB(
+          spacing.lg,
+          spacing.md,
+          0,
+          spacing.md,
+        ),
         child: Row(
           children: [
             Expanded(
@@ -229,7 +234,12 @@ class _DownloadCard extends ConsumerWidget {
         color: colors.tile,
       ),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, 0, spacing.md),
+        padding: EdgeInsetsDirectional.fromSTEB(
+          spacing.lg,
+          spacing.md,
+          0,
+          spacing.md,
+        ),
         child: Row(
           children: [
             Expanded(

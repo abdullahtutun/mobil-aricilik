@@ -93,6 +93,7 @@ pw.Widget _label(LotLabelData label) {
                 ),
                 pw.Text(
                   label.honey,
+                  textDirection: pdfTextDirectionOf(label.honey),
                   maxLines: 2,
                   overflow: pw.TextOverflow.clip,
                   style: const pw.TextStyle(

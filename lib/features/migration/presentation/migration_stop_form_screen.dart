@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary_summary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/migration/domain/migration.dart';
@@ -197,6 +198,7 @@ class _StopFormFieldsState extends ConsumerState<_StopFormFields> {
             controller: _hiveCount,
             keyboardType: TextInputType.number,
             inputFormatters: [
+              const AsciiDigitsFormatter(),
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter('$maxStopHiveCount'.length),
             ],

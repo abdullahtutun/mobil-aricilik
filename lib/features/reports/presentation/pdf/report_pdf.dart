@@ -110,6 +110,7 @@ pw.Document reportDocument(
 
   document.addPage(
     pw.MultiPage(
+      textDirection: pdfTextDirection(l10n.localeName),
       pageFormat: switch (kind) {
         ReportKind.treatmentRegister => PdfPageFormat.a4.landscape,
         ReportKind.hiveHistory => PdfPageFormat.a4,

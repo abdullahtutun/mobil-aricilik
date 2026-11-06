@@ -12,6 +12,7 @@ import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/pdf_fonts.dart';
 import 'package:mobil_arici/core/services/print_service_provider.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/feeding/presentation/widgets/feeding_labels.dart';
 import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest_rules.dart';
@@ -613,6 +614,7 @@ class _SaleSheetState extends ConsumerState<_SaleSheet> {
                   decimal: true,
                 ),
                 inputFormatters: [
+                  const AsciiDigitsFormatter(),
                   FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
                 ],
                 textInputAction: TextInputAction.done,

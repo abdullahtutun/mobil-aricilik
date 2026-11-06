@@ -116,4 +116,24 @@ void main() {
       expect(en.currencySymbol('CHF'), 'CHF');
     });
   });
+
+  group('Farsça: Latin rakam, Farsça ay adı', () {
+    setUpAll(initializeDateFormatting);
+    const fa = AppFormat('fa');
+
+    test('sayı, yüzde ve para Latin rakamla', () {
+      expect(fa.number(1234.5), '1,234.5');
+      expect(fa.percent(0.76), '76%');
+      expect(fa.currency(1500, currencyCode: 'EUR'), contains('1,500'));
+    });
+
+    test('tarihte rakamlar Latin, ay adı Farsça', () {
+      final text = fa.date(moment);
+      expect(text, contains('2026'));
+      expect(text, contains('21'));
+      expect(text, contains('اکتبر'));
+      expect(RegExp('[۰-۹]').hasMatch(fa.dateTime(moment)), isFalse);
+      expect(RegExp('[۰-۹]').hasMatch(fa.weekdayDate(moment)), isFalse);
+    });
+  });
 }

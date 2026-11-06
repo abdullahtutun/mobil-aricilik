@@ -8,6 +8,7 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory.dart';
 import 'package:mobil_arici/features/inventory/domain/inventory_rules.dart';
 import 'package:mobil_arici/features/inventory/presentation/inventory_providers.dart';
@@ -185,6 +186,7 @@ class _MoveSheetState extends ConsumerState<_MoveSheet> {
                   decimal: item.unit.allowsFraction,
                 ),
                 inputFormatters: [
+                  const AsciiDigitsFormatter(),
                   FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
                 ],
                 textInputAction: TextInputAction.done,

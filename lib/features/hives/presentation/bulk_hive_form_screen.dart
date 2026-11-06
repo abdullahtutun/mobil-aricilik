@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/apiaries/presentation/widgets/apiary_not_found.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_controller.dart';
@@ -91,7 +92,10 @@ class _BulkHiveFormFields extends ConsumerWidget {
           label: l10n.hiveBulkCount,
           field: TextField(
             keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            inputFormatters: [
+              const AsciiDigitsFormatter(),
+              FilteringTextInputFormatter.digitsOnly,
+            ],
             textInputAction: TextInputAction.next,
             textAlign: TextAlign.center,
             style: numberStyle,
@@ -111,7 +115,10 @@ class _BulkHiveFormFields extends ConsumerWidget {
           label: l10n.hiveBulkStart,
           field: TextField(
             keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            inputFormatters: [
+              const AsciiDigitsFormatter(),
+              FilteringTextInputFormatter.digitsOnly,
+            ],
             textInputAction: TextInputAction.done,
             textAlign: TextAlign.center,
             style: numberStyle,

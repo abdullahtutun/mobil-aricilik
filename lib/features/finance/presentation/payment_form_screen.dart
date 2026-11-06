@@ -9,6 +9,7 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/core/utils/date_only.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/finance/data/transaction_repository.dart';
 import 'package:mobil_arici/features/finance/domain/finance_rules.dart';
 import 'package:mobil_arici/features/finance/presentation/finance_providers.dart';
@@ -114,6 +115,7 @@ class _PaymentFormState extends ConsumerState<_PaymentForm> {
                 decimal: true,
               ),
               inputFormatters: [
+                const AsciiDigitsFormatter(),
                 FilteringTextInputFormatter.allow(RegExp('[0-9., ]')),
               ],
               style: context.typography.number,

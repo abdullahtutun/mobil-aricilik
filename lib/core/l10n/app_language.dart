@@ -10,7 +10,8 @@ enum AppLanguage {
   spanish(Locale('es'), 'Español'),
   portuguese(Locale('pt'), 'Português'),
   russian(Locale('ru'), 'Русский'),
-  ukrainian(Locale('uk'), 'Українська');
+  ukrainian(Locale('uk'), 'Українська'),
+  persian(Locale('fa'), 'فارسی');
 
   new(this.locale, this.nativeName);
 

@@ -63,6 +63,13 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull, reason: 'açılış');
+        // Farsça sağdan sola çizilir; satırlar, boşluklar ve oklar döner.
+        expect(
+          Directionality.of(tester.element(find.byType(Scaffold).first)),
+          language == AppLanguage.persian
+              ? TextDirection.rtl
+              : TextDirection.ltr,
+        );
 
         final routes = [
           AppRoutes.today,

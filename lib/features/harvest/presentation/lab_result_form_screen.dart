@@ -9,6 +9,7 @@ import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/harvest/domain/lot.dart';
 import 'package:mobil_arici/features/harvest/domain/lot_rules.dart';
 import 'package:mobil_arici/features/harvest/presentation/lot_providers.dart';
@@ -210,6 +211,7 @@ class _LabResultFormState extends ConsumerState<_LabResultForm> {
                     decimal: true,
                   ),
                   inputFormatters: [
+                    const AsciiDigitsFormatter(),
                     FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
                   ],
                   textInputAction: TextInputAction.next,

@@ -2,7 +2,7 @@
 // Saf fonksiyonlar; veri `public.lot_public_page`'ten gelir ve yalnız
 // owner'ın seçtiği alanları taşır. Dış kaynak yok: CSS ve desen satır içi.
 
-import { type AppLocale, pickAcceptLanguage } from "../_shared/locale.ts";
+import { type AppLocale, pickAcceptLanguage, rtlLocales } from "../_shared/locale.ts";
 
 export type Lang = AppLocale;
 
@@ -194,6 +194,30 @@ const text = {
     notFoundHint:
       "Можливо, сторінку видалено або адреса неправильна. З питаннями про продукт звертайтеся до виробника.",
   },
+  fa: {
+    lot: "بچ",
+    honey: {
+      pine: "عسل کاج",
+      flower: "عسل گل",
+      chestnut: "عسل شاه‌بلوط",
+      citrus: "عسل مرکبات",
+      other: "عسل",
+    } as Record<string, string>,
+    hives: (count: string) => `${count} کندو`,
+    lab: "آزمایش آزمایشگاهی",
+    moisture: "رطوبت",
+    hmf: "HMF",
+    diastase: "عدد دیاستاز",
+    proline: "پرولین",
+    residue: "باقیمانده دارو",
+    residueNone: "یافت نشد",
+    residueDetected: "یافت شد",
+    report: "باز کردن گزارش آزمایش",
+    footer: "این صفحه را تولیدکننده با Mobil Arıcı منتشر کرده است.",
+    notFound: "این بچ منتشر نشده است",
+    notFoundHint:
+      "ممکن است صفحه برداشته شده یا نشانی اشتباه باشد. برای پرسش درباره محصول با تولیدکننده تماس بگیرید.",
+  },
 } satisfies Record<Lang, unknown>;
 
 /// Accept-Language'da sırayla ilk desteklenen dil; yoksa İngilizce.
@@ -228,6 +252,8 @@ const intlLocales: Record<Lang, string> = {
   pt: "pt-BR",
   ru: "ru-RU",
   uk: "uk-UA",
+  // Miladi takvim, Latin rakam; uygulamayla aynı (app_format.dart).
+  fa: "fa-IR-u-ca-gregory-nu-latn",
 };
 
 function locale(lang: Lang): string {
@@ -282,7 +308,7 @@ text-transform:uppercase;color:var(--muted)}
 .row{display:flex;justify-content:space-between;gap:12px;padding:16px;
 border-top:1px solid var(--border)}
 .row:first-child{border-top:0}
-.row b{text-align:right}
+.row b{text-align:end}
 .button{display:block;margin-top:16px;padding:16px;border-radius:12px;
 background:var(--button);color:var(--button-text);text-align:center;
 font-weight:700;font-size:17px;text-decoration:none;min-height:56px}
@@ -304,7 +330,7 @@ const honeycomb =
 
 function document(lang: Lang, title: string, body: string): string {
   return `<!doctype html>
-<html lang="${lang}">
+<html lang="${lang}" dir="${rtlLocales.has(lang) ? "rtl" : "ltr"}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">

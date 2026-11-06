@@ -57,3 +57,10 @@ Deno.test("her dilde üç e-posta da kodu ve tarihi taşır", () => {
   assertEquals(formatDeletionDate("2026-11-12T21:30:00Z", "de"), "12. November 2026 um 21:30 UTC");
   assertEquals(formatDeletionDate("2026-11-12T21:30:00Z", "es"), "12 de noviembre de 2026, 21:30 UTC");
 });
+
+Deno.test("Farsçada tarih Miladi takvim ve Latin rakamla", () => {
+  const text = formatDeletionDate("2026-11-12T21:30:00Z", "fa");
+  assert(text.includes("2026"), text);
+  assert(text.includes("نوامبر"), text);
+  assert(!/[۰-۹]/.test(text), text);
+});

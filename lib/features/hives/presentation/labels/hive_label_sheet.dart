@@ -133,6 +133,7 @@ pw.Widget _label(HiveLabelData label) {
               ),
               pw.Text(
                 label.apiaryName,
+                textDirection: pdfTextDirectionOf(label.apiaryName),
                 maxLines: 2,
                 overflow: pw.TextOverflow.clip,
                 style: const pw.TextStyle(fontSize: HiveLabelSheet.apiarySize),

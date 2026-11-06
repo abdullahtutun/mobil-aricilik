@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/subsidies/domain/subsidy_rules.dart';
 import 'package:mobil_arici/features/subsidies/presentation/subsidy_providers.dart';
@@ -66,7 +67,10 @@ class _AksHiveCountFormState extends ConsumerState<_AksHiveCountForm> {
             child: TextField(
               controller: _count,
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              inputFormatters: [
+                const AsciiDigitsFormatter(),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 errorText: _invalid ? l10n.aksCountInvalid : null,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 import 'package:mobil_arici/features/harvest/domain/lot_rules.dart';
 
 /// Lotun yöre ve nem alanları; yeni lotta (hasat adımı) ve düzenlemede
@@ -57,6 +58,7 @@ class LotFields extends StatelessWidget {
             enabled: enabled,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
+              const AsciiDigitsFormatter(),
               FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
             ],
             textInputAction: TextInputAction.done,

@@ -783,6 +783,19 @@ Hedef: hi, fa, es, de, pt, ru, uk. Sıra: altyapı → de + es → pt + ru + uk 
 - Taşma testi Rusça ve Ukraynacada hasat formunda Okut butonunu yakaladı (61px / 7px). `BigButton.compactWidth` etiketin yazı ölçeğiyle genişliğini ölçüyor; hasat seçim kartı buton satırın yarısını aşınca metni üstte, butonu altta tam genişlikte diziyor.
 - `flutter analyze` temiz, tam takım (2386) geçti.
 
+### 2026-11-06 — Farsça, sağdan sola (Faz 3)
+
+Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Farsçada rakamlar Latin.
+
+- `app_fa.arb` ("شما" hitabıyla, makine çevirisi; ana dili konuşan bir arıcının gözden geçirmesi gerekiyor). Terimler: کندو, زنبورستان, بازدید, طبقه عسل, دوره انتظار, کوچ, بچ (lot). RTL'de yön okları ters: `{from} ← {to}`. `AppLanguage.persian`; ülke adları ve tanı kuralları FA'lı.
+- Rakamlar: `intl` Farsçada Farsça rakam (۱۲۳) ve `٫` basıyor, ARB'deki `{count}` ise Latin rakamla geliyor; aynı ekranda iki rakam karışırdı. Kovan numaraları ve etiketler de Latin. `AppFormat` `latinDigitLanguages` (`fa`) için sayı, yüzde ve parayı `en` biçimiyle, tarihleri `useNativeDigits = false` ile yazıyor; ay adları Farsça. Açılışta `useLatinDigitsForDates()` Material'ın tarih seçicisini de Latin rakama alıyor.
+- Giriş: `core/utils/digits.dart` `AsciiDigitsFormatter` Farsça ve Arapça rakamları (ve `٫`) Latin'e çeviriyor; 13 dosyadaki bütün sayısal alanlarda rakam süzgecinden önce duruyor (yoksa süzgeç Farsça rakamı siliyordu).
+- Font: Vazirmatn v33.003 (OFL, 4 ağırlık, ~490 KB) `assets/fonts/vazirmatn/`; `AppTypography.fontFamilyFallback` ve tema yedeği. Lisansı lisans sayfasında.
+- RTL denetimi: 77 yönlü kullanımın çoğu simetrik ya da yalnız dikey; Material ok ve chevron ikonları `matchTextDirection` ile kendiliğinden dönüyor. Değişen: çevrimdışı haritalar ve hava durumu `EdgeInsetsDirectional.fromSTEB`, harita atıf kutusu `BorderRadiusDirectional`. Harita kaplamaları ve varroa grafiği bilinçli olarak LTR kaldı.
+- PDF: rapor ve sezon PDF'leri Farsçada `textDirection: rtl` (`pdf` Arap harflerini yalnız RTL'de birleştiriyor), tema Vazirmatn yedekli. Etiket sayfalarında yerleşim sabit; arılık adı ve bal türü Arap yazısıyla başlıyorsa o metin RTL (`pdfTextDirectionOf`). Farsça PDF cihazda gözle denenmedi.
+- Sunucu: `fa` desteklenen dillerde; `rtlLocales`; lot sayfası `dir="rtl"` ve `text-align:end`; `otp.html` `dir`'li. JS'te `fa-IR` varsayılanı Hicri-Şemsi takvimdi; bütün Intl biçimleri `fa-IR-u-ca-gregory-nu-latn` (Miladi, Latin rakam), Deno testi sabitliyor. Deploy edildi, canlıda `dir="rtl"` döndü. **`otp.html` panele yeniden yapıştırılmalı.**
+- Taşma testi Farsçayı RTL'de 48 ekranda deniyor ve yönün RTL olduğunu doğruluyor. `flutter analyze` temiz, tam takım (2400) geçti; Deno 36.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

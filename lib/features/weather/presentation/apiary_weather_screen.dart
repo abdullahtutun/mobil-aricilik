@@ -167,7 +167,7 @@ class _ForecastView extends ConsumerWidget {
 
     return ListView(
       // Alt kenar telefonun gezinme çubuğunun üstünde kalsın.
-      padding: EdgeInsets.fromLTRB(
+      padding: EdgeInsetsDirectional.fromSTEB(
         spacing.sm,
         spacing.sm,
         spacing.lg,

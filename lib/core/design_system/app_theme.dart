@@ -107,6 +107,7 @@ abstract final class AppTheme {
       brightness: brightness,
       colorScheme: colorScheme,
       fontFamily: AppTypography.fontFamily,
+      fontFamilyFallback: AppTypography.fontFamilyFallback,
       textTheme: typography.toTextTheme().apply(
         bodyColor: colors.textPrimary,
         displayColor: colors.textPrimary,

@@ -23,6 +23,7 @@ const dateFormats: Record<MailLocale, { intl: string; timeZone: string; suffix: 
   pt: { intl: "pt-BR", timeZone: "UTC", suffix: "UTC" },
   ru: { intl: "ru-RU", timeZone: "UTC", suffix: "UTC" },
   uk: { intl: "uk-UA", timeZone: "UTC", suffix: "UTC" },
+  fa: { intl: "fa-IR-u-ca-gregory-nu-latn", timeZone: "UTC", suffix: "UTC" },
 };
 
 /// Silme anı: Türkçede Türkiye saatiyle, diğer dillerde UTC.
@@ -193,6 +194,25 @@ const text: Record<MailLocale, MailText> = {
     completedSubject: "Ваш обліковий запис Mobil Arıcı видалено",
     completedText:
       "Ваш обліковий запис Mobil Arıcı остаточно видалено на ваш запит. Дякуємо, що користувалися Mobil Arıcı.",
+  },
+  fa: {
+    requestedSubject: "حساب Mobil Arıcı شما حذف می‌شود",
+    requestedIntro: "درخواستی برای حذف حساب Mobil Arıcı شما دریافت کردیم.",
+    requestedWithOrganization: (when) =>
+      `حساب شما، کسب‌وکارتان و همه سوابق آن در ${when} برای همیشه حذف می‌شوند.`,
+    requestedAccountOnly: (when) =>
+      `حساب شما در ${when} برای همیشه حذف می‌شود. سوابقی که وارد کرده‌اید در کسب‌وکار می‌مانند.`,
+    requestedChangedMind:
+      "نظرتان عوض شد؟ پیش از این تاریخ وارد برنامه شوید و تأیید کنید که می‌خواهید حسابتان بماند.",
+    requestedNotYou: "اگر این درخواست را شما نداده‌اید، همین حالا وارد شوید.",
+    codeSubject: "کد حذف حساب Mobil Arıcı شما",
+    codeIntro: "درخواست حذف حساب Mobil Arıcı خود را داده‌اید.",
+    codeEnter: (code) => `برای تأیید، این کد را در برنامه وارد کنید: ${code}`,
+    codeValidity: "کد 10 دقیقه اعتبار دارد و یک بار قابل استفاده است. آن را با کسی در میان نگذارید.",
+    codeNotYou: "اگر شما درخواست نداده‌اید، این ایمیل را نادیده بگیرید؛ حسابتان حذف نمی‌شود.",
+    completedSubject: "حساب Mobil Arıcı شما حذف شد",
+    completedText:
+      "حساب Mobil Arıcı شما طبق درخواستتان برای همیشه حذف شد. از اینکه از Mobil Arıcı استفاده کردید سپاسگزاریم.",
   },
 };
 

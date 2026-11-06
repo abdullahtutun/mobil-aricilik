@@ -17,6 +17,7 @@ import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/receipt_file_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_triggers.dart';
+import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/locale_sync.dart';
 import 'package:mobil_arici/features/documents/presentation/document_reminders.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
@@ -34,12 +35,18 @@ Future<void> bootstrap(Flavor flavor) async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inter, SIL OFL 1.1 ile dağıtılıyor; lisans sayfasında görünsün.
+  // Inter ve Vazirmatn SIL OFL 1.1 ile dağıtılıyor; lisans sayfasında
+  // görünsünler.
   LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString(
-      'assets/fonts/inter/LICENSE.txt',
-    );
-    yield LicenseEntryWithLineBreaks(const ['Inter'], license);
+    for (final (family, folder) in [
+      ('Inter', 'inter'),
+      ('Vazirmatn', 'vazirmatn'),
+    ]) {
+      final license = await rootBundle.loadString(
+        'assets/fonts/$folder/LICENSE.txt',
+      );
+      yield LicenseEntryWithLineBreaks([family], license);
+    }
   });
 
   // Supabase açılışındaki hatalar da Sentry'ye gitsin.
@@ -68,6 +75,7 @@ Future<void> bootstrap(Flavor flavor) async {
           ..listen(pushTaskLinksProvider, (_, _) {})
           ..listen(localeSyncProvider, (_, _) {});
 
+    useLatinDigitsForDates();
     runApp(UncontrolledProviderScope(container: container, child: const App()));
 
     // Açılışı bekletmez.

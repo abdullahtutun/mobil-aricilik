@@ -89,6 +89,12 @@ const text: Record<Locale, {
     supportTitle: "Відкрито прийом заявок на субсидії",
     supportBody: (name, last) => `${name} · останній день ${last}`,
   },
+  fa: {
+    taskTitle: "کار جدیدی به شما واگذار شد",
+    taskBody: "کاری به شما واگذار شد.",
+    supportTitle: "درخواست حمایت باز شد",
+    supportBody: (name, last) => `${name} · آخرین روز ${last}`,
+  },
 };
 
 /// Bildirim metni. Otomatik görevin başlığı yoktur; genel metin gösterilir.
@@ -139,6 +145,7 @@ const dayLocales: Record<Locale, string> = {
   pt: "pt-BR",
   ru: "ru-RU",
   uk: "uk-UA",
+  fa: "fa-IR-u-ca-gregory-nu-latn",
 };
 
 /// "2026-12-31" → dilin kısa tarihi: "31.12.2026" (TR, DE), "31/12/2026"

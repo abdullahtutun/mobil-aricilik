@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderListenableSelect;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ProviderListenableSelect;
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';

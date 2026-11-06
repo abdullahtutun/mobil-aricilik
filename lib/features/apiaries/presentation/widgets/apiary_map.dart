@@ -399,8 +399,9 @@ class _Attribution extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: context.colors.surface,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(context.radii.small),
+        // Satır sonunda (LTR'de sağ alt) durur; yuvarlak köşe içe bakar.
+        borderRadius: BorderRadiusDirectional.only(
+          topStart: Radius.circular(context.radii.small),
         ),
       ),
       child: Padding(
