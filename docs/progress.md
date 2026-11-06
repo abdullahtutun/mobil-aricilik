@@ -746,6 +746,11 @@
 - İşletme profilinde ve düzenleme ekranında para birimi simgesiz, yalnız ISO kodu (TRY, USD). `intl`'in "dh", "Lek" gibi harfli kısaltmaları kafa karıştırıyordu. `currencyLabel` ve `businessCurrencyValue` kaldırıldı. Finans tutar alanlarındaki simge (₺) aynı kaldı.
 - Seçim sayfası `CurrencyPicker` (`organization/presentation/widgets/`): üstte arama, seçili ve bölgenin birimi en üstte, kalanı alfabe sırasıyla. Kodla ("eu") ya da birimi kullanan ülkenin adıyla ("almanya" → EUR) aranır; kural `matchesCurrencyQuery`, birim testli. `flutter analyze` temiz, tam takım 2331 test geçti.
 
+### 2026-11-06 — Destekler rotası bölge kapısı
+
+- TR/diğer bölge taraması: TR'ye özel özellikler `RegionFeatures` bayraklarıyla gizleniyor; destek dönemi bildirimi sunucuda yalnız TR işletmelerine gidiyor. Açık kalan tek yer `/more/subsidies` (+ `aks-count`) rotasıydı: menüde gizliydi ama derin link ya da bildirimle açılabiliyordu. Rotaya `features.subsidies` kapalıyken Daha fazla'ya düşüren `redirect` eklendi, iki rota için akış testi yazıldı. `flutter analyze` temiz, tam takım 2333 test geçti.
+- Taramada kalanlar (yapılmadı): ülke TR'den başka ülkeye değişirse açık "AKS'de güncelle" görevleri listede kalıyor; `regulations` ve `trFlora` bayrakları onboarding özetinde listeleniyor ama modülleri henüz yok; il/ilçe tarım müdürlüğü rehberinin bayrağı ve kodu yok.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

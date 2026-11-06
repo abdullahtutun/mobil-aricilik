@@ -293,6 +293,31 @@ void main() {
     expect(find.text('Subsidies'), findsNothing);
   });
 
+  for (final location in [AppRoutes.subsidies, AppRoutes.aksHiveCount]) {
+    testWidgets("diğer bölgede $location açılmaz, Daha fazla'ya düşer", (
+      tester,
+    ) async {
+      final container = await _open(
+        tester,
+        db: db,
+        location: location,
+        region: resolveRegionConfig('DE'),
+      );
+
+      expect(find.byType(SubsidiesScreen), findsNothing);
+      expect(find.byType(AksHiveCountFormScreen), findsNothing);
+      expect(
+        container
+            .read(routerProvider)
+            .routerDelegate
+            .currentConfiguration
+            .uri
+            .path,
+        AppRoutes.more,
+      );
+    });
+  }
+
   testWidgets('AKS görevi görev listesinde kendi başlığıyla görünür', (
     tester,
   ) async {

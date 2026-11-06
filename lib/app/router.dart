@@ -13,6 +13,7 @@ import 'package:mobil_arici/app/sync/initial_sync_screen.dart';
 import 'package:mobil_arici/app/sync/sync_screen.dart';
 import 'package:mobil_arici/core/business/migratory_gate.dart';
 import 'package:mobil_arici/core/design_system/gallery/component_gallery_screen.dart';
+import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/features/account_deletion/presentation/account_deleted_screen.dart';
 import 'package:mobil_arici/features/account_deletion/presentation/account_deletion_providers.dart';
@@ -669,10 +670,16 @@ GoRouter router(Ref ref) {
                       ),
                     ],
                   ),
-                  // Yalnız TR profilinde girişi var (RegionFeatures.subsidies).
+                  // Yalnız TR profilinde (RegionFeatures.subsidies); diğer
+                  // bölgede derin link ya da bildirimle de açılmaz, alt
+                  // rotalarıyla birlikte Daha fazla'ya düşer.
                   GoRoute(
                     path: 'subsidies',
                     parentNavigatorKey: rootNavigatorKey,
+                    redirect: (context, state) =>
+                        ref.read(regionConfigProvider).features.subsidies
+                        ? null
+                        : AppRoutes.more,
                     builder: (context, state) => const SubsidiesScreen(),
                     routes: [
                       GoRoute(
