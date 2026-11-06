@@ -57,7 +57,7 @@ void main() {
     testWidgets('desteklenmeyen cihaz dilinde İngilizce açılır', (
       tester,
     ) async {
-      tester.platformDispatcher.localesTestValue = const [Locale('de', 'DE')];
+      tester.platformDispatcher.localesTestValue = const [Locale('ja', 'JP')];
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
       await tester.pumpWidget(

@@ -1,4 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
+import { supportedLocales } from "../_shared/locale.ts";
 import { codeMail, completedMail, formatDeletionDate, mailLocale, requestedMail } from "./mail.ts";
 
 Deno.test("dil user_metadata.locale'den gelir, varsayılan İngilizce", () => {
@@ -43,4 +44,16 @@ Deno.test("silme kodu e-postası giriş kodundan ayrı", () => {
   const en = codeMail("482913", "en");
   assertEquals(en.subject, "Your Mobil Arıcı account deletion code");
   assert(en.text.includes("482913"));
+});
+
+Deno.test("her dilde üç e-posta da kodu ve tarihi taşır", () => {
+  for (const locale of supportedLocales) {
+    const requested = requestedMail("2026-11-12T09:30:00Z", true, locale);
+    assert(requested.subject.includes("Mobil"), locale);
+    assert(requested.text.includes("2026"), locale);
+    assert(codeMail("482913", locale).text.includes("482913"), locale);
+    assert(completedMail(locale).subject.length > 0, locale);
+  }
+  assertEquals(formatDeletionDate("2026-11-12T21:30:00Z", "de"), "12. November 2026 um 21:30 UTC");
+  assertEquals(formatDeletionDate("2026-11-12T21:30:00Z", "es"), "12 de noviembre de 2026, 21:30 UTC");
 });

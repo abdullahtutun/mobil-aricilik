@@ -59,6 +59,18 @@ const text: Record<Locale, {
     supportTitle: "Support application is open",
     supportBody: (name, last) => `${name} · last day ${last}`,
   },
+  de: {
+    taskTitle: "Neue Aufgabe für dich",
+    taskBody: "Dir wurde eine Aufgabe zugewiesen.",
+    supportTitle: "Förderantrag ist geöffnet",
+    supportBody: (name, last) => `${name} · letzter Tag ${last}`,
+  },
+  es: {
+    taskTitle: "Tienes una tarea nueva",
+    taskBody: "Se te ha asignado una tarea.",
+    supportTitle: "La solicitud de ayudas está abierta",
+    supportBody: (name, last) => `${name} · último día ${last}`,
+  },
 };
 
 /// Bildirim metni. Otomatik görevin başlığı yoktur; genel metin gösterilir.
@@ -100,11 +112,25 @@ export function openedSupportPeriod(
   return { period: record, recipients };
 }
 
-/// "2026-12-31" → "31.12.2026" (TR) ya da "2026-12-31" (diğer diller).
-function formatDay(day: string, locale: Locale): string {
-  const [year, month, date] = day.split("-");
-  if (locale !== "tr" || !year || !month || !date) return day;
-  return `${date}.${month}.${year}`;
+/// Gün biçimi yereli.
+const dayLocales: Record<Locale, string> = {
+  tr: "tr-TR",
+  en: "en-GB",
+  de: "de-DE",
+  es: "es-ES",
+};
+
+/// "2026-12-31" → dilin kısa tarihi: "31.12.2026" (TR, DE), "31/12/2026"
+/// (EN, ES). Biçimsiz gün olduğu gibi döner.
+export function formatDay(day: string, locale: Locale): string {
+  const [year, month, date] = day.split("-").map(Number);
+  if (!year || !month || !date) return day;
+  return new Intl.DateTimeFormat(dayLocales[locale], {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year, month - 1, date)));
 }
 
 /// Destek dönemi bildirimi: başlık ve "ad · son gün".

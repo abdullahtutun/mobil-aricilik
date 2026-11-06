@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
+import 'package:mobil_arici/core/design_system/tokens/app_touch_targets.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 
 /// Değer girilmemiş sayaçta sayının yerinde duran işaret; dilden bağımsız.
@@ -84,73 +85,96 @@ class BigStepper extends StatelessWidget {
             top: spacing.sm,
             bottom: spacing.sm,
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: ExcludeSemantics(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(label, style: context.typography.subtitle),
-                      if (suggested)
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.history_rounded,
-                              size: context.sizes.iconSmall,
-                              color: colors.textSecondary,
-                            ),
-                            SizedBox(width: spacing.xs),
-                            Flexible(
-                              child: Text(
-                                l10n.suggestedValue,
-                                style: context.typography.bodySmall.copyWith(
-                                  color: colors.textSecondary,
+          child: LayoutBuilder(
+            builder: (context, constraints) => Row(
+              children: [
+                Expanded(
+                  child: ExcludeSemantics(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(label, style: context.typography.subtitle),
+                        if (suggested)
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.history_rounded,
+                                size: context.sizes.iconSmall,
+                                color: colors.textSecondary,
+                              ),
+                              SizedBox(width: spacing.xs),
+                              Flexible(
+                                child: Text(
+                                  l10n.suggestedValue,
+                                  style: context.typography.bodySmall.copyWith(
+                                    color: colors.textSecondary,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                    ],
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: targets.gap),
-              _StepButton(
-                icon: Icons.remove_rounded,
-                tooltip: l10n.stepperDecrease,
-                filled: false,
-                onPressed: decreased == null
-                    ? null
-                    : () => onChanged(decreased),
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints(minWidth: targets.fieldLarge),
-                child: ExcludeSemantics(
-                  child: Text(
-                    value == null ? _noValue : '$value',
-                    textAlign: TextAlign.center,
-                    style: suggested || value == null
-                        ? context.typography.number.copyWith(
-                            color: colors.textSecondary,
-                          )
-                        : context.typography.number,
+                SizedBox(width: targets.gap),
+                _StepButton(
+                  icon: Icons.remove_rounded,
+                  tooltip: l10n.stepperDecrease,
+                  filled: false,
+                  onPressed: decreased == null
+                      ? null
+                      : () => onChanged(decreased),
+                ),
+                // Değer sığmazsa (ör. büyük yazıda 4 haneli yıl) küçülür;
+                // etikete en az bir alan genişliği kalır.
+                ConstrainedBox(
+                  constraints: _valueConstraints(constraints.maxWidth, targets),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: ExcludeSemantics(
+                      child: Text(
+                        value == null ? _noValue : '$value',
+                        textAlign: TextAlign.center,
+                        style: suggested || value == null
+                            ? context.typography.number.copyWith(
+                                color: colors.textSecondary,
+                              )
+                            : context.typography.number,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              _StepButton(
-                icon: Icons.add_rounded,
-                tooltip: l10n.stepperIncrease,
-                filled: true,
-                onPressed: increased == null
-                    ? null
-                    : () => onChanged(increased),
-              ),
-            ],
+                _StepButton(
+                  icon: Icons.add_rounded,
+                  tooltip: l10n.stepperIncrease,
+                  filled: true,
+                  onPressed: increased == null
+                      ? null
+                      : () => onChanged(increased),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  /// Değerin genişliği: en az [AppTouchTargets.fieldLarge]; en çok satırdan
+  /// iki buton, boşluk ve etikete bırakılan bir alan genişliği düşünce
+  /// kalan.
+  static BoxConstraints _valueConstraints(
+    double rowWidth,
+    AppTouchTargets targets,
+  ) {
+    final room =
+        rowWidth - 2 * targets.field - targets.gap - targets.fieldLarge;
+    final max = room.clamp(0.0, double.infinity);
+    return BoxConstraints(
+      minWidth: targets.fieldLarge.clamp(0.0, max),
+      maxWidth: max,
     );
   }
 }

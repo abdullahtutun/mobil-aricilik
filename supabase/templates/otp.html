@@ -1,23 +1,28 @@
 {{- /*
-  E-posta OTP şablonu (TR/EN). Panelde hem "Confirm signup" hem "Magic Link"
-  şablonuna aynen yapıştırılır. Dil user_metadata.locale'den gelir: "tr" ise
-  Türkçe, başka her değerde ya da boşsa İngilizce (uygulamanın dil çözümüyle
-  aynı). "10 dakika" metni Email OTP Expiration (600 sn) ile uyumlu tutulmalı.
+  E-posta OTP şablonu (TR, EN, DE, ES). Panelde hem "Confirm signup" hem
+  "Magic Link" şablonuna aynen yapıştırılır. Dil user_metadata.locale'den
+  gelir (uygulama dil kodunu yazar: "tr", "de"…); desteklenmeyen her değerde
+  ya da boşsa İngilizce (uygulamanın dil çözümüyle aynı). Yeni dil
+  `supabase/functions/_shared/locale.ts` ile birlikte buraya da eklenir.
+  "10 dakika" metni Email OTP Expiration (600 sn) ile uyumlu tutulmalı.
 */ -}}
-{{- $tr := eq .Data.locale "tr" -}}
+{{- $l := "en" -}}
+{{- if eq .Data.locale "tr" }}{{ $l = "tr" }}{{ end -}}
+{{- if eq .Data.locale "de" }}{{ $l = "de" }}{{ end -}}
+{{- if eq .Data.locale "es" }}{{ $l = "es" }}{{ end -}}
 <!DOCTYPE html>
-<html lang="{{ if $tr }}tr{{ else }}en{{ end }}">
+<html lang="{{ $l }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
-    <title>{{ if $tr }}Mobil Arıcı giriş kodunuz{{ else }}Your Mobil Arıcı sign-in code{{ end }}</title>
+    <title>{{ if eq $l "tr" }}Mobil Arıcı giriş kodunuz{{ else if eq $l "de" }}Dein Anmeldecode für Mobil Arıcı{{ else if eq $l "es" }}Tu código para iniciar sesión en Mobil Arıcı{{ else }}Your Mobil Arıcı sign-in code{{ end }}</title>
   </head>
   <body style="margin:0; padding:0; background-color:#FFF8EE;">
     <div style="display:none; max-height:0; overflow:hidden; opacity:0;">
-      {{ if $tr }}Mobil Arıcı'ya giriş için tek kullanımlık kodunuz.{{ else }}Your one-time code to sign in to Mobil Arıcı.{{ end }}
+      {{ if eq $l "tr" }}Mobil Arıcı'ya giriş için tek kullanımlık kodunuz.{{ else if eq $l "de" }}Dein Einmalcode für die Anmeldung bei Mobil Arıcı.{{ else if eq $l "es" }}Tu código de un solo uso para iniciar sesión en Mobil Arıcı.{{ else }}Your one-time code to sign in to Mobil Arıcı.{{ end }}
     </div>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FFF8EE;">
       <tr>
@@ -27,10 +32,10 @@
               <td style="padding:32px 24px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1F1A14;">
                 <p style="margin:0 0 24px; font-size:16px; font-weight:700; color:#995A00;">Mobil Arıcı</p>
                 <h1 style="margin:0 0 12px; font-size:22px; line-height:28px; font-weight:700;">
-                  {{ if $tr }}Giriş kodunuz{{ else }}Your sign-in code{{ end }}
+                  {{ if eq $l "tr" }}Giriş kodunuz{{ else if eq $l "de" }}Dein Anmeldecode{{ else if eq $l "es" }}Tu código de inicio de sesión{{ else }}Your sign-in code{{ end }}
                 </h1>
                 <p style="margin:0 0 24px; font-size:16px; line-height:24px;">
-                  {{ if $tr }}Giriş yapmak için bu kodu uygulamaya girin:{{ else }}Enter this code in the app to sign in:{{ end }}
+                  {{ if eq $l "tr" }}Giriş yapmak için bu kodu uygulamaya girin:{{ else if eq $l "de" }}Gib diesen Code in der App ein, um dich anzumelden:{{ else if eq $l "es" }}Introduce este código en la app para iniciar sesión:{{ else }}Enter this code in the app to sign in:{{ end }}
                 </p>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
@@ -40,16 +45,16 @@
                   </tr>
                 </table>
                 <p style="margin:24px 0 8px; font-size:16px; line-height:24px;">
-                  {{ if $tr }}Kod 10 dakika geçerlidir ve bir kez kullanılabilir. Kodu kimseyle paylaşmayın.{{ else }}The code is valid for 10 minutes and can be used once. Don't share it with anyone.{{ end }}
+                  {{ if eq $l "tr" }}Kod 10 dakika geçerlidir ve bir kez kullanılabilir. Kodu kimseyle paylaşmayın.{{ else if eq $l "de" }}Der Code gilt 10 Minuten und kann einmal verwendet werden. Gib ihn an niemanden weiter.{{ else if eq $l "es" }}El código es válido durante 10 minutos y se puede usar una vez. No lo compartas con nadie.{{ else }}The code is valid for 10 minutes and can be used once. Don't share it with anyone.{{ end }}
                 </p>
                 <p style="margin:0; font-size:14px; line-height:20px; color:#5E554A;">
-                  {{ if $tr }}Giriş yapmaya çalışmadıysanız bu e-postayı yok sayabilirsiniz.{{ else }}If you didn't try to sign in, you can ignore this email.{{ end }}
+                  {{ if eq $l "tr" }}Giriş yapmaya çalışmadıysanız bu e-postayı yok sayabilirsiniz.{{ else if eq $l "de" }}Wenn du dich nicht anmelden wolltest, kannst du diese E-Mail ignorieren.{{ else if eq $l "es" }}Si no intentaste iniciar sesión, puedes ignorar este correo.{{ else }}If you didn't try to sign in, you can ignore this email.{{ end }}
                 </p>
               </td>
             </tr>
           </table>
           <p style="margin:16px 0 0; max-width:480px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:12px; line-height:18px; color:#5E554A;">
-            {{ if $tr }}Bu e-posta {{ .Email }} adresine gönderildi.{{ else }}This email was sent to {{ .Email }}.{{ end }}
+            {{ if eq $l "tr" }}Bu e-posta {{ .Email }} adresine gönderildi.{{ else if eq $l "de" }}Diese E-Mail wurde an {{ .Email }} gesendet.{{ else if eq $l "es" }}Este correo se envió a {{ .Email }}.{{ else }}This email was sent to {{ .Email }}.{{ end }}
           </p>
         </td>
       </tr>

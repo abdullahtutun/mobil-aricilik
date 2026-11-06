@@ -14,9 +14,10 @@ void main() {
     });
 
     test('desteklenmeyen dilde İngilizce', () {
-      expect(resolve(const [Locale('de', 'DE')]), const Locale('en'));
-      // Ülke Türkiye olsa da dil Almanca; Türkçe seçilmez.
-      expect(resolve(const [Locale('de', 'TR')]), const Locale('en'));
+      expect(resolve(const [Locale('ja', 'JP')]), const Locale('en'));
+      // Ülke Türkiye olsa da dil Japonca; Türkçe seçilmez.
+      expect(resolve(const [Locale('ja', 'TR')]), const Locale('en'));
+      expect(resolve(const [Locale('de', 'TR')]), const Locale('de'));
     });
 
     test('cihaz dili bilinmiyorsa İngilizce', () {
@@ -25,7 +26,7 @@ void main() {
     });
 
     test('ilk dil desteklenmiyorsa sıradaki desteklenen dil seçilir', () {
-      expect(resolve(const [Locale('de'), Locale('tr')]), const Locale('tr'));
+      expect(resolve(const [Locale('ja'), Locale('tr')]), const Locale('tr'));
     });
   });
 
@@ -34,6 +35,19 @@ void main() {
       expect(AppLanguage.system.locale, isNull);
       expect(AppLanguage.turkish.locale, const Locale('tr'));
       expect(AppLanguage.english.locale, const Locale('en'));
+    });
+
+    test('dil kodundan dil; desteklenmeyende İngilizce', () {
+      expect(AppLanguage.fromLanguageCode('de'), AppLanguage.german);
+      expect(AppLanguage.fromLanguageCode('es'), AppLanguage.spanish);
+      expect(AppLanguage.fromLanguageCode('ja'), AppLanguage.english);
+    });
+
+    test('her ARB dili seçilebilir', () {
+      expect(
+        AppLanguage.selectable.map((language) => language.locale),
+        unorderedEquals(AppLocalizations.supportedLocales),
+      );
     });
 
     test('seçilebilen her dil ve yedek dil destekleniyor', () {

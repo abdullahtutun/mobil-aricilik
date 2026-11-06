@@ -763,6 +763,17 @@ Hedef: hi, fa, es, de, pt, ru, uk. Sıra: altyapı → de + es → pt + ru + uk 
 - Sunucu: `supabase/functions/_shared/locale.ts` desteklenen dilleri ve seçimi tutuyor (`pickLocale`, `pickAcceptLanguage`); bilinmeyen dilde artık Türkçe değil İngilizce. `notify`, `account-delete` e-postaları ve `lot-page` buna geçti; metin tabloları `Record<AppLocale, …>`, yeni dil eklenince eksik çeviri tür hatası veriyor. Deno kuruldu (Homebrew); 31 Deno testi ve tip denetimi geçti. Fonksiyonlar henüz deploy edilmedi; mevcut TR/EN kullanıcılar için davranış aynı, ilk yeni dille birlikte deploy edilecek.
 - `flutter analyze` temiz, tam takım geçti.
 
+### 2026-11-06 — Almanca ve İspanyolca (Faz 1)
+
+- `app_de.arb` ve `app_es.arb`: 2073 anahtarın tamamı çevrildi (makine çevirisi; arıcılık bilen bir kişinin gözden geçirmesi gerekiyor). Hitap "du"/"tú". Terimler: hive → Volk / colmena, apiary → Bienenstand / colmenar, inspection → Durchsicht / revisión, super → Honigraum / alza, withdrawal → Wartezeit / tiempo de espera. Marka adı "Mobil Arıcı" ve "Powered by WeatherAPI.com" çevrilmedi. Hesap silme onay kelimesi LÖSCHEN / ELIMINAR.
+- `AppLanguage`'a `german` ve `spanish` eklendi; dil seçicileri dört dil gösteriyor. Testte "desteklenmeyen dil" örneği Almancadan Japoncaya alındı.
+- Ülke adları artık `tool/country_names.swift` ile üretiliyor (`swift tool/country_names.swift tr en de es > lib/core/region/country_names.dart`); TR ve EN tabloları eski üretimle birebir aynı çıktı, DE ve ES eklendi. `countryNamesFor` tablosu olmayan dilde İngilizce.
+- Tanı kuralları (`rules.json`) DE ve ES etiketleriyle. Bilgi bankası makaleleri hâlâ "örnek makale" yer tutucusu; çevrilmedi, İngilizceye düşüyor.
+- Sunucu: `_shared/locale.ts` desteklenen diller `tr, en, de, es`. `notify` (görev ve destek dönemi bildirimi; son gün artık dilin kısa tarihiyle, EN dahil `31/12/2026`), `account-delete` e-postaları (dil tablosuna taşındı) ve `lot-page` DE/ES metinleriyle. Üç fonksiyon deploy edildi; lot sayfası canlıda `Accept-Language: de` ve `es` ile doğru dili döndü. `otp.html` DE/ES'li; **Supabase panelinde Confirm signup ve Magic Link şablonlarına yeniden yapıştırılmalı** (Go kurulu olmadığı için şablon yerelde çalıştırılmadı). Deno 35 test geçti.
+- `test/app/locale_layout_test.dart`: İngilizce dışındaki her dilde 48 ekran 360dp, 1.5x yazı ve eldiven modunda açılıyor, taşma aranıyor. İlk koşuda dilden bağımsız bir hata çıktı: `BigStepper`'da 4 haneli değer (göç planı yılı) satırı 4px taşırıyordu. Değer artık sığmazsa küçülüyor, etikete en az bir `fieldLarge` kalıyor; sığan durumda yerleşim aynı.
+- CLAUDE.md: yeni anahtar bütün ARB'lere eklenir; yeni dilin dokunduğu yerler listelendi.
+- `flutter analyze` temiz, tam takım geçti.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

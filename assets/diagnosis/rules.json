@@ -5,56 +5,72 @@
       "id": "sunken_perforated_cappings",
       "label": {
         "tr": "Çökük, delikli yavru kapakları",
-        "en": "Sunken, perforated brood cappings"
+        "en": "Sunken, perforated brood cappings",
+        "de": "Eingesunkene, löchrige Zelldeckel",
+        "es": "Opérculos de cría hundidos y perforados"
       }
     },
     {
       "id": "ropy_larva",
       "label": {
         "tr": "Kibrit testinde larva uzayıp sünüyor",
-        "en": "Larva ropes out in the matchstick test"
+        "en": "Larva ropes out in the matchstick test",
+        "de": "Larve zieht beim Streichholztest Fäden",
+        "es": "La larva forma un hilo en la prueba del palillo"
       }
     },
     {
       "id": "spotty_brood",
       "label": {
         "tr": "Düzensiz, alacalı yavru",
-        "en": "Spotty, patchy brood"
+        "en": "Spotty, patchy brood",
+        "de": "Lückenhaftes Brutnest",
+        "es": "Cría salteada, irregular"
       }
     },
     {
       "id": "foul_smell",
       "label": {
         "tr": "Kovanda kötü, çürük kokusu",
-        "en": "Foul, rotten smell in the hive"
+        "en": "Foul, rotten smell in the hive",
+        "de": "Fauliger Geruch im Volk",
+        "es": "Olor fétido, a podrido, en la colmena"
       }
     },
     {
       "id": "chalky_larvae",
       "label": {
         "tr": "Kireçleşmiş, beyaz-gri sert larvalar",
-        "en": "Chalky, white-grey hard larvae"
+        "en": "Chalky, white-grey hard larvae",
+        "de": "Kalkartige, weißgraue harte Larven",
+        "es": "Larvas calcáreas, duras, de color blanco grisáceo"
       }
     },
     {
       "id": "mummies_at_entrance",
       "label": {
         "tr": "Uçuş deliği önünde mumyalaşmış larvalar",
-        "en": "Mummified larvae at the entrance"
+        "en": "Mummified larvae at the entrance",
+        "de": "Mumifizierte Larven am Flugloch",
+        "es": "Larvas momificadas en la piquera"
       }
     },
     {
       "id": "dysentery_streaks",
       "label": {
         "tr": "Kovan önünde ve çerçevelerde ishal izi",
-        "en": "Dysentery streaks on the hive and frames"
+        "en": "Dysentery streaks on the hive and frames",
+        "de": "Kotspuren an Beute und Waben",
+        "es": "Manchas de diarrea en la colmena y los cuadros"
       }
     },
     {
       "id": "crawling_bees",
       "label": {
         "tr": "Uçamayan, sürünen arılar",
-        "en": "Bees crawling, unable to fly"
+        "en": "Bees crawling, unable to fly",
+        "de": "Krabbelnde, flugunfähige Bienen",
+        "es": "Abejas que se arrastran y no pueden volar"
       }
     }
   ],
@@ -63,7 +79,9 @@
       "id": "american_foulbrood",
       "name": {
         "tr": "Amerikan yavru çürüklüğü",
-        "en": "American foulbrood"
+        "en": "American foulbrood",
+        "de": "Amerikanische Faulbrut",
+        "es": "Loque americana"
       },
       "symptoms": [
         "sunken_perforated_cappings",
@@ -74,14 +92,18 @@
       "notifiable": true,
       "advice": {
         "tr": "Kovanı açık bırakma, petek ve ekipmanı başka kovana taşıma. Kesin teşhis laboratuvarda konur; yetkili kuruma hemen bildir ve gelen talimatlara uy.",
-        "en": "Keep the hive closed and don't move combs or equipment to other hives. Only a laboratory can confirm it; notify the authority right away and follow their instructions."
+        "en": "Keep the hive closed and don't move combs or equipment to other hives. Only a laboratory can confirm it; notify the authority right away and follow their instructions.",
+        "de": "Halte das Volk geschlossen und bringe keine Waben oder Geräte zu anderen Völkern. Nur ein Labor kann den Befund sichern; melde den Verdacht sofort der Behörde und folge ihren Anweisungen.",
+        "es": "Mantén la colmena cerrada y no lleves panales ni material a otras colmenas. Solo un laboratorio puede confirmarlo; avisa enseguida a la autoridad y sigue sus instrucciones."
       }
     },
     {
       "id": "chalkbrood",
       "name": {
         "tr": "Kireç hastalığı",
-        "en": "Chalkbrood"
+        "en": "Chalkbrood",
+        "de": "Kalkbrut",
+        "es": "Ascosferiosis (cría yesificada)"
       },
       "symptoms": [
         "chalky_larvae",
@@ -91,14 +113,18 @@
       "notifiable": false,
       "advice": {
         "tr": "Nemli ve serin kovanlarda artar. Havalandırmayı iyileştir, koloniyi güçlendir; sürerse anayı değiştir.",
-        "en": "Worse in damp, cool hives. Improve ventilation and strengthen the colony; requeen if it persists."
+        "en": "Worse in damp, cool hives. Improve ventilation and strengthen the colony; requeen if it persists.",
+        "de": "Tritt in feuchten, kühlen Beuten verstärkt auf. Verbessere die Belüftung und stärke das Volk; weisele um, wenn es anhält.",
+        "es": "Empeora en colmenas húmedas y frías. Mejora la ventilación y refuerza la colonia; cambia la reina si persiste."
       }
     },
     {
       "id": "nosema",
       "name": {
         "tr": "Nosema",
-        "en": "Nosema"
+        "en": "Nosema",
+        "de": "Nosema",
+        "es": "Nosemosis"
       },
       "symptoms": [
         "dysentery_streaks",
@@ -107,7 +133,9 @@
       "notifiable": false,
       "advice": {
         "tr": "Kesin teşhis için 30 arının bağırsağı mikroskopta incelenir. Kirli çerçeveleri değiştir, kışlıkta bal kalitesine dikkat et.",
-        "en": "A microscope check of 30 bees' guts confirms it. Replace soiled frames and watch winter store quality."
+        "en": "A microscope check of 30 bees' guts confirms it. Replace soiled frames and watch winter store quality.",
+        "de": "Gesichert wird der Befund durch Mikroskopie des Darms von 30 Bienen. Ersetze verkotete Waben und achte auf die Qualität des Winterfutters.",
+        "es": "Se confirma examinando al microscopio el intestino de 30 abejas. Sustituye los cuadros manchados y cuida la calidad de las reservas de invierno."
       }
     }
   ],
@@ -115,22 +143,30 @@
     "TR": {
       "name": {
         "tr": "İl/ilçe tarım ve orman müdürlüğü",
-        "en": "Provincial/district directorate of agriculture and forestry"
+        "en": "Provincial/district directorate of agriculture and forestry",
+        "de": "Provinz-/Bezirksdirektion für Landwirtschaft und Forsten",
+        "es": "Dirección provincial o de distrito de agricultura y bosques"
       },
       "detail": {
         "tr": "Şüpheyi bulunduğun yerin müdürlüğüne bildir. ALO 174 Gıda Hattı'ndan da ihbar edebilirsin.",
-        "en": "Report the suspicion to your local directorate. You can also call the ALO 174 food line."
+        "en": "Report the suspicion to your local directorate. You can also call the ALO 174 food line.",
+        "de": "Melde den Verdacht der Direktion vor Ort. Du kannst auch die Lebensmittel-Hotline ALO 174 anrufen.",
+        "es": "Comunica la sospecha a la dirección de tu zona. También puedes llamar a la línea alimentaria ALO 174."
       },
       "phone": "174"
     },
     "GLOBAL": {
       "name": {
         "tr": "Yerel veteriner otoritesi",
-        "en": "Local veterinary authority"
+        "en": "Local veterinary authority",
+        "de": "Zuständiges Veterinäramt",
+        "es": "Autoridad veterinaria local"
       },
       "detail": {
         "tr": "Bölgendeki resmî veteriner hizmetine ya da arıcılık müfettişine bildir.",
-        "en": "Report it to the official veterinary service or bee inspector in your area."
+        "en": "Report it to the official veterinary service or bee inspector in your area.",
+        "de": "Melde es dem amtlichen Veterinärdienst oder dem Bienensachverständigen in deiner Region.",
+        "es": "Comunícalo al servicio veterinario oficial o al inspector apícola de tu zona."
       }
     }
   }

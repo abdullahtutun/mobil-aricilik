@@ -74,6 +74,54 @@ const text = {
     notFoundHint:
       "The page may have been removed or the address may be wrong. Contact the producer about the product.",
   },
+  de: {
+    lot: "Charge",
+    honey: {
+      pine: "Pinienhonig",
+      flower: "Blütenhonig",
+      chestnut: "Kastanienhonig",
+      citrus: "Zitrushonig",
+      other: "Honig",
+    } as Record<string, string>,
+    hives: (count: string) => `${count} Völker`,
+    lab: "Laboranalyse",
+    moisture: "Wassergehalt",
+    hmf: "HMF",
+    diastase: "Diastasezahl",
+    proline: "Prolin",
+    residue: "Arzneimittelrückstände",
+    residueNone: "Nicht nachgewiesen",
+    residueDetected: "Nachgewiesen",
+    report: "Analysebericht öffnen",
+    footer: "Diese Seite wurde vom Erzeuger mit Mobil Arıcı veröffentlicht.",
+    notFound: "Diese Charge ist nicht veröffentlicht",
+    notFoundHint:
+      "Die Seite wurde vielleicht entfernt oder die Adresse ist falsch. Wende dich bei Fragen zum Produkt an den Erzeuger.",
+  },
+  es: {
+    lot: "Lote",
+    honey: {
+      pine: "Miel de pino",
+      flower: "Miel de milflores",
+      chestnut: "Miel de castaño",
+      citrus: "Miel de azahar",
+      other: "Miel",
+    } as Record<string, string>,
+    hives: (count: string) => `${count} colmenas`,
+    lab: "Análisis de laboratorio",
+    moisture: "Humedad",
+    hmf: "HMF",
+    diastase: "Índice de diastasa",
+    proline: "Prolina",
+    residue: "Residuos de medicamentos",
+    residueNone: "No detectados",
+    residueDetected: "Detectados",
+    report: "Abrir informe del análisis",
+    footer: "Esta página la publicó el productor con Mobil Arıcı.",
+    notFound: "Este lote no está publicado",
+    notFoundHint:
+      "Puede que la página se haya retirado o que la dirección sea incorrecta. Para dudas sobre el producto, contacta con el productor.",
+  },
 } satisfies Record<Lang, unknown>;
 
 /// Accept-Language'da sırayla ilk desteklenen dil; yoksa İngilizce.
@@ -99,8 +147,16 @@ export function initials(name: string, lang: Lang): string {
     .toLocaleUpperCase(lang);
 }
 
+/// Intl biçim yereli.
+const intlLocales: Record<Lang, string> = {
+  tr: "tr-TR",
+  en: "en-GB",
+  de: "de-DE",
+  es: "es-ES",
+};
+
 function locale(lang: Lang): string {
-  return lang === "tr" ? "tr-TR" : "en-GB";
+  return intlLocales[lang];
 }
 
 function number(value: number, lang: Lang): string {

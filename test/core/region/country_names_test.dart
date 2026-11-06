@@ -1,16 +1,22 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/region/country_currencies.dart';
 import 'package:mobil_arici/core/region/country_names.dart';
 
 void main() {
   group('Ülke adları', () {
-    test('para birimi tablosundaki her kodun iki dilde de adı var', () {
+    test('para birimi tablosundaki her kodun her arayüz dilinde adı var', () {
       final codes = countryCurrencyCodes.keys.toSet();
 
-      expect(countryNamesTr.keys.toSet(), codes);
-      expect(countryNamesEn.keys.toSet(), codes);
-      expect(countryNamesTr.values, everyElement(isNotEmpty));
-      expect(countryNamesEn.values, everyElement(isNotEmpty));
+      for (final language in AppLanguage.selectable) {
+        final code = language.locale!.languageCode;
+        final names = countryNamesFor(code);
+        expect(names.keys.toSet(), codes, reason: code);
+        expect(names.values, everyElement(isNotEmpty), reason: code);
+        if (code != 'en') {
+          expect(names, isNot(same(countryNamesEn)), reason: code);
+        }
+      }
     });
 
     test('bilinen adlar', () {
@@ -20,6 +26,8 @@ void main() {
       expect(countryNamesEn['TR'], 'Türkiye');
       expect(countryNamesEn['DE'], 'Germany');
       expect(countryNamesEn['GB'], 'United Kingdom');
+      expect(countryNamesDe['DE'], 'Deutschland');
+      expect(countryNamesEs['ES'], 'España');
     });
 
     test('Türkçe liste Türk alfabesi sırasında', () {
@@ -43,10 +51,11 @@ void main() {
       expect(names.indexOf('Germany'), lessThan(names.indexOf('Ghana')));
     });
 
-    test('Türkçe dışındaki dillerde İngilizce adlar döner', () {
+    test('tablosu olmayan dilde İngilizce adlar döner', () {
       expect(countryNamesFor('tr'), same(countryNamesTr));
       expect(countryNamesFor('en'), same(countryNamesEn));
-      expect(countryNamesFor('de'), same(countryNamesEn));
+      expect(countryNamesFor('de'), same(countryNamesDe));
+      expect(countryNamesFor('ja'), same(countryNamesEn));
     });
   });
 }

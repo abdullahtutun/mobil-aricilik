@@ -5,7 +5,9 @@ import 'package:flutter/widgets.dart';
 enum AppLanguage {
   system(null, ''),
   turkish(Locale('tr'), 'Türkçe'),
-  english(Locale('en'), 'English');
+  english(Locale('en'), 'English'),
+  german(Locale('de'), 'Deutsch'),
+  spanish(Locale('es'), 'Español');
 
   new(this.locale, this.nativeName);
 
