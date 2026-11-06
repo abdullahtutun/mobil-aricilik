@@ -741,6 +741,11 @@
 - `account-delete` (silme kodu, silinecek/silindi bilgilendirmesi) kendi posta kutusunu okuyor: `ACCOUNT_MAIL_SMTP_USER` = noreply@tutunsoft.com + `ACCOUNT_MAIL_SMTP_PASS`; `feedback-mail` `FEEDBACK_SMTP_USER` = feedback@tutunsoft.com + `FEEDBACK_SMTP_PASS`, alıcı `FEEDBACK_TO_EMAIL` = feedback@tutunsoft.com. Gönderen adresi giriş yapılan kutu. Kullanıcı ve şifre birlikte yoksa ortak `SMTP_USER`/`SMTP_PASS` kullanılıyor; sunucu smtp.hostinger.com:465. Giriş kodu e-postası Supabase Auth SMTP'sinde (kullanıcı ayarladı).
 - İki fonksiyon deploy edildi; kullanıcı adları ve alıcı secret olarak girildi. **Şifreler (`ACCOUNT_MAIL_SMTP_PASS`, `FEEDBACK_SMTP_PASS`) kullanıcı tarafından girilecek**; girilene kadar mailler eski kutudan çıkıyor (görüşler artık feedback@tutunsoft.com'a geliyor). Gönderim canlıda denenmedi. Deno 28 test ve tip denetimi geçti.
 
+### 2026-11-06 — Para birimi seçicisi: yalnız kod ve arama
+
+- İşletme profilinde ve düzenleme ekranında para birimi simgesiz, yalnız ISO kodu (TRY, USD). `intl`'in "dh", "Lek" gibi harfli kısaltmaları kafa karıştırıyordu. `currencyLabel` ve `businessCurrencyValue` kaldırıldı. Finans tutar alanlarındaki simge (₺) aynı kaldı.
+- Seçim sayfası `CurrencyPicker` (`organization/presentation/widgets/`): üstte arama, seçili ve bölgenin birimi en üstte, kalanı alfabe sırasıyla. Kodla ("eu") ya da birimi kullanan ülkenin adıyla ("almanya" → EUR) aranır; kural `matchesCurrencyQuery`, birim testli. `flutter analyze` temiz, tam takım 2331 test geçti.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

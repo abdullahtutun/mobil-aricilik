@@ -88,6 +88,19 @@ void main() {
     expect(codes, [...codes]..sort());
   });
 
+  test('para birimi kodla ya da ülke adıyla aranır', () {
+    const names = {'TR': 'Türkiye', 'DE': 'Almanya', 'US': 'Amerika'};
+    bool match(String code, String query) =>
+        matchesCurrencyQuery(code: code, countryNames: names, query: query);
+
+    expect(match('TRY', ''), isTrue);
+    expect(match('TRY', ' tr '), isTrue);
+    expect(match('TRY', 'TÜRK'), isTrue);
+    expect(match('EUR', 'almanya'), isTrue);
+    expect(match('EUR', 'turkiye'), isFalse);
+    expect(match('USD', 'zz'), isFalse);
+  });
+
   group('BusinessConfig', () {
     test('gezginci işletmede gezginci modülleri açık', () {
       final config = resolveBusinessConfig(OperationType.migratory);

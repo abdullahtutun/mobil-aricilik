@@ -11859,11 +11859,17 @@ abstract class AppLocalizations {
   /// **'Currency'**
   String get businessCurrency;
 
-  /// No description provided for @businessCurrencyValue.
+  /// No description provided for @businessCurrencySearch.
   ///
   /// In en, this message translates to:
-  /// **'{symbol} {code}'**
-  String businessCurrencyValue(String symbol, String code);
+  /// **'Search code or country'**
+  String get businessCurrencySearch;
+
+  /// No description provided for @businessCurrencyNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No currency matches your search.'**
+  String get businessCurrencyNoMatch;
 
   /// No description provided for @businessCurrencyNote.
   ///

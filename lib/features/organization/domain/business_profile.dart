@@ -1,4 +1,5 @@
 import 'package:mobil_arici/core/region/country_currencies.dart';
+import 'package:mobil_arici/core/utils/text_fold.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 
@@ -100,4 +101,25 @@ String logoFileName(String storagePath) => storagePath.split('/').last;
 List<String> currencyChoices([String? current]) {
   final codes = {...countryCurrencyCodes.values, ?current}.toList()..sort();
   return codes;
+}
+
+/// Para birimi aramasında eşleşme: kodun bir kısmı ("tr" → TRY) ya da o
+/// birimi kullanan bir ülkenin adı ("türk" → TRY, "almanya" → EUR).
+/// Büyük-küçük harf, Türkçe harfler ve aksan gözetilmez. [countryNames]
+/// ülke kodu → uygulamanın dilindeki ad. Boş arama her birimle eşleşir.
+bool matchesCurrencyQuery({
+  required String code,
+  required Map<String, String> countryNames,
+  required String query,
+}) {
+  final folded = foldForSearch(query.trim());
+  if (folded.isEmpty) return true;
+  if (code.toLowerCase().contains(folded)) return true;
+  for (final MapEntry(key: country, value: currency)
+      in countryCurrencyCodes.entries) {
+    if (currency != code) continue;
+    final name = countryNames[country];
+    if (name != null && foldForSearch(name).contains(folded)) return true;
+  }
+  return false;
 }

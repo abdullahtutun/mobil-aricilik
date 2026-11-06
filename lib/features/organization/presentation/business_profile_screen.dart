@@ -73,7 +73,7 @@ class BusinessProfileScreen extends ConsumerWidget {
                     ),
                     ListRow(
                       title: l10n.businessCurrency,
-                      value: currencyLabel(context, profile.currency),
+                      value: profile.currency,
                       onTap: canEdit
                           ? () => context.go(AppRoutes.businessEdit)
                           : null,
@@ -100,14 +100,6 @@ String operationTypeLabel(AppLocalizations l10n, OperationType type) =>
       OperationType.migratory => l10n.businessTypeMigratory,
       OperationType.stationary => l10n.businessTypeStationary,
     };
-
-/// Para birimi simgesi ve kodu: "₺ TRY"; simge kodla aynıysa yalnız kod.
-String currencyLabel(BuildContext context, String code) {
-  final symbol = AppFormat.of(context).currencySymbol(code);
-  return symbol == code
-      ? code
-      : AppLocalizations.of(context).businessCurrencyValue(symbol, code);
-}
 
 class _Header extends ConsumerWidget {
   const new({required this.profile});

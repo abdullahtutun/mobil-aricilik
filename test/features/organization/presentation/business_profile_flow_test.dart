@@ -157,7 +157,7 @@ void main() {
         4,
       );
       expect(find.text('Gezginci'), findsOneWidget);
-      expect(find.text('₺ TRY'), findsOneWidget);
+      expect(find.text('TRY'), findsOneWidget);
       expect(find.text('Ekip · 3 kişi'), findsOneWidget);
       expect(find.text('1 işçi, 1 danışman'), findsOneWidget);
       expect(find.text(testUser.email!), findsOneWidget);
@@ -408,16 +408,33 @@ void main() {
           'Geçmiş kayıtlar dönüştürülmez; yeni para birimi yalnız bundan '
           'sonraki kayıtlara uygulanır.';
       expect(find.text(note), findsNothing);
-      await _tap(tester, find.text('₺ TRY'));
-      await tester.scrollUntilVisible(
-        find.text('€ EUR'),
-        200,
-        scrollable: find.descendant(
-          of: find.byType(BottomSheet),
-          matching: find.byType(Scrollable),
-        ),
+      await _tap(tester, find.text('TRY'));
+      final sheet = find.byType(BottomSheet);
+      // Simge yok, yalnız kod; seçili birim en üstte.
+      expect(
+        find.descendant(of: sheet, matching: find.text('₺ TRY')),
+        findsNothing,
       );
-      await _tap(tester, find.text('€ EUR'));
+      final search = find.descendant(
+        of: sheet,
+        matching: find.byType(TextField),
+      );
+      // Ülke adıyla arama: "almanya" → EUR.
+      await tester.enterText(search, 'almanya');
+      await tester.pump();
+      expect(
+        find.descendant(of: sheet, matching: find.text('TRY')),
+        findsNothing,
+      );
+      await tester.enterText(search, 'xx-yok');
+      await tester.pump();
+      expect(find.text('Aramana uyan para birimi yok.'), findsOneWidget);
+      await tester.enterText(search, 'eu');
+      await tester.pump();
+      await _tap(
+        tester,
+        find.descendant(of: sheet, matching: find.text('EUR')),
+      );
       expect(find.text(note), findsOneWidget);
       await _tap(tester, _save);
 

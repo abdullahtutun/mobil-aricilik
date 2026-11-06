@@ -7411,9 +7411,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessCurrency => 'Currency';
 
   @override
-  String businessCurrencyValue(String symbol, String code) {
-    return '$symbol $code';
-  }
+  String get businessCurrencySearch => 'Search code or country';
+
+  @override
+  String get businessCurrencyNoMatch => 'No currency matches your search.';
 
   @override
   String get businessCurrencyNote =>

@@ -7215,9 +7215,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get businessCurrency => 'Para birimi';
 
   @override
-  String businessCurrencyValue(String symbol, String code) {
-    return '$symbol $code';
-  }
+  String get businessCurrencySearch => 'Kod ya da ülke ara';
+
+  @override
+  String get businessCurrencyNoMatch => 'Aramana uyan para birimi yok.';
 
   @override
   String get businessCurrencyNote =>

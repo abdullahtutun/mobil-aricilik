@@ -15,6 +15,7 @@ import 'package:mobil_arici/features/organization/presentation/business_profile_
 import 'package:mobil_arici/features/organization/presentation/business_profile_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/business_profile_screen.dart';
 import 'package:mobil_arici/features/organization/presentation/widgets/business_avatar.dart';
+import 'package:mobil_arici/features/organization/presentation/widgets/currency_picker.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// İşletme profilini düzenleme (`/more/business/edit`): tam ekran form,
@@ -127,25 +128,10 @@ class _EditFormState extends ConsumerState<_EditForm> {
   }
 
   Future<void> _pickCurrency(String current) async {
-    final l10n = AppLocalizations.of(context);
-    final regionDefault = ref.read(regionConfigProvider).currencyCode;
-    final codes = currencyChoices(current);
-    // Seçili ve bölgenin para birimi en üstte, kalanı alfabe sırasıyla.
-    final ordered = {current, regionDefault, ...codes}.toList();
-    final picked = await showOptionSheet<String>(
+    final picked = await showCurrencyPicker(
       context,
-      (context) => OptionSheet<String>(
-        title: l10n.businessCurrency,
-        options: [
-          for (final code in ordered)
-            SheetOption(
-              value: code,
-              icon: Icons.payments_outlined,
-              label: currencyLabel(context, code),
-              selected: code == current,
-            ),
-        ],
-      ),
+      selected: current,
+      regionDefault: ref.read(regionConfigProvider).currencyCode,
     );
     if (picked != null) {
       ref
@@ -236,7 +222,7 @@ class _EditFormState extends ConsumerState<_EditForm> {
                 child: ListGroup(
                   children: [
                     ListRow(
-                      title: currencyLabel(context, fields.currency),
+                      title: fields.currency,
                       onTap: () => _pickCurrency(fields.currency),
                     ),
                   ],
@@ -391,10 +377,7 @@ class _ReadOnlyForm extends ConsumerWidget {
                 title: l10n.businessType,
                 value: operationTypeLabel(l10n, profile.operationType),
               ),
-              ListRow(
-                title: l10n.businessCurrency,
-                value: currencyLabel(context, profile.currency),
-              ),
+              ListRow(title: l10n.businessCurrency, value: profile.currency),
               ListRow(
                 title: l10n.businessFullNameLabel,
                 value: member?.fullName ?? '–',
