@@ -774,6 +774,15 @@ Hedef: hi, fa, es, de, pt, ru, uk. Sıra: altyapı → de + es → pt + ru + uk 
 - CLAUDE.md: yeni anahtar bütün ARB'lere eklenir; yeni dilin dokunduğu yerler listelendi.
 - `flutter analyze` temiz, tam takım geçti.
 
+### 2026-11-06 — Portekizce, Rusça, Ukraynaca (Faz 2)
+
+- `app_pt.arb` (Brezilya ağırlıklı, "você"), `app_ru.arb` ve `app_uk.arb` ("вы"/"ви"): 2073 anahtarın tamamı (makine çevirisi; ana dili konuşan bir arıcının gözden geçirmesi gerekiyor). Terimler: colmeia / улей / вулик, apiário / пасека / пасіка, revisão / осмотр / огляд, melgueira / магазин, carência / период ожидания / період очікування. Ukraynaca hiçbir yerde Rusçaya düşmüyor. Hesap silme onay kelimesi EXCLUIR / УДАЛИТЬ / ВИДАЛИТИ.
+- Rusça ve Ukraynaca çoğullar `one/few/many/other` ile. `gen_l10n` `=1`'i `one` parametresine yazdığı için ikisi birlikte olunca biri sessizce eziliyordu ("вчера" gibi 1'e özel metin 21'de de çıkardı ya da hiç çıkmazdı). Bu iki dilde `=1` dalları kaldırıldı; `arb_consistency_test.dart` artık `=0/=1/=2` ile `zero/one/two`'nun aynı blokta olmasını reddediyor.
+- `AppLanguage`: `portuguese`, `russian`, `ukrainian`. Ülke adları `tool/country_names.swift tr en de es pt ru uk` ile; tanı kuralları PT/RU/UK'li.
+- Sunucu: `_shared/locale.ts` yedi dil; `notify`, `account-delete`, `lot-page` metinleri ve `otp.html` PT/RU/UK'li. Fonksiyonlar deploy edildi; lot sayfası canlıda `Accept-Language: pt/ru/uk` ile doğru dili döndü. **`otp.html` yine panele yapıştırılmalı.** Deno 35 test geçti.
+- Taşma testi Rusça ve Ukraynacada hasat formunda Okut butonunu yakaladı (61px / 7px). `BigButton.compactWidth` etiketin yazı ölçeğiyle genişliğini ölçüyor; hasat seçim kartı buton satırın yarısını aşınca metni üstte, butonu altta tam genişlikte diziyor.
+- `flutter analyze` temiz, tam takım (2386) geçti.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

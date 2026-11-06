@@ -71,6 +71,24 @@ const text: Record<Locale, {
     supportTitle: "La solicitud de ayudas está abierta",
     supportBody: (name, last) => `${name} · último día ${last}`,
   },
+  pt: {
+    taskTitle: "Você tem uma nova tarefa",
+    taskBody: "Uma tarefa foi atribuída a você.",
+    supportTitle: "A solicitação de subsídio está aberta",
+    supportBody: (name, last) => `${name} · último dia ${last}`,
+  },
+  ru: {
+    taskTitle: "Вам назначена задача",
+    taskBody: "Вам назначили задачу.",
+    supportTitle: "Открыт приём заявок на субсидии",
+    supportBody: (name, last) => `${name} · последний день ${last}`,
+  },
+  uk: {
+    taskTitle: "Вам призначено завдання",
+    taskBody: "Вам призначили завдання.",
+    supportTitle: "Відкрито прийом заявок на субсидії",
+    supportBody: (name, last) => `${name} · останній день ${last}`,
+  },
 };
 
 /// Bildirim metni. Otomatik görevin başlığı yoktur; genel metin gösterilir.
@@ -118,6 +136,9 @@ const dayLocales: Record<Locale, string> = {
   en: "en-GB",
   de: "de-DE",
   es: "es-ES",
+  pt: "pt-BR",
+  ru: "ru-RU",
+  uk: "uk-UA",
 };
 
 /// "2026-12-31" → dilin kısa tarihi: "31.12.2026" (TR, DE), "31/12/2026"

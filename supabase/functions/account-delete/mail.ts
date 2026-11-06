@@ -20,6 +20,9 @@ const dateFormats: Record<MailLocale, { intl: string; timeZone: string; suffix: 
   en: { intl: "en-GB", timeZone: "UTC", suffix: "UTC" },
   de: { intl: "de-DE", timeZone: "UTC", suffix: "UTC" },
   es: { intl: "es-ES", timeZone: "UTC", suffix: "UTC" },
+  pt: { intl: "pt-BR", timeZone: "UTC", suffix: "UTC" },
+  ru: { intl: "ru-RU", timeZone: "UTC", suffix: "UTC" },
+  uk: { intl: "uk-UA", timeZone: "UTC", suffix: "UTC" },
 };
 
 /// Silme anı: Türkçede Türkiye saatiyle, diğer dillerde UTC.
@@ -130,6 +133,66 @@ const text: Record<MailLocale, MailText> = {
     completedSubject: "Tu cuenta de Mobil Arıcı se ha eliminado",
     completedText:
       "Tu cuenta de Mobil Arıcı se ha eliminado definitivamente, como pediste. Gracias por usar Mobil Arıcı.",
+  },
+  pt: {
+    requestedSubject: "Sua conta do Mobil Arıcı será excluída",
+    requestedIntro: "Recebemos um pedido para excluir sua conta do Mobil Arıcı.",
+    requestedWithOrganization: (when) =>
+      `Sua conta, seu negócio e todos os registros dele serão excluídos definitivamente em ${when}.`,
+    requestedAccountOnly: (when) =>
+      `Sua conta será excluída definitivamente em ${when}. Os registros que você lançou continuam no negócio.`,
+    requestedChangedMind:
+      "Mudou de ideia? Entre no app antes dessa data e confirme que quer manter sua conta.",
+    requestedNotYou: "Se você não fez este pedido, entre agora.",
+    codeSubject: "Seu código para excluir a conta do Mobil Arıcı",
+    codeIntro: "Você pediu para excluir sua conta do Mobil Arıcı.",
+    codeEnter: (code) => `Para confirmar, digite este código no app: ${code}`,
+    codeValidity:
+      "O código vale por 10 minutos e pode ser usado uma vez. Não o compartilhe com ninguém.",
+    codeNotYou: "Se não foi você, ignore este e-mail; sua conta não será excluída.",
+    completedSubject: "Sua conta do Mobil Arıcı foi excluída",
+    completedText:
+      "Sua conta do Mobil Arıcı foi excluída definitivamente, como você pediu. Obrigado por usar o Mobil Arıcı.",
+  },
+  ru: {
+    requestedSubject: "Ваш аккаунт Mobil Arıcı будет удалён",
+    requestedIntro: "Мы получили запрос на удаление вашего аккаунта Mobil Arıcı.",
+    requestedWithOrganization: (when) =>
+      `Ваш аккаунт, ваше хозяйство и все его записи будут окончательно удалены ${when}.`,
+    requestedAccountOnly: (when) =>
+      `Ваш аккаунт будет окончательно удалён ${when}. Внесённые вами записи остаются в хозяйстве.`,
+    requestedChangedMind:
+      "Передумали? Войдите в приложение до этой даты и подтвердите, что хотите сохранить аккаунт.",
+    requestedNotYou: "Если вы не отправляли этот запрос, войдите прямо сейчас.",
+    codeSubject: "Код для удаления аккаунта Mobil Arıcı",
+    codeIntro: "Вы запросили удаление аккаунта Mobil Arıcı.",
+    codeEnter: (code) => `Для подтверждения введите этот код в приложении: ${code}`,
+    codeValidity:
+      "Код действует 10 минут и может быть использован один раз. Никому его не сообщайте.",
+    codeNotYou: "Если вы этого не запрашивали, проигнорируйте письмо; аккаунт не будет удалён.",
+    completedSubject: "Ваш аккаунт Mobil Arıcı удалён",
+    completedText:
+      "Ваш аккаунт Mobil Arıcı окончательно удалён по вашему запросу. Спасибо, что пользовались Mobil Arıcı.",
+  },
+  uk: {
+    requestedSubject: "Ваш обліковий запис Mobil Arıcı буде видалено",
+    requestedIntro: "Ми отримали запит на видалення вашого облікового запису Mobil Arıcı.",
+    requestedWithOrganization: (when) =>
+      `Ваш обліковий запис, ваше господарство та всі його записи буде остаточно видалено ${when}.`,
+    requestedAccountOnly: (when) =>
+      `Ваш обліковий запис буде остаточно видалено ${when}. Внесені вами записи залишаються в господарстві.`,
+    requestedChangedMind:
+      "Передумали? Увійдіть у застосунок до цієї дати й підтвердьте, що хочете зберегти обліковий запис.",
+    requestedNotYou: "Якщо ви не надсилали цей запит, увійдіть просто зараз.",
+    codeSubject: "Код для видалення облікового запису Mobil Arıcı",
+    codeIntro: "Ви запросили видалення облікового запису Mobil Arıcı.",
+    codeEnter: (code) => `Для підтвердження введіть цей код у застосунку: ${code}`,
+    codeValidity:
+      "Код діє 10 хвилин і може бути використаний один раз. Нікому його не повідомляйте.",
+    codeNotYou: "Якщо ви цього не запитували, проігноруйте лист; обліковий запис не буде видалено.",
+    completedSubject: "Ваш обліковий запис Mobil Arıcı видалено",
+    completedText:
+      "Ваш обліковий запис Mobil Arıcı остаточно видалено на ваш запит. Дякуємо, що користувалися Mobil Arıcı.",
   },
 };
 

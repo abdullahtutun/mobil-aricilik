@@ -2,7 +2,7 @@
 // her ülke kodunun her arayüz dilindeki adı (CLDR, macOS Foundation), o
 // dilin alfabe sırasıyla.
 //
-//   swift tool/country_names.swift tr en de es > lib/core/region/country_names.dart
+//   swift tool/country_names.swift tr en de es pt ru uk > lib/core/region/country_names.dart
 //
 // Yeni dil eklenince kodu argümanlara eklenip dosya yeniden üretilir.
 

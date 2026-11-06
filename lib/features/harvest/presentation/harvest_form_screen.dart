@@ -283,41 +283,56 @@ class _SelectionCard extends StatelessWidget {
       if (numbers.length > _previewNumbers) '…',
     ].join(', ');
 
+    final summary = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.harvestSelectedCount(numbers.length),
+          style: context.typography.subtitle,
+        ),
+        SizedBox(height: spacing.xs),
+        Text(
+          numbers.isEmpty
+              ? l10n.harvestSelectedEmptyHint
+              : l10n.harvestSelectedHint(preview),
+          style: context.typography.bodySmall.copyWith(
+            color: context.colors.textSecondary,
+          ),
+        ),
+      ],
+    );
+    final scan = BigButton(
+      variant: BigButtonVariant.secondary,
+      label: l10n.harvestScan,
+      expanded: false,
+      onPressed: () => context.go(AppRoutes.apiaryHarvestScan(apiaryId)),
+    );
+
     return AppCard(
       onTap: () => context.go(AppRoutes.apiaryHarvestHives(apiaryId)),
       child: Padding(
         padding: EdgeInsets.all(spacing.lg),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.harvestSelectedCount(numbers.length),
-                    style: context.typography.subtitle,
-                  ),
-                  SizedBox(height: spacing.xs),
-                  Text(
-                    numbers.isEmpty
-                        ? l10n.harvestSelectedEmptyHint
-                        : l10n.harvestSelectedHint(preview),
-                    style: context.typography.bodySmall.copyWith(
-                      color: context.colors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: spacing.md),
-            BigButton(
-              variant: BigButtonVariant.secondary,
-              label: l10n.harvestScan,
-              expanded: false,
-              onPressed: () =>
-                  context.go(AppRoutes.apiaryHarvestScan(apiaryId)),
-            ),
-          ],
+        // Okut yanda; etiketi satırın yarısını aşarsa (uzun dil, büyük
+        // yazı) altta ve tam genişlikte.
+        child: LayoutBuilder(
+          builder: (context, constraints) =>
+              BigButton.compactWidth(context, l10n.harvestScan) >
+                  constraints.maxWidth / 2
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    summary,
+                    SizedBox(height: spacing.md),
+                    scan,
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(child: summary),
+                    SizedBox(width: spacing.md),
+                    scan,
+                  ],
+                ),
         ),
       ),
     );

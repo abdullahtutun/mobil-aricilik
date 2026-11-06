@@ -8,7 +8,10 @@ import 'package:intl/intl.dart' as intl;
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
+import 'app_localizations_pt.dart';
+import 'app_localizations_ru.dart';
 import 'app_localizations_tr.dart';
+import 'app_localizations_uk.dart';
 
 // ignore_for_file: type=lint
 
@@ -99,7 +102,10 @@ abstract class AppLocalizations {
     Locale('de'),
     Locale('en'),
     Locale('es'),
+    Locale('pt'),
+    Locale('ru'),
     Locale('tr'),
+    Locale('uk'),
   ];
 
   /// App name. The brand name stays Turkish in every language.
@@ -12564,8 +12570,15 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['de', 'en', 'es', 'tr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+    'de',
+    'en',
+    'es',
+    'pt',
+    'ru',
+    'tr',
+    'uk',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -12580,8 +12593,14 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'es':
       return AppLocalizationsEs();
+    case 'pt':
+      return AppLocalizationsPt();
+    case 'ru':
+      return AppLocalizationsRu();
     case 'tr':
       return AppLocalizationsTr();
+    case 'uk':
+      return AppLocalizationsUk();
   }
 
   throw FlutterError(

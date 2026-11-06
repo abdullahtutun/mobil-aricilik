@@ -59,6 +59,24 @@ void main() {
         }
         expect(missing, isEmpty);
       });
+
+      test('tam sayı durumu kategoriyle çakışmıyor', () {
+        // gen_l10n `=0`/`=1`/`=2`'yi `zero`/`one`/`two` parametresine
+        // yazar; ikisi birlikte varsa sonraki öncekini sessizce ezer.
+        const clashes = {'=0': 'zero', '=1': 'one', '=2': 'two'};
+        final clashing = <String>[];
+        for (final key in _messageKeys(arb)) {
+          for (final cases in _pluralCases(arb[key]! as String)) {
+            for (final MapEntry(key: exact, value: category)
+                in clashes.entries) {
+              if (cases.contains(exact) && cases.contains(category)) {
+                clashing.add('$key: $exact + $category');
+              }
+            }
+          }
+        }
+        expect(clashing, isEmpty);
+      });
     });
   }
 

@@ -122,6 +122,78 @@ const text = {
     notFoundHint:
       "Puede que la página se haya retirado o que la dirección sea incorrecta. Para dudas sobre el producto, contacta con el productor.",
   },
+  pt: {
+    lot: "Lote",
+    honey: {
+      pine: "Mel de pinho",
+      flower: "Mel silvestre",
+      chestnut: "Mel de castanheiro",
+      citrus: "Mel de laranjeira",
+      other: "Mel",
+    } as Record<string, string>,
+    hives: (count: string) => `${count} colmeias`,
+    lab: "Análise laboratorial",
+    moisture: "Umidade",
+    hmf: "HMF",
+    diastase: "Índice de diastase",
+    proline: "Prolina",
+    residue: "Resíduos de medicamentos",
+    residueNone: "Não detectados",
+    residueDetected: "Detectados",
+    report: "Abrir laudo da análise",
+    footer: "Esta página foi publicada pelo produtor com o Mobil Arıcı.",
+    notFound: "Este lote não está publicado",
+    notFoundHint:
+      "A página pode ter sido removida ou o endereço está errado. Para dúvidas sobre o produto, fale com o produtor.",
+  },
+  ru: {
+    lot: "Партия",
+    honey: {
+      pine: "Сосновый мёд",
+      flower: "Цветочный мёд",
+      chestnut: "Каштановый мёд",
+      citrus: "Цитрусовый мёд",
+      other: "Мёд",
+    } as Record<string, string>,
+    hives: (count: string) => `ульев: ${count}`,
+    lab: "Лабораторный анализ",
+    moisture: "Влажность",
+    hmf: "ГМФ",
+    diastase: "Диастазное число",
+    proline: "Пролин",
+    residue: "Остатки препаратов",
+    residueNone: "Не обнаружены",
+    residueDetected: "Обнаружены",
+    report: "Открыть протокол анализа",
+    footer: "Эту страницу опубликовал производитель с помощью Mobil Arıcı.",
+    notFound: "Эта партия не опубликована",
+    notFoundHint:
+      "Возможно, страница удалена или адрес неверный. С вопросами о продукте обращайтесь к производителю.",
+  },
+  uk: {
+    lot: "Партія",
+    honey: {
+      pine: "Сосновий мед",
+      flower: "Квітковий мед",
+      chestnut: "Каштановий мед",
+      citrus: "Цитрусовий мед",
+      other: "Мед",
+    } as Record<string, string>,
+    hives: (count: string) => `вуликів: ${count}`,
+    lab: "Лабораторний аналіз",
+    moisture: "Вологість",
+    hmf: "ГМФ",
+    diastase: "Діастазне число",
+    proline: "Пролін",
+    residue: "Залишки препаратів",
+    residueNone: "Не виявлено",
+    residueDetected: "Виявлено",
+    report: "Відкрити протокол аналізу",
+    footer: "Цю сторінку опублікував виробник за допомогою Mobil Arıcı.",
+    notFound: "Ця партія не опублікована",
+    notFoundHint:
+      "Можливо, сторінку видалено або адреса неправильна. З питаннями про продукт звертайтеся до виробника.",
+  },
 } satisfies Record<Lang, unknown>;
 
 /// Accept-Language'da sırayla ilk desteklenen dil; yoksa İngilizce.
@@ -153,6 +225,9 @@ const intlLocales: Record<Lang, string> = {
   en: "en-GB",
   de: "de-DE",
   es: "es-ES",
+  pt: "pt-BR",
+  ru: "ru-RU",
+  uk: "uk-UA",
 };
 
 function locale(lang: Lang): string {

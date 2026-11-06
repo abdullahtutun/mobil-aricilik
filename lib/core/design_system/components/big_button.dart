@@ -36,6 +36,22 @@ class BigButton extends StatelessWidget {
   final BigButtonVariant variant;
   final bool expanded;
 
+  /// İkonsuz, `expanded: false` butonun [label] ile kaplayacağı genişlik:
+  /// yazı ölçeğiyle etiket ve iki yandaki iç boşluk. Yan yana dizilecek
+  /// butonun satıra sığıp sığmadığını, uzun dillerde (Rusça, Almanca)
+  /// alt alta geçmek için ölçer.
+  static double compactWidth(BuildContext context, String label) {
+    final painter = TextPainter(
+      text: TextSpan(text: label, style: context.typography.button),
+      textScaler: MediaQuery.textScalerOf(context),
+      textDirection: Directionality.of(context),
+      maxLines: 1,
+    )..layout();
+    final width = painter.width + 2 * context.spacing.xl;
+    painter.dispose();
+    return width;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;

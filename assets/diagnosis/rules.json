@@ -7,7 +7,10 @@
         "tr": "Çökük, delikli yavru kapakları",
         "en": "Sunken, perforated brood cappings",
         "de": "Eingesunkene, löchrige Zelldeckel",
-        "es": "Opérculos de cría hundidos y perforados"
+        "es": "Opérculos de cría hundidos y perforados",
+        "pt": "Opérculos de cria afundados e perfurados",
+        "ru": "Запавшие, продырявленные крышечки расплода",
+        "uk": "Запалі, продірявлені кришечки розплоду"
       }
     },
     {
@@ -16,7 +19,10 @@
         "tr": "Kibrit testinde larva uzayıp sünüyor",
         "en": "Larva ropes out in the matchstick test",
         "de": "Larve zieht beim Streichholztest Fäden",
-        "es": "La larva forma un hilo en la prueba del palillo"
+        "es": "La larva forma un hilo en la prueba del palillo",
+        "pt": "A larva forma fio no teste do palito",
+        "ru": "Личинка тянется нитью при пробе спичкой",
+        "uk": "Личинка тягнеться ниткою під час проби сірником"
       }
     },
     {
@@ -25,7 +31,10 @@
         "tr": "Düzensiz, alacalı yavru",
         "en": "Spotty, patchy brood",
         "de": "Lückenhaftes Brutnest",
-        "es": "Cría salteada, irregular"
+        "es": "Cría salteada, irregular",
+        "pt": "Cria salteada, falhada",
+        "ru": "Пёстрый, разреженный расплод",
+        "uk": "Строкатий, розріджений розплід"
       }
     },
     {
@@ -34,7 +43,10 @@
         "tr": "Kovanda kötü, çürük kokusu",
         "en": "Foul, rotten smell in the hive",
         "de": "Fauliger Geruch im Volk",
-        "es": "Olor fétido, a podrido, en la colmena"
+        "es": "Olor fétido, a podrido, en la colmena",
+        "pt": "Cheiro ruim, de podre, na colmeia",
+        "ru": "Гнилостный запах в улье",
+        "uk": "Гнильний запах у вулику"
       }
     },
     {
@@ -43,7 +55,10 @@
         "tr": "Kireçleşmiş, beyaz-gri sert larvalar",
         "en": "Chalky, white-grey hard larvae",
         "de": "Kalkartige, weißgraue harte Larven",
-        "es": "Larvas calcáreas, duras, de color blanco grisáceo"
+        "es": "Larvas calcáreas, duras, de color blanco grisáceo",
+        "pt": "Larvas duras, calcificadas, branco-acinzentadas",
+        "ru": "Твёрдые меловые бело-серые личинки",
+        "uk": "Тверді крейдяні біло-сірі личинки"
       }
     },
     {
@@ -52,7 +67,10 @@
         "tr": "Uçuş deliği önünde mumyalaşmış larvalar",
         "en": "Mummified larvae at the entrance",
         "de": "Mumifizierte Larven am Flugloch",
-        "es": "Larvas momificadas en la piquera"
+        "es": "Larvas momificadas en la piquera",
+        "pt": "Larvas mumificadas no alvado",
+        "ru": "Мумифицированные личинки у летка",
+        "uk": "Муміфіковані личинки біля льотка"
       }
     },
     {
@@ -61,7 +79,10 @@
         "tr": "Kovan önünde ve çerçevelerde ishal izi",
         "en": "Dysentery streaks on the hive and frames",
         "de": "Kotspuren an Beute und Waben",
-        "es": "Manchas de diarrea en la colmena y los cuadros"
+        "es": "Manchas de diarrea en la colmena y los cuadros",
+        "pt": "Manchas de diarreia na colmeia e nos quadros",
+        "ru": "Следы поноса на улье и рамках",
+        "uk": "Сліди проносу на вулику й рамках"
       }
     },
     {
@@ -70,7 +91,10 @@
         "tr": "Uçamayan, sürünen arılar",
         "en": "Bees crawling, unable to fly",
         "de": "Krabbelnde, flugunfähige Bienen",
-        "es": "Abejas que se arrastran y no pueden volar"
+        "es": "Abejas que se arrastran y no pueden volar",
+        "pt": "Abelhas rastejando, sem conseguir voar",
+        "ru": "Ползающие пчёлы, не способные летать",
+        "uk": "Бджоли повзають і не можуть літати"
       }
     }
   ],
@@ -81,7 +105,10 @@
         "tr": "Amerikan yavru çürüklüğü",
         "en": "American foulbrood",
         "de": "Amerikanische Faulbrut",
-        "es": "Loque americana"
+        "es": "Loque americana",
+        "pt": "Cria pútrida americana",
+        "ru": "Американский гнилец",
+        "uk": "Американський гнилець"
       },
       "symptoms": [
         "sunken_perforated_cappings",
@@ -94,7 +121,10 @@
         "tr": "Kovanı açık bırakma, petek ve ekipmanı başka kovana taşıma. Kesin teşhis laboratuvarda konur; yetkili kuruma hemen bildir ve gelen talimatlara uy.",
         "en": "Keep the hive closed and don't move combs or equipment to other hives. Only a laboratory can confirm it; notify the authority right away and follow their instructions.",
         "de": "Halte das Volk geschlossen und bringe keine Waben oder Geräte zu anderen Völkern. Nur ein Labor kann den Befund sichern; melde den Verdacht sofort der Behörde und folge ihren Anweisungen.",
-        "es": "Mantén la colmena cerrada y no lleves panales ni material a otras colmenas. Solo un laboratorio puede confirmarlo; avisa enseguida a la autoridad y sigue sus instrucciones."
+        "es": "Mantén la colmena cerrada y no lleves panales ni material a otras colmenas. Solo un laboratorio puede confirmarlo; avisa enseguida a la autoridad y sigue sus instrucciones.",
+        "pt": "Mantenha a colmeia fechada e não leve favos nem equipamento para outras colmeias. Só um laboratório confirma; avise a autoridade imediatamente e siga as instruções.",
+        "ru": "Держите улей закрытым и не переносите соты и инвентарь в другие ульи. Подтвердить может только лаборатория; сразу сообщите в ветслужбу и выполняйте её указания.",
+        "uk": "Тримайте вулик закритим і не переносьте стільники й інвентар до інших вуликів. Підтвердити може лише лабораторія; одразу повідомте ветслужбу й виконуйте її вказівки."
       }
     },
     {
@@ -103,7 +133,10 @@
         "tr": "Kireç hastalığı",
         "en": "Chalkbrood",
         "de": "Kalkbrut",
-        "es": "Ascosferiosis (cría yesificada)"
+        "es": "Ascosferiosis (cría yesificada)",
+        "pt": "Cria giz",
+        "ru": "Аскосфероз (известковый расплод)",
+        "uk": "Аскосфероз (вапняний розплід)"
       },
       "symptoms": [
         "chalky_larvae",
@@ -115,7 +148,10 @@
         "tr": "Nemli ve serin kovanlarda artar. Havalandırmayı iyileştir, koloniyi güçlendir; sürerse anayı değiştir.",
         "en": "Worse in damp, cool hives. Improve ventilation and strengthen the colony; requeen if it persists.",
         "de": "Tritt in feuchten, kühlen Beuten verstärkt auf. Verbessere die Belüftung und stärke das Volk; weisele um, wenn es anhält.",
-        "es": "Empeora en colmenas húmedas y frías. Mejora la ventilación y refuerza la colonia; cambia la reina si persiste."
+        "es": "Empeora en colmenas húmedas y frías. Mejora la ventilación y refuerza la colonia; cambia la reina si persiste.",
+        "pt": "Piora em colmeias úmidas e frias. Melhore a ventilação e fortaleça a colônia; troque a rainha se persistir.",
+        "ru": "Сильнее проявляется в сырых, прохладных ульях. Улучшите вентиляцию и усильте семью; если не проходит, замените матку.",
+        "uk": "Сильніше проявляється у вологих, прохолодних вуликах. Покращте вентиляцію й посильте сім'ю; якщо не минає, замініть матку."
       }
     },
     {
@@ -124,7 +160,10 @@
         "tr": "Nosema",
         "en": "Nosema",
         "de": "Nosema",
-        "es": "Nosemosis"
+        "es": "Nosemosis",
+        "pt": "Nosemose",
+        "ru": "Нозематоз",
+        "uk": "Нозематоз"
       },
       "symptoms": [
         "dysentery_streaks",
@@ -135,7 +174,10 @@
         "tr": "Kesin teşhis için 30 arının bağırsağı mikroskopta incelenir. Kirli çerçeveleri değiştir, kışlıkta bal kalitesine dikkat et.",
         "en": "A microscope check of 30 bees' guts confirms it. Replace soiled frames and watch winter store quality.",
         "de": "Gesichert wird der Befund durch Mikroskopie des Darms von 30 Bienen. Ersetze verkotete Waben und achte auf die Qualität des Winterfutters.",
-        "es": "Se confirma examinando al microscopio el intestino de 30 abejas. Sustituye los cuadros manchados y cuida la calidad de las reservas de invierno."
+        "es": "Se confirma examinando al microscopio el intestino de 30 abejas. Sustituye los cuadros manchados y cuida la calidad de las reservas de invierno.",
+        "pt": "Confirma-se examinando ao microscópio o intestino de 30 abelhas. Troque os quadros sujos e cuide da qualidade das reservas de inverno.",
+        "ru": "Подтверждается микроскопией кишечника 30 пчёл. Замените опоношенные рамки и следите за качеством зимнего корма.",
+        "uk": "Підтверджується мікроскопією кишківника 30 бджіл. Замініть опоношені рамки й стежте за якістю зимового корму."
       }
     }
   ],
@@ -145,13 +187,19 @@
         "tr": "İl/ilçe tarım ve orman müdürlüğü",
         "en": "Provincial/district directorate of agriculture and forestry",
         "de": "Provinz-/Bezirksdirektion für Landwirtschaft und Forsten",
-        "es": "Dirección provincial o de distrito de agricultura y bosques"
+        "es": "Dirección provincial o de distrito de agricultura y bosques",
+        "pt": "Diretoria provincial/distrital de agricultura e florestas",
+        "ru": "Областное/районное управление сельского и лесного хозяйства",
+        "uk": "Обласне/районне управління сільського й лісового господарства"
       },
       "detail": {
         "tr": "Şüpheyi bulunduğun yerin müdürlüğüne bildir. ALO 174 Gıda Hattı'ndan da ihbar edebilirsin.",
         "en": "Report the suspicion to your local directorate. You can also call the ALO 174 food line.",
         "de": "Melde den Verdacht der Direktion vor Ort. Du kannst auch die Lebensmittel-Hotline ALO 174 anrufen.",
-        "es": "Comunica la sospecha a la dirección de tu zona. También puedes llamar a la línea alimentaria ALO 174."
+        "es": "Comunica la sospecha a la dirección de tu zona. También puedes llamar a la línea alimentaria ALO 174.",
+        "pt": "Comunique a suspeita à diretoria local. Você também pode ligar para a linha alimentar ALO 174.",
+        "ru": "Сообщите о подозрении в местное управление. Можно также позвонить на продовольственную линию ALO 174.",
+        "uk": "Повідомте про підозру місцеве управління. Можна також зателефонувати на продовольчу лінію ALO 174."
       },
       "phone": "174"
     },
@@ -160,13 +208,19 @@
         "tr": "Yerel veteriner otoritesi",
         "en": "Local veterinary authority",
         "de": "Zuständiges Veterinäramt",
-        "es": "Autoridad veterinaria local"
+        "es": "Autoridad veterinaria local",
+        "pt": "Autoridade veterinária local",
+        "ru": "Местная ветеринарная служба",
+        "uk": "Місцева ветеринарна служба"
       },
       "detail": {
         "tr": "Bölgendeki resmî veteriner hizmetine ya da arıcılık müfettişine bildir.",
         "en": "Report it to the official veterinary service or bee inspector in your area.",
         "de": "Melde es dem amtlichen Veterinärdienst oder dem Bienensachverständigen in deiner Region.",
-        "es": "Comunícalo al servicio veterinario oficial o al inspector apícola de tu zona."
+        "es": "Comunícalo al servicio veterinario oficial o al inspector apícola de tu zona.",
+        "pt": "Comunique ao serviço veterinário oficial ou ao inspetor apícola da sua região.",
+        "ru": "Сообщите в государственную ветслужбу или пчеловодному инспектору вашего района.",
+        "uk": "Повідомте державну ветслужбу або пасічного інспектора вашого району."
       }
     }
   }
