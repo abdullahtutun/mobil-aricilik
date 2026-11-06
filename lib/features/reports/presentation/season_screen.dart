@@ -2,6 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/print_service_provider.dart';
@@ -89,10 +90,16 @@ class _SeasonScreenState extends ConsumerState<SeasonScreen> {
 
   Future<void> _exportPdf(SeasonReport report) async {
     final l10n = AppLocalizations.of(context);
+    // PDF'i basılamayan dilde (Hintçe) İngilizce.
+    final pdfL10n = lookupAppLocalizations(
+      AppLanguage.pdfLanguageFor(
+        Localizations.localeOf(context).languageCode,
+      ).locale!,
+    );
     final region = ref.read(regionConfigProvider);
     final organization = ref.read(currentOrganizationProvider).value;
     final currency = ref.read(financeCurrencyProvider);
-    final title = l10n.seasonTitle('${report.year}');
+    final title = pdfL10n.seasonTitle('${report.year}');
 
     setState(() => _busy = true);
     try {
@@ -109,7 +116,7 @@ class _SeasonScreenState extends ConsumerState<SeasonScreen> {
           _ => null,
         },
         createdAt: clock.now(),
-        l10n: l10n,
+        l10n: pdfL10n,
         massUnit: region.defaultUnits.mass,
       );
       await ref.read(printServiceProvider).printPdf(bytes, name: title);

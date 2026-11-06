@@ -107,6 +107,7 @@ flutter:
   assets:
     - assets/fonts/inter/LICENSE.txt
     - assets/fonts/vazirmatn/LICENSE.txt
+    - assets/fonts/noto_sans_devanagari/LICENSE.txt
     - assets/drugs/ilaclar.json
     # Teşhis yardımcısının kural tablosu; şeması rules.schema.json.
     - assets/diagnosis/rules.json
@@ -137,6 +138,17 @@ flutter:
         - asset: assets/fonts/vazirmatn/Vazirmatn-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/vazirmatn/Vazirmatn-Bold.ttf
+          weight: 700
+    # Hintçe (Devanagari); Inter'de olmayan harfler için yedek font.
+    - family: NotoSansDevanagari
+      fonts:
+        - asset: assets/fonts/noto_sans_devanagari/NotoSansDevanagari-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/noto_sans_devanagari/NotoSansDevanagari-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/noto_sans_devanagari/NotoSansDevanagari-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/noto_sans_devanagari/NotoSansDevanagari-Bold.ttf
           weight: 700
 
   # To add assets to your application, add an assets section, like this:

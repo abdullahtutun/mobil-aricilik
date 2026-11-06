@@ -19,9 +19,9 @@ void main() {
     expect(pdfTextDirectionOf(''), pw.TextDirection.ltr);
   });
 
-  test('PDF teması Farsça için yedek font taşır', () async {
+  test('PDF teması Farsça ve Devanagari için yedek font taşır', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final theme = await interPdfTheme();
-    expect(theme.defaultTextStyle.fontFallback, hasLength(1));
+    expect(theme.defaultTextStyle.fontFallback, hasLength(2));
   });
 }

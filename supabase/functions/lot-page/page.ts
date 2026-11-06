@@ -218,6 +218,30 @@ const text = {
     notFoundHint:
       "ممکن است صفحه برداشته شده یا نشانی اشتباه باشد. برای پرسش درباره محصول با تولیدکننده تماس بگیرید.",
   },
+  hi: {
+    lot: "लॉट",
+    honey: {
+      pine: "चीड़ का शहद",
+      flower: "फूलों का शहद",
+      chestnut: "चेस्टनट शहद",
+      citrus: "नींबू वर्गीय शहद",
+      other: "शहद",
+    } as Record<string, string>,
+    hives: (count: string) => `${count} छत्ते`,
+    lab: "प्रयोगशाला जाँच",
+    moisture: "नमी",
+    hmf: "HMF",
+    diastase: "डायस्टेज़ संख्या",
+    proline: "प्रोलीन",
+    residue: "दवा के अवशेष",
+    residueNone: "नहीं मिले",
+    residueDetected: "मिले",
+    report: "जाँच रिपोर्ट खोलें",
+    footer: "यह पेज उत्पादक ने Mobil Arıcı से प्रकाशित किया है।",
+    notFound: "यह लॉट प्रकाशित नहीं है",
+    notFoundHint:
+      "हो सकता है पेज हटा दिया गया हो या पता गलत हो। उत्पाद के बारे में सवालों के लिए उत्पादक से संपर्क करें।",
+  },
 } satisfies Record<Lang, unknown>;
 
 /// Accept-Language'da sırayla ilk desteklenen dil; yoksa İngilizce.
@@ -254,6 +278,7 @@ const intlLocales: Record<Lang, string> = {
   uk: "uk-UA",
   // Miladi takvim, Latin rakam; uygulamayla aynı (app_format.dart).
   fa: "fa-IR-u-ca-gregory-nu-latn",
+  hi: "hi-IN",
 };
 
 function locale(lang: Lang): string {

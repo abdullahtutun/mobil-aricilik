@@ -35,12 +35,13 @@ Future<void> bootstrap(Flavor flavor) async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inter ve Vazirmatn SIL OFL 1.1 ile dağıtılıyor; lisans sayfasında
-  // görünsünler.
+  // Inter, Vazirmatn ve Noto Sans Devanagari SIL OFL 1.1 ile dağıtılıyor;
+  // lisans sayfasında görünsünler.
   LicenseRegistry.addLicense(() async* {
     for (final (family, folder) in [
       ('Inter', 'inter'),
       ('Vazirmatn', 'vazirmatn'),
+      ('Noto Sans Devanagari', 'noto_sans_devanagari'),
     ]) {
       final license = await rootBundle.loadString(
         'assets/fonts/$folder/LICENSE.txt',

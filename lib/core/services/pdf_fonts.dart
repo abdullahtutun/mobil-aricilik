@@ -2,8 +2,13 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart' as pw;
 
 /// Uygulamaya gömülü Inter; PDF'in varsayılan yazı tipinde ı, ş, ğ yok.
-/// Inter'de olmayan Arap yazısı (Farsça) için Vazirmatn yedek font. Cihazda
-/// okunur, ağ gerekmez.
+/// Inter'de olmayan Arap yazısı (Farsça) için Vazirmatn, Devanagari için
+/// Noto Sans Devanagari yedek font. Cihazda okunur, ağ gerekmez.
+///
+/// `pdf` paketi Devanagari harf birleşimlerini (conjunct, matra) dizemez;
+/// bu yüzden Hintçe arayüzde raporlar İngilizce basılır
+/// (`AppLanguage.supportsPdf`). Devanagari yedeği yalnız kullanıcının
+/// yazdığı adlar (arılık, bal türü) kutucuk yerine okunabilsin diye.
 Future<pw.ThemeData> interPdfTheme() async => pw.ThemeData.withFont(
   base: pw.Font.ttf(
     await rootBundle.load('assets/fonts/inter/Inter-Regular.ttf'),
@@ -12,6 +17,11 @@ Future<pw.ThemeData> interPdfTheme() async => pw.ThemeData.withFont(
   fontFallback: [
     pw.Font.ttf(
       await rootBundle.load('assets/fonts/vazirmatn/Vazirmatn-Regular.ttf'),
+    ),
+    pw.Font.ttf(
+      await rootBundle.load(
+        'assets/fonts/noto_sans_devanagari/NotoSansDevanagari-Regular.ttf',
+      ),
     ),
   ],
 );

@@ -56,7 +56,7 @@ supabase/migrations/      # şema + RLS (RLS'siz tablo yok)
 - Provider'lar `@riverpod` (riverpod_generator) ile yazılır; elle `Provider(...)` tanımlanmaz.
 - Modeller freezed (+ json_serializable). Kod üretimi: `dart run build_runner build --delete-conflicting-outputs`.
 - Navigasyon yalnızca go_router ile (`app/router.dart`); `Navigator.push` kullanılmaz.
-- Kullanıcıya görünen tüm metinler ARB'den (`AppLocalizations`); her yeni anahtar bütün ARB dosyalarına (TR, EN, DE, ES, PT, RU, UK, FA …) birlikte eklenir, `arb_consistency_test.dart` eksik anahtarı, yabancı yer tutucuyu ve eksik çoğul kategorisini yakalar. Kodda sabit metin yok. Yeni dil: ARB + `AppLanguage` + `tool/country_names.swift` + `supabase/functions/_shared/locale.ts` (ve oradaki metin tabloları) + `supabase/templates/otp.html`.
+- Kullanıcıya görünen tüm metinler ARB'den (`AppLocalizations`); her yeni anahtar bütün ARB dosyalarına (TR, EN, DE, ES, PT, RU, UK, FA, HI) birlikte eklenir, `arb_consistency_test.dart` eksik anahtarı, yabancı yer tutucuyu ve eksik çoğul kategorisini yakalar. Kodda sabit metin yok. Yeni dil: ARB + `AppLanguage` + `tool/country_names.swift` + `supabase/functions/_shared/locale.ts` (ve oradaki metin tabloları) + `supabase/templates/otp.html`.
 - Yön: Farsça sağdan soladır. Yatay boşluk ve hizada `EdgeInsetsDirectional`, `AlignmentDirectional`, `PositionedDirectional`, `BorderRadiusDirectional`; yalnız harita ve grafik gibi fiziksel yönlü yerlerde `left`/`right`. Sayısal metin alanlarında ilk biçimlendirici `AsciiDigitsFormatter`.
 - Sabit renk/ölçü yok: `Color(0x...)`, `Colors.*`, sayısal padding/radius/font boyutu yerine yalnızca `core/design_system/` tokenları (`ThemeExtension`).
 - Durum renkleri tek başına anlam taşımaz: renk + ikon + kelime birlikte.

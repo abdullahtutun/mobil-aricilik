@@ -3,7 +3,7 @@
 // Yeni dil uygulamaya eklenince buraya da eklenir; metin tabloları
 // `Record<AppLocale, …>` olduğundan eksik çeviri tür hatası verir.
 
-export const supportedLocales = ["tr", "en", "de", "es", "pt", "ru", "uk", "fa"] as const;
+export const supportedLocales = ["tr", "en", "de", "es", "pt", "ru", "uk", "fa", "hi"] as const;
 
 export type AppLocale = typeof supportedLocales[number];
 

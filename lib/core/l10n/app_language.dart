@@ -11,7 +11,8 @@ enum AppLanguage {
   portuguese(Locale('pt'), 'Português'),
   russian(Locale('ru'), 'Русский'),
   ukrainian(Locale('uk'), 'Українська'),
-  persian(Locale('fa'), 'فارسی');
+  persian(Locale('fa'), 'فارسی'),
+  hindi(Locale('hi'), 'हिन्दी');
 
   new(this.locale, this.nativeName);
 
@@ -28,6 +29,24 @@ enum AppLanguage {
     for (final language in values)
       if (language != system) language,
   ];
+
+  /// Bu dilde PDF basılabilir mi. `pdf` paketi Devanagari harf
+  /// birleşimlerini dizemez; Hintçe arayüzde raporlar İngilizce basılır.
+  bool get supportsPdf => this != hindi;
+
+  /// PDF dili seçicisindeki diller.
+  static List<AppLanguage> get pdfSelectable => [
+    for (final language in selectable)
+      if (language.supportsPdf) language,
+  ];
+
+  /// [languageCode] arayüzünde varsayılan PDF dili: o dil, PDF'i
+  /// basılamıyorsa İngilizce.
+  static AppLanguage pdfLanguageFor(String languageCode) =>
+      switch (fromLanguageCode(languageCode)) {
+        final language when language.supportsPdf => language,
+        _ => english,
+      };
 
   /// [languageCode]'un dili; desteklenmiyorsa İngilizce.
   static AppLanguage fromLanguageCode(String languageCode) {

@@ -47,8 +47,9 @@ class AppTypography extends ThemeExtension<AppTypography> {
   static const fontFamily = 'Inter';
 
   /// Inter'de olmayan yazılar için gömülü yedek fontlar: Vazirmatn (Farsça,
-  /// Arap yazısı). Yeni yazı sistemi (ör. Devanagari) buraya eklenir.
-  static const fontFamilyFallback = ['Vazirmatn'];
+  /// Arap yazısı) ve Noto Sans Devanagari (Hintçe). Yeni yazı sistemi
+  /// buraya eklenir.
+  static const fontFamilyFallback = ['Vazirmatn', 'NotoSansDevanagari'];
 
   /// Gövde 15.
   static final standard = AppTypography._scale(

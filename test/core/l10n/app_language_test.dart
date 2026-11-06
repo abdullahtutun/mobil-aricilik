@@ -43,6 +43,15 @@ void main() {
       expect(AppLanguage.fromLanguageCode('ja'), AppLanguage.english);
     });
 
+    test('Hintçede PDF İngilizce; seçicide Hintçe yok', () {
+      expect(AppLanguage.hindi.supportsPdf, isFalse);
+      expect(AppLanguage.pdfSelectable, isNot(contains(AppLanguage.hindi)));
+      expect(AppLanguage.pdfSelectable, contains(AppLanguage.persian));
+      expect(AppLanguage.pdfLanguageFor('hi'), AppLanguage.english);
+      expect(AppLanguage.pdfLanguageFor('fa'), AppLanguage.persian);
+      expect(AppLanguage.pdfLanguageFor('ja'), AppLanguage.english);
+    });
+
     test('her ARB dili seçilebilir', () {
       expect(
         AppLanguage.selectable.map((language) => language.locale),
