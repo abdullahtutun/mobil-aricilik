@@ -35,6 +35,14 @@ void main() {
             ),
           ),
         );
+        // Görseller (ör. AppLogo) testte kendiliğinden çözülmez; gerçek
+        // zamanda önceden yüklenmezse golden boş çıkar.
+        await tester.runAsync(() async {
+          for (final element in find.byType(Image).evaluate()) {
+            await precacheImage((element.widget as Image).image, element);
+          }
+        });
+        await tester.pump();
 
         await expectLater(
           find.byType(GallerySection),

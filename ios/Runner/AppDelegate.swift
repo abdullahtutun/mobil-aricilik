@@ -15,7 +15,7 @@ import workmanager_apple
       GeneratedPluginRegistrant.register(with: registry)
     }
     WorkmanagerPlugin.registerPeriodicTask(
-      withIdentifier: "com.abdullahtutun.mobilarici.sync",
+      withIdentifier: "com.tutunsoft.mobilarici.sync",
       earliestBeginInSeconds: NSNumber(value: 15 * 60)
     )
     // Çıkarma hatırlatıcısı (flutter_local_notifications) uygulama açıkken

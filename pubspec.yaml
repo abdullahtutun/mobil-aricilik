@@ -109,6 +109,8 @@ flutter:
     - assets/fonts/vazirmatn/LICENSE.txt
     - assets/fonts/noto_sans_devanagari/LICENSE.txt
     - assets/drugs/ilaclar.json
+    # Uygulama içi logo (AppLogo); kaynak docs/mobil_arici_logo.png.
+    - assets/branding/app_logo.png
     # Teşhis yardımcısının kural tablosu; şeması rules.schema.json.
     - assets/diagnosis/rules.json
     # Bilgi bankası: her dil kendi klasöründe; yeni dil klasörü buraya da
@@ -182,14 +184,15 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-# Uygulama ikonu (docs/mobil-arilik-logo.png). Yeniden üretmek için:
+# Uygulama ikonu (kaynak docs/mobil_arici_logo.png). Yeniden üretmek için:
 # `dart run flutter_launcher_icons`. Android'de uyarlanabilir ikon: zemin
-# birincil renk, ön plan logonun şeffaf zeminli beyaz işareti.
+# logonun koyu kahve köşe rengi, ön plan güvenli alana sığdırılmış yuvarlak
+# logo.
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   image_path: "assets/launcher/icon.png"
-  adaptive_icon_background: "#9A5B00"
+  adaptive_icon_background: "#251606"
   adaptive_icon_foreground: "assets/launcher/foreground.png"
   remove_alpha_ios: true
   min_sdk_android: 21

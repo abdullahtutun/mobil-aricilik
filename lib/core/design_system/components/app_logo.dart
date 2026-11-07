@@ -3,64 +3,29 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:mobil_arici/core/design_system/theme_context.dart';
 
-/// Uygulamanın işareti: koyu bal karede iç içe iki petek gözü. Yalnız
-/// süstür; ekran okuyucu atlar.
+/// Uygulamanın logosu: yuvarlak petek ve arı rozeti
+/// (`assets/branding/app_logo.png`, kaynağı `docs/mobil_arici_logo.png`).
+/// Yalnız süstür; ekran okuyucu atlar.
 class AppLogo extends StatelessWidget {
   const new({super.key});
 
+  static const asset = 'assets/branding/app_logo.png';
+
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     final size = context.touchTargets.fieldLarge;
 
     return ExcludeSemantics(
-      child: SizedBox.square(
-        dimension: size,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: colors.primary,
-            borderRadius: BorderRadius.circular(context.radii.card),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(context.spacing.lg),
-            child: CustomPaint(
-              painter: _NestedHexagonPainter(
-                color: colors.onPrimary,
-                // Logonun kendi çizgisi; güneşte kalınlaşıp gözü
-                // doldurmasın.
-                strokeWidth: context.spacing.xs,
-              ),
-            ),
-          ),
-        ),
+      child: Image.asset(
+        asset,
+        width: size,
+        height: size,
+        // Ekrandaki boyuta göre çöz; 512 piksellik kaynak bellekte büyük
+        // kalmasın.
+        cacheWidth: (size * MediaQuery.devicePixelRatioOf(context)).round(),
       ),
     );
   }
-}
-
-class _NestedHexagonPainter extends CustomPainter {
-  const new({required this.color, required this.strokeWidth});
-
-  final Color color;
-  final double strokeWidth;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..strokeJoin = StrokeJoin.round;
-    final center = size.center(Offset.zero);
-    final outer = size.shortestSide / 2 - strokeWidth / 2;
-    canvas
-      ..drawPath(hexagonPath(center, outer), paint)
-      ..drawPath(hexagonPath(center, outer / 2), paint);
-  }
-
-  @override
-  bool shouldRepaint(_NestedHexagonPainter oldDelegate) =>
-      color != oldDelegate.color || strokeWidth != oldDelegate.strokeWidth;
 }
 
 /// Sivri tepeli altıgen: [center] çevresinde [radius] yarıçaplı.

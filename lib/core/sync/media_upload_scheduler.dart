@@ -6,7 +6,7 @@ part 'media_upload_scheduler.g.dart';
 
 /// Medya yükleme görevinin kimliği. iOS'ta `AppDelegate` ve `Info.plist`'teki
 /// (`BGTaskSchedulerPermittedIdentifiers`) kimlikle aynı olmalı.
-const backgroundMediaUploadTask = 'com.abdullahtutun.mobilarici.media';
+const backgroundMediaUploadTask = 'com.tutunsoft.mobilarici.media';
 
 /// Arka plan görevlerinin `inputData`'sında çalışan flavor'ın adı.
 const backgroundFlavorKey = 'flavor';

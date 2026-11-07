@@ -22,5 +22,5 @@ const _ios = FirebaseOptions(
   messagingSenderId: '134091678985',
   projectId: 'mobilarici-94b97',
   storageBucket: 'mobilarici-94b97.firebasestorage.app',
-  iosBundleId: 'com.abdullahtutun.mobilarici',
+  iosBundleId: 'com.tutunsoft.mobilarici',
 );

@@ -16,7 +16,7 @@ import 'package:workmanager/workmanager.dart';
 /// Periyodik senkron görevinin kimliği. iOS'ta `AppDelegate` ve
 /// `Info.plist`'teki (`BGTaskSchedulerPermittedIdentifiers`) kimlikle aynı
 /// olmalı.
-const backgroundSyncTask = 'com.abdullahtutun.mobilarici.sync';
+const backgroundSyncTask = 'com.tutunsoft.mobilarici.sync';
 
 /// Periyodik arka plan senkronunu kaydeder: Android en sık 15 dakikada
 /// bir ve yalnız ağ varken çalıştırır; iOS zamanı kullanıma göre kendisi

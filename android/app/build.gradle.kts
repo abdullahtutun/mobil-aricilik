@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.abdullahtutun.mobilarici"
+    namespace = "com.tutunsoft.mobilarici"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.abdullahtutun.mobilarici"
+        applicationId = "com.tutunsoft.mobilarici"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26 // sentry_flutter en az 26 ister
