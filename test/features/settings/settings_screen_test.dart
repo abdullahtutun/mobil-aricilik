@@ -224,7 +224,7 @@ void main() {
 
     testWidgets('en altta uygulama sürümü yazar', (tester) async {
       await _pumpSettings(tester);
-      final version = _inSettings(find.text('Version 1.0.0+1'));
+      final version = _inSettings(find.text('Version 1.0.0'));
       await tester.scrollUntilVisible(
         version,
         200,
@@ -237,7 +237,7 @@ void main() {
       final container = await _pumpSettings(tester);
       container.read(languageProvider.notifier).language = AppLanguage.turkish;
       await tester.pumpAndSettle();
-      final version = _inSettings(find.text('Sürüm 1.0.0+1'));
+      final version = _inSettings(find.text('Sürüm 1.0.0'));
       await tester.scrollUntilVisible(
         version,
         200,
@@ -256,7 +256,7 @@ void main() {
       addTearDown(tester.view.resetPadding);
       await _pumpSettings(tester);
 
-      final version = _inSettings(find.text('Version 1.0.0+1'));
+      final version = _inSettings(find.text('Version 1.0.0'));
       await tester.scrollUntilVisible(
         version,
         200,

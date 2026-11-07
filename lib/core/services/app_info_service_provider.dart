@@ -7,7 +7,11 @@ part 'app_info_service_provider.g.dart';
 @Riverpod(keepAlive: true)
 AppInfoService appInfoService(Ref ref) => DeviceAppInfoService();
 
-/// Ayarların altında gösterilen sürüm (`1.0.0+1`).
+/// Ayarların altında gösterilen sürüm (`1.0.0`); derleme numarası (`+1`)
+/// kullanıcıya gösterilmez. Görüş ve kullanım olayları tam sürümü
+/// [AppInfoService]'ten okumaya devam eder.
 @riverpod
 Future<String> appVersion(Ref ref) async =>
-    (await ref.watch(appInfoServiceProvider).read()).appVersion;
+    (await ref.watch(appInfoServiceProvider).read()).appVersion
+        .split('+')
+        .first;

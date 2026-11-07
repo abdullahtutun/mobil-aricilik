@@ -54,17 +54,23 @@ final class AppInfoServiceProvider
 
 String _$appInfoServiceHash() => r'5c089ffb347bc95887ba6d337350070f17dcf7b5';
 
-/// Ayarların altında gösterilen sürüm (`1.0.0+1`).
+/// Ayarların altında gösterilen sürüm (`1.0.0`); derleme numarası (`+1`)
+/// kullanıcıya gösterilmez. Görüş ve kullanım olayları tam sürümü
+/// [AppInfoService]'ten okumaya devam eder.
 
 @ProviderFor(appVersion)
 final appVersionProvider = AppVersionProvider._();
 
-/// Ayarların altında gösterilen sürüm (`1.0.0+1`).
+/// Ayarların altında gösterilen sürüm (`1.0.0`); derleme numarası (`+1`)
+/// kullanıcıya gösterilmez. Görüş ve kullanım olayları tam sürümü
+/// [AppInfoService]'ten okumaya devam eder.
 
 final class AppVersionProvider
     extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
     with $FutureModifier<String>, $FutureProvider<String> {
-  /// Ayarların altında gösterilen sürüm (`1.0.0+1`).
+  /// Ayarların altında gösterilen sürüm (`1.0.0`); derleme numarası (`+1`)
+  /// kullanıcıya gösterilmez. Görüş ve kullanım olayları tam sürümü
+  /// [AppInfoService]'ten okumaya devam eder.
   AppVersionProvider._()
     : super(
         from: null,
@@ -90,4 +96,4 @@ final class AppVersionProvider
   }
 }
 
-String _$appVersionHash() => r'84316fdce65a5c068519e408dd05574aa4b42357';
+String _$appVersionHash() => r'b4429e4e2a132dd27f08a2d750745b2d7373be33';
