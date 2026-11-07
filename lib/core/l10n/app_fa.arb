@@ -221,6 +221,7 @@
   "settingsColorModeSun": "آفتاب",
   "settingsAccount": "حساب",
   "settingsSignedInAs": "وارد شده با {email}",
+  "settingsPrivacyPolicy": "سیاست حریم خصوصی",
   "settingsVersion": "نسخه {version}",
   "settingsSignOut": "خروج",
   "settingsSignOutConfirmTitle": "خارج می‌شوید؟",

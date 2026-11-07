@@ -851,6 +851,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get settingsPrivacyPolicy => 'Política de privacidad';
+
+  @override
   String settingsVersion(String version) {
     return 'Versión $version';
   }

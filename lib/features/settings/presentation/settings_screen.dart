@@ -14,6 +14,7 @@ import 'package:mobil_arici/core/region/country_names.dart';
 import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/app_info_service_provider.dart';
 import 'package:mobil_arici/core/services/connectivity_service_provider.dart';
+import 'package:mobil_arici/core/services/url_launcher_service_provider.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
@@ -131,6 +132,7 @@ class SettingsScreen extends ConsumerWidget {
               _PushTile(),
               _AnalyticsTile(),
               _ExportRow(),
+              _PrivacyPolicyRow(),
             ],
           ),
           sectionGap,
@@ -591,6 +593,27 @@ class _HiveOpeningThresholds extends ConsumerWidget {
 /// "Verileri dışa aktar · Excel": tüm ana kayıtlar tek dosyada, paylaşma
 /// sayfasıyla; gelir/gider yalnız owner ve partner'da. Hazırlanırken satır
 /// pasif; hazırlanamazsa mesaj gösterilir.
+/// Mağazalara verilen gizlilik politikası; Apple uygulama içinden de
+/// ulaşılabilmesini istiyor. Kaynağı `docs/legal/privacy-policy.html`.
+final Uri privacyPolicyUri = Uri.parse(
+  'https://tutunsoft.com/mobil-arici/privacy-policy',
+);
+
+class _PrivacyPolicyRow extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => ListRow(
+    title: AppLocalizations.of(context).settingsPrivacyPolicy,
+    trailing: Icon(
+      Icons.open_in_new_rounded,
+      color: context.colors.textSecondary,
+    ),
+    onTap: () =>
+        unawaited(ref.read(urlLauncherServiceProvider).open(privacyPolicyUri)),
+  );
+}
+
 class _ExportRow extends ConsumerWidget {
   const new();
 

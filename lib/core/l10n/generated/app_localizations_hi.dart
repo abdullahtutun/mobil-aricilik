@@ -844,6 +844,9 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get settingsPrivacyPolicy => 'गोपनीयता नीति';
+
+  @override
   String settingsVersion(String version) {
     return 'संस्करण $version';
   }

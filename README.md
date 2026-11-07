@@ -15,8 +15,14 @@ flutter run --flavor dev -t lib/main_dev.dart
 
 ## Mağaza derlemesi
 
+Önce `flutter clean`: `flutter test` üretilen Android eklenti listesine
+`integration_test`'i ekliyor ve sonraki release derlemesi bu listeyi
+yenilemeyip kırılıyor.
+
 ```sh
-# Android (android/key.properties gerekli)
+flutter clean
+
+# Android (android/key.properties gerekli; anahtar ~/keys/mobil_arici_upload.jks)
 flutter build appbundle --flavor prod -t lib/main_prod.dart \
   --dart-define=SENTRY_DSN=<dsn>
 

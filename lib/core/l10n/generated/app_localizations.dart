@@ -1438,6 +1438,12 @@ abstract class AppLocalizations {
   /// **'Signed in as {email}'**
   String settingsSignedInAs(String email);
 
+  /// Settings row that opens the privacy policy web page.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get settingsPrivacyPolicy;
+
   /// App version at the bottom of Settings.
   ///
   /// In en, this message translates to:

@@ -221,6 +221,7 @@
   "settingsColorModeSun": "Sonne",
   "settingsAccount": "Konto",
   "settingsSignedInAs": "Angemeldet als {email}",
+  "settingsPrivacyPolicy": "Datenschutzerklärung",
   "settingsVersion": "Version {version}",
   "settingsSignOut": "Abmelden",
   "settingsSignOutConfirmTitle": "Abmelden?",

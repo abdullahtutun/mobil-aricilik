@@ -221,6 +221,7 @@
   "settingsColorModeSun": "Sol",
   "settingsAccount": "Cuenta",
   "settingsSignedInAs": "Sesión iniciada como {email}",
+  "settingsPrivacyPolicy": "Política de privacidad",
   "settingsVersion": "Versión {version}",
   "settingsSignOut": "Cerrar sesión",
   "settingsSignOutConfirmTitle": "¿Cerrar sesión?",

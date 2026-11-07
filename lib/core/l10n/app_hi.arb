@@ -221,6 +221,7 @@
   "settingsColorModeSun": "धूप",
   "settingsAccount": "खाता",
   "settingsSignedInAs": "{email} से साइन इन",
+  "settingsPrivacyPolicy": "गोपनीयता नीति",
   "settingsVersion": "संस्करण {version}",
   "settingsSignOut": "साइन आउट",
   "settingsSignOutConfirmTitle": "साइन आउट करें?",

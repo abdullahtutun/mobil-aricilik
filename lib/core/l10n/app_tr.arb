@@ -229,6 +229,7 @@
   "settingsColorModeSun": "Güneş",
   "settingsAccount": "Hesap",
   "settingsSignedInAs": "{email} ile giriş yapıldı",
+  "settingsPrivacyPolicy": "Gizlilik politikası",
   "settingsVersion": "Sürüm {version}",
   "settingsSignOut": "Çıkış yap",
   "settingsSignOutConfirmTitle": "Çıkış yapılsın mı?",

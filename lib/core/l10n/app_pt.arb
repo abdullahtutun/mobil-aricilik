@@ -221,6 +221,7 @@
   "settingsColorModeSun": "Sol",
   "settingsAccount": "Conta",
   "settingsSignedInAs": "Conectado como {email}",
+  "settingsPrivacyPolicy": "Política de privacidade",
   "settingsVersion": "Versão {version}",
   "settingsSignOut": "Sair",
   "settingsSignOutConfirmTitle": "Sair?",

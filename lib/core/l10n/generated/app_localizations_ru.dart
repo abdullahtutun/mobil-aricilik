@@ -863,6 +863,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get settingsPrivacyPolicy => 'Политика конфиденциальности';
+
+  @override
   String settingsVersion(String version) {
     return 'Версия $version';
   }

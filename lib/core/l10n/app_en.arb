@@ -665,6 +665,10 @@
       }
     }
   },
+  "settingsPrivacyPolicy": "Privacy policy",
+  "@settingsPrivacyPolicy": {
+    "description": "Settings row that opens the privacy policy web page."
+  },
   "settingsVersion": "Version {version}",
   "@settingsVersion": {
     "description": "App version at the bottom of Settings.",

@@ -843,6 +843,9 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String get settingsPrivacyPolicy => 'سیاست حریم خصوصی';
+
+  @override
   String settingsVersion(String version) {
     return 'نسخه $version';
   }

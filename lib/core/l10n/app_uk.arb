@@ -221,6 +221,7 @@
   "settingsColorModeSun": "Сонце",
   "settingsAccount": "Обліковий запис",
   "settingsSignedInAs": "Ви увійшли як {email}",
+  "settingsPrivacyPolicy": "Політика конфіденційності",
   "settingsVersion": "Версія {version}",
   "settingsSignOut": "Вийти",
   "settingsSignOutConfirmTitle": "Вийти?",

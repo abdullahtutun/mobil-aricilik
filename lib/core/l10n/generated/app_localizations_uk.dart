@@ -863,6 +863,9 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
+  String get settingsPrivacyPolicy => 'Політика конфіденційності';
+
+  @override
   String settingsVersion(String version) {
     return 'Версія $version';
   }

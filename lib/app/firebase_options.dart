@@ -10,7 +10,7 @@ FirebaseOptions get firebaseOptions => Platform.isIOS ? _ios : _android;
 
 const _android = FirebaseOptions(
   apiKey: 'AIzaSyCfHQ9pCnqvn5q1G2wrmrUkTTPzo06iosE',
-  appId: '1:134091678985:android:628f61cd40a9c5bfad9fd8',
+  appId: '1:134091678985:android:d926ace5a09c429dad9fd8',
   messagingSenderId: '134091678985',
   projectId: 'mobilarici-94b97',
   storageBucket: 'mobilarici-94b97.firebasestorage.app',
@@ -18,7 +18,7 @@ const _android = FirebaseOptions(
 
 const _ios = FirebaseOptions(
   apiKey: 'AIzaSyDg3iLQf07NRB0199_AonlOHowaBEO6DH4',
-  appId: '1:134091678985:ios:9d4cb53ec09211ccad9fd8',
+  appId: '1:134091678985:ios:a25e6e00ffcab90fad9fd8',
   messagingSenderId: '134091678985',
   projectId: 'mobilarici-94b97',
   storageBucket: 'mobilarici-94b97.firebasestorage.app',

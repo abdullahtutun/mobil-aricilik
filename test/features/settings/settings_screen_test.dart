@@ -12,6 +12,7 @@ import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 
 import '../../helpers/fake_auth_service.dart';
+import '../../helpers/fake_url_launcher.dart';
 
 Future<ProviderContainer> _pumpSettings(
   WidgetTester tester, {
@@ -220,6 +221,26 @@ void main() {
 
       expect(auth.signOutCount, 0);
       expect(find.byType(SettingsScreen), findsOneWidget);
+    });
+
+    testWidgets('Gizlilik politikası web sayfasını açar', (tester) async {
+      final launcher = FakeUrlLauncher();
+      final container = ProviderContainer.test(
+        overrides: signedIn(urlLauncher: launcher),
+      );
+      await tester.pumpWidget(
+        UncontrolledProviderScope(container: container, child: const App()),
+      );
+      container.read(routerProvider).go(AppRoutes.settings);
+      await tester.pumpAndSettle();
+      container.read(languageProvider.notifier).language = AppLanguage.turkish;
+      await tester.pumpAndSettle();
+
+      await _tapInSettings(tester, 'Gizlilik politikası');
+
+      expect(launcher.opened, [
+        Uri.parse('https://tutunsoft.com/mobil-arici/privacy-policy'),
+      ]);
     });
 
     testWidgets('en altta uygulama sürümü yazar', (tester) async {

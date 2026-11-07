@@ -221,6 +221,7 @@
   "settingsColorModeSun": "Солнце",
   "settingsAccount": "Аккаунт",
   "settingsSignedInAs": "Вход выполнен: {email}",
+  "settingsPrivacyPolicy": "Политика конфиденциальности",
   "settingsVersion": "Версия {version}",
   "settingsSignOut": "Выйти",
   "settingsSignOutConfirmTitle": "Выйти?",
