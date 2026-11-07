@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Senkron, giriş ve medya yüklemesi. Eklentiler de ekliyor; release'te
+         onlara bağlı kalmamak için açıkça yazıldı. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Arılığın konumu GPS'ten, yalnız istendiğinde (geolocator). Arka
          planda konum yok. Android 12+ kullanıcı yaklaşık konum da seçebilir;
          doğruluk formda gösterilir. -->

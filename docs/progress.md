@@ -810,6 +810,14 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Uygulama kimliği `com.tutunsoft.mobilarici` (dev'de `.dev`): Android `applicationId`, `namespace` ve `MainActivity` paketi (`kotlin/com/tutunsoft/mobilarici/`), iOS bundle kimlikleri (RunnerTests dahil), Firebase `iosBundleId`, workmanager görev adları (`…sync`, `…media`; Info.plist `BGTaskSchedulerPermittedIdentifiers` ve `AppDelegate`). Derin link şeması `mobilarici://` değişmedi.
 - **Yapılacak (konsol):** Firebase'de (`mobilarici-94b97`) Android `com.tutunsoft.mobilarici` ve iOS `com.tutunsoft.mobilarici` uygulamaları eklenip `firebase_options.dart`'taki `appId`'ler yenilenmeli; iOS için APNs anahtarı yeni bundle'a bağlanmalı. Bu yapılana kadar push çalışmaz. Apple Developer'da yeni App ID ve provisioning profili, Play Console'da yeni uygulama gerekir (paket adı yayımlandıktan sonra değişmez).
 
+### 2026-11-07 — Mağaza hazırlığı ve ikon
+
+- İkon kenarda boşluk bırakmıyor: zemin rozetin dış halkasının sarısı `#F2B544`. `assets/launcher/icon.png` (iOS) daire dışını sarıya boyuyor; `foreground.png`'de rozet tuvalin %68'i ve `adaptive_icon_foreground_inset: 0` (önce %62 + aracın %16 iç boşluğu, logo iki kez küçülüyordu). Yeniden üretildi, `project.pbxproj` yine geri alındı. Cihazda görülmedi; daire, yuvarlak kare ve iOS maskeleriyle önizlendi.
+- Android: release imzası `android/key.properties`'ten (yoksa debug anahtarı; Play kabul etmez). `INTERNET` izni manifest'e açıkça yazıldı. Eski kalmış `GeneratedPluginRegistrant.java` (`integration_test`'i içeriyordu) release derlemesini kırıyordu; `flutter clean` düzeltti. Prod AAB derlendi (108 MB, imzasız/debug), arm64 native kütüphaneleri 16 KB hizalı.
+- iOS: `ITSAppUsesNonExemptEncryption = false` (yalnız standart HTTPS; her yüklemede şifreleme sorusu gelmez). Prod release imzasız derlendi.
+- `docs/design/` silindi (kullanıcı kararı); CLAUDE.md ve teknik.md'deki atıflar güncellendi, şablon README yenilendi.
+- **Yayın öncesi yapılacaklar (konsol/karar):** Play yükleme anahtarı + `key.properties`; Firebase'e yeni paket kimlikleriyle uygulamalar ve `firebase_options.dart` `appId`'leri (yapılmazsa push çalışmaz); gizlilik politikası URL'si (iki mağaza da istiyor, Apple uygulama içinde de bağlantı istiyor; uygulamada yok); inceleme için giriş yolu (e-posta OTP ile inceleyici kod alamaz); Play'de web üzerinden hesap silme URL'si; Sentry DSN (`--dart-define`) ya da Sentry'siz yayın kararı; iPad desteği (`TARGETED_DEVICE_FAMILY = 1,2` iPad ekran görüntüsü ister); `otp.html`'in panele yapıştırılması.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

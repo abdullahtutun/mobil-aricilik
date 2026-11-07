@@ -214,7 +214,7 @@ lib/
 
 ## 7. Tasarım dili
 
-Uygulamanın adı **Mobil Arıcı**. Tasarım sistemi ve tüm ekran tasarımları bu bölümdeki dil esas alınarak Claude tarafından hazırlanır; ayrı bir tasarımcı yoktur. Ekran tasarımları `docs/design/` altında, ekran adıyla PNG olarak durur (ör. `Kovan kartı.png`); tasarım sisteminin kendisi `Tasarım sistemi v1.png`. Bir ekran yazılırken önce o ekranın tasarımı açılır.
+Uygulamanın adı **Mobil Arıcı**. Tasarım sistemi ve tüm ekran tasarımları bu bölümdeki dil esas alınarak Claude tarafından hazırlanır; ayrı bir tasarımcı yoktur. Ekranlar yazıldıktan sonra PNG tasarımlar (`docs/design/`) kaldırıldı; tasarımın kaynağı artık `core/design_system/` ve mevcut ekranlar.
 
 Karakter: **Sıcak, sakin, güvenilir** — bal ve petekten ilham alan, ama "çocuk uygulaması" gibi durmayan, iş aracı ciddiyetinde bir arayüz. Material 3 temelinde, tokenlar `ThemeExtension` ile taşınır.
 

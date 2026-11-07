@@ -185,14 +185,16 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 # Uygulama ikonu (kaynak docs/mobil_arici_logo.png). Yeniden üretmek için:
-# `dart run flutter_launcher_icons`. Android'de uyarlanabilir ikon: zemin
-# logonun koyu kahve köşe rengi, ön plan güvenli alana sığdırılmış yuvarlak
-# logo.
+# `dart run flutter_launcher_icons` (sonra ios/Runner.xcodeproj/project.pbxproj
+# değişikliği geri alınır). Kenarda boşluk kalmasın diye zemin rozetin dış
+# halkasıyla aynı sarı (#F2B544): icon.png'de daire dışı sarıya boyalı,
+# foreground.png'de rozet tuvalin %68'i (maske %66,7) ve iç boşluk yok.
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   image_path: "assets/launcher/icon.png"
-  adaptive_icon_background: "#251606"
+  adaptive_icon_background: "#F2B544"
   adaptive_icon_foreground: "assets/launcher/foreground.png"
+  adaptive_icon_foreground_inset: 0
   remove_alpha_ios: true
   min_sdk_android: 21

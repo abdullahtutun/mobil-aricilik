@@ -1,17 +1,29 @@
-# mobil_arici
+# Mobil Arıcı
 
-Mobil Arıcı - offline-first arıcılık uygulaması
+Offline-first arıcılık uygulaması (Flutter, Android ve iOS).
 
-## Getting Started
+- Ürün: [docs/ozellikler.md](docs/ozellikler.md)
+- Mimari ve tasarım dili: [docs/teknik.md](docs/teknik.md)
+- İlerleme ve bilinen sorunlar: [docs/progress.md](docs/progress.md)
+- Kod kuralları: [CLAUDE.md](CLAUDE.md)
 
-This project is a starting point for a Flutter application.
+## Çalıştırma
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+flutter run --flavor dev -t lib/main_dev.dart
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Mağaza derlemesi
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+# Android (android/key.properties gerekli)
+flutter build appbundle --flavor prod -t lib/main_prod.dart \
+  --dart-define=SENTRY_DSN=<dsn>
+
+# iOS
+flutter build ipa --flavor prod -t lib/main_prod.dart \
+  --dart-define=SENTRY_DSN=<dsn>
+```
+
+Sürüm `pubspec.yaml`'daki `version`; her yüklemede `+` sonrası derleme
+numarası artırılır.
