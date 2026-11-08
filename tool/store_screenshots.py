@@ -6,8 +6,9 @@ Supabase'deki demo hesapla çalıştırır; test `SHOT:<ad>` bastıkça
 simülatörden durum çubuğu dahil görüntü alır.
 
 Önce: `supabase start`, yerelde `demo@tutunsoft.com` kullanıcısı (parola
---password) ve `supabase/admin/demo_account.sql` yüklü. Türkçe dışındaki
-diller için ardından `tool/store_demo/<dil>.sql` (yalnız yerel DB).
+--password). Betik her çekimde yerel demo işletmeyi `supabase/admin/
+demo_account.sql` ile yeniden kurar; Türkçe dışında `tool/store_demo/
+<dil>.sql` çevirisini uygular (yalnız yerel DB).
 
     python3 tool/store_screenshots.py --password 123456 --out /tmp/raw --lang tr
 """
@@ -17,6 +18,8 @@ import os
 import subprocess
 import sys
 import time
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEVICE = "iPhone 15 Pro Max"
 BUNDLE = "com.tutunsoft.mobilarici.dev"
@@ -36,13 +39,33 @@ def device_id(name):
     sys.exit(f"Simülatör yok: {name}")
 
 
+DOCKER_ENV = dict(os.environ, DOCKER_HOST=f"unix://{os.environ['HOME']}/.colima/default/docker.sock")
+DEMO_ORG = "01900000-0000-7000-8000-00000000de00"
+
+
+def psql_file(path):
+    with open(path) as f:
+        subprocess.run(
+            ["docker", "exec", "-i", "supabase_db_mobil_arici", "psql", "-U", "postgres",
+             "-v", "ON_ERROR_STOP=1", "-q"],
+            stdin=f, check=True, env=DOCKER_ENV, capture_output=True)
+
+
+def reset_demo(lang):
+    """Yerel demo işletmeyi Türkçe asıldan yeniden kurar, dil çevirisini uygular."""
+    sh("docker", "exec", "supabase_db_mobil_arici", "psql", "-U", "postgres", "-q", "-c",
+       f"delete from public.organizations where id = '{DEMO_ORG}'", env=DOCKER_ENV)
+    psql_file(os.path.join(ROOT, "supabase", "admin", "demo_account.sql"))
+    if lang != "tr":
+        psql_file(os.path.join(ROOT, "tool", "store_demo", f"{lang}.sql"))
+
+
 def demo_ids():
-    env = dict(os.environ, DOCKER_HOST=f"unix://{os.environ['HOME']}/.colima/default/docker.sock")
     sql = (
         "select h.apiary_id, h.id from hives h "
         f"where h.number = '{HIVE_NUMBER}' and h.deleted_at is null"
     )
-    out = sh("docker", "exec", "supabase_db_mobil_arici", "psql", "-U", "postgres", "-At", "-c", sql, env=env)
+    out = sh("docker", "exec", "supabase_db_mobil_arici", "psql", "-U", "postgres", "-At", "-c", sql, env=DOCKER_ENV)
     apiary, hive = out.strip().split("|")
     return apiary, hive
 
@@ -68,6 +91,7 @@ def main():
        "--cellularMode", "active", "--cellularBars", "4",
        "--batteryState", "charged", "--batteryLevel", "100")
 
+    reset_demo(args.lang)
     apiary, hive = demo_ids()
     cmd = [
         "flutter", "test", "integration_test/store_screenshots_test.dart",

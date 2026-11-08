@@ -118,20 +118,18 @@ class _SampleWeatherService implements WeatherService {
   static double _rain(int day, double rainy, double dry) =>
       day == 4 ? rainy : dry;
 
+  /// Demo arılıklar rakımlarıyla ayrılır; adları dile göre değişir.
   static const _places = {
-    'Yayla Arılığı': ('Menteşe', 'Muğla', 20.0),
-    'Kestane Arılığı': ('Altınordu', 'Ordu', 19.0),
-    'Köy Arılığı': ('Osmangazi', 'Bursa', 19.0),
-    'Highland Apiary': ('Menteşe', 'Muğla', 20.0),
-    'Chestnut Apiary': ('Altınordu', 'Ordu', 19.0),
-    'Village Apiary': ('Osmangazi', 'Bursa', 19.0),
+    820: ('Menteşe', 'Muğla', 20.0),
+    540: ('Altınordu', 'Ordu', 19.0),
+    310: ('Osmangazi', 'Bursa', 19.0),
   };
 
   @override
   Future<WeatherBundle> fetchBundle() async {
     final rows = await Supabase.instance.client
         .from('apiaries')
-        .select('id, name')
+        .select('id, altitude_m')
         .isFilter('deleted_at', null);
     final now = DateTime.now();
     final start = DateTime(now.year, now.month, now.day);
@@ -142,8 +140,8 @@ class _SampleWeatherService implements WeatherService {
       forecasts: [
         for (final row in rows)
           () {
-            final name = row['name'] as String;
-            final (place, region, base) = _places[name] ?? ('', '', 15.0);
+            final altitude = row['altitude_m'] as int?;
+            final (place, region, base) = _places[altitude] ?? ('', '', 15.0);
             final hours = [
               for (var h = 0; h < 7 * 24; h++) start.add(Duration(hours: h)),
             ];

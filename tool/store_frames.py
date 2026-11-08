@@ -64,6 +64,24 @@ CAPTIONS = {
         "team": ("Work together as a team",
                  "Partners, workers and advisors, each by role"),
     },
+    "ru": {
+        "today": ("Весь день с одного взгляда",
+                  "Погода, ульи, требующие внимания, и задачи"),
+        "apiary": ("Все ульи перед глазами",
+                   "Сила, матка и варроа для каждого улья"),
+        "inspect": ("Осмотр в пару касаний, в перчатках",
+                    "Крупные кнопки и данные прошлого осмотра"),
+        "hive": ("История каждого улья в кармане",
+                 "Матки, варроа и обработки"),
+        "weather": ("Можно ли сегодня открывать ульи?",
+                    "Погода на 7 дней для каждой пасеки"),
+        "map": ("Работает без интернета на точке",
+                "Пасеки на карте, записи в телефоне"),
+        "finance": ("Какая пасека приносит доход?",
+                    "Доходы, расходы и прибыль по пасекам"),
+        "team": ("Работайте командой",
+                 "Партнёры, работники и консультанты"),
+    },
 }
 
 FEATURE = {
@@ -71,11 +89,23 @@ FEATURE = {
            "Dağda internetsiz, eldivenle bile"),
     "en": ("Mobil Arıcı", "Your beekeeping logbook",
            "Works offline in the field, even with gloves"),
+    "ru": ("Mobil Arıcı", "Пасечный журнал в кармане",
+           "Без интернета на точке, даже в перчатках"),
 }
 
 
 def font(weight, size):
     return ImageFont.truetype(os.path.join(FONTS, f"Inter-{weight}.ttf"), size)
+
+
+def fit(draw, text, weight, size, width):
+    """Tek satırda [width]'e sığan en büyük yazı (en çok [size])."""
+    while size > 12:
+        fnt = font(weight, size)
+        if draw.textlength(text, font=fnt) <= width:
+            return fnt
+        size -= 1
+    return font(weight, size)
 
 
 def wrap(draw, text, fnt, width):
@@ -174,9 +204,15 @@ def feature_graphic(shots, name, tagline, line):
 
     logo = Image.open(LOGO).convert("RGBA").resize((150, 150), Image.LANCZOS)
     canvas.alpha_composite(logo, (64, 92))
-    draw.text((64, 270), name, font=font("Bold", 60), fill=CREAM)
-    draw.text((66, 348), tagline, font=font("SemiBold", 32), fill=HONEY)
-    draw.text((66, 396), line, font=font("Medium", 24), fill=(214, 196, 168))
+    # Metin sağdaki telefonlara girmesin: sığmazsa küçülür.
+    max_width = 470
+    for text, weight, size, y, color in (
+        (name, "Bold", 60, 270, CREAM),
+        (tagline, "SemiBold", 32, 348, HONEY),
+        (line, "Medium", 24, 396, (214, 196, 168)),
+    ):
+        fnt = fit(draw, text, weight, size, max_width)
+        draw.text((66, y), text, font=fnt, fill=color)
 
     # İki telefon sağda, alttan taşarak.
     for i, (shot, x, y) in enumerate(((shots[1], 560, 120), (shots[0], 760, 60))):
