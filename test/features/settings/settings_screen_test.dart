@@ -239,7 +239,7 @@ void main() {
       await _tapInSettings(tester, 'Gizlilik politikası');
 
       expect(launcher.opened, [
-        Uri.parse('https://tutunsoft.com/mobil-arici/privacy-policy'),
+        Uri.parse('https://www.tutunsoft.com/mobil-arici/privacy-policy.html'),
       ]);
     });
 

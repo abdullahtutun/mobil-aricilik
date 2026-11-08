@@ -590,13 +590,10 @@ class _HiveOpeningThresholds extends ConsumerWidget {
   }
 }
 
-/// "Verileri dışa aktar · Excel": tüm ana kayıtlar tek dosyada, paylaşma
-/// sayfasıyla; gelir/gider yalnız owner ve partner'da. Hazırlanırken satır
-/// pasif; hazırlanamazsa mesaj gösterilir.
 /// Mağazalara verilen gizlilik politikası; Apple uygulama içinden de
 /// ulaşılabilmesini istiyor. Kaynağı `docs/legal/privacy-policy.html`.
 final Uri privacyPolicyUri = Uri.parse(
-  'https://tutunsoft.com/mobil-arici/privacy-policy',
+  'https://www.tutunsoft.com/mobil-arici/privacy-policy.html',
 );
 
 class _PrivacyPolicyRow extends ConsumerWidget {
@@ -614,6 +611,9 @@ class _PrivacyPolicyRow extends ConsumerWidget {
   );
 }
 
+/// "Verileri dışa aktar · Excel": tüm ana kayıtlar tek dosyada, paylaşma
+/// sayfasıyla; gelir/gider yalnız owner ve partner'da. Hazırlanırken satır
+/// pasif; hazırlanamazsa mesaj gösterilir.
 class _ExportRow extends ConsumerWidget {
   const new();
 
