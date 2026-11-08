@@ -122,6 +122,9 @@ class _SampleWeatherService implements WeatherService {
     'Yayla Arılığı': ('Menteşe', 'Muğla', 20.0),
     'Kestane Arılığı': ('Altınordu', 'Ordu', 19.0),
     'Köy Arılığı': ('Osmangazi', 'Bursa', 19.0),
+    'Highland Apiary': ('Menteşe', 'Muğla', 20.0),
+    'Chestnut Apiary': ('Altınordu', 'Ordu', 19.0),
+    'Village Apiary': ('Osmangazi', 'Bursa', 19.0),
   };
 
   @override

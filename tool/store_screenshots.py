@@ -6,7 +6,8 @@ Supabase'deki demo hesapla çalıştırır; test `SHOT:<ad>` bastıkça
 simülatörden durum çubuğu dahil görüntü alır.
 
 Önce: `supabase start`, yerelde `demo@tutunsoft.com` kullanıcısı (parola
---password) ve `supabase/admin/demo_account.sql` yüklü.
+--password) ve `supabase/admin/demo_account.sql` yüklü. Türkçe dışındaki
+diller için ardından `tool/store_demo/<dil>.sql` (yalnız yerel DB).
 
     python3 tool/store_screenshots.py --password 123456 --out /tmp/raw --lang tr
 """
@@ -18,7 +19,8 @@ import sys
 import time
 
 DEVICE = "iPhone 15 Pro Max"
-APIARY = "Yayla Arılığı"
+BUNDLE = "com.tutunsoft.mobilarici.dev"
+# Görüntülenen arılık ve kovan: 1 numaralı kovan ve arılığı (dilden bağımsız).
 HIVE_NUMBER = "1"
 
 
@@ -37,8 +39,8 @@ def device_id(name):
 def demo_ids():
     env = dict(os.environ, DOCKER_HOST=f"unix://{os.environ['HOME']}/.colima/default/docker.sock")
     sql = (
-        "select a.id, h.id from apiaries a join hives h on h.apiary_id = a.id "
-        f"where a.name = '{APIARY}' and h.number = '{HIVE_NUMBER}'"
+        "select h.apiary_id, h.id from hives h "
+        f"where h.number = '{HIVE_NUMBER}' and h.deleted_at is null"
     )
     out = sh("docker", "exec", "supabase_db_mobil_arici", "psql", "-U", "postgres", "-At", "-c", sql, env=env)
     apiary, hive = out.strip().split("|")
@@ -57,6 +59,8 @@ def main():
     subprocess.run(["xcrun", "simctl", "boot", udid], capture_output=True)
     sh("xcrun", "simctl", "bootstatus", udid, "-b")
     sh("xcrun", "simctl", "ui", udid, "appearance", "light")
+    # Önceki çekimin yerel DB'si (başka dildeki demo verisi) kalmasın.
+    subprocess.run(["xcrun", "simctl", "uninstall", udid, BUNDLE], capture_output=True)
     # Saat gerçek saatle aynı; Bugün ekranındaki selamlama buna göre.
     sh("xcrun", "simctl", "status_bar", udid, "override",
        "--time", time.strftime("%H:%M"),

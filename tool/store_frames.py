@@ -46,11 +46,31 @@ CAPTIONS = {
         "team": ("Ekibinle birlikte çalış",
                  "Ortak, işçi ve danışman; herkes kendi rolünde"),
     },
+    "en": {
+        "today": ("See your day at a glance",
+                  "Weather, hives that need attention and tasks"),
+        "apiary": ("All your hives at a glance",
+                   "Strength, queen and varroa for every hive"),
+        "inspect": ("Inspect in a few taps, gloves on",
+                    "Big buttons; the last inspection is filled in"),
+        "hive": ("Every hive's history in your pocket",
+                 "Track queens, varroa and treatments"),
+        "weather": ("Good day to open the hives?",
+                    "7-day weather for each apiary"),
+        "map": ("Works offline in the field",
+                "Apiaries on the map, records on your phone"),
+        "finance": ("Which apiary pays off?",
+                    "Income, expenses and profit per apiary"),
+        "team": ("Work together as a team",
+                 "Partners, workers and advisors, each by role"),
+    },
 }
 
 FEATURE = {
     "tr": ("Mobil Arıcı", "Arıcılık defterin cepte",
            "Dağda internetsiz, eldivenle bile"),
+    "en": ("Mobil Arıcı", "Your beekeeping logbook",
+           "Works offline in the field, even with gloves"),
 }
 
 
