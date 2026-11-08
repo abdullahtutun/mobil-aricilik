@@ -63,7 +63,6 @@ class _EditFormState extends ConsumerState<_EditForm> {
       .read(businessProfileFormControllerProvider)
       .fields;
   late final _name = TextEditingController(text: _fields.name);
-  late final _fullName = TextEditingController(text: _fields.fullName);
 
   /// Kaydedildi; çıkış artık sorulmaz.
   var _done = false;
@@ -71,7 +70,6 @@ class _EditFormState extends ConsumerState<_EditForm> {
   @override
   void dispose() {
     _name.dispose();
-    _fullName.dispose();
     super.dispose();
   }
 
@@ -235,18 +233,6 @@ class _EditFormState extends ConsumerState<_EditForm> {
                   message: l10n.businessCurrencyNote,
                 ),
               ],
-              SizedBox(height: spacing.xl),
-              LabeledField(
-                label: l10n.businessFullNameLabel,
-                helper: l10n.businessFullNameHelp,
-                child: TextField(
-                  controller: _fullName,
-                  textCapitalization: TextCapitalization.words,
-                  textInputAction: TextInputAction.done,
-                  maxLength: maxFullNameLength,
-                  onChanged: controller.setFullName,
-                ),
-              ),
             ],
           ),
         ),
@@ -344,8 +330,6 @@ class _ReadOnlyForm extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
     final profile = ref.watch(businessProfileProvider)!;
-    final member = ref.watch(ownMemberProfileProvider);
-
     return Scaffold(
       appBar: AppBar(title: Text(l10n.businessEditTitle)),
       body: ListView(
@@ -378,10 +362,6 @@ class _ReadOnlyForm extends ConsumerWidget {
                 value: operationTypeLabel(l10n, profile.operationType),
               ),
               ListRow(title: l10n.businessCurrency, value: profile.currency),
-              ListRow(
-                title: l10n.businessFullNameLabel,
-                value: member?.fullName ?? '–',
-              ),
             ],
           ),
         ],

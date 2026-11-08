@@ -49,9 +49,6 @@ class Memberships extends Table with SyncColumns, OrgColumns {
   TextColumn get role =>
       text().map(const ServerEnumConverter(MembershipRole.values))();
 
-  /// Üyenin adı soyadı; yalnız üyenin kendisi yazar.
-  TextColumn get fullName => text().nullable()();
-
   /// Üye hesabını silmeyi onayladıysa kalıcı silme zamanı; vazgeçerse
   /// boşalır. Yalnız sunucu yazar. Doluyken rolü değiştirilmez, ekipten
   /// çıkarılmaz.

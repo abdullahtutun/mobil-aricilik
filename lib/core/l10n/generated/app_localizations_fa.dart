@@ -277,12 +277,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get apiaryFormOpenSettings => 'باز کردن تنظیمات';
 
   @override
-  String get apiaryFormLandownerName => 'نام مالک زمین';
-
-  @override
-  String get apiaryFormLandownerPhone => 'تلفن مالک زمین';
-
-  @override
   String get apiaryFormNotes => 'یادداشت‌ها';
 
   @override
@@ -7107,12 +7101,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get exportColAltitude => 'ارتفاع (متر)';
 
   @override
-  String get exportColLandowner => 'مالک زمین';
-
-  @override
-  String get exportColLandownerPhone => 'تلفن مالک زمین';
-
-  @override
   String get exportColWaterSource => 'منبع آب';
 
   @override
@@ -7473,12 +7461,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'نام کسب‌وکار';
-
-  @override
-  String get businessFullNameLabel => 'نام کامل';
-
-  @override
-  String get businessFullNameHelp => 'تیم شما را با این نام می‌بیند.';
 
   @override
   String get businessAvatarLabel => 'آواتار';

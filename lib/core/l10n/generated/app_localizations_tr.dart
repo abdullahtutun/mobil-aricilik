@@ -266,12 +266,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get apiaryFormOpenSettings => 'Ayarları aç';
 
   @override
-  String get apiaryFormLandownerName => 'Arazi sahibinin adı';
-
-  @override
-  String get apiaryFormLandownerPhone => 'Arazi sahibinin telefonu';
-
-  @override
   String get apiaryFormNotes => 'Notlar';
 
   @override
@@ -6926,12 +6920,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get exportColAltitude => 'Rakım (m)';
 
   @override
-  String get exportColLandowner => 'Arazi sahibi';
-
-  @override
-  String get exportColLandownerPhone => 'Arazi sahibinin telefonu';
-
-  @override
   String get exportColWaterSource => 'Su kaynağı';
 
   @override
@@ -7262,12 +7250,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'İşletme adı';
-
-  @override
-  String get businessFullNameLabel => 'Ad soyad';
-
-  @override
-  String get businessFullNameHelp => 'Ekipte bu adla görünürsün.';
 
   @override
   String get businessAvatarLabel => 'Avatar';

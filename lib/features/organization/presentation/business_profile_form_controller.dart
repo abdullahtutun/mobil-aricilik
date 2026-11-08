@@ -4,7 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/core/services/logo_file_store_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
-import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/presentation/business_profile_providers.dart';
@@ -20,7 +19,6 @@ part 'business_profile_form_controller.g.dart';
 abstract class BusinessProfileFields with _$BusinessProfileFields {
   const factory({
     @Default('') String name,
-    @Default('') String fullName,
     OrgAvatarColor? avatarColor,
 
     /// Logonun Storage yolu; yeni seçilen logo da bu yolla yazılır.
@@ -77,7 +75,6 @@ class BusinessProfileFormController extends _$BusinessProfileFormController {
     final profile = ref.read(businessProfileProvider);
     final fields = BusinessProfileFields(
       name: profile?.name ?? '',
-      fullName: ref.read(ownMemberProfileProvider)?.fullName ?? '',
       avatarColor: profile?.avatarColor,
       logoPath: profile?.logoPath,
       operationType: profile?.operationType ?? OperationType.migratory,
@@ -90,9 +87,6 @@ class BusinessProfileFormController extends _$BusinessProfileFormController {
       state = state.copyWith(fields: fields);
 
   void setName(String name) => _set(state.fields.copyWith(name: name));
-
-  void setFullName(String fullName) =>
-      _set(state.fields.copyWith(fullName: fullName));
 
   /// Renk seçmek logoyu kaldırır: baş harfler bu renkte görünür.
   void setAvatarColor(OrgAvatarColor color) =>
@@ -139,13 +133,12 @@ class BusinessProfileFormController extends _$BusinessProfileFormController {
         .countMigratoryRecords(orgId);
   }
 
-  /// İşletme alanlarını ve kullanıcının adını yazar; yazıldıysa true.
+  /// İşletme alanlarını yazar; yazıldıysa true.
   /// Kendi rolü burada değişmez (Ekip ekranından yönetilir).
   Future<bool> save() async {
     final form = state;
     final orgId = ref.read(currentOrgIdProvider);
-    final userId = ref.read(currentUserProvider)?.id;
-    if (!form.canSave || orgId == null || userId == null) return false;
+    if (!form.canSave || orgId == null) return false;
     state = form.copyWith(saving: true);
     try {
       final fields = form.fields;
@@ -159,15 +152,6 @@ class BusinessProfileFormController extends _$BusinessProfileFormController {
             currency: fields.currency,
           ));
       if (!written) return false;
-      if (fields.fullName.trim() != form.initial.fullName.trim()) {
-        await ref
-            .read(membershipRepositoryProvider)
-            .setOwnName(
-              orgId: orgId,
-              userId: userId,
-              fullName: fields.fullName,
-            );
-      }
       _saved = true;
       return true;
     } finally {

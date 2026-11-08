@@ -1,8 +1,8 @@
--- İşletme profili: işletme türü, avatar rengi, logo yolu, üyenin adı,
--- logo bucket'ı ve sync_push v24.
+-- İşletme profili: işletme türü, avatar rengi, logo yolu, eski sürümlerin
+-- gönderdiği üye adı (artık yok sayılır), logo bucket'ı ve sync_push v24.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(19);
+select plan(16);
 
 -- Kullanıcılar: 1111 owner, 2222 partner, 3333 worker, 5555 viewer,
 -- 9999 başka işletmenin owner'ı.
@@ -45,14 +45,6 @@ select throws_ok(
   '23514',
   null,
   'logo yolu başka işletmenin klasöründe olamaz'
-);
-
-select throws_ok(
-  $$update public.memberships set full_name = ''
-    where id = 'c0000000-0000-0000-0000-000000000001'$$,
-  '23514',
-  null,
-  'boş ad yazılamaz'
 );
 
 set local role authenticated;
@@ -127,7 +119,8 @@ select is_empty(
   'viewer işletmeyi güncelleyemez'
 );
 
--- Üye kendi adını yazar
+-- Eski sürüm üyenin adını gönderir: kayıt kabul edilir ama uygulanmaz
+-- (20261116120000_drop_personal_names).
 set local request.jwt.claims = '{"sub": "33333333-3333-3333-3333-333333333333"}';
 
 select is(
@@ -140,33 +133,16 @@ select is(
       "created_at": "2026-10-01T00:00:00Z", "updated_at": "2026-11-05T10:00:00Z",
       "created_by": null, "deleted_at": null}}]$$::jsonb,
     now(), 24
-  ) -> 'results' -> 0 ->> 'status',
-  'ok',
-  'worker kendi adını yazar'
+  ) -> 'results' -> 0,
+  '{"id": 1, "status": "ok", "applied": false}'::jsonb,
+  'eski sürümün gönderdiği ad yok sayılır'
 );
 
 select results_eq(
-  $$select full_name, role::text from public.memberships
+  $$select role::text, updated_at from public.memberships
     where id = 'c0000000-0000-0000-0000-000000000003'$$,
-  $$values ('Mehmet Kaya', 'worker')$$,
-  'ad kırpılır, payload''daki rol yok sayılır'
-);
-
-select is(
-  public.sync_push(
-    $$[{"id": 1, "table": "memberships", "operation": "upsert", "payload": {
-      "id": "c0000000-0000-0000-0000-000000000003",
-      "full_name": "Eski ad", "updated_at": "2026-10-02T00:00:00Z"}}]$$::jsonb,
-    now(), 24
-  ) -> 'results' -> 0 ->> 'status',
-  'ok',
-  'eski updated_at ile ad yine yazılır (ad yalnız sahibinin)'
-);
-
-select ok(
-  (select updated_at = '2026-11-05T10:00:00Z' and full_name = 'Eski ad'
-   from public.memberships where id = 'c0000000-0000-0000-0000-000000000003'),
-  'updated_at geri gitmez'
+  $$values ('worker', '2026-10-01 00:00Z'::timestamptz)$$,
+  'üyelik değişmez, payload''daki rol yok sayılır'
 );
 
 select is(

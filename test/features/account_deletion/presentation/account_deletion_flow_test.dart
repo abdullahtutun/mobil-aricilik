@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -54,10 +53,8 @@ Future<_App> _open(
   final db = openTestDatabase();
   await insertOrganizationRow(db);
   await addMember(db, userId: testUser.id, role: role);
-  for (final MapEntry(key: userId, value: (name, memberRole)) in team.entries) {
+  for (final MapEntry(key: userId, value: (_, memberRole)) in team.entries) {
     await addMember(db, userId: userId, role: memberRole);
-    await (db.update(db.memberships)..where((t) => t.userId.equals(userId)))
-        .write(MembershipsCompanion(fullName: Value(name)));
   }
   if (seed != null) await seed(db);
   final auth = FakeAuthService(user: testUser);
@@ -75,7 +72,15 @@ Future<_App> _open(
         media: media,
         secureStorageWipe: secure,
       ),
-      teamServiceProvider.overrideWithValue(FakeTeamService(db: db)),
+      teamServiceProvider.overrideWithValue(
+        FakeTeamService(
+          db: db,
+          emails: {
+            for (final MapEntry(key: userId, value: (email, _)) in team.entries)
+              userId: email,
+          },
+        ),
+      ),
     ],
   );
   container.read(languageProvider.notifier).language = AppLanguage.turkish;
@@ -226,8 +231,8 @@ void main() {
         tester,
         seed: _seedRecords,
         team: {
-          'partner-1': ('Ayşe Kaya', MembershipRole.partner),
-          'worker-1': ('Mustafa Demir', MembershipRole.worker),
+          'partner-1': ('ayse@example.com', MembershipRole.partner),
+          'worker-1': ('mustafa@example.com', MembershipRole.worker),
         },
       );
 
@@ -249,10 +254,10 @@ void main() {
 
       await _tap(tester, find.text('Sahipliği devret ve ayrıl'));
       // Yalnız ortak listelenir; işçi yeni sahip olamaz.
-      expect(find.text('Ayşe Kaya'), findsOneWidget);
-      expect(find.text('Mustafa Demir'), findsNothing);
+      expect(find.text('ayse@example.com'), findsOneWidget);
+      expect(find.text('mustafa@example.com'), findsNothing);
       expect(_bigButton(tester, 'Devam').onPressed, isNull);
-      await _tap(tester, find.text('Ayşe Kaya'));
+      await _tap(tester, find.text('ayse@example.com'));
       expect(_bigButton(tester, 'Devam').onPressed, isNotNull);
 
       await _tap(tester, find.text('İşletmeyi ve tüm kayıtları sil'));
@@ -268,7 +273,9 @@ void main() {
       await _enterCode(tester, '482913');
       expect(find.text('Son onay'), findsOneWidget);
       expect(
-        find.text('Ayşe Kaya, Yılmaz Arıcılık işletmesinin yeni sahibi olur.'),
+        find.text(
+          'ayse@example.com, Yılmaz Arıcılık işletmesinin yeni sahibi olur.',
+        ),
         findsOneWidget,
       );
       expect(find.text('Onaylamak için SİL yaz'), findsOneWidget);
@@ -286,7 +293,7 @@ void main() {
     testWidgets('ortak yoksa devir seçeneği nedenini söyler', (tester) async {
       await _open(
         tester,
-        team: {'worker-1': ('Mustafa Demir', MembershipRole.worker)},
+        team: {'worker-1': ('mustafa@example.com', MembershipRole.worker)},
       );
       await _tap(tester, find.text('Sahipliği devret ve ayrıl'));
       expect(
@@ -300,7 +307,7 @@ void main() {
       await _open(
         tester,
         role: MembershipRole.worker,
-        team: {'owner-1': ('Ahmet Yılmaz', MembershipRole.owner)},
+        team: {'owner-1': ('ahmet@example.com', MembershipRole.owner)},
         seed: _seedRecords,
       );
 
@@ -458,7 +465,7 @@ void main() {
       await _open(
         tester,
         role: MembershipRole.partner,
-        team: {'owner-1': ('Ahmet Yılmaz', MembershipRole.owner)},
+        team: {'owner-1': ('ahmet@example.com', MembershipRole.owner)},
       );
       await _toVerify(tester);
       await _enterCode(tester, '482913');
@@ -730,7 +737,7 @@ void main() {
             final app = await _open(
               tester,
               seed: _seedRecords,
-              team: {'partner-1': ('Ayşe Kaya', MembershipRole.partner)},
+              team: {'partner-1': ('ayse@example.com', MembershipRole.partner)},
             );
             app.container.read(appearanceProvider.notifier)
               ..setColorMode(mode)

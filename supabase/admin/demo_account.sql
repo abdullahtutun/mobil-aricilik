@@ -44,8 +44,8 @@ begin
   values (
     org, 'Demo Arıcılık', 'TR', 'TRY', 'up_to_50', 'migratory', 'honey', uid
   );
-  insert into public.memberships (id, org_id, user_id, role, full_name, created_by)
-  values (gen_random_uuid(), org, uid, 'owner', 'Demo Arıcı', uid);
+  insert into public.memberships (id, org_id, user_id, role, created_by)
+  values (gen_random_uuid(), org, uid, 'owner', uid);
 
   -- Arılıklar: Muğla çam balı, Ordu kestane, Bursa köy arılığı.
   with rows (name, lon, lat, alt, tenure, water, distance, notes) as (

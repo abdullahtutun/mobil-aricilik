@@ -832,6 +832,13 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Uzak projede (`jcddnelaboueazhordfz`) kullanıcı Admin API ile açıldı (e-posta onaylı, e-posta dili `en`). Örnek veri `supabase/admin/demo_account.sql` ile yazıldı: "Demo Arıcılık" (TR, TRY, gezginci), 3 arılık (Muğla, Ordu, Bursa), 15 kovan ve ana arıları (biri varroadan sönmüş), 28 muayene, varroa sayımları, 2:1 şurup beslemesi, köy arılığında süren Bayvarol uygulaması, çam ve kestane hasadı, 4 görev, 6 gelir/gider. Betik tekrar çalıştırılırsa demo işletme varken bir şey yazmaz. Parola girişiyle RLS denendi: yalnız demo işletme görünüyor.
 - Bilinen: Hesap silme kodu `demo@tutunsoft.com`'a gider; incelemeci hesabı silemez, yalnız akışı görür. Kodu değiştirmek için Supabase panelinde kullanıcının parolası değiştirilir. Tarihler betiğin çalıştığı güne göre; aylar sonra muayeneler eski görünür, gerekirse işletme elle silinip betik yeniden çalıştırılır.
 
+### 2026-11-08 — Kişi adları kaldırıldı (arazi sahibi, üyenin adı)
+
+- Arılık formundan (ekleme, düzenleme, onboarding) arazi sahibinin adı ve telefonu; İşletme profilinden "Ad soyad" alanı kalktı. İşletme adı duruyor. Üye her yerde (Daha fazla kartı, profil, ekip avatarları, hesap silmedeki ortak) e-postasıyla görünür. Excel dışa aktarımından arazi sahibi sütunları çıktı; 6 ARB anahtarı dokuz dilden silindi.
+- Sunucu: `20261116120000_drop_personal_names.sql` `apiaries.landowner_name/phone` ve `memberships.full_name`'i düşürür; hesap silme fonksiyonları adsız yeniden yazıldı; `sync_push` şema sürümü 26. Eski sürümlerin gönderdiği `landowner_*` anahtarlarını `jsonb_populate_record` yok sayar, üye adı (`set_own_member_name`) "uygulanmadı" (`applied: false`) döner. pgTAP 635/635; uzak projeye `db push` ile uygulandı, kolonların kalmadığı doğrulandı.
+- Drift şema 26: üç kolon `dropColumn` ile silinir, outbox'ta bekleyen `memberships` yazmaları atılır; migration testi eklendi. `schema_mirror_test` artık `drop column`'u da okuyor. `MembershipRepository.setOwnName` kaldırıldı; uygulama üyeliğe yazmıyor.
+- Bilinen: Ekip ekranı (`team`) ve davet zaten e-postayla çalışıyordu, değişmedi. `sync_push.test.sql`'deki eski arılık payload'u `landowner_*` anahtarlarını bilerek taşıyor (eski sürüm uyumu).
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

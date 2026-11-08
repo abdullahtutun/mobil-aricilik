@@ -250,8 +250,8 @@ void main() {
         name: 'Yayla',
         latitude: 40,
         longitude: 29,
-        landownerName: 'Ahmet',
         waterSource: 'Çeşme',
+        notes: 'Rüzgârlı',
       );
       await _openApiaries(tester, db: db);
       await _tap(tester, find.text('Yayla'));
@@ -265,8 +265,8 @@ void main() {
       // Kayıtlı konumun doğruluğu bilinmez.
       expect(find.textContaining('Accuracy'), findsNothing);
       expect(
-        tester.widget<TextField>(_field("Landowner's name")).controller?.text,
-        'Ahmet',
+        tester.widget<TextField>(_field('Notes')).controller?.text,
+        'Rüzgârlı',
       );
 
       await _enter(tester, 'Apiary name', 'Yayla Üst');

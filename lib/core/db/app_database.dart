@@ -111,7 +111,7 @@ class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   @override
-  int get schemaVersion => 25;
+  int get schemaVersion => 26;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -327,6 +327,16 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(
           schema.memberships,
           schema.memberships.deletionScheduledFor,
+        );
+      },
+      // Kişi adları kalktı: arılığın arazi sahibi ve üyenin adı. Bekleyen
+      // ad yazmaları da gönderilmez.
+      from25To26: (m, schema) async {
+        await m.dropColumn(schema.apiaries, 'landowner_name');
+        await m.dropColumn(schema.apiaries, 'landowner_phone');
+        await m.dropColumn(schema.memberships, 'full_name');
+        await customStatement(
+          "DELETE FROM outbox WHERE record_table = 'memberships'",
         );
       },
     ),

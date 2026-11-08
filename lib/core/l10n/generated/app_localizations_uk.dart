@@ -286,12 +286,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get apiaryFormOpenSettings => 'Відкрити налаштування';
 
   @override
-  String get apiaryFormLandownerName => 'Ім\'я власника землі';
-
-  @override
-  String get apiaryFormLandownerPhone => 'Телефон власника землі';
-
-  @override
   String get apiaryFormNotes => 'Нотатки';
 
   @override
@@ -7310,12 +7304,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get exportColAltitude => 'Висота (м)';
 
   @override
-  String get exportColLandowner => 'Власник землі';
-
-  @override
-  String get exportColLandownerPhone => 'Телефон власника землі';
-
-  @override
   String get exportColWaterSource => 'Джерело води';
 
   @override
@@ -7695,12 +7683,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'Назва господарства';
-
-  @override
-  String get businessFullNameLabel => 'Повне ім\'я';
-
-  @override
-  String get businessFullNameHelp => 'Під цим ім\'ям вас бачить команда.';
 
   @override
   String get businessAvatarLabel => 'Аватар';

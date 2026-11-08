@@ -276,12 +276,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get apiaryFormOpenSettings => 'सेटिंग्स खोलें';
 
   @override
-  String get apiaryFormLandownerName => 'ज़मीन मालिक का नाम';
-
-  @override
-  String get apiaryFormLandownerPhone => 'ज़मीन मालिक का फ़ोन';
-
-  @override
   String get apiaryFormNotes => 'नोट्स';
 
   @override
@@ -7120,12 +7114,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get exportColAltitude => 'ऊँचाई (मी)';
 
   @override
-  String get exportColLandowner => 'ज़मीन मालिक';
-
-  @override
-  String get exportColLandownerPhone => 'ज़मीन मालिक का फ़ोन';
-
-  @override
   String get exportColWaterSource => 'पानी का स्रोत';
 
   @override
@@ -7489,12 +7477,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'व्यवसाय का नाम';
-
-  @override
-  String get businessFullNameLabel => 'पूरा नाम';
-
-  @override
-  String get businessFullNameHelp => 'आपकी टीम आपको इसी नाम से देखती है।';
 
   @override
   String get businessAvatarLabel => 'अवतार';

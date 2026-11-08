@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BusinessProfileFields {
 
- String get name; String get fullName; OrgAvatarColor? get avatarColor;/// Logonun Storage yolu; yeni seçilen logo da bu yolla yazılır.
+ String get name; OrgAvatarColor? get avatarColor;/// Logonun Storage yolu; yeni seçilen logo da bu yolla yazılır.
  String? get logoPath; OperationType get operationType; String get currency;
 /// Create a copy of BusinessProfileFields
 /// with the given fields replaced by the non-null parameter values.
@@ -28,20 +28,20 @@ $BusinessProfileFieldsCopyWith<BusinessProfileFields> get copyWith => _$Business
 @override
 bool operator ==(Object other) {
   final _this = this as BusinessProfileFields;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BusinessProfileFields&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.fullName, _this.fullName) || other.fullName == _this.fullName)&&(identical(other.avatarColor, _this.avatarColor) || other.avatarColor == _this.avatarColor)&&(identical(other.logoPath, _this.logoPath) || other.logoPath == _this.logoPath)&&(identical(other.operationType, _this.operationType) || other.operationType == _this.operationType)&&(identical(other.currency, _this.currency) || other.currency == _this.currency));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BusinessProfileFields&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.avatarColor, _this.avatarColor) || other.avatarColor == _this.avatarColor)&&(identical(other.logoPath, _this.logoPath) || other.logoPath == _this.logoPath)&&(identical(other.operationType, _this.operationType) || other.operationType == _this.operationType)&&(identical(other.currency, _this.currency) || other.currency == _this.currency));
 }
 
 
 @override
 int get hashCode {
   final _this = this as BusinessProfileFields;
-  return Object.hash(runtimeType,_this.name,_this.fullName,_this.avatarColor,_this.logoPath,_this.operationType,_this.currency);
+  return Object.hash(runtimeType,_this.name,_this.avatarColor,_this.logoPath,_this.operationType,_this.currency);
 }
 
 @override
 String toString() {
   final _this = this as BusinessProfileFields;
-  return 'BusinessProfileFields(name: ${_this.name}, fullName: ${_this.fullName}, avatarColor: ${_this.avatarColor}, logoPath: ${_this.logoPath}, operationType: ${_this.operationType}, currency: ${_this.currency})';
+  return 'BusinessProfileFields(name: ${_this.name}, avatarColor: ${_this.avatarColor}, logoPath: ${_this.logoPath}, operationType: ${_this.operationType}, currency: ${_this.currency})';
 }
 
 
@@ -52,7 +52,7 @@ abstract mixin class $BusinessProfileFieldsCopyWith<$Res>  {
   factory $BusinessProfileFieldsCopyWith(BusinessProfileFields value, $Res Function(BusinessProfileFields) _then) = _$BusinessProfileFieldsCopyWithImpl;
 @useResult
 $Res call({
- String name, String fullName, OrgAvatarColor? avatarColor, String? logoPath, OperationType operationType, String currency
+ String name, OrgAvatarColor? avatarColor, String? logoPath, OperationType operationType, String currency
 });
 
 
@@ -69,10 +69,9 @@ class _$BusinessProfileFieldsCopyWithImpl<$Res>
 
 /// Create a copy of BusinessProfileFields
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? fullName = null,Object? avatarColor = freezed,Object? logoPath = freezed,Object? operationType = null,Object? currency = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? avatarColor = freezed,Object? logoPath = freezed,Object? operationType = null,Object? currency = null,}) {
   return _then(BusinessProfileFields(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,avatarColor: freezed == avatarColor ? _self.avatarColor : avatarColor // ignore: cast_nullable_to_non_nullable
 as OrgAvatarColor?,logoPath: freezed == logoPath ? _self.logoPath : logoPath // ignore: cast_nullable_to_non_nullable
 as String?,operationType: null == operationType ? _self.operationType : operationType // ignore: cast_nullable_to_non_nullable
@@ -162,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String fullName,  OrgAvatarColor? avatarColor,  String? logoPath,  OperationType operationType,  String currency)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  OrgAvatarColor? avatarColor,  String? logoPath,  OperationType operationType,  String currency)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BusinessProfileFields() when $default != null:
-return $default(_that.name,_that.fullName,_that.avatarColor,_that.logoPath,_that.operationType,_that.currency);case _:
+return $default(_that.name,_that.avatarColor,_that.logoPath,_that.operationType,_that.currency);case _:
   return orElse();
 
 }
@@ -183,10 +182,10 @@ return $default(_that.name,_that.fullName,_that.avatarColor,_that.logoPath,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String fullName,  OrgAvatarColor? avatarColor,  String? logoPath,  OperationType operationType,  String currency)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  OrgAvatarColor? avatarColor,  String? logoPath,  OperationType operationType,  String currency)  $default,) {final _that = this;
 switch (_that) {
 case _BusinessProfileFields():
-return $default(_that.name,_that.fullName,_that.avatarColor,_that.logoPath,_that.operationType,_that.currency);case _:
+return $default(_that.name,_that.avatarColor,_that.logoPath,_that.operationType,_that.currency);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +202,10 @@ return $default(_that.name,_that.fullName,_that.avatarColor,_that.logoPath,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String fullName,  OrgAvatarColor? avatarColor,  String? logoPath,  OperationType operationType,  String currency)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  OrgAvatarColor? avatarColor,  String? logoPath,  OperationType operationType,  String currency)?  $default,) {final _that = this;
 switch (_that) {
 case _BusinessProfileFields() when $default != null:
-return $default(_that.name,_that.fullName,_that.avatarColor,_that.logoPath,_that.operationType,_that.currency);case _:
+return $default(_that.name,_that.avatarColor,_that.logoPath,_that.operationType,_that.currency);case _:
   return null;
 
 }
@@ -218,11 +217,10 @@ return $default(_that.name,_that.fullName,_that.avatarColor,_that.logoPath,_that
 
 
 class _BusinessProfileFields implements BusinessProfileFields {
-  const _BusinessProfileFields({this.name = '', this.fullName = '', this.avatarColor, this.logoPath, this.operationType = OperationType.migratory, this.currency = ''});
+  const _BusinessProfileFields({this.name = '', this.avatarColor, this.logoPath, this.operationType = OperationType.migratory, this.currency = ''});
   
 
 @override@JsonKey() final  String name;
-@override@JsonKey() final  String fullName;
 @override final  OrgAvatarColor? avatarColor;
 /// Logonun Storage yolu; yeni seçilen logo da bu yolla yazılır.
 @override final  String? logoPath;
@@ -239,18 +237,18 @@ _$BusinessProfileFieldsCopyWith<_BusinessProfileFields> get copyWith => __$Busin
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BusinessProfileFields&&(identical(other.name, name) || other.name == name)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.avatarColor, avatarColor) || other.avatarColor == avatarColor)&&(identical(other.logoPath, logoPath) || other.logoPath == logoPath)&&(identical(other.operationType, operationType) || other.operationType == operationType)&&(identical(other.currency, currency) || other.currency == currency));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BusinessProfileFields&&(identical(other.name, name) || other.name == name)&&(identical(other.avatarColor, avatarColor) || other.avatarColor == avatarColor)&&(identical(other.logoPath, logoPath) || other.logoPath == logoPath)&&(identical(other.operationType, operationType) || other.operationType == operationType)&&(identical(other.currency, currency) || other.currency == currency));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,name,fullName,avatarColor,logoPath,operationType,currency);
+    return Object.hash(runtimeType,name,avatarColor,logoPath,operationType,currency);
 }
 
 @override
 String toString() {
-    return 'BusinessProfileFields(name: $name, fullName: $fullName, avatarColor: $avatarColor, logoPath: $logoPath, operationType: $operationType, currency: $currency)';
+    return 'BusinessProfileFields(name: $name, avatarColor: $avatarColor, logoPath: $logoPath, operationType: $operationType, currency: $currency)';
 }
 
 
@@ -261,7 +259,7 @@ abstract mixin class _$BusinessProfileFieldsCopyWith<$Res> implements $BusinessP
   factory _$BusinessProfileFieldsCopyWith(_BusinessProfileFields value, $Res Function(_BusinessProfileFields) _then) = __$BusinessProfileFieldsCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String fullName, OrgAvatarColor? avatarColor, String? logoPath, OperationType operationType, String currency
+ String name, OrgAvatarColor? avatarColor, String? logoPath, OperationType operationType, String currency
 });
 
 
@@ -278,10 +276,9 @@ class __$BusinessProfileFieldsCopyWithImpl<$Res>
 
 /// Create a copy of BusinessProfileFields
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? fullName = null,Object? avatarColor = freezed,Object? logoPath = freezed,Object? operationType = null,Object? currency = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? avatarColor = freezed,Object? logoPath = freezed,Object? operationType = null,Object? currency = null,}) {
   return _then(_BusinessProfileFields(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,avatarColor: freezed == avatarColor ? _self.avatarColor : avatarColor // ignore: cast_nullable_to_non_nullable
 as OrgAvatarColor?,logoPath: freezed == logoPath ? _self.logoPath : logoPath // ignore: cast_nullable_to_non_nullable
 as String?,operationType: null == operationType ? _self.operationType : operationType // ignore: cast_nullable_to_non_nullable

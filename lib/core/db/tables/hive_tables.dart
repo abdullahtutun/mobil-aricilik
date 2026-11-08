@@ -20,8 +20,6 @@ class Apiaries extends Table with SyncColumns, OrgColumns {
   RealColumn get latitude => real().nullable()();
   RealColumn get longitude => real().nullable()();
   IntColumn get altitudeM => integer().nullable()();
-  TextColumn get landownerName => text().nullable()();
-  TextColumn get landownerPhone => text().nullable()();
   TextColumn get landTenure =>
       text().nullable().map(const ServerEnumConverter(LandTenure.values))();
   TextColumn get waterSource => text().nullable()();

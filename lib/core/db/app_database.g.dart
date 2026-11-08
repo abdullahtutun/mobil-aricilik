@@ -1064,17 +1064,6 @@ class $MembershipsTable extends Memberships
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<MembershipRole>($MembershipsTable.$converterrole);
-  static const VerificationMeta _fullNameMeta = const VerificationMeta(
-    'fullName',
-  );
-  @override
-  late final GeneratedColumn<String> fullName = GeneratedColumn<String>(
-    'full_name',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
   static const VerificationMeta _deletionScheduledForMeta =
       const VerificationMeta('deletionScheduledFor');
   @override
@@ -1097,7 +1086,6 @@ class $MembershipsTable extends Memberships
     orgId,
     userId,
     role,
-    fullName,
     deletionScheduledFor,
   ];
   @override
@@ -1167,12 +1155,6 @@ class $MembershipsTable extends Memberships
     } else if (isInserting) {
       context.missing(_userIdMeta);
     }
-    if (data.containsKey('full_name')) {
-      context.handle(
-        _fullNameMeta,
-        fullName.isAcceptableOrUnknown(data['full_name']!, _fullNameMeta),
-      );
-    }
     if (data.containsKey('deletion_scheduled_for')) {
       context.handle(
         _deletionScheduledForMeta,
@@ -1229,10 +1211,6 @@ class $MembershipsTable extends Memberships
           data['${effectivePrefix}role'],
         )!,
       ),
-      fullName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}full_name'],
-      ),
       deletionScheduledFor: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deletion_scheduled_for'],
@@ -1269,9 +1247,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
   final String userId;
   final MembershipRole role;
 
-  /// Üyenin adı soyadı; yalnız üyenin kendisi yazar.
-  final String? fullName;
-
   /// Üye hesabını silmeyi onayladıysa kalıcı silme zamanı; vazgeçerse
   /// boşalır. Yalnız sunucu yazar. Doluyken rolü değiştirilmez, ekipten
   /// çıkarılmaz.
@@ -1286,7 +1261,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     required this.orgId,
     required this.userId,
     required this.role,
-    this.fullName,
     this.deletionScheduledFor,
   });
   @override
@@ -1311,9 +1285,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
         $MembershipsTable.$converterrole.toSql(role),
       );
     }
-    if (!nullToAbsent || fullName != null) {
-      map['full_name'] = Variable<String>(fullName);
-    }
     if (!nullToAbsent || deletionScheduledFor != null) {
       map['deletion_scheduled_for'] = Variable<DateTime>(deletionScheduledFor);
     }
@@ -1337,9 +1308,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       orgId: Value(orgId),
       userId: Value(userId),
       role: Value(role),
-      fullName: fullName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(fullName),
       deletionScheduledFor: deletionScheduledFor == null && nullToAbsent
           ? const Value.absent()
           : Value(deletionScheduledFor),
@@ -1361,7 +1329,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       orgId: serializer.fromJson<String>(json['orgId']),
       userId: serializer.fromJson<String>(json['userId']),
       role: serializer.fromJson<MembershipRole>(json['role']),
-      fullName: serializer.fromJson<String?>(json['fullName']),
       deletionScheduledFor: serializer.fromJson<DateTime?>(
         json['deletionScheduledFor'],
       ),
@@ -1380,7 +1347,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       'orgId': serializer.toJson<String>(orgId),
       'userId': serializer.toJson<String>(userId),
       'role': serializer.toJson<MembershipRole>(role),
-      'fullName': serializer.toJson<String?>(fullName),
       'deletionScheduledFor': serializer.toJson<DateTime?>(
         deletionScheduledFor,
       ),
@@ -1397,7 +1363,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     String? orgId,
     String? userId,
     MembershipRole? role,
-    Value<String?> fullName = const Value.absent(),
     Value<DateTime?> deletionScheduledFor = const Value.absent(),
   }) => MembershipRow(
     id: id ?? this.id,
@@ -1409,7 +1374,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     orgId: orgId ?? this.orgId,
     userId: userId ?? this.userId,
     role: role ?? this.role,
-    fullName: fullName.present ? fullName.value : this.fullName,
     deletionScheduledFor: deletionScheduledFor.present
         ? deletionScheduledFor.value
         : this.deletionScheduledFor,
@@ -1425,7 +1389,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
       orgId: data.orgId.present ? data.orgId.value : this.orgId,
       userId: data.userId.present ? data.userId.value : this.userId,
       role: data.role.present ? data.role.value : this.role,
-      fullName: data.fullName.present ? data.fullName.value : this.fullName,
       deletionScheduledFor: data.deletionScheduledFor.present
           ? data.deletionScheduledFor.value
           : this.deletionScheduledFor,
@@ -1444,7 +1407,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
           ..write('orgId: $orgId, ')
           ..write('userId: $userId, ')
           ..write('role: $role, ')
-          ..write('fullName: $fullName, ')
           ..write('deletionScheduledFor: $deletionScheduledFor')
           ..write(')'))
         .toString();
@@ -1461,7 +1423,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
     orgId,
     userId,
     role,
-    fullName,
     deletionScheduledFor,
   );
   @override
@@ -1477,7 +1438,6 @@ class MembershipRow extends DataClass implements Insertable<MembershipRow> {
           other.orgId == this.orgId &&
           other.userId == this.userId &&
           other.role == this.role &&
-          other.fullName == this.fullName &&
           other.deletionScheduledFor == this.deletionScheduledFor);
 }
 
@@ -1491,7 +1451,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
   final Value<String> orgId;
   final Value<String> userId;
   final Value<MembershipRole> role;
-  final Value<String?> fullName;
   final Value<DateTime?> deletionScheduledFor;
   final Value<int> rowid;
   const MembershipsCompanion({
@@ -1504,7 +1463,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     this.orgId = const Value.absent(),
     this.userId = const Value.absent(),
     this.role = const Value.absent(),
-    this.fullName = const Value.absent(),
     this.deletionScheduledFor = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1518,7 +1476,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     required String orgId,
     required String userId,
     required MembershipRole role,
-    this.fullName = const Value.absent(),
     this.deletionScheduledFor = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -1537,7 +1494,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     Expression<String>? orgId,
     Expression<String>? userId,
     Expression<String>? role,
-    Expression<String>? fullName,
     Expression<DateTime>? deletionScheduledFor,
     Expression<int>? rowid,
   }) {
@@ -1551,7 +1507,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
       if (orgId != null) 'org_id': orgId,
       if (userId != null) 'user_id': userId,
       if (role != null) 'role': role,
-      if (fullName != null) 'full_name': fullName,
       if (deletionScheduledFor != null)
         'deletion_scheduled_for': deletionScheduledFor,
       if (rowid != null) 'rowid': rowid,
@@ -1568,7 +1523,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
     Value<String>? orgId,
     Value<String>? userId,
     Value<MembershipRole>? role,
-    Value<String?>? fullName,
     Value<DateTime?>? deletionScheduledFor,
     Value<int>? rowid,
   }) {
@@ -1582,7 +1536,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
       orgId: orgId ?? this.orgId,
       userId: userId ?? this.userId,
       role: role ?? this.role,
-      fullName: fullName ?? this.fullName,
       deletionScheduledFor: deletionScheduledFor ?? this.deletionScheduledFor,
       rowid: rowid ?? this.rowid,
     );
@@ -1620,9 +1573,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
         $MembershipsTable.$converterrole.toSql(role.value),
       );
     }
-    if (fullName.present) {
-      map['full_name'] = Variable<String>(fullName.value);
-    }
     if (deletionScheduledFor.present) {
       map['deletion_scheduled_for'] = Variable<DateTime>(
         deletionScheduledFor.value,
@@ -1646,7 +1596,6 @@ class MembershipsCompanion extends UpdateCompanion<MembershipRow> {
           ..write('orgId: $orgId, ')
           ..write('userId: $userId, ')
           ..write('role: $role, ')
-          ..write('fullName: $fullName, ')
           ..write('deletionScheduledFor: $deletionScheduledFor, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -1774,28 +1723,6 @@ class $ApiariesTable extends Apiaries with TableInfo<$ApiariesTable, Apiary> {
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _landownerNameMeta = const VerificationMeta(
-    'landownerName',
-  );
-  @override
-  late final GeneratedColumn<String> landownerName = GeneratedColumn<String>(
-    'landowner_name',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _landownerPhoneMeta = const VerificationMeta(
-    'landownerPhone',
-  );
-  @override
-  late final GeneratedColumn<String> landownerPhone = GeneratedColumn<String>(
-    'landowner_phone',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
   @override
   late final GeneratedColumnWithTypeConverter<LandTenure?, String> landTenure =
       GeneratedColumn<String>(
@@ -1860,8 +1787,6 @@ class $ApiariesTable extends Apiaries with TableInfo<$ApiariesTable, Apiary> {
     latitude,
     longitude,
     altitudeM,
-    landownerName,
-    landownerPhone,
     landTenure,
     waterSource,
     vehicleDistanceM,
@@ -1953,24 +1878,6 @@ class $ApiariesTable extends Apiaries with TableInfo<$ApiariesTable, Apiary> {
         altitudeM.isAcceptableOrUnknown(data['altitude_m']!, _altitudeMMeta),
       );
     }
-    if (data.containsKey('landowner_name')) {
-      context.handle(
-        _landownerNameMeta,
-        landownerName.isAcceptableOrUnknown(
-          data['landowner_name']!,
-          _landownerNameMeta,
-        ),
-      );
-    }
-    if (data.containsKey('landowner_phone')) {
-      context.handle(
-        _landownerPhoneMeta,
-        landownerPhone.isAcceptableOrUnknown(
-          data['landowner_phone']!,
-          _landownerPhoneMeta,
-        ),
-      );
-    }
     if (data.containsKey('water_source')) {
       context.handle(
         _waterSourceMeta,
@@ -2042,14 +1949,6 @@ class $ApiariesTable extends Apiaries with TableInfo<$ApiariesTable, Apiary> {
         DriftSqlType.int,
         data['${effectivePrefix}altitude_m'],
       ),
-      landownerName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}landowner_name'],
-      ),
-      landownerPhone: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}landowner_phone'],
-      ),
       landTenure: $ApiariesTable.$converterlandTenuren.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
@@ -2110,8 +2009,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
   final Value<double?> latitude;
   final Value<double?> longitude;
   final Value<int?> altitudeM;
-  final Value<String?> landownerName;
-  final Value<String?> landownerPhone;
   final Value<LandTenure?> landTenure;
   final Value<String?> waterSource;
   final Value<int?> vehicleDistanceM;
@@ -2130,8 +2027,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
     this.latitude = const Value.absent(),
     this.longitude = const Value.absent(),
     this.altitudeM = const Value.absent(),
-    this.landownerName = const Value.absent(),
-    this.landownerPhone = const Value.absent(),
     this.landTenure = const Value.absent(),
     this.waterSource = const Value.absent(),
     this.vehicleDistanceM = const Value.absent(),
@@ -2151,8 +2046,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
     this.latitude = const Value.absent(),
     this.longitude = const Value.absent(),
     this.altitudeM = const Value.absent(),
-    this.landownerName = const Value.absent(),
-    this.landownerPhone = const Value.absent(),
     this.landTenure = const Value.absent(),
     this.waterSource = const Value.absent(),
     this.vehicleDistanceM = const Value.absent(),
@@ -2176,8 +2069,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
     Expression<double>? latitude,
     Expression<double>? longitude,
     Expression<int>? altitudeM,
-    Expression<String>? landownerName,
-    Expression<String>? landownerPhone,
     Expression<String>? landTenure,
     Expression<String>? waterSource,
     Expression<int>? vehicleDistanceM,
@@ -2197,8 +2088,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
       if (altitudeM != null) 'altitude_m': altitudeM,
-      if (landownerName != null) 'landowner_name': landownerName,
-      if (landownerPhone != null) 'landowner_phone': landownerPhone,
       if (landTenure != null) 'land_tenure': landTenure,
       if (waterSource != null) 'water_source': waterSource,
       if (vehicleDistanceM != null) 'vehicle_distance_m': vehicleDistanceM,
@@ -2220,8 +2109,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
     Value<double?>? latitude,
     Value<double?>? longitude,
     Value<int?>? altitudeM,
-    Value<String?>? landownerName,
-    Value<String?>? landownerPhone,
     Value<LandTenure?>? landTenure,
     Value<String?>? waterSource,
     Value<int?>? vehicleDistanceM,
@@ -2241,8 +2128,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       altitudeM: altitudeM ?? this.altitudeM,
-      landownerName: landownerName ?? this.landownerName,
-      landownerPhone: landownerPhone ?? this.landownerPhone,
       landTenure: landTenure ?? this.landTenure,
       waterSource: waterSource ?? this.waterSource,
       vehicleDistanceM: vehicleDistanceM ?? this.vehicleDistanceM,
@@ -2288,12 +2173,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
     if (altitudeM.present) {
       map['altitude_m'] = Variable<int>(altitudeM.value);
     }
-    if (landownerName.present) {
-      map['landowner_name'] = Variable<String>(landownerName.value);
-    }
-    if (landownerPhone.present) {
-      map['landowner_phone'] = Variable<String>(landownerPhone.value);
-    }
     if (landTenure.present) {
       map['land_tenure'] = Variable<String>(
         $ApiariesTable.$converterlandTenuren.toSql(landTenure.value),
@@ -2331,8 +2210,6 @@ class ApiariesCompanion extends UpdateCompanion<Apiary> {
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('altitudeM: $altitudeM, ')
-          ..write('landownerName: $landownerName, ')
-          ..write('landownerPhone: $landownerPhone, ')
           ..write('landTenure: $landTenure, ')
           ..write('waterSource: $waterSource, ')
           ..write('vehicleDistanceM: $vehicleDistanceM, ')
@@ -2361,8 +2238,6 @@ class _$ApiaryInsertable implements Insertable<Apiary> {
       latitude: Value(_object.latitude),
       longitude: Value(_object.longitude),
       altitudeM: Value(_object.altitudeM),
-      landownerName: Value(_object.landownerName),
-      landownerPhone: Value(_object.landownerPhone),
       landTenure: Value(_object.landTenure),
       waterSource: Value(_object.waterSource),
       vehicleDistanceM: Value(_object.vehicleDistanceM),
@@ -26160,7 +26035,6 @@ typedef $$MembershipsTableCreateCompanionBuilder =
       required String orgId,
       required String userId,
       required MembershipRole role,
-      Value<String?> fullName,
       Value<DateTime?> deletionScheduledFor,
       Value<int> rowid,
     });
@@ -26175,7 +26049,6 @@ typedef $$MembershipsTableUpdateCompanionBuilder =
       Value<String> orgId,
       Value<String> userId,
       Value<MembershipRole> role,
-      Value<String?> fullName,
       Value<DateTime?> deletionScheduledFor,
       Value<int> rowid,
     });
@@ -26233,11 +26106,6 @@ class $$MembershipsTableFilterComposer
   get role => $composableBuilder(
     column: $table.role,
     builder: (column) => ColumnWithTypeConverterFilters(column),
-  );
-
-  ColumnFilters<String> get fullName => $composableBuilder(
-    column: $table.fullName,
-    builder: (column) => ColumnFilters(column),
   );
 
   ColumnFilters<DateTime> get deletionScheduledFor => $composableBuilder(
@@ -26300,11 +26168,6 @@ class $$MembershipsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get fullName => $composableBuilder(
-    column: $table.fullName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<DateTime> get deletionScheduledFor => $composableBuilder(
     column: $table.deletionScheduledFor,
     builder: (column) => ColumnOrderings(column),
@@ -26346,9 +26209,6 @@ class $$MembershipsTableAnnotationComposer
 
   GeneratedColumnWithTypeConverter<MembershipRole, String> get role =>
       $composableBuilder(column: $table.role, builder: (column) => column);
-
-  GeneratedColumn<String> get fullName =>
-      $composableBuilder(column: $table.fullName, builder: (column) => column);
 
   GeneratedColumn<DateTime> get deletionScheduledFor => $composableBuilder(
     column: $table.deletionScheduledFor,
@@ -26396,7 +26256,6 @@ class $$MembershipsTableTableManager
                 Value<String> orgId = const Value.absent(),
                 Value<String> userId = const Value.absent(),
                 Value<MembershipRole> role = const Value.absent(),
-                Value<String?> fullName = const Value.absent(),
                 Value<DateTime?> deletionScheduledFor = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembershipsCompanion(
@@ -26409,7 +26268,6 @@ class $$MembershipsTableTableManager
                 orgId: orgId,
                 userId: userId,
                 role: role,
-                fullName: fullName,
                 deletionScheduledFor: deletionScheduledFor,
                 rowid: rowid,
               ),
@@ -26424,7 +26282,6 @@ class $$MembershipsTableTableManager
                 required String orgId,
                 required String userId,
                 required MembershipRole role,
-                Value<String?> fullName = const Value.absent(),
                 Value<DateTime?> deletionScheduledFor = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembershipsCompanion.insert(
@@ -26437,7 +26294,6 @@ class $$MembershipsTableTableManager
                 orgId: orgId,
                 userId: userId,
                 role: role,
-                fullName: fullName,
                 deletionScheduledFor: deletionScheduledFor,
                 rowid: rowid,
               ),
@@ -26487,8 +26343,6 @@ typedef $$ApiariesTableCreateCompanionBuilder = ApiariesCompanion Function({
   Value<double?> latitude,
   Value<double?> longitude,
   Value<int?> altitudeM,
-  Value<String?> landownerName,
-  Value<String?> landownerPhone,
   Value<LandTenure?> landTenure,
   Value<String?> waterSource,
   Value<int?> vehicleDistanceM,
@@ -26508,8 +26362,6 @@ typedef $$ApiariesTableUpdateCompanionBuilder = ApiariesCompanion Function({
   Value<double?> latitude,
   Value<double?> longitude,
   Value<int?> altitudeM,
-  Value<String?> landownerName,
-  Value<String?> landownerPhone,
   Value<LandTenure?> landTenure,
   Value<String?> waterSource,
   Value<int?> vehicleDistanceM,
@@ -26579,16 +26431,6 @@ class $$ApiariesTableFilterComposer
 
   ColumnFilters<int> get altitudeM => $composableBuilder(
     column: $table.altitudeM,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get landownerName => $composableBuilder(
-    column: $table.landownerName,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get landownerPhone => $composableBuilder(
-    column: $table.landownerPhone,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -26683,16 +26525,6 @@ class $$ApiariesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get landownerName => $composableBuilder(
-    column: $table.landownerName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get landownerPhone => $composableBuilder(
-    column: $table.landownerPhone,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get landTenure => $composableBuilder(
     column: $table.landTenure,
     builder: (column) => ColumnOrderings(column),
@@ -26761,16 +26593,6 @@ class $$ApiariesTableAnnotationComposer
   GeneratedColumn<int> get altitudeM =>
       $composableBuilder(column: $table.altitudeM, builder: (column) => column);
 
-  GeneratedColumn<String> get landownerName => $composableBuilder(
-    column: $table.landownerName,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get landownerPhone => $composableBuilder(
-    column: $table.landownerPhone,
-    builder: (column) => column,
-  );
-
   GeneratedColumnWithTypeConverter<LandTenure?, String> get landTenure =>
       $composableBuilder(
         column: $table.landTenure,
@@ -26833,8 +26655,6 @@ class $$ApiariesTableTableManager
                 Value<double?> latitude = const Value.absent(),
                 Value<double?> longitude = const Value.absent(),
                 Value<int?> altitudeM = const Value.absent(),
-                Value<String?> landownerName = const Value.absent(),
-                Value<String?> landownerPhone = const Value.absent(),
                 Value<LandTenure?> landTenure = const Value.absent(),
                 Value<String?> waterSource = const Value.absent(),
                 Value<int?> vehicleDistanceM = const Value.absent(),
@@ -26853,8 +26673,6 @@ class $$ApiariesTableTableManager
                 latitude: latitude,
                 longitude: longitude,
                 altitudeM: altitudeM,
-                landownerName: landownerName,
-                landownerPhone: landownerPhone,
                 landTenure: landTenure,
                 waterSource: waterSource,
                 vehicleDistanceM: vehicleDistanceM,
@@ -26875,8 +26693,6 @@ class $$ApiariesTableTableManager
                 Value<double?> latitude = const Value.absent(),
                 Value<double?> longitude = const Value.absent(),
                 Value<int?> altitudeM = const Value.absent(),
-                Value<String?> landownerName = const Value.absent(),
-                Value<String?> landownerPhone = const Value.absent(),
                 Value<LandTenure?> landTenure = const Value.absent(),
                 Value<String?> waterSource = const Value.absent(),
                 Value<int?> vehicleDistanceM = const Value.absent(),
@@ -26895,8 +26711,6 @@ class $$ApiariesTableTableManager
                 latitude: latitude,
                 longitude: longitude,
                 altitudeM: altitudeM,
-                landownerName: landownerName,
-                landownerPhone: landownerPhone,
                 landTenure: landTenure,
                 waterSource: waterSource,
                 vehicleDistanceM: vehicleDistanceM,

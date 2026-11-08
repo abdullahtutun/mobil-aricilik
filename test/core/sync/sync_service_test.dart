@@ -165,8 +165,6 @@ Map<String, Object?> _apiaryRow(
   'latitude': 38.41,
   'longitude': 27.14,
   'altitude_m': 1200,
-  'landowner_name': null,
-  'landowner_phone': null,
   'land_tenure': 'rented',
   'water_source': null,
   'vehicle_distance_m': null,

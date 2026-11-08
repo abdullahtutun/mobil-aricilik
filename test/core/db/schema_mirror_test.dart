@@ -67,6 +67,11 @@ _serverSchema() {
       tables[match[1]]!.add(match[2]!);
     }
     for (final match in RegExp(
+      r'alter table public\.(\w+)\s+drop column (\w+)',
+    ).allMatches(sql)) {
+      tables[match[1]]!.remove(match[2]);
+    }
+    for (final match in RegExp(
       r'create type public\.(\w+) as enum \(([^)]*)\)',
     ).allMatches(sql)) {
       enums[match[1]!] = [

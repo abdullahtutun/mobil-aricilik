@@ -62,8 +62,6 @@ void main() {
     test('işletmeye yazılır; metinler kırpılır, boşlar boş kalır', () async {
       final controller = await open()
         ..updateName('  Yayla ')
-        ..updateLandownerName(' Ahmet ')
-        ..updateLandownerPhone('   ')
         ..updateNotes('Rüzgârlı\n');
 
       final id = await controller.save();
@@ -71,8 +69,6 @@ void main() {
       final saved = (await repository.findById(id!))!;
       expect(saved.orgId, testOrganization.id);
       expect(saved.name, 'Yayla');
-      expect(saved.landownerName, 'Ahmet');
-      expect(saved.landownerPhone, isNull);
       expect(saved.notes, 'Rüzgârlı');
       expect(saved.latitude, isNull);
       expect((await readOutbox(db)).single.recordId, id);
@@ -184,8 +180,6 @@ void main() {
         name: 'Yayla',
         latitude: 40,
         longitude: 29,
-        landownerName: 'Ahmet',
-        landownerPhone: '0555',
         notes: 'Rüzgârlı',
         waterSource: 'Çeşme',
         landTenure: LandTenure.rented,
@@ -201,8 +195,6 @@ void main() {
           name: 'Yayla',
           latitude: 40,
           longitude: 29,
-          landownerName: 'Ahmet',
-          landownerPhone: '0555',
           notes: 'Rüzgârlı',
         ),
       );
@@ -223,7 +215,6 @@ void main() {
       expect(saved.name, 'Yayla Üst');
       expect(saved.notes, isNull);
       expect(saved.latitude, isNull);
-      expect(saved.landownerName, 'Ahmet');
       expect(saved.waterSource, 'Dere');
       expect(saved.landTenure, LandTenure.rented);
       expect(saved.createdAt, apiary.createdAt);
@@ -259,8 +250,6 @@ class _FailingRepository extends ApiaryRepository {
     double? latitude,
     double? longitude,
     int? altitudeM,
-    String? landownerName,
-    String? landownerPhone,
     LandTenure? landTenure,
     String? waterSource,
     int? vehicleDistanceM,

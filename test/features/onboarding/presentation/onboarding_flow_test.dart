@@ -474,9 +474,6 @@ void main() {
       await _tap(tester, find.text('Take location from GPS'));
       expect(find.text('40.12346, 29.65432'), findsOneWidget);
       expect(find.text('Accuracy ±8 m'), findsOneWidget);
-      await tester.enterText(_field("Landowner's name"), 'Ahmet Yılmaz');
-      await tester.enterText(_field("Landowner's phone"), '0555 111 22 33');
-      await tester.pump();
       await _tap(tester, find.text('Save apiary'));
 
       expect(find.byType(TodayScreen), findsOneWidget);
@@ -489,8 +486,6 @@ void main() {
       expect(apiary.name, 'Yayla');
       expect(apiary.latitude, testFix.latitude);
       expect(apiary.longitude, testFix.longitude);
-      expect(apiary.landownerName, 'Ahmet Yılmaz');
-      expect(apiary.landownerPhone, '0555 111 22 33');
       expect(apiary.notes, isNull);
       expect(await readOutbox(db), hasLength(1));
     });

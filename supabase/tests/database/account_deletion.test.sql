@@ -19,15 +19,15 @@ insert into public.organizations (id, name, country_code, currency, created_by) 
   ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Tek Kişilik', 'TR', 'TRY',
    '44444444-4444-4444-4444-444444444444');
 
-insert into public.memberships (id, org_id, user_id, role, full_name) values
+insert into public.memberships (id, org_id, user_id, role) values
   ('c0000000-0000-0000-0000-000000000001', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-   '11111111-1111-1111-1111-111111111111', 'owner', 'Sahip Kişi'),
+   '11111111-1111-1111-1111-111111111111', 'owner'),
   ('c0000000-0000-0000-0000-000000000004', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
-   '44444444-4444-4444-4444-444444444444', 'owner', null),
+   '44444444-4444-4444-4444-444444444444', 'owner'),
   ('c0000000-0000-0000-0000-000000000002', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-   '22222222-2222-2222-2222-222222222222', 'partner', 'Ortak Kişi'),
+   '22222222-2222-2222-2222-222222222222', 'partner'),
   ('c0000000-0000-0000-0000-000000000003', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-   '33333333-3333-3333-3333-333333333333', 'worker', 'İşçi Kişi');
+   '33333333-3333-3333-3333-333333333333', 'worker');
 
 -- A: worker'ın girdiği kayıtlar.
 insert into public.apiaries (id, org_id, name, created_by) values
@@ -452,10 +452,10 @@ select is(
 delete from auth.users where id = '33333333-3333-3333-3333-333333333333';
 
 select results_eq(
-  $$select deleted_at is not null, full_name from public.memberships
+  $$select deleted_at is not null from public.memberships
     where user_id = '33333333-3333-3333-3333-333333333333'$$,
-  $$values (true, null::text)$$,
-  'üyelik yumuşak silinmiş ve adı temizlenmiş olarak kalır (cihazlar çeker)'
+  $$values (true)$$,
+  'üyelik yumuşak silinmiş olarak kalır (cihazlar çeker)'
 );
 select results_eq(
   $$select count(*)::integer, count(created_by)::integer from public.apiaries

@@ -59,7 +59,7 @@ final class BusinessProfileFormControllerProvider
 }
 
 String _$businessProfileFormControllerHash() =>
-    r'1a96995f427c0da5080f9f85f6a3fb7500263e4c';
+    r'976069671a7115e5ee57cf1e670ccf48cfb29ad6';
 
 /// İşletme profil formu (`/more/business/edit`). Ekran açık kaldığı sürece
 /// yaşar. Her şey yerel DB'ye ve outbox'a yazılır, ağ beklenmez; seçilen

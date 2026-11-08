@@ -279,12 +279,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get apiaryFormOpenSettings => 'Abrir configurações';
 
   @override
-  String get apiaryFormLandownerName => 'Nome do dono do terreno';
-
-  @override
-  String get apiaryFormLandownerPhone => 'Telefone do dono do terreno';
-
-  @override
   String get apiaryFormNotes => 'Observações';
 
   @override
@@ -7163,12 +7157,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get exportColAltitude => 'Altitude (m)';
 
   @override
-  String get exportColLandowner => 'Dono do terreno';
-
-  @override
-  String get exportColLandownerPhone => 'Telefone do dono do terreno';
-
-  @override
   String get exportColWaterSource => 'Fonte de água';
 
   @override
@@ -7533,12 +7521,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'Nome do negócio';
-
-  @override
-  String get businessFullNameLabel => 'Nome completo';
-
-  @override
-  String get businessFullNameHelp => 'Sua equipe vê você por este nome.';
 
   @override
   String get businessAvatarLabel => 'Avatar';

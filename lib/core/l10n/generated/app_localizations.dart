@@ -520,18 +520,6 @@ abstract class AppLocalizations {
   /// **'Open settings'**
   String get apiaryFormOpenSettings;
 
-  /// No description provided for @apiaryFormLandownerName.
-  ///
-  /// In en, this message translates to:
-  /// **'Landowner\'s name'**
-  String get apiaryFormLandownerName;
-
-  /// No description provided for @apiaryFormLandownerPhone.
-  ///
-  /// In en, this message translates to:
-  /// **'Landowner\'s phone'**
-  String get apiaryFormLandownerPhone;
-
   /// No description provided for @apiaryFormNotes.
   ///
   /// In en, this message translates to:
@@ -11351,18 +11339,6 @@ abstract class AppLocalizations {
   /// **'Altitude (m)'**
   String get exportColAltitude;
 
-  /// No description provided for @exportColLandowner.
-  ///
-  /// In en, this message translates to:
-  /// **'Landowner'**
-  String get exportColLandowner;
-
-  /// No description provided for @exportColLandownerPhone.
-  ///
-  /// In en, this message translates to:
-  /// **'Landowner phone'**
-  String get exportColLandownerPhone;
-
   /// No description provided for @exportColWaterSource.
   ///
   /// In en, this message translates to:
@@ -11944,18 +11920,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Business name'**
   String get businessNameLabel;
-
-  /// No description provided for @businessFullNameLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Full name'**
-  String get businessFullNameLabel;
-
-  /// No description provided for @businessFullNameHelp.
-  ///
-  /// In en, this message translates to:
-  /// **'Your team sees you by this name.'**
-  String get businessFullNameHelp;
 
   /// No description provided for @businessAvatarLabel.
   ///

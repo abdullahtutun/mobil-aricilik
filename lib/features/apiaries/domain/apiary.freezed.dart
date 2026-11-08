@@ -18,7 +18,7 @@ mixin _$Apiary {
 
  String get id; String get orgId; String get name; DateTime get createdAt; DateTime get updatedAt;/// WGS 84. Sunucuda tek bir `location` noktası; ikisi birlikte dolu ya
 /// da birlikte boş (GPS alınamadıysa).
- double? get latitude; double? get longitude; int? get altitudeM; String? get landownerName; String? get landownerPhone; LandTenure? get landTenure; String? get waterSource;/// Aracın bırakıldığı yerden arılığa uzaklık.
+ double? get latitude; double? get longitude; int? get altitudeM; LandTenure? get landTenure; String? get waterSource;/// Aracın bırakıldığı yerden arılığa uzaklık.
  int? get vehicleDistanceM; String? get roadNotes; String? get notes; String? get createdBy; DateTime? get deletedAt;@JsonKey(includeToJson: false) int? get serverSeq;
 /// Create a copy of Apiary
 /// with the given fields replaced by the non-null parameter values.
@@ -33,20 +33,20 @@ $ApiaryCopyWith<Apiary> get copyWith => _$ApiaryCopyWithImpl<Apiary>(this as Api
 @override
 bool operator ==(Object other) {
   final _this = this as Apiary;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Apiary&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude)&&(identical(other.longitude, _this.longitude) || other.longitude == _this.longitude)&&(identical(other.altitudeM, _this.altitudeM) || other.altitudeM == _this.altitudeM)&&(identical(other.landownerName, _this.landownerName) || other.landownerName == _this.landownerName)&&(identical(other.landownerPhone, _this.landownerPhone) || other.landownerPhone == _this.landownerPhone)&&(identical(other.landTenure, _this.landTenure) || other.landTenure == _this.landTenure)&&(identical(other.waterSource, _this.waterSource) || other.waterSource == _this.waterSource)&&(identical(other.vehicleDistanceM, _this.vehicleDistanceM) || other.vehicleDistanceM == _this.vehicleDistanceM)&&(identical(other.roadNotes, _this.roadNotes) || other.roadNotes == _this.roadNotes)&&(identical(other.notes, _this.notes) || other.notes == _this.notes)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Apiary&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.orgId, _this.orgId) || other.orgId == _this.orgId)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude)&&(identical(other.longitude, _this.longitude) || other.longitude == _this.longitude)&&(identical(other.altitudeM, _this.altitudeM) || other.altitudeM == _this.altitudeM)&&(identical(other.landTenure, _this.landTenure) || other.landTenure == _this.landTenure)&&(identical(other.waterSource, _this.waterSource) || other.waterSource == _this.waterSource)&&(identical(other.vehicleDistanceM, _this.vehicleDistanceM) || other.vehicleDistanceM == _this.vehicleDistanceM)&&(identical(other.roadNotes, _this.roadNotes) || other.roadNotes == _this.roadNotes)&&(identical(other.notes, _this.notes) || other.notes == _this.notes)&&(identical(other.createdBy, _this.createdBy) || other.createdBy == _this.createdBy)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.serverSeq, _this.serverSeq) || other.serverSeq == _this.serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Apiary;
-  return Object.hash(runtimeType,_this.id,_this.orgId,_this.name,_this.createdAt,_this.updatedAt,_this.latitude,_this.longitude,_this.altitudeM,_this.landownerName,_this.landownerPhone,_this.landTenure,_this.waterSource,_this.vehicleDistanceM,_this.roadNotes,_this.notes,_this.createdBy,_this.deletedAt,_this.serverSeq);
+  return Object.hash(runtimeType,_this.id,_this.orgId,_this.name,_this.createdAt,_this.updatedAt,_this.latitude,_this.longitude,_this.altitudeM,_this.landTenure,_this.waterSource,_this.vehicleDistanceM,_this.roadNotes,_this.notes,_this.createdBy,_this.deletedAt,_this.serverSeq);
 }
 
 @override
 String toString() {
   final _this = this as Apiary;
-  return 'Apiary(id: ${_this.id}, orgId: ${_this.orgId}, name: ${_this.name}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, latitude: ${_this.latitude}, longitude: ${_this.longitude}, altitudeM: ${_this.altitudeM}, landownerName: ${_this.landownerName}, landownerPhone: ${_this.landownerPhone}, landTenure: ${_this.landTenure}, waterSource: ${_this.waterSource}, vehicleDistanceM: ${_this.vehicleDistanceM}, roadNotes: ${_this.roadNotes}, notes: ${_this.notes}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
+  return 'Apiary(id: ${_this.id}, orgId: ${_this.orgId}, name: ${_this.name}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, latitude: ${_this.latitude}, longitude: ${_this.longitude}, altitudeM: ${_this.altitudeM}, landTenure: ${_this.landTenure}, waterSource: ${_this.waterSource}, vehicleDistanceM: ${_this.vehicleDistanceM}, roadNotes: ${_this.roadNotes}, notes: ${_this.notes}, createdBy: ${_this.createdBy}, deletedAt: ${_this.deletedAt}, serverSeq: ${_this.serverSeq})';
 }
 
 
@@ -57,7 +57,7 @@ abstract mixin class $ApiaryCopyWith<$Res>  {
   factory $ApiaryCopyWith(Apiary value, $Res Function(Apiary) _then) = _$ApiaryCopyWithImpl;
 @useResult
 $Res call({
- String id, String orgId, String name, DateTime createdAt, DateTime updatedAt, double? latitude, double? longitude, int? altitudeM, String? landownerName, String? landownerPhone, LandTenure? landTenure, String? waterSource, int? vehicleDistanceM, String? roadNotes, String? notes, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String name, DateTime createdAt, DateTime updatedAt, double? latitude, double? longitude, int? altitudeM, LandTenure? landTenure, String? waterSource, int? vehicleDistanceM, String? roadNotes, String? notes, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -74,7 +74,7 @@ class _$ApiaryCopyWithImpl<$Res>
 
 /// Create a copy of Apiary
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? name = null,Object? createdAt = null,Object? updatedAt = null,Object? latitude = freezed,Object? longitude = freezed,Object? altitudeM = freezed,Object? landownerName = freezed,Object? landownerPhone = freezed,Object? landTenure = freezed,Object? waterSource = freezed,Object? vehicleDistanceM = freezed,Object? roadNotes = freezed,Object? notes = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orgId = null,Object? name = null,Object? createdAt = null,Object? updatedAt = null,Object? latitude = freezed,Object? longitude = freezed,Object? altitudeM = freezed,Object? landTenure = freezed,Object? waterSource = freezed,Object? vehicleDistanceM = freezed,Object? roadNotes = freezed,Object? notes = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(Apiary(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -84,9 +84,7 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
 as double?,altitudeM: freezed == altitudeM ? _self.altitudeM : altitudeM // ignore: cast_nullable_to_non_nullable
-as int?,landownerName: freezed == landownerName ? _self.landownerName : landownerName // ignore: cast_nullable_to_non_nullable
-as String?,landownerPhone: freezed == landownerPhone ? _self.landownerPhone : landownerPhone // ignore: cast_nullable_to_non_nullable
-as String?,landTenure: freezed == landTenure ? _self.landTenure : landTenure // ignore: cast_nullable_to_non_nullable
+as int?,landTenure: freezed == landTenure ? _self.landTenure : landTenure // ignore: cast_nullable_to_non_nullable
 as LandTenure?,waterSource: freezed == waterSource ? _self.waterSource : waterSource // ignore: cast_nullable_to_non_nullable
 as String?,vehicleDistanceM: freezed == vehicleDistanceM ? _self.vehicleDistanceM : vehicleDistanceM // ignore: cast_nullable_to_non_nullable
 as int?,roadNotes: freezed == roadNotes ? _self.roadNotes : roadNotes // ignore: cast_nullable_to_non_nullable
@@ -179,10 +177,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String name,  DateTime createdAt,  DateTime updatedAt,  double? latitude,  double? longitude,  int? altitudeM,  String? landownerName,  String? landownerPhone,  LandTenure? landTenure,  String? waterSource,  int? vehicleDistanceM,  String? roadNotes,  String? notes,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orgId,  String name,  DateTime createdAt,  DateTime updatedAt,  double? latitude,  double? longitude,  int? altitudeM,  LandTenure? landTenure,  String? waterSource,  int? vehicleDistanceM,  String? roadNotes,  String? notes,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Apiary() when $default != null:
-return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,_that.latitude,_that.longitude,_that.altitudeM,_that.landownerName,_that.landownerPhone,_that.landTenure,_that.waterSource,_that.vehicleDistanceM,_that.roadNotes,_that.notes,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,_that.latitude,_that.longitude,_that.altitudeM,_that.landTenure,_that.waterSource,_that.vehicleDistanceM,_that.roadNotes,_that.notes,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return orElse();
 
 }
@@ -200,10 +198,10 @@ return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String name,  DateTime createdAt,  DateTime updatedAt,  double? latitude,  double? longitude,  int? altitudeM,  String? landownerName,  String? landownerPhone,  LandTenure? landTenure,  String? waterSource,  int? vehicleDistanceM,  String? roadNotes,  String? notes,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orgId,  String name,  DateTime createdAt,  DateTime updatedAt,  double? latitude,  double? longitude,  int? altitudeM,  LandTenure? landTenure,  String? waterSource,  int? vehicleDistanceM,  String? roadNotes,  String? notes,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)  $default,) {final _that = this;
 switch (_that) {
 case _Apiary():
-return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,_that.latitude,_that.longitude,_that.altitudeM,_that.landownerName,_that.landownerPhone,_that.landTenure,_that.waterSource,_that.vehicleDistanceM,_that.roadNotes,_that.notes,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,_that.latitude,_that.longitude,_that.altitudeM,_that.landTenure,_that.waterSource,_that.vehicleDistanceM,_that.roadNotes,_that.notes,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -220,10 +218,10 @@ return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String name,  DateTime createdAt,  DateTime updatedAt,  double? latitude,  double? longitude,  int? altitudeM,  String? landownerName,  String? landownerPhone,  LandTenure? landTenure,  String? waterSource,  int? vehicleDistanceM,  String? roadNotes,  String? notes,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orgId,  String name,  DateTime createdAt,  DateTime updatedAt,  double? latitude,  double? longitude,  int? altitudeM,  LandTenure? landTenure,  String? waterSource,  int? vehicleDistanceM,  String? roadNotes,  String? notes,  String? createdBy,  DateTime? deletedAt, @JsonKey(includeToJson: false)  int? serverSeq)?  $default,) {final _that = this;
 switch (_that) {
 case _Apiary() when $default != null:
-return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,_that.latitude,_that.longitude,_that.altitudeM,_that.landownerName,_that.landownerPhone,_that.landTenure,_that.waterSource,_that.vehicleDistanceM,_that.roadNotes,_that.notes,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
+return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,_that.latitude,_that.longitude,_that.altitudeM,_that.landTenure,_that.waterSource,_that.vehicleDistanceM,_that.roadNotes,_that.notes,_that.createdBy,_that.deletedAt,_that.serverSeq);case _:
   return null;
 
 }
@@ -235,7 +233,7 @@ return $default(_that.id,_that.orgId,_that.name,_that.createdAt,_that.updatedAt,
 @JsonSerializable()
 
 class _Apiary implements Apiary {
-  const _Apiary({required this.id, required this.orgId, required this.name, required this.createdAt, required this.updatedAt, this.latitude, this.longitude, this.altitudeM, this.landownerName, this.landownerPhone, this.landTenure, this.waterSource, this.vehicleDistanceM, this.roadNotes, this.notes, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
+  const _Apiary({required this.id, required this.orgId, required this.name, required this.createdAt, required this.updatedAt, this.latitude, this.longitude, this.altitudeM, this.landTenure, this.waterSource, this.vehicleDistanceM, this.roadNotes, this.notes, this.createdBy, this.deletedAt, @JsonKey(includeToJson: false) this.serverSeq});
   factory _Apiary.fromJson(Map<String, dynamic> json) => _$ApiaryFromJson(json);
 
 @override final  String id;
@@ -248,8 +246,6 @@ class _Apiary implements Apiary {
 @override final  double? latitude;
 @override final  double? longitude;
 @override final  int? altitudeM;
-@override final  String? landownerName;
-@override final  String? landownerPhone;
 @override final  LandTenure? landTenure;
 @override final  String? waterSource;
 /// Aracın bırakıldığı yerden arılığa uzaklık.
@@ -273,18 +269,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Apiary&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.name, name) || other.name == name)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.altitudeM, altitudeM) || other.altitudeM == altitudeM)&&(identical(other.landownerName, landownerName) || other.landownerName == landownerName)&&(identical(other.landownerPhone, landownerPhone) || other.landownerPhone == landownerPhone)&&(identical(other.landTenure, landTenure) || other.landTenure == landTenure)&&(identical(other.waterSource, waterSource) || other.waterSource == waterSource)&&(identical(other.vehicleDistanceM, vehicleDistanceM) || other.vehicleDistanceM == vehicleDistanceM)&&(identical(other.roadNotes, roadNotes) || other.roadNotes == roadNotes)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Apiary&&(identical(other.id, id) || other.id == id)&&(identical(other.orgId, orgId) || other.orgId == orgId)&&(identical(other.name, name) || other.name == name)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.altitudeM, altitudeM) || other.altitudeM == altitudeM)&&(identical(other.landTenure, landTenure) || other.landTenure == landTenure)&&(identical(other.waterSource, waterSource) || other.waterSource == waterSource)&&(identical(other.vehicleDistanceM, vehicleDistanceM) || other.vehicleDistanceM == vehicleDistanceM)&&(identical(other.roadNotes, roadNotes) || other.roadNotes == roadNotes)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.serverSeq, serverSeq) || other.serverSeq == serverSeq));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,orgId,name,createdAt,updatedAt,latitude,longitude,altitudeM,landownerName,landownerPhone,landTenure,waterSource,vehicleDistanceM,roadNotes,notes,createdBy,deletedAt,serverSeq);
+    return Object.hash(runtimeType,id,orgId,name,createdAt,updatedAt,latitude,longitude,altitudeM,landTenure,waterSource,vehicleDistanceM,roadNotes,notes,createdBy,deletedAt,serverSeq);
 }
 
 @override
 String toString() {
-    return 'Apiary(id: $id, orgId: $orgId, name: $name, createdAt: $createdAt, updatedAt: $updatedAt, latitude: $latitude, longitude: $longitude, altitudeM: $altitudeM, landownerName: $landownerName, landownerPhone: $landownerPhone, landTenure: $landTenure, waterSource: $waterSource, vehicleDistanceM: $vehicleDistanceM, roadNotes: $roadNotes, notes: $notes, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
+    return 'Apiary(id: $id, orgId: $orgId, name: $name, createdAt: $createdAt, updatedAt: $updatedAt, latitude: $latitude, longitude: $longitude, altitudeM: $altitudeM, landTenure: $landTenure, waterSource: $waterSource, vehicleDistanceM: $vehicleDistanceM, roadNotes: $roadNotes, notes: $notes, createdBy: $createdBy, deletedAt: $deletedAt, serverSeq: $serverSeq)';
 }
 
 
@@ -295,7 +291,7 @@ abstract mixin class _$ApiaryCopyWith<$Res> implements $ApiaryCopyWith<$Res> {
   factory _$ApiaryCopyWith(_Apiary value, $Res Function(_Apiary) _then) = __$ApiaryCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String orgId, String name, DateTime createdAt, DateTime updatedAt, double? latitude, double? longitude, int? altitudeM, String? landownerName, String? landownerPhone, LandTenure? landTenure, String? waterSource, int? vehicleDistanceM, String? roadNotes, String? notes, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
+ String id, String orgId, String name, DateTime createdAt, DateTime updatedAt, double? latitude, double? longitude, int? altitudeM, LandTenure? landTenure, String? waterSource, int? vehicleDistanceM, String? roadNotes, String? notes, String? createdBy, DateTime? deletedAt,@JsonKey(includeToJson: false) int? serverSeq
 });
 
 
@@ -312,7 +308,7 @@ class __$ApiaryCopyWithImpl<$Res>
 
 /// Create a copy of Apiary
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? name = null,Object? createdAt = null,Object? updatedAt = null,Object? latitude = freezed,Object? longitude = freezed,Object? altitudeM = freezed,Object? landownerName = freezed,Object? landownerPhone = freezed,Object? landTenure = freezed,Object? waterSource = freezed,Object? vehicleDistanceM = freezed,Object? roadNotes = freezed,Object? notes = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orgId = null,Object? name = null,Object? createdAt = null,Object? updatedAt = null,Object? latitude = freezed,Object? longitude = freezed,Object? altitudeM = freezed,Object? landTenure = freezed,Object? waterSource = freezed,Object? vehicleDistanceM = freezed,Object? roadNotes = freezed,Object? notes = freezed,Object? createdBy = freezed,Object? deletedAt = freezed,Object? serverSeq = freezed,}) {
   return _then(_Apiary(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orgId: null == orgId ? _self.orgId : orgId // ignore: cast_nullable_to_non_nullable
@@ -322,9 +318,7 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
 as double?,altitudeM: freezed == altitudeM ? _self.altitudeM : altitudeM // ignore: cast_nullable_to_non_nullable
-as int?,landownerName: freezed == landownerName ? _self.landownerName : landownerName // ignore: cast_nullable_to_non_nullable
-as String?,landownerPhone: freezed == landownerPhone ? _self.landownerPhone : landownerPhone // ignore: cast_nullable_to_non_nullable
-as String?,landTenure: freezed == landTenure ? _self.landTenure : landTenure // ignore: cast_nullable_to_non_nullable
+as int?,landTenure: freezed == landTenure ? _self.landTenure : landTenure // ignore: cast_nullable_to_non_nullable
 as LandTenure?,waterSource: freezed == waterSource ? _self.waterSource : waterSource // ignore: cast_nullable_to_non_nullable
 as String?,vehicleDistanceM: freezed == vehicleDistanceM ? _self.vehicleDistanceM : vehicleDistanceM // ignore: cast_nullable_to_non_nullable
 as int?,roadNotes: freezed == roadNotes ? _self.roadNotes : roadNotes // ignore: cast_nullable_to_non_nullable

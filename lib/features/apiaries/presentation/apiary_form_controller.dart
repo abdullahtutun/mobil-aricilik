@@ -19,8 +19,6 @@ abstract class ApiaryFormState with _$ApiaryFormState {
     /// Bu formda GPS'ten alınan konumun doğruluğu (m); kayıtlı konumda
     /// bilinmez.
     double? accuracyM,
-    @Default('') String landownerName,
-    @Default('') String landownerPhone,
     @Default('') String notes,
 
     /// GPS'ten konum bekleniyor.
@@ -33,8 +31,6 @@ abstract class ApiaryFormState with _$ApiaryFormState {
     name: apiary.name,
     latitude: apiary.latitude,
     longitude: apiary.longitude,
-    landownerName: apiary.landownerName ?? '',
-    landownerPhone: apiary.landownerPhone ?? '',
     notes: apiary.notes ?? '',
   );
 }
@@ -63,12 +59,6 @@ class ApiaryFormController extends _$ApiaryFormController {
   }
 
   void updateName(String name) => _update((form) => form.copyWith(name: name));
-
-  void updateLandownerName(String value) =>
-      _update((form) => form.copyWith(landownerName: value));
-
-  void updateLandownerPhone(String value) =>
-      _update((form) => form.copyWith(landownerPhone: value));
 
   void updateNotes(String value) =>
       _update((form) => form.copyWith(notes: value));
@@ -155,8 +145,6 @@ class ApiaryFormController extends _$ApiaryFormController {
           name: form.name.trim(),
           latitude: form.latitude,
           longitude: form.longitude,
-          landownerName: _orNull(form.landownerName),
-          landownerPhone: _orNull(form.landownerPhone),
           notes: _orNull(form.notes),
         );
       } else {
@@ -172,8 +160,6 @@ class ApiaryFormController extends _$ApiaryFormController {
             name: form.name.trim(),
             latitude: form.latitude,
             longitude: form.longitude,
-            landownerName: _orNull(form.landownerName),
-            landownerPhone: _orNull(form.landownerPhone),
             notes: _orNull(form.notes),
           ),
         );

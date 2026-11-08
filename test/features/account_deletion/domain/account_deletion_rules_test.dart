@@ -11,7 +11,6 @@ MemberProfile _profile(String userId, MembershipRole role) => (
   membershipId: 'm-$userId',
   userId: userId,
   role: role,
-  fullName: null,
   deletionScheduledFor: null,
 );
 

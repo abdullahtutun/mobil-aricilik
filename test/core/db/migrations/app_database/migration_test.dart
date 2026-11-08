@@ -22,6 +22,7 @@ import 'generated/schema_v22.dart' as v22;
 import 'generated/schema_v23.dart' as v23;
 import 'generated/schema_v24.dart' as v24;
 import 'generated/schema_v25.dart' as v25;
+import 'generated/schema_v26.dart' as v26;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
 import 'generated/schema_v5.dart' as v5;
@@ -1016,6 +1017,73 @@ void main() {
         expect(membership.role, 'partner');
         expect(membership.fullName, 'Ayşe Kaya');
         expect(membership.deletionScheduledFor, null);
+      },
+    );
+  });
+
+  test('v25 → v26 arazi sahibini ve üyenin adını siler', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 25,
+      newVersion: 26,
+      createOld: v25.DatabaseAtV25.new,
+      createNew: v26.DatabaseAtV26.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch
+          ..insert(
+            oldDb.apiaries,
+            v25.ApiariesCompanion.insert(
+              id: 'apiary-1',
+              createdAt: '2026-11-05T09:00:00.000Z',
+              updatedAt: '2026-11-05T09:00:00.000Z',
+              orgId: 'org-1',
+              name: 'Yayla',
+              landownerName: const Value('Ahmet'),
+              landownerPhone: const Value('0555'),
+              notes: const Value('Çeşme yanında'),
+            ),
+          )
+          ..insert(
+            oldDb.memberships,
+            v25.MembershipsCompanion.insert(
+              id: 'membership-1',
+              createdAt: '2026-11-05T09:00:00.000Z',
+              updatedAt: '2026-11-05T09:00:00.000Z',
+              orgId: 'org-1',
+              userId: 'user-1',
+              role: 'owner',
+              fullName: const Value('Ayşe Kaya'),
+            ),
+          )
+          ..insert(
+            oldDb.outbox,
+            v25.OutboxCompanion.insert(
+              recordTable: 'memberships',
+              recordId: 'membership-1',
+              operation: 'upsert',
+              payload: '{}',
+              createdAt: '2026-11-05T09:00:00.000Z',
+            ),
+          )
+          ..insert(
+            oldDb.outbox,
+            v25.OutboxCompanion.insert(
+              recordTable: 'apiaries',
+              recordId: 'apiary-1',
+              operation: 'upsert',
+              payload: '{}',
+              createdAt: '2026-11-05T09:00:00.000Z',
+            ),
+          );
+      },
+      validateItems: (newDb) async {
+        final apiary = (await newDb.select(newDb.apiaries).get()).single;
+        expect(apiary.name, 'Yayla');
+        expect(apiary.notes, 'Çeşme yanında');
+        final membership = (await newDb.select(newDb.memberships).get()).single;
+        expect(membership.role, 'owner');
+        final outbox = await newDb.select(newDb.outbox).get();
+        expect(outbox.map((row) => row.recordTable), ['apiaries']);
       },
     );
   });

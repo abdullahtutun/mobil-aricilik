@@ -228,7 +228,7 @@ class _OrganizationCard extends ConsumerWidget {
     final country = countryNamesFor(
       Localizations.localeOf(context).languageCode,
     )[profile.countryCode];
-    final person = member?.fullName ?? activityName(email);
+    final person = activityName(email);
     final role = member?.role;
     final details = [
       ?person,

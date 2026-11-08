@@ -17,7 +17,7 @@ mixin _$ApiaryFormState {
 
  String get name; double? get latitude; double? get longitude;/// Bu formda GPS'ten alınan konumun doğruluğu (m); kayıtlı konumda
 /// bilinmez.
- double? get accuracyM; String get landownerName; String get landownerPhone; String get notes;/// GPS'ten konum bekleniyor.
+ double? get accuracyM; String get notes;/// GPS'ten konum bekleniyor.
  bool get locating; LocationFailure? get locationFailure; bool get saving;
 /// Create a copy of ApiaryFormState
 /// with the given fields replaced by the non-null parameter values.
@@ -30,20 +30,20 @@ $ApiaryFormStateCopyWith<ApiaryFormState> get copyWith => _$ApiaryFormStateCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as ApiaryFormState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiaryFormState&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude)&&(identical(other.longitude, _this.longitude) || other.longitude == _this.longitude)&&(identical(other.accuracyM, _this.accuracyM) || other.accuracyM == _this.accuracyM)&&(identical(other.landownerName, _this.landownerName) || other.landownerName == _this.landownerName)&&(identical(other.landownerPhone, _this.landownerPhone) || other.landownerPhone == _this.landownerPhone)&&(identical(other.notes, _this.notes) || other.notes == _this.notes)&&(identical(other.locating, _this.locating) || other.locating == _this.locating)&&(identical(other.locationFailure, _this.locationFailure) || other.locationFailure == _this.locationFailure)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiaryFormState&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude)&&(identical(other.longitude, _this.longitude) || other.longitude == _this.longitude)&&(identical(other.accuracyM, _this.accuracyM) || other.accuracyM == _this.accuracyM)&&(identical(other.notes, _this.notes) || other.notes == _this.notes)&&(identical(other.locating, _this.locating) || other.locating == _this.locating)&&(identical(other.locationFailure, _this.locationFailure) || other.locationFailure == _this.locationFailure)&&(identical(other.saving, _this.saving) || other.saving == _this.saving));
 }
 
 
 @override
 int get hashCode {
   final _this = this as ApiaryFormState;
-  return Object.hash(runtimeType,_this.name,_this.latitude,_this.longitude,_this.accuracyM,_this.landownerName,_this.landownerPhone,_this.notes,_this.locating,_this.locationFailure,_this.saving);
+  return Object.hash(runtimeType,_this.name,_this.latitude,_this.longitude,_this.accuracyM,_this.notes,_this.locating,_this.locationFailure,_this.saving);
 }
 
 @override
 String toString() {
   final _this = this as ApiaryFormState;
-  return 'ApiaryFormState(name: ${_this.name}, latitude: ${_this.latitude}, longitude: ${_this.longitude}, accuracyM: ${_this.accuracyM}, landownerName: ${_this.landownerName}, landownerPhone: ${_this.landownerPhone}, notes: ${_this.notes}, locating: ${_this.locating}, locationFailure: ${_this.locationFailure}, saving: ${_this.saving})';
+  return 'ApiaryFormState(name: ${_this.name}, latitude: ${_this.latitude}, longitude: ${_this.longitude}, accuracyM: ${_this.accuracyM}, notes: ${_this.notes}, locating: ${_this.locating}, locationFailure: ${_this.locationFailure}, saving: ${_this.saving})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $ApiaryFormStateCopyWith<$Res>  {
   factory $ApiaryFormStateCopyWith(ApiaryFormState value, $Res Function(ApiaryFormState) _then) = _$ApiaryFormStateCopyWithImpl;
 @useResult
 $Res call({
- String name, double? latitude, double? longitude, double? accuracyM, String landownerName, String landownerPhone, String notes, bool locating, LocationFailure? locationFailure, bool saving
+ String name, double? latitude, double? longitude, double? accuracyM, String notes, bool locating, LocationFailure? locationFailure, bool saving
 });
 
 
@@ -71,15 +71,13 @@ class _$ApiaryFormStateCopyWithImpl<$Res>
 
 /// Create a copy of ApiaryFormState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? latitude = freezed,Object? longitude = freezed,Object? accuracyM = freezed,Object? landownerName = null,Object? landownerPhone = null,Object? notes = null,Object? locating = null,Object? locationFailure = freezed,Object? saving = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? latitude = freezed,Object? longitude = freezed,Object? accuracyM = freezed,Object? notes = null,Object? locating = null,Object? locationFailure = freezed,Object? saving = null,}) {
   return _then(ApiaryFormState(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
 as double?,accuracyM: freezed == accuracyM ? _self.accuracyM : accuracyM // ignore: cast_nullable_to_non_nullable
-as double?,landownerName: null == landownerName ? _self.landownerName : landownerName // ignore: cast_nullable_to_non_nullable
-as String,landownerPhone: null == landownerPhone ? _self.landownerPhone : landownerPhone // ignore: cast_nullable_to_non_nullable
-as String,notes: null == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as double?,notes: null == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String,locating: null == locating ? _self.locating : locating // ignore: cast_nullable_to_non_nullable
 as bool,locationFailure: freezed == locationFailure ? _self.locationFailure : locationFailure // ignore: cast_nullable_to_non_nullable
 as LocationFailure?,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
@@ -168,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  double? latitude,  double? longitude,  double? accuracyM,  String landownerName,  String landownerPhone,  String notes,  bool locating,  LocationFailure? locationFailure,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  double? latitude,  double? longitude,  double? accuracyM,  String notes,  bool locating,  LocationFailure? locationFailure,  bool saving)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ApiaryFormState() when $default != null:
-return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.landownerName,_that.landownerPhone,_that.notes,_that.locating,_that.locationFailure,_that.saving);case _:
+return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.notes,_that.locating,_that.locationFailure,_that.saving);case _:
   return orElse();
 
 }
@@ -189,10 +187,10 @@ return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  double? latitude,  double? longitude,  double? accuracyM,  String landownerName,  String landownerPhone,  String notes,  bool locating,  LocationFailure? locationFailure,  bool saving)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  double? latitude,  double? longitude,  double? accuracyM,  String notes,  bool locating,  LocationFailure? locationFailure,  bool saving)  $default,) {final _that = this;
 switch (_that) {
 case _ApiaryFormState():
-return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.landownerName,_that.landownerPhone,_that.notes,_that.locating,_that.locationFailure,_that.saving);case _:
+return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.notes,_that.locating,_that.locationFailure,_that.saving);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +207,10 @@ return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  double? latitude,  double? longitude,  double? accuracyM,  String landownerName,  String landownerPhone,  String notes,  bool locating,  LocationFailure? locationFailure,  bool saving)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  double? latitude,  double? longitude,  double? accuracyM,  String notes,  bool locating,  LocationFailure? locationFailure,  bool saving)?  $default,) {final _that = this;
 switch (_that) {
 case _ApiaryFormState() when $default != null:
-return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.landownerName,_that.landownerPhone,_that.notes,_that.locating,_that.locationFailure,_that.saving);case _:
+return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.notes,_that.locating,_that.locationFailure,_that.saving);case _:
   return null;
 
 }
@@ -224,7 +222,7 @@ return $default(_that.name,_that.latitude,_that.longitude,_that.accuracyM,_that.
 
 
 class _ApiaryFormState implements ApiaryFormState {
-  const _ApiaryFormState({this.name = '', this.latitude, this.longitude, this.accuracyM, this.landownerName = '', this.landownerPhone = '', this.notes = '', this.locating = false, this.locationFailure, this.saving = false});
+  const _ApiaryFormState({this.name = '', this.latitude, this.longitude, this.accuracyM, this.notes = '', this.locating = false, this.locationFailure, this.saving = false});
   
 
 @override@JsonKey() final  String name;
@@ -233,8 +231,6 @@ class _ApiaryFormState implements ApiaryFormState {
 /// Bu formda GPS'ten alınan konumun doğruluğu (m); kayıtlı konumda
 /// bilinmez.
 @override final  double? accuracyM;
-@override@JsonKey() final  String landownerName;
-@override@JsonKey() final  String landownerPhone;
 @override@JsonKey() final  String notes;
 /// GPS'ten konum bekleniyor.
 @override@JsonKey() final  bool locating;
@@ -251,18 +247,18 @@ _$ApiaryFormStateCopyWith<_ApiaryFormState> get copyWith => __$ApiaryFormStateCo
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiaryFormState&&(identical(other.name, name) || other.name == name)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.accuracyM, accuracyM) || other.accuracyM == accuracyM)&&(identical(other.landownerName, landownerName) || other.landownerName == landownerName)&&(identical(other.landownerPhone, landownerPhone) || other.landownerPhone == landownerPhone)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.locating, locating) || other.locating == locating)&&(identical(other.locationFailure, locationFailure) || other.locationFailure == locationFailure)&&(identical(other.saving, saving) || other.saving == saving));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiaryFormState&&(identical(other.name, name) || other.name == name)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.accuracyM, accuracyM) || other.accuracyM == accuracyM)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.locating, locating) || other.locating == locating)&&(identical(other.locationFailure, locationFailure) || other.locationFailure == locationFailure)&&(identical(other.saving, saving) || other.saving == saving));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,name,latitude,longitude,accuracyM,landownerName,landownerPhone,notes,locating,locationFailure,saving);
+    return Object.hash(runtimeType,name,latitude,longitude,accuracyM,notes,locating,locationFailure,saving);
 }
 
 @override
 String toString() {
-    return 'ApiaryFormState(name: $name, latitude: $latitude, longitude: $longitude, accuracyM: $accuracyM, landownerName: $landownerName, landownerPhone: $landownerPhone, notes: $notes, locating: $locating, locationFailure: $locationFailure, saving: $saving)';
+    return 'ApiaryFormState(name: $name, latitude: $latitude, longitude: $longitude, accuracyM: $accuracyM, notes: $notes, locating: $locating, locationFailure: $locationFailure, saving: $saving)';
 }
 
 
@@ -273,7 +269,7 @@ abstract mixin class _$ApiaryFormStateCopyWith<$Res> implements $ApiaryFormState
   factory _$ApiaryFormStateCopyWith(_ApiaryFormState value, $Res Function(_ApiaryFormState) _then) = __$ApiaryFormStateCopyWithImpl;
 @override @useResult
 $Res call({
- String name, double? latitude, double? longitude, double? accuracyM, String landownerName, String landownerPhone, String notes, bool locating, LocationFailure? locationFailure, bool saving
+ String name, double? latitude, double? longitude, double? accuracyM, String notes, bool locating, LocationFailure? locationFailure, bool saving
 });
 
 
@@ -290,15 +286,13 @@ class __$ApiaryFormStateCopyWithImpl<$Res>
 
 /// Create a copy of ApiaryFormState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? latitude = freezed,Object? longitude = freezed,Object? accuracyM = freezed,Object? landownerName = null,Object? landownerPhone = null,Object? notes = null,Object? locating = null,Object? locationFailure = freezed,Object? saving = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? latitude = freezed,Object? longitude = freezed,Object? accuracyM = freezed,Object? notes = null,Object? locating = null,Object? locationFailure = freezed,Object? saving = null,}) {
   return _then(_ApiaryFormState(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
 as double?,accuracyM: freezed == accuracyM ? _self.accuracyM : accuracyM // ignore: cast_nullable_to_non_nullable
-as double?,landownerName: null == landownerName ? _self.landownerName : landownerName // ignore: cast_nullable_to_non_nullable
-as String,landownerPhone: null == landownerPhone ? _self.landownerPhone : landownerPhone // ignore: cast_nullable_to_non_nullable
-as String,notes: null == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as double?,notes: null == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String,locating: null == locating ? _self.locating : locating // ignore: cast_nullable_to_non_nullable
 as bool,locationFailure: freezed == locationFailure ? _self.locationFailure : locationFailure // ignore: cast_nullable_to_non_nullable
 as LocationFailure?,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable

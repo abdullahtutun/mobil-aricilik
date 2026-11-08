@@ -104,8 +104,6 @@ void main() {
       latitude: 40.123456,
       longitude: 29.654321,
       altitudeM: 1250,
-      landownerName: 'Ahmet',
-      landownerPhone: '+905551112233',
       landTenure: LandTenure.permitted,
       waterSource: 'Çeşme',
       vehicleDistanceM: 300,

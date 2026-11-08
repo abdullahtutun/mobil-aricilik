@@ -33,8 +33,6 @@ abstract class Apiary with _$Apiary implements SyncedRecord {
     double? latitude,
     double? longitude,
     int? altitudeM,
-    String? landownerName,
-    String? landownerPhone,
     LandTenure? landTenure,
     String? waterSource,
 

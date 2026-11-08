@@ -27,19 +27,11 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
       .read(apiaryFormControllerProvider(widget.apiaryId))
       .value!;
   late final _name = TextEditingController(text: _initial.name);
-  late final _landownerName = TextEditingController(
-    text: _initial.landownerName,
-  );
-  late final _landownerPhone = TextEditingController(
-    text: _initial.landownerPhone,
-  );
   late final _notes = TextEditingController(text: _initial.notes);
 
   @override
   void dispose() {
     _name.dispose();
-    _landownerName.dispose();
-    _landownerPhone.dispose();
     _notes.dispose();
     super.dispose();
   }
@@ -73,38 +65,6 @@ class _ApiaryFormFieldsState extends ConsumerState<ApiaryFormFields> {
         ),
         SizedBox(height: spacing.xl),
         _LocationSection(apiaryId: widget.apiaryId),
-        SizedBox(height: spacing.xl),
-        // Ad ve telefon yan yana; ikisi de kısa.
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          spacing: spacing.md,
-          children: [
-            Expanded(
-              child: LabeledField(
-                label: l10n.apiaryFormLandownerName,
-                child: TextField(
-                  controller: _landownerName,
-                  textCapitalization: TextCapitalization.words,
-                  textInputAction: TextInputAction.next,
-                  style: context.typography.body,
-                  onChanged: controller.updateLandownerName,
-                ),
-              ),
-            ),
-            Expanded(
-              child: LabeledField(
-                label: l10n.apiaryFormLandownerPhone,
-                child: TextField(
-                  controller: _landownerPhone,
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.next,
-                  style: context.typography.body,
-                  onChanged: controller.updateLandownerPhone,
-                ),
-              ),
-            ),
-          ],
-        ),
         SizedBox(height: spacing.xl),
         LabeledField(
           label: l10n.apiaryFormNotes,

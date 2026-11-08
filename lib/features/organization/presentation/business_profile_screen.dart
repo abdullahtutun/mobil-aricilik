@@ -120,7 +120,7 @@ class _Header extends ConsumerWidget {
           Localizations.localeOf(context).languageCode,
         )[profile.countryCode] ??
         profile.countryCode;
-    final person = member?.fullName ?? activityName(email);
+    final person = activityName(email);
     final role = member?.role;
     final subtitle = switch ((person, role)) {
       (final person?, final role?) => l10n.businessPersonRole(
@@ -268,7 +268,7 @@ class _TeamCard extends ConsumerWidget {
     final step = dimension - spacing.md;
 
     String initials(MemberProfile member) {
-      final name = member.fullName ?? activityName(emails[member.userId]);
+      final name = activityName(emails[member.userId]);
       return name == null ? '?' : nameInitials(name);
     }
 

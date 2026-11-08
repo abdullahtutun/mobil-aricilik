@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,8 +26,8 @@ import '../../../helpers/test_database.dart';
 
 typedef _App = ({ProviderContainer container, AppDatabase db});
 
-/// Uygulamayı Türkçe açar; kullanıcı ([testUser]) [role] rolünde, adı
-/// "Ahmet Yılmaz". Ekipte bir işçi ve bir danışman daha var. İşletme
+/// Uygulamayı Türkçe açar; kullanıcı ([testUser]) [role] rolünde, e-posta
+/// adıyla ("ari") görünür. Ekipte bir işçi ve bir danışman daha var. İşletme
 /// satırı yerel DB'de ([insertOrganizationRow]).
 Future<_App> _open(
   WidgetTester tester, {
@@ -40,8 +39,6 @@ Future<_App> _open(
   final db = openTestDatabase();
   await insertOrganizationRow(db, operationType: operationType);
   await addMember(db, userId: testUser.id, role: role);
-  await (db.update(db.memberships)..where((t) => t.userId.equals(testUser.id)))
-      .write(const MembershipsCompanion(fullName: Value('Ahmet Yılmaz')));
   await addMember(db, userId: 'worker-1', role: MembershipRole.worker);
   await addMember(db, userId: 'viewer-1', role: MembershipRole.viewer);
   if (seed != null) await seed(db);
@@ -131,12 +128,12 @@ void main() {
         seed: seedCountedRecords,
       );
 
-      expect(find.text('Ahmet Yılmaz · Sahip · Türkiye'), findsOneWidget);
+      expect(find.text('ari · Sahip · Türkiye'), findsOneWidget);
       await _tap(tester, find.text('Yılmaz Arıcılık'));
 
       expect(find.byType(BusinessProfileScreen), findsOneWidget);
       expect(find.text('YA'), findsOneWidget);
-      expect(find.text('Ahmet Yılmaz · Sahip'), findsOneWidget);
+      expect(find.text('ari · Sahip'), findsOneWidget);
       expect(find.text('Türkiye · TR profili'), findsOneWidget);
       // 3 aktif kovan, 2 arılık, 4 muayene (silinmiş/sönmüş sayılmaz).
       expect(find.widgetWithText(CountTile, 'kovan'), findsOneWidget);
@@ -322,7 +319,7 @@ void main() {
   });
 
   group('form', () {
-    testWidgets('kaydet: işletme ve ad yerelde yazılır, outbox kaydı açılır, '
+    testWidgets('kaydet: işletme yerelde yazılır, outbox kaydı açılır, '
         '"eşitlenecek" rozeti görünür', (tester) async {
       final (:container, :db) = await _open(
         tester,
@@ -330,7 +327,6 @@ void main() {
       );
 
       await _enter(tester, 'İşletme adı', 'Petek Ltd.');
-      await _enter(tester, 'Ad soyad', 'Ahmet Can Yılmaz');
       await _tap(tester, find.text('Bal'));
       await _tap(tester, _save);
 
@@ -338,16 +334,13 @@ void main() {
       final org = await _org(db);
       expect(org.name, 'Petek Ltd.');
       expect(org.avatarColor, OrgAvatarColor.honey);
-      final member = await (db.select(
-        db.memberships,
-      )..where((t) => t.userId.equals(testUser.id))).getSingle();
-      expect(member.fullName, 'Ahmet Can Yılmaz');
-      expect(member.role, MembershipRole.owner);
-      expect([
-        for (final e in await readOutbox(db)) e.recordTable,
-      ], unorderedEquals(['organizations', 'memberships']));
+      expect(
+        [for (final e in await readOutbox(db)) e.recordTable],
+        ['organizations'],
+      );
+      expect(find.text('Ad soyad'), findsNothing);
       expect(find.text('Petek Ltd.'), findsOneWidget);
-      expect(find.text('Ahmet Can Yılmaz · Sahip'), findsOneWidget);
+      expect(find.text('ari · Sahip'), findsOneWidget);
       expect(find.text('Eşitlenecek'), findsOneWidget);
 
       // Gönderilince rozet kalkar.
@@ -488,7 +481,7 @@ void main() {
             expect(tester.takeException(), isNull);
             expect(tester.getSize(_save).height, greaterThanOrEqualTo(56));
             expect(tester.getSize(_cancel).height, greaterThanOrEqualTo(56));
-            await _reveal(tester, _field('Ad soyad'));
+            await _reveal(tester, _field('İşletme adı'));
             expect(tester.takeException(), isNull);
           },
         );

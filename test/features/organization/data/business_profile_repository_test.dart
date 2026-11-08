@@ -223,51 +223,18 @@ void main() {
     });
   });
 
-  group('kendi adı', () {
-    test(
-      'yalnız ad ve updated_at değişir; outbox üyeliğin satırını taşır',
-      () async {
-        await addMember(db, userId: 'user-1', role: MembershipRole.worker);
-        final members = MembershipRepository(db, clock: clock.call);
-
-        expect(
-          await members.setOwnName(
-            orgId: _org,
-            userId: 'user-1',
-            fullName: '  Mehmet Kaya ',
-          ),
-          isTrue,
-        );
-
-        final row = await db.select(db.memberships).getSingle();
-        expect(row.fullName, 'Mehmet Kaya');
-        expect(row.role, MembershipRole.worker);
-        final outbox = (await readOutbox(db)).single;
-        expect(outbox.recordTable, 'memberships');
-        expect(outbox.recordId, row.id);
-        expect(outbox.payload, containsPair('full_name', 'Mehmet Kaya'));
-        expect(await members.watchProfiles(_org).first, [
-          (
-            membershipId: row.id,
-            userId: 'user-1',
-            role: MembershipRole.worker,
-            fullName: 'Mehmet Kaya',
-            deletionScheduledFor: null,
-          ),
-        ]);
-      },
-    );
-
-    test('boş ad siler; üyelik yoksa false', () async {
-      await addMember(db, userId: 'user-1', role: MembershipRole.owner);
-      final members = MembershipRepository(db, clock: clock.call);
-      await members.setOwnName(orgId: _org, userId: 'user-1', fullName: ' ');
-      expect((await db.select(db.memberships).getSingle()).fullName, isNull);
-      expect(
-        await members.setOwnName(orgId: _org, userId: 'nobody', fullName: 'X'),
-        isFalse,
-      );
-    });
+  test('üyelikler: uygulama yazmaz, profiller adsız gelir', () async {
+    await addMember(db, userId: 'user-1', role: MembershipRole.worker);
+    final row = await db.select(db.memberships).getSingle();
+    expect(await MembershipRepository(db).watchProfiles(_org).first, [
+      (
+        membershipId: row.id,
+        userId: 'user-1',
+        role: MembershipRole.worker,
+        deletionScheduledFor: null,
+      ),
+    ]);
+    expect(await readOutbox(db), isEmpty);
   });
 
   test(

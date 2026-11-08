@@ -3,8 +3,7 @@ import 'package:mobil_arici/core/utils/text_fold.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 
-/// İşletme profili formunun yazdığı alanlar. Ad soyad üyelikte durduğu için
-/// burada yok (`MembershipRepository.setOwnName`).
+/// İşletme profili formunun yazdığı alanlar.
 typedef BusinessProfileChange = ({
   String name,
   OrgAvatarColor? avatarColor,
@@ -33,21 +32,17 @@ typedef BusinessCounts = ({int hives, int apiaries, int inspections});
 /// Sabite geçerken gizlenecek gezginci kayıtları.
 typedef MigratoryRecordCounts = ({int plans, int stops});
 
-/// Ekip kartı ve profil için üye: kimlik, rol, (yazdıysa) adı soyadı ve
-/// hesabını silmeyi onayladıysa kalıcı silme zamanı.
+/// Ekip kartı ve profil için üye: kimlik, rol ve hesabını silmeyi
+/// onayladıysa kalıcı silme zamanı. Üye adla değil e-postayla gösterilir.
 typedef MemberProfile = ({
   String membershipId,
   String userId,
   MembershipRole role,
-  String? fullName,
   DateTime? deletionScheduledFor,
 });
 
 /// Logo yokken varsayılan avatar rengi (çam yeşili; docs/design).
 const OrgAvatarColor defaultAvatarColor = OrgAvatarColor.pine;
-
-/// Ad soyadın en çok uzunluğu; sunucu da CHECK ile denetler.
-const maxFullNameLength = 80;
 
 /// Addaki ilk iki kelimenin baş harfleri ("Yılmaz Arıcılık" → "YA");
 /// büyük harfe çevirme dile göre yapıldığı için çağırana bırakılır. Ad boşsa

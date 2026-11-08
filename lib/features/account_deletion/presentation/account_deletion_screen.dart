@@ -308,11 +308,8 @@ class _OverviewStep extends ConsumerWidget {
   }
 }
 
-/// Ortağın adı; ad girilmemişse e-postası, o da yoksa "Ortak".
+/// Ortağın e-postası; bilinmiyorsa "Ortak".
 String _memberName(WidgetRef ref, AppLocalizations l10n, MemberProfile member) {
-  if (member.fullName case final name? when name.trim().isNotEmpty) {
-    return name;
-  }
   final emails = ref.watch(memberEmailsProvider).value ?? const {};
   return emails[member.userId] ?? l10n.deletionPartnerFallbackName;
 }
