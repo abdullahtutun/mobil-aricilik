@@ -82,6 +82,24 @@ CAPTIONS = {
         "team": ("Работайте командой",
                  "Партнёры, работники и консультанты"),
     },
+    "es": {
+        "today": ("Tu día de un vistazo",
+                  "Clima, colmenas que piden atención y tareas"),
+        "apiary": ("Tus colmenas a la vista",
+                   "Fuerza, reina y varroa de cada colmena"),
+        "inspect": ("Revisa en pocos toques, con guantes",
+                    "Botones grandes y la última revisión a mano"),
+        "hive": ("La historia de cada colmena",
+                 "Reinas, varroa y tratamientos"),
+        "weather": ("¿Buen día para abrir colmenas?",
+                    "Clima de 7 días para cada colmenar"),
+        "map": ("Funciona sin conexión en el campo",
+                "Colmenares en el mapa, registros contigo"),
+        "finance": ("¿Qué colmenar deja ganancia?",
+                    "Ingresos, gastos y ganancia por colmenar"),
+        "team": ("Trabaja en equipo",
+                 "Socios, trabajadores y asesores"),
+    },
 }
 
 FEATURE = {
@@ -91,6 +109,8 @@ FEATURE = {
            "Works offline in the field, even with gloves"),
     "ru": ("Mobil Arıcı", "Пасечный журнал в кармане",
            "Без интернета на точке, даже в перчатках"),
+    "es": ("Mobil Arıcı", "Tu cuaderno apícola",
+           "Sin conexión en el campo, incluso con guantes"),
 }
 
 
