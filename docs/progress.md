@@ -839,6 +839,10 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Drift şema 26: üç kolon `dropColumn` ile silinir, outbox'ta bekleyen `memberships` yazmaları atılır; migration testi eklendi. `schema_mirror_test` artık `drop column`'u da okuyor. `MembershipRepository.setOwnName` kaldırıldı; uygulama üyeliğe yazmıyor.
 - Bilinen: Ekip ekranı (`team`) ve davet zaten e-postayla çalışıyordu, değişmedi. `sync_push.test.sql`'deki eski arılık payload'u `landowner_*` anahtarlarını bilerek taşıyor (eski sürüm uyumu).
 
+### 2026-11-08 — Logo zemini düz sarı
+
+- `docs/mobil_arici_logo.png` yenilendi: dış koyu kahve degrade kalktı, zemin düz `#F2B544` (adaptive ikon zemini ile aynı); rozet ölçüsü değişmedi. Türevler aynı ölçülerle yeniden üretildi: `assets/launcher/icon.png` logonun kendisi (1024, saydamsız), `foreground.png` logonun iç teğet dairesi tuvalin %68'i, `assets/branding/app_logo.png` aynı daire 512 px saydam zeminli. `flutter_launcher_icons` ile Android/iOS ikonları üretildi, `project.pbxproj` geri alındı; `app_logo` goldenı yenilendi. Cihazda görülmedi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

@@ -186,9 +186,10 @@ flutter:
 
 # Uygulama ikonu (kaynak docs/mobil_arici_logo.png). Yeniden üretmek için:
 # `dart run flutter_launcher_icons` (sonra ios/Runner.xcodeproj/project.pbxproj
-# değişikliği geri alınır). Kenarda boşluk kalmasın diye zemin rozetin dış
-# halkasıyla aynı sarı (#F2B544): icon.png'de daire dışı sarıya boyalı,
-# foreground.png'de rozet tuvalin %68'i (maske %66,7) ve iç boşluk yok.
+# değişikliği geri alınır). Logonun zemini düz sarı (#F2B544) ve adaptive
+# zemin de aynı renk: icon.png logonun kendisi, foreground.png logonun iç
+# teğet dairesi tuvalin %68'i (maske %66,7), dışı saydam, iç boşluk yok.
+# app_logo.png aynı daire, 512 px.
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
