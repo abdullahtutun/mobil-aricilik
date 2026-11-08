@@ -87,6 +87,7 @@ dev_dependencies:
   build_runner: ^2.15.1
   drift_dev: ^2.35.1
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
   flutter_test:
     sdk: flutter
   freezed: ^4.0.3
@@ -199,3 +200,17 @@ flutter_launcher_icons:
   adaptive_icon_foreground_inset: 0
   remove_alpha_ios: true
   min_sdk_android: 21
+
+# Açılış (native splash) ekranı: logonun sarısı üstünde koyu rozet
+# (assets/splash/, kaynak docs/mobil_arici_logo.png). Yeniden üretmek için:
+# `dart run flutter_native_splash:create`. logo.png 800 px (≈200 dp, 4x);
+# android12.png 1152 px tuvalde 760 px rozet, Android 12+'nın 768 px'lik
+# dairesel maskesine sığar. Koyu tema da aynı sarı. Araç ios/Runner/Info.plist'i
+# yalnız girintiyle yeniden yazar; o değişiklik geri alınır.
+flutter_native_splash:
+  color: "#F2B544"
+  image: assets/splash/logo.png
+  android_12:
+    color: "#F2B544"
+    image: assets/splash/android12.png
+  web: false

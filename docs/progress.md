@@ -842,6 +842,7 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 ### 2026-11-08 — Logo zemini düz sarı
 
 - `docs/mobil_arici_logo.png` yenilendi: dış koyu kahve degrade kalktı, zemin düz `#F2B544` (adaptive ikon zemini ile aynı); rozet ölçüsü değişmedi. Türevler aynı ölçülerle yeniden üretildi: `assets/launcher/icon.png` logonun kendisi (1024, saydamsız), `foreground.png` logonun iç teğet dairesi tuvalin %68'i, `assets/branding/app_logo.png` aynı daire 512 px saydam zeminli. `flutter_launcher_icons` ile Android/iOS ikonları üretildi, `project.pbxproj` geri alındı; `app_logo` goldenı yenilendi. Cihazda görülmedi.
+- Açılış (native splash) ekranı: önceden yoktu; Android 12+ beyaz zeminde uygulama ikonunu gösteriyordu, iOS beyazdı. `flutter_native_splash` (dev bağımlılığı) ile zemin `#F2B544`, ortada logonun koyu rozeti (`assets/splash/logo.png` 800 px ≈ 200 dp; `android12.png` 1152 px tuvalde 760 px, 768 px'lik maskeye sığar). Koyu temada da aynı. Araç `Info.plist`'i yalnız girintiyle yeniden yazıp varsayılan `UIStatusBarHidden=false` ekliyordu; geri alındı, yeniden üretilirse yine geri alınmalı. Dev debug APK Samsung'a (Android 16) kuruldu; açılış ekranı gözle denenmedi, iOS'ta hiç görülmedi.
 
 ## Sona bırakılanlar
 
