@@ -8,6 +8,7 @@ import 'package:http/testing.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
+import 'package:mobil_arici/features/auth/domain/sign_in_rules.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -208,6 +209,51 @@ void main() {
       await service.verifyCode(email: _email, code: '482913', locale: 'tr');
 
       expect(service.currentUser, isNotNull);
+    });
+
+    test('demo hesaba kod gönderilmez', () async {
+      await service.sendCode(email: reviewDemoEmail, locale: 'tr');
+
+      expect(requests, isEmpty);
+    });
+
+    test('demo hesapta kod parola olarak denenir', () async {
+      handler = (request) => request.url.path == '/token'
+          ? _json(_sessionJson(expiresAt: inAnHour, metadata: {'locale': 'tr'}))
+          : _error(404, 'not_found');
+
+      await service.verifyCode(
+        email: reviewDemoEmail,
+        code: '482913',
+        locale: 'tr',
+      );
+
+      final token = requests.single;
+      expect(token.url.queryParameters['grant_type'], 'password');
+      final sent = jsonDecode(token.body) as Map<String, Object?>;
+      expect(sent['email'], reviewDemoEmail);
+      expect(sent['password'], '482913');
+      expect(service.currentUser, isNotNull);
+    });
+
+    test('demo hesapta yanlış kod reddedilir', () async {
+      handler = (_) => _error(400, 'invalid_credentials');
+
+      await expectLater(
+        service.verifyCode(
+          email: reviewDemoEmail,
+          code: '000000',
+          locale: 'tr',
+        ),
+        throwsA(
+          isA<AuthServiceException>().having(
+            (e) => e.failure,
+            'failure',
+            AuthFailure.invalidCode,
+          ),
+        ),
+      );
+      expect(service.currentUser, isNull);
     });
 
     test('çıkış çevrimdışıyken de yerel oturumu siler', () async {

@@ -1,5 +1,6 @@
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
+import 'package:mobil_arici/features/auth/domain/sign_in_rules.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Giriş ve çıkış. Ağa doğrudan giden az sayıdaki çağrıdan biri; ekranlar
@@ -52,12 +53,15 @@ class SupabaseAuthService implements AuthService {
       .handleError((_) {});
 
   @override
-  Future<void> sendCode({required String email, required String locale}) =>
-      _guard(
-        // `data` yalnız hesap ilk açılırken yazılır, mevcut hesapta yok
-        // sayılır.
-        () => _auth.signInWithOtp(email: email, data: {localeKey: locale}),
-      );
+  Future<void> sendCode({required String email, required String locale}) async {
+    // Demo hesabın gelen kutusu yok; kod sabit (parola), e-posta gitmez.
+    if (isReviewDemoEmail(email)) return;
+    await _guard(
+      // `data` yalnız hesap ilk açılırken yazılır, mevcut hesapta yok
+      // sayılır.
+      () => _auth.signInWithOtp(email: email, data: {localeKey: locale}),
+    );
+  }
 
   @override
   Future<void> verifyCode({
@@ -66,7 +70,9 @@ class SupabaseAuthService implements AuthService {
     required String locale,
   }) async {
     final response = await _guard(
-      () => _auth.verifyOTP(type: OtpType.email, email: email, token: code),
+      () => isReviewDemoEmail(email)
+          ? _auth.signInWithPassword(email: email, password: code)
+          : _auth.verifyOTP(type: OtpType.email, email: email, token: code),
     );
     if (response.user == null) return;
     // Giriş yine geçerli; dil yazılamazsa sonraki denemede düzelir.
@@ -112,7 +118,8 @@ class SupabaseAuthService implements AuthService {
 
   static AuthFailure _failureOf(AuthApiException error) {
     return switch (error.code) {
-      'otp_expired' => AuthFailure.invalidCode,
+      // Demo hesapta kod parola olarak denenir; yanlışsa invalid_credentials.
+      'otp_expired' || 'invalid_credentials' => AuthFailure.invalidCode,
       'email_address_invalid' ||
       'validation_failed' => AuthFailure.invalidEmail,
       'over_email_send_rate_limit' ||

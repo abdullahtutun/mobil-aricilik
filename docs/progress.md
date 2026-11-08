@@ -826,6 +826,12 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Gizlilik politikası: `docs/legal/privacy-policy.html` (TR + EN, tek sayfa), https://www.tutunsoft.com/mobil-arici/privacy-policy.html adresine yüklenecek. İçerik koddaki veri akışlarından çıkarıldı (e-posta OTP, işletme ve arıcılık kayıtları, isteğe bağlı GPS, medya, müşteri kayıtları, ekip, push token, görüş, kimliksiz analitik, Sentry; Supabase AB, FCM, WeatherAPI ~1 km yuvarlanmış koordinat, OpenFreeMap, Nominatim, Hostinger; 7 gün silme süresi, 3 yıllık özet kayıt). Veri sorumlusu Abdullah Tutun (gerçek kişi; şirket yok), iletişim support@tutunsoft.com. Ayarlar → Veri'de "Gizlilik politikası" satırı sayfayı tarayıcıda açıyor (`settingsPrivacyPolicy`, 9 dil; test eklendi).
 - Testler: `flutter analyze` temiz; tam takımda yalnız `apiary_weather_flow_test` "çevrimdışıyken saklanan paket…" kırık; temiz HEAD'de de kırılıyor (gece yarısı koşuldu, bilinen saat bağımlılığı).
 
+### 2026-11-08 — Mağaza incelemesi için demo hesap
+
+- `demo@tutunsoft.com` (`reviewDemoEmail`, `sign_in_rules.dart`): `AuthService.sendCode` bu adrese kod göndermez; `verifyCode` girilen 6 haneyi `signInWithPassword` ile parola olarak dener. Yanlış kod (`invalid_credentials`) "kod yanlış" hatası. Diğer adreslerde akış değişmedi. Kod uygulamada ve repoda yok, yalnız Supabase'deki parolada; App Store ve Play Console inceleme formlarına yazılır.
+- Uzak projede (`jcddnelaboueazhordfz`) kullanıcı Admin API ile açıldı (e-posta onaylı, e-posta dili `en`). Örnek veri `supabase/admin/demo_account.sql` ile yazıldı: "Demo Arıcılık" (TR, TRY, gezginci), 3 arılık (Muğla, Ordu, Bursa), 15 kovan ve ana arıları (biri varroadan sönmüş), 28 muayene, varroa sayımları, 2:1 şurup beslemesi, köy arılığında süren Bayvarol uygulaması, çam ve kestane hasadı, 4 görev, 6 gelir/gider. Betik tekrar çalıştırılırsa demo işletme varken bir şey yazmaz. Parola girişiyle RLS denendi: yalnız demo işletme görünüyor.
+- Bilinen: Hesap silme kodu `demo@tutunsoft.com`'a gider; incelemeci hesabı silemez, yalnız akışı görür. Kodu değiştirmek için Supabase panelinde kullanıcının parolası değiştirilir. Tarihler betiğin çalıştığı güne göre; aylar sonra muayeneler eski görünür, gerekirse işletme elle silinip betik yeniden çalıştırılır.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
