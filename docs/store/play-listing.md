@@ -4,11 +4,17 @@ Varsayılan dil en-US; diğerleri Play Console → Store listing → Manage tran
 
 Sınırlar: uygulama adı 30, kısa açıklama 80, uzun açıklama 4000 karakter.
 
+Uygulama adı her dilde "Mobil Arıcı: <o dilde ne olduğu>". Marka her dilde aynı ve önde; iki noktadan sonrası "Mobil Arıcı"nın anlamını bilmeyen kullanıcıya ne olduğunu söyler ve aramada bulunmayı kolaylaştırır. Bu yalnız mağazadaki addır; telefonda ikonun altındaki ad uygulamanın kendisinden gelir ve "Mobil Arıcı" kalır.
+
 ---
 
 ## tr-TR — Türkçe
 
-**App name:** Mobil Arıcı
+**App name** (29/30):
+
+```
+Mobil Arıcı: Arıcılık Defteri
+```
 
 **Short description:**
 
@@ -58,7 +64,11 @@ Türkçe, İngilizce, Almanca, İspanyolca, Portekizce, Rusça, Ukraynaca, Fars�
 
 ## en-US — English (varsayılan)
 
-**App name:** Mobil Arıcı
+**App name** (27/30):
+
+```
+Mobil Arıcı: Beekeeping Log
+```
 
 **Short description:**
 
@@ -108,7 +118,11 @@ Available in English, Turkish, German, Spanish, Portuguese, Russian, Ukrainian, 
 
 ## de-DE — Deutsch
 
-**App name:** Mobil Arıcı
+**App name** (23/30):
+
+```
+Mobil Arıcı: Stockkarte
+```
 
 **Short description:**
 
@@ -158,7 +172,11 @@ Auf Deutsch, Englisch, Türkisch, Spanisch, Portugiesisch, Russisch, Ukrainisch,
 
 ## es-419 — Español (Latinoamérica)
 
-**App name:** Mobil Arıcı
+**App name** (29/30):
+
+```
+Mobil Arıcı: Cuaderno apícola
+```
 
 **Short description:**
 
@@ -208,7 +226,11 @@ Disponible en español, inglés, turco, alemán, portugués, ruso, ucraniano, pe
 
 ## pt-BR — Português (Brasil)
 
-**App name:** Mobil Arıcı
+**App name** (28/30):
+
+```
+Mobil Arıcı: Caderno apícola
+```
 
 **Short description:**
 
@@ -258,7 +280,11 @@ Disponível em português, inglês, turco, alemão, espanhol, russo, ucraniano, 
 
 ## ru-RU — Русский
 
-**App name:** Mobil Arıcı
+**App name** (28/30):
+
+```
+Mobil Arıcı: Пасечный журнал
+```
 
 **Short description:**
 
@@ -308,7 +334,11 @@ Mobil Arıcı собирает пасечный журнал, записи и д
 
 ## uk — Українська
 
-**App name:** Mobil Arıcı
+**App name** (28/30):
+
+```
+Mobil Arıcı: Пасічний журнал
+```
 
 **Short description:**
 
@@ -358,7 +388,11 @@ Mobil Arıcı збирає пасічний журнал, записи та до
 
 ## fa — فارسی
 
-**App name:** Mobil Arıcı
+**App name** (27/30):
+
+```
+Mobil Arıcı: دفتر زنبورداری
+```
 
 **Short description:**
 
@@ -408,7 +442,11 @@ Mobil Arıcı دفتر، سوابق و مدارک زنبوردار را در ی�
 
 ## hi-IN — हिन्दी
 
-**App name:** Mobil Arıcı
+**App name** (27/30):
+
+```
+Mobil Arıcı: मधुमक्खी डायरी
+```
 
 **Short description:**
 
