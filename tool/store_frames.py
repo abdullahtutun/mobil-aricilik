@@ -7,16 +7,24 @@
 Ham görüntüler `tool/store_screenshots.py` ile alınır. Pillow gerekir.
 
     python3 tool/store_frames.py --raw /tmp/raw --lang tr --out docs/store/play/tr
+
+Farsça ve Hintçe harf birleştirme ister: Pillow libraqm ile çalışmalı
+(`brew install libraqm`, sonra `DYLD_LIBRARY_PATH=/opt/homebrew/lib`).
 """
 
 import argparse
 import math
 import os
+import sys
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, features
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FONTS = os.path.join(ROOT, "assets", "fonts", "inter")
+FONTS = os.path.join(ROOT, "assets", "fonts")
+# Dile göre yazı tipi (uygulamadakiyle aynı); Inter'de bu yazılar yok.
+FAMILY = {"fa": ("vazirmatn", "Vazirmatn"), "hi": ("noto_sans_devanagari", "NotoSansDevanagari")}
+RTL = {"fa"}
+LANG = "tr"
 LOGO = os.path.join(ROOT, "assets", "branding", "app_logo.png")
 
 HONEY = (242, 181, 68)
@@ -136,6 +144,24 @@ CAPTIONS = {
         "team": ("Працюйте командою",
                  "Партнери, працівники й консультанти"),
     },
+    "fa": {
+        "today": ("کار امروز در یک نگاه",
+                  "هوا، کندوهای نیازمند توجه و کارها"),
+        "apiary": ("همهٔ کندوها جلوی چشم",
+                   "قدرت، ملکه و واروآی هر کندو"),
+        "inspect": ("بازدید حتی با دستکش",
+                    "دکمه‌های بزرگ و داده‌های بازدید قبلی"),
+        "hive": ("تاریخچهٔ هر کندو در جیب شما",
+                 "ملکه، واروآ و درمان‌ها"),
+        "weather": ("امروز کندو را باز کنم؟",
+                    "پیش‌بینی ۷ روزه برای هر زنبورستان"),
+        "map": ("بدون اینترنت در کوه و دشت",
+                "زنبورستان‌ها روی نقشه، داده‌ها در گوشی"),
+        "finance": ("کدام زنبورستان سود می‌دهد؟",
+                    "درآمد، هزینه و سود هر زنبورستان"),
+        "team": ("با تیم خود کار کنید",
+                 "شریک، کارگر و مشاور"),
+    },
 }
 
 FEATURE = {
@@ -151,11 +177,14 @@ FEATURE = {
            "Sem internet no campo, até de luvas"),
     "uk": ("Mobil Arıcı", "Пасічний журнал у кишені",
            "Без інтернету на точці, навіть у рукавичках"),
+    "fa": ("Mobil Arıcı", "دفتر زنبورداری در جیب شما",
+           "بدون اینترنت در کوه، حتی با دستکش"),
 }
 
 
 def font(weight, size):
-    return ImageFont.truetype(os.path.join(FONTS, f"Inter-{weight}.ttf"), size)
+    folder, name = FAMILY.get(LANG, ("inter", "Inter"))
+    return ImageFont.truetype(os.path.join(FONTS, folder, f"{name}-{weight}.ttf"), size)
 
 
 def fit(draw, text, weight, size, width):
@@ -259,11 +288,19 @@ def screenshot_frame(shot, title, subtitle):
 def feature_graphic(shots, name, tagline, line):
     W, H = 1024, 500
     canvas = Image.new("RGBA", (W, H), BROWN + (255,))
-    canvas.alpha_composite(honeycomb((W, H), (52, 40, 32, 255), 70, 4, (520, -20)))
+    comb = honeycomb((W, H), (52, 40, 32, 255), 70, 4, (520, -20))
+    if LANG in RTL:
+        comb = comb.transpose(Image.FLIP_LEFT_RIGHT)
+    canvas.alpha_composite(comb)
     draw = ImageDraw.Draw(canvas)
 
+    rtl = LANG in RTL
+    # Sağdan sola dillerde düzen aynalanır: yazı sağda, telefonlar solda.
+    def mirror(x, w=0):
+        return W - x - w if rtl else x
+
     logo = Image.open(LOGO).convert("RGBA").resize((150, 150), Image.LANCZOS)
-    canvas.alpha_composite(logo, (64, 92))
+    canvas.alpha_composite(logo, (mirror(64, 150), 92))
     # Metin sağdaki telefonlara girmesin: sığmazsa küçülür.
     max_width = 470
     for text, weight, size, y, color in (
@@ -272,13 +309,16 @@ def feature_graphic(shots, name, tagline, line):
         (line, "Medium", 24, 396, (214, 196, 168)),
     ):
         fnt = fit(draw, text, weight, size, max_width)
-        draw.text((66, y), text, font=fnt, fill=color)
+        if rtl:
+            draw.text((W - 66, y), text, font=fnt, fill=color, anchor="ra")
+        else:
+            draw.text((66, y), text, font=fnt, fill=color)
 
     # İki telefon sağda, alttan taşarak.
     for i, (shot, x, y) in enumerate(((shots[1], 560, 120), (shots[0], 760, 60))):
         body = phone(shot, 230)
         framed, pad = with_shadow(body, blur=18, offset=(0, 10), alpha=140)
-        canvas.alpha_composite(framed, (x - pad, y - pad))
+        canvas.alpha_composite(framed, (mirror(x, body.width) - pad, y - pad))
     return canvas.convert("RGB")
 
 
@@ -289,6 +329,10 @@ def main():
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
     os.makedirs(args.out, exist_ok=True)
+    global LANG
+    LANG = args.lang
+    if LANG in FAMILY and not features.check("raqm"):
+        sys.exit("Bu dil için Pillow libraqm ile çalışmalı (docstring'e bak).")
 
     captions = CAPTIONS[args.lang]
     for index, (shot_name, (title, subtitle)) in enumerate(captions.items(), 1):
