@@ -100,6 +100,24 @@ CAPTIONS = {
         "team": ("Trabaja en equipo",
                  "Socios, trabajadores y asesores"),
     },
+    "pt": {
+        "today": ("Seu dia num relance",
+                  "Clima, colmeias que pedem atenção e tarefas"),
+        "apiary": ("Suas colmeias à vista",
+                   "Força, rainha e varroa de cada colmeia"),
+        "inspect": ("Revise em poucos toques, de luvas",
+                    "Botões grandes e a última revisão à mão"),
+        "hive": ("A história de cada colmeia",
+                 "Rainhas, varroa e tratamentos"),
+        "weather": ("Dá para abrir as colmeias hoje?",
+                    "Previsão de 7 dias para cada apiário"),
+        "map": ("Funciona sem internet no campo",
+                "Apiários no mapa, registros com você"),
+        "finance": ("Qual apiário dá lucro?",
+                    "Receitas, despesas e lucro por apiário"),
+        "team": ("Trabalhe em equipe",
+                 "Sócios, funcionários e consultores"),
+    },
 }
 
 FEATURE = {
@@ -111,6 +129,8 @@ FEATURE = {
            "Без интернета на точке, даже в перчатках"),
     "es": ("Mobil Arıcı", "Tu cuaderno apícola",
            "Sin conexión en el campo, incluso con guantes"),
+    "pt": ("Mobil Arıcı", "Seu caderno apícola",
+           "Sem internet no campo, até de luvas"),
 }
 
 
