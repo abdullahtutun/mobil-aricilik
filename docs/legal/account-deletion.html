@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mobil Arıcı · Hesap Silme / Account Deletion</title>
+<meta name="description" content="Mobil Arıcı hesabınızı ve verilerinizi nasıl silersiniz. How to delete your Mobil Arıcı account and data.">
+<style>
+  :root {
+    --bg: #fffaf0;
+    --surface: #ffffff;
+    --text: #251606;
+    --muted: #6b5640;
+    --accent: #9a5b00;
+    --on-accent: #ffffff;
+    --line: #ecdcc0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1006;
+      --surface: #251606;
+      --text: #f6ead6;
+      --muted: #c9b496;
+      --accent: #f2b544;
+      --on-accent: #251606;
+      --line: #4a3418;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+  h1 { font-size: 1.75rem; line-height: 1.25; margin: 0; }
+  h2 { font-size: 1.2rem; margin: 2rem 0 .5rem; }
+  .meta { color: var(--muted); font-size: .95rem; margin: .25rem 0 1.5rem; }
+  .lang a {
+    display: inline-block; padding: 8px 14px; border: 1px solid var(--line);
+    border-radius: 999px; color: var(--accent); text-decoration: none; font-weight: 600;
+  }
+  a { color: var(--accent); }
+  section.page { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 8px 20px 20px; margin-top: 24px; }
+  ul, ol { padding-inline-start: 1.25rem; }
+  li { margin: .25rem 0; }
+  .button {
+    display: inline-block; margin: .5rem 0; padding: 12px 20px; min-height: 48px;
+    border-radius: 12px; background: var(--accent); color: var(--on-accent);
+    font-weight: 700; text-decoration: none;
+  }
+  .note { color: var(--muted); font-size: .95rem; }
+  code { font-size: .95em; }
+</style>
+</head>
+<body>
+<main>
+
+<!-- ============================ TÜRKÇE ============================ -->
+<section class="page" id="tr" lang="tr">
+  <header>
+    <h1>Mobil Arıcı hesabını silme</h1>
+    <nav class="lang"><a href="#en" hreflang="en">English</a></nav>
+  </header>
+  <p class="meta">Uygulama: Mobil Arıcı · Geliştirici: Abdullah Tutun (Tutunsoft)</p>
+
+  <p>Mobil Arıcı hesabınızı ve ona bağlı verileri iki yoldan silebilirsiniz. Her iki yolda da silme aynı şekilde işler.</p>
+
+  <h2>1. Uygulamanın içinden</h2>
+  <ol>
+    <li>Mobil Arıcı'yı açın ve hesabınıza giriş yapın.</li>
+    <li><strong>Daha fazla → Ayarlar → Hesabımı sil</strong> adımlarını izleyin.</li>
+    <li>E-postanıza gelen 6 haneli silme kodunu girip talebi onaylayın.</li>
+  </ol>
+
+  <h2>2. Uygulama olmadan, e-postayla</h2>
+  <p>Uygulamaya erişemiyorsanız, hesabınızın kayıtlı olduğu e-posta adresinden bize yazın:</p>
+  <p><a class="button" href="mailto:support@tutunsoft.com?subject=Hesap%20silme%20talebi%20-%20Mobil%20Ar%C4%B1c%C4%B1&amp;body=Mobil%20Ar%C4%B1c%C4%B1%20hesab%C4%B1m%C4%B1n%20ve%20verilerimin%20silinmesini%20istiyorum.">support@tutunsoft.com adresine yaz</a></p>
+  <ul>
+    <li>Konu: <em>Hesap silme talebi - Mobil Arıcı</em></li>
+    <li>Talebin hesap sahibinden geldiğini doğrulamak için o adrese bir onay e-postası göndeririz. Onayınızdan sonra talep işleme alınır.</li>
+    <li>Talebinizi en geç 30 gün içinde sonuçlandırırız.</li>
+  </ul>
+
+  <h2>Ne silinir</h2>
+  <ul>
+    <li>Hesabınız ve e-posta adresiniz.</li>
+    <li>Arılık, kovan, ana arı, muayene, besleme, ilaçlama, varroa, hasat, lot, görev, stok, göç, gelir-gider ve müşteri kayıtlarınız.</li>
+    <li>Yüklediğiniz fotoğraflar, sesli notlar, belgeler ve işletme logosu.</li>
+    <li>Bildirim anahtarlarınız ve ekip davetleriniz.</li>
+    <li>Tek kişilik işletmede işletmenin kendisi ve bütün kayıtları.</li>
+  </ul>
+
+  <h2>Ne kalır ve ne kadar süre</h2>
+  <ul>
+    <li><strong>7 günlük vazgeçme süresi:</strong> Talepten sonra 7 gün boyunca verileriniz durur ve oturumlarınız kapanır. Bu sürede uygulamaya yeniden girip silmeyi iptal edebilirsiniz. Süre dolunca veriler sunucudan kalıcı olarak silinir.</li>
+    <li><strong>Silme kaydı:</strong> Silmenin yapıldığını kanıtlamak için yalnız tarih, silme türü ve kullanıcı kimliğinin geri çevrilemez bir özetinden oluşan bir kayıt 3 yıl saklanır. Bu kayıt sizi doğrudan tanımlamaz.</li>
+    <li><strong>Ekipli işletmeler:</strong> Başkalarının da üye olduğu bir işletmede ekip üyesiyseniz, hesabınız silinir ama işletmeye girdiğiniz kayıtlar işletmede kalır ve "silinmiş kullanıcı" olarak görünür. İşletmenin sahibiyseniz, silmeden önce sahipliği bir ortağa devretmeniz ya da işletmeyi tümüyle silmeyi seçmeniz gerekir.</li>
+    <li>Kimlik içermeyen kullanım istatistikleri anonim olarak kalabilir. Hata raporları hizmet sağlayıcının saklama süresince tutulur.</li>
+  </ul>
+
+  <h2>Hesabı silmeden veri silme</h2>
+  <p>Tek tek kayıtları (ör. bir muayene, belge ya da fotoğraf) uygulamanın içinden silebilirsiniz. Hesabınız kalsın ama belirli verilerinizin silinmesini istiyorsanız <a href="mailto:support@tutunsoft.com">support@tutunsoft.com</a> adresine yazın.</p>
+
+  <p class="note">Ayrıntılar için <a href="privacy-policy.html#tr">Gizlilik Politikası</a>.</p>
+</section>
+
+<!-- ============================ ENGLISH ============================ -->
+<section class="page" id="en" lang="en">
+  <header>
+    <h1>Delete your Mobil Arıcı account</h1>
+    <nav class="lang"><a href="#tr" hreflang="tr">Türkçe</a></nav>
+  </header>
+  <p class="meta">App: Mobil Arıcı · Developer: Abdullah Tutun (Tutunsoft)</p>
+
+  <p>You can delete your Mobil Arıcı account and its data in two ways. Deletion works the same either way.</p>
+
+  <h2>1. In the app</h2>
+  <ol>
+    <li>Open Mobil Arıcı and sign in.</li>
+    <li>Go to <strong>More → Settings → Delete my account</strong>.</li>
+    <li>Enter the 6-digit deletion code sent to your email and confirm.</li>
+  </ol>
+
+  <h2>2. Without the app, by email</h2>
+  <p>If you cannot access the app, write to us from the email address your account is registered with:</p>
+  <p><a class="button" href="mailto:support@tutunsoft.com?subject=Account%20deletion%20request%20-%20Mobil%20Ar%C4%B1c%C4%B1&amp;body=Please%20delete%20my%20Mobil%20Ar%C4%B1c%C4%B1%20account%20and%20data.">Email support@tutunsoft.com</a></p>
+  <ul>
+    <li>Subject: <em>Account deletion request - Mobil Arıcı</em></li>
+    <li>To confirm the request comes from the account owner, we send a confirmation email to that address. The request is processed after you confirm.</li>
+    <li>We complete your request within 30 days at the latest.</li>
+  </ul>
+
+  <h2>What is deleted</h2>
+  <ul>
+    <li>Your account and email address.</li>
+    <li>Your apiary, hive, queen, inspection, feeding, treatment, varroa, harvest, lot, task, inventory, migration, income/expense and customer records.</li>
+    <li>Photos, voice notes, documents and the business logo you uploaded.</li>
+    <li>Your notification tokens and team invites.</li>
+    <li>In a single-person business, the business itself and all its records.</li>
+  </ul>
+
+  <h2>What is kept, and for how long</h2>
+  <ul>
+    <li><strong>7-day grace period:</strong> After the request your data stays for 7 days and your sessions are signed out. During this time you can sign in again and cancel the deletion. After it ends, the data is permanently deleted from the server.</li>
+    <li><strong>Deletion record:</strong> To prove that a deletion took place, a record of only the date, deletion type and an irreversible hash of the user ID is kept for 3 years. It does not directly identify you.</li>
+    <li><strong>Team businesses:</strong> If you are a member of a business with other members, your account is deleted but the records you entered stay in the business and are shown as "deleted user". If you own the business, you must first transfer ownership to a partner or choose to delete the whole business.</li>
+    <li>Usage statistics, which contain no identity, may remain anonymously. Crash reports are kept for the provider's retention period.</li>
+  </ul>
+
+  <h2>Deleting data without deleting your account</h2>
+  <p>You can delete individual records (e.g. an inspection, document or photo) in the app. If you want to keep your account but have specific data deleted, write to <a href="mailto:support@tutunsoft.com">support@tutunsoft.com</a>.</p>
+
+  <p class="note">See the <a href="privacy-policy.html#en">Privacy Policy</a> for details.</p>
+</section>
+
+</main>
+</body>
+</html>
