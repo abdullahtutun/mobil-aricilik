@@ -72,10 +72,27 @@ umask 077
 
 # Anahtar curl'e stdin'den yapılandırma olarak verilir; `ps` çıktısında görünmez
 # (printf bash'in yerleşik komutudur, ayrı süreç açmaz).
+# Eski service_role anahtarı bir JWT'dir (eyJ...) ve Authorization'da da gider.
+# Yeni gizli anahtar (sb_secret_...) JWT değildir; Authorization'da gönderilirse
+# Storage reddeder, yalnız apikey başlığında gider ve ağ geçidi onu çevirir.
 storage_curl() {
-  printf 'header = "apikey: %s"\nheader = "Authorization: Bearer %s"\n' \
-    "$SUPABASE_SERVICE_ROLE_KEY" "$SUPABASE_SERVICE_ROLE_KEY" |
-    curl --config - --silent --show-error --fail --retry 3 "$@"
+  {
+    printf 'header = "apikey: %s"\n' "$SUPABASE_SERVICE_ROLE_KEY"
+    case "$SUPABASE_SERVICE_ROLE_KEY" in
+      eyJ*) printf 'header = "Authorization: Bearer %s"\n' "$SUPABASE_SERVICE_ROLE_KEY" ;;
+    esac
+  } | curl --config - --silent --show-error --fail-with-body --retry 3 "$@"
+}
+
+# Storage'dan JSON alır; hata olursa HTTP yanıtını (anahtarsız) gösterip durur.
+storage_json() {
+  local what="$1" out
+  shift
+  out="$(storage_curl "$@")" ||
+    die "Storage isteği başarısız ($what): ${out:-yanıt yok}"
+  jq -e 'type == "array"' >/dev/null 2>&1 <<<"$out" ||
+    die "Storage beklenmeyen yanıt verdi ($what): $out"
+  printf '%s' "$out"
 }
 
 urlencode_path() {
@@ -91,8 +108,9 @@ list_objects() {
   while :; do
     body="$(jq -cn --arg p "$prefix" --argjson l "$page_size" --argjson o "$offset" \
       '{prefix: $p, limit: $l, offset: $o, sortBy: {column: "name", order: "asc"}}')"
-    page="$(storage_curl -X POST -H 'Content-Type: application/json' \
-      --data "$body" "$SUPABASE_URL/storage/v1/object/list/$bucket")"
+    page="$(storage_json "liste $bucket/$prefix" -X POST \
+      -H 'Content-Type: application/json' \
+      --data "$body" "$SUPABASE_URL/storage/v1/object/list/$bucket")" || exit 1
     count="$(jq 'length' <<<"$page")"
     jq -r --arg p "$prefix" \
       '.[] | select(.id != null)
@@ -140,13 +158,15 @@ where table_type = 'BASE TABLE'
     'supabase_migrations')
 order by 1"
 table_counts="$(supabase db query --linked --output-format json "$count_sql" |
-  jq -r '.rows[] | "\(.tbl)\t\(.n)"')"
+  jq -r '.rows[] | "\(.tbl)\t\(.n)"')" ||
+  die "tablo sayımı başarısız (supabase db query --linked)"
 [[ -n "$table_counts" ]] || die "tablo sayımı boş döndü"
 
 # --- 3. Storage ---------------------------------------------------------------
 
 log "Bucket listesi alınıyor"
-buckets="$(storage_curl "$SUPABASE_URL/storage/v1/bucket" | jq -r '.[].id' | sort)"
+buckets="$(storage_json "bucket listesi" "$SUPABASE_URL/storage/v1/bucket" |
+  jq -r '.[].id' | sort)" || exit 1
 bucket_summary=""
 object_list=""
 mkdir -p "$target/storage"
@@ -164,8 +184,12 @@ while IFS= read -r bucket; do
     esac
     dest="$target/storage/$bucket/$path"
     mkdir -p "$(dirname "$dest")"
-    storage_curl -o "$dest" \
-      "$SUPABASE_URL/storage/v1/object/authenticated/$bucket/$(urlencode_path "$path")"
+    if ! storage_curl -o "$dest" \
+      "$SUPABASE_URL/storage/v1/object/authenticated/$bucket/$(urlencode_path "$path")"; then
+      err="$(head -c 500 "$dest" 2>/dev/null || true)"
+      rm -f "$dest"
+      die "indirme başarısız ($bucket/$path): ${err:-yanıt yok}"
+    fi
     actual="$(wc -c <"$dest" | tr -d ' ')"
     files=$((files + 1))
     bytes=$((bytes + actual))
