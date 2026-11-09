@@ -16,7 +16,11 @@ import (
 var version = "dev-local"
 
 func main() {
-	app := pocketbase.New()
+	// Default for every command, not only `serve`: the superuser and other
+	// CLI commands must read the same key, or they cannot decrypt settings.
+	app := pocketbase.NewWithConfig(pocketbase.Config{
+		DefaultEncryptionEnv: "PB_ENCRYPTION_KEY",
+	})
 
 	// Schema changes come only from Go migrations in ./migrations (K-3).
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{

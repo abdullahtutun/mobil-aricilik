@@ -39,4 +39,6 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
     CMD wget -q -O /dev/null http://127.0.0.1:8090/api/health || exit 1
 
 ENTRYPOINT ["/pb/arici"]
-CMD ["serve", "--http", "0.0.0.0:8090", "--dir", "/pb/pb_data", "--encryptionEnv", "PB_ENCRYPTION_KEY"]
+# The encryption key env name is the default in main.go, so CLI commands
+# (superuser upsert, migrate) run in the container terminal use it too.
+CMD ["serve", "--http", "0.0.0.0:8090", "--dir", "/pb/pb_data"]
