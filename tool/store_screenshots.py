@@ -78,6 +78,9 @@ def main():
     args = parser.parse_args()
     os.makedirs(args.out, exist_ok=True)
 
+    if time.strftime("%H") == "00":
+        # simctl status_bar 00:xx saatini kabul etmiyor.
+        sys.exit("Gece 00:00-01:00 arasında çekilemez (simctl saat 00'ı reddeder).")
     udid = device_id(DEVICE)
     subprocess.run(["xcrun", "simctl", "boot", udid], capture_output=True)
     sh("xcrun", "simctl", "bootstatus", udid, "-b")

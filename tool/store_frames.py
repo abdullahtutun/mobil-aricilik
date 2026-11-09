@@ -162,6 +162,24 @@ CAPTIONS = {
         "team": ("با تیم خود کار کنید",
                  "شریک، کارگر و مشاور"),
     },
+    "hi": {
+        "today": ("आज का पूरा काम एक नज़र में",
+                  "मौसम, ध्यान माँगते छत्ते और काम"),
+        "apiary": ("सारे छत्ते एक नज़र में",
+                   "हर छत्ते की ताक़त, रानी और वरोआ"),
+        "inspect": ("दस्ताने पहनकर भी निरीक्षण",
+                    "बड़े बटन और पिछले निरीक्षण का डेटा"),
+        "hive": ("हर छत्ते का इतिहास जेब में",
+                 "रानी, वरोआ और उपचार"),
+        "weather": ("आज छत्ते खोलें या नहीं?",
+                    "हर फार्म के लिए 7 दिन का मौसम"),
+        "map": ("बिना इंटरनेट खेत में भी",
+                "फार्म नक्शे पर, रिकॉर्ड फ़ोन में"),
+        "finance": ("कौन सा फार्म मुनाफ़ा देता है?",
+                    "हर फार्म की आय, खर्च और मुनाफ़ा"),
+        "team": ("टीम के साथ काम करें",
+                 "साझेदार, कर्मचारी और सलाहकार"),
+    },
 }
 
 FEATURE = {
@@ -179,22 +197,24 @@ FEATURE = {
            "Без інтернету на точці, навіть у рукавичках"),
     "fa": ("Mobil Arıcı", "دفتر زنبورداری در جیب شما",
            "بدون اینترنت در کوه، حتی با دستکش"),
+    "hi": ("Mobil Arıcı", "मधुमक्खी डायरी, आपकी जेब में",
+           "बिना इंटरनेट, दस्ताने पहनकर भी"),
 }
 
 
-def font(weight, size):
-    folder, name = FAMILY.get(LANG, ("inter", "Inter"))
+def font(weight, size, latin=False):
+    folder, name = ("inter", "Inter") if latin else FAMILY.get(LANG, ("inter", "Inter"))
     return ImageFont.truetype(os.path.join(FONTS, folder, f"{name}-{weight}.ttf"), size)
 
 
-def fit(draw, text, weight, size, width):
+def fit(draw, text, weight, size, width, latin=False):
     """Tek satırda [width]'e sığan en büyük yazı (en çok [size])."""
     while size > 12:
-        fnt = font(weight, size)
+        fnt = font(weight, size, latin)
         if draw.textlength(text, font=fnt) <= width:
             return fnt
         size -= 1
-    return font(weight, size)
+    return font(weight, size, latin)
 
 
 def wrap(draw, text, fnt, width):
@@ -308,7 +328,8 @@ def feature_graphic(shots, name, tagline, line):
         (tagline, "SemiBold", 32, 348, HONEY),
         (line, "Medium", 24, 396, (214, 196, 168)),
     ):
-        fnt = fit(draw, text, weight, size, max_width)
+        # Marka adı Latin harfli; her dilde Inter ile yazılır.
+        fnt = fit(draw, text, weight, size, max_width, latin=text == name)
         if rtl:
             draw.text((W - 66, y), text, font=fnt, fill=color, anchor="ra")
         else:
