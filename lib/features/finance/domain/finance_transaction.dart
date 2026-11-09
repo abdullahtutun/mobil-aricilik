@@ -80,7 +80,7 @@ enum TransactionCategory implements ServerEnum {
 }
 
 /// Tutarın üst sınırı (sunucudaki CHECK).
-const maxTransactionAmount = 1000000000.0;
+const maxTransactionAmount = 1000000000000.0;
 
 /// Açıklama en çok bu kadar karakter.
 const maxTransactionDescriptionLength = 200;

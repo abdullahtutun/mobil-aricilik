@@ -38,6 +38,18 @@ String financeMoney(BuildContext context, double amount, String currency) =>
       decimalDigits: amount == amount.roundToDouble() ? 0 : null,
     );
 
+/// Özet kartı ve kâr satırı gibi dar yerlerde tutar: 10 milyondan büyükse
+/// kısaltılır (`₺1,22 Mr`), küçükse [financeMoney] gibi.
+String financeCompactMoney(
+  BuildContext context,
+  double amount,
+  String currency,
+) => AppFormat.of(context).compactCurrency(
+  amount,
+  currencyCode: currency,
+  decimalDigits: amount == amount.roundToDouble() ? 0 : null,
+);
+
 /// Yönüyle tutar: gelir `+₺56.000`, gider `−₺17.500`.
 String financeSignedMoney(
   BuildContext context,

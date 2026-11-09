@@ -844,6 +844,13 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - `docs/mobil_arici_logo.png` yenilendi: dış koyu kahve degrade kalktı, zemin düz `#F2B544` (adaptive ikon zemini ile aynı); rozet ölçüsü değişmedi. Türevler aynı ölçülerle yeniden üretildi: `assets/launcher/icon.png` logonun kendisi (1024, saydamsız), `foreground.png` logonun iç teğet dairesi tuvalin %68'i, `assets/branding/app_logo.png` aynı daire 512 px saydam zeminli. `flutter_launcher_icons` ile Android/iOS ikonları üretildi, `project.pbxproj` geri alındı; `app_logo` goldenı yenilendi. Cihazda görülmedi.
 - Açılış (native splash) ekranı: önceden yoktu; Android 12+ beyaz zeminde uygulama ikonunu gösteriyordu, iOS beyazdı. `flutter_native_splash` (dev bağımlılığı) ile zemin `#F2B544`, ortada logonun koyu rozeti (`assets/splash/logo.png` 800 px ≈ 200 dp; `android12.png` 1152 px tuvalde 760 px, 768 px'lik maskeye sığar). Koyu temada da aynı. Araç `Info.plist`'i yalnız girintiyle yeniden yazıp varsayılan `UIStatusBarHidden=false` ekliyordu; geri alındı, yeniden üretilirse yine geri alınmalı. Dev debug APK Samsung'a (Android 16) kuruldu; açılış ekranı gözle denenmedi, iOS'ta hiç görülmedi.
 
+### 2026-11-09 — Tutar sınırı 1 trilyon, dar yerlerde kısa tutar
+
+- Sunucu: `20261117120000_raise_amount_limit.sql` `transactions.amount` ve `customer_payments.amount`'u `numeric(18, 2)`'ye büyütür, üst sınır 1 milyardan 10¹²'ye çıkar. Riyal (IRR) gibi düşük değerli parada tek bal satışı 1 milyarı aşıp reddediliyordu (Farsça mağaza görüntüsünde görüldü). Sınır yalnız gevşediği için `sync_push` sürümü değişmedi; yerelde tutar `real`, Drift şeması aynı. pgTAP 637/637 (iki sınır testi); uzak projeye `db push` ile uygulandı, kolon tipi ve kısıt doğrulandı.
+- İstemci: `maxTransactionAmount` 10¹² (`parseAmount`, `checkTransaction`, müşteri ödemesi aynı sabiti kullanıyor).
+- `AppFormat.compactCurrency`: 10 milyondan küçük tutar tam, büyüğü yerelin kısaltmasıyla (`₺1,22 Mr`, `1,22 Mrd. €`, `$12.5M`). Farsçada sözcük Farsça (`میلیارد`), rakam Latin, ondalık nokta. `financeCompactMoney` finans özet kartında (net, gelir, gider, kovan başı, diğer para birimleri), konaklama kârı satırlarında ve alacak kartında; hareket listesi, ayrıntı, form ve sezon raporu tam tutarı yazar.
+- Bilinen: Kısa tutar ekranda cihazda denenmedi. Riyal simgesi `intl`'den "Rial" geliyor; İran'da günlük kullanım toman, desteklenmiyor. Yerel pgTAP, demo işletme yüklüyken iki testte (`account_deletion_transfer`, `support_periods`) kırılıyor; demo işletme silinince geçiyor.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

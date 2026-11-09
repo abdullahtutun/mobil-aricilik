@@ -102,6 +102,19 @@ void main() {
     test('ondalık hane sayısı para biriminden gelir', () {
       expect(tr.currency(1234.5, currencyCode: 'JPY'), '¥1.235');
     });
+
+    test('kısa tutar 10 milyondan itibaren kısaltılır', () {
+      expect(
+        tr.compactCurrency(9999999, currencyCode: 'TRY', decimalDigits: 0),
+        '₺9.999.999',
+      );
+      expect(
+        tr.compactCurrency(1220000000, currencyCode: 'TRY'),
+        '₺1,22\u00a0Mr',
+      );
+      expect(en.compactCurrency(12500000, currencyCode: 'USD'), r'$12.5M');
+      expect(en.compactCurrency(-36000000, currencyCode: 'USD'), r'-$36M');
+    });
   });
 
   group('upperCase ve currencySymbol', () {
@@ -125,6 +138,12 @@ void main() {
       expect(fa.number(1234.5), '1,234.5');
       expect(fa.percent(0.76), '76%');
       expect(fa.currency(1500, currencyCode: 'EUR'), contains('1,500'));
+    });
+
+    test('kısa tutarda sözcük Farsça, rakam Latin, ondalık nokta', () {
+      final text = fa.compactCurrency(1220000000, currencyCode: 'IRR');
+      expect(text, matches(RegExp(r'1\.22\sمیلیارد')));
+      expect(RegExp('[۰-۹٫]').hasMatch(text), isFalse);
     });
 
     test('tarihte rakamlar Latin, ay adı Farsça', () {

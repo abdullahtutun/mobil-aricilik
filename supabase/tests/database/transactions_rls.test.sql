@@ -6,7 +6,7 @@
 -- yazar.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(21);
+select plan(23);
 
 -- Kullanıcılar: 2222 A'da partner, 3333 A'da worker, 5555 A'da viewer,
 -- 9999 B'nin owner'ı.
@@ -255,6 +255,25 @@ set local request.jwt.claims = '{"sub": "55555555-5555-5555-5555-555555555555"}'
 select is_empty(
   'select id from public.transactions',
   'viewer finans hareketlerini göremez'
+);
+
+reset role;
+
+-- Tutar sınırı 1 trilyon: riyal gibi düşük değerli paralarda büyük satış.
+select lives_ok(
+  $$insert into public.transactions (id, org_id, kind, category, amount, currency, occurred_on)
+    values ('f1000000-0000-0000-0000-0000000000f1', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+            'income', 'honey', 1000000000000, 'IRR', '2026-10-01')$$,
+  'tutar 1 trilyona kadar yazılır'
+);
+
+select throws_ok(
+  $$insert into public.transactions (id, org_id, kind, category, amount, currency, occurred_on)
+    values ('f1000000-0000-0000-0000-0000000000f2', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+            'income', 'honey', 1000000000000.01, 'IRR', '2026-10-01')$$,
+  '23514',
+  null,
+  '1 trilyonu aşan tutar reddedilir'
 );
 
 select * from finish();

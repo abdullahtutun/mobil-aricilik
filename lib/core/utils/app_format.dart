@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:mobil_arici/core/utils/digits.dart';
 
 /// Yerele göre tarih, saat, sayı ve para biçimleri. Ekranlar `intl`
 /// biçimlerini kendisi kurmaz, bunu kullanır; biçim kararları tek yerde kalır.
@@ -152,4 +153,32 @@ class AppFormat {
     );
     return format.format(amount);
   }
+
+  /// Dar yerler (özet kartı, kâr satırı) için tutar: [compactFrom]'dan
+  /// küçükse [currency] gibi tam, büyükse yerelin kısaltmasıyla.
+  /// `₺1,22 Mr`, `1,22 Mrd. €`, `Rial 1.22 میلیارد`. Farsçada kısaltma
+  /// sözcüğü Farsça, rakamlar Latin ve ondalık ayırıcı nokta kalır (sayı
+  /// biçimi İngilizce olduğundan virgül binlik ayracıyla karışırdı).
+  String compactCurrency(
+    num amount, {
+    required String currencyCode,
+    int? decimalDigits,
+  }) {
+    if (amount.abs() < compactFrom) {
+      return currency(
+        amount,
+        currencyCode: currencyCode,
+        decimalDigits: decimalDigits,
+      );
+    }
+    final text = NumberFormat.compactSimpleCurrency(
+      locale: locale,
+      name: currencyCode,
+    ).format(amount);
+    return _latinDigits ? asciiDigits(text.replaceAll('٫', '.')) : text;
+  }
+
+  /// Bu tutardan (10 milyon) itibaren [compactCurrency] kısaltır; lira,
+  /// avro ve dolarla günlük tutarlar tam kalır.
+  static const compactFrom = 10000000;
 }

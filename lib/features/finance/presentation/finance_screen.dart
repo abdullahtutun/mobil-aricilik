@@ -97,7 +97,8 @@ class _SeasonCard extends ConsumerWidget {
     final others = ref.watch(financeOtherCurrenciesProvider).value ?? const {};
     if (currency == null || season == null) return const SizedBox.shrink();
 
-    String money(double amount) => financeMoney(context, amount, currency);
+    String money(double amount) =>
+        financeCompactMoney(context, amount, currency);
     final net = season.net < 0
         ? l10n.financeMinus(money(-season.net))
         : l10n.financePlus(money(season.net));
@@ -171,10 +172,10 @@ class _SeasonCard extends ConsumerWidget {
                       code,
                       other.net < 0
                           ? l10n.financeMinus(
-                              financeMoney(context, -other.net, code),
+                              financeCompactMoney(context, -other.net, code),
                             )
                           : l10n.financePlus(
-                              financeMoney(context, other.net, code),
+                              financeCompactMoney(context, other.net, code),
                             ),
                     ),
                     style: valueStyle,
@@ -228,10 +229,10 @@ class _ProfitCard extends ConsumerWidget {
                 name: names[profit.apiaryId] ?? l10n.financeProfitUnknownApiary,
                 value: profit.net < 0
                     ? l10n.financeMinus(
-                        financeMoney(context, -profit.net, currency),
+                        financeCompactMoney(context, -profit.net, currency),
                       )
                     : l10n.financePlus(
-                        financeMoney(context, profit.net, currency),
+                        financeCompactMoney(context, profit.net, currency),
                       ),
                 loss: profit.net < 0,
                 fill: largest == 0 ? 0 : profit.net.abs() / largest,
@@ -347,7 +348,11 @@ class _ReceivablesCard extends ConsumerWidget {
                       child: Text(
                         owed
                             ? l10n.financeReceivables(
-                                financeMoney(context, summary.total, currency),
+                                financeCompactMoney(
+                                  context,
+                                  summary.total,
+                                  currency,
+                                ),
                                 summary.customers,
                               )
                             : l10n.customerNoReceivable,

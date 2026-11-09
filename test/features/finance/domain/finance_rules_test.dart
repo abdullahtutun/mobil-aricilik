@@ -48,8 +48,9 @@ void main() {
       expect(parseAmount('1,2,3'), isNull);
       expect(parseAmount('abc'), isNull);
       expect(parseAmount('-5'), isNull);
-      expect(parseAmount('1000000000'), maxTransactionAmount);
-      expect(parseAmount('1000000001'), isNull);
+      expect(parseAmount('1000000000000'), maxTransactionAmount);
+      expect(parseAmount('1.000.000.000.000'), maxTransactionAmount);
+      expect(parseAmount('1000000000001'), isNull);
     });
   });
 
