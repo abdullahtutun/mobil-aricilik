@@ -180,6 +180,24 @@ CAPTIONS = {
         "team": ("टीम के साथ काम करें",
                  "साझेदार, कर्मचारी और सलाहकार"),
     },
+    "de": {
+        "today": ("Dein Tag auf einen Blick",
+                  "Wetter, Völker mit Handlungsbedarf, Aufgaben"),
+        "apiary": ("Alle Völker im Blick",
+                   "Stärke, Königin und Varroa für jedes Volk"),
+        "inspect": ("Durchsicht mit Handschuhen",
+                    "Große Tasten, letzte Durchsicht vorbelegt"),
+        "hive": ("Die Stockkarte jedes Volks",
+                 "Königinnen, Varroa und Behandlungen"),
+        "weather": ("Heute Völker öffnen?",
+                    "7-Tage-Wetter für jeden Stand"),
+        "map": ("Funktioniert offline am Stand",
+                "Stände auf der Karte, Daten im Handy"),
+        "finance": ("Welcher Stand lohnt sich?",
+                    "Einnahmen, Ausgaben und Gewinn je Stand"),
+        "team": ("Gemeinsam im Team",
+                 "Partner, Mitarbeiter und Berater"),
+    },
 }
 
 FEATURE = {
@@ -199,6 +217,8 @@ FEATURE = {
            "بدون اینترنت در کوه، حتی با دستکش"),
     "hi": ("Mobil Arıcı", "मधुमक्खी डायरी, आपकी जेब में",
            "बिना इंटरनेट, दस्ताने पहनकर भी"),
+    "de": ("Mobil Arıcı", "Deine Stockkarte für die Tasche",
+           "Offline am Stand, sogar mit Handschuhen"),
 }
 
 
