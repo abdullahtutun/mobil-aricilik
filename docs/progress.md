@@ -859,6 +859,13 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Supabase (`jcddnelaboueazhordfz`) olduğu gibi açık ve çalışıyor; geçiş bitip 14 günlük gözlem dolana kadar hiçbir adım onu kapatmaz ya da verisini silmez (K-11).
 - Kod değişmedi; `flutter analyze` ve `flutter test` temiz.
 
+### 2026-11-09 — P0.2 Supabase yedek betiği
+
+- `tool/backup_supabase.sh` (bash 3.2 uyumlu, `set -euo pipefail`): `supabase db dump --linked` ile `schema.sql`, `data.sql`, `roles.sql`; Storage'ı REST API'den bucket listesini alıp sayfalı ve klasörleri özyinelemeli gezerek `storage/<bucket>/<yol>`'a indirir; `manifest.txt` (tablo başına `select count(*)`, bucket başına dosya ve bayt, dosya listesi) ve `SHA256SUMS` yazar. Supabase'e yalnız okur.
+- Satır sayıları tek sorguyla `supabase db query --linked` (Management API) üzerinden alınıyor; `psql` ve veritabanı parolası gerekmiyor. Sayılan şemalar `data.sql`'in kapsadıklarıyla aynı (db dump'ın dışarıda bıraktığı iç şemalar hariç).
+- Gizli değerler yalnız `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` ortam değişkenlerinden; anahtar curl'e stdin'den yapılandırma olarak verilir, `ps`'te ve çıktıda görünmez. Hedef repo içindeyse ya da boş değilse, `SUPABASE_URL` bağlı projeyle uyuşmuyorsa betik durur; bu korkuluklar sahte değerle denendi. Ağ kısmı çalıştırılmadı; `shellcheck` kurulu değil, yalnız `bash -n`.
+- Kullanıcı çalıştıracak: sayılar (beklenen 4 kullanıcı, 3 işletme, 47 kovan, 7 dosya) manifest paylaşılınca buraya yazılacak; yedek Mac + harici diskte olunca P0.2 ☑ olur (şimdilik ◐).
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

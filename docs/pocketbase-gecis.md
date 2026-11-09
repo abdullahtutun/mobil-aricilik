@@ -17,7 +17,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | Kod | Başlık | Bağımlı | Durum |
 | --- | --- | --- | --- |
 | P0.1 | Geçiş dalı, karar kaydı, CLAUDE.md notu | — | ☑ |
-| P0.2 | Supabase'in tam yedeği | P0.1 | ☐ |
+| P0.2 | Supabase'in tam yedeği | P0.1 | ◐ |
 | P1.1 | DNS A kayıtları | P0.1 | ☐ |
 | P1.2 | `server/` iskeleti: Go + PocketBase + Dockerfile | P0.1 | ☐ |
 | P1.3 | Coolify'da dev ve prod servisleri | P1.1, P1.2 | ☐ |
@@ -285,6 +285,8 @@ Kod yazma.
 **Claude yapar.** `tool/backup_supabase.sh` betiği: hedef klasörü argüman alır (repo içi hedefi reddeder); `supabase db dump --linked` ile `schema.sql`, `--data-only` ile `data.sql`, `--role-only` ile `roles.sql`; Storage nesnelerini Storage REST API ile indirir (`SUPABASE_URL` ve `SUPABASE_SERVICE_ROLE_KEY` kabuktan okunur, betikte ve çıktıda görünmez); sonunda tablo başına satır sayısı ve dosya listesiyle `manifest.txt` yazar; SHA-256 özetleri `SHA256SUMS`'a.
 
 **Sen yaparsın.** Betiği kendi terminalinde, ortam değişkenlerini kendin vererek çalıştırırsın: `SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… tool/backup_supabase.sh ~/Yedekler/mobil-arici/supabase-2026-11-XX`. Klasörü harici diske de kopyalarsın.
+
+> **Not (2026-11-09, betik yazılınca teyit).** Komut bu haliyle doğru; repo kökünden çalıştırılır. `SUPABASE_URL` tam olarak `https://jcddnelaboueazhordfz.supabase.co` olmalı (bağlı projeyle uyuşmazsa betik durur); hedef klasör yoksa açılır, varsa boş olmalı. Veritabanı parolası gerekmez: CLI 2.117 `db dump` ve `db query --linked` için Management API üzerinden geçici bir giriş rolü açıyor (`supabase login` yeterli). Docker (ya da Colima, `DOCKER_HOST` ile) açık olmalı, çünkü `db dump` pg_dump'ı konteynerde çalıştırır. `data.sql` `--column-inserts --rows-per-insert 100000` ile yazılır; `grep -c INSERT` satır değil tablo başına deyim sayar, satır sayıları `manifest.txt`'tedir. Anahtarı geçmişe yazdırmamak için komutun başına boşluk koyabilir (zsh `HIST_IGNORE_SPACE`) ya da `read -rs SUPABASE_SERVICE_ROLE_KEY && export SUPABASE_SERVICE_ROLE_KEY` kullanabilirsin.
 
 **Prompt.**
 
