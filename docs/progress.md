@@ -868,6 +868,14 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Her dökümde doğrudan bağlantı IPv6 olduğu için `could not translate host name` hatası çıkıyor, CLI IPv4 pooler'la tamamlıyor. `data.sql` `queens` için döngüsel FK uyarısı veriyor; döküm `session_replication_role = replica` ile başladığından geri yüklemede trigger/FK devre dışı.
 - P0.2 ☑. Yedek yalnız Mac'te; kullanıcı harici disk kopyasından vazgeçti (2026-11-09), bitti kriterindeki "iki yer" şartı bu kararla düştü.
 
+### 2026-11-09 — P1.2 `server/` iskeleti
+
+- Doğrulanan sürümler: PocketBase v0.40.6 GitHub'da "Latest" (2026-10-23), kendi `go.mod`'u `go 1.27`; Mac'te go1.27.3. İmajlar etiket + çok mimarili digest ile sabit: `golang:1.27.3-alpine3.24@sha256:fa3d5968…` ve `alpine:3.24.4@sha256:f59abe65…` (Docker Hub, 2026-11-09). Modül `github.com/abdullahtutun/mobil-aricilik/server`, `go.sum` repoda.
+- `main.go`: `pocketbase.New()`, `migratecmd` (`Automigrate: false`, `Dir: migrations`), boş `migrations` paketi. `internal/config` bilinen 22 ortam değişkenini okur; `internal/bootstrap` açılışta `env`/`version`'ı ve eksikleri özelliğe göre adıyla (değersiz) loglar, `GET /api/app/info` → `{env, version}` (oturumsuz). PocketBase logu dev modu dışında yalnız panele yazdığı için açılış satırları stderr'e de gider; Coolify konteyner logunda görünür.
+- Dockerfile: `CGO_ENABLED=0`, `-trimpath -s -w`, sürüm `SOURCE_COMMIT` build argümanından `-ldflags` ile; ikili `/pb/arici`, kullanıcı `arici` (uid 10001), `VOLUME /pb/pb_data`, `HEALTHCHECK` busybox `wget` ile `/api/health`. Yerelde (Colima) derlendi, imaj **50,2 MB**; konteyner `healthy`, `/api/health` 200, `/api/app/info` `{"env":"prod","version":"84ce70a"}`, volume'e root olmadan yazıyor.
+- `go test ./...` geçiyor: `/api/health` 200, `/api/app/info` env/sürüm (dev, prod, boş), gizli değerin yanıtta ve logda olmaması, geçersiz `APP_ENV`. `server/README.md` ve `server/ops/coolify.md` (iki kaynağın panel ayarları, env adları, "Include Source Commit in Build", ilk deploy denetimi) yazıldı. `flutter analyze` ve `flutter test` temiz.
+- Bilinen: `TRUSTED_PROXY_HEADERS` şimdilik yalnız varlığı denetleniyor, ayara P4.2'de yazılacak. Coolify'da "Include Source Commit in Build" kapalı kalırsa `version` `unknown` döner.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
