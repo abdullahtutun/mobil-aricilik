@@ -864,7 +864,9 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - `tool/backup_supabase.sh` (bash 3.2 uyumlu, `set -euo pipefail`): `supabase db dump --linked` ile `schema.sql`, `data.sql`, `roles.sql`; Storage'ı REST API'den bucket listesini alıp sayfalı ve klasörleri özyinelemeli gezerek `storage/<bucket>/<yol>`'a indirir; `manifest.txt` (tablo başına `select count(*)`, bucket başına dosya ve bayt, dosya listesi) ve `SHA256SUMS` yazar. Supabase'e yalnız okur.
 - Satır sayıları tek sorguyla `supabase db query --linked` (Management API) üzerinden alınıyor; `psql` ve veritabanı parolası gerekmiyor. Sayılan şemalar `data.sql`'in kapsadıklarıyla aynı (db dump'ın dışarıda bıraktığı iç şemalar hariç).
 - Gizli değerler yalnız `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` ortam değişkenlerinden; anahtar curl'e stdin'den yapılandırma olarak verilir, `ps`'te ve çıktıda görünmez. Hedef repo içindeyse ya da boş değilse, `SUPABASE_URL` bağlı projeyle uyuşmuyorsa betik durur; bu korkuluklar sahte değerle denendi. Ağ kısmı çalıştırılmadı; `shellcheck` kurulu değil, yalnız `bash -n`.
-- Kullanıcı çalıştıracak: sayılar (beklenen 4 kullanıcı, 3 işletme, 47 kovan, 7 dosya) manifest paylaşılınca buraya yazılacak; yedek Mac + harici diskte olunca P0.2 ☑ olur (şimdilik ◐).
+- Yedek alındı (2026-11-09, `~/Yedekler/mobil-arici/supabase-2026-11-09`): `auth.users` 4, `organizations` 3, `memberships` 4, `apiaries` 8, `hives` 47, `analytics_events` 70, `ref_drugs` 21, `ref_support_periods` 0; Storage 7 dosya (media 5, documents 1, org-logos 1; toplam 961 521 bayt), `storage.objects` 7. Planla uyuşuyor; `shasum -c` 11/11 OK, yedekte anahtar yok. Anahtar `supabase projects api-keys`'ten (legacy `service_role`) doğrudan ortama verildi, ekrana basılmadı.
+- Her dökümde doğrudan bağlantı IPv6 olduğu için `could not translate host name` hatası çıkıyor, CLI IPv4 pooler'la tamamlıyor. `data.sql` `queens` için döngüsel FK uyarısı veriyor; döküm `session_replication_role = replica` ile başladığından geri yüklemede trigger/FK devre dışı.
+- P0.2 ◐: yedek yalnız Mac'te; harici diske kopyalanınca ☑.
 
 ## Sona bırakılanlar
 
