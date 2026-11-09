@@ -1,14 +1,14 @@
 -- Mağaza ekran görüntüleri: yerel demo işletmeyi Farsçaya çevirir. YALNIZ
 -- YEREL DB'de, `supabase/admin/demo_account.sql`'den hemen sonra
 -- (`tool/store_screenshots.py --lang fa` kendisi çalıştırır). Para birimi
--- USD: riyal tutarları sunucudaki 1 milyar üst sınırını aşıyor.
+-- IRR, tutarlar yaklaşık riyal karşılığı (1 USD ≈ 1.000.000 IRR).
 
 do $$
 declare
   org constant uuid := '01900000-0000-7000-8000-00000000de00';
 begin
   update public.organizations
-  set name = 'زنبورستان نمونه', currency = 'USD', updated_at = now()
+  set name = 'زنبورستان نمونه', currency = 'IRR', updated_at = now()
   where id = org;
 
   update public.apiaries a
@@ -40,15 +40,15 @@ begin
   where t.org_id = org and t.title = v.tr;
 
   update public.transactions x
-  set description = v.fa, amount = v.usd, currency = 'USD', updated_at = now()
+  set description = v.fa, amount = v.irr, currency = 'IRR', updated_at = now()
   from (values
-    ('Çam balı, 162 kg', 'عسل کاج، ۱۶۲ کیلو', 1220),
-    ('Kestane balı, 96 kg', 'عسل شاه‌بلوط، ۹۶ کیلو', 840),
-    ('Şeker, 200 kg', 'شکر، ۲۰۰ کیلو', 155),
-    ('Bayvarol, 2 kutu', 'بایوارول، ۲ جعبه', 36),
-    ('Yaylaya nakliye', 'حمل به کوهستان', 245),
-    ('Kestane arılığı yer kirası', 'اجارهٔ زمین زنبورستان شاه‌بلوط', 125)
-  ) as v (tr, fa, usd)
+    ('Çam balı, 162 kg', 'عسل کاج، ۱۶۲ کیلو', 1220000000),
+    ('Kestane balı, 96 kg', 'عسل شاه‌بلوط، ۹۶ کیلو', 840000000),
+    ('Şeker, 200 kg', 'شکر، ۲۰۰ کیلو', 155000000),
+    ('Bayvarol, 2 kutu', 'بایوارول، ۲ جعبه', 36000000),
+    ('Yaylaya nakliye', 'حمل به کوهستان', 245000000),
+    ('Kestane arılığı yer kirası', 'اجارهٔ زمین زنبورستان شاه‌بلوط', 125000000)
+  ) as v (tr, fa, irr)
   where x.org_id = org and x.description = v.tr;
 end;
 $$;
