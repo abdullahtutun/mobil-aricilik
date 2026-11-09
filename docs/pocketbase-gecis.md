@@ -17,7 +17,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | Kod | Başlık | Bağımlı | Durum |
 | --- | --- | --- | --- |
 | P0.1 | Geçiş dalı, karar kaydı, CLAUDE.md notu | — | ☑ |
-| P0.2 | Supabase'in tam yedeği | P0.1 | ◐ |
+| P0.2 | Supabase'in tam yedeği | P0.1 | ☑ |
 | P1.1 | DNS A kayıtları | P0.1 | ☐ |
 | P1.2 | `server/` iskeleti: Go + PocketBase + Dockerfile | P0.1 | ☐ |
 | P1.3 | Coolify'da dev ve prod servisleri | P1.1, P1.2 | ☐ |

@@ -866,7 +866,7 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Gizli değerler yalnız `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` ortam değişkenlerinden; anahtar curl'e stdin'den yapılandırma olarak verilir, `ps`'te ve çıktıda görünmez. Hedef repo içindeyse ya da boş değilse, `SUPABASE_URL` bağlı projeyle uyuşmuyorsa betik durur; bu korkuluklar sahte değerle denendi. Ağ kısmı çalıştırılmadı; `shellcheck` kurulu değil, yalnız `bash -n`.
 - Yedek alındı (2026-11-09, `~/Yedekler/mobil-arici/supabase-2026-11-09`): `auth.users` 4, `organizations` 3, `memberships` 4, `apiaries` 8, `hives` 47, `analytics_events` 70, `ref_drugs` 21, `ref_support_periods` 0; Storage 7 dosya (media 5, documents 1, org-logos 1; toplam 961 521 bayt), `storage.objects` 7. Planla uyuşuyor; `shasum -c` 11/11 OK, yedekte anahtar yok. Anahtar `supabase projects api-keys`'ten (legacy `service_role`) doğrudan ortama verildi, ekrana basılmadı.
 - Her dökümde doğrudan bağlantı IPv6 olduğu için `could not translate host name` hatası çıkıyor, CLI IPv4 pooler'la tamamlıyor. `data.sql` `queens` için döngüsel FK uyarısı veriyor; döküm `session_replication_role = replica` ile başladığından geri yüklemede trigger/FK devre dışı.
-- P0.2 ◐: yedek yalnız Mac'te; harici diske kopyalanınca ☑.
+- P0.2 ☑. Yedek yalnız Mac'te; kullanıcı harici disk kopyasından vazgeçti (2026-11-09), bitti kriterindeki "iki yer" şartı bu kararla düştü.
 
 ## Sona bırakılanlar
 
