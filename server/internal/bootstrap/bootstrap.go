@@ -29,7 +29,9 @@ func Register(app core.App, cfg config.Config, version string) {
 		if err := e.Next(); err != nil {
 			return err
 		}
-		logStartup(startupLogger(e.App), cfg, version)
+		log := startupLogger(e.App)
+		logStartup(log, cfg, version)
+		applyBackups(e.App, cfg.Backups, log)
 		return nil
 	})
 

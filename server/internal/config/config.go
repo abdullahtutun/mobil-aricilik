@@ -61,6 +61,8 @@ type Config struct {
 	Missing []Var
 	// InvalidEnv is true when APP_ENV is set to something other than dev/prod.
 	InvalidEnv bool
+	// Backups is the backup schedule and optional S3 target (P1.4).
+	Backups Backups
 }
 
 // Load reads the environment through getenv (os.Getenv when nil).
@@ -84,6 +86,7 @@ func Load(getenv func(string) string) Config {
 		cfg.InvalidEnv = true
 	}
 	cfg.URL = strings.TrimSpace(getenv("APP_URL"))
+	cfg.Backups = loadBackups(getenv)
 
 	return cfg
 }

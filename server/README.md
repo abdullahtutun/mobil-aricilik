@@ -9,9 +9,12 @@ Go sürümü PocketBase v0.40.6'nın `go.mod`'undaki `go 1.27` satırından geli
 ```text
 main.go                 # pocketbase.New, migratecmd (Automigrate kapalı), bootstrap.Register
 internal/config/        # ortam değişkenleri; eksikler açılışta adıyla loglanır
-internal/bootstrap/     # açılış logu, GET /api/app/info
+internal/bootstrap/     # açılış logu, BACKUPS_* → yedek ayarı, GET /api/app/info
 migrations/             # Go şema migration'ları (K-3); şimdilik boş
 ops/coolify.md          # Coolify panel ayarları (P1.3)
+ops/backup.md           # gece yedeği, Mac'e indirme, geri yükleme (P1.4)
+ops/pull_backup.sh      # en yeni yedeği Mac'e indirir
+ops/restore_check.sh    # bir yedeği yerelde açıp dener
 ```
 
 ## Yerel çalıştırma
