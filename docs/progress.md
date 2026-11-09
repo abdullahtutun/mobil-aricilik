@@ -882,7 +882,7 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - İlk deploy'da iki adres de 502 verdi: konteynerler 8090'da açılmıştı, ama Coolify'ın "Ports Exposes" alanı 8090 değildi, bu yüzden Traefik yanlış porta gidiyordu. Alan 8090 yapılıp yeniden deploy edilince düzeldi. `server/ops/coolify.md` tablosunda bu ayar zaten 8090.
 - Superuser'lar CLI ile açıldı; dev yeniden deploy edildikten sonra panele giriş çalışıyor, yani volume (`/pb/pb_data`) kalıcı. Disk 95,8 GB, %7 dolu.
 - RAM (VPS, `free -m` + `docker stats`, 2026-11-09 akşamı): toplam 3915 MB, kullanılan 1291 MB, **kullanılabilir 2623 MB**; swap yok. Coolify 473 MiB, Traefik 40 MiB, Postgres 33 MiB, Redis 11 MiB, sentinel 3 MiB; PocketBase boştayken prod 11,8 MiB / 512 MiB, dev 7,5 MiB / 384 MiB. Boşluk 700 MB eşiğinin çok üstünde; dev sınırı 384 MB'ta kalıyor. Yük altındaki ölçüm P9.3'te.
-- Not: ilk açılış logu ekran görüntüsüyle paylaşıldı ve içindeki `pbinstall` token'ı da göründü; superuser açılınca bu token işe yaramaz hale geldi. P1.1'in DNS kayıtları bu doğrulamayla fiilen çalışıyor, ama P1.1 kontrol listesinde ayrıca işaretlenmedi.
+- Not: ilk açılış logu ekran görüntüsüyle paylaşıldı ve içindeki `pbinstall` token'ı da göründü; superuser açılınca bu token işe yaramaz hale geldi. P1.1'in DNS kayıtları bu doğrulamayla çalıştığı görüldü; P1.1 de işaretlendi.
 - Yan düzeltme: `apiary_weather_flow_test.dart`'taki "çevrimdışıyken saklanan paket" testi 00:00–03:00 arasında kırılıyordu: tahmin 3 saat önceki günden başladığı için başlık "2 günlük" oluyordu. Tahmin artık bugünden başlıyor. `go test ./...`, `flutter analyze` ve `flutter test` (2438 test) temiz.
 
 ## Sona bırakılanlar
