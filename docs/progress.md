@@ -851,6 +851,14 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - `AppFormat.compactCurrency`: 10 milyondan küçük tutar tam, büyüğü yerelin kısaltmasıyla (`₺1,22 Mr`, `1,22 Mrd. €`, `$12.5M`). Farsçada sözcük Farsça (`میلیارد`), rakam Latin, ondalık nokta. `financeCompactMoney` finans özet kartında (net, gelir, gider, kovan başı, diğer para birimleri), konaklama kârı satırlarında ve alacak kartında; hareket listesi, ayrıntı, form ve sezon raporu tam tutarı yazar.
 - Bilinen: Kısa tutar ekranda cihazda denenmedi. Riyal simgesi `intl`'den "Rial" geliyor; İran'da günlük kullanım toman, desteklenmiyor. Yerel pgTAP, demo işletme yüklüyken iki testte (`account_deletion_transfer`, `support_periods`) kırılıyor; demo işletme silinince geçiyor.
 
+### 2026-11-09 — PocketBase geçişi başladı
+
+- Backend'in Supabase'den PocketBase'e (Türkiye'deki VPS, Coolify) taşınması başladı. Plan, adımlar (P0.1…P11.3) ve kullanıcıyla kararlaştırılan kararlar K-1…K-18 olarak `docs/pocketbase-gecis.md`'de.
+- Geçişin bütün commit'leri `pocketbase-gecis` dalına gider; `main`'e dokunulmaz.
+- CLAUDE.md'nin başına "Geçiş sürüyor" notu eklendi; geri kalanı P11.2'de yeniden yazılacak. Yeni sunucu kodu `server/` altında Go.
+- Supabase (`jcddnelaboueazhordfz`) olduğu gibi açık ve çalışıyor; geçiş bitip 14 günlük gözlem dolana kadar hiçbir adım onu kapatmaz ya da verisini silmez (K-11).
+- Kod değişmedi; `flutter analyze` ve `flutter test` temiz.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

@@ -3,6 +3,10 @@
 Arıcının defterini, kayıtlarını ve resmi evrakını tek telefonda toplayan, dağda internetsiz ve eldivenle kullanılabilen offline-first saha uygulaması. Arayüz TR/EN; Türkiye'ye özel modüller (AKS, mevzuat, destekler) yalnızca TR bölge profilinde görünür.
 Ayrıntılar: [docs/ozellikler.md](docs/ozellikler.md) (ürün), [docs/teknik.md](docs/teknik.md) (mimari, tasarım dili, yol haritası).
 
+## Geçiş sürüyor
+
+Backend Supabase'den PocketBase'e taşınıyor; plan, adımlar ve kararlar (K-1…K-18) [docs/pocketbase-gecis.md](docs/pocketbase-gecis.md)'de. Geçiş bitene kadar yeni Supabase migration'ı yalnız bu planın söylediği yerde yazılır. Yeni sunucu kodu `server/` altında Go'dur. Aşağıdaki Supabase anlatımı geçiş bitince (P11.2) yeniden yazılır.
+
 ## Teknoloji yığını
 
 - Flutter (stable), Dart 3; Android öncelikli, iOS aynı kod tabanından
