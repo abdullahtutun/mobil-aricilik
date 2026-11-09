@@ -20,7 +20,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P0.2 | Supabase'in tam yedeği | P0.1 | ☑ |
 | P1.1 | DNS A kayıtları | P0.1 | ☐ |
 | P1.2 | `server/` iskeleti: Go + PocketBase + Dockerfile | P0.1 | ☑ |
-| P1.3 | Coolify'da dev ve prod servisleri | P1.1, P1.2 | ☐ |
+| P1.3 | Coolify'da dev ve prod servisleri | P1.1, P1.2 | ☑ |
 | P1.4 | Günlük yedek, Mac'e kopya, geri yükleme denemesi | P1.3 | ☐ |
 | P2.1 | Şema kalıbı, ortak alanlar, `server_seq` sayacı, users, organizations, memberships | P1.2 | ☐ |
 | P2.2 | Koleksiyonlar: arılıklar, kovanlar, ana arılar, kovan geçmişi | P2.1 | ☐ |
