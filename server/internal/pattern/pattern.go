@@ -2,7 +2,10 @@
 // that migrations, validation and tests use one definition (K-4, K-5).
 package pattern
 
-import "regexp"
+import (
+	"regexp"
+	"time"
+)
 
 const (
 	// UUID is the id pattern of every collection we own (K-4) and of the
@@ -20,6 +23,9 @@ const (
 
 	// TimestampLength is the fixed width of a Timestamp.
 	TimestampLength = 27
+
+	// TimestampLayout is the Go time layout of a [Timestamp] in UTC.
+	TimestampLayout = "2006-01-02T15:04:05.000000Z"
 
 	// Date is a day column (`expires_on` and the like): YYYY-MM-DD.
 	Date = `^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$`
@@ -42,3 +48,6 @@ func IsTimestamp(s string) bool { return timestampRe.MatchString(s) }
 
 // IsDate reports whether s matches [Date].
 func IsDate(s string) bool { return dateRe.MatchString(s) }
+
+// FormatTimestamp writes t as a sync time (K-5): UTC, microseconds.
+func FormatTimestamp(t time.Time) string { return t.UTC().Format(TimestampLayout) }

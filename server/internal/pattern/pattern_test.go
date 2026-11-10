@@ -1,6 +1,9 @@
 package pattern
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestPatterns(t *testing.T) {
 	cases := []struct {
@@ -49,5 +52,20 @@ func TestPatterns(t *testing.T) {
 	}
 	if len("2026-11-09") != DateLength {
 		t.Error("DateLength")
+	}
+}
+
+func TestFormatTimestamp(t *testing.T) {
+	ist := time.FixedZone("TRT", 3*60*60)
+	got := FormatTimestamp(time.Date(2026, 11, 9, 13, 15, 30, 123456789, ist))
+	if got != "2026-11-09T10:15:30.123456Z" {
+		t.Errorf("FormatTimestamp = %q", got)
+	}
+	if !IsTimestamp(got) || len(got) != TimestampLength {
+		t.Errorf("%q is not a K-5 time", got)
+	}
+	// Whole seconds keep the six digits (fixed width).
+	if got := FormatTimestamp(time.Date(2026, 1, 2, 3, 4, 5, 0, time.UTC)); got != "2026-01-02T03:04:05.000000Z" {
+		t.Errorf("FormatTimestamp = %q", got)
 	}
 }

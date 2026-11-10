@@ -15,6 +15,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/recordapi"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/schemadump"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/users"
@@ -42,6 +43,7 @@ func Register(app core.App, cfg config.Config, version string) {
 	users.Register(app)
 	appsync.RegisterSeq(app)
 	deletion.RegisterLogGuard(app)
+	recordapi.Register(app)
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
@@ -50,6 +52,7 @@ func Register(app core.App, cfg config.Config, version string) {
 		log := startupLogger(e.App)
 		logStartup(log, cfg, version)
 		applyBackups(e.App, cfg.Backups, log)
+		applyRateLimits(e.App, log)
 		return nil
 	})
 

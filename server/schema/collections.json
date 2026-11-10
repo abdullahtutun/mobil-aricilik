@@ -4,7 +4,7 @@
     "type": "base",
     "listRule": null,
     "viewRule": null,
-    "createRule": null,
+    "createRule": "@request.auth.id != \"\"",
     "updateRule": null,
     "deleteRule": null,
     "fields": [
@@ -909,8 +909,8 @@
   {
     "name": "deletion_requests",
     "type": "base",
-    "listRule": null,
-    "viewRule": null,
+    "listRule": "@request.auth.id != \"\" && user_id = @request.auth.id",
+    "viewRule": "@request.auth.id != \"\" && user_id = @request.auth.id",
     "createRule": null,
     "updateRule": null,
     "deleteRule": null,
@@ -1129,8 +1129,8 @@
   {
     "name": "device_tokens",
     "type": "base",
-    "listRule": null,
-    "viewRule": null,
+    "listRule": "@request.auth.id != \"\" && user_id = @request.auth.id",
+    "viewRule": "@request.auth.id != \"\" && user_id = @request.auth.id",
     "createRule": null,
     "updateRule": null,
     "deleteRule": null,
@@ -1656,7 +1656,7 @@
     "type": "base",
     "listRule": null,
     "viewRule": null,
-    "createRule": null,
+    "createRule": "@request.auth.id != \"\" && created_by = @request.auth.id && @collection.memberships:own.user_id ?= @request.auth.id && @collection.memberships:own.org_id ?= org_id && @collection.memberships:own.deleted_at ?= \"\"",
     "updateRule": null,
     "deleteRule": null,
     "fields": [
@@ -8219,11 +8219,11 @@
   {
     "name": "users",
     "type": "auth",
-    "listRule": "id = @request.auth.id",
-    "viewRule": "id = @request.auth.id",
-    "createRule": "",
-    "updateRule": "id = @request.auth.id",
-    "deleteRule": "id = @request.auth.id",
+    "listRule": "@request.auth.id != \"\" && id = @request.auth.id",
+    "viewRule": "@request.auth.id != \"\" && id = @request.auth.id",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
     "authRule": "",
     "fields": [
       {

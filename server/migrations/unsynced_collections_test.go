@@ -144,15 +144,7 @@ func TestUnsyncedCollectionShapes(t *testing.T) {
 			if got := describeIndexes(c); !slices.Equal(got, tc.indexes) {
 				t.Errorf("indexes\n got  %q\n want %q", got, tc.indexes)
 			}
-			// Server code only until P3.2.
-			for rule, v := range map[string]*string{
-				"list": c.ListRule, "view": c.ViewRule, "create": c.CreateRule,
-				"update": c.UpdateRule, "delete": c.DeleteRule,
-			} {
-				if v != nil {
-					t.Errorf("%s rule = %q, want nil", rule, *v)
-				}
-			}
+			// API rules: TestNoUnexpectedRules (P3.2).
 			if c.Fields.GetByName(fieldServerSeq) != nil {
 				t.Error("not synced, but has server_seq")
 			}
