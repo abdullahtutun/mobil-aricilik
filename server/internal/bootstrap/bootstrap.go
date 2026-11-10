@@ -48,6 +48,7 @@ func Register(app core.App, cfg config.Config, version string) {
 	mail := newMailGate(cfg.Mail)
 	auth.Register(app, mail.On)
 	appsync.RegisterPull(app)
+	appsync.RegisterPush(app)
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
