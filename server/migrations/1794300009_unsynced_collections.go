@@ -78,8 +78,8 @@ func hashField(name string, required bool) *core.TextField {
 }
 
 func upUnsyncedCollections(app core.App) error {
-	// All of invites comes from 20261027140000. The invite Edge Function
-	// (P5.5) creates and redeems codes.
+	// All of invites comes from 20261027140000. The team routes
+	// (internal/team, P5.4) create and redeem codes.
 	invites := plainCollection("invites",
 		// org_id uuid not null references organizations on delete cascade.
 		uuidField(fieldOrgID, true),

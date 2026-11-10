@@ -555,6 +555,16 @@ func classifySaveError(err error) error {
 	return err
 }
 
+// IsUniqueViolation reports whether a failed save broke a unique index; the
+// team route retries a new invite code on it.
+func IsUniqueViolation(err error) bool {
+	var verrs validation.Errors
+	if errors.As(err, &verrs) {
+		return hasCode(verrs, "validation_not_unique")
+	}
+	return strings.Contains(strings.ToLower(err.Error()), "unique constraint failed")
+}
+
 func hasCode(errs validation.Errors, code string) bool {
 	for _, e := range errs {
 		switch v := e.(type) {

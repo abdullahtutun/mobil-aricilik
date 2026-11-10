@@ -39,7 +39,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P5.1 | Senkron çekme: `/api/sync/pull` | P3.2 | ☑ |
 | P5.2 | Senkron gönderme çekirdeği: `/api/sync/push`, LWW, olay, sonuçlar | P5.1 | ☑ |
 | P5.3 | Gönderme özel kuralları: işletme, üyelik, korumalar, doğrulama | P5.2 | ☑ |
-| P5.4 | İşletme kurma ve ekip daveti route'ları | P5.3 | ☐ |
+| P5.4 | İşletme kurma ve ekip daveti route'ları | P5.3 | ☑ |
 | P5.5 | Hava durumu: `weather-bundle` | P5.1 | ☐ |
 | P5.6 | Push bildirim: FCM, cihaz token'ı, görev ataması, destek dönemi cron'u | P5.4 | ☐ |
 | P5.7 | Görüş e-postası | P5.4, P4.2, P6.1 | ☐ |
@@ -1202,8 +1202,8 @@ Adım P7.4: `PocketBaseFileStore implements FileStore`. Bucket → koleksiyon e�
 [BAŞ] CLAUDE.md, docs/progress.md ve docs/pocketbase-gecis.md'yi oku. Sadece aşağıdaki adımı yap, fazlasını yapma. Belirsizlik varsa başlamadan sor.
 
 Adım P7.5: PocketBase uygulamalarını yaz ve provider seçimine bağla:
-- OrganizationService → /api/app/organizations, /api/app/organizations/mine.
-- TeamService → /api/app/team/{action}; çevrimdışı hatası bugünkü "durum 0" davranışıyla aynı.
+- OrganizationService → /api/app/organizations (yanıt işletme satırı; 400 `invalid`, 409 `conflict`), /api/app/organizations/mine (satır ya da `null`).
+- TeamService → /api/app/team/{action}, gövde `action`'sız; hata kodu Edge Function'daki `error` değil `data.code` (P5.4: `{status, message, data: {code}}`), durumlar ve kodlar aynı, 429 `too_many_requests` yeni (redeem, kullanıcı başına dakikada 10). Çevrimdışı hatası bugünkü "durum 0" davranışıyla aynı.
 - WeatherApi → POST /api/app/weather.
 - DeviceTokenService → /api/app/device-token.
 - TelemetryApi → feedback ve analytics_events kayıt API'si (create); "id zaten var" → duplicate (bugünkü 23505 karşılığı).

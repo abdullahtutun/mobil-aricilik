@@ -16,9 +16,11 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/orgs"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/recordapi"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/schemadump"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/team"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/users"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -49,6 +51,8 @@ func Register(app core.App, cfg config.Config, version string) {
 	auth.Register(app, mail.On)
 	appsync.RegisterPull(app)
 	appsync.RegisterPush(app)
+	orgs.Register(app)
+	team.Register(app)
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
