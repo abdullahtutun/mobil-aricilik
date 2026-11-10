@@ -526,6 +526,9 @@ func TestDownMigrations(t *testing.T) {
 	app := newApp(t)
 
 	// Newest first, like `migrate down`.
+	if err := downUnsyncedCollections(app); err != nil {
+		t.Fatal(err)
+	}
 	if err := downFinanceCustomersSupportPeriods(app); err != nil {
 		t.Fatal(err)
 	}

@@ -2,12 +2,14 @@ package bootstrap
 
 import (
 	"bytes"
+	"errors"
 	"log/slog"
 	"net/http"
 	"strings"
 	"testing"
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	_ "github.com/abdullahtutun/mobil-aricilik/server/migrations"
 	"github.com/pocketbase/pocketbase/core"
@@ -153,5 +155,23 @@ func TestRegisterBindsRecordHooks(t *testing.T) {
 	}
 	if int64(m.GetInt("server_seq")) != last || last < 2 || len(m.Id) != 36 {
 		t.Errorf("membership id=%q server_seq=%d", m.Id, m.GetInt("server_seq"))
+	}
+
+	// The deletion log guard: a new record cannot be deleted.
+	logs, err := app.FindCollectionByNameOrId(deletion.LogCollection)
+	if err != nil {
+		t.Fatal(err)
+	}
+	l := core.NewRecord(logs)
+	l.Set("request_id", "0195f2a4-dfdf-7000-8000-000000000001")
+	l.Set("user_hash", strings.Repeat("a", 64))
+	l.Set("kind", "hesap")
+	l.Set("channel", "web")
+	l.Set("requested_at", "2026-11-10T10:15:30.123456Z")
+	if err := app.Save(l); err != nil {
+		t.Fatal(err)
+	}
+	if err := app.Delete(l); !errors.Is(err, deletion.ErrLogRetained) {
+		t.Errorf("deleting a new deletion log record: err = %v", err)
 	}
 }

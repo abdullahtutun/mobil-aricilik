@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/users"
@@ -33,6 +34,7 @@ func Register(app core.App, cfg config.Config, version string) {
 	ids.Register(app)
 	users.Register(app)
 	appsync.RegisterSeq(app)
+	deletion.RegisterLogGuard(app)
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {

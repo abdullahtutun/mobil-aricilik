@@ -28,7 +28,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P2.4 | Koleksiyonlar: görev, hasat, belge, göç, taşıma | P2.3 | ☑ |
 | P2.5 | Koleksiyonlar: stok, ana yetiştirme, lotlar ve analiz | P2.4 | ☑ |
 | P2.6 | Koleksiyonlar: finans, müşteri, destek dönemleri; referans verinin taşınması | P2.5 | ☑ |
-| P2.7 | Senkronlanmayan koleksiyonlar: davet, token, görüş, analitik, hava önbelleği, silme | P2.6 | ☐ |
+| P2.7 | Senkronlanmayan koleksiyonlar: davet, token, görüş, analitik, hava önbelleği, silme | P2.6 | ☑ |
 | P2.8 | Şema dökümü ve Flutter `schema_mirror_test` uyarlaması | P2.7 | ☐ |
 | P3.1 | Yetki katmanı (`authz`) ve politika testleri | P2.8 | ☐ |
 | P3.2 | API kuralları ve "kuralsız koleksiyon yok" testi | P3.1 | ☐ |
