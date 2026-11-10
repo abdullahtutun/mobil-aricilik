@@ -175,3 +175,29 @@ func TestRegisterBindsRecordHooks(t *testing.T) {
 		t.Errorf("deleting a new deletion log record: err = %v", err)
 	}
 }
+
+// FCM_SERVICE_ACCOUNT_B64: unset or invalid turns push off without an
+// error that quotes the value; the support period cron is registered
+// either way, so the panel lists it.
+func TestFCMFromEnv(t *testing.T) {
+	if c, err := newFCM(""); c != nil || err != nil {
+		t.Errorf("unset: %v %v", c, err)
+	}
+	c, err := newFCM("bm90LWpzb24tc2VjcmV0") // base64("not-json-secret")
+	if c != nil || err == nil || strings.Contains(err.Error(), "secret") || strings.Contains(err.Error(), "bm90") {
+		t.Errorf("invalid: %v %v", c, err)
+	}
+
+	app, err := tests.NewTestApp(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer app.Cleanup()
+	Register(app, config.Config{FCMServiceAccountB64: "bm90LWpzb24tc2VjcmV0"}, "x")
+	for _, j := range app.Cron().Jobs() {
+		if j.Id() == "notify-support-periods" {
+			return
+		}
+	}
+	t.Error("notify-support-periods is not registered")
+}

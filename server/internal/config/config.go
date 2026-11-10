@@ -69,6 +69,10 @@ type Config struct {
 	TrustedProxy TrustedProxy
 	// Weather is the WeatherAPI key and day count (P5.5).
 	Weather Weather
+	// FCMServiceAccountB64 is FCM_SERVICE_ACCOUNT_B64 (P5.6): the Firebase
+	// service account JSON, base64. Secret; never log it. Empty turns push
+	// sending off.
+	FCMServiceAccountB64 string
 }
 
 // Load reads the environment through getenv (os.Getenv when nil).
@@ -99,6 +103,7 @@ func Load(getenv func(string) string) Config {
 		Key:  strings.TrimSpace(getenv("WEATHERAPI_KEY")),
 		Days: strings.TrimSpace(getenv("WEATHERAPI_DAYS")),
 	}
+	cfg.FCMServiceAccountB64 = strings.TrimSpace(getenv("FCM_SERVICE_ACCOUNT_B64"))
 
 	return cfg
 }

@@ -15,7 +15,9 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/auth"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/fcm"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/notify"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/orgs"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/recordapi"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/schemadump"
@@ -58,6 +60,8 @@ func Register(app core.App, cfg config.Config, version string) {
 		Key:  cfg.Weather.Key,
 		Days: weather.ForecastDays(cfg.Weather.Days),
 	})
+	push, pushErr := newFCM(cfg.FCMServiceAccountB64)
+	notify.Register(app, notify.Options{FCM: push})
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
@@ -71,6 +75,10 @@ func Register(app core.App, cfg config.Config, version string) {
 		}
 		applyTrustedProxy(e.App, cfg.TrustedProxy, log)
 		applyRateLimits(e.App, log)
+		if pushErr != nil {
+			// The error names the problem, never the value.
+			log.Error("FCM_SERVICE_ACCOUNT_B64 is invalid; push notifications are off", "error", pushErr)
+		}
 		return nil
 	})
 
@@ -89,6 +97,20 @@ func Register(app core.App, cfg config.Config, version string) {
 		}).Bind(apis.RequireSuperuserAuth())
 		return se.Next()
 	})
+}
+
+// newFCM builds the FCM sender from FCM_SERVICE_ACCOUNT_B64; nil (push
+// off) when it is unset or invalid. An invalid value is returned as the
+// error for the startup log.
+func newFCM(b64 string) (*fcm.Client, error) {
+	if b64 == "" {
+		return nil, nil
+	}
+	account, err := fcm.ParseServiceAccountB64(b64)
+	if err != nil {
+		return nil, err
+	}
+	return fcm.New(account, fcm.Options{})
 }
 
 // logStartup logs the environment and the names (never values) of missing

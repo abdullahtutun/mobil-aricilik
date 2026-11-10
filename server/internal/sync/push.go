@@ -2,6 +2,7 @@ package sync
 
 import (
 	"bytes"
+	"context"
 	"database/sql"
 	"encoding/json"
 	"errors"
@@ -11,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/actor"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/auth"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/authz"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/pattern"
@@ -373,7 +375,7 @@ func pushOrganization(txApp core.App, userID string, payload map[string]json.Raw
 	if err := checkRow(txApp, "organizations", existing, false); err != nil {
 		return false, err
 	}
-	return save(txApp, existing)
+	return save(txApp, userID, existing)
 }
 
 // skipped are the columns push never takes from the payload: id is the
@@ -442,7 +444,7 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 		if err := proposed(); err != nil {
 			return false, err
 		}
-		if _, err := save(txApp, candidate); err != nil {
+		if _, err := save(txApp, userID, candidate); err != nil {
 			return false, err
 		}
 		// After the write, like Postgres' foreign key triggers: a unique
@@ -491,7 +493,7 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 		if err := checkRow(txApp, table.Name, existing, false); err != nil {
 			return false, err
 		}
-		if _, err := save(txApp, existing); err != nil {
+		if _, err := save(txApp, userID, existing); err != nil {
 			return false, err
 		}
 		return true, checkRefs(txApp, table.Name, existing, func(column string) bool {
@@ -508,7 +510,7 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 		}
 		existing.Set("deleted_at", deletedAt)
 		existing.Set("updated_at", updatedAt)
-		return save(txApp, existing)
+		return save(txApp, userID, existing)
 	}
 	return false, fmt.Errorf("sync: table %q has kind %q, not pushable", table.Name, table.Kind)
 }
@@ -527,8 +529,10 @@ func require(txApp core.App, userID, table, orgID string, action authz.Action) e
 
 // save writes the record through the model hooks (server_seq, validation)
 // and turns a refusal into a rejection.
-func save(txApp core.App, record *core.Record) (bool, error) {
-	if err := txApp.Save(record); err != nil {
+func save(txApp core.App, userID string, record *core.Record) (bool, error) {
+	// The pushing user is the actor: the task hook skips a notification
+	// to oneself (notify, P5.6).
+	if err := txApp.SaveWithContext(actor.With(context.Background(), userID), record); err != nil {
 		return false, classifySaveError(err)
 	}
 	return true, nil
