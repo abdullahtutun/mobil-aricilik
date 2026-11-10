@@ -22,6 +22,7 @@ import (
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/team"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/users"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/weather"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
@@ -53,6 +54,10 @@ func Register(app core.App, cfg config.Config, version string) {
 	appsync.RegisterPush(app)
 	orgs.Register(app)
 	team.Register(app)
+	weather.Register(app, weather.Options{
+		Key:  cfg.Weather.Key,
+		Days: weather.ForecastDays(cfg.Weather.Days),
+	})
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {

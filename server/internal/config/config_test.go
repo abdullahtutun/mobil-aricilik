@@ -55,3 +55,13 @@ func TestBlankCountsAsMissing(t *testing.T) {
 		t.Fatal("blank SMTP_HOST not reported missing")
 	}
 }
+
+func TestLoad_weather(t *testing.T) {
+	cfg := Load(env(map[string]string{"WEATHERAPI_KEY": " k3y ", "WEATHERAPI_DAYS": " 3 "}))
+	if cfg.Weather.Key != "k3y" || cfg.Weather.Days != "3" {
+		t.Errorf("Weather = %+v", cfg.Weather)
+	}
+	if cfg := Load(env(nil)); cfg.Weather.Key != "" {
+		t.Errorf("Weather without env = %+v", cfg.Weather)
+	}
+}

@@ -40,7 +40,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P5.2 | Senkron gönderme çekirdeği: `/api/sync/push`, LWW, olay, sonuçlar | P5.1 | ☑ |
 | P5.3 | Gönderme özel kuralları: işletme, üyelik, korumalar, doğrulama | P5.2 | ☑ |
 | P5.4 | İşletme kurma ve ekip daveti route'ları | P5.3 | ☑ |
-| P5.5 | Hava durumu: `weather-bundle` | P5.1 | ☐ |
+| P5.5 | Hava durumu: `weather-bundle` | P5.1 | ☑ |
 | P5.6 | Push bildirim: FCM, cihaz token'ı, görev ataması, destek dönemi cron'u | P5.4 | ☐ |
 | P5.7 | Görüş e-postası | P5.4, P4.2, P6.1 | ☐ |
 | P5.8 | Hesap silme: kod, talep, iptal, durum | P5.6 | ☐ |

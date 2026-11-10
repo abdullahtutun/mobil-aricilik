@@ -67,6 +67,8 @@ type Config struct {
 	Mail Mail
 	// TrustedProxy is the client IP header behind the proxy (P4.2).
 	TrustedProxy TrustedProxy
+	// Weather is the WeatherAPI key and day count (P5.5).
+	Weather Weather
 }
 
 // Load reads the environment through getenv (os.Getenv when nil).
@@ -93,6 +95,10 @@ func Load(getenv func(string) string) Config {
 	cfg.Backups = loadBackups(getenv)
 	cfg.Mail = loadMail(getenv)
 	cfg.TrustedProxy = loadTrustedProxy(getenv)
+	cfg.Weather = Weather{
+		Key:  strings.TrimSpace(getenv("WEATHERAPI_KEY")),
+		Days: strings.TrimSpace(getenv("WEATHERAPI_DAYS")),
+	}
 
 	return cfg
 }
@@ -104,4 +110,12 @@ func (c Config) MissingNames() []string {
 		names[i] = v.Name
 	}
 	return names
+}
+
+// Weather is WEATHERAPI_KEY and WEATHERAPI_DAYS (P5.5). Key is a secret;
+// never log it. Days is the raw value; weather.ForecastDays parses it. An
+// empty Key turns the weather route off (503).
+type Weather struct {
+	Key  string
+	Days string
 }
