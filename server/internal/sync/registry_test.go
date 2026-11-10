@@ -9,8 +9,28 @@ import (
 )
 
 func TestRegistry(t *testing.T) {
-	if got, want := appsync.Names(), []string{"organizations", "memberships"}; !slices.Equal(got, want) {
+	want := []string{
+		"organizations", "memberships",
+		"apiaries", "queens", "hives", "hive_location_history", "hive_status_events",
+	}
+	if got := appsync.Names(); !slices.Equal(got, want) {
 		t.Errorf("Names() = %v, want %v (pull order)", got, want)
+	}
+
+	// Kinds of Supabase's private.sync_push_change.
+	wantKinds := map[string]appsync.Kind{
+		"organizations":         appsync.KindOrganization,
+		"memberships":           appsync.KindOwnMembership,
+		"apiaries":              appsync.KindState,
+		"queens":                appsync.KindState,
+		"hives":                 appsync.KindState,
+		"hive_location_history": appsync.KindEvent,
+		"hive_status_events":    appsync.KindEvent,
+	}
+	for name, kind := range wantKinds {
+		if tbl, ok := appsync.Lookup(name); !ok || tbl.Kind != kind {
+			t.Errorf("Lookup(%s) = %v, %v; want kind %q", name, tbl, ok, kind)
+		}
 	}
 
 	kinds := map[appsync.Kind]bool{

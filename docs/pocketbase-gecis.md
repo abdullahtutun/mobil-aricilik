@@ -23,7 +23,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P1.3 | Coolify'da dev ve prod servisleri | P1.1, P1.2 | ☑ |
 | P1.4 | Günlük yedek, Mac'e kopya, geri yükleme denemesi | P1.3 | ☐ |
 | P2.1 | Şema kalıbı, ortak alanlar, `server_seq` sayacı, users, organizations, memberships | P1.2 | ☑ |
-| P2.2 | Koleksiyonlar: arılıklar, kovanlar, ana arılar, kovan geçmişi | P2.1 | ☐ |
+| P2.2 | Koleksiyonlar: arılıklar, kovanlar, ana arılar, kovan geçmişi | P2.1 | ☑ |
 | P2.3 | Koleksiyonlar: muayene, medya, varroa, ilaçlar, ilaçlama, besleme | P2.2 | ☐ |
 | P2.4 | Koleksiyonlar: görev, hasat, belge, göç, taşıma | P2.3 | ☐ |
 | P2.5 | Koleksiyonlar: stok, ana yetiştirme, lotlar ve analiz | P2.4 | ☐ |

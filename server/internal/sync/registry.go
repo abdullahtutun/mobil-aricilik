@@ -34,6 +34,11 @@ type Table struct {
 var Tables = []Table{
 	{Name: "organizations", Kind: KindOrganization},
 	{Name: "memberships", Kind: KindOwnMembership},
+	{Name: "apiaries", Kind: KindState},
+	{Name: "queens", Kind: KindState},
+	{Name: "hives", Kind: KindState},
+	{Name: "hive_location_history", Kind: KindEvent},
+	{Name: "hive_status_events", Kind: KindEvent},
 }
 
 // Names returns the collection names of [Tables], in pull order.

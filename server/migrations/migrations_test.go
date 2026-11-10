@@ -524,6 +524,10 @@ func TestSyncMetaRow(t *testing.T) {
 func TestDownMigrations(t *testing.T) {
 	app := newApp(t)
 
+	// Newest first, like `migrate down`.
+	if err := downApiariesHivesQueens(app); err != nil {
+		t.Fatal(err)
+	}
 	if err := downOrganizationsMemberships(app); err != nil {
 		t.Fatal(err)
 	}
