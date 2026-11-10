@@ -1,7 +1,11 @@
 package sync_test
 
 import (
+	"os"
+	"path/filepath"
+	"regexp"
 	"slices"
+	"strings"
 	"testing"
 
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
@@ -17,6 +21,10 @@ func TestRegistry(t *testing.T) {
 		"migrations", "migration_stops", "transports", "transport_items",
 		"inventory_items", "inventory_moves", "queen_rearing_batches", "mating_nucs",
 		"lots", "lot_harvests", "lot_treatments", "lab_results", "lot_sales",
+		"customers", "transactions", "customer_payments", "ref_support_periods",
+	}
+	if len(want) != 35 {
+		t.Fatalf("want lists %d tables, the client syncs 35", len(want))
 	}
 	if got := appsync.Names(); !slices.Equal(got, want) {
 		t.Errorf("Names() = %v, want %v (pull order)", got, want)
@@ -55,6 +63,13 @@ func TestRegistry(t *testing.T) {
 		"lot_treatments":        appsync.KindEvent,
 		"lab_results":           appsync.KindEvent,
 		"lot_sales":             appsync.KindEvent,
+		"customers":             appsync.KindState,
+		"transactions":          appsync.KindEvent,
+		"customer_payments":     appsync.KindEvent,
+		"ref_support_periods":   appsync.KindReference,
+	}
+	if len(wantKinds) != len(want) {
+		t.Errorf("wantKinds has %d tables, want %d", len(wantKinds), len(want))
 	}
 	for name, kind := range wantKinds {
 		if tbl, ok := appsync.Lookup(name); !ok || tbl.Kind != kind {
@@ -102,4 +117,40 @@ func TestRegistryMatchesSchema(t *testing.T) {
 			t.Errorf("%s: sync time fields missing", tbl.Name)
 		}
 	}
+}
+
+// The registry is SyncService.pullTables of the client, name by name and in
+// order: lib/core/sync/sync_service.dart lists `_db.<camelCase>` getters,
+// whose snake_case names are the table names.
+func TestRegistryMatchesPullTables(t *testing.T) {
+	src, err := os.ReadFile(filepath.Join("..", "..", "..", "lib", "core", "sync", "sync_service.dart"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	block := regexp.MustCompile(`(?s)get pullTables => \[(.*?)\];`).FindSubmatch(src)
+	if block == nil {
+		t.Fatal("pullTables not found in sync_service.dart")
+	}
+	var dart []string
+	for _, m := range regexp.MustCompile(`_db\.(\w+)`).FindAllSubmatch(block[1], -1) {
+		dart = append(dart, snakeCase(string(m[1])))
+	}
+	if len(dart) != 35 {
+		t.Errorf("pullTables has %d tables, want 35", len(dart))
+	}
+	if got := appsync.Names(); !slices.Equal(got, dart) {
+		t.Errorf("Names() = %v\npullTables = %v", got, dart)
+	}
+}
+
+func snakeCase(s string) string {
+	var b strings.Builder
+	for _, r := range s {
+		if r >= 'A' && r <= 'Z' {
+			b.WriteByte('_')
+			r += 'a' - 'A'
+		}
+		b.WriteRune(r)
+	}
+	return b.String()
 }

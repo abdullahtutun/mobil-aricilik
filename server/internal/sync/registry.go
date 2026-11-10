@@ -30,7 +30,8 @@ type Table struct {
 // Tables lists every synced collection, in pull order: the order of
 // SyncService.pullTables in lib/core/sync/sync_service.dart. Only these
 // collections get a server_seq (seq.go) and are served by push and pull.
-// Each P2 step appends its collections.
+// The list is complete: the 35 tables of pullTables (registry_test.go reads
+// the Dart file and compares name by name).
 var Tables = []Table{
 	{Name: "organizations", Kind: KindOrganization},
 	{Name: "memberships", Kind: KindOwnMembership},
@@ -63,6 +64,10 @@ var Tables = []Table{
 	{Name: "lot_treatments", Kind: KindEvent},
 	{Name: "lab_results", Kind: KindEvent},
 	{Name: "lot_sales", Kind: KindEvent},
+	{Name: "customers", Kind: KindState},
+	{Name: "transactions", Kind: KindEvent},
+	{Name: "customer_payments", Kind: KindEvent},
+	{Name: "ref_support_periods", Kind: KindReference},
 }
 
 // Names returns the collection names of [Tables], in pull order.

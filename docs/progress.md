@@ -943,6 +943,14 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Kayıt listesi: inventory_items/queen_rearing_batches/mating_nucs/lots `state`, inventory_moves/lot_harvests/lot_treatments/lab_results/lot_sales `event`, `pullTables` sırasıyla. CLI ile up → down 1 → up denendi. `go test -race ./...`, `flutter analyze`, `flutter test` (2438) temiz.
 - Bilinen: Sütun varsayılanları yok (`mating_nucs.status` empty, `lots.status` open, `published` false, `public_*` true). Bool alan gönderilmeyince false oluyor; Supabase'de `public_*` true'ya düşüyordu. Bu ve owner'a özel yayım kuralı `guard_lot_publication` olarak P5.3'te push'a bağlanacak.
 
+### 2026-11-10 — P2.6 Koleksiyonlar: finans, müşteri, destek dönemleri
+
+- `server/migrations/1794300008_finance_customers_support_periods.go`: customers (state), transactions (event), customer_payments (event), ref_support_periods (org_id'siz, reference); kaynak 20261103120000, 20261104120000 (`transactions.customer_id` dahil), 20261105120000, 20261117120000. Kolonlar, CHECK adları, index'ler ve trigger'lar canlı projeden MCP ile okunup karşılaştırıldı. `receipt_path` deseni `validate.ReceiptStoragePath`, satıra bağlılığı `TransactionsCheck2`; `currency` deseni `^[A-Z]{3}$`; `source_url` deseni `^https?://`, en çok 1000.
+- Tutar kuralı `validate.Amount` (sayı, > 0, ≤ 10¹², en çok 2 ondalık; float64 ya da `json.Number`). Supabase'in numeric(18, 2)'si 3. ondalığı yuvarlıyordu; burada float64 saklandığı için ret (istemci zaten `(x*100).round()/100` gönderiyor). Testte 10¹²'nin altındaki son 200 000 kuruş, ilk 100 000 kuruş ve 200 000 rastgele kuruş: kısa yazımı aynı ondalık, JSON'dan aynı değer, komşusundan ayrı ve geçerli; 10¹² + 0,01 ayrı bir float64 ve reddediliyor.
+- `check_customer_payment` trigger'ı `validate.CheckCustomerPayment(app, org, transaction)`: müşterisiz satışa tahsilat `ErrPaymentNeedsCustomerSale`; silinmiş satış da sayılır, yok ya da başka işletmedeki satış referans denetimine bırakılır (Supabase'deki gibi). P5.3'te yalnız eklemede push'a bağlanacak. Diğer CHECK'ler (`TransactionsCheck`…`Check3`, btrim uzunlukları, `RefSupportPeriodsCheck`) testli.
+- Destek dönemi verisi yok: admin SQL'de yalnız yorumlu örnek, P0.2 yedeğindeki `data.sql` ve canlı tablo boş (0 satır). Veri migration'ı yazılmadı, `TestRefSupportPeriodsEmpty` bunu sabitliyor; dönemler P8.1 tohum aracıyla gelecek.
+- Kayıt listesi 35 tabloyla tamam; `TestRegistryMatchesPullTables` `lib/core/sync/sync_service.dart`'taki `pullTables`'ı okuyup adları sırasıyla karşılaştırıyor. CLI ile up → down 1 → up denendi. `go test -race ./...`, `flutter analyze`, `flutter test` (2438) temiz.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
