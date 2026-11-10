@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
+	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	_ "github.com/abdullahtutun/mobil-aricilik/server/migrations"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tests"
@@ -144,7 +145,13 @@ func TestRegisterBindsRecordHooks(t *testing.T) {
 	if err := app.Save(m); err != nil {
 		t.Fatal(err)
 	}
-	if m.GetInt("server_seq") != 1 || len(m.Id) != 36 {
+	// The next number after the counter; the migrations' reference rows
+	// took the first ones.
+	last, err := appsync.LastSeq(app)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if int64(m.GetInt("server_seq")) != last || last < 2 || len(m.Id) != 36 {
 		t.Errorf("membership id=%q server_seq=%d", m.Id, m.GetInt("server_seq"))
 	}
 }

@@ -84,6 +84,7 @@ func lastSeq(t *testing.T, app core.App) int64 {
 
 func TestSeqIncreasesAcrossCollections(t *testing.T) {
 	app := newApp(t)
+	base := lastSeq(t, app) // the reference rows of the migrations took numbers
 
 	org := organization(t, app)
 	if err := app.Save(org); err != nil {
@@ -98,21 +99,22 @@ func TestSeqIncreasesAcrossCollections(t *testing.T) {
 		saved = append(saved, r)
 	}
 
-	if got := storedSeq(t, app, "organizations", org.Id); got != 1 {
-		t.Errorf("organization seq = %d, want 1", got)
+	if got := storedSeq(t, app, "organizations", org.Id); got != base+1 {
+		t.Errorf("organization seq = %d, want %d", got, base+1)
 	}
 	for i, r := range saved {
-		if got, want := storedSeq(t, app, "memberships", r.Id), int64(i+2); got != want {
+		if got, want := storedSeq(t, app, "memberships", r.Id), base+int64(i+2); got != want {
 			t.Errorf("membership %d seq = %d, want %d", i, got, want)
 		}
 	}
-	if got := lastSeq(t, app); got != 4 {
-		t.Errorf("last_seq = %d, want 4", got)
+	if got := lastSeq(t, app); got != base+4 {
+		t.Errorf("last_seq = %d, want %d", got, base+4)
 	}
 }
 
 func TestUpdateTakesNewSeq(t *testing.T) {
 	app := newApp(t)
+	base := lastSeq(t, app) // the reference rows of the migrations took numbers
 	r := membership(t, app, 1)
 	if err := app.Save(r); err != nil {
 		t.Fatal(err)
@@ -126,8 +128,8 @@ func TestUpdateTakesNewSeq(t *testing.T) {
 	if err := app.Save(r); err != nil {
 		t.Fatal(err)
 	}
-	if got := storedSeq(t, app, "memberships", r.Id); got != 3 {
-		t.Errorf("seq after update = %d, want 3", got)
+	if got := storedSeq(t, app, "memberships", r.Id); got != base+3 {
+		t.Errorf("seq after update = %d, want %d", got, base+3)
 	}
 
 	// Soft delete is an update too: the row travels to other devices.
@@ -135,37 +137,39 @@ func TestUpdateTakesNewSeq(t *testing.T) {
 	if err := app.Save(r); err != nil {
 		t.Fatal(err)
 	}
-	if got := storedSeq(t, app, "memberships", r.Id); got != 4 {
-		t.Errorf("seq after soft delete = %d, want 4", got)
+	if got := storedSeq(t, app, "memberships", r.Id); got != base+4 {
+		t.Errorf("seq after soft delete = %d, want %d", got, base+4)
 	}
 }
 
 func TestClientSeqIgnored(t *testing.T) {
 	app := newApp(t)
+	base := lastSeq(t, app) // the reference rows of the migrations took numbers
 	r := membership(t, app, 1)
 	r.Set(appsync.FieldServerSeq, 999)
 	if err := app.Save(r); err != nil {
 		t.Fatal(err)
 	}
-	if got := storedSeq(t, app, "memberships", r.Id); got != 1 {
-		t.Errorf("seq = %d, want 1 (client value ignored)", got)
+	if got := storedSeq(t, app, "memberships", r.Id); got != base+1 {
+		t.Errorf("seq = %d, want %d (client value ignored)", got, base+1)
 	}
 
 	r.Set("role", "partner")
-	r.Set(appsync.FieldServerSeq, 1) // tries to keep the old number
+	r.Set(appsync.FieldServerSeq, base+1) // tries to keep the old number
 	if err := app.Save(r); err != nil {
 		t.Fatal(err)
 	}
-	if got := storedSeq(t, app, "memberships", r.Id); got != 2 {
-		t.Errorf("seq after update = %d, want 2", got)
+	if got := storedSeq(t, app, "memberships", r.Id); got != base+2 {
+		t.Errorf("seq after update = %d, want %d", got, base+2)
 	}
-	if got := lastSeq(t, app); got != 2 {
-		t.Errorf("last_seq = %d, want 2", got)
+	if got := lastSeq(t, app); got != base+2 {
+		t.Errorf("last_seq = %d, want %d", got, base+2)
 	}
 }
 
 func TestFailedSaveRollsCounterBack(t *testing.T) {
 	app := newApp(t)
+	base := lastSeq(t, app) // the reference rows of the migrations took numbers
 	bad := membership(t, app, 1)
 	bad.Set("role", "admin")
 	if err := app.Save(bad); err == nil {
@@ -179,13 +183,14 @@ func TestFailedSaveRollsCounterBack(t *testing.T) {
 	if err := app.Save(membership(t, app, 2)); err == nil {
 		t.Fatal("duplicate membership saved")
 	}
-	if got := lastSeq(t, app); got != 1 {
-		t.Errorf("last_seq = %d, want 1 (failed saves leave no gap)", got)
+	if got := lastSeq(t, app); got != base+1 {
+		t.Errorf("last_seq = %d, want %d (failed saves leave no gap)", got, base+1)
 	}
 }
 
 func TestSeqJoinsCallerTransaction(t *testing.T) {
 	app := newApp(t)
+	base := lastSeq(t, app) // the reference rows of the migrations took numbers
 	errStop := errors.New("stop")
 
 	err := app.RunInTransaction(func(txApp core.App) error {
@@ -203,7 +208,7 @@ func TestSeqJoinsCallerTransaction(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if n != 0 || lastSeq(t, app) != 0 {
+	if n != 0 || lastSeq(t, app) != base {
 		t.Errorf("rolled back transaction left rows=%d last_seq=%d", n, lastSeq(t, app))
 	}
 
@@ -218,13 +223,14 @@ func TestSeqJoinsCallerTransaction(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := lastSeq(t, app); got != 2 {
-		t.Errorf("last_seq = %d, want 2", got)
+	if got := lastSeq(t, app); got != base+2 {
+		t.Errorf("last_seq = %d, want %d", got, base+2)
 	}
 }
 
 func TestConcurrentWritesGetDistinctSeq(t *testing.T) {
 	app := newApp(t)
+	base := lastSeq(t, app) // the reference rows of the migrations took numbers
 	const writers, perWriter = 4, 50
 
 	var wg stdsync.WaitGroup
@@ -275,19 +281,20 @@ func TestConcurrentWritesGetDistinctSeq(t *testing.T) {
 	}
 
 	// Inserts plus updates, no gaps: the counter equals the write count.
-	wantLast := int64(writers*perWriter + writers*perWriter/2)
+	wantLast := base + int64(writers*perWriter+writers*perWriter/2)
 	if got := lastSeq(t, app); got != wantLast {
 		t.Errorf("last_seq = %d, want %d", got, wantLast)
 	}
 	for seq := range seen {
-		if seq < 1 || seq > wantLast {
-			t.Errorf("server_seq %d outside 1..%d", seq, wantLast)
+		if seq <= base || seq > wantLast {
+			t.Errorf("server_seq %d outside %d..%d", seq, base+1, wantLast)
 		}
 	}
 }
 
 func TestNonSyncCollectionUntouched(t *testing.T) {
 	app := newApp(t)
+	base := lastSeq(t, app) // the reference rows of the migrations took numbers
 	users, err := app.FindCollectionByNameOrId("users")
 	if err != nil {
 		t.Fatal(err)
@@ -299,7 +306,7 @@ func TestNonSyncCollectionUntouched(t *testing.T) {
 	if err := app.Save(u); err != nil {
 		t.Fatal(err)
 	}
-	if got := lastSeq(t, app); got != 0 {
-		t.Errorf("last_seq = %d after a users write, want 0", got)
+	if got := lastSeq(t, app); got != base {
+		t.Errorf("last_seq = %d after a users write, want %d", got, base)
 	}
 }

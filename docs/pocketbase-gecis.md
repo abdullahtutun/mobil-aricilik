@@ -24,7 +24,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P1.4 | Günlük yedek, Mac'e kopya, geri yükleme denemesi | P1.3 | ☐ |
 | P2.1 | Şema kalıbı, ortak alanlar, `server_seq` sayacı, users, organizations, memberships | P1.2 | ☑ |
 | P2.2 | Koleksiyonlar: arılıklar, kovanlar, ana arılar, kovan geçmişi | P2.1 | ☑ |
-| P2.3 | Koleksiyonlar: muayene, medya, varroa, ilaçlar, ilaçlama, besleme | P2.2 | ☐ |
+| P2.3 | Koleksiyonlar: muayene, medya, varroa, ilaçlar, ilaçlama, besleme | P2.2 | ☑ |
 | P2.4 | Koleksiyonlar: görev, hasat, belge, göç, taşıma | P2.3 | ☐ |
 | P2.5 | Koleksiyonlar: stok, ana yetiştirme, lotlar ve analiz | P2.4 | ☐ |
 | P2.6 | Koleksiyonlar: finans, müşteri, destek dönemleri; referans verinin taşınması | P2.5 | ☐ |
@@ -451,7 +451,7 @@ Her P2 adımında ortak kalıp (P2.1'de kurulur, sonrakiler yeniden kullanır):
 - Başka kayda bağ: relation değil, UUID desenli metin (`hive_id` vb.); aynı işletme denetimi P5.3'te push'ta. Neden: yerelde ve sunucuda satırlar sırasız gelebilir ve relation alanı silinen kayda bağı reddeder.
 - `jsonb` → `json` alanı (boyut sınırı Supabase CHECK'iyle aynı ya da makul).
 - `date` → `YYYY-MM-DD` desenli metin. `numeric` → `number`.
-- Boş olabilen sayı (Supabase'de null olabilen `integer`/`numeric`) → `json` alanı: değer `null` ya da sayı. PocketBase `number` alanı `NOT NULL DEFAULT 0` olduğu için "girilmemiş" ile 0'ı ayıramaz (kullanıcı kararı 2026-11-10). Tam sayı ve aralık denetimi `internal/validate`'te (`validate.NullableInt`). Zorunlu sayılar `number` kalır. Yardımcı: `nullableNumberField`.
+- Boş olabilen sayı (Supabase'de null olabilen `integer`/`numeric`) → `json` alanı: değer `null` ya da sayı. PocketBase `number` alanı `NOT NULL DEFAULT 0` olduğu için "girilmemiş" ile 0'ı ayıramaz (kullanıcı kararı 2026-11-10). Tam sayı ve aralık denetimi `internal/validate`'te (`validate.NullableInt`). Zorunlu sayılar `number` kalır. Yardımcı: `nullableNumberField`. Boş olabilen `boolean` aynı gerekçeyle `json` (null/true/false; `nullableBoolField`, `validate.NullableBool`; P2.3). 0'ı geçerli olan not-null sayı `number` ama `Required` değil (PocketBase `Required` 0'ı reddeder).
 - Satırı işletmenin kendisi olan ya da işletmesiz koleksiyonlar (organizations, ref_*) `syncedCollectionWithoutOrg` ile kurulur: `org_id` ve `(org_id, server_seq)` index'i yok.
 - Eksik `id` istemcide ya da sunucuda verilmediyse UUIDv7 ile doldurulur (`internal/ids`; id deseni UUID olan her koleksiyon). Model düzeyi hook'lar `bootstrap.Register`'da `Start`'tan önce bağlanır; migration ve CLI komutları da onları çalıştırır.
 - Tüm API kuralları (list, view, create, update, delete) **null** (yalnız sunucu kodu); P3.2'de doğrudan erişilen koleksiyonlar dışında böyle kalır.

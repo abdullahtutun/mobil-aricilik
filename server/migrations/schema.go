@@ -117,3 +117,14 @@ func nullableNumberField(name string) *core.JSONField {
 		MaxSize: 32,
 	}
 }
+
+// nullableBoolField holds a boolean column that may be null in Supabase
+// (inspections.swarm_signs: "not checked" is not "no"). A PocketBase bool
+// field is false when absent, so, like [nullableNumberField], the value is
+// JSON: null, true or false; validate.NullableBool checks the type.
+func nullableBoolField(name string) *core.JSONField {
+	return &core.JSONField{
+		Name:    name,
+		MaxSize: 8,
+	}
+}

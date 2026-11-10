@@ -509,8 +509,9 @@ func TestSyncMetaRow(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got != 0 {
-		t.Errorf("last_seq = %d, want 0", got)
+	// The only rows the migrations write are the reference drugs.
+	if got != refDrugsSupabaseRows {
+		t.Errorf("last_seq = %d, want %d", got, refDrugsSupabaseRows)
 	}
 	n, err := app.CountRecords(appsync.MetaCollection)
 	if err != nil {
@@ -525,6 +526,12 @@ func TestDownMigrations(t *testing.T) {
 	app := newApp(t)
 
 	// Newest first, like `migrate down`.
+	if err := downRefDrugsSeed(app); err != nil {
+		t.Fatal(err)
+	}
+	if err := downInspectionsTreatmentsFeedings(app); err != nil {
+		t.Fatal(err)
+	}
 	if err := downApiariesHivesQueens(app); err != nil {
 		t.Fatal(err)
 	}
