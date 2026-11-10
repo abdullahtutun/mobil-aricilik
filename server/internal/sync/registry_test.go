@@ -15,6 +15,8 @@ func TestRegistry(t *testing.T) {
 		"inspections", "media", "mite_counts", "ref_drugs", "drugs", "treatments", "feedings",
 		"tasks", "harvests", "harvest_hives", "documents",
 		"migrations", "migration_stops", "transports", "transport_items",
+		"inventory_items", "inventory_moves", "queen_rearing_batches", "mating_nucs",
+		"lots", "lot_harvests", "lot_treatments", "lab_results", "lot_sales",
 	}
 	if got := appsync.Names(); !slices.Equal(got, want) {
 		t.Errorf("Names() = %v, want %v (pull order)", got, want)
@@ -44,6 +46,15 @@ func TestRegistry(t *testing.T) {
 		"migration_stops":       appsync.KindState,
 		"transports":            appsync.KindState,
 		"transport_items":       appsync.KindState,
+		"inventory_items":       appsync.KindState,
+		"inventory_moves":       appsync.KindEvent,
+		"queen_rearing_batches": appsync.KindState,
+		"mating_nucs":           appsync.KindState,
+		"lots":                  appsync.KindState,
+		"lot_harvests":          appsync.KindEvent,
+		"lot_treatments":        appsync.KindEvent,
+		"lab_results":           appsync.KindEvent,
+		"lot_sales":             appsync.KindEvent,
 	}
 	for name, kind := range wantKinds {
 		if tbl, ok := appsync.Lookup(name); !ok || tbl.Kind != kind {

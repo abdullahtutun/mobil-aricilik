@@ -54,6 +54,15 @@ var Tables = []Table{
 	{Name: "migration_stops", Kind: KindState},
 	{Name: "transports", Kind: KindState},
 	{Name: "transport_items", Kind: KindState},
+	{Name: "inventory_items", Kind: KindState},
+	{Name: "inventory_moves", Kind: KindEvent},
+	{Name: "queen_rearing_batches", Kind: KindState},
+	{Name: "mating_nucs", Kind: KindState},
+	{Name: "lots", Kind: KindState},
+	{Name: "lot_harvests", Kind: KindEvent},
+	{Name: "lot_treatments", Kind: KindEvent},
+	{Name: "lab_results", Kind: KindEvent},
+	{Name: "lot_sales", Kind: KindEvent},
 }
 
 // Names returns the collection names of [Tables], in pull order.

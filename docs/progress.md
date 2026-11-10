@@ -935,6 +935,14 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Kayıt listesi: tasks/documents/migrations/migration_stops/transports/transport_items `state`, harvests/harvest_hives `event`, `pullTables` sırasıyla. CLI ile up → down 1 → up denendi. `go test -race ./...`, `flutter analyze`, `flutter test` (2438) temiz.
 - Bilinen: Sütun varsayılanları (`tasks.source` manual, `migration_stops.status` planned, `transports.status` loading, `vehicles` `[]`) yok; push istemcinin tam satırına dayanıyor. Alan Max'ı kırpılmamış metni saydığı için Postgres'in kabul ettiği "sınır + kenar boşluğu" metni alan düzeyinde reddediliyor (P2.3'teki `drugs.name` ile aynı; istemci kırpıp yazıyor). `notify_task_assigned` trigger'ı P5.6'da.
 
+### 2026-11-10 — P2.5 Koleksiyonlar: stok, ana yetiştirme, lotlar ve analiz
+
+- `server/migrations/1794300007_inventory_queen_rearing_lots.go`: inventory_items, inventory_moves, queen_rearing_batches, mating_nucs, lots, lot_harvests, lot_treatments, lab_results, lot_sales; kaynak 20261101180000, 20261101230000, 20261102120000, 20261102180000 (`published`, `public_*`). Sonraki migration'lar bu tabloları yalnız okuyor. Kolonlar, CHECK adları, enum'lar ve index'ler canlı projeden MCP ile okunup karşılaştırıldı. Boş olabilen `threshold`, `accepted_count`, `lots.moisture` ve lab değerleri (`hmf`, `diastase`, `proline`, `moisture`) json; `lots.published`/`public_*` ve `lot_treatments.withdrawal_violation` bool; `inventory_moves.linked_table` alan deseni `^[a-z_]{1,63}$`.
+- `lot_harvests`'te "bir hasat en çok bir lotta" kısmi tekil index'i `(harvest_id) WHERE deleted_at = ''`; testte ikinci lot ve aynı lot reddediliyor, silinen satırdan sonra hasat başka lota geçebiliyor.
+- `internal/validate` (`inventory.go`, `lots.go`): `LabResultsCheck` (`num_nonnulls(...) > 0`; 0 dolu sayılır, boş `residue` null), stok hareketinin işaret kuralları (`InventoryMovesCheck`, `Check1`, `QuantityCheck1` — 0.0004 sıfıra yuvarlandığı için ret), `Check2` bağ çifti, `QueenRearingBatchesCheck` (kabul ≤ aktarılan), `MatingNucsCheck`/`Check1`, yuvarlamalı numeric aralıkları (eşik, miktar, nem, HMF, diastaz, prolin, kg) ve btrim uzunlukları. Testli.
+- Kayıt listesi: inventory_items/queen_rearing_batches/mating_nucs/lots `state`, inventory_moves/lot_harvests/lot_treatments/lab_results/lot_sales `event`, `pullTables` sırasıyla. CLI ile up → down 1 → up denendi. `go test -race ./...`, `flutter analyze`, `flutter test` (2438) temiz.
+- Bilinen: Sütun varsayılanları yok (`mating_nucs.status` empty, `lots.status` open, `published` false, `public_*` true). Bool alan gönderilmeyince false oluyor; Supabase'de `public_*` true'ya düşüyordu. Bu ve owner'a özel yayım kuralı `guard_lot_publication` olarak P5.3'te push'a bağlanacak.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
