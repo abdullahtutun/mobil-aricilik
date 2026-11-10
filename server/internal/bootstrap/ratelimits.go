@@ -23,7 +23,8 @@ var rateLimitRules = []core.RateLimitRule{
 	// OTP code request, the app's route (P4.1): it also refuses the same
 	// e-mail more often than once in 60 s.
 	{Label: "POST /api/app/auth/otp", MaxRequests: 5, Duration: 60},
-	// PocketBase's own request-otp; P4.1 decides whether the app uses it.
+	// PocketBase's own request-otp: closed by internal/auth (P4.1), the
+	// rule stays so that probing it costs the same.
 	{Label: "users:requestOTP", MaxRequests: 3, Duration: 60},
 	// Entering the code: 6 digits; a few typos are fine, guessing is not.
 	{Label: "users:authWithOTP", MaxRequests: 5, Duration: 60},

@@ -105,12 +105,12 @@ func TestRateLimitTriggers(t *testing.T) {
 			DisableTestAppCleanup: true,
 		}
 	}
-	// OTP is not enabled on users yet (P4.1): PocketBase answers 403, after
-	// the rate limit check.
+	// PocketBase's request-otp is closed (internal/auth, P4.1): it answers
+	// 404, after the rate limit check.
 	for _, s := range []tests.ApiScenario{
-		request("request 1", http.StatusForbidden),
-		request("request 2", http.StatusForbidden),
-		request("request 3", http.StatusForbidden),
+		request("request 1", http.StatusNotFound),
+		request("request 2", http.StatusNotFound),
+		request("request 3", http.StatusNotFound),
 		request("request 4 is limited", http.StatusTooManyRequests),
 		{
 			Name:                  "health is still served",

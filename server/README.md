@@ -13,6 +13,7 @@ internal/bootstrap/     # açılış logu, kayıt hook'ları, BACKUPS_* → yede
 internal/pattern/       # UUID, senkron zamanı ve gün desenleri (K-4, K-5), tek yerde
 internal/ids/           # eksik id'yi UUIDv7 ile doldurur
 internal/users/         # users varsayılanları (locale = en)
+internal/auth/          # OTP route'u, dil route'u, 9 dilli OTP e-postası (templates/otp.html), demo parola girişi (P4.1)
 internal/sync/          # senkron koleksiyonları listesi (registry.go), server_seq sayacı (seq.go)
 internal/validate/      # alan seçeneğiyle ifade edilemeyen Supabase CHECK'leri
 internal/schemadump/    # şema dökümü, `schema dump` komutu, döküm özeti
@@ -45,6 +46,11 @@ Uçlar:
 - `GET /api/health`: PocketBase'in sağlık denetimi, 200.
 - `GET /api/app/info`: `{"env": "dev|prod", "version": "<git commit>"}`; oturumsuz, gizli değer içermez. Araçlar dev/prod ayrımını buradan yapar. `APP_ENV` yoksa ya da geçersizse `env` boş döner.
 - `GET /api/app/schema-hash`: yalnız superuser; `{"sha256": "…"}`, canlı şema dökümünün özeti.
+- `POST /api/app/auth/otp` `{email, locale}`: hesap yoksa açar, kodu e-postayla yollar, `{otpId}` döner; aynı e-postaya 60 sn'de bir (429 `too_many_requests`). Giriş PocketBase'in `POST /api/collections/users/auth-with-otp` `{otpId, password: <kod>}` ucuyla. PocketBase'in kendi `request-otp`'si kapalı (404).
+- `POST /api/app/auth/locale` `{locale}`: oturumlu kullanıcının dili (e-postalar bu dilde).
+- Parola girişi (`auth-with-password`) yalnız `demo@tutunsoft.com` için.
+
+`--dev` ile açılan yerel sunucuda SMTP yoksa e-postalar gönderilmez, konsola yazılır (kod dahil). Dokuz dilin OTP e-postasına bakmak için: `OTP_MAIL_PREVIEW=<klasör> go test ./internal/auth -run TestOTPMailEveryLanguage -count=1`.
 
 ## Ortam değişkenleri
 
