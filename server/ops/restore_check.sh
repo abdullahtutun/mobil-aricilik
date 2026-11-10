@@ -109,7 +109,10 @@ kill "$pid"
 wait "$pid" 2>/dev/null || true
 pid=""
 
-counts="$(sqlite3 -readonly "$data/data.db" \
+# Not -readonly: the server left the copy in WAL mode, and a read-only
+# connection cannot create the -shm file it then needs (SQLITE_CANTOPEN).
+# This is the temporary copy; the zip is untouched.
+counts="$(sqlite3 "$data/data.db" \
   "select count(*), coalesce(sum(system), 0) from _collections;")"
 total="${counts%%|*}"
 system="${counts##*|}"

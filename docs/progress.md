@@ -891,7 +891,17 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Yedek API'sinin yolları v0.40.6 kaynağından (`apis/backup.go`, `apis/file.go`) ve pocketbase.io/docs'tan doğrulandı: `GET /api/backups` (superuser), `POST /api/files/token`, `GET /api/backups/{key}?token=` (yalnız superuser dosya token'ı kabul ediliyor). PocketBase cron'u konteyner saatinden bağımsız olarak UTC çalışıyor (`tools/cron`). Bu yüzden `0 3 * * *` 06:00 TR'ye denk geliyor.
 - `server/ops/pull_backup.sh`: `/api/app/info`'dan ortamı alıyor, superuser olarak giriyor, en yeni yedeği `~/Yedekler/mobil-arici/pb-<env>/`'e indiriyor. Boyutu ve `unzip -t`'yi denetliyor, `.sha256` yazıyor, 8 haftadan eski kopyaları siliyor. Parola jq'ya `env.` üzerinden, token'lar curl'e 0600 izinli `-K` dosyasıyla veriliyor; ikisi de `ps`'te ya da çıktıda görünmüyor. `server/ops/restore_check.sh`: SHA-256'yı denetliyor, zip'i geçici `pb_data`'ya açıyor, bu checkout'tan derlenen `arici`'yi yalnız `PATH` + `PB_ENCRYPTION_KEY` ile `127.0.0.1:18090`'da açıyor, `health: ok` ve koleksiyon sayısını yazıyor. Ayarlar şifreli olduğu için anahtar gerekiyor; betik böylece parola yöneticisindeki anahtarı da denemiş oluyor.
 - `server/ops/backup.md`: env davranışı, iki betiğin kullanımı, Anahtar Zinciri'nden okuyan haftalık launchd plist'i ve geri yükleme prosedürü (panelden Restore ya da Coolify Stop → volume → Start). Betikler yalnız `bash -n` ile denetlendi (macOS bash 3.2); `shellcheck` kurulu değil. Plan gereği sunucuya karşı çalıştırılmadı.
-- Bekleyen (kullanıcı): Coolify'da iki ortama `BACKUPS_CRON` / `BACKUPS_MAX_KEEP` girilecek, deploy edilecek, ilk yedek alınacak, `pull_backup.sh` ile dev ve prod indirilecek ve `restore_check.sh` çalıştırılacak. Sonuçlar gelince buraya yazılacak ve P1.4 işaretlenecek. `go test ./...`, `flutter analyze` ve `flutter test` (2438 test) temiz.
+- Canlı deneme (2026-11-10):
+  - İlk deploy `09d5b78`'de kaldı, çünkü `c677b8b` push edilmemişti; push ve iki deploy sonrası `/api/app/info` iki ortamda da `c677b8b`.
+  - Coolify'da `BACKUPS_CRON`'a `7` yazılmıştı. Hook kaydı reddetti, log `fields=backups.cron` dedi, panelde eski `0 0 * * *` / 3 kaldı (beklenen davranış). Düzeltilince ayar uygulandı.
+  - Cron `0 0 * * *` seçildi: PocketBase cron'u UTC, yani 03:00 TR (K-15).
+- Superuser bilgisi ve iki `PB_ENCRYPTION_KEY` macOS Anahtar Zinciri'nde (`-s mobil-arici-pb`, hesaplar `prod|dev-email|password|enckey`). Betikler oradan okuyarak çalıştırıldı; değerler çıktıya düşmedi.
+  - `pull_backup.sh` prod: `pb_backup_acme_20261109223551.zip` (35 244 B, sha256 `42d28725…`).
+  - `pull_backup.sh` dev: `pb_backup_acme_20261109223525.zip` (103 907 B, sha256 `3f914355…`).
+  - `restore_check.sh` iki zip'te: `sha256: ok`, `health: ok`, `collections: 6 (system 5, app 1)`.
+  - Yanlış anahtarla sunucu açılmıyor (`cipher: message authentication failed`), betik başarısız sayıyor.
+  - Düzeltme: sunucu kopyayı WAL kipine geçirdiği için sayımdaki `sqlite3 -readonly` `SQLITE_CANTOPEN` veriyordu; `-readonly` kaldırıldı (geçici kopya, zip'e dokunulmuyor).
+- Bekleyen: ilk gece yedeği (`@auto_pb_backup_…`, 03:00 TR) panelde görülünce P1.4 işaretlenecek. İndirilen iki yedek elle alınanlardı. Yedek adındaki `acme`, PocketBase'in varsayılan uygulama adı (Settings → Application name); bu adımda değiştirilmedi. launchd görevi henüz kurulmadı. `go test ./...`, `flutter analyze` ve `flutter test` (2438 test) temiz.
 
 ## Sona bırakılanlar
 
