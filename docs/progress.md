@@ -903,6 +903,14 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
   - Düzeltme: sunucu kopyayı WAL kipine geçirdiği için sayımdaki `sqlite3 -readonly` `SQLITE_CANTOPEN` veriyordu; `-readonly` kaldırıldı (geçici kopya, zip'e dokunulmuyor).
 - Bekleyen: ilk gece yedeği (`@auto_pb_backup_…`, 03:00 TR) panelde görülünce P1.4 işaretlenecek. İndirilen iki yedek elle alınanlardı. Yedek adındaki `acme`, PocketBase'in varsayılan uygulama adı (Settings → Application name); bu adımda değiştirilmedi. launchd görevi henüz kurulmadı. `go test ./...`, `flutter analyze` ve `flutter test` (2438 test) temiz.
 
+### 2026-11-10 — P2.1 Şema kalıbı, `server_seq` sayacı, users, organizations, memberships
+
+- `server/migrations/schema.go`: `syncedCollection` (org_id + `(org_id, server_seq)`) ve `syncedCollectionWithoutOrg` (organizations, ref_*); ortak alanlar, tekil `server_seq` index'i, null API kuralları. Desenler `internal/pattern`'de tek yerde. Kullanıcı kararı: Supabase'de null olabilen sayılar `json` alanı (null ya da sayı), çünkü PocketBase `number` 0 ile boşu ayıramaz; denetim `internal/validate`'te. Plandaki P2 kalıbına not düşüldü.
+- Migration'lar: `sync_meta` (tek satır, sabit id), `users` (UUID id, `locale`; `name`/`avatar` kaldırıldı), `organizations` + `memberships` (Supabase son hâli, her alanın kaynak migration'ı yorumda; tek etkin üyelik kısmi tekil index'i `deleted_at = ''`). CLI ile up → down → up denendi.
+- `internal/sync`: `registry.go` (organizations `organization`, memberships `own_membership`, pull sırası) ve `seq.go`: OnRecordCreate/Update'te transaction açılır (ya da çağıranınkine katılır), sayaç `UPDATE … RETURNING` ile artar, satır aynı transaction'da yazılır; istemcinin `server_seq`'i ezilir, başarısız kayıt sayacı geri alır. `internal/ids` eksik id'yi UUIDv7 yapar, `internal/users` `locale`'i `en`'e çeker; üçü `bootstrap.Register`'da `Start`'tan önce bağlı.
+- Testler: koleksiyon alanları/index'leri/kurallar, enum değerleri, UUID ve zaman desenleri, null ile 0'ın ayrı saklanması, tek etkin üyelik, down migration'lar; sayaç: artan numara, güncellemede yeni numara, istemci numarasının yok sayılması, geri alınan transaction, 4 goroutine × 50 yazma + güncellemede tekrarsız ve boşluksuz numara (`-race` temiz). `go test ./...`, `flutter analyze`, `flutter test` (2438) temiz.
+- Bilinen: `users` API kuralları hâlâ PocketBase varsayılanı (CreateRule `""`: parolayla herkese açık kayıt; dev/prod'da P1.3'ten beri böyle), P3.2/P4.1'de kapanacak. `organizations.operation_type` zorunlu ama sütun varsayılanı yok; push ve P5.4'teki kurma route'u değeri vermeli. `validate` fonksiyonları henüz push'a bağlı değil (P5.3).
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

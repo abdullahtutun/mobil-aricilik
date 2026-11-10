@@ -13,6 +13,9 @@ import (
 	"strings"
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/users"
 	"github.com/pocketbase/pocketbase/core"
 )
 
@@ -23,8 +26,14 @@ type Info struct {
 	Version string `json:"version"`
 }
 
-// Register binds the startup log and the app routes.
+// Register binds the record hooks, the startup log and the app routes.
 func Register(app core.App, cfg config.Config, version string) {
+	// Model-level hooks, bound before Start so that migrations and CLI
+	// commands run them too.
+	ids.Register(app)
+	users.Register(app)
+	appsync.RegisterSeq(app)
+
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
 			return err

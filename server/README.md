@@ -9,8 +9,13 @@ Go sürümü PocketBase v0.40.6'nın `go.mod`'undaki `go 1.27` satırından geli
 ```text
 main.go                 # pocketbase.New, migratecmd (Automigrate kapalı), bootstrap.Register
 internal/config/        # ortam değişkenleri; eksikler açılışta adıyla loglanır
-internal/bootstrap/     # açılış logu, BACKUPS_* → yedek ayarı, GET /api/app/info
-migrations/             # Go şema migration'ları (K-3); şimdilik boş
+internal/bootstrap/     # açılış logu, kayıt hook'ları, BACKUPS_* → yedek ayarı, GET /api/app/info
+internal/pattern/       # UUID, senkron zamanı ve gün desenleri (K-4, K-5), tek yerde
+internal/ids/           # eksik id'yi UUIDv7 ile doldurur
+internal/users/         # users varsayılanları (locale = en)
+internal/sync/          # senkron koleksiyonları listesi (registry.go), server_seq sayacı (seq.go)
+internal/validate/      # alan seçeneğiyle ifade edilemeyen Supabase CHECK'leri
+migrations/             # Go şema migration'ları (K-3); schema.go ortak kalıp yardımcıları
 ops/coolify.md          # Coolify panel ayarları (P1.3)
 ops/backup.md           # gece yedeği, Mac'e indirme, geri yükleme (P1.4)
 ops/pull_backup.sh      # en yeni yedeği Mac'e indirir

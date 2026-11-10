@@ -8,13 +8,15 @@ import (
 	"testing"
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
+	_ "github.com/abdullahtutun/mobil-aricilik/server/migrations"
+	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tests"
 )
 
 func factory(cfg config.Config, version string) func(testing.TB) *tests.TestApp {
 	return func(t testing.TB) *tests.TestApp {
 		// Empty temp data dir: the app bootstraps from scratch with our
-		// (still empty) schema, not PocketBase's own fixture data.
+		// migrations, not PocketBase's own fixture data.
 		app, err := tests.NewTestApp(t.TempDir())
 		if err != nil {
 			t.Fatal(err)
@@ -102,5 +104,47 @@ func TestStartupLogInvalidEnv(t *testing.T) {
 	}), "x")
 	if !strings.Contains(buf.String(), "APP_ENV must be dev or prod") {
 		t.Fatalf("no invalid env error:\n%s", buf.String())
+	}
+}
+
+// Register wires the record hooks: a user gets a UUIDv7 id and the default
+// locale, a synced row gets a server_seq.
+func TestRegisterBindsRecordHooks(t *testing.T) {
+	app, err := tests.NewTestApp(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer app.Cleanup()
+	Register(app, config.Config{}, "x")
+
+	users, err := app.FindCollectionByNameOrId("users")
+	if err != nil {
+		t.Fatal(err)
+	}
+	u := core.NewRecord(users)
+	u.SetEmail("u@example.com")
+	u.SetPassword("12345678901234")
+	if err := app.Save(u); err != nil {
+		t.Fatal(err)
+	}
+	if len(u.Id) != 36 || u.GetString("locale") != "en" {
+		t.Errorf("user id=%q locale=%q", u.Id, u.GetString("locale"))
+	}
+
+	members, err := app.FindCollectionByNameOrId("memberships")
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := core.NewRecord(members)
+	m.Set("org_id", "0195f2a4-1111-7000-8000-000000000001")
+	m.Set("user_id", u.Id)
+	m.Set("role", "owner")
+	m.Set("created_at", "2026-11-10T10:15:30.123456Z")
+	m.Set("updated_at", "2026-11-10T10:15:30.123456Z")
+	if err := app.Save(m); err != nil {
+		t.Fatal(err)
+	}
+	if m.GetInt("server_seq") != 1 || len(m.Id) != 36 {
+		t.Errorf("membership id=%q server_seq=%d", m.Id, m.GetInt("server_seq"))
 	}
 }
