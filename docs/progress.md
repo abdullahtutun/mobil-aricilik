@@ -965,7 +965,7 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - `GET /api/app/schema-hash` (`apis.RequireSuperuserAuth`): canlı dökümün SHA-256'sı; anonim 401, users token'ı 403 (testli). `server/ops/schema_check.sh <url>`: superuser bilgisi kabuktan, jq ile stdin'den, token 0600 dosyadan; repodaki dosyanın `shasum`'uyla karşılaştırır (0 eşit, 1 sapma, 2 hata). Yerelde derlenmiş ikiliyle denendi: eşit; `_collections`'ta `hives.listRule` elle değiştirilince `DRIFT`, çıkış 1.
 - `test/core/db/schema_mirror_test.dart` ikinci kaynak: `server_seq`'li koleksiyonların alan adları Drift tablolarıyla birebir (konum PocketBase'de de enlem + boylam, dönüşüm yok); select alanları `koleksiyon.alan` anahtarıyla Dart enum değerleriyle aynı sırada (43 alan, iki yönde de eksiksiz). Supabase SQL kaynağı P11.1'e kadar duruyor; iki kaynak da geçiyor.
 - `internal/sync/coverage_test.go` (`sync_seq.test.sql` + `rls_enabled.test.sql`'in server_seq kısmı): kayıt listesindeki her koleksiyonda zorunlu tam sayı `server_seq` ve tekil index'i; listede olmayan hiçbir koleksiyonda (sistem dahil) alan yok; create/update hook zinciri her listedeki koleksiyonda sayacı bir artırıp numarayı yazıyor, diğerlerinde sayaca dokunmuyor.
-- `go test ./...`, `go run . schema dump && git diff --exit-code server/schema/`, `flutter analyze`, `flutter test` (2441) temiz. Kalan: dev deploy sonrası `schema_check.sh https://arici-api-dev.tutunsoft.com`'u kullanıcı çalıştıracak.
+- `go test ./...`, `go run . schema dump && git diff --exit-code server/schema/`, `flutter analyze`, `flutter test` (2441) temiz. Dev deploy sonrası kullanıcı `schema_check.sh https://arici-api-dev.tutunsoft.com`'u çalıştırdı: `equal`.
 
 ## Sona bırakılanlar
 
