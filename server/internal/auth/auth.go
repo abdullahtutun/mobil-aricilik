@@ -55,17 +55,32 @@ const (
 	CodeInvalidLocale   = "invalid_locale"
 	CodeTooManyRequests = "too_many_requests"
 	CodeMailFailed      = "mail_failed"
+	// CodeMailUnavailable: the server has no SMTP account (P4.2); nothing
+	// was written.
+	CodeMailUnavailable = "mail_unavailable"
 )
 
-// Register binds the routes and hooks of this package.
-func Register(app core.App) {
+// MailOn reports whether e-mail may be sent: the environment holds a
+// complete SMTP account and it was written into the settings (P4.2).
+type MailOn func() bool
+
+// Register binds the routes and hooks of this package. mailOn gates every
+// e-mail: off, the OTP route answers 503 and nothing is handed to a mailer.
+func Register(app core.App, mailOn MailOn) {
 	registerOTPMail(app)
-	registerDevMailLog(app)
+	registerMailGate(app, mailOn)
 	registerDemoPasswordOnly(app)
 	registerNoRecordAPIOTPRequest(app)
 
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
-		se.Router.POST("/api/app/auth/otp", requestOTP)
+		se.Router.POST("/api/app/auth/otp", func(e *core.RequestEvent) error {
+			// In --dev mode without SMTP the e-mail goes to the console.
+			if !mailOn() && !e.App.IsDev() {
+				return apiError(e, http.StatusServiceUnavailable, CodeMailUnavailable,
+					"E-mail is not available. Please try again later.")
+			}
+			return requestOTP(e)
+		})
 		se.Router.POST("/api/app/auth/locale", setLocale).
 			Bind(apis.RequireAuth(UsersCollection))
 		return se.Next()

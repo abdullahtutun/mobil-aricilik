@@ -50,7 +50,7 @@ Uçlar:
 - `POST /api/app/auth/locale` `{locale}`: oturumlu kullanıcının dili (e-postalar bu dilde).
 - Parola girişi (`auth-with-password`) yalnız `demo@tutunsoft.com` için.
 
-`--dev` ile açılan yerel sunucuda SMTP yoksa e-postalar gönderilmez, konsola yazılır (kod dahil). Dokuz dilin OTP e-postasına bakmak için: `OTP_MAIL_PREVIEW=<klasör> go test ./internal/auth -run TestOTPMailEveryLanguage -count=1`.
+SMTP ayarı yalnız ortam değişkeninden (K-10): `SMTP_HOST`, `SMTP_PORT`, `MAIL_NOREPLY_USER`, `MAIL_NOREPLY_PASS` doluysa her açılışta PocketBase ayarına yazılır (gönderen "Mobil Arıcı" <kullanıcı adı>, 465'te TLS, başka portta STARTTLS). Biri eksikse saklı ayara dokunulmaz, hiçbir e-posta gönderilmez ve `POST /api/app/auth/otp` 503 `mail_unavailable` döner; açılış logu eksik adları söyler. `TRUSTED_PROXY_HEADERS` (virgülle) doluysa "User IP proxy headers" ayarına yazılır, en sağdaki IP kullanılır. `--dev` ile açılan yerel sunucuda SMTP değişkenleri yoksa e-postalar gönderilmez, konsola yazılır (kod dahil). Dokuz dilin OTP e-postasına bakmak için: `OTP_MAIL_PREVIEW=<klasör> go test ./internal/auth -run TestOTPMailEveryLanguage -count=1`.
 
 ## Ortam değişkenleri
 

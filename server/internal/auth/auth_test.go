@@ -30,6 +30,15 @@ const (
 	demoPassword = "test-only-demo-password"
 )
 
+// testMail turns e-mail on; the test mailer catches every message, nothing
+// is sent.
+var testMail = config.Mail{
+	Host:     "smtp.example.com",
+	Port:     465,
+	Username: "noreply@example.com",
+	Password: "test-only-smtp-password",
+}
+
 func newApp(t *testing.T) *tests.TestApp {
 	t.Helper()
 	app, err := tests.NewTestApp(t.TempDir())
@@ -37,7 +46,7 @@ func newApp(t *testing.T) *tests.TestApp {
 		t.Fatal(err)
 	}
 	t.Cleanup(app.Cleanup)
-	bootstrap.Register(app, config.Config{Env: config.EnvDev}, "test")
+	bootstrap.Register(app, config.Config{Env: config.EnvDev, Mail: testMail}, "test")
 	return app
 }
 

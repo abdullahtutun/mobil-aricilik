@@ -48,7 +48,7 @@ P1.3'te girilenler (her ortamda ayrı değer):
 | --- | --- |
 | `BACKUPS_CRON`, `BACKUPS_MAX_KEEP` | P1.4 (ayrıntı: `backup.md`) |
 | `BACKUPS_S3_ENDPOINT`, `BACKUPS_S3_BUCKET`, `BACKUPS_S3_REGION`, `BACKUPS_S3_ACCESS_KEY`, `BACKUPS_S3_SECRET` | S3 hedefi alınınca (K-15) |
-| `SMTP_HOST`, `SMTP_PORT`, `MAIL_NOREPLY_USER`, `MAIL_NOREPLY_PASS` | P4.2 |
+| `SMTP_HOST`, `SMTP_PORT`, `MAIL_NOREPLY_USER`, `MAIL_NOREPLY_PASS` | P4.2 (`smtp.hostinger.com`, `465`, `noreply@tutunsoft.com`; dördü birlikte, yoksa OTP 503) |
 | `MAIL_FEEDBACK_USER`, `MAIL_FEEDBACK_PASS`, `FEEDBACK_TO_EMAIL` | P5.7 |
 | `WEATHERAPI_KEY`, `WEATHERAPI_DAYS` | P5.5 |
 | `FCM_SERVICE_ACCOUNT_B64` | P5.6 |

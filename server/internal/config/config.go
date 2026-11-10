@@ -63,6 +63,10 @@ type Config struct {
 	InvalidEnv bool
 	// Backups is the backup schedule and optional S3 target (P1.4).
 	Backups Backups
+	// Mail is the noreply SMTP account (P4.2).
+	Mail Mail
+	// TrustedProxy is the client IP header behind the proxy (P4.2).
+	TrustedProxy TrustedProxy
 }
 
 // Load reads the environment through getenv (os.Getenv when nil).
@@ -87,6 +91,8 @@ func Load(getenv func(string) string) Config {
 	}
 	cfg.URL = strings.TrimSpace(getenv("APP_URL"))
 	cfg.Backups = loadBackups(getenv)
+	cfg.Mail = loadMail(getenv)
+	cfg.TrustedProxy = loadTrustedProxy(getenv)
 
 	return cfg
 }

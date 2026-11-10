@@ -45,7 +45,8 @@ func Register(app core.App, cfg config.Config, version string) {
 	appsync.RegisterSeq(app)
 	deletion.RegisterLogGuard(app)
 	recordapi.Register(app)
-	auth.Register(app)
+	mail := newMailGate(cfg.Mail)
+	auth.Register(app, mail.On)
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
@@ -54,6 +55,10 @@ func Register(app core.App, cfg config.Config, version string) {
 		log := startupLogger(e.App)
 		logStartup(log, cfg, version)
 		applyBackups(e.App, cfg.Backups, log)
+		if !applyMail(e.App, cfg.Mail, log) {
+			mail.on.Store(false)
+		}
+		applyTrustedProxy(e.App, cfg.TrustedProxy, log)
 		applyRateLimits(e.App, log)
 		return nil
 	})

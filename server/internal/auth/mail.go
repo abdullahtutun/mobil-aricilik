@@ -3,6 +3,7 @@ package auth
 import (
 	"bytes"
 	_ "embed"
+	"errors"
 	"fmt"
 	"html/template"
 	"strconv"
@@ -87,15 +88,21 @@ func registerOTPMail(app core.App) {
 	})
 }
 
-// registerDevMailLog prints e-mails to the log instead of sending them when
-// the server runs with --dev (`go run . serve`) and SMTP is off: without it
-// PocketBase would hand them to the local sendmail. The code shows in the
-// console, so the app can sign in locally. Never in production: --dev is
-// not set there.
-func registerDevMailLog(app core.App) {
+// ErrMailOff is returned for an e-mail sent while the gate is off.
+var ErrMailOff = errors.New("e-mail is off: SMTP is not configured from the environment")
+
+// registerMailGate stops every e-mail while mailOn is false (P4.2), so an
+// incomplete environment never falls back to the local sendmail or to SMTP
+// settings stored earlier. With --dev (`go run . serve`) the e-mail is
+// printed to the log instead, so the app can sign in locally; --dev is
+// never set in production.
+func registerMailGate(app core.App, mailOn MailOn) {
 	app.OnMailerSend().BindFunc(func(e *core.MailerEvent) error {
-		if !e.App.IsDev() || e.App.Settings().SMTP.Enabled {
+		if mailOn() {
 			return e.Next()
+		}
+		if !e.App.IsDev() {
+			return ErrMailOff
 		}
 		to := make([]string, 0, len(e.Message.To))
 		for _, a := range e.Message.To {
