@@ -998,7 +998,7 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - E-posta kapısı (`auth.MailOn`): env tam değilse `POST /api/app/auth/otp` hesap ya da kod yazmadan 503 `mail_unavailable` dönüyor ve `OnMailerSend` her e-postayı `ErrMailOff` ile durduruyor; böylece P4.1'deki "SMTP yoksa canlıda sendmail'e gidiyor" ve eski saklı SMTP ayarıyla gönderme kapandı. `--dev` sunucuda env yokken e-posta yine konsola yazılıyor.
 - `TRUSTED_PROXY_HEADERS` (virgülle ayrık) doluysa "User IP proxy headers" ayarına yazılıyor, `UseLeftmostIP` false (Traefik'in eklediği en sağdaki IP); boşsa saklı ayar kalıyor.
 - Testler: config (dolu, saklıyı ezme, 587'de STARTTLS, boş, yarım, geçersiz port, sıfır değer hazır değil, proxy dolu/boş), bootstrap (DB'ye yazılıp geri okunma, boş/yarım/geçersiz port/reddedilen adreste saklı ayarın kalması, log'da parola yok), auth (boş ve yarım env'de 503, hesap/kod/e-posta yok; mailer `ErrMailOff`; env doluyken gönderim). Yerelde derlenmiş ikiliyle: env'siz `serve` 503 + açılış logunda adlar, `serve --dev` kod konsolda. `go test -race ./...`, `flutter analyze`, `flutter test` temiz.
-- Canlı deneme (dev, Hostinger): kullanıcının Coolify'a dört değişkeni girip deploy etmesi ve `curl` ile kod istemesi bekleniyor; gelen kutusu/spam ve SPF/DKIM sonucu buraya yazılacak.
+- Canlı deneme (dev, Hostinger, `3f2a5a4`): dört değişken Coolify'a runtime olarak girildi (parolada interpolasyon kapalı). Geçersiz adresle yoklama 503 değil 400 `invalid_email` döndü (kapı açık). `curl` ile kod istendi: Türkçe OTP e-postası Gmail'de gelen kutusuna düştü, spam değil; "Orijinali göster"de SPF, DKIM ve DMARC PASS. DNS: SPF `include:_spf.mail.hostinger.com ~all`, DKIM `hostingermail-a`, DMARC `p=none`.
 
 ## Sona bırakılanlar
 
