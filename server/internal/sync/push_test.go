@@ -410,15 +410,15 @@ func TestPushFinanceRoles(t *testing.T) {
 	wantOutcomes(t, "worker update", f.push(t, pWorker, c), "2 rejected forbidden")
 }
 
-// TestPushUnsupportedTables: until P5.3 only state and event tables are
-// written; organizations, memberships, reference tables and everything
-// outside the registry are "unsupported".
+// TestPushUnsupportedTables: reference tables and everything outside the
+// registry are "unsupported" (organizations and memberships have their own
+// rules: push_rules_test.go).
 func TestPushUnsupportedTables(t *testing.T) {
 	f := newPullFixture(t)
 	payload := map[string]any{"id": pOrgA, "org_id": pOrgA, "name": "X", "updated_at": "2026-12-01T00:00:00Z"}
 	var changes []map[string]any
 	var want []string
-	for i, table := range []string{"organizations", "memberships", "ref_drugs", "ref_support_periods", "invites", "users", "sync_meta", "nope"} {
+	for i, table := range []string{"ref_drugs", "ref_support_periods", "invites", "users", "sync_meta", "nope"} {
 		changes = append(changes, map[string]any{"id": i, "table": table, "operation": "upsert", "payload": payload})
 		want = append(want, fmt.Sprintf("%d rejected unsupported", i))
 	}

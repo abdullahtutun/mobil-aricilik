@@ -15,6 +15,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/authz"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/pattern"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/validate"
+	"github.com/pocketbase/dbx"
 	validation "github.com/pocketbase/ozzo-validation/v4"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -273,16 +274,106 @@ func pushChange(txApp core.App, userID string, raw json.RawMessage) (json.RawMes
 		return c.id, false, err
 	}
 	table, ok := Lookup(c.table)
-	if !ok || (table.Kind != KindState && table.Kind != KindEvent) {
-		// organizations and memberships come with their own rules in P5.3;
-		// reference tables are never written by clients.
+	if !ok || table.Kind == KindReference {
+		// Reference tables are never written by clients.
 		return c.id, false, reject(ReasonUnsupported, "Table %q cannot be written by sync.", c.table)
 	}
 	if c.operation == "delete" && isNull(c.payload["deleted_at"]) {
 		return c.id, false, reject(ReasonInvalid, "A delete must carry deleted_at.")
 	}
-	applied, err := applyRow(txApp, userID, table, c.payload)
+	var applied bool
+	switch table.Kind {
+	case KindOwnMembership:
+		applied, err = pushOwnMembership(txApp, userID, c.operation, c.payload)
+	case KindOrganization:
+		applied, err = pushOrganization(txApp, userID, c.payload)
+	default:
+		applied, err = applyRow(txApp, userID, table, c.payload)
+	}
 	return c.id, applied, err
+}
+
+// pushOwnMembership is private.set_own_member_name after 20261116120000:
+// memberships are written only by the team routes (P5.4). An older app may
+// still send the member's own name; the change is accepted and not applied
+// when it is the caller's own live membership, forbidden otherwise. A
+// membership is never deleted by sync.
+func pushOwnMembership(txApp core.App, userID, operation string, payload map[string]json.RawMessage) (bool, error) {
+	if operation != "upsert" {
+		return false, reject(ReasonUnsupported, "Memberships are not deleted by sync.")
+	}
+	var id string
+	if json.Unmarshal(payload["id"], &id) != nil || !pattern.IsUUID(id) {
+		return false, reject(ReasonInvalid, "id must be a UUID.")
+	}
+	var own struct {
+		ID string `db:"id"`
+	}
+	err := txApp.DB().Select("id").From("memberships").
+		Where(dbx.HashExp{"id": id, "user_id": userID, "deleted_at": ""}).
+		Limit(1).One(&own)
+	if errors.Is(err, sql.ErrNoRows) {
+		return false, reject(ReasonForbidden, "Only your own membership can be sent.")
+	}
+	if err != nil {
+		return false, err
+	}
+	return false, nil
+}
+
+// pushOrganization is the organization branch of private.sync_push_change:
+// an organization is created only by the create route (P5.4); push updates
+// a visible one, for owners and partners, when updated_at is newer. Columns
+// the payload lacks (an older app's: operation_type, avatar_color,
+// logo_path) keep the stored value (existing_row || row_data).
+func pushOrganization(txApp core.App, userID string, payload map[string]json.RawMessage) (bool, error) {
+	collection, err := txApp.FindCachedCollectionByNameOrId("organizations")
+	if err != nil {
+		return false, err
+	}
+	var id string
+	if json.Unmarshal(payload["id"], &id) != nil || !pattern.IsUUID(id) {
+		return false, reject(ReasonInvalid, "id must be a UUID.")
+	}
+	values, err := decodeValues(collection, payload, true)
+	if err != nil {
+		return false, err
+	}
+	notFound := reject(ReasonForbidden, "No such organization, or you are not its member; an organization is created with create_organization.")
+	existing, err := txApp.FindRecordById(collection, id)
+	if errors.Is(err, sql.ErrNoRows) {
+		return false, notFound
+	}
+	if err != nil {
+		return false, err
+	}
+	visible, err := authz.CanSeeRow(txApp, "organizations", existing, userID)
+	if err != nil {
+		return false, err
+	}
+	if !visible {
+		return false, notFound
+	}
+	updatedAt, _ := values["updated_at"].(string)
+	if updatedAt <= existing.GetString("updated_at") {
+		return false, nil
+	}
+	ok, err := authz.Can(txApp, userID, "organizations", id, authz.Update)
+	if err != nil {
+		return false, err
+	}
+	if !ok {
+		return false, reject(ReasonForbidden, "Only owners and partners update the organization.")
+	}
+	for name, v := range values {
+		if !keptOnUpdate[name] {
+			existing.Set(name, v)
+		}
+	}
+	if err := checkRow(txApp, "organizations", existing, false); err != nil {
+		return false, err
+	}
+	return save(txApp, existing)
 }
 
 // skipped are the columns push never takes from the payload: id is the
@@ -304,7 +395,7 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 	if json.Unmarshal(payload["id"], &id) != nil || !pattern.IsUUID(id) {
 		return false, reject(ReasonInvalid, "id must be a UUID.")
 	}
-	values, err := decodeValues(collection, payload)
+	values, err := decodeValues(collection, payload, false)
 	if err != nil {
 		return false, err
 	}
@@ -315,8 +406,10 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 			return false, reject(ReasonInvalid, "%s", err.Error())
 		}
 	}
+	roundNumerics(table.Name, values)
 	updatedAt, _ := values["updated_at"].(string)
 	deletedAt, _ := values["deleted_at"].(string)
+	orgID, _ := values["org_id"].(string)
 
 	existing, err := txApp.FindRecordById(collection, id)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -326,18 +419,35 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 		return false, err
 	}
 
+	// The row as the payload proposes it: Supabase's insert tuple, which
+	// the BEFORE INSERT triggers rewrote and the CHECKs saw before the
+	// conflict with a stored row was known.
+	candidate := core.NewRecord(collection)
+	candidate.Id = id
+	for name, v := range values {
+		candidate.Set(name, v)
+	}
+	candidate.Set("created_by", userID)
+	proposed := func() error {
+		if err := guardRow(txApp, userID, table.Name, orgID, candidate, existing, payload); err != nil {
+			return err
+		}
+		return checkRow(txApp, table.Name, candidate, true)
+	}
+
 	if existing == nil {
-		orgID, _ := values["org_id"].(string)
 		if err := require(txApp, userID, table.Name, orgID, authz.Insert); err != nil {
 			return false, err
 		}
-		record := core.NewRecord(collection)
-		record.Id = id
-		for name, v := range values {
-			record.Set(name, v)
+		if err := proposed(); err != nil {
+			return false, err
 		}
-		record.Set("created_by", userID)
-		return save(txApp, record)
+		if _, err := save(txApp, candidate); err != nil {
+			return false, err
+		}
+		// After the write, like Postgres' foreign key triggers: a unique
+		// index conflict is reported first.
+		return true, checkRefs(txApp, table.Name, candidate, nil)
 	}
 
 	// Supabase's upsert updates a row the caller cannot see (another
@@ -351,6 +461,11 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 	if !visible {
 		return false, reject(ReasonForbidden, "The row belongs to an organization you cannot write to.")
 	}
+	// Guards run in the stored row's organization (org_id never changes).
+	orgID = existing.GetString("org_id")
+	if err := proposed(); err != nil {
+		return false, err
+	}
 
 	switch table.Kind {
 	case KindState:
@@ -358,15 +473,30 @@ func applyRow(txApp core.App, userID string, table Table, payload map[string]jso
 		if updatedAt <= existing.GetString("updated_at") {
 			return false, nil
 		}
-		if err := require(txApp, userID, table.Name, existing.GetString("org_id"), authz.Update); err != nil {
+		if err := require(txApp, userID, table.Name, orgID, authz.Update); err != nil {
 			return false, err
 		}
-		for name, v := range values {
+		before := map[string]string{}
+		for _, ref := range refsOf(table.Name) {
+			before[ref.Column] = existing.GetString(ref.Column)
+		}
+		for name := range values {
 			if !keptOnUpdate[name] {
-				existing.Set(name, v)
+				// The candidate holds the guarded values.
+				existing.Set(name, candidate.Get(name))
 			}
 		}
-		return save(txApp, existing)
+		// The CHECKs again on the updated row: org_id and created_at are
+		// the stored ones.
+		if err := checkRow(txApp, table.Name, existing, false); err != nil {
+			return false, err
+		}
+		if _, err := save(txApp, existing); err != nil {
+			return false, err
+		}
+		return true, checkRefs(txApp, table.Name, existing, func(column string) bool {
+			return existing.GetString(column) != before[column]
+		})
 	case KindEvent:
 		// An event row is written once; only its deletion is recorded,
 		// once.
@@ -460,16 +590,21 @@ func IsTransient(err error) bool {
 // decodeValues reads the payload into the collection's column values, by
 // column name. Keys that are not columns are ignored (an older app's
 // payload; Supabase's jsonb_populate_record did the same), and a missing
-// column counts as null, as there. id, created_by and server_seq are never
-// taken from the payload.
-func decodeValues(collection *core.Collection, payload map[string]json.RawMessage) (map[string]any, error) {
+// column counts as null, as there; with onlyPresent it is left out instead
+// (organizations keep the stored value). id, created_by and server_seq are
+// never taken from the payload.
+func decodeValues(collection *core.Collection, payload map[string]json.RawMessage, onlyPresent bool) (map[string]any, error) {
 	values := map[string]any{}
 	for _, f := range collection.Fields {
 		name := f.GetName()
 		if skipped[name] {
 			continue
 		}
-		v, err := decodeValue(f, payload[name])
+		raw, present := payload[name]
+		if onlyPresent && !present {
+			continue
+		}
+		v, err := decodeValue(f, raw)
 		if err != nil {
 			return nil, reject(ReasonInvalid, "%s: %s", name, err.Error())
 		}
