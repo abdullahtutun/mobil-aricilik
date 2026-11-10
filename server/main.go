@@ -6,6 +6,7 @@ import (
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/bootstrap"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/schemadump"
 	_ "github.com/abdullahtutun/mobil-aricilik/server/migrations"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
@@ -27,6 +28,9 @@ func main() {
 		Dir:         "migrations",
 		Automigrate: false,
 	})
+
+	// `go run . schema dump` rewrites schema/collections.json (P2.8).
+	app.RootCmd.AddCommand(schemadump.NewCommand())
 
 	bootstrap.Register(app, config.Load(nil), version)
 

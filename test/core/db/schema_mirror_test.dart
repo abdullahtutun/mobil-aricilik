@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -97,8 +98,46 @@ _serverSchema() {
   return (tables: tables, enums: enums, supportedVersions: supportedVersions);
 }
 
+/// PocketBase şema dökümü (`server/schema/collections.json`, P2.8):
+/// `server_seq` alanı olan, yani senkronlanan koleksiyonların alan adları ve
+/// select alanlarının değerleri (`koleksiyon.alan` anahtarıyla).
+({Map<String, Set<String>> collections, Map<String, List<String>> selects})
+_pocketBaseSchema() {
+  final dump = jsonDecode(
+    File('server/schema/collections.json').readAsStringSync(),
+  ) as List<dynamic>;
+  final collections = <String, Set<String>>{};
+  final selects = <String, List<String>>{};
+  for (final collection in dump.cast<Map<String, dynamic>>()) {
+    final name = collection['name'] as String;
+    final fields = (collection['fields'] as List<dynamic>)
+        .cast<Map<String, dynamic>>();
+    if (!fields.any((field) => field['name'] == 'server_seq')) continue;
+    collections[name] = {for (final field in fields) field['name'] as String};
+    for (final field in fields.where((field) => field['type'] == 'select')) {
+      selects['$name.${field['name']}'] = (field['values'] as List<dynamic>)
+          .cast<String>();
+    }
+  }
+  return (collections: collections, selects: selects);
+}
+
 void main() {
   final server = _serverSchema();
+  final pocketBase = _pocketBaseSchema();
+
+  /// Bu telefondaki senkron tabloları ve kolonları. Yalnız bu telefondaki
+  /// tablolar (outbox, taslaklar) `server_seq` taşımaz.
+  Map<String, Set<String>> localSyncedTables() {
+    final db = openTestDatabase();
+    return {
+      for (final table in db.allTables)
+        if (table.$columns.any((column) => column.name == 'server_seq'))
+          table.actualTableName: {
+            for (final column in table.$columns) column.name,
+          },
+    };
+  }
 
   test('migration ayrıştırması tabloları ve enumları buluyor', () {
     expect(server.tables['hives'], containsAll(['id', 'org_id', 'number']));
@@ -110,16 +149,7 @@ void main() {
   });
 
   test('senkronlanan tablolar sunucudaki kolonların aynası', () {
-    final db = openTestDatabase();
-    // Yalnız bu telefondaki tablolar (outbox, taslaklar) `server_seq`
-    // taşımaz.
-    final local = {
-      for (final table in db.allTables)
-        if (table.$columns.any((column) => column.name == 'server_seq'))
-          table.actualTableName: {
-            for (final column in table.$columns) column.name,
-          },
-    };
+    final local = localSyncedTables();
 
     // PostGIS noktası yerelde iki kolon. Yalnız sunucudaki tablolar
     // (`weather_cache`) da `server_seq` taşımaz ve aynalanmaz.
@@ -185,6 +215,87 @@ void main() {
     };
 
     expect(local, server.enums);
+  });
+
+  group('PocketBase dökümü', () {
+    test('döküm ayrıştırması koleksiyonları ve select alanlarını buluyor', () {
+      expect(
+        pocketBase.collections['hives'],
+        containsAll(['id', 'org_id', 'number', 'server_seq']),
+      );
+      expect(pocketBase.selects['queens.source'], [
+        'own_rearing',
+        'purchased',
+        'certified_breeder',
+      ]);
+      // Senkronlanmayan koleksiyonlar (`server_seq`'siz) aynalanmaz.
+      expect(pocketBase.collections, isNot(contains('weather_cache')));
+    });
+
+    test('senkron koleksiyonlarının alanları Drift tablolarında', () {
+      // Konum PocketBase'de de enlem + boylam; dönüşüm yok.
+      expect(localSyncedTables(), pocketBase.collections);
+    });
+
+    test('select değerleri Dart enumlarıyla aynı, aynı sırada', () {
+      List<String> values(List<ServerEnum> values) => [
+        for (final e in values) e.value,
+      ];
+      final hiveStatus = values(HiveStatus.values);
+      final activeIngredient = values(DrugActiveIngredient.values);
+      final doseUnit = values(DrugDoseUnit.values);
+      final honeyKind = values(HoneyKind.values);
+      final local = {
+        'apiaries.land_tenure': values(LandTenure.values),
+        'documents.type': values(DocumentType.values),
+        'documents.file_kind': values(DocumentFileKind.values),
+        'drugs.active_ingredient': activeIngredient,
+        'drugs.dose_unit': doseUnit,
+        'feedings.kind': values(FeedingKind.values),
+        'harvest_hives.withdrawal_override_reason': values(
+          WithdrawalOverrideReason.values,
+        ),
+        'harvests.honey_kind': honeyKind,
+        'harvests.unit': values(HarvestUnit.values),
+        'hive_status_events.from_status': hiveStatus,
+        'hive_status_events.to_status': hiveStatus,
+        'hive_status_events.loss_reason': values(HiveLossReason.values),
+        'hives.type': values(HiveType.values),
+        'hives.status': hiveStatus,
+        'hives.source': values(HiveSource.values),
+        'inspections.queen_state': values(QueenState.values),
+        'inspections.temperament': values(Temperament.values),
+        'inspections.queen_cells': values(QueenCells.values),
+        'inventory_items.category': values(InventoryCategory.values),
+        'inventory_items.unit': values(InventoryUnit.values),
+        'inventory_moves.kind': values(InventoryMoveKind.values),
+        'lab_results.residue': values(ResidueResult.values),
+        'lots.honey_kind': honeyKind,
+        'lots.status': values(LotStatus.values),
+        'mating_nucs.status': values(MatingNucStatus.values),
+        'media.kind': values(MediaKind.values),
+        'memberships.role': values(MembershipRole.values),
+        'migration_stops.status': values(MigrationStopStatus.values),
+        'mite_counts.method': values(MiteCountMethod.values),
+        'organizations.hive_count_range': values(HiveCountRange.values),
+        'organizations.operation_type': values(OperationType.values),
+        'organizations.avatar_color': values(OrgAvatarColor.values),
+        // Dart adları sunucu değerleriyle aynı.
+        'queens.mark_color': [for (final e in QueenMarkColor.values) e.name],
+        'queens.source': values(QueenSource.values),
+        'queens.mating_status': values(QueenMatingStatus.values),
+        'ref_drugs.active_ingredient': activeIngredient,
+        'ref_drugs.dose_unit': doseUnit,
+        'tasks.source': values(TaskSource.values),
+        'transactions.kind': values(TransactionKind.values),
+        'transactions.category': values(TransactionCategory.values),
+        'transports.status': values(TransportStatus.values),
+        'treatments.active_ingredient': activeIngredient,
+        'treatments.dose_unit': doseUnit,
+      };
+
+      expect(local, pocketBase.selects);
+    });
   });
 
   test('sync_push Drift şema sürümünü kabul eder', () {

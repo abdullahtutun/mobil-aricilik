@@ -15,11 +15,14 @@ internal/ids/           # eksik id'yi UUIDv7 ile doldurur
 internal/users/         # users varsayılanları (locale = en)
 internal/sync/          # senkron koleksiyonları listesi (registry.go), server_seq sayacı (seq.go)
 internal/validate/      # alan seçeneğiyle ifade edilemeyen Supabase CHECK'leri
+internal/schemadump/    # şema dökümü, `schema dump` komutu, döküm özeti
+schema/collections.json # migration'ların kurduğu şemanın dökümü (P2.8, elle düzenlenmez)
 migrations/             # Go şema migration'ları (K-3); schema.go ortak kalıp yardımcıları
 ops/coolify.md          # Coolify panel ayarları (P1.3)
 ops/backup.md           # gece yedeği, Mac'e indirme, geri yükleme (P1.4)
 ops/pull_backup.sh      # en yeni yedeği Mac'e indirir
 ops/restore_check.sh    # bir yedeği yerelde açıp dener
+ops/schema_check.sh     # canlı şemanın özetini repodaki dökümle karşılaştırır
 ```
 
 ## Yerel çalıştırma
@@ -41,6 +44,7 @@ Uçlar:
 
 - `GET /api/health`: PocketBase'in sağlık denetimi, 200.
 - `GET /api/app/info`: `{"env": "dev|prod", "version": "<git commit>"}`; oturumsuz, gizli değer içermez. Araçlar dev/prod ayrımını buradan yapar. `APP_ENV` yoksa ya da geçersizse `env` boş döner.
+- `GET /api/app/schema-hash`: yalnız superuser; `{"sha256": "…"}`, canlı şema dökümünün özeti.
 
 ## Ortam değişkenleri
 
@@ -53,6 +57,16 @@ Adların tam listesi `internal/config/config.go`'daki `Known`'da ve dokümanın 
 ```sh
 go run . migrate create <ad>   # migrations/<zaman>_<ad>.go açar
 go run . migrate up            # bekleyenleri uygular (serve da açılışta uygular)
+go run . schema dump           # schema/collections.json'u yeniden yazar
+```
+
+Migration değişince `go run . schema dump` çalıştırılır ve döküm aynı commit'e girer; `TestDumpUpToDate` eski dökümle kırılır. Döküm boş geçici bir uygulamada üretilir, yerel `pb_data` okunmaz. Ad sırasıyla sistem dışı koleksiyonlar: kurallar, alanlar (id'siz) ve sıralı index'ler.
+
+Deploy sonrası canlı sapma denetimi (superuser bilgisi kendi kabuğundan, K-10):
+
+```sh
+export PB_SUPERUSER_EMAIL=… PB_SUPERUSER_PASSWORD=…
+server/ops/schema_check.sh https://arici-api-dev.tutunsoft.com   # 0 eşit, 1 sapma
 ```
 
 ## Test

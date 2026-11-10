@@ -15,8 +15,10 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/schemadump"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/users"
+	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
 
@@ -25,6 +27,11 @@ import (
 type Info struct {
 	Env     string `json:"env"`
 	Version string `json:"version"`
+}
+
+// SchemaHash is the body of GET /api/app/schema-hash (superusers only).
+type SchemaHash struct {
+	SHA256 string `json:"sha256"`
 }
 
 // Register binds the record hooks, the startup log and the app routes.
@@ -50,6 +57,15 @@ func Register(app core.App, cfg config.Config, version string) {
 		se.Router.GET("/api/app/info", func(e *core.RequestEvent) error {
 			return e.JSON(http.StatusOK, Info{Env: cfg.Env, Version: version})
 		})
+		// Live drift check (P2.8): server/ops/schema_check.sh compares this
+		// with the SHA-256 of server/schema/collections.json.
+		se.Router.GET("/api/app/schema-hash", func(e *core.RequestEvent) error {
+			sum, err := schemadump.Hash(e.App)
+			if err != nil {
+				return e.InternalServerError("", err)
+			}
+			return e.JSON(http.StatusOK, SchemaHash{SHA256: sum})
+		}).Bind(apis.RequireSuperuserAuth())
 		return se.Next()
 	})
 }

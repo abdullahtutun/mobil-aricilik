@@ -959,6 +959,14 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - `internal/validate/unsynced.go`: `InvitesCheck`, `FeedbackCheck` (`<org>/<id>.jpg`), `FeedbackMessageCheck`, `FeedbackDeviceInfoCheck` ve `AnalyticsEventsPropsCheck` (nesne; boyut `octet_length(jsonb::text)` gibi ölçülüyor, beklenen uzunluklar canlı Postgres'te ölçüldü), `DeletionRequestsCheck`…`Check3`, `DeletionRequestsDeleteOrgIdsCheck` (UUID dizisi). Testli. CLI ile up → down 1 → up denendi. `go test -race ./...`, `flutter analyze`, `flutter test` (2438) temiz.
 - Bilinen: Sütun varsayılanları yok (`status` bekliyor, `attempts` 0, `sent_in_window` 1, `props` `{}`, `delete_org_ids` `[]`, zamanların `now()`'ı, davetin 48 saati); yazan sunucu kodu (P5.5–P5.9) vermeli. `notify_feedback_mail` ve `sync_member_deletion_schedule` trigger'ları ilgili adımlarda.
 
+### 2026-11-10 — P2.8 Şema dökümü ve `schema_mirror_test` uyarlaması
+
+- `server/internal/schemadump` + `go run . schema dump` (cobra): boş geçici bir uygulamada bütün migration'ları uygular, sistem dışı koleksiyonları ad sırasıyla `server/schema/collections.json`'a yazar (ad, tür, kurallar, alanların kendi JSON'u id'siz + `type`, sıralı index'ler; koleksiyon/alan id'leri ve zaman damgaları dışarıda). `TestDumpUpToDate` dökümü yeniden üretip dosyayla karşılaştırıyor, farkta ilk farklı satırı ve "`go run . schema dump` çalıştır" mesajını veriyor; `hives.type`'a geçici değer eklenerek kırıldığı denendi.
+- `GET /api/app/schema-hash` (`apis.RequireSuperuserAuth`): canlı dökümün SHA-256'sı; anonim 401, users token'ı 403 (testli). `server/ops/schema_check.sh <url>`: superuser bilgisi kabuktan, jq ile stdin'den, token 0600 dosyadan; repodaki dosyanın `shasum`'uyla karşılaştırır (0 eşit, 1 sapma, 2 hata). Yerelde derlenmiş ikiliyle denendi: eşit; `_collections`'ta `hives.listRule` elle değiştirilince `DRIFT`, çıkış 1.
+- `test/core/db/schema_mirror_test.dart` ikinci kaynak: `server_seq`'li koleksiyonların alan adları Drift tablolarıyla birebir (konum PocketBase'de de enlem + boylam, dönüşüm yok); select alanları `koleksiyon.alan` anahtarıyla Dart enum değerleriyle aynı sırada (43 alan, iki yönde de eksiksiz). Supabase SQL kaynağı P11.1'e kadar duruyor; iki kaynak da geçiyor.
+- `internal/sync/coverage_test.go` (`sync_seq.test.sql` + `rls_enabled.test.sql`'in server_seq kısmı): kayıt listesindeki her koleksiyonda zorunlu tam sayı `server_seq` ve tekil index'i; listede olmayan hiçbir koleksiyonda (sistem dahil) alan yok; create/update hook zinciri her listedeki koleksiyonda sayacı bir artırıp numarayı yazıyor, diğerlerinde sayaca dokunmuyor.
+- `go test ./...`, `go run . schema dump && git diff --exit-code server/schema/`, `flutter analyze`, `flutter test` (2441) temiz. Kalan: dev deploy sonrası `schema_check.sh https://arici-api-dev.tutunsoft.com`'u kullanıcı çalıştıracak.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
