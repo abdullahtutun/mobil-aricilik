@@ -95,6 +95,17 @@ func timeField(name string, required bool) *core.TextField {
 	}
 }
 
+// dateField is a Postgres `date` column stored as YYYY-MM-DD text (K-5).
+func dateField(name string, required bool) *core.TextField {
+	return &core.TextField{
+		Name:     name,
+		Required: required,
+		Min:      pattern.DateLength,
+		Max:      pattern.DateLength,
+		Pattern:  pattern.Date,
+	}
+}
+
 // selectField mirrors a Postgres enum: one value out of values, which must be
 // the enum's labels verbatim. An optional enum is required == false.
 func selectField(name string, required bool, values ...string) *core.SelectField {

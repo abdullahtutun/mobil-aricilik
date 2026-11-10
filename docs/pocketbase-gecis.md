@@ -25,7 +25,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P2.1 | Şema kalıbı, ortak alanlar, `server_seq` sayacı, users, organizations, memberships | P1.2 | ☑ |
 | P2.2 | Koleksiyonlar: arılıklar, kovanlar, ana arılar, kovan geçmişi | P2.1 | ☑ |
 | P2.3 | Koleksiyonlar: muayene, medya, varroa, ilaçlar, ilaçlama, besleme | P2.2 | ☑ |
-| P2.4 | Koleksiyonlar: görev, hasat, belge, göç, taşıma | P2.3 | ☐ |
+| P2.4 | Koleksiyonlar: görev, hasat, belge, göç, taşıma | P2.3 | ☑ |
 | P2.5 | Koleksiyonlar: stok, ana yetiştirme, lotlar ve analiz | P2.4 | ☐ |
 | P2.6 | Koleksiyonlar: finans, müşteri, destek dönemleri; referans verinin taşınması | P2.5 | ☐ |
 | P2.7 | Senkronlanmayan koleksiyonlar: davet, token, görüş, analitik, hava önbelleği, silme | P2.6 | ☐ |
