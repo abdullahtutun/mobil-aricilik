@@ -36,7 +36,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P6.2 | Bilgi bankası paketi ve yayımlama aracı | P6.1 | ☐ |
 | P4.1 | OTP girişi: ilk istekte kullanıcı açma, 9 dilli e-posta, demo hesap | P3.2 | ☑ |
 | P4.2 | SMTP (Hostinger) ve oturum ayarları ortam değişkeninden; canlı e-posta denemesi | P4.1, P1.3 | ☑ |
-| P5.1 | Senkron çekme: `/api/sync/pull` | P3.2 | ☐ |
+| P5.1 | Senkron çekme: `/api/sync/pull` | P3.2 | ☑ |
 | P5.2 | Senkron gönderme çekirdeği: `/api/sync/push`, LWW, olay, sonuçlar | P5.1 | ☐ |
 | P5.3 | Gönderme özel kuralları: işletme, üyelik, korumalar, doğrulama | P5.2 | ☐ |
 | P5.4 | İşletme kurma ve ekip daveti route'ları | P5.3 | ☐ |
