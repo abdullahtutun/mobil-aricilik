@@ -1,7 +1,7 @@
 import 'dart:ui' show IsolateNameServer;
 
+import 'package:mobil_arici/app/backend_setup.dart';
 import 'package:mobil_arici/app/flavor.dart';
-import 'package:mobil_arici/app/supabase_setup.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/services/connectivity_service.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
@@ -10,7 +10,6 @@ import 'package:mobil_arici/core/sync/media_upload_scheduler.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:workmanager/workmanager.dart';
 
 /// Periyodik senkron görevinin kimliği. iOS'ta `AppDelegate` ve
@@ -40,7 +39,8 @@ Future<void> registerBackgroundSync(Flavor flavor) async {
 /// Uygulama açıksa (aynı süreçte) işi ona devreder ve hemen biter: iki
 /// motor aynı oturumu yenilerse refresh token yeniden kullanılmış sayılıp
 /// oturum düşebilir, iki tur da aynı outbox'ı gönderir. Uygulama kapalıysa
-/// Supabase'i ve DB'yi kendisi açar. Oturum yoksa bir şey yapmaz.
+/// sunucu istemcisini ([backendDefine] ya da flavor'ın varsayılanı) ve DB'yi
+/// kendisi açar. Oturum yoksa bir şey yapmaz.
 ///
 /// Periyodik görev senkron turundan sonra bekleyen medyayı da yükler.
 /// Medya görevi yalnız yükler; geçici hatada false döner ve Android
@@ -57,16 +57,18 @@ void backgroundSyncDispatcher() {
     final flavor = Flavor.values.asNameMap()[inputData?[backgroundFlavorKey]];
     if (flavor == null) return true;
 
-    await initializeSupabase(flavor);
-    final client = Supabase.instance.client;
-    if (client.auth.currentSession == null) return true;
+    final connection = await openBackgroundConnection(
+      flavor,
+      resolveBackend(flavor),
+    );
+    if (connection == null) return true;
 
     final db = openAppDatabase();
     try {
-      if (!media) await SyncService(db, client).sync();
+      if (!media) await SyncService(db, connection.sync).sync();
       final uploaded = await MediaSyncService(
         db,
-        client,
+        connection.files,
         MediaFileStore.app(),
         PlusConnectivityService(),
       ).uploadPending();

@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/sync_repository.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
@@ -12,7 +13,7 @@ import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
-import 'package:mobil_arici/features/organization/data/organization_service.dart';
+import 'package:mobil_arici/features/organization/data/supabase_organization_service.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -133,7 +134,7 @@ class TestDevice {
 
   late final sync = SyncService(
     db,
-    client,
+    SupabaseSyncTransport(client),
     clock: clock.call,
     // Yeniden denemeler beklemeden yapılır.
     delay: (_) async {},

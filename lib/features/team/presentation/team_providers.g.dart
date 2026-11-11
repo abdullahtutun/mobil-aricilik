@@ -52,7 +52,7 @@ final class TeamServiceProvider
   }
 }
 
-String _$teamServiceHash() => r'5cb9165e6797b8458fedb702204fab459e3cf3ae';
+String _$teamServiceHash() => r'8843bcb5208e35a441f018e916cfc61b6291c6c6';
 
 /// Oturumdaki kullanıcının işletmedeki rolü; üyeliği henüz yerel DB'ye
 /// inmediyse null.

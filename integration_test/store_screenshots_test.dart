@@ -21,7 +21,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
-import 'package:mobil_arici/features/auth/data/secure_session_storage.dart';
+import 'package:mobil_arici/features/auth/data/supabase_session_storage.dart';
 import 'package:mobil_arici/features/weather/data/weather_service.dart';
 import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';

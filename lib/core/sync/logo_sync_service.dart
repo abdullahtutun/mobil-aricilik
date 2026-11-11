@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/file_store.dart';
 import 'package:mobil_arici/core/sync/storage_file_sync.dart';
 import 'package:mobil_arici/features/organization/domain/business_profile.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// İşletme logosunu `org-logos` bucket'ına yükler ve indirir; kural belge
 /// ve fiş dosyalarınınkiyle aynı ([StorageFileSync]). İşletme satırı
@@ -13,10 +13,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// Uygulamada tek örnek `logoSyncServiceProvider`'dan gelir.
 class LogoSyncService {
-  new(this._db, this._client, this._files, {this.clock = DateTime.now});
+  new(this._db, this._store, this._files, {this.clock = DateTime.now});
 
   final AppDatabase _db;
-  final SupabaseClient _client;
+  final FileStore _store;
   final MediaFileStore _files;
 
   /// Yeniden deneme zamanının kaynağı; testler sabit saat verir.
@@ -25,7 +25,7 @@ class LogoSyncService {
   static const bucket = 'org-logos';
 
   late final _sync = StorageFileSync(
-    _client,
+    _store,
     _files,
     bucket: bucket,
     clock: clock,

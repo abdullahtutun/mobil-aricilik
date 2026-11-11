@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
-import 'package:mobil_arici/features/team/data/team_service.dart';
+import 'package:mobil_arici/features/team/data/supabase_team_service.dart';
 import 'package:mobil_arici/features/team/domain/team_failure.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

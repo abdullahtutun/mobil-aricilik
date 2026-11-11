@@ -9,6 +9,7 @@ import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/sync/document_sync_service.dart';
+import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/features/documents/data/document_repository.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/domain/document_rules.dart';
@@ -56,7 +57,12 @@ void main() {
       }),
     );
     addTearDown(client.dispose);
-    service = DocumentSyncService(db, client, files, clock: clock.call);
+    service = DocumentSyncService(
+      db,
+      SupabaseFileStore(client),
+      files,
+      clock: clock.call,
+    );
   });
 
   /// Dosyası belge klasöründe olan bir belge yazar.

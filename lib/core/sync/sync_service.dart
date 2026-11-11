@@ -5,11 +5,10 @@ import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:mobil_arici/core/sync/sync_transport.dart';
 
-/// Yerel DB ile sunucu arasındaki senkron (teknik.md §3). Supabase
-/// istemcisine dokunan tek senkron sınıfı; ekranlar ve repository'ler ağa
-/// gitmez.
+/// Yerel DB ile sunucu arasındaki senkron (teknik.md §3). Sunucuya
+/// [SyncTransport] üzerinden gider; ekranlar ve repository'ler ağa gitmez.
 ///
 /// Aynı anda tek tur çalışır. Tur sürerken gelen çağrı yeni tur başlatmaz,
 /// süren turun sonucunu bekler. Kilit nesneye bağlıdır; uygulamada tek
@@ -17,13 +16,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SyncService {
   new(
     this._db,
-    this._client, {
+    this._transport, {
     this.clock = DateTime.now,
     this.delay = Future<void>.delayed,
   });
 
   final AppDatabase _db;
-  final SupabaseClient _client;
+  final SyncTransport _transport;
 
   /// `client_time` kaynağı; testler sabit saat verir.
   final DateTime Function() clock;
@@ -45,9 +44,6 @@ class SyncService {
   /// denenir (1 + 2 + 4 + 8 + 16 = 31 sn bekleme), sonra tur
   /// [SyncStatus.retryLater] ile biter.
   static const maxRetries = 5;
-
-  /// Tek isteğin süre sınırı; askıda kalan bağlantı kilidi tutmasın.
-  static const requestTimeout = Duration(seconds: 30);
 
   /// Son gönderimde kabul edilen kayıtların en uzun bekleyeni: yerelde
   /// yazılmasından sunucunun kabul etmesine kadar geçen süre (senkron
@@ -134,7 +130,7 @@ class SyncService {
   }
 
   /// Outbox'ı oluşturulma sırasıyla [batchSize]'lık paketler halinde
-  /// `sync_push`'a gönderir.
+  /// gönderir.
   ///
   /// Sunucunun kabul ettiği kayıtlar silinir. Reddedilen kayıt (RLS, geçersiz
   /// veri) `last_error`'a `<reason>: <message>` olarak işaretlenir, outbox'ta
@@ -180,8 +176,8 @@ class SyncService {
   /// [maxRetries] kez yeniden dener. Başarısız her denemeden sonra önce
   /// [onFailure] çalışır. Hata geçici değilse ya da denemeler biterse turu
   /// hatanın durumuyla bitirir ([_TurnEnded]).
-  Future<Map<String, dynamic>> _withRetry(
-    Future<Map<String, dynamic>> Function() request, {
+  Future<T> _withRetry<T>(
+    Future<T> Function() request, {
     Future<void> Function()? onFailure,
   }) async {
     for (var retries = 0; ; retries++) {
@@ -206,50 +202,34 @@ class SyncService {
             ..limit(batchSize))
           .get();
 
-  Future<Map<String, dynamic>> _send(List<OutboxEntry> batch) => _client
-      .rpc<Map<String, dynamic>>(
-        'sync_push',
-        params: {
-          'changes': [
-            for (final entry in batch)
-              {
-                'id': entry.id,
-                'table': entry.recordTable,
-                'operation': entry.operation.name,
-                'payload': entry.payload,
-              },
-          ],
-          'client_time': clock().toUtc().toIso8601String(),
-          'schema_version': _db.schemaVersion,
-        },
-      )
-      // POST zaten kendiliğinden yeniden denenmez; burada yalnız süre sınırı
-      // konur, yeniden denemeyi [_push] yapar.
-      .retry(enabled: false, requestTimeout: requestTimeout);
+  Future<SyncPushResponse> _send(List<OutboxEntry> batch) => _transport.push(
+    [
+      for (final entry in batch)
+        (
+          id: entry.id,
+          table: entry.recordTable,
+          operation: entry.operation.name,
+          payload: entry.payload,
+        ),
+    ],
+    clientTime: clock(),
+    schemaVersion: _db.schemaVersion,
+  );
 
   /// Yanıttaki sonuçları tek transaction'da işler: `ok` kayıtlar silinir,
   /// `rejected` kayıtlar işaretlenir. Yanıtta sonucu olmayan ya da tanınmayan
   /// kayıt yerinde kalır ve `complete` false döner.
   Future<({int pushed, int rejected, bool complete, Duration? maxDelay})>
-  _apply(List<OutboxEntry> batch, Map<String, dynamic> response) async {
-    final results = <int, Map<String, dynamic>>{
-      if (response['results'] case final List<dynamic> list)
-        for (final result in list)
-          if (result case {'id': final int id} && final Map<String, dynamic> r)
-            id: r,
-    };
+  _apply(List<OutboxEntry> batch, SyncPushResponse response) async {
     final accepted = <int>[];
     final rejections = <int, String>{};
     for (final entry in batch) {
-      switch (results[entry.id]) {
-        case {'status': 'ok'}:
+      switch (response.results[entry.id]) {
+        case SyncPushAccepted():
           accepted.add(entry.id);
-        case {
-          'status': 'rejected',
-          'reason': final String reason,
-          'message': final String message,
-        }:
+        case SyncPushRejected(:final reason, :final message):
           rejections[entry.id] = '$reason: $message';
+        case null:
       }
     }
 
@@ -284,8 +264,8 @@ class SyncService {
         ),
       );
 
-  /// [pullTables]'ı sırayla, imleçten itibaren `sync_pull` ile sayfa sayfa
-  /// çeker ve yerel DB'ye upsert eder.
+  /// [pullTables]'ı sırayla, imleçten itibaren sayfa sayfa çeker ve yerel
+  /// DB'ye upsert eder.
   ///
   /// Her sayfa tek transaction'da yazılır; imleç yalnız sayfa yazılınca
   /// ilerler, kesilen çekme kaldığı yerden sürer. Outbox'ta bekleyen
@@ -319,7 +299,13 @@ class SyncService {
         // Atlanan ilk satırın bir öncesi; imleç bu turda bunu geçmez.
         int? hold;
         while (true) {
-          final response = await _withRetry(() => _fetch(table, since));
+          final response = await _withRetry(
+            () => _transport.pull(
+              table.actualTableName,
+              sinceSeq: since,
+              pageSize: pullPageSize,
+            ),
+          );
           final _Page page;
           try {
             page = _Page.parse(table, response);
@@ -385,20 +371,6 @@ class SyncService {
     return (rows: fresh.length, hold: newHold);
   });
 
-  Future<Map<String, dynamic>> _fetch(
-    TableInfo<Table, Object?> table,
-    int since,
-  ) => _client
-      .rpc<Map<String, dynamic>>(
-        'sync_pull',
-        params: {
-          'table_name': table.actualTableName,
-          'since_seq': since,
-          'page_size': pullPageSize,
-        },
-      )
-      .retry(enabled: false, requestTimeout: requestTimeout);
-
   Future<int> _cursor(TableInfo<Table, Object?> table) async {
     final query = _db.select(_db.syncState)
       ..where((t) => t.recordTable.equals(table.actualTableName));
@@ -431,45 +403,13 @@ class SyncService {
   }
 
   /// Gönderim hatasının turu nasıl bitireceği; [SyncStatus.retryLater]
-  /// geçici hata demek.
+  /// geçici hata demek. Taşıyıcının sınıflamadığı hata (ör. zaman aşımı)
+  /// geçici sayılır.
   static SyncStatus _statusFor(Exception error) => switch (error) {
-    // Süresi dolmuş token çevrimdışı yenilenemedi.
-    AuthRetryableFetchException() => SyncStatus.retryLater,
-    // Refresh token reddedildi; oturum düşecek.
-    AuthException() => SyncStatus.failed,
-    PostgrestException(code: 'PT426' || '426') => SyncStatus.upgradeRequired,
-    PostgrestException(:final code?) when _isTransient(code) =>
-      SyncStatus.retryLater,
-    PostgrestException() => SyncStatus.failed,
-    // Bağlantı hatası (ClientException, SocketException) ya da zaman aşımı.
+    SyncUpgradeRequiredException() => SyncStatus.upgradeRequired,
+    SyncPermanentException() => SyncStatus.failed,
     _ => SyncStatus.retryLater,
   };
-
-  /// sync_push bu SQLSTATE sınıflarında paketi geri alır: bağlantı,
-  /// kilitlenme, kaynak yetersizliği, iptal ve zaman aşımı, sistem hatası.
-  static const _transientSqlStateClasses = {'08', '40', '53', '57', '58'};
-
-  /// `55P03` kilit beklenemedi. `PGRST000`–`PGRST003` PostgREST'in
-  /// veritabanına ulaşamaması. Sayılar, JSON dönmeyen ağ geçidinin HTTP
-  /// durumu (postgrest kodu böyle doldurur).
-  static const _transientCodes = {
-    '55P03',
-    'PGRST000',
-    'PGRST001',
-    'PGRST002',
-    'PGRST003',
-    '408',
-    '429',
-    '500',
-    '502',
-    '503',
-    '504',
-  };
-
-  static bool _isTransient(String code) =>
-      _transientCodes.contains(code) ||
-      (code.length == 5 &&
-          _transientSqlStateClasses.contains(code.substring(0, 2)));
 }
 
 /// Turu [status] ile bitirir: [SyncService._withRetry] atar, gönderme ya da
@@ -480,26 +420,17 @@ class _TurnEnded implements Exception {
   final SyncStatus status;
 }
 
-/// `sync_pull` yanıtının bir sayfası, yerel kolonlara çevrilmiş.
+/// Çekilen bir sayfa, yerel kolonlara çevrilmiş.
 class _Page {
   const new({required this.rows, required this.nextSeq, required this.hasMore});
 
-  /// Yanıt beklenen biçimde değilse ya da bir değer kolonuna uymuyorsa
-  /// [FormatException] atar; sayfanın hiçbir satırı yazılmaz.
-  factory parse(TableInfo<Table, Object?> table, Map<String, dynamic> json) {
-    if (json case {
-      'rows': final List<dynamic> rows,
-      'next_seq': final int nextSeq,
-      'has_more': final bool hasMore,
-    }) {
-      return _Page(
-        rows: [for (final row in rows) _Row.parse(table, row)],
-        nextSeq: nextSeq,
-        hasMore: hasMore,
-      );
-    }
-    throw const FormatException('sync_pull yanıtı beklenen biçimde değil');
-  }
+  /// Bir değer kolonuna uymuyorsa [FormatException] atar; sayfanın hiçbir
+  /// satırı yazılmaz.
+  factory parse(TableInfo<Table, Object?> table, SyncPullPage page) => _Page(
+    rows: [for (final row in page.rows) _Row.parse(table, row)],
+    nextSeq: page.nextSeq,
+    hasMore: page.hasMore,
+  );
 
   /// `server_seq` sırasında.
   final List<_Row> rows;

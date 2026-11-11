@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
+import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
@@ -624,7 +625,7 @@ void main() {
     addTearDown(client.dispose);
     service = SyncService(
       db,
-      client,
+      SupabaseSyncTransport(client),
       clock: clock.call,
       delay: (duration) async => delays.add(duration),
     );
@@ -978,7 +979,7 @@ void main() {
         final resume = Completer<void>();
         service = SyncService(
           db,
-          client,
+          SupabaseSyncTransport(client),
           clock: clock.call,
           delay: (_) {
             waiting.complete();

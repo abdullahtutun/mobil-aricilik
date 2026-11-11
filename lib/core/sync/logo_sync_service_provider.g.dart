@@ -56,4 +56,4 @@ final class LogoSyncServiceProvider
   }
 }
 
-String _$logoSyncServiceHash() => r'2fca42f596d0ccd7b76c4c9c5c04021039e16b51';
+String _$logoSyncServiceHash() => r'5fe5446da4083a827285fad4720ca0b1fa86c151';

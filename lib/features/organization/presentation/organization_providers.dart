@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ProviderListenableSelect;
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
@@ -10,6 +11,7 @@ import 'package:mobil_arici/features/organization/data/membership_repository.dar
 import 'package:mobil_arici/features/organization/data/organization_cache.dart';
 import 'package:mobil_arici/features/organization/data/organization_repository.dart';
 import 'package:mobil_arici/features/organization/data/organization_service.dart';
+import 'package:mobil_arici/features/organization/data/supabase_organization_service.dart';
 import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
@@ -21,7 +23,14 @@ part 'organization_providers.g.dart';
 /// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
 OrganizationService organizationService(Ref ref) =>
-    SupabaseOrganizationService(ref.watch(supabaseClientProvider));
+    switch (ref.watch(backendProvider)) {
+      Backend.supabase => SupabaseOrganizationService(
+        ref.watch(supabaseClientProvider),
+      ),
+      Backend.pocketbase => throw UnimplementedError(
+        'PocketBase işletme servisi: P7.5',
+      ),
+    };
 
 @Riverpod(keepAlive: true)
 OrganizationCache organizationCache(Ref ref) => const SecureOrganizationCache();

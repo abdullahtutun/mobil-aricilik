@@ -59,7 +59,7 @@ final class DeviceTokenServiceProvider
 }
 
 String _$deviceTokenServiceHash() =>
-    r'6a75b203d1bc9bf18f9fa769c0ca7ba12771d3b7';
+    r'a23fee41359da6cf838c18089d7a8175ef1936ca';
 
 /// Bu telefonun push token'ını sunucuya kaydeder: görev atanınca bildirim
 /// buraya gelir. Oturum açıkken ve "Görev bildirimleri" açıkken çalışır;

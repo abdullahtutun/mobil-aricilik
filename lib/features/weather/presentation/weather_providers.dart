@@ -1,10 +1,12 @@
 import 'package:clock/clock.dart';
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/weather/data/supabase_weather_service.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 import 'package:mobil_arici/features/weather/data/weather_service.dart';
 import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
@@ -14,8 +16,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'weather_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-WeatherService weatherService(Ref ref) =>
-    SupabaseWeatherService(ref.watch(supabaseClientProvider));
+WeatherService weatherService(Ref ref) => switch (ref.watch(backendProvider)) {
+  Backend.supabase => SupabaseWeatherService(ref.watch(supabaseClientProvider)),
+  Backend.pocketbase => throw UnimplementedError('PocketBase hava: P7.5'),
+};
 
 @Riverpod(keepAlive: true)
 WeatherRepository weatherRepository(Ref ref) =>

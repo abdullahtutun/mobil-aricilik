@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobil_arici/features/auth/data/secure_session_storage.dart';
+import 'package:mobil_arici/features/auth/data/supabase_session_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Başka cihazdan aktarılmış, bu cihazın anahtarıyla çözülemeyen kayıt.

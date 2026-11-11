@@ -60,4 +60,4 @@ final class MediaSyncServiceProvider
   }
 }
 
-String _$mediaSyncServiceHash() => r'9ff6b119921e7e78771ab4950446324c1377e7c1';
+String _$mediaSyncServiceHash() => r'03b06c6d28b746f82ebf5492e8ba6bd0e158e42e';

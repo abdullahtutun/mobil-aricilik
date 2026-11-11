@@ -9,6 +9,7 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/sync/media_sync_service.dart';
+import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -58,7 +59,13 @@ void main() {
       }),
     );
     addTearDown(client.dispose);
-    service = MediaSyncService(db, client, files, network, clock: clock.call);
+    service = MediaSyncService(
+      db,
+      SupabaseFileStore(client),
+      files,
+      network,
+      clock: clock.call,
+    );
   });
 
   /// Dosyası medya klasöründe olan bir çekim yazar.

@@ -59,7 +59,7 @@ final class OrganizationServiceProvider
 }
 
 String _$organizationServiceHash() =>
-    r'7bb33ee2d4cb4ca15f087e22895fe88c6679794c';
+    r'44a16cc26d3c8258cd90515ef827c1d10a07e373';
 
 @ProviderFor(organizationCache)
 final organizationCacheProvider = OrganizationCacheProvider._();

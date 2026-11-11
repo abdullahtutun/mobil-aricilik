@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/app/app.dart';
+import 'package:mobil_arici/app/backend_setup.dart';
 import 'package:mobil_arici/app/background_sync.dart';
 import 'package:mobil_arici/app/error_reporting.dart';
 import 'package:mobil_arici/app/flavor.dart';
-import 'package:mobil_arici/app/supabase_setup.dart';
 import 'package:mobil_arici/app/sync/sync_reminder.dart';
 import 'package:mobil_arici/core/sync/document_file_triggers.dart';
 import 'package:mobil_arici/core/sync/knowledge_update_triggers.dart';
@@ -50,9 +50,9 @@ Future<void> bootstrap(Flavor flavor) async {
     }
   });
 
-  // Supabase açılışındaki hatalar da Sentry'ye gitsin.
+  // Sunucu istemcisinin açılış hataları da Sentry'ye gitsin.
   await runWithErrorReporting(flavor, () async {
-    await initializeSupabase(flavor);
+    await initializeBackend(flavor, resolveBackend(flavor));
 
     final container =
         ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])

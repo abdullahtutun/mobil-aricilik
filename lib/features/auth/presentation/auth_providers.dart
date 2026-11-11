@@ -1,5 +1,7 @@
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
+import 'package:mobil_arici/features/auth/data/supabase_auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,8 +9,12 @@ part 'auth_providers.g.dart';
 
 /// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
-AuthService authService(Ref ref) =>
-    SupabaseAuthService(ref.watch(supabaseClientProvider).auth);
+AuthService authService(Ref ref) => switch (ref.watch(backendProvider)) {
+  Backend.supabase => SupabaseAuthService(
+    ref.watch(supabaseClientProvider).auth,
+  ),
+  Backend.pocketbase => throw UnimplementedError('PocketBase girişi: P7.2'),
+};
 
 /// Oturumdaki kullanıcı; null ise giriş yapılmamış. Çevrimdışıyken süresi
 /// dolan token oturumu kapatmaz, yalnız sunucu refresh token'ı reddederse

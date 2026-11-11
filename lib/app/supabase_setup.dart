@@ -1,5 +1,8 @@
+import 'package:mobil_arici/app/backend_setup.dart';
 import 'package:mobil_arici/app/flavor.dart';
-import 'package:mobil_arici/features/auth/data/secure_session_storage.dart';
+import 'package:mobil_arici/core/sync/supabase_file_store.dart';
+import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
+import 'package:mobil_arici/features/auth/data/supabase_session_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Supabase'i [flavor]'ın projesiyle başlatır; uygulama ve arka plan
@@ -18,3 +21,16 @@ Future<void> initializeSupabase(Flavor flavor) => Supabase.initialize(
     detectSessionInUri: false,
   ),
 );
+
+/// Arka plan isolate'i için Supabase'i başlatır; kayıtlı oturum yoksa null.
+Future<BackgroundConnection?> openSupabaseBackgroundConnection(
+  Flavor flavor,
+) async {
+  await initializeSupabase(flavor);
+  final client = Supabase.instance.client;
+  if (client.auth.currentSession == null) return null;
+  return (
+    sync: SupabaseSyncTransport(client),
+    files: SupabaseFileStore(client),
+  );
+}

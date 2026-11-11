@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:mobil_arici/features/organization/data/organization_service.dart';
+import 'package:mobil_arici/features/organization/data/supabase_organization_service.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/organization/domain/organization_failure.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

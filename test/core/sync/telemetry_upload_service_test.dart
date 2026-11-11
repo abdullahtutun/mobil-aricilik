@@ -9,6 +9,8 @@ import 'package:mobil_arici/core/analytics/analytics_repository.dart';
 import 'package:mobil_arici/core/analytics/analytics_rules.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/supabase_file_store.dart';
+import 'package:mobil_arici/core/sync/supabase_telemetry_api.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_service.dart';
 import 'package:mobil_arici/features/feedback/data/feedback_repository.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
@@ -80,7 +82,8 @@ void main() {
     addTearDown(client.dispose);
     service = TelemetryUploadService(
       db,
-      client,
+      SupabaseTelemetryApi(client),
+      SupabaseFileStore(client),
       files,
       FakeAppInfoService(),
       clock: clock.call,

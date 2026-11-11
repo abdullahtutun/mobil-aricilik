@@ -5,13 +5,13 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/services/connectivity_service.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/file_store.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/media/domain/media_rules.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Medya dosyalarını Storage'a yükler ve indirir (teknik.md §3 "Medya
-/// kuyruğu"). Satırlar `SyncService` ile, dosyalar burada gider; ikisi
-/// birbirini beklemez.
+/// Medya dosyalarını [FileStore] üzerinden yükler ve indirir (teknik.md §3
+/// "Medya kuyruğu"). Satırlar `SyncService` ile, dosyalar burada gider;
+/// ikisi birbirini beklemez.
 ///
 /// Aynı anda tek yükleme turu çalışır; tur sürerken gelen çağrı süren
 /// turun sonucunu bekler. Kilit nesneye bağlıdır; uygulamada tek örnek
@@ -19,14 +19,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class MediaSyncService {
   new(
     this._db,
-    this._client,
+    this._store,
     this._files,
     this._network, {
     this.clock = DateTime.now,
   });
 
   final AppDatabase _db;
-  final SupabaseClient _client;
+  final FileStore _store;
   final MediaFileStore _files;
   final ConnectivityService _network;
 
@@ -116,24 +116,22 @@ class MediaSyncService {
       return _Sent.failed;
     }
     try {
-      await _client.storage
-          .from(bucket)
-          .uploadBinary(
+      // Aynı yolda zaten olan dosya da yüklenmiş sayılır: önceki deneme
+      // sunucuya ulaşmış, yanıtı yolda kalmış.
+      await _store
+          .upload(
+            bucket,
             job.media.storagePath,
             await file.readAsBytes(),
-            fileOptions: FileOptions(contentType: job.media.kind.contentType),
-            retryAttempts: 0,
+            contentType: job.media.kind.contentType,
           )
           .timeout(requestTimeout);
-    } on StorageException catch (error) {
-      // Aynı yola ikinci yükleme: önceki deneme sunucuya ulaşmış, yanıtı
-      // yolda kalmış.
-      if (error.statusCode == '409') return await _markUploaded(job);
-      if (_isTransient(error.statusCode)) {
+    } on FileStoreException catch (error) {
+      if (error.failure == FileStoreFailure.transient) {
         await _postpone(job, error.message);
         return _Sent.retryLater;
       }
-      await _fail(job, '${error.statusCode}: ${error.message}');
+      await _fail(job, error.message);
       return _Sent.failed;
     } on Exception catch (error) {
       // Bağlantı hatası, zaman aşımı, çevrimdışı token yenileme.
@@ -182,39 +180,25 @@ class MediaSyncService {
   )..where((t) => t.mediaId.equals(job.upload.mediaId))).write(values);
 
   /// Başka telefonda çekilen [media]'nın dosyasını indirir ve
-  /// [downloadFileName] adıyla saklar. Dosya Storage'da henüz yoksa (çeken
+  /// [downloadFileName] adıyla saklar. Dosya sunucuda henüz yoksa (çeken
   /// telefon yüklememiş) [MediaDownloadFailure.notUploaded], ağ yoksa
   /// [MediaDownloadFailure.offline] atar.
   Future<File> download(MediaItem media) async {
     final Uint8List bytes;
     try {
-      bytes = await _client.storage
-          .from(bucket)
-          .download(media.storagePath)
+      bytes = await _store
+          .download(bucket, media.storagePath)
           .timeout(requestTimeout);
-    } on StorageException catch (error) {
-      throw MediaDownloadException(
-        error.statusCode == '400' || error.statusCode == '404'
-            ? MediaDownloadFailure.notUploaded
-            : _isTransient(error.statusCode)
-            ? MediaDownloadFailure.offline
-            : MediaDownloadFailure.failed,
-      );
+    } on FileStoreException catch (error) {
+      throw MediaDownloadException(switch (error.failure) {
+        FileStoreFailure.notFound => MediaDownloadFailure.notUploaded,
+        FileStoreFailure.transient => MediaDownloadFailure.offline,
+        FileStoreFailure.permanent => MediaDownloadFailure.failed,
+      });
     } on Exception {
       throw const MediaDownloadException(MediaDownloadFailure.offline);
     }
     return await _files.write(downloadFileName(media), bytes);
-  }
-
-  /// HTTP durumu olmayan hata (bağlantı; storage_client türün adını yazar),
-  /// süresi dolmuş oturum, zaman aşımı, istek sınırı ve sunucu hataları.
-  static bool _isTransient(String? statusCode) {
-    final status = int.tryParse(statusCode ?? '');
-    return status == null ||
-        status == 401 ||
-        status == 408 ||
-        status == 429 ||
-        status >= 500;
   }
 }
 

@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/tables/media_tables.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/file_store.dart';
 import 'package:mobil_arici/features/media/domain/media_rules.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Bekleyen yüklemenin Storage yolu ve şimdiye kadarki deneme sayısı.
 typedef PendingFileUpload = ({String storagePath, int attempts});
@@ -15,15 +15,16 @@ typedef FileUploadChange = ({
   Value<String?> lastError,
 });
 
-/// Storage yolu ve yerel adı aynı olan dosyaları (belge, fiş) bir bucket'a
-/// yükler ve indirir. Kuyruk tablosunu ve indirilecek yolları çağıran verir
-/// (`DocumentSyncService`, `ReceiptSyncService`); tur kuralları burada.
+/// Storage yolu ve yerel adı aynı olan dosyaları (belge, fiş, logo) bir
+/// bucket'a [FileStore] üzerinden yükler ve indirir. Kuyruk tablosunu ve
+/// indirilecek yolları çağıran verir (`DocumentSyncService`,
+/// `ReceiptSyncService`, `LogoSyncService`); tur kuralları burada.
 ///
 /// Aynı anda tek yükleme ve tek indirme turu çalışır; tur sürerken gelen
 /// çağrı süren turun sonucunu bekler.
 class StorageFileSync {
   new(
-    this._client,
+    this._store,
     this._files, {
     required this.bucket,
     required this.clock,
@@ -34,7 +35,7 @@ class StorageFileSync {
     required this.contentType,
   });
 
-  final SupabaseClient _client;
+  final FileStore _store;
   final MediaFileStore _files;
   final String bucket;
 
@@ -100,24 +101,22 @@ class StorageFileSync {
       return _Sent.failed;
     }
     try {
-      await _client.storage
-          .from(bucket)
-          .uploadBinary(
+      // Aynı yolda zaten olan dosya da yüklenmiş sayılır: önceki deneme
+      // sunucuya ulaşmış, yanıtı yolda kalmış.
+      await _store
+          .upload(
+            bucket,
             path,
             await file.readAsBytes(),
-            fileOptions: FileOptions(contentType: contentType(path)),
-            retryAttempts: 0,
+            contentType: contentType(path),
           )
           .timeout(requestTimeout);
-    } on StorageException catch (error) {
-      // Aynı yola ikinci yükleme: önceki deneme sunucuya ulaşmış, yanıtı
-      // yolda kalmış.
-      if (error.statusCode == '409') return await _markUploaded(upload);
-      if (_isTransient(error.statusCode)) {
+    } on FileStoreException catch (error) {
+      if (error.failure == FileStoreFailure.transient) {
         await _postpone(upload, error.message);
         return _Sent.retryLater;
       }
-      await _fail(upload, '${error.statusCode}: ${error.message}');
+      await _fail(upload, error.message);
       return _Sent.failed;
     } on Exception catch (error) {
       // Bağlantı hatası, zaman aşımı, çevrimdışı token yenileme.
@@ -163,12 +162,9 @@ class StorageFileSync {
       if (await _files.find(name) != null) continue;
       final Uint8List bytes;
       try {
-        bytes = await _client.storage
-            .from(bucket)
-            .download(path)
-            .timeout(requestTimeout);
-      } on StorageException catch (error) {
-        if (_isTransient(error.statusCode)) {
+        bytes = await _store.download(bucket, path).timeout(requestTimeout);
+      } on FileStoreException catch (error) {
+        if (error.failure == FileStoreFailure.transient) {
           return FileSyncResult(done: done, failed: failed, retryLater: true);
         }
         // Henüz yüklenmemiş (400/404) ya da yetki yok.
@@ -181,17 +177,6 @@ class StorageFileSync {
       done++;
     }
     return FileSyncResult(done: done, failed: failed);
-  }
-
-  /// HTTP durumu olmayan hata (bağlantı; storage_client türün adını yazar),
-  /// süresi dolmuş oturum, zaman aşımı, istek sınırı ve sunucu hataları.
-  static bool _isTransient(String? statusCode) {
-    final status = int.tryParse(statusCode ?? '');
-    return status == null ||
-        status == 401 ||
-        status == 408 ||
-        status == 429 ||
-        status >= 500;
   }
 }
 

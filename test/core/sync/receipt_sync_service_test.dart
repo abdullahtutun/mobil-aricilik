@@ -8,6 +8,7 @@ import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/sync/receipt_sync_service.dart';
+import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/features/finance/data/transaction_repository.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -54,7 +55,12 @@ void main() {
       }),
     );
     addTearDown(client.dispose);
-    service = ReceiptSyncService(db, client, files, clock: clock.call);
+    service = ReceiptSyncService(
+      db,
+      SupabaseFileStore(client),
+      files,
+      clock: clock.call,
+    );
   });
 
   /// Fişi fiş klasöründe olan bir gider yazar.

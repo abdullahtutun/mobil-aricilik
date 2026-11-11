@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
 import 'package:mobil_arici/core/services/push_service_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/tasks/data/device_token_service.dart';
+import 'package:mobil_arici/features/tasks/data/supabase_device_token_service.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,8 +15,14 @@ part 'task_push.g.dart';
 
 /// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
-DeviceTokenService deviceTokenService(Ref ref) =>
-    SupabaseDeviceTokenService(ref.watch(supabaseClientProvider));
+DeviceTokenService deviceTokenService(Ref ref) => switch (ref.watch(
+  backendProvider,
+)) {
+  Backend.supabase => SupabaseDeviceTokenService(
+    ref.watch(supabaseClientProvider),
+  ),
+  Backend.pocketbase => throw UnimplementedError('PocketBase push token: P7.5'),
+};
 
 /// Bu telefonun push token'ını sunucuya kaydeder: görev atanınca bildirim
 /// buraya gelir. Oturum açıkken ve "Görev bildirimleri" açıkken çalışır;

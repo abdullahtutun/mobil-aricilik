@@ -1,10 +1,10 @@
 import 'package:drift/drift.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/file_store.dart';
 import 'package:mobil_arici/core/sync/storage_file_sync.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/domain/document_rules.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Belge dosyalarını Storage'a yükler ve indirir. Satırlar `SyncService`
 /// ile, dosyalar burada gider; ikisi birbirini beklemez. Tur kuralları
@@ -17,10 +17,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// Uygulamada tek örnek `documentSyncServiceProvider`'dan gelir.
 class DocumentSyncService {
-  new(this._db, this._client, this._files, {this.clock = DateTime.now});
+  new(this._db, this._store, this._files, {this.clock = DateTime.now});
 
   final AppDatabase _db;
-  final SupabaseClient _client;
+  final FileStore _store;
   final MediaFileStore _files;
 
   /// Yeniden deneme zamanının kaynağı; testler sabit saat verir.
@@ -29,7 +29,7 @@ class DocumentSyncService {
   static const bucket = 'documents';
 
   late final _sync = StorageFileSync(
-    _client,
+    _store,
     _files,
     bucket: bucket,
     clock: clock,
