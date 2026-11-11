@@ -56,6 +56,8 @@ func isRequired(f core.Field) bool {
 		return f.Required
 	case *core.JSONField:
 		return f.Required
+	case *core.FileField:
+		return f.Required
 	}
 	return false
 }

@@ -23,6 +23,21 @@ var expectedOpenRules = map[string]string{
 	"device_tokens.list":      `@request.auth.id != "" && user_id = @request.auth.id`,
 	"device_tokens.view":      `@request.auth.id != "" && user_id = @request.auth.id`,
 
+	// P6.1 (1794300012_file_collections.go). public_lot_files: all nil.
+	"media_files.list":      fileMember,
+	"media_files.view":      fileMember,
+	"media_files.create":    fileWriters,
+	"document_files.list":   fileMember,
+	"document_files.view":   fileMember,
+	"document_files.create": fileWriters,
+	"receipt_files.list":    fileManagers,
+	"receipt_files.view":    fileManagers,
+	"receipt_files.create":  fileManagers,
+	"feedback_files.create": fileMember,
+	"org_logo_files.list":   fileMember,
+	"org_logo_files.view":   fileMember,
+	"org_logo_files.create": fileManagers,
+
 	// PocketBase's own system collections (1640988000_init), unchanged: a
 	// user sees, and for the last two deletes, only their own entries.
 	"_mfas.list":            pbOwnerRule,
@@ -36,6 +51,14 @@ var expectedOpenRules = map[string]string{
 	"_authOrigins.view":     pbOwnerRule,
 	"_authOrigins.delete":   pbOwnerRule,
 }
+
+// The file collection rules, spelled out so that a change to the rule
+// constants in the migration breaks the test.
+const (
+	fileMember   = `@request.auth.id != "" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= ""`
+	fileWriters  = fileMember + ` && (@collection.memberships:m.role ?= "owner" || @collection.memberships:m.role ?= "partner" || @collection.memberships:m.role ?= "worker")`
+	fileManagers = fileMember + ` && (@collection.memberships:m.role ?= "owner" || @collection.memberships:m.role ?= "partner")`
+)
 
 const pbOwnerRule = "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId"
 

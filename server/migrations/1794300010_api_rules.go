@@ -9,7 +9,7 @@ import (
 // The API rules of the collections the app reaches through PocketBase's
 // record API (P3.2). Everything else keeps all five rules nil: only server
 // code reads and writes it (K-7), and the sync routes ask internal/authz.
-// File collections get their rules in P6.1. api_rules_test.go walks every
+// File collections get their rules in 1794300012_file_collections.go (P6.1). api_rules_test.go walks every
 // collection and fails on any rule not listed there, and on any "" (public)
 // rule.
 //

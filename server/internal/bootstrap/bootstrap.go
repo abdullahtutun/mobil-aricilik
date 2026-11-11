@@ -16,6 +16,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/fcm"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/files"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/notify"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/orgs"
@@ -50,6 +51,7 @@ func Register(app core.App, cfg config.Config, version string) {
 	appsync.RegisterSeq(app)
 	deletion.RegisterLogGuard(app)
 	recordapi.Register(app)
+	files.Register(app)
 	mail := newMailGate(cfg.Mail)
 	auth.Register(app, mail.On)
 	appsync.RegisterPull(app)

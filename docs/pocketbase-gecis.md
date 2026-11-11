@@ -32,7 +32,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P2.8 | Şema dökümü ve Flutter `schema_mirror_test` uyarlaması | P2.7 | ☑ |
 | P3.1 | Yetki katmanı (`authz`) ve politika testleri | P2.8 | ☑ |
 | P3.2 | API kuralları ve "kuralsız koleksiyon yok" testi | P3.1 | ☑ |
-| P6.1 | Dosya koleksiyonları (7 bucket'ın karşılığı) | P3.2 | ☐ |
+| P6.1 | Dosya koleksiyonları (7 bucket'ın karşılığı) | P3.2 | ☑ |
 | P6.2 | Bilgi bankası paketi ve yayımlama aracı | P6.1 | ☐ |
 | P4.1 | OTP girişi: ilk istekte kullanıcı açma, 9 dilli e-posta, demo hesap | P3.2 | ☑ |
 | P4.2 | SMTP (Hostinger) ve oturum ayarları ortam değişkeninden; canlı e-posta denemesi | P4.1, P1.3 | ☑ |
@@ -1183,6 +1183,8 @@ Adım P7.4: `PocketBaseFileStore implements FileStore`. Bucket → koleksiyon e�
 
 [SON] Bitince: ilgili testleri, flutter analyze ve flutter test'i çalıştır, hataları düzelt, docs/progress.md'ye 3-5 madde ekle, kontrol listesinde adımı işaretle, anlamlı bir mesajla commit at.
 ```
+
+**P6.1 notu (2026-11-11).** "Zaten yüklendi" yanıtı: HTTP 400 ve `data.id.code == "validation_pk_invalid"` (tam gövde `{"data":{"id":{"code":"validation_pk_invalid","message":"The record primary key is invalid or already exists."}},"message":"Failed to create record.","status":400}`, `server/internal/files/files_test.go` `alreadyUploaded`). Yalnız bu kod `alreadyExists`; `data` boş 400 kural reddidir (kalıcı), `data.file.code` `validation_file_size_limit` / `validation_invalid_mime_type` ve `data.path`/`data.id`/`data.org_id` `validation_path_*` kodları da kalıcıdır. feedback_files okunamaz (kural null). Thumbnail yok; `?thumb=` yok sayılır.
 
 **Bitti sayılma kriterleri.** Testler geçiyor; yerelde fotoğraf yüklenip ikinci kurulumda açılıyor.
 
