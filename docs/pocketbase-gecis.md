@@ -45,7 +45,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P5.7 | Görüş e-postası | P5.4, P4.2, P6.1 | ☑ |
 | P5.8 | Hesap silme: kod, talep, iptal, durum | P5.6 | ☑ |
 | P5.9 | Hesap silme: saatlik kalıcı silme cron'u, 3 yıllık kayıt, e-postalar | P5.8, P6.1 | ☑ |
-| P5.10 | Lotun herkese açık sayfası (açılıyor) | P5.3, P6.1 | ☐ |
+| P5.10 | Lotun herkese açık sayfası (açılıyor) | P5.3, P6.1 | ☑ |
 | P7.1 | Flutter backend soyutlaması ve seçim ayarı | P0.1 | ☐ |
 | P7.2 | PocketBase istemcisi, oturum saklama, OTP girişi | P7.1, P4.1 | ☐ |
 | P7.3 | Senkron taşıyıcısı, backend değişiminde imleç sıfırlama, arka plan görevi | P7.2, P5.3 | ☐ |

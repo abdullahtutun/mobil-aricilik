@@ -19,6 +19,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/feedback"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/files"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/lotpage"
 	appmail "github.com/abdullahtutun/mobil-aricilik/server/internal/mail"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/notify"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/orgs"
@@ -68,6 +69,7 @@ func Register(app core.App, cfg config.Config, version string) {
 	push, pushErr := newFCM(cfg.FCMServiceAccountB64)
 	notify.Register(app, notify.Options{FCM: push})
 	feedback.Register(app, feedbackOptions(cfg))
+	lotpage.Register(app)
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
