@@ -18,6 +18,7 @@ import 'package:mobil_arici/core/sync/receipt_file_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_triggers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/locale_sync.dart';
 import 'package:mobil_arici/features/documents/presentation/document_reminders.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
@@ -52,10 +53,18 @@ Future<void> bootstrap(Flavor flavor) async {
 
   // Sunucu istemcisinin açılış hataları da Sentry'ye gitsin.
   await runWithErrorReporting(flavor, () async {
-    await initializeBackend(flavor, resolveBackend(flavor));
+    final backendOverrides = await initializeBackend(
+      flavor,
+      resolveBackend(flavor),
+    );
 
     final container =
-        ProviderContainer(overrides: [flavorProvider.overrideWithValue(flavor)])
+        ProviderContainer(
+            overrides: [
+              flavorProvider.overrideWithValue(flavor),
+              ...backendOverrides,
+            ],
+          )
           // Senkron, medya, görüş ve kullanım olayı gönderimi; belge, fiş
           // ve işletme logosu dosyalarının yüklenip indirilmesi; bilgi
           // bankası güncellemesi; görev, belge ve gönderilemeyen kayıt
@@ -79,7 +88,9 @@ Future<void> bootstrap(Flavor flavor) async {
     useLatinDigitsForDates();
     runApp(UncontrolledProviderScope(container: container, child: const App()));
 
-    // Açılışı bekletmez.
+    // Açılışı bekletmez. Token yenilemesi çevrimdışıyken oturumu kapatmaz
+    // (K-6).
+    unawaited(container.read(authServiceProvider).refreshSession());
     unawaited(registerBackgroundSync(flavor));
   });
 }

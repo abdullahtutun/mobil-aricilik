@@ -47,7 +47,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P5.9 | Hesap silme: saatlik kalıcı silme cron'u, 3 yıllık kayıt, e-postalar | P5.8, P6.1 | ☑ |
 | P5.10 | Lotun herkese açık sayfası (açılıyor) | P5.3, P6.1 | ☑ |
 | P7.1 | Flutter backend soyutlaması ve seçim ayarı | P0.1 | ☑ |
-| P7.2 | PocketBase istemcisi, oturum saklama, OTP girişi | P7.1, P4.1 | ☐ |
+| P7.2 | PocketBase istemcisi, oturum saklama, OTP girişi | P7.1, P4.1 | ☑ |
 | P7.3 | Senkron taşıyıcısı, backend değişiminde imleç sıfırlama, arka plan görevi | P7.2, P5.3 | ☐ |
 | P7.4 | Dosya yükleme ve indirme | P7.3, P6.2 | ☐ |
 | P7.5 | Servisler: işletme, ekip, hava, push token, görüş ve analitik, hesap silme | P7.4, P5.4–P5.9 | ☐ |
@@ -188,7 +188,7 @@ Kaynak: `supabase/migrations` (43 dosya), `supabase/functions`, `supabase/config
 | `supabase/admin/demo_account.sql` | `arici seed demo` komutu | P8.1 |
 | `supabase db push` + MCP doğrulaması | Coolify deploy (migration'lar açılışta uygulanır) + `/api/health` + şema dökümü | P1.3, P2.8 |
 | Supabase yedekleri | PocketBase yerleşik yedeği + Mac'e kopya (K-15) | P1.4 |
-| `supabase_flutter` | `pocketbase` Dart SDK 0.25.3 (sürüm P7.2'de pub.dev'den doğrulanıp sabitlenir) | P7.2 |
+| `supabase_flutter` | `pocketbase` Dart SDK 0.25.3 (P7.2'de sabitlendi; 0.26.0 süresi dolmuş token'ı istekten önce sildiği için K-6'yla çelişiyor, yükseltilirse `pb.autoClearAuthStore(false)` gerekir) | P7.2 |
 | `SecureSessionStorage` | `AsyncAuthStore` + `flutter_secure_storage` | P7.2 |
 | `schema_mirror_test.dart` (migration SQL'ini okur) | `server/schema/collections.json` dökümünü okur | P2.8 |
 | İki cihaz testleri (yerel Supabase) | Yerel PocketBase'e karşı | P9.1 |
@@ -1147,6 +1147,8 @@ Ekran değişmez. BACKEND=pocketbase ile yerel sunucuya karşı (go run . serve)
 **Amaç.** SyncService PocketBase ile push/pull yapsın; backend değişince yerel imleçler sıfırlansın ama outbox korunsun.
 
 **Ön koşul.** P7.2, P5.3.
+
+**P7.2'den not.** Taşıyıcı 401 aldığında oturumu kapatmalı (SDK 0.25.3 kendisi kapatmaz; `PocketBaseAuthService.refreshSession`'daki gibi yalnız aynı token hâlâ duruyorsa `authStore.clear()`) ve hatayı kalıcı saymalı. Arka plan isolate'i oturumu `PocketBaseSessionStorage(url).readSession()` ile okur ve `SyncService(..., refreshSession: …)` verir.
 
 **Prompt.**
 

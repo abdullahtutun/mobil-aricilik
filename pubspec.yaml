@@ -68,6 +68,9 @@ dependencies:
   path: ^1.9.1
   path_provider: ^2.1.6
   pdf: ^3.13.1
+  # Tam sürüm: 0.26.0 süresi dolmuş token'ı istekten önce siliyor; K-6
+  # çevrimdışıyken oturumun kalmasını istiyor (docs/pocketbase-gecis.md P7.2).
+  pocketbase: 0.25.3
   printing: ^5.15.1
   record: ^7.1.2
   riverpod_annotation: ^4.0.7

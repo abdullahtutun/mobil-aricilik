@@ -17,6 +17,9 @@ class FakeSyncService implements SyncService {
   @override
   Duration? lastPushDelay;
 
+  @override
+  Future<void> Function()? get refreshSession => null;
+
   /// Tur başında sırayla bildirilir.
   List<SyncProgress> progress = const [];
 

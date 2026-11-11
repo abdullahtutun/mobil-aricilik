@@ -52,7 +52,7 @@ final class AuthServiceProvider
   }
 }
 
-String _$authServiceHash() => r'f34d77862bf1a63afc28805bf4164f2857caf08d';
+String _$authServiceHash() => r'0048472253268e9877e9dd778100d54fb6198f56';
 
 /// Oturumdaki kullanıcı; null ise giriş yapılmamış. Çevrimdışıyken süresi
 /// dolan token oturumu kapatmaz, yalnız sunucu refresh token'ı reddederse

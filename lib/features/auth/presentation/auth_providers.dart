@@ -1,6 +1,8 @@
 import 'package:mobil_arici/app/flavor.dart';
+import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
+import 'package:mobil_arici/features/auth/data/pocketbase_auth_service.dart';
 import 'package:mobil_arici/features/auth/data/supabase_auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,7 +15,10 @@ AuthService authService(Ref ref) => switch (ref.watch(backendProvider)) {
   Backend.supabase => SupabaseAuthService(
     ref.watch(supabaseClientProvider).auth,
   ),
-  Backend.pocketbase => throw UnimplementedError('PocketBase girişi: P7.2'),
+  Backend.pocketbase => PocketBaseAuthService(
+    ref.watch(pocketbaseClientProvider),
+    ref.watch(pocketBaseSessionStorageProvider),
+  ),
 };
 
 /// Oturumdaki kullanıcı; null ise giriş yapılmamış. Çevrimdışıyken süresi

@@ -19,6 +19,7 @@ class SyncService {
     this._transport, {
     this.clock = DateTime.now,
     this.delay = Future<void>.delayed,
+    this.refreshSession,
   });
 
   final AppDatabase _db;
@@ -29,6 +30,12 @@ class SyncService {
 
   /// Yeniden denemeden önce bekler; testler beklemeden kaydeder.
   final Future<void> Function(Duration duration) delay;
+
+  /// Tam turun başında oturumun token'ını yeniler (PocketBase, K-6); hata
+  /// atmaz. Sunucu token'ı reddederse oturum kapanır ve tur, oturumsuz
+  /// gönderimin hatasıyla biter. Null ise (Supabase) istemci kendisi
+  /// yeniler.
+  final Future<void> Function()? refreshSession;
 
   /// Bir pakette en fazla bu kadar kayıt gider.
   static const batchSize = 100;
@@ -119,6 +126,7 @@ class SyncService {
   Future<SyncResult> _sync(
     void Function(SyncProgress progress)? onProgress,
   ) async {
+    await refreshSession?.call();
     final pushed = await push();
     if (pushed.status != SyncStatus.done) return pushed;
     final pulled = await pull(onProgress: onProgress);

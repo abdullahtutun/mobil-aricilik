@@ -28,6 +28,11 @@ abstract interface class AuthService {
   /// Hata atmaz: çevrimdışıysa sonraki denemede düzelir.
   Future<void> updateLocale(String locale);
 
+  /// Oturumun token'ını yeniler; açılışta ve senkron turunun başında
+  /// çağrılır. Ağ hatası oturumu kapatmaz, yalnız sunucunun token'ı
+  /// reddetmesi kapatır. Oturum yoksa ağa gitmez. Hata atmaz.
+  Future<void> refreshSession();
+
   /// Yerel oturumu siler; çevrimdışı da çalışır.
   Future<void> signOut();
 }

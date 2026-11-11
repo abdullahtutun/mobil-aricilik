@@ -1615,6 +1615,26 @@ void main() {
   });
 
   group('tam tur', () {
+    test('turun başında, istekten önce oturumu yeniler', () async {
+      await enqueue(1);
+      handler = _server({});
+      final calls = <String>[];
+      final refreshing = SyncService(
+        db,
+        SupabaseSyncTransport(client),
+        clock: clock.call,
+        delay: (duration) async => delays.add(duration),
+        refreshSession: () async => calls.add('refresh:${requests.length}'),
+      );
+
+      await refreshing.sync();
+      final afterFirst = requests.length;
+      await refreshing.sync();
+
+      expect(afterFirst, greaterThan(0));
+      expect(calls, ['refresh:0', 'refresh:$afterFirst']);
+    });
+
     test('önce gönderir, sonra çeker; sonuçlar birleşir', () async {
       await enqueue(2);
       handler = _server({

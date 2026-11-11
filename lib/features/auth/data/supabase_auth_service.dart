@@ -62,6 +62,10 @@ class SupabaseAuthService implements AuthService {
     }
   }
 
+  /// supabase_flutter token'ı kendisi yeniler (otomatik yenileme açık).
+  @override
+  Future<void> refreshSession() async {}
+
   @override
   Future<void> signOut() async {
     try {
