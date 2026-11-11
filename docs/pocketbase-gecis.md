@@ -49,7 +49,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P7.1 | Flutter backend soyutlaması ve seçim ayarı | P0.1 | ☑ |
 | P7.2 | PocketBase istemcisi, oturum saklama, OTP girişi | P7.1, P4.1 | ☑ |
 | P7.3 | Senkron taşıyıcısı, backend değişiminde imleç sıfırlama, arka plan görevi | P7.2, P5.3 | ☑ |
-| P7.4 | Dosya yükleme ve indirme | P7.3, P6.2 | ☐ |
+| P7.4 | Dosya yükleme ve indirme | P7.3, P6.2 | ☑ |
 | P7.5 | Servisler: işletme, ekip, hava, push token, görüş ve analitik, hesap silme | P7.4, P5.4–P5.9 | ☐ |
 | P7.6 | Lot sayfası adresi, yasal metinler, dev'de varsayılan PocketBase | P7.5, P5.10 | ☐ |
 | P8.1 | Referans veri ve demo hesap tohumu (idempotent, dry-run) | P7.6 | ☐ |

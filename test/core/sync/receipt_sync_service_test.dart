@@ -7,12 +7,14 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/receipt_sync_service.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/features/finance/data/transaction_repository.dart';
 import 'package:mobil_arici/features/finance/domain/finance_transaction.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../helpers/fake_pocketbase_files.dart';
 import '../../helpers/test_database.dart';
 
 const _url = 'http://supabase.test';
@@ -213,6 +215,119 @@ void main() {
 
       expect(result.retryLater, isTrue);
       expect(requests, hasLength(1));
+    });
+  });
+
+  group('PocketBase', () {
+    late FakePocketBaseFiles server;
+
+    setUp(() {
+      server = FakePocketBaseFiles();
+      service = ReceiptSyncService(
+        db,
+        PocketBaseFileStore(server.client()),
+        files,
+        clock: clock.call,
+      );
+    });
+
+    Future<void> pulledPb(String id, String fileId) => db
+        .into(db.transactions)
+        .insert(
+          FinanceTransaction(
+            id: id,
+            orgId: 'org-1',
+            kind: TransactionKind.expense,
+            category: TransactionCategory.labor,
+            amount: 50,
+            currency: 'TRY',
+            occurredOn: DateTime(2026, 10, 22),
+            receiptPath: 'org-1/$id/$fileId.jpg',
+            createdAt: clock.current,
+            updatedAt: clock.current,
+          ).toInsertable(),
+        );
+
+    test('ilk yükleme receipt_files’a gider; sunucuda zaten olan (ikinci '
+        'yükleme) yüklendi sayılır', () async {
+      final first = await add('f1');
+      final second = await add('f2');
+      server.put('receipt_files', second.receiptPath!, [9]);
+
+      final result = await service.uploadPending();
+
+      expect(result.done, 2);
+      expect(server.uploads.map((u) => u.body), [
+        {'id': 'f1', 'org_id': 'org-1', 'path': first.receiptPath!},
+        {'id': 'f2', 'org_id': 'org-1', 'path': second.receiptPath!},
+      ]);
+      expect(server.uploads.first.collection, 'receipt_files');
+      expect(utf8.decode(server.uploads.first.bytes), 'bytes:f1');
+      expect(
+        (await uploadOf(second.receiptPath!)).uploadStatus,
+        MediaUploadStatus.uploaded,
+      );
+    });
+
+    test('boyut sınırı (400 ve 413) kalıcı; kuyruk durmaz', () async {
+      final big = await add('big');
+      final huge = await add('huge');
+      final fine = await add('fine');
+      server.handler = (request) {
+        final body = latin1.decode(request.bodyBytes);
+        if (body.contains('bytes:big')) {
+          return fakePocketBaseError(
+            400,
+            data: {'file': 'validation_file_size_limit'},
+          );
+        }
+        if (body.contains('bytes:huge')) {
+          return http.Response('too large', 413);
+        }
+        return null;
+      };
+
+      final result = await service.uploadPending();
+
+      expect(result.done, 1);
+      expect(result.failed, 2);
+      expect(
+        (await uploadOf(big.receiptPath!)).lastError,
+        contains('validation_file_size_limit'),
+      );
+      expect((await uploadOf(huge.receiptPath!)).lastError, startsWith('413'));
+      expect(
+        (await uploadOf(fine.receiptPath!)).uploadStatus,
+        MediaUploadStatus.uploaded,
+      );
+    });
+
+    test('ağ hatası geçici: ertelenir, tur durur', () async {
+      final first = await add('f1');
+      await add('f2');
+      server.handler = (_) => throw const SocketException('ağ yok');
+
+      final result = await service.uploadPending();
+
+      expect(result.retryLater, isTrue);
+      expect(server.requests, hasLength(1));
+      final postponed = await uploadOf(first.receiptPath!);
+      expect(postponed.uploadStatus, MediaUploadStatus.pending);
+      expect(postponed.attempts, 1);
+    });
+
+    test('indirme dosya token’ıyla; yüklenmemiş dosya (404) atlanır', () async {
+      await pulledPb('remote-1', 'r1');
+      await pulledPb('remote-2', 'r2');
+      server.put('receipt_files', 'org-1/remote-2/r2.jpg', [1, 2, 3]);
+
+      final result = await service.downloadMissing('org-1');
+
+      expect(result.done, 1);
+      expect(result.failed, 1);
+      expect(await files.find('r1.jpg'), isNull);
+      expect((await files.find('r2.jpg'))!.readAsBytesSync(), [1, 2, 3]);
+      expect(server.fileGets.single.url.queryParameters['token'], isNotEmpty);
     });
   });
 }

@@ -7,6 +7,7 @@ import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/core/sync/backend_providers.dart';
+import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
@@ -170,7 +171,8 @@ void main() {
       );
     });
 
-    test('PocketBase dalları (giriş ve senkrondan başka) henüz yazılmadı '
+    test('PocketBase dalları (giriş, senkron ve dosyalardan başka) henüz '
+        'yazılmadı '
         've Supabase istemcisine dokunmaz', () {
       final c = ProviderContainer(
         overrides: [
@@ -183,7 +185,6 @@ void main() {
       addTearDown(c.dispose);
 
       for (final provider in <ProviderListenable<Object>>[
-        fileStoreProvider,
         telemetryApiProvider,
         organizationServiceProvider,
         teamServiceProvider,
@@ -205,7 +206,8 @@ void main() {
       }
     });
 
-    test('PocketBase seçiliyken giriş ve senkron PocketBase uygulamasıdır '
+    test('PocketBase seçiliyken giriş, senkron ve dosyalar PocketBase '
+        'uygulamasıdır '
         've kayıtlı oturum yalnız aynı adresten yüklenir', () {
       // AsyncAuthStore yüklediği oturumu depoya yeniden yazar.
       FlutterSecureStorage.setMockInitialValues({});
@@ -226,6 +228,7 @@ void main() {
 
       expect(c.read(authServiceProvider), isA<PocketBaseAuthService>());
       expect(c.read(syncTransportProvider), isA<PocketBaseSyncTransport>());
+      expect(c.read(fileStoreProvider), isA<PocketBaseFileStore>());
       expect(
         c.read(pocketbaseClientProvider).baseURL,
         'https://arici-api-dev.tutunsoft.com',

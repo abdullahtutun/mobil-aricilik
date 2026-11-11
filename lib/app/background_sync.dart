@@ -78,13 +78,9 @@ void backgroundSyncDispatcher() {
           refreshSession: connection.refreshSession,
         ).sync();
       }
-      // Dosya deposu olmayan backend'de (PocketBase, P7.4'e kadar) medya
-      // uygulama açıkken de yüklenmez; görev başarılı biter.
-      final files = connection.files;
-      if (files == null) return true;
       final uploaded = await MediaSyncService(
         db,
-        files,
+        connection.files,
         MediaFileStore.app(),
         PlusConnectivityService(),
       ).uploadPending();

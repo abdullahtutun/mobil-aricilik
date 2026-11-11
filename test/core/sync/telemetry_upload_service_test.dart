@@ -9,14 +9,17 @@ import 'package:mobil_arici/core/analytics/analytics_repository.dart';
 import 'package:mobil_arici/core/analytics/analytics_rules.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
+import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_telemetry_api.dart';
+import 'package:mobil_arici/core/sync/telemetry_api.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_service.dart';
 import 'package:mobil_arici/features/feedback/data/feedback_repository.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../helpers/fake_app_info_service.dart';
+import '../../helpers/fake_pocketbase_files.dart';
 import '../../helpers/test_database.dart';
 
 const _url = 'http://supabase.test';
@@ -295,4 +298,104 @@ void main() {
     expect(restCalls('analytics_events'), isEmpty);
     expect(await analytics.pending(), hasLength(1));
   });
+
+  group('PocketBase ekran görüntüsü', () {
+    late FakePocketBaseFiles server;
+    late _RecordingTelemetryApi api;
+
+    setUp(() {
+      server = FakePocketBaseFiles();
+      // Görüş satırının PocketBase yolu P7.5'te; burada yalnız dosya.
+      api = _RecordingTelemetryApi();
+      service = TelemetryUploadService(
+        db,
+        api,
+        PocketBaseFileStore(server.client()),
+        files,
+        FakeAppInfoService(),
+        clock: clock.call,
+      );
+    });
+
+    test('ilk yükleme feedback_files’a, sonra satır gider; sunucuda zaten '
+        'olan (ikinci yükleme) gönderildi sayılır', () async {
+      final first = await queueFeedback(screenshot: 'feedback-a.jpg');
+      clock.advance(const Duration(seconds: 1));
+      final second = await queueFeedback(screenshot: 'feedback-b.jpg');
+      server.put('feedback_files', 'org-1/$second.jpg', [9]);
+
+      final result = await service.uploadPending();
+
+      expect(result.feedbackSent, 2);
+      expect(server.uploads.map((u) => u.collection).toSet(), {
+        'feedback_files',
+      });
+      expect(server.uploads.map((u) => u.body), [
+        {'id': first, 'org_id': 'org-1', 'path': 'org-1/$first.jpg'},
+        {'id': second, 'org_id': 'org-1', 'path': 'org-1/$second.jpg'},
+      ]);
+      expect(server.uploads.first.bytes, [1, 2, 3]);
+      expect(api.feedback.map((row) => row['screenshot_path']), [
+        'org-1/$first.jpg',
+        'org-1/$second.jpg',
+      ]);
+      expect(await feedback.nextDue(), isNull);
+    });
+
+    test(
+      'boyut sınırı (400 ve 413) kalıcı: görüş failed, satır gitmez',
+      () async {
+        await queueFeedback(screenshot: 'feedback-a.jpg');
+        server.handler = (_) => fakePocketBaseError(
+          400,
+          data: {'file': 'validation_file_size_limit'},
+        );
+
+        await service.uploadPending();
+
+        var [row] = await db.select(db.feedbackQueue).get();
+        expect(row.failed, isTrue);
+        expect(row.lastError, contains('validation_file_size_limit'));
+
+        await db.delete(db.feedbackQueue).go();
+        await queueFeedback(screenshot: 'feedback-b.jpg');
+        server.handler = (_) => http.Response('too large', 413);
+
+        await service.uploadPending();
+
+        [row] = await db.select(db.feedbackQueue).get();
+        expect(row.failed, isTrue);
+        expect(row.lastError, startsWith('413'));
+        expect(api.feedback, isEmpty);
+      },
+    );
+
+    test('ağ hatası geçici: ertelenir, satır gitmez', () async {
+      await queueFeedback(screenshot: 'feedback-a.jpg');
+      server.handler = (_) => throw const SocketException('ağ yok');
+
+      final result = await service.uploadPending();
+
+      expect(result.complete, isFalse);
+      final [row] = await db.select(db.feedbackQueue).get();
+      expect(row.failed, isFalse);
+      expect(row.attempts, 1);
+      expect(api.feedback, isEmpty);
+    });
+  });
+}
+
+/// Satırları kaydeden [TelemetryApi]; hepsini kabul eder.
+class _RecordingTelemetryApi implements TelemetryApi {
+  final feedback = <Map<String, Object?>>[];
+
+  @override
+  Future<void> insertFeedback(Map<String, Object?> row) async =>
+      feedback.add(row);
+
+  @override
+  Future<void> insertAnalytics(List<Map<String, Object?>> rows) async {}
+
+  @override
+  Future<void> insertAnalyticsEvent(Map<String, Object?> row) async {}
 }

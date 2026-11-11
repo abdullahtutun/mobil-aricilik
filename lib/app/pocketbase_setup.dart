@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:mobil_arici/app/backend_setup.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
+import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
 import 'package:mobil_arici/features/auth/data/pocketbase_auth_service.dart';
 import 'package:mobil_arici/features/auth/data/pocketbase_session_storage.dart';
@@ -24,7 +25,7 @@ Future<List<Override>> initializePocketBase(Flavor flavor) async {
 /// Arka plan isolate'i için [flavor]'ın PocketBase istemcisini uygulamayla
 /// aynı oturum anahtarıyla açar; kayıtlı oturum yoksa null. Yenilenen ya da
 /// 401'de kapanan oturum aynı kayda yazılır, uygulama sonraki açılışta onu
-/// okur. Dosya deposu henüz yok (P7.4).
+/// okur.
 Future<BackgroundConnection?> openPocketBaseBackgroundConnection(
   Flavor flavor,
 ) async {
@@ -35,7 +36,7 @@ Future<BackgroundConnection?> openPocketBaseBackgroundConnection(
   final client = PocketBase(url, authStore: storage.authStore(initial: data));
   return (
     sync: PocketBaseSyncTransport(client),
-    files: null,
+    files: PocketBaseFileStore(client),
     refreshSession: PocketBaseAuthService(client, storage).refreshSession,
   );
 }

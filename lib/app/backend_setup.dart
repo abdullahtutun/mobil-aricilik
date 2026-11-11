@@ -7,11 +7,10 @@ import 'package:mobil_arici/core/sync/sync_transport.dart';
 
 /// Arka plan görevinin sunucuya gittiği arayüzler. `refreshSession`
 /// senkron turunun başında token'ı yeniler (PocketBase, K-6); Supabase'de
-/// null, istemci kendisi yeniler. `files` null ise bu backend'in dosya
-/// deposu henüz yok (PocketBase: P7.4) ve medya yüklenmez.
+/// null, istemci kendisi yeniler.
 typedef BackgroundConnection = ({
   SyncTransport sync,
-  FileStore? files,
+  FileStore files,
   Future<void> Function()? refreshSession,
 });
 

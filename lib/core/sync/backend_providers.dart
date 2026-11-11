@@ -2,6 +2,7 @@ import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/core/sync/file_store.dart';
+import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
@@ -25,7 +26,9 @@ SyncTransport syncTransport(Ref ref) => switch (ref.watch(backendProvider)) {
 @Riverpod(keepAlive: true)
 FileStore fileStore(Ref ref) => switch (ref.watch(backendProvider)) {
   Backend.supabase => SupabaseFileStore(ref.watch(supabaseClientProvider)),
-  Backend.pocketbase => throw UnimplementedError('PocketBase dosyaları: P7.4'),
+  Backend.pocketbase => PocketBaseFileStore(
+    ref.watch(pocketbaseClientProvider),
+  ),
 };
 
 /// Görüş ve kullanım olayı satırlarının yazıldığı yer; [backendProvider]'a

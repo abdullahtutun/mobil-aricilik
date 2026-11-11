@@ -9,12 +9,14 @@ import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/sync/media_sync_service.dart';
+import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../helpers/fake_connectivity_service.dart';
+import '../../helpers/fake_pocketbase_files.dart';
 import '../../helpers/test_database.dart';
 
 const _url = 'http://supabase.test';
@@ -306,5 +308,123 @@ void main() {
       expect(await failure(), MediaDownloadFailure.failed);
       expect(await files.find('remote-1.jpg'), isNull);
     });
+  });
+
+  group('PocketBase', () {
+    late FakePocketBaseFiles server;
+
+    setUp(() {
+      server = FakePocketBaseFiles();
+      service = MediaSyncService(
+        db,
+        PocketBaseFileStore(server.client()),
+        files,
+        network,
+        clock: clock.call,
+      );
+    });
+
+    test('ilk yükleme media_files’a gider; sunucuda zaten olan (ikinci '
+        'yükleme) yüklendi sayılır', () async {
+      final photo = await capture('p.jpg');
+      final voice = await capture('v.m4a', kind: MediaKind.audio);
+      // Önceki denemenin yanıtı yolda kalmış: kayıt sunucuda.
+      server.put('media_files', voice.storagePath, [9]);
+
+      final result = await service.uploadPending();
+
+      expect(result.outcome, MediaUploadOutcome.done);
+      expect(result.uploaded, 2);
+      expect(server.uploads.map((u) => (u.collection, u.body['path'])), [
+        ('media_files', photo.storagePath),
+        ('media_files', voice.storagePath),
+      ]);
+      expect(server.uploads.first.body, {
+        'id': photo.id,
+        'org_id': 'org-1',
+        'path': photo.storagePath,
+      });
+      expect(utf8.decode(server.uploads.first.bytes), 'bytes:p.jpg');
+      expect((await uploadOf(voice)).uploadStatus, MediaUploadStatus.uploaded);
+      expect(await media.watchPendingUploadCount().first, 0);
+    });
+
+    test('boyut sınırı (400 ve 413) kalıcı; kuyruk durmaz', () async {
+      final big = await capture('big.jpg');
+      final huge = await capture('huge.jpg');
+      final fine = await capture('fine.jpg');
+      server.handler = (request) {
+        final body = latin1.decode(request.bodyBytes);
+        if (body.contains('bytes:big.jpg')) {
+          return fakePocketBaseError(
+            400,
+            data: {'file': 'validation_file_size_limit'},
+          );
+        }
+        if (body.contains('bytes:huge.jpg')) {
+          return http.Response('too large', 413);
+        }
+        return null;
+      };
+
+      final result = await service.uploadPending();
+
+      expect(result.uploaded, 1);
+      expect((await uploadOf(big)).uploadStatus, MediaUploadStatus.failed);
+      expect(
+        (await uploadOf(big)).lastError,
+        contains('validation_file_size_limit'),
+      );
+      expect((await uploadOf(huge)).uploadStatus, MediaUploadStatus.failed);
+      expect((await uploadOf(huge)).lastError, startsWith('413'));
+      expect((await uploadOf(fine)).uploadStatus, MediaUploadStatus.uploaded);
+    });
+
+    test('ağ hatası geçici: ertelenir, tur durur', () async {
+      final photo = await capture('p.jpg');
+      await capture('q.jpg');
+      server.handler = (_) => throw const SocketException('ağ yok');
+
+      final result = await service.uploadPending();
+
+      expect(result.outcome, MediaUploadOutcome.retryLater);
+      expect(server.requests, hasLength(1));
+      final postponed = await uploadOf(photo);
+      expect(postponed.uploadStatus, MediaUploadStatus.pending);
+      expect(postponed.attempts, 1);
+    });
+
+    test(
+      'indirme dosya token’ıyla; yüklenmemiş dosya 404 → notUploaded',
+      () async {
+        final remote = MediaItem(
+          id: 'remote-1',
+          orgId: 'org-1',
+          hiveId: 'hive-1',
+          kind: MediaKind.photo,
+          storagePath: 'org-1/hive-1/remote-1.jpg',
+          capturedAt: clock.current,
+          byteSize: 5,
+          createdAt: clock.current,
+          updatedAt: clock.current,
+        );
+        await expectLater(
+          service.download(remote),
+          throwsA(
+            isA<MediaDownloadException>().having(
+              (e) => e.failure,
+              'failure',
+              MediaDownloadFailure.notUploaded,
+            ),
+          ),
+        );
+
+        server.put('media_files', remote.storagePath, [1, 2, 3]);
+        final file = await service.download(remote);
+
+        expect(file.readAsBytesSync(), [1, 2, 3]);
+        expect(server.fileGets.single.url.queryParameters['token'], isNotEmpty);
+      },
+    );
   });
 }
