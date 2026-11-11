@@ -5,8 +5,15 @@ import 'package:mobil_arici/app/supabase_setup.dart';
 import 'package:mobil_arici/core/sync/file_store.dart';
 import 'package:mobil_arici/core/sync/sync_transport.dart';
 
-/// Arka plan görevinin sunucuya gittiği arayüzler.
-typedef BackgroundConnection = ({SyncTransport sync, FileStore files});
+/// Arka plan görevinin sunucuya gittiği arayüzler. `refreshSession`
+/// senkron turunun başında token'ı yeniler (PocketBase, K-6); Supabase'de
+/// null, istemci kendisi yeniler. `files` null ise bu backend'in dosya
+/// deposu henüz yok (PocketBase: P7.4) ve medya yüklenmez.
+typedef BackgroundConnection = ({
+  SyncTransport sync,
+  FileStore? files,
+  Future<void> Function()? refreshSession,
+});
 
 /// Uygulama açılırken [backend]'in istemcisini başlatır; ağı beklemez.
 /// Dönen override'lar uygulamanın provider kabına eklenir.
@@ -20,6 +27,14 @@ Future<List<Override>> initializeBackend(Flavor flavor, Backend backend) async {
   }
 }
 
+/// Senkronun bağlandığı sunucunun kimliği, `<backend>|<adres>`; değişirse
+/// yerel imleçler sıfırlanır (`resetCursorsIfBackendChanged`).
+String syncBackendIdentity(Flavor flavor, Backend backend) =>
+    '${backend.name}|${switch (backend) {
+      Backend.supabase => flavor.supabaseUrl,
+      Backend.pocketbase => resolvePocketbaseUrl(flavor),
+    }}';
+
 /// Arka plan isolate'inde [backend]'in istemcisini açar; kayıtlı oturum
 /// yoksa null (görev bir şey yapmaz).
 Future<BackgroundConnection?> openBackgroundConnection(
@@ -27,7 +42,5 @@ Future<BackgroundConnection?> openBackgroundConnection(
   Backend backend,
 ) => switch (backend) {
   Backend.supabase => openSupabaseBackgroundConnection(flavor),
-  Backend.pocketbase => throw UnimplementedError(
-    'PocketBase arka plan senkronu: P7.3',
-  ),
+  Backend.pocketbase => openPocketBaseBackgroundConnection(flavor),
 };

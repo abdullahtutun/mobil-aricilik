@@ -32,5 +32,6 @@ Future<BackgroundConnection?> openSupabaseBackgroundConnection(
   return (
     sync: SupabaseSyncTransport(client),
     files: SupabaseFileStore(client),
+    refreshSession: null,
   );
 }

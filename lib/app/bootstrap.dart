@@ -10,11 +10,13 @@ import 'package:mobil_arici/app/background_sync.dart';
 import 'package:mobil_arici/app/error_reporting.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/sync/sync_reminder.dart';
+import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/sync/document_file_triggers.dart';
 import 'package:mobil_arici/core/sync/knowledge_update_triggers.dart';
 import 'package:mobil_arici/core/sync/logo_file_triggers.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/receipt_file_triggers.dart';
+import 'package:mobil_arici/core/sync/sync_backend.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_triggers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
@@ -53,37 +55,42 @@ Future<void> bootstrap(Flavor flavor) async {
 
   // Sunucu istemcisinin açılış hataları da Sentry'ye gitsin.
   await runWithErrorReporting(flavor, () async {
-    final backendOverrides = await initializeBackend(
-      flavor,
-      resolveBackend(flavor),
-    );
+    final backend = resolveBackend(flavor);
+    final backendOverrides = await initializeBackend(flavor, backend);
 
-    final container =
-        ProviderContainer(
-            overrides: [
-              flavorProvider.overrideWithValue(flavor),
-              ...backendOverrides,
-            ],
-          )
-          // Senkron, medya, görüş ve kullanım olayı gönderimi; belge, fiş
-          // ve işletme logosu dosyalarının yüklenip indirilmesi; bilgi
-          // bankası güncellemesi; görev, belge ve gönderilemeyen kayıt
-          // hatırlatmalarının eşitlemesi; push token kaydı ve bildirimden
-          // görev açma; arayüz dilinin hesaba yazılması uygulama açık
-          // kaldıkça çalışır.
-          ..listen(syncTriggersProvider, (_, _) {})
-          ..listen(mediaUploadTriggersProvider, (_, _) {})
-          ..listen(telemetryUploadTriggersProvider, (_, _) {})
-          ..listen(documentFileTriggersProvider, (_, _) {})
-          ..listen(receiptFileTriggersProvider, (_, _) {})
-          ..listen(logoFileTriggersProvider, (_, _) {})
-          ..listen(knowledgeUpdateTriggersProvider, (_, _) {})
-          ..listen(taskRemindersProvider, (_, _) {})
-          ..listen(documentRemindersProvider, (_, _) {})
-          ..listen(syncReminderProvider, (_, _) {})
-          ..listen(pushRegistrationProvider, (_, _) {})
-          ..listen(pushTaskLinksProvider, (_, _) {})
-          ..listen(localeSyncProvider, (_, _) {});
+    final container = ProviderContainer(
+      overrides: [
+        flavorProvider.overrideWithValue(flavor),
+        ...backendOverrides,
+      ],
+    );
+    // Sunucu değiştiyse (BACKEND, PB_URL, flavor) eski imleçlerle
+    // çekilmesin; ilk senkron turundan ve ilk çekme ekranının kararından
+    // önce. Yalnız yerel DB, ağı beklemez.
+    await resetCursorsIfBackendChanged(
+      container.read(appDatabaseProvider),
+      syncBackendIdentity(flavor, backend),
+    );
+    container
+      // Senkron, medya, görüş ve kullanım olayı gönderimi; belge, fiş
+      // ve işletme logosu dosyalarının yüklenip indirilmesi; bilgi
+      // bankası güncellemesi; görev, belge ve gönderilemeyen kayıt
+      // hatırlatmalarının eşitlemesi; push token kaydı ve bildirimden
+      // görev açma; arayüz dilinin hesaba yazılması uygulama açık
+      // kaldıkça çalışır.
+      ..listen(syncTriggersProvider, (_, _) {})
+      ..listen(mediaUploadTriggersProvider, (_, _) {})
+      ..listen(telemetryUploadTriggersProvider, (_, _) {})
+      ..listen(documentFileTriggersProvider, (_, _) {})
+      ..listen(receiptFileTriggersProvider, (_, _) {})
+      ..listen(logoFileTriggersProvider, (_, _) {})
+      ..listen(knowledgeUpdateTriggersProvider, (_, _) {})
+      ..listen(taskRemindersProvider, (_, _) {})
+      ..listen(documentRemindersProvider, (_, _) {})
+      ..listen(syncReminderProvider, (_, _) {})
+      ..listen(pushRegistrationProvider, (_, _) {})
+      ..listen(pushTaskLinksProvider, (_, _) {})
+      ..listen(localeSyncProvider, (_, _) {});
 
     useLatinDigitsForDates();
     runApp(UncontrolledProviderScope(container: container, child: const App()));

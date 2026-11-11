@@ -1,6 +1,8 @@
 import 'package:mobil_arici/app/flavor.dart';
+import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/core/sync/file_store.dart';
+import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/supabase_telemetry_api.dart';
@@ -14,7 +16,9 @@ part 'backend_providers.g.dart';
 @Riverpod(keepAlive: true)
 SyncTransport syncTransport(Ref ref) => switch (ref.watch(backendProvider)) {
   Backend.supabase => SupabaseSyncTransport(ref.watch(supabaseClientProvider)),
-  Backend.pocketbase => throw UnimplementedError('PocketBase senkronu: P7.3'),
+  Backend.pocketbase => PocketBaseSyncTransport(
+    ref.watch(pocketbaseClientProvider),
+  ),
 };
 
 /// Sunucudaki dosya deposu; [backendProvider]'a göre.

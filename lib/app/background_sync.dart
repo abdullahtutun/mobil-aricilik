@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/sync/media_sync_service.dart';
 import 'package:mobil_arici/core/sync/media_upload_scheduler.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
+import 'package:mobil_arici/core/sync/sync_backend.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:workmanager/workmanager.dart';
@@ -40,7 +41,8 @@ Future<void> registerBackgroundSync(Flavor flavor) async {
 /// motor aynı oturumu yenilerse refresh token yeniden kullanılmış sayılıp
 /// oturum düşebilir, iki tur da aynı outbox'ı gönderir. Uygulama kapalıysa
 /// sunucu istemcisini ([backendDefine] ya da flavor'ın varsayılanı) ve DB'yi
-/// kendisi açar. Oturum yoksa bir şey yapmaz.
+/// kendisi açar. Oturum yoksa bir şey yapmaz. Sunucu son turdakinden
+/// farklıysa önce imleçleri sıfırlar (`resetCursorsIfBackendChanged`).
 ///
 /// Periyodik görev senkron turundan sonra bekleyen medyayı da yükler.
 /// Medya görevi yalnız yükler; geçici hatada false döner ve Android
@@ -57,18 +59,32 @@ void backgroundSyncDispatcher() {
     final flavor = Flavor.values.asNameMap()[inputData?[backgroundFlavorKey]];
     if (flavor == null) return true;
 
-    final connection = await openBackgroundConnection(
-      flavor,
-      resolveBackend(flavor),
-    );
+    final backend = resolveBackend(flavor);
+    final connection = await openBackgroundConnection(flavor, backend);
     if (connection == null) return true;
 
     final db = openAppDatabase();
     try {
-      if (!media) await SyncService(db, connection.sync).sync();
+      if (!media) {
+        // Güncellenen uygulama yeni sunucuyla ilk kez arka planda açılırsa
+        // eski sunucunun imleçleriyle çekmesin.
+        await resetCursorsIfBackendChanged(
+          db,
+          syncBackendIdentity(flavor, backend),
+        );
+        await SyncService(
+          db,
+          connection.sync,
+          refreshSession: connection.refreshSession,
+        ).sync();
+      }
+      // Dosya deposu olmayan backend'de (PocketBase, P7.4'e kadar) medya
+      // uygulama açıkken de yüklenmez; görev başarılı biter.
+      final files = connection.files;
+      if (files == null) return true;
       final uploaded = await MediaSyncService(
         db,
-        connection.files,
+        files,
         MediaFileStore.app(),
         PlusConnectivityService(),
       ).uploadPending();

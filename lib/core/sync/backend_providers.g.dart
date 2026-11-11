@@ -52,7 +52,7 @@ final class SyncTransportProvider
   }
 }
 
-String _$syncTransportHash() => r'19ea10f2a58c60d8117e5b207360faf182e06875';
+String _$syncTransportHash() => r'974dcb13b441e415d592e61145b2545d9c608cb5';
 
 /// Sunucudaki dosya deposu; [backendProvider]'a göre.
 
