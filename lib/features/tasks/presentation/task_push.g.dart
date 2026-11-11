@@ -59,12 +59,13 @@ final class DeviceTokenServiceProvider
 }
 
 String _$deviceTokenServiceHash() =>
-    r'a23fee41359da6cf838c18089d7a8175ef1936ca';
+    r'77a730cc3738385bbd6ab2946f4693427f32bfc5';
 
 /// Bu telefonun push token'ını sunucuya kaydeder: görev atanınca bildirim
 /// buraya gelir. Oturum açıkken ve "Görev bildirimleri" açıkken çalışır;
 /// bildirim izni telefonda bir kez sorulur. Token yenilenince yeniden
-/// kaydedilir. Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
+/// kaydedilir; arayüz dili değişince de (bildirim bu telefonun dilinde
+/// gider). Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
 /// açılışta yeniden denenir. `bootstrap` uygulama boyunca dinler.
 
 @ProviderFor(PushRegistration)
@@ -73,14 +74,16 @@ final pushRegistrationProvider = PushRegistrationProvider._();
 /// Bu telefonun push token'ını sunucuya kaydeder: görev atanınca bildirim
 /// buraya gelir. Oturum açıkken ve "Görev bildirimleri" açıkken çalışır;
 /// bildirim izni telefonda bir kez sorulur. Token yenilenince yeniden
-/// kaydedilir. Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
+/// kaydedilir; arayüz dili değişince de (bildirim bu telefonun dilinde
+/// gider). Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
 /// açılışta yeniden denenir. `bootstrap` uygulama boyunca dinler.
 final class PushRegistrationProvider
     extends $NotifierProvider<PushRegistration, void> {
   /// Bu telefonun push token'ını sunucuya kaydeder: görev atanınca bildirim
   /// buraya gelir. Oturum açıkken ve "Görev bildirimleri" açıkken çalışır;
   /// bildirim izni telefonda bir kez sorulur. Token yenilenince yeniden
-  /// kaydedilir. Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
+  /// kaydedilir; arayüz dili değişince de (bildirim bu telefonun dilinde
+  /// gider). Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
   /// açılışta yeniden denenir. `bootstrap` uygulama boyunca dinler.
   PushRegistrationProvider._()
     : super(
@@ -109,12 +112,13 @@ final class PushRegistrationProvider
   }
 }
 
-String _$pushRegistrationHash() => r'd1fe1dbb402dcf33ff9450f4afc596843f558c83';
+String _$pushRegistrationHash() => r'066eefb8c12f79a9faec2510797a7a5db6802e96';
 
 /// Bu telefonun push token'ını sunucuya kaydeder: görev atanınca bildirim
 /// buraya gelir. Oturum açıkken ve "Görev bildirimleri" açıkken çalışır;
 /// bildirim izni telefonda bir kez sorulur. Token yenilenince yeniden
-/// kaydedilir. Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
+/// kaydedilir; arayüz dili değişince de (bildirim bu telefonun dilinde
+/// gider). Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
 /// açılışta yeniden denenir. `bootstrap` uygulama boyunca dinler.
 
 abstract class _$PushRegistration extends $Notifier<void> {

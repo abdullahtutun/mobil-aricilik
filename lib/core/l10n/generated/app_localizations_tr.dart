@@ -7641,4 +7641,8 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'Bu kişi hesabını siliyor; bekleme süresinde rolü değiştirilemez ve ekipten çıkarılamaz.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'Çok fazla kod denendi. Bir dakika bekleyip yeniden dene.';
 }

@@ -7933,4 +7933,8 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'Esta pessoa está excluindo a conta; durante o período de espera, o papel dela não pode ser mudado e ela não pode ser removida.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'Muitas tentativas de código. Espere um minuto e tente de novo.';
 }

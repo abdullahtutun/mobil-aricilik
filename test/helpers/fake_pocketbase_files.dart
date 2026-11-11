@@ -107,15 +107,15 @@ class FakePocketBaseFiles {
   ];
 
   /// Bu sahte sunucuya bağlı istemci; oturum [token] (varsayılan bir saat
-  /// geçerli).
-  PocketBase client({String? token}) {
+  /// geçerli); [record] oturumdaki kullanıcı.
+  PocketBase client({String? token, RecordModel? record}) {
     final pb = PocketBase(
       fakePocketBaseUrl,
       httpClientFactory: () => MockClient(_handle),
     );
     pb.authStore.save(
       token ?? fakePocketBaseJwt(DateTime.now().add(const Duration(hours: 1))),
-      null,
+      record,
     );
     return pb;
   }

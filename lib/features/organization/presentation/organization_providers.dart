@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart'
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
+import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/data/membership_repository.dart';
 import 'package:mobil_arici/features/organization/data/organization_cache.dart';
 import 'package:mobil_arici/features/organization/data/organization_repository.dart';
 import 'package:mobil_arici/features/organization/data/organization_service.dart';
+import 'package:mobil_arici/features/organization/data/pocketbase_organization_service.dart';
 import 'package:mobil_arici/features/organization/data/supabase_organization_service.dart';
 import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
@@ -27,8 +29,8 @@ OrganizationService organizationService(Ref ref) =>
       Backend.supabase => SupabaseOrganizationService(
         ref.watch(supabaseClientProvider),
       ),
-      Backend.pocketbase => throw UnimplementedError(
-        'PocketBase işletme servisi: P7.5',
+      Backend.pocketbase => PocketBaseOrganizationService(
+        ref.watch(pocketbaseClientProvider),
       ),
     };
 

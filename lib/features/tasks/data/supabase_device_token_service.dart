@@ -9,7 +9,12 @@ class SupabaseDeviceTokenService implements DeviceTokenService {
   final SupabaseClient _client;
 
   @override
-  Future<void> register({required String token, required String platform}) =>
+  Future<void> register({
+    required String token,
+    required String platform,
+    String? locale,
+  }) =>
+      // Edge Function dili hesabın `user_metadata.locale`'inden okur.
       _call({'action': 'register', 'token': token, 'platform': platform});
 
   @override

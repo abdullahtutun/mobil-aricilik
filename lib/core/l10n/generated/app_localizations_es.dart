@@ -7937,4 +7937,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'Esta persona está eliminando su cuenta; durante el periodo de espera no se puede cambiar su rol ni quitarla.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'Demasiados intentos con el código. Espera un minuto y vuelve a intentarlo.';
 }

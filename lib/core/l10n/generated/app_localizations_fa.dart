@@ -7865,4 +7865,8 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'این فرد در حال حذف حسابش است؛ در دوره انتظار نقش او تغییر نمی‌کند و حذف نمی‌شود.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'تعداد تلاش‌ها برای کد بیش از حد است. یک دقیقه صبر کنید و دوباره تلاش کنید.';
 }

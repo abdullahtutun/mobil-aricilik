@@ -10,12 +10,14 @@ import 'package:mobil_arici/core/analytics/analytics_rules.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
+import 'package:mobil_arici/core/sync/pocketbase_telemetry_api.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_telemetry_api.dart';
 import 'package:mobil_arici/core/sync/telemetry_api.dart';
 import 'package:mobil_arici/core/sync/telemetry_upload_service.dart';
 import 'package:mobil_arici/features/feedback/data/feedback_repository.dart';
 import 'package:mobil_arici/features/feedback/domain/feedback.dart';
+import 'package:pocketbase/pocketbase.dart' show RecordModel;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../helpers/fake_app_info_service.dart';
@@ -383,6 +385,127 @@ void main() {
       expect(api.feedback, isEmpty);
     });
   });
+
+  group('PocketBase görüş ve olay satırları', () {
+    late FakePocketBaseFiles server;
+    late _PocketBaseRows rows;
+
+    setUp(() {
+      server = FakePocketBaseFiles();
+      rows = _PocketBaseRows();
+      server.handler = rows.handle;
+      final client = server.client(
+        record: RecordModel({'id': 'user-1', 'collectionName': 'users'}),
+      );
+      service = TelemetryUploadService(
+        db,
+        PocketBaseTelemetryApi(client),
+        PocketBaseFileStore(client),
+        files,
+        FakeAppInfoService(),
+        clock: clock.call,
+      );
+    });
+
+    test('ekran görüntüsü, sonra feedback kaydı (created_by, K-5 zamanı); '
+        'sunucuda zaten olan görüş gönderildi sayılır', () async {
+      final id = await queueFeedback(screenshot: 'feedback-a.jpg');
+
+      final result = await service.uploadPending();
+
+      expect(result.feedbackSent, 1);
+      expect(server.uploads.single.collection, 'feedback_files');
+      final (collection, body) = rows.creates.single;
+      expect(collection, 'feedback');
+      expect(body, {
+        'id': id,
+        'org_id': 'org-1',
+        'kind': 'bug',
+        'message': 'Liste açılmıyor',
+        'screenshot_path': 'org-1/$id.jpg',
+        'device_info': {'app_version': '1.0.0+1'},
+        'created_at': matches(
+          RegExp(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z$'),
+        ),
+        'created_by': 'user-1',
+      });
+      expect(
+        DateTime.parse(body['created_at']! as String),
+        clock.current.toUtc(),
+      );
+
+      // Önceki denemenin yanıtı yolda kalmış: kayıt sunucuda var.
+      final again = await queueFeedback();
+      rows.rows['feedback']![again] = {'id': again};
+
+      expect((await service.uploadPending()).feedbackSent, 1);
+      expect(await feedback.nextDue(), isNull);
+    });
+
+    test('kural reddi kalıcı: görüş failed', () async {
+      await queueFeedback();
+      rows.reply = (_) => fakePocketBaseError(400);
+
+      await service.uploadPending();
+
+      final [row] = await db.select(db.feedbackQueue).get();
+      expect(row.failed, isTrue);
+      expect(row.lastError, startsWith('400'));
+    });
+
+    test('olaylar tek tek gider; sunucuda olan atlanır, hepsi '
+        'kuyruktan düşer', () async {
+      await analytics.record(AnalyticsEvent.scanFinished);
+      clock.advance(const Duration(seconds: 1));
+      await analytics.record(AnalyticsEvent.syncPushed);
+      final [first, _] = await analytics.pending();
+      rows.rows['analytics_events'] = {
+        first.id: {'id': first.id},
+      };
+
+      final result = await service.uploadPending();
+
+      expect(result.eventsSent, 2);
+      expect(await analytics.pending(), isEmpty);
+      expect(rows.rows['analytics_events']!.keys, hasLength(2));
+      final created = rows.creates.last.$2;
+      expect(created['name'], 'sync_pushed');
+      expect(created.containsKey('created_by'), isFalse);
+      expect(
+        created['occurred_at'],
+        matches(RegExp(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z$')),
+      );
+    });
+  });
+}
+
+/// `feedback` ve `analytics_events` kayıtlarını (JSON create) tutan sahte
+/// PocketBase; aynı id ikinci kez gelirse "zaten var" (400
+/// `validation_pk_invalid`). Dosya yüklemeleri [FakePocketBaseFiles]'a
+/// kalır.
+class _PocketBaseRows {
+  final rows = <String, Map<String, Map<String, Object?>>>{};
+  final creates = <(String, Map<String, Object?>)>[];
+
+  /// Doluysa bu koleksiyonun eklemesi bu yanıtı alır.
+  http.Response Function(Map<String, Object?> body)? reply;
+
+  http.Response? handle(http.Request request) {
+    final collection = switch (request.url.pathSegments) {
+      ['api', 'collections', final c, 'records']
+          when c == 'feedback' || c == 'analytics_events' =>
+        c,
+      _ => null,
+    };
+    if (request.method != 'POST' || collection == null) return null;
+    final body = jsonDecode(request.body) as Map<String, Object?>;
+    creates.add((collection, body));
+    if (reply?.call(body) case final response?) return response;
+    final table = rows.putIfAbsent(collection, () => {});
+    if (table.containsKey(body['id'])) return fakePocketBaseAlreadyUploaded();
+    table[body['id']! as String] = body;
+    return fakePocketBaseJson(body);
+  }
 }
 
 /// Satırları kaydeden [TelemetryApi]; hepsini kabul eder.

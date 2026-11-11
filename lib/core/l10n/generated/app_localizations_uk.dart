@@ -8110,4 +8110,8 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'Ця людина видаляє свій обліковий запис; у період очікування її роль не можна змінити, а саму її не можна видалити з команди.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'Забагато спроб введення коду. Зачекайте хвилину й спробуйте знову.';
 }

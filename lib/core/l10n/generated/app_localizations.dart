@@ -12532,6 +12532,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This person is deleting their account; during the waiting period their role can\'t be changed and they can\'t be removed.'**
   String get teamErrorMemberLeaving;
+
+  /// No description provided for @teamErrorTooManyAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many code attempts. Wait a minute and try again.'**
+  String get teamErrorTooManyAttempts;
 }
 
 class _AppLocalizationsDelegate

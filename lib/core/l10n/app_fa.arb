@@ -2067,5 +2067,6 @@
   "deletionPendingCancelled": "حذف لغو شد. خوش برگشتید!",
   "deletionPendingCancelFailed": "لغو حذف ممکن نشد. اتصال را بررسی کنید و دوباره تلاش کنید.",
   "teamMemberLeaving": "در حال حذف حساب · {date}",
-  "teamErrorMemberLeaving": "این فرد در حال حذف حسابش است؛ در دوره انتظار نقش او تغییر نمی‌کند و حذف نمی‌شود."
+  "teamErrorMemberLeaving": "این فرد در حال حذف حسابش است؛ در دوره انتظار نقش او تغییر نمی‌کند و حذف نمی‌شود.",
+  "teamErrorTooManyAttempts": "تعداد تلاش‌ها برای کد بیش از حد است. یک دقیقه صبر کنید و دوباره تلاش کنید."
 }

@@ -4,6 +4,7 @@ import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/core/sync/file_store.dart';
 import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
+import 'package:mobil_arici/core/sync/pocketbase_telemetry_api.dart';
 import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/supabase_telemetry_api.dart';
@@ -36,5 +37,7 @@ FileStore fileStore(Ref ref) => switch (ref.watch(backendProvider)) {
 @Riverpod(keepAlive: true)
 TelemetryApi telemetryApi(Ref ref) => switch (ref.watch(backendProvider)) {
   Backend.supabase => SupabaseTelemetryApi(ref.watch(supabaseClientProvider)),
-  Backend.pocketbase => throw UnimplementedError('PocketBase görüş: P7.5'),
+  Backend.pocketbase => PocketBaseTelemetryApi(
+    ref.watch(pocketbaseClientProvider),
+  ),
 };

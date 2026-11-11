@@ -19,6 +19,10 @@ enum TeamFailure {
   /// ekipten çıkarılamaz.
   memberLeaving,
 
+  /// Kısa sürede çok fazla kod denemesi (kullanıcı başına dakikada 10);
+  /// biraz beklenmeli.
+  tooManyAttempts,
+
   unknown,
 }
 

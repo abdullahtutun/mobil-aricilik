@@ -98,7 +98,7 @@ final class FileStoreProvider
   }
 }
 
-String _$fileStoreHash() => r'f64336605dd27e604ed899f4cb4ad12aafa26f34';
+String _$fileStoreHash() => r'0d0e84e920cb265cfab27de1f3c55932bcec0a33';
 
 /// Görüş ve kullanım olayı satırlarının yazıldığı yer; [backendProvider]'a
 /// göre.
@@ -147,4 +147,4 @@ final class TelemetryApiProvider
   }
 }
 
-String _$telemetryApiHash() => r'22c4ed9222d38c9c20d31eab5dc3af24febcefe5';
+String _$telemetryApiHash() => r'1a5eae7526e67f7b1826d68765de8ed44b726b43';
