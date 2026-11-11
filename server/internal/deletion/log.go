@@ -1,7 +1,8 @@
 // Package deletion is account deletion (P5.8–P5.9): the user routes of
 // supabase/functions/account-delete (code, request, cancel, status; see
-// routes.go), the memberships mark of a pending request and the guard of
-// the deletion log. The permanent deletion (cron) is P5.9.
+// routes.go), the memberships mark of a pending request, the guard of the
+// deletion log and (P5.9) the hourly permanent deletion with the users
+// delete hook (purge.go, user.go).
 package deletion
 
 import (

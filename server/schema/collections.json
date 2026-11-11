@@ -1117,6 +1117,18 @@
         "required": false,
         "system": false,
         "type": "text"
+      },
+      {
+        "help": "",
+        "hidden": false,
+        "max": 6,
+        "min": 0,
+        "name": "purge_step",
+        "onlyInt": true,
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "number"
       }
     ],
     "indexes": [

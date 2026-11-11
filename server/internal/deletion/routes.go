@@ -100,9 +100,11 @@ type action func(e *core.RequestEvent, b body) (any, error)
 
 // Register binds the routes and the memberships mark of a pending request
 // (sync_member_deletion_schedule) together with the checks of
-// deletion_requests. mailOn is the e-mail gate of internal/auth.
+// deletion_requests, the hourly permanent deletion and the users delete
+// hook (purge.go, user.go). mailOn is the e-mail gate of internal/auth.
 func Register(app core.App, mailOn auth.MailOn) {
 	registerRequestHooks(app)
+	registerPurge(app)
 
 	actions := map[string]action{
 		"send_code": func(e *core.RequestEvent, _ body) (any, error) {

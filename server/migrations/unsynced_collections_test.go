@@ -94,6 +94,8 @@ func TestUnsyncedCollectionShapes(t *testing.T) {
 				"status": "select!", "delete_org_ids": "json", "user_hash": "text!",
 				"email_hash": "text", "storage_prefixes": "json", "purge_started_at": "text",
 				"cancelled_at": "text", "completed_at": "text",
+				// 1794300013_deletion_purge_step (P5.9).
+				"purge_step": "number",
 			},
 			indexes: []string{
 				"idx_deletion_requests_due||scheduled_for|`status` = 'bekliyor'",
