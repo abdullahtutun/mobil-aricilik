@@ -42,7 +42,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P5.4 | İşletme kurma ve ekip daveti route'ları | P5.3 | ☑ |
 | P5.5 | Hava durumu: `weather-bundle` | P5.1 | ☑ |
 | P5.6 | Push bildirim: FCM, cihaz token'ı, görev ataması, destek dönemi cron'u | P5.4 | ☑ |
-| P5.7 | Görüş e-postası | P5.4, P4.2, P6.1 | ☐ |
+| P5.7 | Görüş e-postası | P5.4, P4.2, P6.1 | ☑ |
 | P5.8 | Hesap silme: kod, talep, iptal, durum | P5.6 | ☐ |
 | P5.9 | Hesap silme: saatlik kalıcı silme cron'u, 3 yıllık kayıt, e-postalar | P5.8, P6.1 | ☐ |
 | P5.10 | Lotun herkese açık sayfası (açılıyor) | P5.3, P6.1 | ☐ |
@@ -212,7 +212,8 @@ server/
     sync/                 # push, pull, seq (P5.1–P5.3)
     validate/             # alan ve iş kuralı doğrulaması
     auth/                 # OTP, e-posta şablonları (P4)
-    mail/                 # SMTP gönderici
+    mail/                 # feedback kutusunun SMTP göndericisi (P5.7)
+    feedback/             # görüş e-postası ve ekran görüntüsü linki (P5.7)
     fcm/                  # FCM HTTP v1 (P5.6)
     weather/              # WeatherAPI (P5.5)
     deletion/             # hesap silme (P5.8–P5.9)

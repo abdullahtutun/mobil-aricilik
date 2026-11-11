@@ -65,6 +65,11 @@ type Config struct {
 	Backups Backups
 	// Mail is the noreply SMTP account (P4.2).
 	Mail Mail
+	// FeedbackMail is the feedback mailbox (P5.7).
+	FeedbackMail FeedbackMail
+	// EncryptionKey is PB_ENCRYPTION_KEY. Secret; never log it. The
+	// feedback screenshot links derive their signing key from it (P5.7).
+	EncryptionKey string
 	// TrustedProxy is the client IP header behind the proxy (P4.2).
 	TrustedProxy TrustedProxy
 	// Weather is the WeatherAPI key and day count (P5.5).
@@ -98,6 +103,8 @@ func Load(getenv func(string) string) Config {
 	cfg.URL = strings.TrimSpace(getenv("APP_URL"))
 	cfg.Backups = loadBackups(getenv)
 	cfg.Mail = loadMail(getenv)
+	cfg.FeedbackMail = loadFeedbackMail(getenv)
+	cfg.EncryptionKey = getenv("PB_ENCRYPTION_KEY")
 	cfg.TrustedProxy = loadTrustedProxy(getenv)
 	cfg.Weather = Weather{
 		Key:  strings.TrimSpace(getenv("WEATHERAPI_KEY")),

@@ -16,8 +16,10 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/fcm"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/feedback"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/files"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	appmail "github.com/abdullahtutun/mobil-aricilik/server/internal/mail"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/notify"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/orgs"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/recordapi"
@@ -64,6 +66,7 @@ func Register(app core.App, cfg config.Config, version string) {
 	})
 	push, pushErr := newFCM(cfg.FCMServiceAccountB64)
 	notify.Register(app, notify.Options{FCM: push})
+	feedback.Register(app, feedbackOptions(cfg))
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
@@ -77,6 +80,10 @@ func Register(app core.App, cfg config.Config, version string) {
 		}
 		applyTrustedProxy(e.App, cfg.TrustedProxy, log)
 		applyRateLimits(e.App, log)
+		if !cfg.FeedbackMail.Ready() {
+			log.Warn("Feedback e-mail is off (feedback is still stored): variables are empty or invalid",
+				"names", strings.Join(cfg.FeedbackMail.Problems(), ","))
+		}
 		if pushErr != nil {
 			// The error names the problem, never the value.
 			log.Error("FCM_SERVICE_ACCOUNT_B64 is invalid; push notifications are off", "error", pushErr)
@@ -99,6 +106,26 @@ func Register(app core.App, cfg config.Config, version string) {
 		}).Bind(apis.RequireSuperuserAuth())
 		return se.Next()
 	})
+}
+
+// feedbackOptions builds the feedback mail from the environment: the
+// feedback mailbox (nil sender, mail off, when incomplete) and the
+// screenshot link key derived from PB_ENCRYPTION_KEY.
+func feedbackOptions(cfg config.Config) feedback.Options {
+	opts := feedback.Options{
+		To:      cfg.FeedbackMail.To,
+		BaseURL: cfg.URL,
+		Signer:  feedback.NewSigner(cfg.EncryptionKey),
+	}
+	if f := cfg.FeedbackMail; f.Ready() {
+		opts.Sender = appmail.New(appmail.Account{
+			Host:     f.Host,
+			Port:     f.Port,
+			Username: f.Username,
+			Password: f.Password,
+		}, config.SenderName)
+	}
+	return opts
 }
 
 // newFCM builds the FCM sender from FCM_SERVICE_ACCOUNT_B64; nil (push
