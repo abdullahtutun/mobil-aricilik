@@ -93,6 +93,12 @@ func newFixture(t *testing.T) *fixture {
 		r.Set("requested_at", testTime)
 		r.Set("scheduled_for", "2026-11-17T10:15:30.123456Z")
 		r.Set("user_hash", hash)
+		// The checks of deletion_requests (internal/deletion hook):
+		// delete_org_ids is an array, completed_at goes with tamamlandi.
+		r.Set("delete_org_ids", []string{})
+		if d.user == "" {
+			r.Set("completed_at", "2026-11-17T10:16:00.000000Z")
+		}
 		f.save(t, r)
 	}
 
@@ -406,9 +412,11 @@ func TestSyncCollectionsClosed(t *testing.T) {
 			}
 		}
 	}
-	// Nothing changed: the membership is as saved.
+	// Nothing changed: the membership is as before the scenarios (the
+	// fixture's pending deletion request already marked it).
 	after, err := f.app.FindRecordById("memberships", member.Id)
-	if err != nil || after.GetString("updated_at") != testTime {
+	if err != nil || after.GetString("updated_at") != member.GetString("updated_at") ||
+		after.GetInt("server_seq") != member.GetInt("server_seq") {
 		t.Errorf("membership changed: %v", err)
 	}
 }

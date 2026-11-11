@@ -60,6 +60,7 @@ func Register(app core.App, cfg config.Config, version string) {
 	appsync.RegisterPush(app)
 	orgs.Register(app)
 	team.Register(app)
+	deletion.Register(app, mail.On)
 	weather.Register(app, weather.Options{
 		Key:  cfg.Weather.Key,
 		Days: weather.ForecastDays(cfg.Weather.Days),

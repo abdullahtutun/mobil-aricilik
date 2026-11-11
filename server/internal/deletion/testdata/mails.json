@@ -1,0 +1,830 @@
+{
+ "tr": {
+  "requested_org": {
+   "subject": "Mobil Arıcı hesabın silinecek",
+   "text": "Mobil Arıcı hesabını silme talebini aldık.\n\nHesabın, işletmen ve işletmenin tüm kayıtları 12 Kasım 2026 12:30 (TSİ) tarihinde kalıcı olarak silinecek.\n\nVazgeçtiysen bu tarihten önce uygulamaya giriş yap ve hesabını korumak istediğini onayla.\nBu talebi sen yapmadıysan hemen giriş yap."
+  },
+  "requested_account": {
+   "subject": "Mobil Arıcı hesabın silinecek",
+   "text": "Mobil Arıcı hesabını silme talebini aldık.\n\nHesabın 13 Kasım 2026 00:30 (TSİ) tarihinde kalıcı olarak silinecek. Girdiğin işletme kayıtları işletmede kalır.\n\nVazgeçtiysen bu tarihten önce uygulamaya giriş yap ve hesabını korumak istediğini onayla.\nBu talebi sen yapmadıysan hemen giriş yap."
+  },
+  "code": {
+   "subject": "Mobil Arıcı hesap silme kodun",
+   "text": "Mobil Arıcı hesabını silmek istedin.\n\nOnaylamak için bu kodu uygulamaya gir: 482913\n\nKod 10 dakika geçerli ve bir kez kullanılabilir. Kodu kimseyle paylaşma.\nBunu sen istemediysen bu e-postayı yok say; hesabın silinmez."
+  },
+  "completed": {
+   "subject": "Mobil Arıcı hesabın silindi",
+   "text": "Mobil Arıcı hesabın isteğin üzerine kalıcı olarak silindi. Mobil Arıcı'yı kullandığın için teşekkürler."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 Kasım 2026 12:30 (TSİ)"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "13 Kasım 2026 00:30 (TSİ)"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "1 Ocak 2027 01:00 (TSİ)"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 Ocak 2027 03:05 (TSİ)"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 Ocak 2026 03:00 (TSİ)"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 Şubat 2026 08:07 (TSİ)"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 Mart 2026 13:14 (TSİ)"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 Nisan 2026 18:21 (TSİ)"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 Mayıs 2026 23:28 (TSİ)"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 Haziran 2026 04:35 (TSİ)"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 Temmuz 2026 09:42 (TSİ)"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 Ağustos 2026 14:49 (TSİ)"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 Eylül 2026 19:56 (TSİ)"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "11 Ekim 2026 00:03 (TSİ)"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 Kasım 2026 05:10 (TSİ)"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 Aralık 2026 10:17 (TSİ)"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 Temmuz 2026 15:00 (TSİ)"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 Mart 2027 03:59 (TSİ)"
+   ]
+  ]
+ },
+ "en": {
+  "requested_org": {
+   "subject": "Your Mobil Arıcı account will be deleted",
+   "text": "We received a request to delete your Mobil Arıcı account.\n\nYour account, your business and all of its records will be permanently deleted on 12 November 2026 at 09:30 UTC.\n\nChanged your mind? Sign in to the app before that date and confirm that you want to keep your account.\nIf you did not make this request, sign in now."
+  },
+  "requested_account": {
+   "subject": "Your Mobil Arıcı account will be deleted",
+   "text": "We received a request to delete your Mobil Arıcı account.\n\nYour account will be permanently deleted on 12 November 2026 at 21:30 UTC. The business records you entered stay with the business.\n\nChanged your mind? Sign in to the app before that date and confirm that you want to keep your account.\nIf you did not make this request, sign in now."
+  },
+  "code": {
+   "subject": "Your Mobil Arıcı account deletion code",
+   "text": "You asked to delete your Mobil Arıcı account.\n\nTo confirm, enter this code in the app: 482913\n\nThe code is valid for 10 minutes and can be used once. Don't share it with anyone.\nIf you didn't ask for this, ignore this email; your account will not be deleted."
+  },
+  "completed": {
+   "subject": "Your Mobil Arıcı account has been deleted",
+   "text": "Your Mobil Arıcı account has been permanently deleted as you requested. Thank you for using Mobil Arıcı."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 November 2026 at 09:30 UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12 November 2026 at 21:30 UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31 December 2026 at 22:00 UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 January 2027 at 00:05 UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 January 2026 at 00:00 UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 February 2026 at 05:07 UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 March 2026 at 10:14 UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 April 2026 at 15:21 UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 May 2026 at 20:28 UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 June 2026 at 01:35 UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 July 2026 at 06:42 UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 August 2026 at 11:49 UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 September 2026 at 16:56 UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10 October 2026 at 21:03 UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 November 2026 at 02:10 UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 December 2026 at 07:17 UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 July 2026 at 12:00 UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 March 2027 at 00:59 UTC"
+   ]
+  ]
+ },
+ "de": {
+  "requested_org": {
+   "subject": "Dein Mobil-Arıcı-Konto wird gelöscht",
+   "text": "Wir haben eine Anfrage zum Löschen deines Mobil-Arıcı-Kontos erhalten.\n\nDein Konto, dein Betrieb und alle seine Einträge werden am 12. November 2026 um 09:30 UTC endgültig gelöscht.\n\nDu hast es dir anders überlegt? Melde dich vor diesem Datum in der App an und bestätige, dass du dein Konto behalten möchtest.\nWenn du diese Anfrage nicht gestellt hast, melde dich sofort an."
+  },
+  "requested_account": {
+   "subject": "Dein Mobil-Arıcı-Konto wird gelöscht",
+   "text": "Wir haben eine Anfrage zum Löschen deines Mobil-Arıcı-Kontos erhalten.\n\nDein Konto wird am 12. November 2026 um 21:30 UTC endgültig gelöscht. Die Einträge, die du im Betrieb erfasst hast, bleiben beim Betrieb.\n\nDu hast es dir anders überlegt? Melde dich vor diesem Datum in der App an und bestätige, dass du dein Konto behalten möchtest.\nWenn du diese Anfrage nicht gestellt hast, melde dich sofort an."
+  },
+  "code": {
+   "subject": "Dein Code zum Löschen des Mobil-Arıcı-Kontos",
+   "text": "Du möchtest dein Mobil-Arıcı-Konto löschen.\n\nGib zur Bestätigung diesen Code in der App ein: 482913\n\nDer Code gilt 10 Minuten und kann einmal verwendet werden. Gib ihn an niemanden weiter.\nWenn du das nicht angefordert hast, ignoriere diese E-Mail; dein Konto wird nicht gelöscht."
+  },
+  "completed": {
+   "subject": "Dein Mobil-Arıcı-Konto wurde gelöscht",
+   "text": "Dein Mobil-Arıcı-Konto wurde auf deinen Wunsch endgültig gelöscht. Danke, dass du Mobil Arıcı genutzt hast."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12. November 2026 um 09:30 UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12. November 2026 um 21:30 UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31. Dezember 2026 um 22:00 UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1. Januar 2027 um 00:05 UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1. Januar 2026 um 00:00 UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2. Februar 2026 um 05:07 UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3. März 2026 um 10:14 UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4. April 2026 um 15:21 UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5. Mai 2026 um 20:28 UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6. Juni 2026 um 01:35 UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7. Juli 2026 um 06:42 UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8. August 2026 um 11:49 UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9. September 2026 um 16:56 UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10. Oktober 2026 um 21:03 UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11. November 2026 um 02:10 UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12. Dezember 2026 um 07:17 UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9. Juli 2026 um 12:00 UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28. März 2027 um 00:59 UTC"
+   ]
+  ]
+ },
+ "es": {
+  "requested_org": {
+   "subject": "Tu cuenta de Mobil Arıcı se eliminará",
+   "text": "Hemos recibido una solicitud para eliminar tu cuenta de Mobil Arıcı.\n\nTu cuenta, tu explotación y todos sus registros se eliminarán definitivamente el 12 de noviembre de 2026, 9:30 UTC.\n\n¿Has cambiado de opinión? Inicia sesión en la app antes de esa fecha y confirma que quieres conservar tu cuenta.\nSi no has hecho esta solicitud, inicia sesión ahora."
+  },
+  "requested_account": {
+   "subject": "Tu cuenta de Mobil Arıcı se eliminará",
+   "text": "Hemos recibido una solicitud para eliminar tu cuenta de Mobil Arıcı.\n\nTu cuenta se eliminará definitivamente el 12 de noviembre de 2026, 21:30 UTC. Los registros que introdujiste se quedan en la explotación.\n\n¿Has cambiado de opinión? Inicia sesión en la app antes de esa fecha y confirma que quieres conservar tu cuenta.\nSi no has hecho esta solicitud, inicia sesión ahora."
+  },
+  "code": {
+   "subject": "Tu código para eliminar la cuenta de Mobil Arıcı",
+   "text": "Has pedido eliminar tu cuenta de Mobil Arıcı.\n\nPara confirmar, introduce este código en la app: 482913\n\nEl código es válido durante 10 minutos y se puede usar una vez. No lo compartas con nadie.\nSi no lo has pedido tú, ignora este correo; tu cuenta no se eliminará."
+  },
+  "completed": {
+   "subject": "Tu cuenta de Mobil Arıcı se ha eliminado",
+   "text": "Tu cuenta de Mobil Arıcı se ha eliminado definitivamente, como pediste. Gracias por usar Mobil Arıcı."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 de noviembre de 2026, 9:30 UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12 de noviembre de 2026, 21:30 UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31 de diciembre de 2026, 22:00 UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 de enero de 2027, 0:05 UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 de enero de 2026, 0:00 UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 de febrero de 2026, 5:07 UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 de marzo de 2026, 10:14 UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 de abril de 2026, 15:21 UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 de mayo de 2026, 20:28 UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 de junio de 2026, 1:35 UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 de julio de 2026, 6:42 UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 de agosto de 2026, 11:49 UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 de septiembre de 2026, 16:56 UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10 de octubre de 2026, 21:03 UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 de noviembre de 2026, 2:10 UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 de diciembre de 2026, 7:17 UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 de julio de 2026, 12:00 UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 de marzo de 2027, 0:59 UTC"
+   ]
+  ]
+ },
+ "pt": {
+  "requested_org": {
+   "subject": "Sua conta do Mobil Arıcı será excluída",
+   "text": "Recebemos um pedido para excluir sua conta do Mobil Arıcı.\n\nSua conta, seu negócio e todos os registros dele serão excluídos definitivamente em 12 de novembro de 2026 às 09:30 UTC.\n\nMudou de ideia? Entre no app antes dessa data e confirme que quer manter sua conta.\nSe você não fez este pedido, entre agora."
+  },
+  "requested_account": {
+   "subject": "Sua conta do Mobil Arıcı será excluída",
+   "text": "Recebemos um pedido para excluir sua conta do Mobil Arıcı.\n\nSua conta será excluída definitivamente em 12 de novembro de 2026 às 21:30 UTC. Os registros que você lançou continuam no negócio.\n\nMudou de ideia? Entre no app antes dessa data e confirme que quer manter sua conta.\nSe você não fez este pedido, entre agora."
+  },
+  "code": {
+   "subject": "Seu código para excluir a conta do Mobil Arıcı",
+   "text": "Você pediu para excluir sua conta do Mobil Arıcı.\n\nPara confirmar, digite este código no app: 482913\n\nO código vale por 10 minutos e pode ser usado uma vez. Não o compartilhe com ninguém.\nSe não foi você, ignore este e-mail; sua conta não será excluída."
+  },
+  "completed": {
+   "subject": "Sua conta do Mobil Arıcı foi excluída",
+   "text": "Sua conta do Mobil Arıcı foi excluída definitivamente, como você pediu. Obrigado por usar o Mobil Arıcı."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 de novembro de 2026 às 09:30 UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12 de novembro de 2026 às 21:30 UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31 de dezembro de 2026 às 22:00 UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 de janeiro de 2027 às 00:05 UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 de janeiro de 2026 às 00:00 UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 de fevereiro de 2026 às 05:07 UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 de março de 2026 às 10:14 UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 de abril de 2026 às 15:21 UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 de maio de 2026 às 20:28 UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 de junho de 2026 às 01:35 UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 de julho de 2026 às 06:42 UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 de agosto de 2026 às 11:49 UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 de setembro de 2026 às 16:56 UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10 de outubro de 2026 às 21:03 UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 de novembro de 2026 às 02:10 UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 de dezembro de 2026 às 07:17 UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 de julho de 2026 às 12:00 UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 de março de 2027 às 00:59 UTC"
+   ]
+  ]
+ },
+ "ru": {
+  "requested_org": {
+   "subject": "Ваш аккаунт Mobil Arıcı будет удалён",
+   "text": "Мы получили запрос на удаление вашего аккаунта Mobil Arıcı.\n\nВаш аккаунт, ваше хозяйство и все его записи будут окончательно удалены 12 ноября 2026 г. в 09:30 UTC.\n\nПередумали? Войдите в приложение до этой даты и подтвердите, что хотите сохранить аккаунт.\nЕсли вы не отправляли этот запрос, войдите прямо сейчас."
+  },
+  "requested_account": {
+   "subject": "Ваш аккаунт Mobil Arıcı будет удалён",
+   "text": "Мы получили запрос на удаление вашего аккаунта Mobil Arıcı.\n\nВаш аккаунт будет окончательно удалён 12 ноября 2026 г. в 21:30 UTC. Внесённые вами записи остаются в хозяйстве.\n\nПередумали? Войдите в приложение до этой даты и подтвердите, что хотите сохранить аккаунт.\nЕсли вы не отправляли этот запрос, войдите прямо сейчас."
+  },
+  "code": {
+   "subject": "Код для удаления аккаунта Mobil Arıcı",
+   "text": "Вы запросили удаление аккаунта Mobil Arıcı.\n\nДля подтверждения введите этот код в приложении: 482913\n\nКод действует 10 минут и может быть использован один раз. Никому его не сообщайте.\nЕсли вы этого не запрашивали, проигнорируйте письмо; аккаунт не будет удалён."
+  },
+  "completed": {
+   "subject": "Ваш аккаунт Mobil Arıcı удалён",
+   "text": "Ваш аккаунт Mobil Arıcı окончательно удалён по вашему запросу. Спасибо, что пользовались Mobil Arıcı."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 ноября 2026 г. в 09:30 UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12 ноября 2026 г. в 21:30 UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31 декабря 2026 г. в 22:00 UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 января 2027 г. в 00:05 UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 января 2026 г. в 00:00 UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 февраля 2026 г. в 05:07 UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 марта 2026 г. в 10:14 UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 апреля 2026 г. в 15:21 UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 мая 2026 г. в 20:28 UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 июня 2026 г. в 01:35 UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 июля 2026 г. в 06:42 UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 августа 2026 г. в 11:49 UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 сентября 2026 г. в 16:56 UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10 октября 2026 г. в 21:03 UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 ноября 2026 г. в 02:10 UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 декабря 2026 г. в 07:17 UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 июля 2026 г. в 12:00 UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 марта 2027 г. в 00:59 UTC"
+   ]
+  ]
+ },
+ "uk": {
+  "requested_org": {
+   "subject": "Ваш обліковий запис Mobil Arıcı буде видалено",
+   "text": "Ми отримали запит на видалення вашого облікового запису Mobil Arıcı.\n\nВаш обліковий запис, ваше господарство та всі його записи буде остаточно видалено 12 листопада 2026 р. о 09:30 UTC.\n\nПередумали? Увійдіть у застосунок до цієї дати й підтвердьте, що хочете зберегти обліковий запис.\nЯкщо ви не надсилали цей запит, увійдіть просто зараз."
+  },
+  "requested_account": {
+   "subject": "Ваш обліковий запис Mobil Arıcı буде видалено",
+   "text": "Ми отримали запит на видалення вашого облікового запису Mobil Arıcı.\n\nВаш обліковий запис буде остаточно видалено 12 листопада 2026 р. о 21:30 UTC. Внесені вами записи залишаються в господарстві.\n\nПередумали? Увійдіть у застосунок до цієї дати й підтвердьте, що хочете зберегти обліковий запис.\nЯкщо ви не надсилали цей запит, увійдіть просто зараз."
+  },
+  "code": {
+   "subject": "Код для видалення облікового запису Mobil Arıcı",
+   "text": "Ви запросили видалення облікового запису Mobil Arıcı.\n\nДля підтвердження введіть цей код у застосунку: 482913\n\nКод діє 10 хвилин і може бути використаний один раз. Нікому його не повідомляйте.\nЯкщо ви цього не запитували, проігноруйте лист; обліковий запис не буде видалено."
+  },
+  "completed": {
+   "subject": "Ваш обліковий запис Mobil Arıcı видалено",
+   "text": "Ваш обліковий запис Mobil Arıcı остаточно видалено на ваш запит. Дякуємо, що користувалися Mobil Arıcı."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 листопада 2026 р. о 09:30 UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12 листопада 2026 р. о 21:30 UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31 грудня 2026 р. о 22:00 UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 січня 2027 р. о 00:05 UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 січня 2026 р. о 00:00 UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 лютого 2026 р. о 05:07 UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 березня 2026 р. о 10:14 UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 квітня 2026 р. о 15:21 UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 травня 2026 р. о 20:28 UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 червня 2026 р. о 01:35 UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 липня 2026 р. о 06:42 UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 серпня 2026 р. о 11:49 UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 вересня 2026 р. о 16:56 UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10 жовтня 2026 р. о 21:03 UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 листопада 2026 р. о 02:10 UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 грудня 2026 р. о 07:17 UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 липня 2026 р. о 12:00 UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 березня 2027 р. о 00:59 UTC"
+   ]
+  ]
+ },
+ "fa": {
+  "requested_org": {
+   "subject": "حساب Mobil Arıcı شما حذف می‌شود",
+   "text": "درخواستی برای حذف حساب Mobil Arıcı شما دریافت کردیم.\n\nحساب شما، کسب‌وکارتان و همه سوابق آن در 12 نوامبر 2026 ساعت 9:30 UTC برای همیشه حذف می‌شوند.\n\nنظرتان عوض شد؟ پیش از این تاریخ وارد برنامه شوید و تأیید کنید که می‌خواهید حسابتان بماند.\nاگر این درخواست را شما نداده‌اید، همین حالا وارد شوید."
+  },
+  "requested_account": {
+   "subject": "حساب Mobil Arıcı شما حذف می‌شود",
+   "text": "درخواستی برای حذف حساب Mobil Arıcı شما دریافت کردیم.\n\nحساب شما در 12 نوامبر 2026 ساعت 21:30 UTC برای همیشه حذف می‌شود. سوابقی که وارد کرده‌اید در کسب‌وکار می‌مانند.\n\nنظرتان عوض شد؟ پیش از این تاریخ وارد برنامه شوید و تأیید کنید که می‌خواهید حسابتان بماند.\nاگر این درخواست را شما نداده‌اید، همین حالا وارد شوید."
+  },
+  "code": {
+   "subject": "کد حذف حساب Mobil Arıcı شما",
+   "text": "درخواست حذف حساب Mobil Arıcı خود را داده‌اید.\n\nبرای تأیید، این کد را در برنامه وارد کنید: 482913\n\nکد 10 دقیقه اعتبار دارد و یک بار قابل استفاده است. آن را با کسی در میان نگذارید.\nاگر شما درخواست نداده‌اید، این ایمیل را نادیده بگیرید؛ حسابتان حذف نمی‌شود."
+  },
+  "completed": {
+   "subject": "حساب Mobil Arıcı شما حذف شد",
+   "text": "حساب Mobil Arıcı شما طبق درخواستتان برای همیشه حذف شد. از اینکه از Mobil Arıcı استفاده کردید سپاسگزاریم."
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 نوامبر 2026 ساعت 9:30 UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12 نوامبر 2026 ساعت 21:30 UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31 دسامبر 2026 ساعت 22:00 UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 ژانویهٔ 2027 ساعت 0:05 UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 ژانویهٔ 2026 ساعت 0:00 UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 فوریهٔ 2026 ساعت 5:07 UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 مارس 2026 ساعت 10:14 UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 آوریل 2026 ساعت 15:21 UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 مهٔ 2026 ساعت 20:28 UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 ژوئن 2026 ساعت 1:35 UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 ژوئیهٔ 2026 ساعت 6:42 UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 اوت 2026 ساعت 11:49 UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 سپتامبر 2026 ساعت 16:56 UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10 اکتبر 2026 ساعت 21:03 UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 نوامبر 2026 ساعت 2:10 UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 دسامبر 2026 ساعت 7:17 UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 ژوئیهٔ 2026 ساعت 12:00 UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 مارس 2027 ساعت 0:59 UTC"
+   ]
+  ]
+ },
+ "hi": {
+  "requested_org": {
+   "subject": "आपका Mobil Arıcı खाता हटाया जाएगा",
+   "text": "हमें आपका Mobil Arıcı खाता हटाने का अनुरोध मिला है।\n\nआपका खाता, आपका व्यवसाय और उसके सभी रिकॉर्ड 12 नवंबर 2026 को 9:30 am बजे UTC को स्थायी रूप से हटा दिए जाएँगे।\n\nमन बदल गया? उस तारीख़ से पहले ऐप में साइन इन करें और पुष्टि करें कि आप अपना खाता रखना चाहते हैं।\nअगर यह अनुरोध आपने नहीं किया, तो अभी साइन इन करें।"
+  },
+  "requested_account": {
+   "subject": "आपका Mobil Arıcı खाता हटाया जाएगा",
+   "text": "हमें आपका Mobil Arıcı खाता हटाने का अनुरोध मिला है।\n\nआपका खाता 12 नवंबर 2026 को 9:30 pm बजे UTC को स्थायी रूप से हटा दिया जाएगा। आपके डाले व्यवसाय रिकॉर्ड व्यवसाय में बने रहेंगे।\n\nमन बदल गया? उस तारीख़ से पहले ऐप में साइन इन करें और पुष्टि करें कि आप अपना खाता रखना चाहते हैं।\nअगर यह अनुरोध आपने नहीं किया, तो अभी साइन इन करें।"
+  },
+  "code": {
+   "subject": "आपका Mobil Arıcı खाता हटाने का कोड",
+   "text": "आपने अपना Mobil Arıcı खाता हटाने का अनुरोध किया है।\n\nपुष्टि के लिए ऐप में यह कोड डालें: 482913\n\nकोड 10 मिनट तक मान्य है और एक बार इस्तेमाल हो सकता है। इसे किसी से साझा न करें।\nअगर आपने यह नहीं माँगा, तो इस ईमेल को अनदेखा करें; आपका खाता नहीं हटेगा।"
+  },
+  "completed": {
+   "subject": "आपका Mobil Arıcı खाता हटा दिया गया",
+   "text": "आपके अनुरोध पर आपका Mobil Arıcı खाता स्थायी रूप से हटा दिया गया है। Mobil Arıcı इस्तेमाल करने के लिए धन्यवाद।"
+  },
+  "dates": [
+   [
+    "2026-11-12T09:30:00Z",
+    "12 नवंबर 2026 को 9:30 am बजे UTC"
+   ],
+   [
+    "2026-11-12T21:30:00Z",
+    "12 नवंबर 2026 को 9:30 pm बजे UTC"
+   ],
+   [
+    "2026-12-31T22:00:00Z",
+    "31 दिसंबर 2026 को 10:00 pm बजे UTC"
+   ],
+   [
+    "2027-01-01T00:05:00Z",
+    "1 जनवरी 2027 को 12:05 am बजे UTC"
+   ],
+   [
+    "2026-01-01T00:00:00Z",
+    "1 जनवरी 2026 को 12:00 am बजे UTC"
+   ],
+   [
+    "2026-02-02T05:07:00Z",
+    "2 फ़रवरी 2026 को 5:07 am बजे UTC"
+   ],
+   [
+    "2026-03-03T10:14:00Z",
+    "3 मार्च 2026 को 10:14 am बजे UTC"
+   ],
+   [
+    "2026-04-04T15:21:00Z",
+    "4 अप्रैल 2026 को 3:21 pm बजे UTC"
+   ],
+   [
+    "2026-05-05T20:28:00Z",
+    "5 मई 2026 को 8:28 pm बजे UTC"
+   ],
+   [
+    "2026-06-06T01:35:00Z",
+    "6 जून 2026 को 1:35 am बजे UTC"
+   ],
+   [
+    "2026-07-07T06:42:00Z",
+    "7 जुलाई 2026 को 6:42 am बजे UTC"
+   ],
+   [
+    "2026-08-08T11:49:00Z",
+    "8 अगस्त 2026 को 11:49 am बजे UTC"
+   ],
+   [
+    "2026-09-09T16:56:00Z",
+    "9 सितंबर 2026 को 4:56 pm बजे UTC"
+   ],
+   [
+    "2026-10-10T21:03:00Z",
+    "10 अक्टूबर 2026 को 9:03 pm बजे UTC"
+   ],
+   [
+    "2026-11-11T02:10:00Z",
+    "11 नवंबर 2026 को 2:10 am बजे UTC"
+   ],
+   [
+    "2026-12-12T07:17:00Z",
+    "12 दिसंबर 2026 को 7:17 am बजे UTC"
+   ],
+   [
+    "2026-07-09T12:00:00Z",
+    "9 जुलाई 2026 को 12:00 pm बजे UTC"
+   ],
+   [
+    "2027-03-28T00:59:00Z",
+    "28 मार्च 2027 को 12:59 am बजे UTC"
+   ]
+  ]
+ }
+}

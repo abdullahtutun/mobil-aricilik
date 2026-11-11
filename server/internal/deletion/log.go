@@ -1,5 +1,7 @@
-// Package deletion holds account deletion (P5.8–P5.9). For now only the
-// guard of the deletion log.
+// Package deletion is account deletion (P5.8–P5.9): the user routes of
+// supabase/functions/account-delete (code, request, cancel, status; see
+// routes.go), the memberships mark of a pending request and the guard of
+// the deletion log. The permanent deletion (cron) is P5.9.
 package deletion
 
 import (
@@ -24,7 +26,8 @@ var (
 	ErrLogRetained = errors.New("silme kaydı üç yıl saklanır")
 )
 
-// now is the clock of the guard; tests replace it.
+// now is the package clock (the guard, codes and requests); tests replace
+// it.
 var now = time.Now
 
 // RegisterLogGuard is Supabase's protect_deletion_log trigger
