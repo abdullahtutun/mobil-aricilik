@@ -3967,6 +3967,64 @@
     ]
   },
   {
+    "name": "knowledge_packs",
+    "type": "base",
+    "listRule": "@request.auth.id != \"\"",
+    "viewRule": "@request.auth.id != \"\"",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "fields": [
+      {
+        "autogeneratePattern": "",
+        "help": "",
+        "hidden": false,
+        "max": 36,
+        "min": 36,
+        "name": "id",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "presentable": false,
+        "primaryKey": true,
+        "required": true,
+        "system": true,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "help": "",
+        "hidden": false,
+        "max": 32,
+        "min": 0,
+        "name": "name",
+        "pattern": "^(manifest|knowledge-v[1-9][0-9]{0,8})\\.json$",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "help": "",
+        "hidden": false,
+        "maxSelect": 1,
+        "maxSize": 10485760,
+        "mimeTypes": [
+          "application/json"
+        ],
+        "name": "file",
+        "presentable": false,
+        "protected": false,
+        "required": true,
+        "system": false,
+        "thumbs": [],
+        "type": "file"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_knowledge_packs_name` ON `knowledge_packs` (`name`)"
+    ]
+  },
+  {
     "name": "lab_results",
     "type": "base",
     "listRule": null,

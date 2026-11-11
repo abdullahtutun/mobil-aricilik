@@ -33,7 +33,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P3.1 | Yetki katmanı (`authz`) ve politika testleri | P2.8 | ☑ |
 | P3.2 | API kuralları ve "kuralsız koleksiyon yok" testi | P3.1 | ☑ |
 | P6.1 | Dosya koleksiyonları (7 bucket'ın karşılığı) | P3.2 | ☑ |
-| P6.2 | Bilgi bankası paketi ve yayımlama aracı | P6.1 | ☐ |
+| P6.2 | Bilgi bankası paketi ve yayımlama aracı | P6.1 | ☑ |
 | P4.1 | OTP girişi: ilk istekte kullanıcı açma, 9 dilli e-posta, demo hesap | P3.2 | ☑ |
 | P4.2 | SMTP (Hostinger) ve oturum ayarları ortam değişkeninden; canlı e-posta denemesi | P4.1, P1.3 | ☑ |
 | P5.1 | Senkron çekme: `/api/sync/pull` | P3.2 | ☑ |

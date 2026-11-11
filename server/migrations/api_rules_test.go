@@ -38,6 +38,11 @@ var expectedOpenRules = map[string]string{
 	"org_logo_files.view":   fileMember,
 	"org_logo_files.create": fileManagers,
 
+	// P6.2 (1794300014_knowledge_packs.go): any signed-in user reads; only
+	// the superuser writes.
+	"knowledge_packs.list": `@request.auth.id != ""`,
+	"knowledge_packs.view": `@request.auth.id != ""`,
+
 	// PocketBase's own system collections (1640988000_init), unchanged: a
 	// user sees, and for the last two deletes, only their own entries.
 	"_mfas.list":            pbOwnerRule,
