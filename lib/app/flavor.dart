@@ -18,7 +18,7 @@ enum Flavor {
   dev(
     supabaseUrl: _sharedSupabaseUrl,
     supabaseAnonKey: _sharedSupabaseAnonKey,
-    defaultBackend: Backend.supabase,
+    defaultBackend: Backend.pocketbase,
     pocketbaseUrl: 'https://arici-api-dev.tutunsoft.com',
   ),
   prod(

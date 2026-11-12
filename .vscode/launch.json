@@ -2,18 +2,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "dev",
+      "name": "dev (PocketBase)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "dev"]
+      "args": ["--flavor", "dev", "--dart-define=BACKEND=pocketbase"]
+    },
+    {
+      "name": "dev (Supabase)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "dev", "--dart-define=BACKEND=supabase"]
     },
     {
       "name": "prod",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_prod.dart",
-      "args": ["--flavor", "prod"]
+      "args": ["--flavor", "prod", "--dart-define=BACKEND=supabase"]
     }
   ]
 }

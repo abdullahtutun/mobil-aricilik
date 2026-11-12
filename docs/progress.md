@@ -1134,15 +1134,19 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Testler: servis başına PocketBase testi (sahte HTTP, `test/helpers/fake_pocketbase_api.dart`): istek yolları, gövdeler, token başlığı, hata eşleme tabloları, zaman aşımı, Edge biçimindeki `error`'un okunmaması; `pocketbase_telemetry_api_test.dart` ve `telemetry_upload_service_test.dart`'ta PocketBase satır grubu (ekran görüntüsü + görüş, sunucuda olan görüş/olay, kural reddi); push kaydında dil. Zaman çevirisi ve `data.code` okuma bozulunca testlerin kırıldığı denendi. `flutter analyze` temiz, `flutter test` 2637 geçti.
 - Yerel deneme (2026-11-12, iPhone 15 Pro iOS 17.4, yerel `serve --dev` 127.0.0.1:8091, scratchpad'te boş `pb_data`; iki kullanıcı OTP ile, kod sunucu logundan; geçici integration test gerçek provider grafiğiyle `BACKEND=pocketbase`, commit edilmedi): işletme kuruldu (ad kırpıldı, aynı kimlikle tekrar aynı işletme), B'de işletme yok → `null`; A worker kodu üretti, B kodla katıldı ve işletmesi göründü, kodun ikinci kullanımı `invalidCode`, üye listesi iki e-posta, worker'ın kod üretmesi `forbidden`; hava 503 `config`; push token `de` diliyle kaydedildi; görüş yazıldı (sunucuda `created_by`, K-5 `created_at`, `received_at`), aynı görüş duplicate, iki olay yazıldı; B'de bekleyen talep yok, kodsuz talep `codeRequired`, `send_code` e-postası ("Mobil Arıcı hesap silme kodun") logda, yanlış kod `invalidCode`. Kayıtlar SQLite'tan doğrulandı. Uygulamanın ekranlarıyla (onboarding, ekip ekranı, Bugün) tıklanarak denenmedi. Hava 503'te ekran: `WeatherRefresher` hatayı yutuyor; Bugün'de saklanan paket yoksa konumlu arılık kartı "Bağlantı gelince gelir" diyor, arılık havası ekranındaki "Yenile" "Tahmin alınamadı. İnternet bağlantını kontrol et." gösteriyor — sunucu yapılandırma hatasında da internet diyor (bilinen, ayırt edilmiyor).
 
+### 2026-11-12 — P7.6 Lot sayfası adresi, yasal metinler, dev'de varsayılan PocketBase
+
+- Lot sayfası: `resolveLotPageBaseUrl` (`lot_rules.dart`, saf) `LOT_PAGE_BASE_URL` doluysa onu, değilse PocketBase'de `<PB adresi>/l`'i (sunucunun `GET /l/{id}`'si, K-14), Supabase'de null'u döner; `lotPageBaseUrlProvider` `backendProvider` + `pocketbaseUrlProvider`'dan çözüyor. PocketBase'de lot ekranındaki "Herkese açık sayfa" bölümü ve kavanoz etiketinin QR'ı derleme ayarı olmadan açık.
+- `Flavor.dev.defaultBackend` artık `Backend.pocketbase` (`arici-api-dev.tutunsoft.com`), prod Supabase'de. `.vscode/launch.json`: `dev (PocketBase)`, `dev (Supabase)` ve `prod` (açıkça `BACKEND=supabase`). README'de `BACKEND`, `PB_URL` ve `LOT_PAGE_BASE_URL` kullanımı.
+- Yasal: `privacy-policy.html` (TR + EN) Supabase/İrlanda yerine sunucunun Türkiye'de (Hosting.com.tr) olduğunu yazıyor; yurt dışı aktarım bölümü artık yalnız FCM, Sentry, WeatherAPI, OpenFreeMap, Nominatim ve Hostinger'ı, her birine giden veriyle listeliyor. Hostinger'ın ülkesi kullanıcı kararıyla yazılmadı. Yürürlük 12 Kasım 2026. `account-deletion.html` PocketBase akışıyla karşılaştırıldı (7 gün `GracePeriod`, 3 yıl `LogRetentionYears`, talepte `endSessions`, iptal için giriş + onay, e-posta yolu): fark yok, değişmedi. **Sayfaları siteye kullanıcı yükleyecek**; yeni gizlilik metni PocketBase'i anlattığı için prod PocketBase'e geçerken (P10) yüklenmeli, prod hâlâ Supabase'deyken yüklenirse metin gerçeği yansıtmaz.
+- Testler: `lot_rules_test.dart` (PocketBase'de `/l`, sondaki `/`, Supabase'de null, `LOT_PAGE_BASE_URL` iki backend'de ezer), `lots_flow_test.dart` (PocketBase'de bölüm görünür ve adres `<PB>/l`; "adres yokken bölüm gizli" artık Supabase'e sabit), `backend_test.dart` (dev PocketBase, prod Supabase). `flutter analyze` temiz, `flutter test` 2642 geçti.
+- Bilinen: Cihazda `flutter run --flavor dev` ile dev sunucudan giriş e-postası bu oturumda denenmedi (kullanıcı denemesi). `integration_test/store_screenshots_test.dart` `Flavor.dev` override ettiği için artık PocketBase servislerini seçer; ekran görüntüsü alınırken `BACKEND` gerekirse verilmeli (denenmedi).
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
 
-- Lotun herkese açık sayfası (2026-11-02): Kod hazır, uygulamada gizli. Açmak için:
-  1. Sayfaya HTML sunabilen bir adres kur: Supabase Custom Domain (ücretli) ya da ücretsiz Cloudflare Worker proxy'si. Worker, isteği `https://jcddnelaboueazhordfz.supabase.co/functions/v1/lot-page/<yol>`'a iletir; yanıt `text/plain` gelirse `Content-Type`'ı `text/html; charset=utf-8` yapar. `/<id>/report` (PDF/JPEG) dokunulmadan geçer; yalnız GET ve HEAD.
-  2. `curl -I <adres>/<lot-id>` ile `content-type: text/html` geldiğini doğrula.
-  3. Uygulamayı `--dart-define=LOT_PAGE_BASE_URL=<adres>` ile derle; `.vscode/launch.json`'a da ekle. Bölüm kendiliğinden görünür.
-  4. Gerçek bir yayımlı lot ve raporlu analizle uçtan uca dene (sayfa, rapor, yayımdan kaldırınca 404).
+- Lotun herkese açık sayfası: P5.10/P7.6 ile açıldı; uçtan uca P9.2'de denenecek.
 
 - Varroa (2026-10-25):
   - Alt tabla sayımları arılık grafiğinde yok; birimi (akar/gün) yüzdeyle aynı eksende gösterilemez. Ayrı seri ya da sekme olarak nasıl gösterileceği kullanıcıyla kararlaştırılacak.
@@ -1154,7 +1158,7 @@ Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
 
 ## Notlar
 
-- Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev` ve `prod` ayarları var.
+- Çalıştırma: `flutter run --flavor dev -t lib/main_dev.dart` (prod için `prod` / `main_prod.dart`). VS Code'da `.vscode/launch.json` içinde hazır `dev (PocketBase)`, `dev (Supabase)` ve `prod` ayarları var; dev varsayılan olarak PocketBase'e bağlanır (P7.6, README).
 - Flutter 3.47.7 / Dart 3.13 gerekiyor: freezed 4 ve very_good_analysis 11, Dart 3.13 istiyor. very_good_analysis 11, Dart 3.13'ün `const new(...)` kurucu sözdizimini zorunlu tutuyor.
 - Üretilen kodlar (`*.g.dart`, l10n `generated/`) repoya dahil ve analizden hariç tutuluyor.
 - teknik.md'de `staging` flavor'ı da geçiyor; bu adımda yalnızca `dev` ve `prod` kuruldu.

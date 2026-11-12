@@ -36,8 +36,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('flavor varsayılanları', () {
-    test('iki flavor da şimdilik Supabase kullanır', () {
-      expect(Flavor.dev.defaultBackend, Backend.supabase);
+    test("dev PocketBase'i, prod şimdilik Supabase'i kullanır", () {
+      expect(Flavor.dev.defaultBackend, Backend.pocketbase);
       expect(Flavor.prod.defaultBackend, Backend.supabase);
     });
 
@@ -146,7 +146,7 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      expect(container.read(backendProvider), Backend.supabase);
+      expect(container.read(backendProvider), Backend.pocketbase);
       expect(
         container.read(pocketbaseUrlProvider),
         'https://arici-api-dev.tutunsoft.com',

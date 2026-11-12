@@ -685,29 +685,26 @@ final class AnalysisReportsProvider
 
 String _$analysisReportsHash() => r'1c65a7eda0c32da844bc17c00942f168c61eb789';
 
-/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...`. Verilmezse
-/// null ve lot ekranındaki "Herkese açık sayfa" bölümü gizli: Supabase
-/// varsayılan `*.supabase.co` alanında HTML'i düz metin sunar, sayfa ancak
-/// özel alan adı ya da önüne konan bir proxy ile açılır. O hazır olunca bu
-/// değerle derlemek özelliği açar.
+/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): PocketBase'de
+/// `<PB adresi>/l`, `--dart-define=LOT_PAGE_BASE_URL=...` ezer. Supabase'de
+/// adres verilmezse null ve lot ekranındaki "Herkese açık sayfa" bölümü
+/// gizli.
 
 @ProviderFor(lotPageBaseUrl)
 final lotPageBaseUrlProvider = LotPageBaseUrlProvider._();
 
-/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...`. Verilmezse
-/// null ve lot ekranındaki "Herkese açık sayfa" bölümü gizli: Supabase
-/// varsayılan `*.supabase.co` alanında HTML'i düz metin sunar, sayfa ancak
-/// özel alan adı ya da önüne konan bir proxy ile açılır. O hazır olunca bu
-/// değerle derlemek özelliği açar.
+/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): PocketBase'de
+/// `<PB adresi>/l`, `--dart-define=LOT_PAGE_BASE_URL=...` ezer. Supabase'de
+/// adres verilmezse null ve lot ekranındaki "Herkese açık sayfa" bölümü
+/// gizli.
 
 final class LotPageBaseUrlProvider
     extends $FunctionalProvider<String?, String?, String?>
     with $Provider<String?> {
-  /// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...`. Verilmezse
-  /// null ve lot ekranındaki "Herkese açık sayfa" bölümü gizli: Supabase
-  /// varsayılan `*.supabase.co` alanında HTML'i düz metin sunar, sayfa ancak
-  /// özel alan adı ya da önüne konan bir proxy ile açılır. O hazır olunca bu
-  /// değerle derlemek özelliği açar.
+  /// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): PocketBase'de
+  /// `<PB adresi>/l`, `--dart-define=LOT_PAGE_BASE_URL=...` ezer. Supabase'de
+  /// adres verilmezse null ve lot ekranındaki "Herkese açık sayfa" bölümü
+  /// gizli.
   LotPageBaseUrlProvider._()
     : super(
         from: null,
@@ -741,7 +738,7 @@ final class LotPageBaseUrlProvider
   }
 }
 
-String _$lotPageBaseUrlHash() => r'a99f24700ff315a264c318a964084b2174da57f4';
+String _$lotPageBaseUrlHash() => r'db9c8be22784f383cf6824ba4a28aa27eded86bb';
 
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.

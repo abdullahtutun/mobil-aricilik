@@ -31,6 +31,26 @@ String lotPageUrl(String baseUrl, String lotId) {
   return '$base/$lotId';
 }
 
+/// `--dart-define=LOT_PAGE_BASE_URL=...`; boşsa backend'e göre çözülür.
+const lotPageBaseUrlDefine = String.fromEnvironment('LOT_PAGE_BASE_URL');
+
+/// Lot sayfalarının kökü. [define] (`LOT_PAGE_BASE_URL`) doluysa o; değilse
+/// PocketBase'de sunucunun `/l` yolu (K-14), Supabase'de null: varsayılan
+/// `*.supabase.co` alanı HTML'i düz metin sunduğu için bölüm gizli kalır.
+String? resolveLotPageBaseUrl({
+  required bool pocketbase,
+  required String pocketbaseUrl,
+  String define = lotPageBaseUrlDefine,
+}) {
+  final override = define.trim();
+  if (override.isNotEmpty) return override;
+  if (!pocketbase) return null;
+  final root = pocketbaseUrl.endsWith('/')
+      ? pocketbaseUrl.substring(0, pocketbaseUrl.length - 1)
+      : pocketbaseUrl;
+  return '$root/l';
+}
+
 /// Yılın sıradaki lot sırası: [seqs] (o yılın silinmemiş lotlarının
 /// sıraları) içindeki en büyüğün bir fazlası; lot yoksa 1.
 int nextLotSeq(Iterable<int> seqs) =>

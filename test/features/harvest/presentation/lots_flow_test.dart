@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobil_arici/app/app.dart';
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
@@ -38,21 +39,25 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
-/// Testlerde lot sayfası açık; derlemede `LOT_PAGE_BASE_URL` verilmezse
+/// Testlerde lot sayfası açık; Supabase'de `LOT_PAGE_BASE_URL` verilmezse
 /// bölüm gizli.
 const _lotPageBaseUrl = 'https://lot.example.com';
 
+/// [backend] verilirse lot sayfası kökü sabitlenmez, o backend'den çözülür.
 Future<ProviderContainer> _open(
   WidgetTester tester, {
   required AppDatabase db,
   required String location,
   FakePrintService? printer,
-  String? lotPageBaseUrl = _lotPageBaseUrl,
+  Backend? backend,
 }) async {
   final container = ProviderContainer.test(
     overrides: [
       ...signedIn(db: db, printer: printer),
-      lotPageBaseUrlProvider.overrideWithValue(lotPageBaseUrl),
+      if (backend == null)
+        lotPageBaseUrlProvider.overrideWithValue(_lotPageBaseUrl)
+      else
+        backendProvider.overrideWithValue(backend),
     ],
   );
   await tester.pumpWidget(
@@ -483,7 +488,34 @@ void main() {
     expect(toggle('Analysis report'), findsNothing);
   });
 
-  testWidgets('sayfa adresi yapılandırılmadıysa (derlemede '
+  testWidgets("PocketBase'de sayfa adresi sunucudan gelir, bölüm görünür", (
+    tester,
+  ) async {
+    await addMember(db, userId: testUser.id, role: MembershipRole.owner);
+    final lot = await lots.createWithHarvest(await harvest());
+    await lots.setPublication(lot.id, published: true);
+    final container = await _open(
+      tester,
+      db: db,
+      location: AppRoutes.lot(lot.id),
+      backend: Backend.pocketbase,
+    );
+
+    expect(
+      container.read(lotPageBaseUrlProvider),
+      '${container.read(pocketbaseUrlProvider)}/l',
+    );
+    await showToggle(tester, 'Publish');
+    expect(tester.widget<SwitchListTile>(toggle('Publish')).value, isTrue);
+    await tester.scrollUntilVisible(
+      _button('Print'),
+      200,
+      scrollable: _list(LotScreen),
+    );
+    expect(_button('Print'), findsOneWidget);
+  });
+
+  testWidgets("Supabase'de sayfa adresi yapılandırılmadıysa (derlemede "
       'LOT_PAGE_BASE_URL yok) bölüm gizli', (tester) async {
     await addMember(db, userId: testUser.id, role: MembershipRole.owner);
     final lot = await lots.createWithHarvest(await harvest());
@@ -492,7 +524,7 @@ void main() {
       tester,
       db: db,
       location: AppRoutes.lot(lot.id),
-      lotPageBaseUrl: null,
+      backend: Backend.supabase,
     );
 
     await tester.scrollUntilVisible(
