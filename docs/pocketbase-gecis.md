@@ -53,7 +53,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P7.5 | Servisler: işletme, ekip, hava, push token, görüş ve analitik, hesap silme | P7.4, P5.4–P5.9 | ☑ |
 | P7.6 | Lot sayfası adresi, yasal metinler, dev'de varsayılan PocketBase | P7.5, P5.10 | ☑ |
 | P8.1 | Referans veri ve demo hesap tohumu (idempotent, dry-run) | P7.6 | ☑ |
-| P9.1 | İki cihaz ve çevrimdışı senkron testleri (yerel PocketBase) | P8.1 | ☐ |
+| P9.1 | İki cihaz ve çevrimdışı senkron testleri (yerel PocketBase) | P8.1 | ☑ |
 | P9.2 | Dev sunucusunda uçtan uca: roller, hesap silme, dosyalar, push, e-posta | P9.1 | ☐ |
 | P9.3 | Yük ve RAM kontrolü | P9.2 | ☐ |
 | P10.1 | Prod hazırlığı ve Supabase yazmalarının dondurulması | P9.3 | ☐ |
