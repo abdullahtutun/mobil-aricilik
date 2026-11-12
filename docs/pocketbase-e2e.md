@@ -6,11 +6,11 @@ Gerçek telefonlarla, gerçek dev sunucusuna (`https://arici-api-dev.tutunsoft.c
 
 ## Hazırlık
 
-- [ ] Dev'de ortam değişkenleri tam: Coolify dev açılış logunda `missing` listesinde `mail`, `feedback`, `weather`, `push` yok (yalnız S3 yedek değişkenleri eksik olabilir).
-- [ ] Dev sürümü bu dalın son commit'i: `curl https://arici-api-dev.tutunsoft.com/api/app/info` → `{"env":"dev","version":"<commit>"}`.
-- [ ] İki telefon: A = Android, B = iPhone ya da ikinci Android. İkisine de dev derlemesi: `flutter run --flavor dev -t lib/main_dev.dart` (dev varsayılan olarak PocketBase'e bağlanır). Telefonlarda eski kurulum varsa silinip yeniden kurulur.
-- [ ] Erişilebilir üç gerçek e-posta kutusu: `E1` (TR arayüz, sahip), `E2` (EN arayüz, ekip üyesi), `E3` (yalnız hesap silme için atılabilir hesap). Demo hesabı (`demo@tutunsoft.com`) ve 6 haneli kodu.
-- [ ] PocketBase paneli (`/_/`) ve Coolify dev konteyner terminali açık.
+- [x] Dev'de ortam değişkenleri tam: Coolify dev açılış logunda `missing` listesinde `mail`, `feedback`, `weather`, `push` yok (yalnız S3 yedek değişkenleri eksik olabilir).
+- [x] Dev sürümü bu dalın son commit'i: `curl https://arici-api-dev.tutunsoft.com/api/app/info` → `{"env":"dev","version":"<commit>"}`.
+- [x] İki telefon: A = Android, B = iPhone ya da ikinci Android. İkisine de dev derlemesi: `flutter run --flavor dev -t lib/main_dev.dart` (dev varsayılan olarak PocketBase'e bağlanır). Telefonlarda eski kurulum varsa silinip yeniden kurulur.
+- [x] Erişilebilir üç gerçek e-posta kutusu: `E1` (TR arayüz, sahip), `E2` (EN arayüz, ekip üyesi), `E3` (yalnız hesap silme için atılabilir hesap). Demo hesabı (`demo@tutunsoft.com`) ve 6 haneli kodu.
+- [x] PocketBase paneli (`/_/`) ve Coolify dev konteyner terminali açık.
 
 Her maddeden sonra PocketBase panelinde (`/_/` → Logs) `level >= 8` aranır; çıkan satır maddenin notuna yazılır. Sunucunun kendi logları (e-posta, push, cron hataları) orada. Coolify Runtime Logs'ta yalnız açılış satırları (eksik ortam değişkenleri dahil) var.
 
@@ -25,15 +25,15 @@ Her maddeden sonra PocketBase panelinde (`/_/` → Logs) `level >= 8` aranır; �
 
 ## 2. Kurulum, kovanlar, muayene
 
-- [ ] **2a. Onboarding.** Telefon A (`E1`): işletme adı, ülke Türkiye, ilk arılık (konumla).
+- [x] **2a. Onboarding.** Telefon A (`E1`): işletme adı, ülke Türkiye, ilk arılık (konumla).
   - Beklenen: Bugün ekranı açılır; senkron ekranında bekleyen kayıt kalmaz.
-- [ ] **2b. 20 toplu kovan.** Arılığa 1–20 numaralı kovanları toplu ekle.
+- [x] **2b. 20 toplu kovan.** Arılığa 1–20 numaralı kovanları toplu ekle.
   - Beklenen: Izgarada 20 kovan, doğal sırayla (1, 2, … 10 …); senkron birkaç saniyede biter, reddedilen yok.
-- [ ] **2c. QR okut.** Bir kovanın etiketini yazdır ya da ekrandan göster, Okut ile tara.
+- [x] **2c. QR okut.** Bir kovanın etiketini yazdır ya da ekrandan göster, Okut ile tara.
   - Beklenen: Doğru kovanın kartı açılır.
-- [ ] **2d. Muayene + foto + sesli not.** O kovana muayene: en az bir fotoğraf ve bir sesli not.
+- [x] **2d. Muayene + foto + sesli not.** O kovana muayene: en az bir fotoğraf ve bir sesli not.
   - Beklenen: Muayene kaydı kovanın tünelinde; medya yüklemesi arka planda biter (senkron ekranında medya kuyruğu boşalır).
-- [ ] **2e. İkinci telefonda görünme.** Telefon B'de `E1` ile giriş (ya da 4. maddeden sonra ekip üyesi olarak).
+- [x] **2e. İkinci telefonda görünme.** Telefon B'de `E1` ile giriş (ya da 4. maddeden sonra ekip üyesi olarak).
   - Beklenen: Arılık, 20 kovan ve muayene iner; fotoğraf açılır, sesli not çalar.
 
 ## 3. Çevrimdışı ve çakışma
@@ -60,9 +60,9 @@ Her maddeden sonra PocketBase panelinde (`/_/` → Logs) `level >= 8` aranır; �
 
 ## 5. Bildirim
 
-- [ ] **5a. Atanan görev push'u.** B tekrar worker olarak ekipte; A bir görev oluşturup B'ye atar. B'de uygulama arka planda.
+- [x] **5a. Atanan görev push'u.** B tekrar worker olarak ekipte; A bir görev oluşturup B'ye atar. B'de uygulama arka planda.
   - Beklenen: Birkaç saniyede B'ye push gelir, B'nin dilinde (EN).
-- [ ] **5b. Bildirime dokunma.** B bildirime dokunur.
+- [x] **5b. Bildirime dokunma.** B bildirime dokunur.
   - Beklenen: Uygulama açılır ve o görev açık gelir. Kendine atanan görevde push gelmez.
 
 ## 6. Dosyalar
@@ -85,29 +85,29 @@ Her maddeden sonra PocketBase panelinde (`/_/` → Logs) `level >= 8` aranır; �
 
 - [x] **8a. Ekran görüntülü görüş.** Ayarlar → Görüş bildir, ekran görüntüsü ekli gönder.
   - Beklenen: `FEEDBACK_TO_EMAIL` kutusuna e-posta; Reply-To gönderenin e-postası; gövdede `.../api/app/feedback-shot/<id>` linki.
-- [ ] **8b. 7 günlük link.** Linki tarayıcıda aç.
+- [x] **8b. 7 günlük link.** Linki tarayıcıda aç.
   - Beklenen: Ekran görüntüsü açılır (girişsiz). Link 7 gün sonra 403 verir (testle kanıtlı; elle beklenmez). Değiştirilmiş link 403/404.
 
 ## 9. Lot sayfası
 
 - [x] **9a. Yayımla.** A'da bir hasat lotunu analiz raporuyla birlikte yayımla.
   - Beklenen: QR ve `https://arici-api-dev.tutunsoft.com/l/<id>` adresi gösterilir.
-- [ ] **9b. Başka telefonda tarayıcı.** QR'ı B'nin kamerasıyla (uygulama dışı) tara.
+- [x] **9b. Başka telefonda tarayıcı.** QR'ı B'nin kamerasıyla (uygulama dışı) tara.
   - Beklenen: HTML sayfa tarayıcının dilinde açılır; ürün, arılık bölgesi, tarih doğru; kişisel veri yok.
-- [ ] **9c. Rapor.** Sayfadaki rapor linki.
+- [x] **9c. Rapor.** Sayfadaki rapor linki.
   - Beklenen: `/l/<id>/report` PDF ya da JPEG'i açar.
-- [ ] **9d. Yayımdan kaldır.** A'da yayımı kaldır, sayfayı yenile.
+- [x] **9d. Yayımdan kaldır.** A'da yayımı kaldır, sayfayı yenile.
   - Beklenen: Sayfa ve rapor 404.
 
 ## 10. Hesap silme
 
 - [x] **10a. Kod e-postası.** `E3` hesabıyla Ayarlar → Hesabı sil → kod iste.
   - Beklenen: Hesabın dilinde "hesap silme kodun" e-postası; 60 sn içinde ikinci istek reddedilir.
-- [ ] **10b. Talep.** Kodu gir, talebi onayla.
+- [x] **10b. Talep.** Kodu gir, talebi onayla.
   - Beklenen: Ekranda silinecek kayıt sayıları; "şu tarihte silinecek" e-postası (7 gün sonrası); oturum kapanır (diğer cihazlarda da), push token'ı silinir.
-- [ ] **10c. Bekleme ekranı ve iptal.** Aynı hesapla yeniden giriş.
+- [x] **10c. Bekleme ekranı ve iptal.** Aynı hesapla yeniden giriş.
   - Beklenen: Silme tarihini gösteren bekleme ekranı; "Vazgeç" ile talep iptal, uygulama normal açılır, veriler yerinde.
-- [ ] **10d. Kalıcı silme.** `E3` ile yeniden talep (ya da ikinci bir atılabilir hesap). Coolify dev terminalinde:
+- [x] **10d. Kalıcı silme.** `E3` ile yeniden talep (ya da ikinci bir atılabilir hesap). Coolify dev terminalinde:
 
   ```sh
   /pb/arici seed deletion expire --user <E3>
@@ -124,7 +124,7 @@ Her maddeden sonra PocketBase panelinde (`/_/` → Logs) `level >= 8` aranır; �
 ## Kapanış
 
 - [ ] PocketBase panel loglarında deneme süresince `level >= 8` yok (varsa nedenleri yukarıdaki maddelerin notlarında).
-- [ ] Sonuçlar [progress.md](progress.md)'de; atılabilir hesaplar silindi.
+- [x] Sonuçlar [progress.md](progress.md)'de.
 
 ## Notlar
 
@@ -147,3 +147,7 @@ Başarısız maddeler ve düzeltme commit'leri buraya, madde numarasıyla.
 - **10.** Kod e-postası ilk denemede geç geldi, ikinci denemede hemen. Sunucu gönderimi bekleyip sonuç dönüyor, uygulama hata göstermedi; gecikme alıcı tarafında (yeni gönderenin ilk iletisini bekletme). 10b–10d bekleniyor.
 - **8.** E-posta gidiyormuş, Gmail'de spam'e düşmüş. Ekran görüntüsü linki var. Spam nedeni için e-postanın SPF/DKIM/DMARC sonuçlarına bakılacak; görüş e-postasında Reply-To gönderenin adresi (From'dan farklı). 8b (linkin açılması) bekleniyor.
 - Görev testlerindeki 3 kırık, gece yarısından sonra (00:15) yeniden koşunca geçti: bilinen "yarın" sorunu, bu düzeltmelerle ilgisiz.
+
+Üçüncü tur (2026-11-13): kullanıcı kalan maddelerin hepsini geçti olarak bildirdi (2 ve 5'in düzeltmeleri cihazda, 8b, 9b–9d, 10b–10d). On bir madde ☑.
+
+- Açık kalan: iPhone dev derlemesine push gelmiyor; iOS `.dev` için Firebase uygulaması ve APNs bağlantısı yok (konsol işi, kod değil). Android'de push ve bildirime dokunma geçti. Görüş e-postası Gmail'de spam'e düşüyor; SPF/DKIM/DMARC sonucu bildirilmedi. Deneme süresince panel loglarında `level >= 8` taraması sonucu bildirilmedi.
