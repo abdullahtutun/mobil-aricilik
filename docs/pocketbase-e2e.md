@@ -90,7 +90,7 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## 9. Lot sayfası
 
-- [ ] **9a. Yayımla.** A'da bir hasat lotunu analiz raporuyla birlikte yayımla.
+- [x] **9a. Yayımla.** A'da bir hasat lotunu analiz raporuyla birlikte yayımla.
   - Beklenen: QR ve `https://arici-api-dev.tutunsoft.com/l/<id>` adresi gösterilir.
 - [ ] **9b. Başka telefonda tarayıcı.** QR'ı B'nin kamerasıyla (uygulama dışı) tara.
   - Beklenen: HTML sayfa tarayıcının dilinde açılır; ürün, arılık bölgesi, tarih doğru; kişisel veri yok.
@@ -101,7 +101,7 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## 10. Hesap silme
 
-- [ ] **10a. Kod e-postası.** `E3` hesabıyla Ayarlar → Hesabı sil → kod iste.
+- [x] **10a. Kod e-postası.** `E3` hesabıyla Ayarlar → Hesabı sil → kod iste.
   - Beklenen: Hesabın dilinde "hesap silme kodun" e-postası; 60 sn içinde ikinci istek reddedilir.
 - [ ] **10b. Talep.** Kodu gir, talebi onayla.
   - Beklenen: Ekranda silinecek kayıt sayıları; "şu tarihte silinecek" e-postası (7 gün sonrası); oturum kapanır (diğer cihazlarda da), push token'ı silinir.
@@ -137,3 +137,11 @@ Başarısız maddeler ve düzeltme commit'leri buraya, madde numarasıyla.
 - **8.** Görüş e-postası gelmedi. `feedback` satırı panelde var mı ve log soruldu.
 - **9.** Kavanoz etiketi Paylaş/Yazdır: butonlar pasifleşiyor, paylaşma ya da yazdırma ekranı açılmıyor. PDF testte sorunsuz üretiliyor (gerçek adres ve Türkçe adla denendi); sorun cihazdaki yazdırma eklentisinde görünüyor. Kovan etiketlerinin aynı telefonda çalışıp çalışmadığı soruldu.
 - **10.** Hesap silme kod e-postası gelmedi. Giriş e-postasıyla aynı SMTP'den gidiyor; uygulamadaki mesaj ve log soruldu.
+
+İkinci tur (2026-11-12, A = Android, B = iPhone):
+
+- **2.** Harita uygulamaya yeniden girince açıldı. Neden: ilk açılışta OpenFreeMap stili 15 sn'de inmedi; hata uygulama boyunca tutuluyordu ve konum seçme ekranı (Arılıklar'daki harita sekmesinin tersine) yeniden denemiyordu. Düzeltme `4883424`: ekran açılırken önceki deneme başarısızsa yeniden yükler. Cihazda yeniden denenecek.
+- **5.** iPhone'a push gelmiyor: iOS dev (`com.tutunsoft.mobilarici.dev`) için Firebase uygulaması ve APNs bağlantısı yok. Konsol işi. Android'e push geliyor; ancak arka plandayken bildirime dokununca form "görev bulunamadı" açılıyordu (görev henüz inmemişti, form bir kez okuyor). Düzeltme `4647f05`: görev yerelde yoksa önce bir senkron turu beklenir (en çok 15 sn). Cihazda yeniden denenecek.
+- **8.** `feedback` satırı sunucuda var; sorun gönderimde. Coolify logunda `feedback mail` ya da açılıştaki `Feedback e-mail is off` satırı bekleniyor.
+- **9.** Butonlar sonradan çalıştı. PDF testte sorunsuz üretiliyor; ilk denemedeki gecikme cihazda yeniden görülmedi. 9b–9d bekleniyor.
+- **10.** Kod e-postası ilk denemede geç geldi, ikinci denemede hemen. Sunucu gönderimi bekleyip sonuç dönüyor, uygulama hata göstermedi; gecikme alıcı tarafında (yeni gönderenin ilk iletisini bekletme). 10b–10d bekleniyor.
