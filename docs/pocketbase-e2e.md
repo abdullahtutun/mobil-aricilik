@@ -16,11 +16,11 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## 1. Giriş
 
-- [ ] **1a. TR e-posta.** Telefon A, arayüz Türkçe, `E1` ile "Kod gönder".
+- [x] **1a. TR e-posta.** Telefon A, arayüz Türkçe, `E1` ile "Kod gönder".
   - Beklenen: Birkaç saniyede noreply kutusundan Türkçe "giriş kodu" e-postası, 6 haneli kod. Kod girilince onboarding açılır.
-- [ ] **1b. EN e-posta.** Telefon B, arayüz İngilizce, `E2` ile.
+- [x] **1b. EN e-posta.** Telefon B, arayüz İngilizce, `E2` ile.
   - Beklenen: E-posta İngilizce; kod girilince onboarding açılır.
-- [ ] **1c. Kodu sonra girme.** `E3` ile kod iste, uygulamayı görev yöneticisinden öldür, yeniden aç, aynı e-postayla kodu gir (yeni kod istemeden).
+- [x] **1c. Kodu sonra girme.** `E3` ile kod iste, uygulamayı görev yöneticisinden öldür, yeniden aç, aynı e-postayla kodu gir (yeni kod istemeden).
   - Beklenen: Uygulama kod ekranına ya da e-posta ekranına döner; aynı e-posta yazılınca eski kod kabul edilir (10 dk içinde). Yanlış kod hata mesajı verir, uygulama çökmez.
 
 ## 2. Kurulum, kovanlar, muayene
@@ -38,24 +38,24 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## 3. Çevrimdışı ve çakışma
 
-- [ ] **3a. Uçak modunda 10 kayıt.** Telefon A uçak modunda: karışık 10 kayıt (muayene, besleme, görev, gider …).
+- [x] **3a. Uçak modunda 10 kayıt.** Telefon A uçak modunda: karışık 10 kayıt (muayene, besleme, görev, gider …).
   - Beklenen: Her kayıt anında listede; senkron ekranında 10 (ya da daha fazla outbox satırı) bekliyor; hata yok.
-- [ ] **3b. Ağ gelince.** Uçak modu kapatılır.
+- [x] **3b. Ağ gelince.** Uçak modu kapatılır.
   - Beklenen: Bir dakika içinde outbox boşalır; Telefon B'de 10 kayıt görünür.
-- [ ] **3c. Son yazan kazanır.** İki telefon uçak modunda; aynı kovanın durumunu A'da "zayıf", sonra B'de "ana arısız" yap (B ikinci). Önce A, sonra B ağa bağlanır.
+- [x] **3c. Son yazan kazanır.** İki telefon uçak modunda; aynı kovanın durumunu A'da "zayıf", sonra B'de "ana arısız" yap (B ikinci). Önce A, sonra B ağa bağlanır.
   - Beklenen: İki telefonda da B'nin durumu kalır; reddedilen kayıt yok.
 
 ## 4. Ekip ve roller
 
-- [ ] **4a. Davet kodu.** A (sahip) worker rolüyle davet kodu üretir; B (`E2`) kodla katılır.
+- [x] **4a. Davet kodu.** A (sahip) worker rolüyle davet kodu üretir; B (`E2`) kodla katılır.
   - Beklenen: B işletmeyi açar, kayıtlar iner; A'nın ekip listesinde `E2` worker.
-- [ ] **4b. Worker finansı görmez.** B'de gelir/gider.
+- [x] **4b. Worker finansı görmez.** B'de gelir/gider.
   - Beklenen: Finans sekmesi ya da girişi görünmez; doğrudan adresle bile veri gelmez. Muayene yazabilir ve A'ya iner.
-- [ ] **4c. Viewer yazamaz.** A, B'nin rolünü viewer yapar.
+- [x] **4c. Viewer yazamaz.** A, B'nin rolünü viewer yapar.
   - Beklenen: B'de rol bir senkron turunda değişir; ekleme butonları kapanır. Kapanmayan bir yerden yazılan kayıt senkron ekranında `forbidden` ile görünür ve A'ya ulaşmaz.
-- [ ] **4d. Rol değiştirme.** Viewer → worker → partner.
+- [x] **4d. Rol değiştirme.** Viewer → worker → partner.
   - Beklenen: Her değişiklik B'ye iner; partner finansı görür.
-- [ ] **4e. Çıkarma.** A, B'yi işletmeden çıkarır.
+- [x] **4e. Çıkarma.** A, B'yi işletmeden çıkarır.
   - Beklenen: B'de işletme kapanır ya da erişim kesilir; B'nin yazdığı kayıtlar A'da kalır.
 
 ## 5. Bildirim
@@ -67,18 +67,18 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## 6. Dosyalar
 
-- [ ] **6a. Belge (PDF).** A'da Belgeler'e bir PDF yükle (20 MB altı).
+- [x] **6a. Belge (PDF).** A'da Belgeler'e bir PDF yükle (20 MB altı).
   - Beklenen: Yükleme biter; B'de belge iner ve açılır.
-- [ ] **6b. Fiş.** A'da bir gidere fiş fotoğrafı ekle.
+- [x] **6b. Fiş.** A'da bir gidere fiş fotoğrafı ekle.
   - Beklenen: B'de (partner/owner) fiş açılır.
-- [ ] **6c. İşletme logosu.** A'da işletme logosu yükle.
+- [x] **6c. İşletme logosu.** A'da işletme logosu yükle.
   - Beklenen: B'de logo görünür; PDF çıktılarında logo var.
 
 ## 7. Hava ve bilgi bankası
 
-- [ ] **7a. Hava kartları.** Konumu olan arılıkta Bugün/arılık ekranı.
+- [x] **7a. Hava kartları.** Konumu olan arılıkta Bugün/arılık ekranı.
   - Beklenen: Günlük tahmin ve uçuş uygunluğu kartları dolu (WeatherAPI); ikinci açılışta önbellekten anında gelir. Logda weather hatası yok.
-- [ ] **7b. Bilgi bankası güncellemesi.** Dev'e `tool/publish_knowledge.dart --backend pocketbase` ile yeni sürüm yayımlanır, telefonda bilgi bankası açılır.
+- [x] **7b. Bilgi bankası güncellemesi.** Dev'e `tool/publish_knowledge.dart --backend pocketbase` ile yeni sürüm yayımlanır, telefonda bilgi bankası açılır.
   - Beklenen: Yeni sürüm iner (makale değişikliği görünür), çevrimdışı da açılır.
 
 ## 8. Görüş bildir
@@ -118,7 +118,7 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## 11. Demo hesabı
 
-- [ ] **11a. Parola girişi.** Çıkış yap, `demo@tutunsoft.com` + 6 haneli kod (e-posta kodu istemeden).
+- [x] **11a. Parola girişi.** Çıkış yap, `demo@tutunsoft.com` + 6 haneli kod (e-posta kodu istemeden).
   - Beklenen: Demo işletmesi açılır (3 arılık, 15 kovan, 28 muayene, görevler). Başka bir e-postada parola girişi yok.
 
 ## Kapanış
@@ -129,3 +129,11 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 ## Notlar
 
 Başarısız maddeler ve düzeltme commit'leri buraya, madde numarasıyla.
+
+İlk tur (2026-11-12): 1, 3, 4, 6, 7, 11 geçti. Başarısız:
+
+- **2.** Arılık eklendi ama konum seçerken harita açılmadı (OpenFreeMap; PocketBase'le ilgisi yok). Ayrıntı bekleniyor.
+- **5.** Atanan görevde push gelmedi. iOS dev (`.dev`) için Firebase uygulaması yok, iPhone'da bu beklenen bir eksik. Alıcının telefonu ve `device_tokens` satırı soruldu.
+- **8.** Görüş e-postası gelmedi. `feedback` satırı panelde var mı ve log soruldu.
+- **9.** Kavanoz etiketi Paylaş/Yazdır: butonlar pasifleşiyor, paylaşma ya da yazdırma ekranı açılmıyor. PDF testte sorunsuz üretiliyor (gerçek adres ve Türkçe adla denendi); sorun cihazdaki yazdırma eklentisinde görünüyor. Kovan etiketlerinin aynı telefonda çalışıp çalışmadığı soruldu.
+- **10.** Hesap silme kod e-postası gelmedi. Giriş e-postasıyla aynı SMTP'den gidiyor; uygulamadaki mesaj ve log soruldu.
