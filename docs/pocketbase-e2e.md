@@ -12,7 +12,7 @@ Gerçek telefonlarla, gerçek dev sunucusuna (`https://arici-api-dev.tutunsoft.c
 - [ ] Erişilebilir üç gerçek e-posta kutusu: `E1` (TR arayüz, sahip), `E2` (EN arayüz, ekip üyesi), `E3` (yalnız hesap silme için atılabilir hesap). Demo hesabı (`demo@tutunsoft.com`) ve 6 haneli kodu.
 - [ ] PocketBase paneli (`/_/`) ve Coolify dev konteyner terminali açık.
 
-Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddenin notuna yazılır.
+Her maddeden sonra PocketBase panelinde (`/_/` → Logs) `level >= 8` aranır; çıkan satır maddenin notuna yazılır. Sunucunun kendi logları (e-posta, push, cron hataları) orada. Coolify Runtime Logs'ta yalnız açılış satırları (eksik ortam değişkenleri dahil) var.
 
 ## 1. Giriş
 
@@ -83,7 +83,7 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## 8. Görüş bildir
 
-- [ ] **8a. Ekran görüntülü görüş.** Ayarlar → Görüş bildir, ekran görüntüsü ekli gönder.
+- [x] **8a. Ekran görüntülü görüş.** Ayarlar → Görüş bildir, ekran görüntüsü ekli gönder.
   - Beklenen: `FEEDBACK_TO_EMAIL` kutusuna e-posta; Reply-To gönderenin e-postası; gövdede `.../api/app/feedback-shot/<id>` linki.
 - [ ] **8b. 7 günlük link.** Linki tarayıcıda aç.
   - Beklenen: Ekran görüntüsü açılır (girişsiz). Link 7 gün sonra 403 verir (testle kanıtlı; elle beklenmez). Değiştirilmiş link 403/404.
@@ -123,7 +123,7 @@ Her maddeden sonra Coolify logunda `level=ERROR` aranır; çıkan satır maddeni
 
 ## Kapanış
 
-- [ ] Coolify dev logunda deneme süresince `level=ERROR` yok (varsa nedenleri yukarıdaki maddelerin notlarında).
+- [ ] PocketBase panel loglarında deneme süresince `level >= 8` yok (varsa nedenleri yukarıdaki maddelerin notlarında).
 - [ ] Sonuçlar [progress.md](progress.md)'de; atılabilir hesaplar silindi.
 
 ## Notlar
@@ -145,3 +145,5 @@ Başarısız maddeler ve düzeltme commit'leri buraya, madde numarasıyla.
 - **8.** `feedback` satırı sunucuda var; sorun gönderimde. Coolify logunda `feedback mail` ya da açılıştaki `Feedback e-mail is off` satırı bekleniyor.
 - **9.** Butonlar sonradan çalıştı. PDF testte sorunsuz üretiliyor; ilk denemedeki gecikme cihazda yeniden görülmedi. 9b–9d bekleniyor.
 - **10.** Kod e-postası ilk denemede geç geldi, ikinci denemede hemen. Sunucu gönderimi bekleyip sonuç dönüyor, uygulama hata göstermedi; gecikme alıcı tarafında (yeni gönderenin ilk iletisini bekletme). 10b–10d bekleniyor.
+- **8.** E-posta gidiyormuş, Gmail'de spam'e düşmüş. Ekran görüntüsü linki var. Spam nedeni için e-postanın SPF/DKIM/DMARC sonuçlarına bakılacak; görüş e-postasında Reply-To gönderenin adresi (From'dan farklı). 8b (linkin açılması) bekleniyor.
+- Görev testlerindeki 3 kırık, gece yarısından sonra (00:15) yeniden koşunca geçti: bilinen "yarın" sorunu, bu düzeltmelerle ilgisiz.
