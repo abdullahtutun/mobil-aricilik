@@ -7,6 +7,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/bootstrap"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/config"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/schemadump"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/seed"
 	_ "github.com/abdullahtutun/mobil-aricilik/server/migrations"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
@@ -31,6 +32,8 @@ func main() {
 
 	// `go run . schema dump` rewrites schema/collections.json (P2.8).
 	app.RootCmd.AddCommand(schemadump.NewCommand())
+	// `arici seed demo-user|demo|verify-ref` (P8.1).
+	app.RootCmd.AddCommand(seed.NewCommand(app, nil))
 
 	bootstrap.Register(app, config.Load(nil), version)
 

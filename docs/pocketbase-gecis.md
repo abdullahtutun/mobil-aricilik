@@ -52,7 +52,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P7.4 | Dosya yükleme ve indirme | P7.3, P6.2 | ☑ |
 | P7.5 | Servisler: işletme, ekip, hava, push token, görüş ve analitik, hesap silme | P7.4, P5.4–P5.9 | ☑ |
 | P7.6 | Lot sayfası adresi, yasal metinler, dev'de varsayılan PocketBase | P7.5, P5.10 | ☑ |
-| P8.1 | Referans veri ve demo hesap tohumu (idempotent, dry-run) | P7.6 | ☐ |
+| P8.1 | Referans veri ve demo hesap tohumu (idempotent, dry-run) | P7.6 | ☑ |
 | P9.1 | İki cihaz ve çevrimdışı senkron testleri (yerel PocketBase) | P8.1 | ☐ |
 | P9.2 | Dev sunucusunda uçtan uca: roller, hesap silme, dosyalar, push, e-posta | P9.1 | ☐ |
 | P9.3 | Yük ve RAM kontrolü | P9.2 | ☐ |
@@ -1265,6 +1265,8 @@ Adım P7.6:
 **Claude yapar.** `go run . seed demo [--dry-run] [--date YYYY-MM-DD]` alt komutu: `supabase/admin/demo_account.sql`'in yazdığı her şeyi (Demo Arıcılık, 3 arılık, 15 kovan ve anaları, 28 muayene, varroa, besleme, ilaçlama, hasat, 4 görev, 6 gelir/gider) aynı mantıkla, sabit kimliklerle (UUIDv5 ya da sabit liste) yazar; demo kullanıcı yoksa parolasız hata verir; işletme varsa hiçbir şey yazmaz (`--force-reset` yalnız demo işletmeyi silip yeniden yazar); dry-run yazılacak satır sayılarını tablo tablo basar. Komut sunucu ikilisinin içinde çalışır (konteyner terminalinden). `seed verify-ref`: ref_drugs ve ref_support_periods sayısını ve örnek 3 kaydın alanlarını P0.2 yedeğindeki değerlerle (argümanla verilen JSON) karşılaştırır.
 
 **Sen yaparsın.** Dev'in Coolify konteyner terminalinde demo kullanıcıyı aç: `/pb/arici seed demo-user --email demo@tutunsoft.com` (parolayı terminal sorar, ekrana basılmaz; App Store/Play inceleme formundaki kodla aynı 6 hane). Sonra `/pb/arici seed demo --dry-run`, çıktıyı Claude'a ver; sonra `/pb/arici seed demo`. Aynısı P10.1'de prod için. (İkili adı P1.2'deki Dockerfile'da neyse o; burada `arici` varsayıldı.)
+
+> **Not (2026-11-12, araç yazılınca teyit).** İkili `/pb/arici`, veri `/pb/pb_data`; terminal başka klasörde açılırsa komutlara `--dir /pb/pb_data` eklenir. Parola tam 6 rakam olmalı (başka adres ve uzunluk reddedilir); kullanıcı zaten varsa yalnız parolası değişir. PocketBase'in parola alt sınırı 8 olduğu için `1794300015_demo_password_length` migration'ı bunu 6'ya indirir (deploy'da kendiliğinden uygulanır; parola girişi yalnız demo hesaba açık). Tarih `--date YYYY-MM-DD` verilirse o günün 12:00 UTC'si, verilmezse şimdinin saat başı. `verify-ref` için beklenen değerler repoda: `server/ops/ref_expected.json` (Supabase'den 2026-11-12'de `server/ops/ref_expected.sql` ile alındı); konteynere yapıştırarak: `/pb/arici seed verify-ref --expect - <<'EOF'` … dosyanın içeriği … `EOF`. Fark varsa komut farkları yazar ve hata koduyla çıkar.
 
 **Prompt.**
 

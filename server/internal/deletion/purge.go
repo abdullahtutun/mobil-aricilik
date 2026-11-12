@@ -297,6 +297,20 @@ func deleteOrganizationRows(txApp core.App, orgIDs []string) error {
 	return nil
 }
 
+// DeleteOrganization removes one organization for good, as the permanent
+// deletion does: its files first, then every row hanging on it and the
+// organization itself, in one transaction. Nothing else is touched (no
+// user, no deletion request, no log). The seed tool's --force-reset uses it
+// on the demo organization (P8.1).
+func DeleteOrganization(app core.App, orgID string) error {
+	if err := deleteOrganizationFiles(app, []string{orgID}); err != nil {
+		return err
+	}
+	return app.RunInTransaction(func(txApp core.App) error {
+		return deleteOrganizationRows(txApp, []string{orgID})
+	})
+}
+
 // deleteOrganizationFiles removes the file records of the organizations in
 // every file collection (public_lot_files carries the lot's organization),
 // each file before its record.

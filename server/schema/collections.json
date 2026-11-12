@@ -8812,7 +8812,7 @@
         "help": "",
         "hidden": true,
         "max": 0,
-        "min": 8,
+        "min": 6,
         "name": "password",
         "pattern": "",
         "presentable": false,

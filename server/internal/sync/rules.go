@@ -134,6 +134,17 @@ func checkRow(txApp core.App, table string, row *core.Record, onInsert bool) err
 	return nil
 }
 
+// CheckNewRow runs on a new row written outside push (the seed tool, P8.1)
+// the checks push runs on an insert: the table's CHECKs, then its
+// references. The row's references must already be written. The error is
+// the push rejection ("invalid: …", "missing_reference: …").
+func CheckNewRow(txApp core.App, table string, row *core.Record) error {
+	if err := checkRow(txApp, table, row, true); err != nil {
+		return err
+	}
+	return checkRefs(txApp, table, row, nil)
+}
+
 // tableChecks returns the first failing CHECK of the table, nil when all
 // pass. Every validate function that guards a pushable table is called here
 // (rules_test.go checks the list against the validate package).

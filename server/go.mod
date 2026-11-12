@@ -8,6 +8,7 @@ require (
 	github.com/pocketbase/ozzo-validation/v4 v4.3.0
 	github.com/pocketbase/pocketbase v0.40.6
 	github.com/spf13/cobra v1.10.2
+	golang.org/x/term v0.47.0
 )
 
 require (
