@@ -11,6 +11,7 @@ import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/push_service_provider.dart';
 import 'package:mobil_arici/core/services/supabase_client_provider.dart';
+import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/features/tasks/data/device_token_service.dart';
 import 'package:mobil_arici/features/tasks/data/pocketbase_device_token_service.dart';
 import 'package:mobil_arici/features/tasks/data/supabase_device_token_service.dart';
@@ -126,19 +127,40 @@ class PushRegistration extends _$PushRegistration {
   }
 }
 
+/// Bildirime dokununca görev bu telefonda yoksa senkron en çok bu kadar
+/// beklenir; sonra ekran yine açılır.
+const pushTaskSyncWait = Duration(seconds: 15);
+
 /// Bildirime dokununca görevi açar: uygulama kapalıyken ya da arka
 /// plandayken. `bootstrap` uygulama boyunca dinler.
+///
+/// Bildirim senkrondan önce gelir: atanan görev bu telefona henüz inmemiş
+/// olabilir ve arka plandan dönüşte tur kendiliğinden başlamaz. Görev
+/// yerelde yoksa önce bir tur çalışır; yoksa form "görev bulunamadı" açılır
+/// ve görevi bir daha okumaz (P9.2, madde 5).
 @Riverpod(keepAlive: true)
 void pushTaskLinks(Ref ref) {
   final push = ref.read(pushServiceProvider);
-  void open(String taskId) =>
-      ref.read(routerProvider).go(AppRoutes.taskEdit(taskId));
+  Future<void> open(String taskId) async {
+    if (await ref.read(taskRepositoryProvider).findById(taskId) == null &&
+        ref.mounted) {
+      try {
+        await ref
+            .read(syncControllerProvider.notifier)
+            .sync()
+            .timeout(pushTaskSyncWait);
+      } on Object {
+        // Çevrimdışı ya da uzun süren tur: ekran yine açılır.
+      }
+    }
+    if (ref.mounted) ref.read(routerProvider).go(AppRoutes.taskEdit(taskId));
+  }
 
-  final subscription = push.taskOpens.listen(open);
+  final subscription = push.taskOpens.listen((id) => unawaited(open(id)));
   ref.onDispose(() => unawaited(subscription.cancel()));
   unawaited(
     push.launchTaskId().then((taskId) {
-      if (taskId != null && ref.mounted) open(taskId);
+      if (taskId != null && ref.mounted) unawaited(open(taskId));
     }),
   );
 }
