@@ -198,6 +198,31 @@ void main() {
     expect(_button(tester, 'Use this location').onPressed, isNotNull);
   });
 
+  // P9.2 madde 2: ilk açılışta yüklenemeyen harita, ekran yeniden
+  // açılınca uygulamayı kapatmadan gelir.
+  testWidgets('harita yüklenemediyse ekran yeniden açılınca yeniden denenir', (
+    tester,
+  ) async {
+    final basemap = FakeBasemapService();
+    await _open(
+      tester,
+      db: db,
+      location: AppRoutes.apiaryNew,
+      basemap: basemap,
+    );
+    await _tap(tester, find.text('Pick on map'));
+    expect(find.text('Map unavailable'), findsOneWidget);
+    await _tap(tester, find.byType(CloseButton));
+    final loads = basemap.loadCount;
+
+    basemap.fail = false;
+    await _tap(tester, find.text('Pick on map'));
+
+    expect(basemap.loadCount, loads + 1);
+    expect(find.text('Map unavailable'), findsNothing);
+    expect(_button(tester, 'Use this location').onPressed, isNotNull);
+  });
+
   testWidgets('aranan yer yoksa söylenir; Türkçe', (tester) async {
     final container = await _open(
       tester,
