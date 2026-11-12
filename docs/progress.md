@@ -1158,6 +1158,13 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Sonuç: iPhone 15 Pro simülatöründe (iOS 26.2) yerel PocketBase'e (`go run . serve`, boş klasör) karşı 21 testin hepsi geçti, süre ~15 sn. `flutter analyze` temiz, `flutter test` 2642 geçti. Komut README "İki cihaz testleri"nde.
 - Bilinen: Impersonate token'ı yenilenmiyor (`auth-refresh` 200 ile aynı token'ı dönüyor). Bu yüzden (2)'de yeni token üretimi uçtan uca değil, P7.2'nin sahte HTTP testlerinde kanıtlı; uçtan uca test yalnız oturumun açık kaldığını gösteriyor. Supabase yolu bu oturumda çalıştırılmadı (yerel Supabase kapalıydı); kod analizden geçiyor. Havuz her koşuda tükendiği için betik her koşudan önce yeniden çalıştırılmalı; hesaplar yerel sunucuda kalıyor (atılacak `--dir`).
 
+### 2026-11-12 — P9.2 Dev sunucusunda uçtan uca (◐ başladı)
+
+- Kontrol listesi: [pocketbase-e2e.md](pocketbase-e2e.md). Planın 11 maddesi 40 alt madde. Her alt maddenin "Beklenen"i var. Ayrıca hazırlık (env, `/api/app/info` sürümü, iki telefon, üç e-posta kutusu) ve kapanış (`level=ERROR` taraması) bölümleri var.
+- `seed deletion expire --user <e-posta>` (`internal/seed/deletion.go`): bekleyen silme talebinin `requested_at` ve `scheduled_for`'unu 7 günlük farkı koruyarak geçmişe çeker; cron'u tetiklemez, çıktı panelde çalıştırılacak `account-deletion-purge`'ı söyler. `APP_ENV` `dev` değilse (prod, boş, başka) hiçbir şey okumadan `ErrNotDev` döner. `seed.NewCommand` artık `env` alıyor (`main.go` `config.Load`'un `Env`'ini veriyor). Kalıcı silmesi başlamış ya da bekleyen talebi olmayan hesapta komut hata verir. Üyeliklerdeki `deletion_scheduled_for` eski tarihte kalır, kalıcı silme onları zaten kaldırıyor.
+- Testler (`internal/seed/deletion_test.go`): prod, boş ve `staging`'de komut reddediliyor, tarih değişmiyor, cron bir şey silmiyor. Dev'de talep süresi doluyor, `PurgeDue` 1 tamamlıyor, kullanıcı gidiyor, `deletion_log`'da özetle 1 kayıt yazılıyor. İkinci çalıştırma, talepsiz hesap, bilinmeyen e-posta ve eksik `--user` hata veriyor. `go test ./...`, `flutter analyze` ve `flutter test` (2642) temiz.
+- Açık: 11 maddenin hiçbiri telefonla henüz yürütülmedi. Sonuçlar geldikçe maddeler işaretlenecek, başarısızlar ayrı commit'lerle düzeltilecek. Dev'de yeni alt komut, bu commit deploy edilince kullanılabilir.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

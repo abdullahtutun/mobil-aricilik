@@ -496,7 +496,7 @@ func TestVerifyRef(t *testing.T) {
 
 func run(t *testing.T, app core.App, read seed.PasswordReader, stdin string, args ...string) (string, error) {
 	t.Helper()
-	cmd := seed.NewCommand(app, read)
+	cmd := seed.NewCommand(app, read, config.EnvDev)
 	var out bytes.Buffer
 	cmd.SetOut(&out)
 	cmd.SetErr(&out)

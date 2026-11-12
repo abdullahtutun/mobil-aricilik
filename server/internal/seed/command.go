@@ -7,8 +7,10 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/auth"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/deletion"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
@@ -25,9 +27,10 @@ type PasswordReader func(cmd *cobra.Command) (string, error)
 //	seed demo-user --email demo@tutunsoft.com
 //	seed demo [--dry-run] [--date YYYY-MM-DD] [--force-reset]
 //	seed verify-ref --expect ref.json   (or --expect - for stdin)
+//	seed deletion expire --user <e-mail> (APP_ENV=dev only, P9.2)
 //
-// read nil is [TerminalPassword].
-func NewCommand(app core.App, read PasswordReader) *cobra.Command {
+// read nil is [TerminalPassword]. env is APP_ENV ([config.Config.Env]).
+func NewCommand(app core.App, read PasswordReader, env string) *cobra.Command {
 	if read == nil {
 		read = TerminalPassword
 	}
@@ -111,7 +114,32 @@ func NewCommand(app core.App, read PasswordReader) *cobra.Command {
 	verify.Flags().StringVar(&expectPath, "expect", "", "expected counts and samples (JSON file, - for stdin)")
 	_ = verify.MarkFlagRequired("expect")
 
-	seed.AddCommand(demoUser, demo, verify)
+	var userEmail string
+	expire := &cobra.Command{
+		Use:          "expire",
+		Short:        "Move the user's pending deletion request into the past (dev only)",
+		Args:         cobra.NoArgs,
+		SilenceUsage: true,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			scheduled, err := ExpireDeletion(app, env, userEmail, time.Now())
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(),
+				"The deletion request of %s is due (scheduled_for %s).\nRun %s in Settings → Crons.\n",
+				userEmail, scheduled, deletion.PurgeCronJob)
+			return nil
+		},
+	}
+	expire.Flags().StringVar(&userEmail, "user", "", "the account's e-mail")
+	_ = expire.MarkFlagRequired("user")
+	deletionCmd := &cobra.Command{
+		Use:   "deletion",
+		Short: "Account deletion test tools (dev only, P9.2)",
+	}
+	deletionCmd.AddCommand(expire)
+
+	seed.AddCommand(demoUser, demo, verify, deletionCmd)
 	return seed
 }
 

@@ -32,10 +32,12 @@ func main() {
 
 	// `go run . schema dump` rewrites schema/collections.json (P2.8).
 	app.RootCmd.AddCommand(schemadump.NewCommand())
-	// `arici seed demo-user|demo|verify-ref` (P8.1).
-	app.RootCmd.AddCommand(seed.NewCommand(app, nil))
+	cfg := config.Load(nil)
+	// `arici seed demo-user|demo|verify-ref` (P8.1), `seed deletion expire`
+	// (P9.2, dev only).
+	app.RootCmd.AddCommand(seed.NewCommand(app, nil, cfg.Env))
 
-	bootstrap.Register(app, config.Load(nil), version)
+	bootstrap.Register(app, cfg, version)
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
