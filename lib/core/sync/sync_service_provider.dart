@@ -1,4 +1,3 @@
-import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/sync/backend_providers.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
@@ -13,10 +12,6 @@ part 'sync_service_provider.g.dart';
 SyncService syncService(Ref ref) => SyncService(
   ref.watch(appDatabaseProvider),
   ref.watch(syncTransportProvider),
-  // PocketBase token'ı kendiliğinden yenilenmez (K-6); supabase_flutter
-  // kendisi yeniler.
-  refreshSession: switch (ref.watch(backendProvider)) {
-    Backend.supabase => null,
-    Backend.pocketbase => ref.watch(authServiceProvider).refreshSession,
-  },
+  // PocketBase token'ı kendiliğinden yenilenmez (K-6).
+  refreshSession: ref.watch(authServiceProvider).refreshSession,
 );

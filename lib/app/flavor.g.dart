@@ -56,55 +56,6 @@ final class FlavorProvider extends $FunctionalProvider<Flavor, Flavor, Flavor>
 
 String _$flavorHash() => r'c3c6739adc0e2d6b51d2f700da1c7219e281b92f';
 
-/// Kullanılan sunucu ([resolveBackend]). Yalnız data katmanındaki servis
-/// provider'ları okur; ekranlar okumaz.
-
-@ProviderFor(backend)
-final backendProvider = BackendProvider._();
-
-/// Kullanılan sunucu ([resolveBackend]). Yalnız data katmanındaki servis
-/// provider'ları okur; ekranlar okumaz.
-
-final class BackendProvider
-    extends $FunctionalProvider<Backend, Backend, Backend>
-    with $Provider<Backend> {
-  /// Kullanılan sunucu ([resolveBackend]). Yalnız data katmanındaki servis
-  /// provider'ları okur; ekranlar okumaz.
-  BackendProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'backendProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$backendHash();
-
-  @$internal
-  @override
-  $ProviderElement<Backend> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  Backend create(Ref ref) {
-    return backend(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Backend value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Backend>(value),
-    );
-  }
-}
-
-String _$backendHash() => r'8db0fcce8aa6980468078182264b35e514ce4ff9';
-
 /// PocketBase sunucusunun adresi ([resolvePocketbaseUrl]).
 
 @ProviderFor(pocketbaseUrl)

@@ -26,7 +26,7 @@ enum TeamFailure {
   unknown,
 }
 
-/// Ekip servisinin attığı tek hata; Supabase hataları buna çevrilir.
+/// Ekip servisinin attığı tek hata; sunucu hataları buna çevrilir.
 class TeamServiceException implements Exception {
   const new(this.failure);
 

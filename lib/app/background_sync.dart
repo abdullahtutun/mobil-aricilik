@@ -40,8 +40,8 @@ Future<void> registerBackgroundSync(Flavor flavor) async {
 /// Uygulama açıksa (aynı süreçte) işi ona devreder ve hemen biter: iki
 /// motor aynı oturumu yenilerse refresh token yeniden kullanılmış sayılıp
 /// oturum düşebilir, iki tur da aynı outbox'ı gönderir. Uygulama kapalıysa
-/// sunucu istemcisini ([backendDefine] ya da flavor'ın varsayılanı) ve DB'yi
-/// kendisi açar. Oturum yoksa bir şey yapmaz. Sunucu son turdakinden
+/// sunucu istemcisini (flavor'ın adresi ya da `PB_URL`) ve DB'yi kendisi
+/// açar. Oturum yoksa bir şey yapmaz. Sunucu son turdakinden
 /// farklıysa önce imleçleri sıfırlar (`resetCursorsIfBackendChanged`).
 ///
 /// Periyodik görev senkron turundan sonra bekleyen medyayı da yükler.
@@ -59,8 +59,7 @@ void backgroundSyncDispatcher() {
     final flavor = Flavor.values.asNameMap()[inputData?[backgroundFlavorKey]];
     if (flavor == null) return true;
 
-    final backend = resolveBackend(flavor);
-    final connection = await openBackgroundConnection(flavor, backend);
+    final connection = await openBackgroundConnection(flavor);
     if (connection == null) return true;
 
     final db = openAppDatabase();
@@ -68,10 +67,7 @@ void backgroundSyncDispatcher() {
       if (!media) {
         // Güncellenen uygulama yeni sunucuyla ilk kez arka planda açılırsa
         // eski sunucunun imleçleriyle çekmesin.
-        await resetCursorsIfBackendChanged(
-          db,
-          syncBackendIdentity(flavor, backend),
-        );
+        await resetCursorsIfBackendChanged(db, syncBackendIdentity(flavor));
         await SyncService(
           db,
           connection.sync,

@@ -1,17 +1,11 @@
 // İki telefon, tek hesap ve tek işletme: yerel sunucuya karşı senkron.
-// Aynı senaryolar iki backend'de de koşar; yalnız PocketBase'e özgü olanlar
-// (Supabase'den geçiş, token yenileme) Supabase'de atlanır.
 //
-// PocketBase (README "İki cihaz testleri"):
+// README "İki cihaz testleri":
 //   cd server && go run . serve --http 127.0.0.1:8090 --dir <boş klasör>
 //   server/ops/test_users.sh http://127.0.0.1:8090
 //   flutter test integration_test/two_devices_sync_test.dart --flavor dev \
-//     -d <iOS simülatörü> --dart-define=BACKEND=pocketbase \
-//     --dart-define=PB_URL=http://127.0.0.1:8090 \
+//     -d <iOS simülatörü> --dart-define=PB_URL=http://127.0.0.1:8090 \
 //     --dart-define-from-file=build/p91_accounts.json
-//
-// Supabase (`supabase start` açıkken): aynı komut, yalnız
-// `--dart-define=BACKEND=supabase`.
 //
 // Her test yeni bir hesap ve işletme açar; testler birbirini etkilemez.
 
@@ -20,22 +14,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mobil_arici/app/app.dart';
-import 'package:mobil_arici/app/backend_setup.dart';
-import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/sync/sync_screen.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
-import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
-import 'package:mobil_arici/core/sync/sync_backend.dart';
 import 'package:mobil_arici/core/sync/sync_indicator.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'
-    show AuthClientOptions, SupabaseClient;
 
 import '../test/helpers/fake_auth_service.dart';
 import '../test/helpers/fake_sync_service.dart';
@@ -309,8 +297,7 @@ void main() {
     test('yeni telefonun ilk çekmesi sayfalar arasında kesilirse kaldığı '
         'sayfadan sürer', () async {
       // 600 kovan + 600 geçmiş kaydı 1200 sunucu numarası alır; kovanlar
-      // iki sayfada iner (sayfa 500). Supabase'de ilk kovanlar geriye bakma
-      // payının (1000 numara) gerisinde kalır; PocketBase'de pay yok (K-7).
+      // iki sayfada iner (sayfa 500); geriye bakma payı yok (K-7).
       final numbers = [for (var i = 1; i <= 600; i++) '$i'];
       await a.hives.createMany(
         orgId: orgId,
@@ -413,58 +400,8 @@ void main() {
     final idle = await b.syncNow();
     expect(idle.status, SyncStatus.done);
     expect(await b.cursor('hives'), after);
-    // Supabase'de geriye bakma payı aynı satırları yeniden indirir.
-    if (testBackend == Backend.pocketbase) expect(idle.pulled, 0);
+    expect(idle.pulled, 0);
   });
-
-  test("Supabase'de yazılıp outbox'ta kalan kayıt backend değişince "
-      "PocketBase'e gider (P7.3)", () async {
-    // Uygulama Supabase'e bağlıyken çevrimdışı yazılmış kayıt.
-    final c = await TestDevice.signIn('C', account, clock);
-    await resetCursorsIfBackendChanged(
-      c.db,
-      syncBackendIdentity(Flavor.dev, Backend.supabase),
-    );
-    final offline = TestNetwork()..online = false;
-    final oldClient = SupabaseClient(
-      supabaseUrl,
-      supabaseKey,
-      httpClient: offline,
-      authOptions: const AuthClientOptions(autoRefreshToken: false),
-    );
-    addTearDown(() async {
-      await oldClient.dispose();
-      offline.close();
-    });
-    final hive = await c.hives.create(
-      orgId: orgId,
-      number: 'S1',
-      type: HiveType.langstroth,
-      apiaryId: apiaryId,
-    );
-    final viaSupabase = await c
-        .syncWith(SupabaseSyncTransport(oldClient))
-        .sync();
-    expect(viaSupabase.status, isNot(SyncStatus.done));
-    expect(await c.outbox(), hasLength(2));
-
-    // Yeni sürüm PocketBase'e bağlanır: imleçler sıfırlanır, outbox kalır.
-    expect(
-      await resetCursorsIfBackendChanged(
-        c.db,
-        syncBackendIdentity(Flavor.dev, Backend.pocketbase),
-      ),
-      isTrue,
-    );
-    final viaPocketBase = await c.syncNow();
-    expect(viaPocketBase.status, SyncStatus.done);
-    expect(viaPocketBase.pushed, 2);
-    expect(await c.fullPullDone(), isTrue);
-
-    await settle([a, c]);
-    expect(await a.hives.findById(hive.id), isNotNull);
-    await expectConverged(a, c);
-  }, skip: testBackend == Backend.pocketbase ? false : 'yalnız PocketBase');
 
   test(
     'süresi dolmuş oturumla çevrimdışı açılış: arayüz kilitlenmez, ağ '
@@ -512,7 +449,6 @@ void main() {
       expect(await a.hives.findById(hive.id), isNotNull);
       await expectConverged(a, e);
     },
-    skip: testBackend == Backend.pocketbase ? false : 'yalnız PocketBase',
   );
 
   testWidgets('aynı etiket iki kovana verilirse ikincisi conflict ile '

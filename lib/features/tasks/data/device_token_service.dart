@@ -3,7 +3,7 @@
 /// sonra yeniden dener.
 abstract interface class DeviceTokenService {
   /// [locale] bu telefonun arayüz dili (`tr`, `en`, …); görev bildirimi bu
-  /// dilde gider. Supabase uygulaması göndermez (hesabın dili kullanılır).
+  /// dilde gider.
   Future<void> register({
     required String token,
     required String platform,

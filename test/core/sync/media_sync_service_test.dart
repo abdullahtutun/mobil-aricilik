@@ -4,31 +4,17 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/sync/media_sync_service.dart';
 import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
-import 'package:mobil_arici/core/sync/supabase_file_store.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../helpers/fake_connectivity_service.dart';
 import '../../helpers/fake_pocketbase_files.dart';
 import '../../helpers/test_database.dart';
-
-const _url = 'http://supabase.test';
-const _objectPath = '/storage/v1/object/media/';
-
-typedef _Handler = FutureOr<http.Response> Function(http.Request request);
-
-http.Response _storageError(int status, String error) => http.Response(
-  jsonEncode({'statusCode': '$status', 'error': error, 'message': error}),
-  status == 409 ? 400 : status,
-  headers: {'content-type': 'application/json'},
-);
 
 void main() {
   late AppDatabase db;
@@ -38,8 +24,7 @@ void main() {
   late FakeConnectivityService network;
   late MediaRepository media;
   late MediaSyncService service;
-  late List<http.Request> requests;
-  late _Handler handler;
+  late FakePocketBaseFiles server;
 
   setUp(() {
     db = openTestDatabase();
@@ -49,21 +34,10 @@ void main() {
     files = MediaFileStore(Future.value(directory));
     network = FakeConnectivityService();
     media = MediaRepository(db, clock: clock.call);
-    requests = [];
-    handler = (_) => http.Response(jsonEncode({'Key': 'ok'}), 200);
-    final client = SupabaseClient(
-      _url,
-      'anon-key',
-      accessToken: () async => 'user-token',
-      httpClient: MockClient((request) async {
-        requests.add(request);
-        return await handler(request);
-      }),
-    );
-    addTearDown(client.dispose);
+    server = FakePocketBaseFiles();
     service = MediaSyncService(
       db,
-      SupabaseFileStore(client),
+      PocketBaseFileStore(server.client()),
       files,
       network,
       clock: clock.call,
@@ -95,14 +69,12 @@ void main() {
   )..where((t) => t.mediaId.equals(item.id))).getSingle();
 
   List<String> uploadedPaths() => [
-    for (final request in requests)
-      if (request.method == 'POST')
-        request.url.path.substring(_objectPath.length),
+    for (final upload in server.uploads) upload.body['path'] as String,
   ];
 
   group('yükleme', () {
     test(
-      'bekleyenleri sırayla doğru yola, türüyle ve oturumla yükler',
+      'bekleyenleri sırayla doğru yola, adıyla ve oturumla yükler',
       () async {
         final photo = await capture('p.jpg');
         final voice = await capture('v.m4a', kind: MediaKind.audio);
@@ -112,17 +84,13 @@ void main() {
         expect(result.outcome, MediaUploadOutcome.done);
         expect(result.uploaded, 2);
         expect(uploadedPaths(), [photo.storagePath, voice.storagePath]);
-        expect(requests[0].headers['Authorization'], 'Bearer user-token');
-        // Dosya multipart gövdede, bucket'ın kabul ettiği türle.
-        expect(utf8.decode(requests[0].bodyBytes), contains('bytes:p.jpg'));
-        expect(
-          utf8.decode(requests[0].bodyBytes),
-          contains('content-type: image/jpeg'),
-        );
-        expect(
-          utf8.decode(requests[1].bodyBytes),
-          contains('content-type: audio/mp4'),
-        );
+        expect(server.uploads.first.authorization, isNotEmpty);
+        expect(utf8.decode(server.uploads.first.bytes), 'bytes:p.jpg');
+        // Dosyanın adı yolun son parçası (kimlik + uzantı).
+        expect(server.uploads.map((upload) => upload.fileName), [
+          photo.storagePath.split('/').last,
+          voice.storagePath.split('/').last,
+        ]);
         expect(
           (await uploadOf(photo)).uploadStatus,
           MediaUploadStatus.uploaded,
@@ -131,13 +99,13 @@ void main() {
 
         // Yüklenen yeniden gönderilmez.
         await service.uploadPending();
-        expect(requests, hasLength(2));
+        expect(server.requests, hasLength(2));
       },
     );
 
-    test('Storage’da zaten olan dosya (409) yüklendi sayılır', () async {
+    test('sunucuda zaten olan dosya yüklendi sayılır', () async {
       final photo = await capture('p.jpg');
-      handler = (_) => _storageError(409, 'Duplicate');
+      server.handler = (_) => fakePocketBaseAlreadyUploaded();
 
       await service.uploadPending();
 
@@ -148,12 +116,12 @@ void main() {
         'denenir', () async {
       final first = await capture('1.jpg');
       await capture('2.jpg');
-      handler = (_) => _storageError(503, 'Unavailable');
+      server.handler = (_) => fakePocketBaseError(503, message: 'Unavailable');
 
       final result = await service.uploadPending();
 
       expect(result.outcome, MediaUploadOutcome.retryLater);
-      expect(requests, hasLength(1));
+      expect(server.requests, hasLength(1));
       final postponed = await uploadOf(first);
       expect(postponed.uploadStatus, MediaUploadStatus.pending);
       expect(postponed.attempts, 1);
@@ -163,8 +131,8 @@ void main() {
       );
 
       // Ertelenen beklenirken sıradaki denenir.
-      handler = (_) => http.Response(jsonEncode({'Key': 'ok'}), 200);
-      requests.clear();
+      server.handler = null;
+      server.uploads.clear();
       await service.uploadPending();
       expect(uploadedPaths(), hasLength(1));
       expect(uploadedPaths().single, isNot(first.storagePath));
@@ -177,7 +145,7 @@ void main() {
 
     test('bağlantı hatası geçici sayılır', () async {
       final photo = await capture('p.jpg');
-      handler = (_) => throw const SocketException('ağ yok');
+      server.handler = (_) => throw const SocketException('ağ yok');
 
       expect(
         (await service.uploadPending()).outcome,
@@ -190,9 +158,10 @@ void main() {
       final forbidden = await capture('1.jpg');
       final missing = await capture('2.jpg', withFile: false);
       final fine = await capture('3.jpg');
-      handler = (request) => request.url.path.endsWith(forbidden.storagePath)
-          ? _storageError(403, 'Unauthorized')
-          : http.Response(jsonEncode({'Key': 'ok'}), 200);
+      server.handler = (request) =>
+          latin1.decode(request.bodyBytes).contains('bytes:1.jpg')
+          ? fakePocketBaseError(403, message: 'Unauthorized')
+          : null;
 
       final result = await service.uploadPending();
 
@@ -220,7 +189,7 @@ void main() {
         (await service.uploadPending()).outcome,
         MediaUploadOutcome.waitingForWifi,
       );
-      expect(requests, isEmpty);
+      expect(server.requests, isEmpty);
 
       network.connectUnmetered();
       expect((await service.uploadPending()).uploaded, 1);
@@ -243,15 +212,15 @@ void main() {
       await media.remove(photo.id);
 
       await service.uploadPending();
-      expect(requests, isEmpty);
+      expect(server.requests, isEmpty);
     });
 
     test('tur sürerken gelen çağrı aynı turu bekler', () async {
       await capture('p.jpg');
       final gate = Completer<void>();
-      handler = (_) async {
+      server.handler = (_) async {
         await gate.future;
-        return http.Response(jsonEncode({'Key': 'ok'}), 200);
+        return null;
       };
 
       final first = service.uploadPending();
@@ -259,7 +228,7 @@ void main() {
       gate.complete();
 
       expect(await second, same(await first));
-      expect(requests, hasLength(1));
+      expect(server.requests, hasLength(1));
     });
   });
 
@@ -277,15 +246,11 @@ void main() {
     );
 
     test('dosyayı kimliğinin adıyla medya klasörüne yazar', () async {
-      handler = (_) => http.Response.bytes([1, 2, 3, 4, 5], 200);
+      server.put('media_files', 'org-1/hive-1/remote-1.jpg', [1, 2, 3, 4, 5]);
 
       final file = await service.download(remote());
 
-      expect(requests.single.method, 'GET');
-      expect(
-        requests.single.url.path,
-        '${_objectPath}org-1/hive-1/remote-1.jpg',
-      );
+      expect(server.fileGets.single.url.path, startsWith('/api/files/'));
       expect(file.readAsBytesSync(), [1, 2, 3, 4, 5]);
       expect((await files.find('remote-1.jpg'))!.path, file.path);
     });
@@ -300,30 +265,16 @@ void main() {
         }
       }
 
-      handler = (_) => http.Response('{"error":"not_found"}', 400);
       expect(await failure(), MediaDownloadFailure.notUploaded);
-      handler = (_) => throw const SocketException('ağ yok');
+      server.handler = (_) => throw const SocketException('ağ yok');
       expect(await failure(), MediaDownloadFailure.offline);
-      handler = (_) => http.Response('forbidden', 403);
+      server.handler = (_) => fakePocketBaseError(403, message: 'Forbidden');
       expect(await failure(), MediaDownloadFailure.failed);
       expect(await files.find('remote-1.jpg'), isNull);
     });
   });
 
   group('PocketBase', () {
-    late FakePocketBaseFiles server;
-
-    setUp(() {
-      server = FakePocketBaseFiles();
-      service = MediaSyncService(
-        db,
-        PocketBaseFileStore(server.client()),
-        files,
-        network,
-        clock: clock.call,
-      );
-    });
-
     test('ilk yükleme media_files’a gider; sunucuda zaten olan (ikinci '
         'yükleme) yüklendi sayılır', () async {
       final photo = await capture('p.jpg');

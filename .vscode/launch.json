@@ -2,18 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "dev (PocketBase)",
+      "name": "dev",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "dev", "--dart-define=BACKEND=pocketbase"]
-    },
-    {
-      "name": "dev (Supabase)",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main_dev.dart",
-      "args": ["--flavor", "dev", "--dart-define=BACKEND=supabase"]
+      "args": ["--flavor", "dev"]
     },
     {
       "name": "prod",

@@ -5,7 +5,7 @@ import 'package:mobil_arici/core/db/local_settings_repository.dart';
 /// `<backend>|<adres>` (ör. `pocketbase|https://arici-api-dev.tutunsoft.com`).
 const syncBackendKey = 'sync_backend';
 
-/// Senkronun sunucusu [identity] değilse (backend ya da adres değişti, ya
+/// Senkronun sunucusu [identity] değilse (adres değişti, ör. dev ↔ prod, ya
 /// da değer hiç yazılmamış) imleçleri sıfırlar ve [identity]'yi yazar;
 /// sıfırladıysa true döner. Uygulama ve arka plan görevi ilk senkron
 /// turundan önce çağırır.

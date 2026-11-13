@@ -39,25 +39,23 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
-/// Testlerde lot sayfası açık; Supabase'de `LOT_PAGE_BASE_URL` verilmezse
-/// bölüm gizli.
+/// Testlerde lot sayfasının kökü.
 const _lotPageBaseUrl = 'https://lot.example.com';
 
-/// [backend] verilirse lot sayfası kökü sabitlenmez, o backend'den çözülür.
+/// [fixedPageBaseUrl] false ise lot sayfası kökü sabitlenmez, sunucunun
+/// adresinden çözülür.
 Future<ProviderContainer> _open(
   WidgetTester tester, {
   required AppDatabase db,
   required String location,
   FakePrintService? printer,
-  Backend? backend,
+  bool fixedPageBaseUrl = true,
 }) async {
   final container = ProviderContainer.test(
     overrides: [
       ...signedIn(db: db, printer: printer),
-      if (backend == null)
-        lotPageBaseUrlProvider.overrideWithValue(_lotPageBaseUrl)
-      else
-        backendProvider.overrideWithValue(backend),
+      if (fixedPageBaseUrl)
+        lotPageBaseUrlProvider.overrideWithValue(_lotPageBaseUrl),
     ],
   );
   await tester.pumpWidget(
@@ -488,9 +486,7 @@ void main() {
     expect(toggle('Analysis report'), findsNothing);
   });
 
-  testWidgets("PocketBase'de sayfa adresi sunucudan gelir, bölüm görünür", (
-    tester,
-  ) async {
+  testWidgets('sayfa adresi sunucudan gelir, bölüm görünür', (tester) async {
     await addMember(db, userId: testUser.id, role: MembershipRole.owner);
     final lot = await lots.createWithHarvest(await harvest());
     await lots.setPublication(lot.id, published: true);
@@ -498,7 +494,7 @@ void main() {
       tester,
       db: db,
       location: AppRoutes.lot(lot.id),
-      backend: Backend.pocketbase,
+      fixedPageBaseUrl: false,
     );
 
     expect(
@@ -513,29 +509,6 @@ void main() {
       scrollable: _list(LotScreen),
     );
     expect(_button('Print'), findsOneWidget);
-  });
-
-  testWidgets("Supabase'de sayfa adresi yapılandırılmadıysa (derlemede "
-      'LOT_PAGE_BASE_URL yok) bölüm gizli', (tester) async {
-    await addMember(db, userId: testUser.id, role: MembershipRole.owner);
-    final lot = await lots.createWithHarvest(await harvest());
-    await lots.setPublication(lot.id, published: true);
-    await _open(
-      tester,
-      db: db,
-      location: AppRoutes.lot(lot.id),
-      backend: Backend.supabase,
-    );
-
-    await tester.scrollUntilVisible(
-      find.text('No sales recorded yet'),
-      200,
-      scrollable: _list(LotScreen),
-    );
-    expect(find.text('PUBLIC PAGE'), findsNothing);
-    expect(find.text('Public page'), findsNothing);
-    expect(toggle('Publish'), findsNothing);
-    expect(_button('Print'), findsNothing);
   });
 
   testWidgets('owner olmayan yayımı görür ama değiştiremez; etiketi basar', (

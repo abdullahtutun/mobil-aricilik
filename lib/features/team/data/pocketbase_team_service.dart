@@ -101,9 +101,8 @@ class PocketBaseTeamService implements TeamService {
     }
   }
 
-  /// Sunucunun durum ve koduna karşılık gelen hata; Supabase uygulamasıyla
-  /// aynı eşleme, yalnız 429 (kod denemesi, kullanıcı başına dakikada 10)
-  /// yeni.
+  /// Sunucunun durum ve koduna karşılık gelen hata; 429 kod denemesi
+  /// sınırı (kullanıcı başına dakikada 10).
   static TeamFailure failureOf(int status, String? code) =>
       switch ((status, code)) {
         (404, 'invalid_code') => TeamFailure.invalidCode,

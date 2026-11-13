@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ProviderListenableSelect;
-import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/services/document_services_provider.dart';
 import 'package:mobil_arici/core/services/logo_file_store_provider.dart';
@@ -8,13 +7,11 @@ import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/receipt_file_store_provider.dart';
 import 'package:mobil_arici/core/services/secure_storage.dart';
-import 'package:mobil_arici/core/services/supabase_client_provider.dart';
 import 'package:mobil_arici/core/sync/sync_service_provider.dart';
 import 'package:mobil_arici/features/account_deletion/data/account_deletion_repository.dart';
 import 'package:mobil_arici/features/account_deletion/data/account_deletion_service.dart';
 import 'package:mobil_arici/features/account_deletion/data/device_data_wiper.dart';
 import 'package:mobil_arici/features/account_deletion/data/pocketbase_account_deletion_service.dart';
-import 'package:mobil_arici/features/account_deletion/data/supabase_account_deletion_service.dart';
 import 'package:mobil_arici/features/account_deletion/domain/account_deletion.dart';
 import 'package:mobil_arici/features/account_deletion/domain/account_deletion_rules.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
@@ -29,14 +26,7 @@ part 'account_deletion_providers.g.dart';
 /// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
 AccountDeletionService accountDeletionService(Ref ref) =>
-    switch (ref.watch(backendProvider)) {
-      Backend.supabase => SupabaseAccountDeletionService(
-        ref.watch(supabaseClientProvider),
-      ),
-      Backend.pocketbase => PocketBaseAccountDeletionService(
-        ref.watch(pocketbaseClientProvider),
-      ),
-    };
+    PocketBaseAccountDeletionService(ref.watch(pocketbaseClientProvider));
 
 @Riverpod(keepAlive: true)
 AccountDeletionRepository accountDeletionRepository(Ref ref) =>

@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
-import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/sync_repository.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
@@ -22,36 +21,14 @@ import 'package:mobil_arici/features/inspections/data/inspection_repository.dart
 import 'package:mobil_arici/features/inspections/domain/inspection.dart';
 import 'package:mobil_arici/features/organization/data/organization_service.dart';
 import 'package:mobil_arici/features/organization/data/pocketbase_organization_service.dart';
-import 'package:mobil_arici/features/organization/data/supabase_organization_service.dart';
 import 'package:mobil_arici/features/organization/domain/organization.dart';
 import 'package:mobil_arici/features/team/data/pocketbase_team_service.dart';
-import 'package:mobil_arici/features/team/data/supabase_team_service.dart';
 import 'package:mobil_arici/features/team/data/team_service.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../test/helpers/test_database.dart';
 
 export '../../test/helpers/test_database.dart' show TestClock;
-
-/// Testlerin konuştuğu sunucu: `--dart-define=BACKEND=supabase|pocketbase`;
-/// verilmezse dev flavor'ın varsayılanı (PocketBase).
-final Backend testBackend = resolveBackend(Flavor.dev);
-
-/// Yerel Supabase (`supabase start`). iOS simülatöründe 127.0.0.1 Mac'in
-/// kendisidir; başka cihazda adres `--dart-define=SUPABASE_URL=...` ile
-/// verilir.
-const supabaseUrl = String.fromEnvironment(
-  'SUPABASE_URL',
-  defaultValue: 'http://127.0.0.1:54321',
-);
-
-/// Supabase CLI'ın her kurulumda aynı olan yerel publishable key'i
-/// (`supabase status`).
-const supabaseKey = String.fromEnvironment(
-  'SUPABASE_KEY',
-  defaultValue: 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH',
-);
 
 /// Yerel PocketBase'in adresi (`--dart-define=PB_URL=...`).
 final String pocketbaseUrl = resolvePocketbaseUrl(Flavor.dev);
@@ -64,28 +41,15 @@ const _pocketbaseAccountsDefine = String.fromEnvironment('PB_TEST_ACCOUNTS');
 /// İsteği seçer; testler eşleşen istekte bağlantıyı keser.
 typedef RequestMatcher = bool Function(http.BaseRequest request);
 
-/// Gönderim isteği (Supabase `sync_push` RPC'si, PocketBase
-/// `POST /api/sync/push`).
-RequestMatcher pushRequest() => switch (testBackend) {
-  Backend.supabase => (request) => request.url.path == '/rest/v1/rpc/sync_push',
-  Backend.pocketbase => (
-    request,
-  ) => request.url.path == PocketBaseSyncTransport.pushPath,
-};
+/// Gönderim isteği (`POST /api/sync/push`).
+RequestMatcher pushRequest() =>
+    (request) => request.url.path == PocketBaseSyncTransport.pushPath;
 
 /// Çekme isteği; [table] verilirse yalnız o tablonunki.
-RequestMatcher pullRequest({String? table}) => switch (testBackend) {
-  Backend.supabase => (request) {
-    if (request.url.path != '/rest/v1/rpc/sync_pull') return false;
-    if (table == null) return true;
-    final params = jsonDecode((request as http.Request).body) as Map;
-    return params['table_name'] == table;
-  },
-  Backend.pocketbase =>
+RequestMatcher pullRequest({String? table}) =>
     (request) =>
         request.url.path == PocketBaseSyncTransport.pullPath &&
-        (table == null || request.url.queryParameters['table'] == table),
-};
+        (table == null || request.url.queryParameters['table'] == table);
 
 /// Cihazın ağ bağlantısı. Testler bağlantıyı keser ya da bir isteğin
 /// ortasında koparır.
@@ -126,26 +90,23 @@ class TestNetwork extends http.BaseClient {
   void close() => _inner.close();
 }
 
-/// Testin hesabı; her cihaz bununla giriş yapar. Supabase'de e-posta +
-/// parola; PocketBase'de `test_users.sh`'in verdiği kimlik ve token'lar
-/// (superuser'ın impersonate token'ı; parola girişi yalnız demo hesaba
-/// açık kalır).
+/// Testin hesabı; her cihaz bununla giriş yapar: `test_users.sh`'in
+/// verdiği kimlik ve token'lar (superuser'ın impersonate token'ı; parola
+/// girişi yalnız demo hesaba açık kalır).
 class TestAccount {
   const new _({
     required this.email,
-    this.password,
-    this.userId,
-    this.token,
-    this.expiredToken,
+    required this.userId,
+    required this.token,
+    required this.expiredToken,
   });
 
   final String email;
-  final String? password;
-  final String? userId;
-  final String? token;
+  final String userId;
+  final String token;
 
-  /// Süresi dolmuş token (PocketBase).
-  final String? expiredToken;
+  /// Süresi dolmuş token.
+  final String expiredToken;
 
   @override
   String toString() => email;
@@ -154,43 +115,23 @@ class TestAccount {
 List<Map<String, Object?>>? _pocketbaseAccounts;
 var _nextPocketbaseAccount = 0;
 
-/// Daha önce hiçbir testin kullanmadığı bir hesap. Supabase'de yeni hesap
-/// açılır; PocketBase'de betiğin hazırladığı havuzdan sıradaki alınır.
+/// Daha önce hiçbir testin kullanmadığı bir hesap: betiğin hazırladığı
+/// havuzdan sıradaki.
 Future<TestAccount> newAccount() async {
-  switch (testBackend) {
-    case Backend.supabase:
-      final email = 'two-devices-${generateId()}@example.com';
-      const password = 'two-devices-password';
-      final client = SupabaseClient(
-        supabaseUrl,
-        supabaseKey,
-        authOptions: const AuthClientOptions(
-          autoRefreshToken: false,
-          authFlowType: AuthFlowType.implicit,
-        ),
-      );
-      try {
-        await client.auth.signUp(email: email, password: password);
-      } finally {
-        await client.dispose();
-      }
-      return TestAccount._(email: email, password: password);
-    case Backend.pocketbase:
-      final pool = _pocketbaseAccounts ??= _readPocketbaseAccounts();
-      if (_nextPocketbaseAccount >= pool.length) {
-        fail(
-          'PB_TEST_ACCOUNTS havuzu bitti (${pool.length} hesap); '
-          'server/ops/test_users.sh daha büyük bir sayıyla çalıştırılmalı.',
-        );
-      }
-      final entry = pool[_nextPocketbaseAccount++];
-      return TestAccount._(
-        email: entry['email']! as String,
-        userId: entry['id']! as String,
-        token: entry['token']! as String,
-        expiredToken: entry['expired_token']! as String,
-      );
+  final pool = _pocketbaseAccounts ??= _readPocketbaseAccounts();
+  if (_nextPocketbaseAccount >= pool.length) {
+    fail(
+      'PB_TEST_ACCOUNTS havuzu bitti (${pool.length} hesap); '
+      'server/ops/test_users.sh daha büyük bir sayıyla çalıştırılmalı.',
+    );
   }
+  final entry = pool[_nextPocketbaseAccount++];
+  return TestAccount._(
+    email: entry['email']! as String,
+    userId: entry['id']! as String,
+    token: entry['token']! as String,
+    expiredToken: entry['expired_token']! as String,
+  );
 }
 
 List<Map<String, Object?>> _readPocketbaseAccounts() {
@@ -218,30 +159,8 @@ List<Map<String, Object?>> _readPocketbaseAccounts() {
 /// ağı. Saat cihazlar arasında ortaktır; testler yazmalar arasında ilerletir.
 class TestDevice {
   new _(this.name, this.account, this.clock) : db = openTestDatabase() {
-    switch (testBackend) {
-      case Backend.supabase:
-        supabase = SupabaseClient(
-          supabaseUrl,
-          supabaseKey,
-          httpClient: network,
-          // PKCE kod deposu ister; parola girişi için gerekmez.
-          authOptions: const AuthClientOptions(
-            autoRefreshToken: false,
-            authFlowType: AuthFlowType.implicit,
-          ),
-        );
-      case Backend.pocketbase:
-        // Tek istemci: SDK her istekten sonra kapatmasın, kesme kuralları
-        // aynı nesnede kalsın.
-        pocketbase = PocketBase(
-          pocketbaseUrl,
-          reuseHTTPClient: true,
-          httpClientFactory: () => network,
-        );
-    }
-    addTearDown(() async {
-      await supabase?.dispose();
-      pocketbase?.close();
+    addTearDown(() {
+      pocketbase.close();
       network.close();
     });
   }
@@ -255,19 +174,9 @@ class TestDevice {
     TestClock clock, {
     bool expiredSession = false,
   }) async {
-    final device = TestDevice._(name, account, clock);
-    switch (testBackend) {
-      case Backend.supabase:
-        await device.supabase!.auth.signInWithPassword(
-          email: account.email,
-          password: account.password!,
-        );
-      case Backend.pocketbase:
-        device.restoreSession(
-          token: expiredSession ? account.expiredToken : account.token,
-        );
-    }
-    return device;
+    return TestDevice._(name, account, clock)..restoreSession(
+      token: expiredSession ? account.expiredToken : account.token,
+    );
   }
 
   final String name;
@@ -276,15 +185,19 @@ class TestDevice {
   final TestClock clock;
   final network = TestNetwork();
 
-  /// Hangisi kullanılıyorsa onun istemcisi; diğeri null.
-  SupabaseClient? supabase;
-  PocketBase? pocketbase;
+  /// Tek istemci: SDK her istekten sonra kapatmasın, kesme kuralları aynı
+  /// nesnede kalsın.
+  late final pocketbase = PocketBase(
+    pocketbaseUrl,
+    reuseHTTPClient: true,
+    httpClientFactory: () => network,
+  );
 
-  /// PocketBase'de giriş: kayıtlı oturum telefona yazılır (ağa gitmez).
-  /// [token] verilmezse hesabın geçerli token'ı.
+  /// Giriş: kayıtlı oturum telefona yazılır (ağa gitmez). [token]
+  /// verilmezse hesabın geçerli token'ı.
   void restoreSession({String? token}) {
-    pocketbase!.authStore.save(
-      token ?? account.token!,
+    pocketbase.authStore.save(
+      token ?? account.token,
       RecordModel.fromJson({
         'id': account.userId,
         'email': account.email,
@@ -294,35 +207,24 @@ class TestDevice {
     );
   }
 
-  /// Uygulamanın PocketBase oturum servisi (yenileme, K-6).
+  /// Uygulamanın oturum servisi (yenileme, K-6).
   late final auth = PocketBaseAuthService(
-    pocketbase!,
+    pocketbase,
     PocketBaseSessionStorage(pocketbaseUrl),
   );
 
   /// Telefonda oturum var mı.
-  bool get signedIn => switch (testBackend) {
-    Backend.supabase => supabase!.auth.currentSession != null,
-    Backend.pocketbase => auth.currentUser != null,
-  };
+  bool get signedIn => auth.currentUser != null;
 
-  late final SyncTransport transport = switch (testBackend) {
-    Backend.supabase => SupabaseSyncTransport(supabase!),
-    Backend.pocketbase => PocketBaseSyncTransport(pocketbase!),
-  };
+  late final SyncTransport transport = PocketBaseSyncTransport(pocketbase);
 
-  late final OrganizationService organizations = switch (testBackend) {
-    Backend.supabase => SupabaseOrganizationService(supabase!),
-    Backend.pocketbase => PocketBaseOrganizationService(pocketbase!),
-  };
+  late final OrganizationService organizations = PocketBaseOrganizationService(
+    pocketbase,
+  );
 
-  late final TeamService team = switch (testBackend) {
-    Backend.supabase => SupabaseTeamService(supabase!),
-    Backend.pocketbase => PocketBaseTeamService(pocketbase!),
-  };
+  late final TeamService team = PocketBaseTeamService(pocketbase);
 
-  /// Uygulamadaki gibi kurulmuş senkron: PocketBase'de her tur token'ı
-  /// yeniler.
+  /// Uygulamadaki gibi kurulmuş senkron: her tur token'ı yeniler.
   late final SyncService sync = syncWith(transport);
 
   /// [transport] ile konuşan, bu telefonun DB'sini kullanan senkron.
@@ -332,10 +234,7 @@ class TestDevice {
     clock: clock.call,
     // Yeniden denemeler beklemeden yapılır.
     delay: (_) async {},
-    refreshSession: switch (testBackend) {
-      Backend.supabase => null,
-      Backend.pocketbase => auth.refreshSession,
-    },
+    refreshSession: auth.refreshSession,
   );
 
   late final apiaries = ApiaryRepository(db, clock: clock.call);

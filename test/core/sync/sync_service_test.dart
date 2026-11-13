@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_repository.dart';
-import 'package:mobil_arici/core/sync/supabase_sync_transport.dart';
+import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
@@ -54,11 +54,12 @@ import 'package:mobil_arici/features/queens/domain/queen_rearing.dart';
 import 'package:mobil_arici/features/subsidies/data/support_period_repository.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 import '../../helpers/test_database.dart';
 
-const _url = 'http://supabase.test';
+const _url = 'http://pocketbase.test';
+const _token = 'user-token';
 
 typedef _Handler = FutureOr<http.Response> Function(http.Request request);
 
@@ -68,12 +69,11 @@ http.Response _json(Object? body, [int status = 200]) => http.Response(
   headers: {'content-type': 'application/json; charset=utf-8'},
 );
 
-/// PostgREST'in hata gövdesi; [code] SQLSTATE ya da `PGRST...`.
-http.Response _postgrestError(String code, int status) => _json({
-  'code': code,
+/// Sunucunun hata gövdesi (`server/internal/sync`, `apiError`).
+http.Response _error(int status, String code) => _json({
+  'status': status,
   'message': '$code hatası',
-  'details': null,
-  'hint': null,
+  'data': {'code': code},
 }, status);
 
 /// İstekteki outbox kimlikleri, gönderim sırasıyla.
@@ -90,7 +90,7 @@ http.Response _results(List<Map<String, Object?>> results) => _json({
   'warning': null,
 });
 
-/// Sahte sync_push: [rejected]'daki kimlikleri o nedenle reddeder, gerisini
+/// Sahte push: [rejected]'daki kimlikleri o nedenle reddeder, gerisini
 /// kabul eder.
 http.Response _accept(
   http.Request request, {
@@ -120,7 +120,7 @@ typedef _Rows = List<Map<String, Object?>>;
 
 const _org = 'org-1';
 
-/// Sunucu satırlarının ortak alanları, sync_pull'un döndüğü biçimde.
+/// Sunucu satırlarının ortak alanları, pull'un döndüğü biçimde.
 Map<String, Object?> _standard(
   String id,
   int seq, {
@@ -153,7 +153,7 @@ Map<String, Object?> _membershipRow(int seq) => {
   'role': 'owner',
 };
 
-/// Konum sync_pull'daki gibi latitude + longitude.
+/// Konum pull'daki gibi latitude + longitude.
 Map<String, Object?> _apiaryRow(
   String id,
   int seq, {
@@ -548,27 +548,30 @@ Map<String, Object?> _supportPeriodRow(int seq) => {
 };
 
 bool _isPull(http.Request request) =>
-    request.url.path == '/rest/v1/rpc/sync_pull';
+    request.url.path == PocketBaseSyncTransport.pullPath;
 
 /// Çekme isteğinin tablosu ve imleci.
 ({String table, int since}) _pullOf(http.Request request) {
-  final body = jsonDecode(request.body) as Map<String, dynamic>;
-  return (table: body['table_name'] as String, since: body['since_seq'] as int);
+  final query = request.url.queryParameters;
+  return (table: query['table']!, since: int.parse(query['since_seq']!));
 }
 
-/// Sahte sunucu: sync_push'a her şeyi kabul eder; sync_pull'a [tables]'daki
+/// Sahte sunucu: push'a her şeyi kabul eder; pull'a [tables]'daki
 /// satırlardan imleçten büyük olanları server_seq sırasıyla döner. Sayfa en
 /// çok [maxPage] satır (sunucu istenenden az dönebilir); geriye bakma payı
 /// yok.
 _Handler _server(Map<String, _Rows> tables, {int maxPage = 1000}) => (request) {
   if (!_isPull(request)) return _accept(request);
-  final body = jsonDecode(request.body) as Map<String, dynamic>;
   final (:table, :since) = _pullOf(request);
   final rows = [
     for (final row in tables[table] ?? const <Map<String, Object?>>[])
       if ((row['server_seq']! as int) > since) row,
   ];
-  final page = rows.take(math.min(body['page_size'] as int, maxPage)).toList();
+  final page = rows
+      .take(
+        math.min(int.parse(request.url.queryParameters['page_size']!), maxPage),
+      )
+      .toList();
   return _json({
     'rows': page,
     'next_seq': page.isEmpty ? since : page.last['server_seq'],
@@ -587,11 +590,8 @@ void main() {
   late List<http.Request> requests;
   late _Handler handler;
   late List<Duration> delays;
-  late SupabaseClient client;
+  late PocketBase client;
   late SyncService service;
-
-  /// Bir sonraki token isteğinde bir kez atılır.
-  Exception? nextTokenError;
 
   setUp(() {
     db = openTestDatabase();
@@ -599,33 +599,18 @@ void main() {
     requests = [];
     handler = _accept;
     delays = [];
-    nextTokenError = null;
-    client = SupabaseClient(
+    client = PocketBase(
       _url,
-      'anon-key',
-      accessToken: () async {
-        if (nextTokenError case final error?) {
-          nextTokenError = null;
-          throw error;
-        }
-        return 'user-token';
-      },
-      httpClient: MockClient((request) async {
+      authStore: AuthStore()
+        ..save(_token, RecordModel({'id': 'user-1', 'email': 'a@b.co'})),
+      httpClientFactory: () => MockClient((request) async {
         requests.add(request);
-        final response = await handler(request);
-        // postgrest yanıtı isteğiyle birlikte okur.
-        return http.Response.bytes(
-          response.bodyBytes,
-          response.statusCode,
-          headers: response.headers,
-          request: request,
-        );
+        return await handler(request);
       }),
     );
-    addTearDown(client.dispose);
     service = SyncService(
       db,
-      SupabaseSyncTransport(client),
+      PocketBaseSyncTransport(client),
       clock: clock.call,
       delay: (duration) async => delays.add(duration),
     );
@@ -651,7 +636,7 @@ void main() {
       expect(requests, isEmpty);
     });
 
-    test('kayıtları sync_push sözleşmesiyle gönderir', () async {
+    test('kayıtları /api/sync/push sözleşmesiyle gönderir', () async {
       final repository = ApiaryRepository(db, clock: clock.call);
       final apiary = await repository.create(orgId: 'org-1', name: 'Yayla');
       await repository.delete(apiary.id);
@@ -664,8 +649,8 @@ void main() {
 
       final request = requests.single;
       expect(request.method, 'POST');
-      expect(request.url.path, '/rest/v1/rpc/sync_push');
-      expect(request.headers['Authorization'], 'Bearer user-token');
+      expect(request.url.path, PocketBaseSyncTransport.pushPath);
+      expect(request.headers['Authorization'], _token);
       expect(jsonDecode(request.body), {
         'changes': [
           {
@@ -837,12 +822,7 @@ void main() {
     final transientFailures = <String, _Handler>{
       'bağlantı hatası': (_) => throw http.ClientException('bağlantı koptu'),
       'istek zaman aşımı': (_) => throw TimeoutException('yanıt yok'),
-      'kilitlenme (40P01)': (_) => _postgrestError('40P01', 500),
-      'serileştirme hatası (40001)': (_) => _postgrestError('40001', 500),
-      'sorgu zaman aşımı (57014)': (_) => _postgrestError('57014', 500),
-      'kilit beklenemedi (55P03)': (_) => _postgrestError('55P03', 500),
-      'veritabanına ulaşılamıyor (PGRST001)': (_) =>
-          _postgrestError('PGRST001', 503),
+      'sunucu paketi geri aldı (503)': (_) => _error(503, 'unavailable'),
       'JSON dönmeyen ağ geçidi (502)': (_) =>
           http.Response('<html>Bad Gateway</html>', 502),
       'çok sık istek (429)': (_) => _json({'message': 'Too many'}, 429),
@@ -861,30 +841,13 @@ void main() {
         expect(delays, _seconds([1]));
       });
     }
-
-    test(
-      'geçici sayılır: süresi dolmuş token çevrimdışı yenilenemedi',
-      () async {
-        await enqueue(1);
-        nextTokenError = AuthRetryableFetchException(message: 'çevrimdışı');
-
-        expect(
-          await service.push(),
-          const SyncResult(status: SyncStatus.done, pushed: 1),
-        );
-        expect(delays, _seconds([1]));
-        expect(requests, hasLength(1));
-      },
-    );
   });
 
   group('yeniden denenmeyen hata', () {
     final fatalFailures = <String, _Handler>{
-      'oturum yok (42501)': (_) => _postgrestError('42501', 401),
-      'süresi dolmuş JWT (PGRST303)': (_) => _postgrestError('PGRST303', 401),
-      'bozuk istek (22023)': (_) => _postgrestError('22023', 400),
-      'fonksiyon yok (PGRST202)': (_) => _postgrestError('PGRST202', 404),
-      'iç hata (XX000)': (_) => _postgrestError('XX000', 500),
+      'yetki yok (403)': (_) => _error(403, 'forbidden'),
+      'bozuk istek (400)': (_) => _error(400, 'invalid'),
+      'route yok (404)': (_) => _error(404, 'not_found'),
     };
     for (final MapEntry(key: name, value: failure) in fatalFailures.entries) {
       test('turu bitirir: $name', () async {
@@ -903,18 +866,9 @@ void main() {
       });
     }
 
-    test('turu bitirir: refresh token reddedildi', () async {
-      await enqueue(1);
-      nextTokenError = const AuthException('Invalid Refresh Token');
-
-      expect(await service.push(), const SyncResult(status: SyncStatus.failed));
-      expect(requests, isEmpty);
-      expect(delays, isEmpty);
-    });
-
     test('desteklenmeyen şema sürümünde güncelleme ister', () async {
       await enqueue(1);
-      handler = (_) => _postgrestError('PT426', 426);
+      handler = (_) => _error(426, 'upgrade_required');
 
       expect(
         await service.push(),
@@ -979,7 +933,7 @@ void main() {
         final resume = Completer<void>();
         service = SyncService(
           db,
-          SupabaseSyncTransport(client),
+          PocketBaseSyncTransport(client),
           clock: clock.call,
           delay: (_) {
             waiting.complete();
@@ -1006,7 +960,7 @@ void main() {
 
     test('biten tur kilidi bırakır, hatayla bitse de', () async {
       await enqueue(1);
-      handler = (_) => _postgrestError('42501', 401);
+      handler = (_) => _error(403, 'forbidden');
       expect((await service.push()).status, SyncStatus.failed);
 
       handler = _accept;
@@ -1109,9 +1063,12 @@ void main() {
         (table: 'customer_payments', since: 0),
         (table: 'ref_support_periods', since: 0),
       ]);
-      final body = jsonDecode(requests.first.body) as Map<String, dynamic>;
-      expect(body['page_size'], SyncService.pullPageSize);
-      expect(requests.first.headers['Authorization'], 'Bearer user-token');
+      expect(requests.first.method, 'GET');
+      expect(
+        requests.first.url.queryParameters['page_size'],
+        '${SyncService.pullPageSize}',
+      );
+      expect(requests.first.headers['Authorization'], _token);
 
       final organization = await db.select(db.organizations).getSingle();
       expect(organization.name, 'Petek Arıcılık');
@@ -1361,9 +1318,9 @@ void main() {
           final hiveRequests = requests.where(
             (request) => _pullOf(request).table == 'hives',
           );
-          // Üçüncü sayfa reddedilir (ör. oturum düştü).
+          // Üçüncü sayfa reddedilir (ör. yetki kalktı).
           if (_pullOf(request).table == 'hives' && hiveRequests.length == 3) {
-            return _postgrestError('42501', 401);
+            return _error(403, 'forbidden');
           }
           return serve(request);
         };
@@ -1564,7 +1521,7 @@ void main() {
     });
 
     test('yeniden denenmeyen hatada hemen durur', () async {
-      handler = (_) => _postgrestError('42501', 401);
+      handler = (_) => _error(403, 'forbidden');
 
       expect(await service.pull(), const SyncResult(status: SyncStatus.failed));
       expect(requests, hasLength(1));
@@ -1621,7 +1578,7 @@ void main() {
       final calls = <String>[];
       final refreshing = SyncService(
         db,
-        SupabaseSyncTransport(client),
+        PocketBaseSyncTransport(client),
         clock: clock.call,
         delay: (duration) async => delays.add(duration),
         refreshSession: () async => calls.add('refresh:${requests.length}'),
@@ -1645,7 +1602,7 @@ void main() {
         await service.sync(),
         const SyncResult(status: SyncStatus.done, pushed: 2, pulled: 1),
       );
-      expect(requests.first.url.path, '/rest/v1/rpc/sync_push');
+      expect(requests.first.url.path, PocketBaseSyncTransport.pushPath);
       expect(requests.skip(1).every(_isPull), isTrue);
       expect(requests.skip(1), hasLength(service.pullTables.length));
     });

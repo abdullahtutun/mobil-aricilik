@@ -1,11 +1,7 @@
 // Bilgi bankası içeriğini uygulama güncellemesi olmadan yayımlar.
 //
-//   SUPABASE_URL=https://jcddnelaboueazhordfz.supabase.co \
-//   SUPABASE_SERVICE_ROLE_KEY=... \
-//   dart run tool/publish_knowledge.dart --version 2
-//
 //   PB_URL=https://... PB_SUPERUSER_EMAIL=... PB_SUPERUSER_PASSWORD=... \
-//   dart run tool/publish_knowledge.dart --backend pocketbase --version 2
+//   dart run tool/publish_knowledge.dart --version 2
 //
 // `assets/knowledge/<dil>/*.md` dosyalarını (ya da `--dir` ile verilen
 // klasörü) okur; her makaleyi uygulamanın ayrıştırıcısıyla denetler, biri
@@ -13,9 +9,8 @@
 // `manifest.json`'u ona çevirir (manifest hiçbir zaman olmayan bir paketi
 // göstermez). `--dry-run` yalnız denetler ve özeti yazar.
 //
-// `--backend`: `supabase` (varsayılan, P11.1'e kadar) `knowledge` bucket'ına,
-// `pocketbase` `knowledge_packs` koleksiyonuna süper kullanıcı olarak yazar;
-// aynı adlı kayıt varsa yalnız dosyası değişir. Gizli değerler yalnız
+// `knowledge_packs` koleksiyonuna süper kullanıcı olarak yazar; aynı adlı
+// kayıt varsa yalnız dosyası değişir. Gizli değerler yalnız
 // ortamdan okunur ve hiçbir çıktıya yazılmaz.
 //
 // Sürüm, uygulamayla gelen `assets/knowledge/manifest.json` sürümünden ve
@@ -76,13 +71,10 @@ Future<void> publishKnowledge(
   final version = int.tryParse(option('version') ?? '');
   final directory = Directory(option('dir') ?? 'assets/knowledge');
   final dryRun = args.contains('--dry-run');
-  final backend = option('backend') ?? 'supabase';
-  if (version == null ||
-      version < 1 ||
-      !const {'supabase', 'pocketbase'}.contains(backend)) {
+  if (version == null || version < 1) {
     _fail(
       'Kullanım: dart run tool/publish_knowledge.dart --version <N> '
-      '[--backend supabase|pocketbase] [--dir assets/knowledge] [--dry-run]',
+      '[--dir assets/knowledge] [--dry-run]',
     );
   }
 
@@ -136,53 +128,17 @@ Future<void> publishKnowledge(
   );
   if (dryRun) return;
 
-  final upload = switch (backend) {
-    'pocketbase' => await _pocketBaseUploader(environment, client),
-    _ => _supabaseUploader(environment, client),
-  };
-  for (final (name, body, mutable) in [
-    (packagePath, bytes, false),
-    ('manifest.json', manifest, true),
+  final upload = await _pocketBaseUploader(environment, client);
+  for (final (name, body) in [
+    (packagePath, bytes),
+    ('manifest.json', manifest),
   ]) {
-    await upload(name, body, mutable: mutable);
+    await upload(name, body);
     log('$name yüklendi');
   }
 }
 
-typedef _Uploader = Future<void> Function(
-  String name,
-  List<int> body, {
-  required bool mutable,
-});
-
-_Uploader _supabaseUploader(Map<String, String> env, http.Client client) {
-  final url = env['SUPABASE_URL'];
-  final key = env['SUPABASE_SERVICE_ROLE_KEY'];
-  if (url == null || key == null) {
-    _fail('SUPABASE_URL ve SUPABASE_SERVICE_ROLE_KEY gerekli.');
-  }
-  Future<void> upload(
-    String name,
-    List<int> body, {
-    required bool mutable,
-  }) async {
-    final response = await client.post(
-      Uri.parse('$url/storage/v1/object/knowledge/$name'),
-      headers: {
-        'Authorization': 'Bearer $key',
-        'apikey': key,
-        'Content-Type': 'application/json',
-        // Manifest kısa önbellekte kalsın; paket sürümlü, değişmez.
-        'Cache-Control': mutable ? 'max-age=60' : 'max-age=31536000',
-        'x-upsert': '$mutable',
-      },
-      body: body,
-    );
-    _check(response, '$name yüklenemedi');
-  }
-
-  return upload;
-}
+typedef _Uploader = Future<void> Function(String name, List<int> body);
 
 /// Süper kullanıcı olarak girer; her ad için kayıt varsa dosyasını
 /// değiştirir (PATCH), yoksa oluşturur (POST).
@@ -211,11 +167,7 @@ Future<_Uploader> _pocketBaseUploader(
   final records = '$base/api/collections/$knowledgePacksCollection/records';
   final headers = {'Authorization': token};
 
-  Future<void> upload(
-    String name,
-    List<int> body, {
-    required bool mutable,
-  }) async {
+  Future<void> upload(String name, List<int> body) async {
     final found = await client.get(
       Uri.parse(records).replace(
         queryParameters: {

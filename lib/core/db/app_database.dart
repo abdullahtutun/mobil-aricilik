@@ -52,8 +52,8 @@ export 'tables/sync_tables.dart' show OutboxOperation, fullPullMarker;
 part 'app_database.g.dart';
 
 /// Yerel veritabanı. Her okuma ve yazma buraya gider; ekran ağı beklemez.
-/// Senkronlanan tablolar (`server_seq` kolonu olanlar) `supabase/migrations`
-/// şemasının aynası; diğerleri yalnız bu telefonda.
+/// Senkronlanan tablolar (`server_seq` kolonu olanlar) sunucunun
+/// `server/schema/collections.json` şemasının aynası; diğerleri yalnız bu telefonda.
 ///
 /// Şema değişince [schemaVersion] artar, `dart run drift_dev
 /// make-migrations` dökümü ve testi üretir, adım [migration]'a yazılır.

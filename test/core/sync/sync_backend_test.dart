@@ -16,8 +16,8 @@ import 'package:pocketbase/pocketbase.dart';
 
 import '../../helpers/test_database.dart';
 
-const _supabase = 'supabase|https://project.supabase.co';
-const _pocketbase = 'pocketbase|http://127.0.0.1:8090';
+const _dev = 'pocketbase|https://arici-api-dev.tutunsoft.com';
+const _local = 'pocketbase|http://127.0.0.1:8090';
 
 http.Response _json(Object? body) => http.Response(
   jsonEncode(body),
@@ -34,9 +34,10 @@ void main() {
     settings = LocalSettingsRepository(db);
   });
 
-  /// Supabase'le senkronlanmış telefon: imleçler ve ilk tam çekme işareti.
-  Future<void> syncedWithSupabase() async {
-    await settings.writeValue(syncBackendKey, _supabase);
+  /// Dev sunucusuyla senkronlanmış telefon: imleçler ve ilk tam çekme
+  /// işareti.
+  Future<void> syncedWithDev() async {
+    await settings.writeValue(syncBackendKey, _dev);
     await db.batch(
       (batch) => batch.insertAll(db.syncState, [
         SyncStateCompanion.insert(
@@ -55,53 +56,53 @@ void main() {
   Future<List<SyncCursor>> cursors() => db.select(db.syncState).get();
 
   test('aynı sunucuda bir şeye dokunmaz', () async {
-    await syncedWithSupabase();
+    await syncedWithDev();
 
-    expect(await resetCursorsIfBackendChanged(db, _supabase), isFalse);
+    expect(await resetCursorsIfBackendChanged(db, _dev), isFalse);
     expect(await cursors(), hasLength(3));
   });
 
   test('değer hiç yoksa (önceki sürüm) imleçler sıfırlanır ve değer '
       'yazılır', () async {
-    await syncedWithSupabase();
+    await syncedWithDev();
     await settings.removeValue(syncBackendKey);
 
-    expect(await resetCursorsIfBackendChanged(db, _supabase), isTrue);
+    expect(await resetCursorsIfBackendChanged(db, _dev), isTrue);
     expect(await cursors(), isEmpty);
-    expect(await settings.readValue(syncBackendKey), _supabase);
-    expect(await resetCursorsIfBackendChanged(db, _supabase), isFalse);
+    expect(await settings.readValue(syncBackendKey), _dev);
+    expect(await resetCursorsIfBackendChanged(db, _dev), isFalse);
   });
 
-  test('aynı backend’in başka adresi de değişim sayılır', () async {
-    await settings.writeValue(syncBackendKey, _pocketbase);
+  test('başka adres (ör. dev ↔ prod) değişim sayılır', () async {
+    await settings.writeValue(syncBackendKey, _local);
 
     expect(
       await resetCursorsIfBackendChanged(
         db,
-        'pocketbase|https://arici-api-dev.tutunsoft.com',
+        'pocketbase|https://arici-api.tutunsoft.com',
       ),
       isTrue,
     );
   });
 
-  test('Supabase’de yazılmış, outbox’ta bekleyen kayıt backend değişince '
-      'PocketBase’e gönderilir; ilk tam çekme baştan yapılır', () async {
-    await syncedWithSupabase();
-    // Supabase'e gönderilmeden kalan yazma ve önceki sürümden yerel bir
-    // satır (sunucu numarası Supabase'in).
+  test('eski sunucuda yazılmış, outbox’ta bekleyen kayıt adres değişince '
+      'yeni sunucuya gönderilir; ilk tam çekme baştan yapılır', () async {
+    await syncedWithDev();
+    // Eski sunucuya gönderilmeden kalan yazma ve önceki sunucudan yerel bir
+    // satır (sunucu numarası eski sunucunun).
     final apiaries = ApiaryRepository(db);
     final pending = await apiaries.create(orgId: 'org-1', name: 'Yayla');
     final outbox = await readOutbox(db);
     final fullPull = SyncRepository(db).watchFullPullDone();
     expect(await fullPull.first, isTrue);
 
-    expect(await resetCursorsIfBackendChanged(db, _pocketbase), isTrue);
+    expect(await resetCursorsIfBackendChanged(db, _local), isTrue);
 
     // İmleçler ve işaret silindi: ilk çekme ekranı açılır. Outbox ve yerel
     // kayıt yerinde.
     expect(await cursors(), isEmpty);
     expect(await fullPull.first, isFalse);
-    expect(await settings.readValue(syncBackendKey), _pocketbase);
+    expect(await settings.readValue(syncBackendKey), _local);
     expect(
       (await readOutbox(db)).map((entry) => entry.toJson()),
       outbox.map((entry) => entry.toJson()),
@@ -155,7 +156,7 @@ void main() {
     ]);
     expect(await readOutbox(db), isEmpty);
 
-    // Her tablo PocketBase'in numaralarıyla sıfırdan çekildi.
+    // Her tablo yeni sunucunun numaralarıyla sıfırdan çekildi.
     final pulls = requests.skip(1).toList();
     expect(
       pulls,

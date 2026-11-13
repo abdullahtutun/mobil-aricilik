@@ -7,13 +7,12 @@ import 'package:pocketbase/pocketbase.dart';
 /// `analytics_events` koleksiyonlarına kayıt API'siyle ekleme (yalnız
 /// create kuralı açık, P3.2). Sunucu `received_at`'i kendisi yazar.
 ///
-/// Farklar: zaman alanları K-5 metnidir (mikrosaniyeli, sabit genişlikli
-/// UTC), bu yüzden `created_at` / `occurred_at` o biçime çevrilir; görüşün
-/// `created_by`'ı kuralın istediği gibi oturumdaki kullanıcıdır (Supabase'de
-/// `auth.uid()` varsayılanı). Batch API kapalı olduğundan olay paketi tek
-/// tek yazılır: paket yarıda kalırsa yazılanlar sunucuda kalır, sonraki
-/// denemede "zaten var" olur ve `TelemetryUploadService` olayları tek tek
-/// gönderir.
+/// Zaman alanları K-5 metnidir (mikrosaniyeli, sabit genişlikli UTC), bu
+/// yüzden `created_at` / `occurred_at` o biçime çevrilir; görüşün
+/// `created_by`'ı kuralın istediği gibi oturumdaki kullanıcıdır. Batch API
+/// kapalı olduğundan olay paketi tek tek yazılır: paket yarıda kalırsa
+/// yazılanlar sunucuda kalır, sonraki denemede "zaten var" olur ve
+/// `TelemetryUploadService` olayları tek tek gönderir.
 ///
 /// Oturum yoksa ya da token'ın süresi dolmuşsa istek atılmaz ve hata
 /// geçicidir: SDK süresi dolmuş token'ı göndermez, sunucu girişsiz isteği
@@ -26,7 +25,7 @@ class PocketBaseTelemetryApi implements TelemetryApi {
   /// Tek isteğin süre sınırı; testler kısaltır.
   final Duration timeout;
 
-  /// Supabase uygulamasıyla aynı.
+  /// Varsayılan süre sınırı.
   static const requestTimeout = Duration(seconds: 60);
 
   static const feedbackCollection = 'feedback';

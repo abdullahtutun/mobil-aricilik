@@ -31,10 +31,9 @@ class SyncService {
   /// Yeniden denemeden önce bekler; testler beklemeden kaydeder.
   final Future<void> Function(Duration duration) delay;
 
-  /// Tam turun başında oturumun token'ını yeniler (PocketBase, K-6); hata
-  /// atmaz. Sunucu token'ı reddederse oturum kapanır ve tur, oturumsuz
-  /// gönderimin hatasıyla biter. Null ise (Supabase) istemci kendisi
-  /// yeniler.
+  /// Tam turun başında oturumun token'ını yeniler (K-6); hata atmaz.
+  /// Sunucu token'ı reddederse oturum kapanır ve tur, oturumsuz gönderimin
+  /// hatasıyla biter. Null ise (testler) yenilenmez.
   final Future<void> Function()? refreshSession;
 
   /// Bir pakette en fazla bu kadar kayıt gider.

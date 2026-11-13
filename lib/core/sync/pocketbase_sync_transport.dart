@@ -4,9 +4,8 @@ import 'package:mobil_arici/core/sync/sync_transport.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 /// [SyncTransport]'un PocketBase uygulaması: `POST /api/sync/push` ve
-/// `GET /api/sync/pull` (`server/internal/sync`). Gövdeler Supabase'in
-/// `sync_push` / `sync_pull` RPC'leriyle aynı biçimde (geçiş planı, P5
-/// "Senkron sözleşmesi").
+/// `GET /api/sync/pull` (`server/internal/sync`; sözleşme geçiş planında,
+/// P5 "Senkron sözleşmesi").
 ///
 /// Token istekte elle gönderilir: SDK süresi dolmuş token'ı hiç göndermez,
 /// 401'in sunucunun o token'a verdiği yanıt olduğu bilinsin. 401 oturumu

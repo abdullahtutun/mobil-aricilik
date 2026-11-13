@@ -100,13 +100,9 @@ void main() {
 
   String bodyOf(http.Request request) => latin1.decode(request.bodyBytes);
 
-  group('--backend pocketbase', () {
+  group('PocketBase', () {
     test('logs in, then uploads the package before the manifest', () async {
-      await run(
-        ['--version', '2', '--backend', 'pocketbase'],
-        environment: _pbEnv,
-        client: pocketBase(),
-      );
+      await run(['--version', '2'], environment: _pbEnv, client: pocketBase());
 
       expect(requests.map((r) => '${r.method} ${r.url.path}'), [
         'POST /api/collections/_superusers/auth-with-password',
@@ -155,11 +151,7 @@ void main() {
 
     test('replaces the file of a name that exists', () async {
       existing['manifest.json'] = 'manifest-id';
-      await run(
-        ['--version', '3', '--backend', 'pocketbase'],
-        environment: _pbEnv,
-        client: pocketBase(),
-      );
+      await run(['--version', '3'], environment: _pbEnv, client: pocketBase());
 
       final writes = requests.where((r) => r.method != 'GET').toList();
       expect(writes.map((r) => '${r.method} ${r.url.path}'), [
@@ -175,7 +167,7 @@ void main() {
     test('a failed login stops before any upload, without secrets', () async {
       await expectLater(
         run(
-          ['--version', '2', '--backend', 'pocketbase'],
+          ['--version', '2'],
           environment: _pbEnv,
           client: pocketBase(authStatus: 400),
         ),
@@ -207,11 +199,7 @@ void main() {
         }, 400);
       });
       await expectLater(
-        run(
-          ['--version', '2', '--backend', 'pocketbase'],
-          environment: _pbEnv,
-          client: client,
-        ),
+        run(['--version', '2'], environment: _pbEnv, client: client),
         throwsA(
           isA<PublishKnowledgeException>().having(
             (e) => e.message,
@@ -231,7 +219,7 @@ void main() {
         requests.clear();
         await expectLater(
           run(
-            ['--version', '2', '--backend', 'pocketbase'],
+            ['--version', '2'],
             environment: {..._pbEnv}..remove(missing),
             client: pocketBase(),
           ),
@@ -242,39 +230,16 @@ void main() {
     });
 
     test('logs neither the password nor the token', () async {
-      await run(
-        ['--version', '2', '--backend', 'pocketbase'],
-        environment: _pbEnv,
-        client: pocketBase(),
-      );
+      await run(['--version', '2'], environment: _pbEnv, client: pocketBase());
       for (final secret in [_password, _token]) {
         expect(logs.where((line) => line.contains(secret)), isEmpty);
       }
     });
   });
 
-  test('Supabase stays the default backend', () async {
-    final client = MockClient((request) async {
-      requests.add(request);
-      return _json({'Key': request.url.path});
-    });
-    await run(
-      ['--version', '2'],
-      environment: {
-        'SUPABASE_URL': 'http://sb.test',
-        'SUPABASE_SERVICE_ROLE_KEY': 'k',
-      },
-      client: client,
-    );
-    expect(requests.map((r) => '${r.url.path} ${r.headers['x-upsert']}'), [
-      '/storage/v1/object/knowledge/knowledge-v2.json false',
-      '/storage/v1/object/knowledge/manifest.json true',
-    ]);
-  });
-
   test('--dry-run sends nothing', () async {
     await run(
-      ['--version', '2', '--backend', 'pocketbase', '--dry-run'],
+      ['--version', '2', '--dry-run'],
       environment: const {},
       client: pocketBase(),
     );
@@ -282,13 +247,9 @@ void main() {
     expect(logs, [startsWith('1 makale')]);
   });
 
-  test('an unknown backend is a usage error', () async {
+  test('a missing version is a usage error', () async {
     await expectLater(
-      run(
-        ['--version', '2', '--backend', 'firebase'],
-        environment: _pbEnv,
-        client: pocketBase(),
-      ),
+      run(const [], environment: _pbEnv, client: pocketBase()),
       throwsA(
         isA<PublishKnowledgeException>().having(
           (e) => e.message,

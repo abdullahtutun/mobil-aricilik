@@ -1,11 +1,13 @@
-// Mağaza ekran görüntüleri: uygulamayı yerel Supabase'deki demo hesabıyla
-// açar, ekranları sırayla gezer ve her ekranda `SHOT:<ad>` basıp bekler.
-// Görüntüyü `tool/store_screenshots.py` simülatörden alır (durum çubuğu
-// dahil). Yalnız o betikle çalıştırılır; `flutter test` bu klasörü koşmaz.
+// Mağaza ekran görüntüleri: uygulamayı yerel sunucudaki (`PB_URL`) demo
+// hesabıyla açar, ekranları sırayla gezer ve her ekranda `SHOT:<ad>` basıp
+// bekler. Görüntüyü `tool/store_screenshots.py` simülatörden alır (durum
+// çubuğu dahil). Yalnız o betikle çalıştırılır; `flutter test` bu klasörü
+// koşmaz.
 //
-// Kimlikler `--dart-define` ile gelir (betik yerel DB'den okur). Yerelde
-// WeatherAPI anahtarı olmadığı için hava durumu, yerel DB'deki arılıklara
-// mevsime uygun örnek tahminle doldurulur (bütün veri zaten demo verisi).
+// Kimlikler `--dart-define` ile gelir; betiğin yerel PocketBase'e
+// uyarlanması P11.2'de. Yerelde WeatherAPI anahtarı olmadığı için hava
+// durumu, yerel DB'deki arılıklara mevsime uygun örnek tahminle doldurulur
+// (bütün veri zaten demo verisi).
 
 import 'dart:math' as math;
 
@@ -16,18 +18,17 @@ import 'package:integration_test/integration_test.dart';
 import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/router.dart';
+import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
-import 'package:mobil_arici/features/auth/data/supabase_session_storage.dart';
+import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/weather/data/weather_service.dart';
 import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'helpers/test_device.dart' show supabaseKey, supabaseUrl;
 
 const _email = String.fromEnvironment('DEMO_EMAIL');
 const _password = String.fromEnvironment('DEMO_PASSWORD');
@@ -41,25 +42,19 @@ void main() {
   testWidgets('mağaza ekran görüntüleri', (tester) async {
     // Mağaza görüntüsünde DEBUG şeridi olmasın.
     WidgetsApp.debugAllowBannerOverride = false;
-    await Supabase.initialize(
-      url: supabaseUrl,
-      publishableKey: supabaseKey,
-      authOptions: FlutterAuthClientOptions(
-        localStorage: SecureSessionStorage(supabaseUrl: supabaseUrl),
-        detectSessionInUri: false,
-      ),
-    );
-    await Supabase.instance.client.auth.signInWithPassword(
-      email: _email,
-      password: _password,
-    );
-
     final container = ProviderContainer(
       overrides: [
         flavorProvider.overrideWithValue(Flavor.dev),
-        weatherServiceProvider.overrideWithValue(const _SampleWeatherService()),
+        weatherServiceProvider.overrideWith(
+          (ref) => _SampleWeatherService(ref.watch(appDatabaseProvider)),
+        ),
       ],
-    )..listen(syncTriggersProvider, (_, _) {});
+    );
+    // Demo hesapta kod yerine parola girilir.
+    await container
+        .read(authServiceProvider)
+        .verifyCode(email: _email, code: _password, locale: _language);
+    container.listen(syncTriggersProvider, (_, _) {});
     container.read(languageProvider.notifier).language = AppLanguage.values
         .firstWhere((l) => l.locale?.languageCode == _language);
     useLatinDigitsForDates();
@@ -112,7 +107,9 @@ Future<void> _wait(WidgetTester tester, Duration duration) async {
 
 /// Yerel DB'deki her arılık için 7 günlük, mevsime uygun örnek tahmin.
 class _SampleWeatherService implements WeatherService {
-  const new();
+  const new(this._db);
+
+  final AppDatabase _db;
 
   /// Yalnız 5. gün yağmurlu.
   static double _rain(int day, double rainy, double dry) =>
@@ -127,10 +124,10 @@ class _SampleWeatherService implements WeatherService {
 
   @override
   Future<WeatherBundle> fetchBundle() async {
-    final rows = await Supabase.instance.client
-        .from('apiaries')
-        .select('id, altitude_m')
-        .isFilter('deleted_at', null);
+    final rows = [
+      for (final apiary in await _db.select(_db.apiaries).get())
+        if (apiary.deletedAt == null) apiary,
+    ];
     final now = DateTime.now();
     final start = DateTime(now.year, now.month, now.day);
     const offset = 3 * 3600;
@@ -140,7 +137,7 @@ class _SampleWeatherService implements WeatherService {
       forecasts: [
         for (final row in rows)
           () {
-            final altitude = row['altitude_m'] as int?;
+            final altitude = row.altitudeM;
             final (place, region, base) = _places[altitude] ?? ('', '', 15.0);
             final hours = [
               for (var h = 0; h < 7 * 24; h++) start.add(Duration(hours: h)),
@@ -150,7 +147,7 @@ class _SampleWeatherService implements WeatherService {
                 5 * math.sin((t.hour - 9) / 24 * 2 * math.pi) -
                 t.difference(start).inDays * 0.4;
             return ApiaryForecast(
-              apiaryId: row['id'] as String,
+              apiaryId: row.id,
               cell: '00.00,00.00',
               fetchedAt: now.toUtc(),
               forecast: Forecast(

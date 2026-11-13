@@ -6,7 +6,7 @@ enum OrganizationFailure {
   unknown,
 }
 
-/// İşletme servisinin attığı tek hata; Supabase hataları buna çevrilir.
+/// İşletme servisinin attığı tek hata; sunucu hataları buna çevrilir.
 class OrganizationServiceException implements Exception {
   const new(this.failure);
 

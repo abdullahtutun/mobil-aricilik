@@ -8,17 +8,17 @@ part of 'backend_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Senkronun sunucuyla konuştuğu taşıyıcı; [backendProvider]'a göre.
+/// Senkronun sunucuyla konuştuğu taşıyıcı.
 
 @ProviderFor(syncTransport)
 final syncTransportProvider = SyncTransportProvider._();
 
-/// Senkronun sunucuyla konuştuğu taşıyıcı; [backendProvider]'a göre.
+/// Senkronun sunucuyla konuştuğu taşıyıcı.
 
 final class SyncTransportProvider
     extends $FunctionalProvider<SyncTransport, SyncTransport, SyncTransport>
     with $Provider<SyncTransport> {
-  /// Senkronun sunucuyla konuştuğu taşıyıcı; [backendProvider]'a göre.
+  /// Senkronun sunucuyla konuştuğu taşıyıcı.
   SyncTransportProvider._()
     : super(
         from: null,
@@ -52,19 +52,19 @@ final class SyncTransportProvider
   }
 }
 
-String _$syncTransportHash() => r'974dcb13b441e415d592e61145b2545d9c608cb5';
+String _$syncTransportHash() => r'e941678733a19c734800b42f969d9922aeb05afa';
 
-/// Sunucudaki dosya deposu; [backendProvider]'a göre.
+/// Sunucudaki dosya deposu.
 
 @ProviderFor(fileStore)
 final fileStoreProvider = FileStoreProvider._();
 
-/// Sunucudaki dosya deposu; [backendProvider]'a göre.
+/// Sunucudaki dosya deposu.
 
 final class FileStoreProvider
     extends $FunctionalProvider<FileStore, FileStore, FileStore>
     with $Provider<FileStore> {
-  /// Sunucudaki dosya deposu; [backendProvider]'a göre.
+  /// Sunucudaki dosya deposu.
   FileStoreProvider._()
     : super(
         from: null,
@@ -98,22 +98,19 @@ final class FileStoreProvider
   }
 }
 
-String _$fileStoreHash() => r'0d0e84e920cb265cfab27de1f3c55932bcec0a33';
+String _$fileStoreHash() => r'80694c536f0666edf0b8078696fbbb685f3505ca';
 
-/// Görüş ve kullanım olayı satırlarının yazıldığı yer; [backendProvider]'a
-/// göre.
+/// Görüş ve kullanım olayı satırlarının yazıldığı yer.
 
 @ProviderFor(telemetryApi)
 final telemetryApiProvider = TelemetryApiProvider._();
 
-/// Görüş ve kullanım olayı satırlarının yazıldığı yer; [backendProvider]'a
-/// göre.
+/// Görüş ve kullanım olayı satırlarının yazıldığı yer.
 
 final class TelemetryApiProvider
     extends $FunctionalProvider<TelemetryApi, TelemetryApi, TelemetryApi>
     with $Provider<TelemetryApi> {
-  /// Görüş ve kullanım olayı satırlarının yazıldığı yer; [backendProvider]'a
-  /// göre.
+  /// Görüş ve kullanım olayı satırlarının yazıldığı yer.
   TelemetryApiProvider._()
     : super(
         from: null,
@@ -147,4 +144,4 @@ final class TelemetryApiProvider
   }
 }
 
-String _$telemetryApiHash() => r'1a5eae7526e67f7b1826d68765de8ed44b726b43';
+String _$telemetryApiHash() => r'60beb19ef35b4edbbf94417acd30e44452f7beb7';

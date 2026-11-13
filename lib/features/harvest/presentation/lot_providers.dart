@@ -70,15 +70,11 @@ Future<List<VaultDocument>> analysisReports(Ref ref) async => [
     if (document.type == DocumentType.analysisReport) document,
 ];
 
-/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): PocketBase'de
-/// `<PB adresi>/l`, `--dart-define=LOT_PAGE_BASE_URL=...` ezer. Supabase'de
-/// adres verilmezse null ve lot ekranındaki "Herkese açık sayfa" bölümü
-/// gizli.
+/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): `<sunucu adresi>/l`,
+/// `--dart-define=LOT_PAGE_BASE_URL=...` ezer.
 @riverpod
-String? lotPageBaseUrl(Ref ref) => resolveLotPageBaseUrl(
-  pocketbase: ref.watch(backendProvider) == Backend.pocketbase,
-  pocketbaseUrl: ref.watch(pocketbaseUrlProvider),
-);
+String lotPageBaseUrl(Ref ref) =>
+    resolveLotPageBaseUrl(pocketbaseUrl: ref.watch(pocketbaseUrlProvider));
 
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.

@@ -71,44 +71,27 @@ void main() {
   });
 
   group('resolveLotPageBaseUrl', () {
-    test("PocketBase'de sunucunun /l yolu; sondaki / tekrar etmez", () {
+    test('sunucunun /l yolu; sondaki / tekrar etmez', () {
       expect(
         resolveLotPageBaseUrl(
-          pocketbase: true,
           pocketbaseUrl: 'https://arici-api-dev.tutunsoft.com',
         ),
         'https://arici-api-dev.tutunsoft.com/l',
       );
       expect(
-        resolveLotPageBaseUrl(
-          pocketbase: true,
-          pocketbaseUrl: 'http://127.0.0.1:8090/',
-        ),
+        resolveLotPageBaseUrl(pocketbaseUrl: 'http://127.0.0.1:8090/'),
         'http://127.0.0.1:8090/l',
       );
     });
 
-    test("Supabase'de adres verilmezse null (bölüm gizli)", () {
+    test('LOT_PAGE_BASE_URL sunucunun adresini ezer', () {
       expect(
         resolveLotPageBaseUrl(
-          pocketbase: false,
           pocketbaseUrl: 'https://arici-api.tutunsoft.com',
+          define: ' https://lot.example.com ',
         ),
-        isNull,
+        'https://lot.example.com',
       );
-    });
-
-    test("LOT_PAGE_BASE_URL iki backend'de de ezer", () {
-      for (final pocketbase in [true, false]) {
-        expect(
-          resolveLotPageBaseUrl(
-            pocketbase: pocketbase,
-            pocketbaseUrl: 'https://arici-api.tutunsoft.com',
-            define: ' https://lot.example.com ',
-          ),
-          'https://lot.example.com',
-        );
-      }
     });
 
     test('testler dart-define vermeden çalışır', () {

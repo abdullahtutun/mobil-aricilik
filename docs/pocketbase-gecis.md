@@ -58,7 +58,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P9.3 | Yük ve RAM kontrolü | P9.2 | ☑ |
 | P10.1 | Prod hazırlığı ve Supabase yazmalarının dondurulması | P9.3 | ☑ |
 | P10.2 | Geçiş: prod varsayılanı PocketBase, sürüm, izleme | P10.1 | ☑ |
-| P11.1 | Flutter'dan Supabase'in kaldırılması (gözlemden sonra) | P10.2 + 14 gün | ☐ |
+| P11.1 | Flutter'dan Supabase'in kaldırılması (gözlemden sonra) | P10.2 + 14 gün | ☑ (kullanıcı kararıyla gözlem beklenmeden, 2026-11-13) |
 | P11.2 | Dokümanlar, CLAUDE.md, araçlar ve hafıza | P11.1 | ☐ |
 | P11.3 | Supabase projesinin duraklatılması | P11.2 | ☐ |
 

@@ -5,12 +5,10 @@ import 'package:pocketbase/pocketbase.dart';
 
 /// [AccountDeletionService]'in PocketBase uygulaması: `POST
 /// /api/app/account-deletion/{send_code|verify_code|request|cancel|status}`
-/// (`server/internal/deletion`). Gövdeler, yanıtlar ve durumlar
-/// `account-delete` Edge Function'ınınkiyle aynı, gövde `action`'sız; kod
-/// `data.code`'da.
+/// (`server/internal/deletion`); hata kodu `data.code`'da.
 ///
-/// Supabase'deki 502 `sign_out_failed` yolu yok: talep, kullanıcının bütün
-/// oturumlarını aynı transaction'da geçersiz kılar (`tokenKey` yenilenir).
+/// Talep, kullanıcının bütün oturumlarını aynı transaction'da geçersiz
+/// kılar (`tokenKey` yenilenir).
 /// "Şu tarihte silinecek" e-postası gitmezse sunucu yalnız loglar, talep
 /// yine 200 döner.
 class PocketBaseAccountDeletionService implements AccountDeletionService {
@@ -87,10 +85,10 @@ class PocketBaseAccountDeletionService implements AccountDeletionService {
     throw const AccountDeletionException(AccountDeletionFailure.unknown);
   }
 
-  /// Sunucunun durum ve koduna karşılık gelen hata; Supabase uygulamasıyla
-  /// aynı eşleme. 409'daki `data.org_ids` okunmaz (ekran kullanmıyor).
-  /// `send_code`'da SMTP yokken 503 `mail_unavailable`, gönderilemezse 502
-  /// `mail_failed`: ikisi de geçici, ağ hatası gibi.
+  /// Sunucunun durum ve koduna karşılık gelen hata. 409'daki `data.org_ids`
+  /// okunmaz (ekran kullanmıyor). `send_code`'da SMTP yokken 503
+  /// `mail_unavailable`, gönderilemezse 502 `mail_failed`: ikisi de geçici,
+  /// ağ hatası gibi.
   static AccountDeletionFailure failureOf(int status, String? code) => switch ((
     status,
     code,

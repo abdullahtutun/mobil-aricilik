@@ -57,7 +57,7 @@ class PocketBaseOrganizationService implements OrganizationService {
       );
     } on PocketBaseApiException catch (error) {
       // 400 `invalid`, 409 `conflict` (kimlik başkasının işletmesi), 401 ve
-      // diğerleri Supabase'deki gibi bilinmeyen hata.
+      // diğerleri bilinmeyen hata.
       throw OrganizationServiceException(
         error.isNetwork || error.status == 408 || error.status == 429
             ? OrganizationFailure.network

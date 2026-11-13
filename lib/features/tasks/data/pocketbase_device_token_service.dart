@@ -16,7 +16,7 @@ class PocketBaseDeviceTokenService implements DeviceTokenService {
 
   static const path = '/api/app/device-token';
 
-  /// Supabase uygulamasıyla aynı.
+  /// Varsayılan süre sınırı.
   static const requestTimeout = Duration(seconds: 8);
 
   @override

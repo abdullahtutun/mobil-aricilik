@@ -15,7 +15,7 @@ enum AuthFailure {
   unknown,
 }
 
-/// Auth servisinin attığı tek hata; Supabase hataları buna çevrilir.
+/// Auth servisinin attığı tek hata; sunucu hataları buna çevrilir.
 class AuthServiceException implements Exception {
   const new(this.failure);
 

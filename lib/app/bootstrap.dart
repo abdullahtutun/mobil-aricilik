@@ -55,8 +55,7 @@ Future<void> bootstrap(Flavor flavor) async {
 
   // Sunucu istemcisinin açılış hataları da Sentry'ye gitsin.
   await runWithErrorReporting(flavor, () async {
-    final backend = resolveBackend(flavor);
-    final backendOverrides = await initializeBackend(flavor, backend);
+    final backendOverrides = await initializeBackend(flavor);
 
     final container = ProviderContainer(
       overrides: [
@@ -64,12 +63,12 @@ Future<void> bootstrap(Flavor flavor) async {
         ...backendOverrides,
       ],
     );
-    // Sunucu değiştiyse (BACKEND, PB_URL, flavor) eski imleçlerle
+    // Sunucu adresi değiştiyse (PB_URL, flavor) eski imleçlerle
     // çekilmesin; ilk senkron turundan ve ilk çekme ekranının kararından
     // önce. Yalnız yerel DB, ağı beklemez.
     await resetCursorsIfBackendChanged(
       container.read(appDatabaseProvider),
-      syncBackendIdentity(flavor, backend),
+      syncBackendIdentity(flavor),
     );
     container
       // Senkron, medya, görüş ve kullanım olayı gönderimi; belge, fiş

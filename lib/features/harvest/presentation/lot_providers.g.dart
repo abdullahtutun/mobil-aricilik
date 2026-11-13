@@ -685,26 +685,20 @@ final class AnalysisReportsProvider
 
 String _$analysisReportsHash() => r'1c65a7eda0c32da844bc17c00942f168c61eb789';
 
-/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): PocketBase'de
-/// `<PB adresi>/l`, `--dart-define=LOT_PAGE_BASE_URL=...` ezer. Supabase'de
-/// adres verilmezse null ve lot ekranındaki "Herkese açık sayfa" bölümü
-/// gizli.
+/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): `<sunucu adresi>/l`,
+/// `--dart-define=LOT_PAGE_BASE_URL=...` ezer.
 
 @ProviderFor(lotPageBaseUrl)
 final lotPageBaseUrlProvider = LotPageBaseUrlProvider._();
 
-/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): PocketBase'de
-/// `<PB adresi>/l`, `--dart-define=LOT_PAGE_BASE_URL=...` ezer. Supabase'de
-/// adres verilmezse null ve lot ekranındaki "Herkese açık sayfa" bölümü
-/// gizli.
+/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): `<sunucu adresi>/l`,
+/// `--dart-define=LOT_PAGE_BASE_URL=...` ezer.
 
 final class LotPageBaseUrlProvider
-    extends $FunctionalProvider<String?, String?, String?>
-    with $Provider<String?> {
-  /// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): PocketBase'de
-  /// `<PB adresi>/l`, `--dart-define=LOT_PAGE_BASE_URL=...` ezer. Supabase'de
-  /// adres verilmezse null ve lot ekranındaki "Herkese açık sayfa" bölümü
-  /// gizli.
+    extends $FunctionalProvider<String, String, String>
+    with $Provider<String> {
+  /// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): `<sunucu adresi>/l`,
+  /// `--dart-define=LOT_PAGE_BASE_URL=...` ezer.
   LotPageBaseUrlProvider._()
     : super(
         from: null,
@@ -721,24 +715,24 @@ final class LotPageBaseUrlProvider
 
   @$internal
   @override
-  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<String> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  String? create(Ref ref) {
+  String create(Ref ref) {
     return lotPageBaseUrl(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(String? value) {
+  Override overrideWithValue(String value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<String?>(value),
+      providerOverride: $SyncValueProvider<String>(value),
     );
   }
 }
 
-String _$lotPageBaseUrlHash() => r'f0d259e39782b0403353419dd92bbb28ee08dea9';
+String _$lotPageBaseUrlHash() => r'50aad5260b2b8d8ea5f543f6a9c74ee6e418d5a2';
 
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.
