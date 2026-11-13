@@ -813,7 +813,7 @@ var (
 // "table.column → target (scope)", leaving out org_id and created_by.
 func refsFromMigrations(t *testing.T) map[string]bool {
 	t.Helper()
-	files, err := filepath.Glob("../../../supabase/migrations/*.sql")
+	files, err := filepath.Glob("../../../archive/supabase/migrations/*.sql")
 	if err != nil || len(files) == 0 {
 		t.Fatalf("no migrations: %v", err)
 	}

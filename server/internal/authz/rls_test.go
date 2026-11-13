@@ -421,7 +421,7 @@ func sortedKeys[V any](m map[string]V) []string {
 // Every *_rls.test.sql file has scenarios here: a new pgTAP RLS file
 // without a Go counterpart breaks the test.
 func TestEveryRLSFileCarried(t *testing.T) {
-	files, err := filepath.Glob(filepath.Join("..", "..", "..", "supabase", "tests", "database", "*_rls.test.sql"))
+	files, err := filepath.Glob(filepath.Join("..", "..", "..", "archive", "supabase", "tests", "database", "*_rls.test.sql"))
 	if err != nil || len(files) == 0 {
 		t.Fatalf("no pgTAP RLS tests found: %v", err)
 	}

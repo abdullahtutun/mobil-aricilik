@@ -3,7 +3,7 @@
 #
 # Kullanım:
 #   SUPABASE_URL=https://<ref>.supabase.co SUPABASE_SERVICE_ROLE_KEY=... \
-#     tool/backup_supabase.sh ~/Yedekler/mobil-arici/supabase-YYYY-MM-DD
+#     archive/backup_supabase.sh ~/Yedekler/mobil-arici/supabase-YYYY-MM-DD
 #
 # Ön koşul: Supabase CLI giriş yapmış ve proje bağlı (`supabase link`),
 # Docker çalışıyor (db dump pg_dump'ı konteynerde çalıştırır), curl, jq, shasum.
@@ -43,9 +43,9 @@ docker info >/dev/null 2>&1 || die "Docker çalışmıyor (supabase db dump içi
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 repo_root="$(cd "$script_dir/.." && pwd -P)"
-[[ -f "$repo_root/supabase/.temp/project-ref" ]] ||
-  die "proje bağlı değil: önce 'supabase link --project-ref <ref>'"
-project_ref="$(<"$repo_root/supabase/.temp/project-ref")"
+[[ -f "$repo_root/archive/supabase/.temp/project-ref" ]] ||
+  die "proje bağlı değil: önce 'cd archive && supabase link --project-ref <ref>'"
+project_ref="$(<"$repo_root/archive/supabase/.temp/project-ref")"
 [[ "$SUPABASE_URL" == "https://$project_ref.supabase.co" ]] ||
   die "SUPABASE_URL bağlı projeyle ($project_ref) uyuşmuyor"
 
@@ -131,7 +131,7 @@ list_objects() {
 
 # --- 1. Veritabanı dökümü -----------------------------------------------------
 
-cd "$repo_root"
+cd "$repo_root/archive"  # supabase CLI ./supabase klasörünü arar
 log "Şema dökülüyor (schema.sql)"
 supabase db dump --linked -f "$target/schema.sql"
 log "Veri dökülüyor (data.sql)"

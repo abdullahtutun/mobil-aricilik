@@ -2,6 +2,8 @@
 
 Kasım 2026 · Abdullah Tutun
 
+> **Tamamlandı (2026-11-13).** Uygulama ve sunucu PocketBase'de; `pocketbase-gecis` dalı P11.2'de `main`'e birleştirildi, Supabase kodu `archive/supabase/`'te. Kalan tek adım P11.3 (Supabase projesinin duraklatılması; kullanıcı işi). Bu doküman bundan sonra karar kaydı olarak durur; yeni iş CLAUDE.md'deki kalıpla yapılır.
+
 ## Özet
 
 Mobil Arıcı'nın backend'i Supabase'den, Hosting.com.tr'deki (Türkiye) VPS'te Coolify ile çalışan PocketBase'e taşınır. PocketBase Go ile genişletilmiş kendi ikilimiz olarak `server/` klasöründe yaşar. Senkron, yetki, hesap silme, bildirim ve hava durumu bu ikilinin içindeki Go kodudur. Flutter'da önce bir backend soyutlaması kurulur. Supabase ve PocketBase uygulamaları yan yana yaşar, `BACKEND` ayarı hangisinin kullanılacağını seçer. Önce dev, en son prod geçer.
@@ -59,7 +61,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P10.1 | Prod hazırlığı ve Supabase yazmalarının dondurulması | P9.3 | ☑ |
 | P10.2 | Geçiş: prod varsayılanı PocketBase, sürüm, izleme | P10.1 | ☑ |
 | P11.1 | Flutter'dan Supabase'in kaldırılması (gözlemden sonra) | P10.2 + 14 gün | ☑ (kullanıcı kararıyla gözlem beklenmeden, 2026-11-13) |
-| P11.2 | Dokümanlar, CLAUDE.md, araçlar ve hafıza | P11.1 | ☐ |
+| P11.2 | Dokümanlar, CLAUDE.md, araçlar ve hafıza | P11.1 | ☑ |
 | P11.3 | Supabase projesinin duraklatılması | P11.2 | ☐ |
 
 ## Kararlar

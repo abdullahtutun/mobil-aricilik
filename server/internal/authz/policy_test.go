@@ -128,7 +128,7 @@ var (
 // command (select, insert, update, …) → what the policy allows.
 func readSupabasePolicies(t *testing.T) map[string]map[string]supabasePolicy {
 	t.Helper()
-	dir := filepath.Join("..", "..", "..", "supabase", "migrations")
+	dir := filepath.Join("..", "..", "..", "archive", "supabase", "migrations")
 	files, err := filepath.Glob(filepath.Join(dir, "*.sql"))
 	if err != nil || len(files) == 0 {
 		t.Fatalf("no Supabase migrations in %s (until P11.1 they are the source of the policies): %v", dir, err)

@@ -6,6 +6,8 @@ Offline-first arıcılık uygulaması (Flutter, Android ve iOS).
 - Mimari ve tasarım dili: [docs/teknik.md](docs/teknik.md)
 - İlerleme ve bilinen sorunlar: [docs/progress.md](docs/progress.md)
 - Kod kuralları: [CLAUDE.md](CLAUDE.md)
+- Sunucu (PocketBase + Go): [server/README.md](server/README.md)
+- Supabase'den geçiş (2026-11) ve kararlar: [docs/pocketbase-gecis.md](docs/pocketbase-gecis.md); eski backend `archive/supabase/`
 
 ## Çalıştırma
 
@@ -13,28 +15,23 @@ Offline-first arıcılık uygulaması (Flutter, Android ve iOS).
 flutter run --flavor dev -t lib/main_dev.dart
 ```
 
-Sunucu seçimi `--dart-define` ile:
+Sunucu PocketBase'dir: dev `https://arici-api-dev.tutunsoft.com`'a, prod
+`https://arici-api.tutunsoft.com`'a bağlanır. `--dart-define` ile:
 
-- `BACKEND=pocketbase|supabase`: verilmezse PocketBase; dev
-  `https://arici-api-dev.tutunsoft.com`'a, prod
-  `https://arici-api.tutunsoft.com`'a bağlanır (P10.2). `supabase` yalnız
-  geri dönüş için, P11.1'de kalkar (docs/pocketbase-gecis.md).
 - `PB_URL=<adres>`: flavor'ın PocketBase adresini ezer. Yerel sunucu için
   iOS simülatöründe `http://127.0.0.1:8090`, Android emülatöründe
   `http://10.0.2.2:8090`.
-- `LOT_PAGE_BASE_URL=<adres>`: lot sayfası kökünü ezer; PocketBase'de
-  verilmezse `<PB adresi>/l`.
+- `LOT_PAGE_BASE_URL=<adres>`: lot sayfası kökünü ezer; verilmezse
+  `<PB adresi>/l`.
 
 ```sh
 # Yerel PocketBase'e karşı dev
 flutter run --flavor dev -t lib/main_dev.dart --dart-define=PB_URL=http://127.0.0.1:8090
-
-# dev'i Supabase'le çalıştırmak
-flutter run --flavor dev -t lib/main_dev.dart --dart-define=BACKEND=supabase
 ```
 
-VS Code'da `.vscode/launch.json` içinde `dev (PocketBase)`, `dev (Supabase)`
-ve `prod` ayarları var.
+Yerel sunucu: `cd server && go run . serve --http 127.0.0.1:8090`
+(ayrıntı [server/README.md](server/README.md)). VS Code'da
+`.vscode/launch.json` içinde `dev` ve `prod` ayarları var.
 
 ## İki cihaz testleri
 
@@ -56,7 +53,7 @@ server/ops/test_users.sh http://127.0.0.1:8090
 
 # 3) Testler
 flutter test integration_test/two_devices_sync_test.dart --flavor dev \
-  -d <iOS simülatörü> --dart-define=BACKEND=pocketbase \
+  -d <iOS simülatörü> \
   --dart-define=PB_URL=http://127.0.0.1:8090 \
   --dart-define-from-file=build/p91_accounts.json
 ```
@@ -68,9 +65,20 @@ test havuzdan yeni hesap alır, bu yüzden her koşudan önce betik yeniden
 çalıştırılır (varsayılan 40 hesap). Betik bu yerel sunucunun hız sınırını
 da kapatır; sunucu yeniden başlayınca sınır geri gelir.
 
-Yerel Supabase'e karşı (`supabase start` açıkken) aynı test dosyası
-`--dart-define=BACKEND=supabase` ile koşar; PocketBase'e özgü iki senaryo
-atlanır.
+## Mağaza ekran görüntüleri
+
+`tool/store_screenshots.py` `integration_test/store_screenshots_test.dart`'ı
+iOS simülatöründe yerel PocketBase'deki demo hesapla çalıştırır. Önce yerel
+sunucu açık olmalı; betik her çekimde demo hesabı ve işletmesini `seed
+demo-user` + `seed demo --force-reset` ile yeniden kurar, Türkçe dışında
+`tool/store_demo/<dil>.sql` çevirisini `sqlite3` ile uygular:
+
+```sh
+cd server && go run . serve --http 127.0.0.1:8090 --dir /tmp/pb-shots
+# başka terminalde, repo kökünde
+python3 tool/store_screenshots.py --password 123456 --pb-dir /tmp/pb-shots \
+  --out /tmp/raw --lang en
+```
 
 ## Mağaza derlemesi
 
