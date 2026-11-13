@@ -738,7 +738,7 @@ final class LotPageBaseUrlProvider
   }
 }
 
-String _$lotPageBaseUrlHash() => r'db9c8be22784f383cf6824ba4a28aa27eded86bb';
+String _$lotPageBaseUrlHash() => r'f0d259e39782b0403353419dd92bbb28ee08dea9';
 
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.

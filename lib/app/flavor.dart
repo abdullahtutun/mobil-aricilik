@@ -24,7 +24,9 @@ enum Flavor {
   prod(
     supabaseUrl: _sharedSupabaseUrl,
     supabaseAnonKey: _sharedSupabaseAnonKey,
-    defaultBackend: Backend.supabase,
+    // P10.2: prod PocketBase'e geçti. Geri dönüş: bu satırı
+    // Backend.supabase yapmak (ya da --dart-define=BACKEND=supabase).
+    defaultBackend: Backend.pocketbase,
     pocketbaseUrl: 'https://arici-api.tutunsoft.com',
   );
 

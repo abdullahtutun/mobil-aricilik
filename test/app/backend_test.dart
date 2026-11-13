@@ -36,9 +36,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('flavor varsayılanları', () {
-    test("dev PocketBase'i, prod şimdilik Supabase'i kullanır", () {
+    test("dev ve prod PocketBase'i kullanır (P10.2)", () {
       expect(Flavor.dev.defaultBackend, Backend.pocketbase);
-      expect(Flavor.prod.defaultBackend, Backend.supabase);
+      expect(Flavor.prod.defaultBackend, Backend.pocketbase);
     });
 
     test('PocketBase adresleri ayrı alt alan adlarında (K-8)', () {

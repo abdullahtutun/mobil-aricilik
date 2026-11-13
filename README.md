@@ -15,9 +15,10 @@ flutter run --flavor dev -t lib/main_dev.dart
 
 Sunucu seçimi `--dart-define` ile:
 
-- `BACKEND=pocketbase|supabase`: verilmezse dev PocketBase'e
-  (`https://arici-api-dev.tutunsoft.com`), prod Supabase'e bağlanır.
-  Geçiş bitene kadar böyle (docs/pocketbase-gecis.md).
+- `BACKEND=pocketbase|supabase`: verilmezse PocketBase; dev
+  `https://arici-api-dev.tutunsoft.com`'a, prod
+  `https://arici-api.tutunsoft.com`'a bağlanır (P10.2). `supabase` yalnız
+  geri dönüş için, P11.1'de kalkar (docs/pocketbase-gecis.md).
 - `PB_URL=<adres>`: flavor'ın PocketBase adresini ezer. Yerel sunucu için
   iOS simülatöründe `http://127.0.0.1:8090`, Android emülatöründe
   `http://10.0.2.2:8090`.

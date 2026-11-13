@@ -141,17 +141,32 @@ abstract class _$PushRegistration extends $Notifier<void> {
 
 /// Bildirime dokununca görevi açar: uygulama kapalıyken ya da arka
 /// plandayken. `bootstrap` uygulama boyunca dinler.
+///
+/// Bildirim senkrondan önce gelir: atanan görev bu telefona henüz inmemiş
+/// olabilir ve arka plandan dönüşte tur kendiliğinden başlamaz. Görev
+/// yerelde yoksa önce bir tur çalışır; yoksa form "görev bulunamadı" açılır
+/// ve görevi bir daha okumaz (P9.2, madde 5).
 
 @ProviderFor(pushTaskLinks)
 final pushTaskLinksProvider = PushTaskLinksProvider._();
 
 /// Bildirime dokununca görevi açar: uygulama kapalıyken ya da arka
 /// plandayken. `bootstrap` uygulama boyunca dinler.
+///
+/// Bildirim senkrondan önce gelir: atanan görev bu telefona henüz inmemiş
+/// olabilir ve arka plandan dönüşte tur kendiliğinden başlamaz. Görev
+/// yerelde yoksa önce bir tur çalışır; yoksa form "görev bulunamadı" açılır
+/// ve görevi bir daha okumaz (P9.2, madde 5).
 
 final class PushTaskLinksProvider extends $FunctionalProvider<void, void, void>
     with $Provider<void> {
   /// Bildirime dokununca görevi açar: uygulama kapalıyken ya da arka
   /// plandayken. `bootstrap` uygulama boyunca dinler.
+  ///
+  /// Bildirim senkrondan önce gelir: atanan görev bu telefona henüz inmemiş
+  /// olabilir ve arka plandan dönüşte tur kendiliğinden başlamaz. Görev
+  /// yerelde yoksa önce bir tur çalışır; yoksa form "görev bulunamadı" açılır
+  /// ve görevi bir daha okumaz (P9.2, madde 5).
   PushTaskLinksProvider._()
     : super(
         from: null,
@@ -185,4 +200,4 @@ final class PushTaskLinksProvider extends $FunctionalProvider<void, void, void>
   }
 }
 
-String _$pushTaskLinksHash() => r'f4807f73bf9a9388d2948a3b64ad0718a1b9fa2e';
+String _$pushTaskLinksHash() => r'afe12b1e536548061625a8dbaeffd3aacb8c8f5f';
