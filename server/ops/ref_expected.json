@@ -1,0 +1,14 @@
+{
+  "ref_drugs": {
+    "count": 21,
+    "samples": [
+      {"id": "01900000-0000-7000-8000-000000000001", "country_code": "GLOBAL", "name_tr": "Amitraz", "name_en": "Amitraz", "active_ingredient": "amitraz", "dose_unit": "strip", "withdrawal_days": null, "license_no": null, "deleted_at": null},
+      {"id": "01900000-0000-7000-8000-000000000102", "country_code": "TR", "name_tr": "Oksalik asit damlatma", "name_en": "Oxalic acid trickling", "active_ingredient": "oxalic_acid", "dose_unit": "ml", "withdrawal_days": null, "license_no": null, "deleted_at": "2026-10-31T20:32:34.866517+00:00"},
+      {"id": "01900000-0000-7000-8000-000000000201", "country_code": "TR", "name_tr": "Bayvarol Kovan İçi Şerit", "name_en": "Bayvarol in-hive strip", "active_ingredient": "flumethrin", "dose_unit": "strip", "withdrawal_days": 0, "license_no": null, "deleted_at": null}
+    ]
+  },
+  "ref_support_periods": {
+    "count": 0,
+    "samples": []
+  }
+}

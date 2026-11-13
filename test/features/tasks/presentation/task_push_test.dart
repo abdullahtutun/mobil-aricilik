@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
+import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/services/push_service.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 
@@ -62,6 +64,18 @@ void main() {
 
     expect(push.permissionRequests, 0);
     expect(tokens.registered, hasLength(1));
+  });
+
+  test('kayıt arayüz dilini gönderir, dil değişince yenilenir', () async {
+    final container = open();
+    await pumpEventQueue();
+    container.read(languageProvider.notifier).language = AppLanguage.german;
+    await pumpEventQueue();
+
+    expect(tokens.calls, ['register:token-1', 'register:token-1']);
+    expect(tokens.locales.last, 'de');
+    // İlk kayıt cihazın dilinden (testte desteklenen bir dil).
+    expect(tokens.locales.first, isNotEmpty);
   });
 
   test('token yenilenince yeni token kaydedilir', () async {

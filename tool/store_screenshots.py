@@ -2,15 +2,20 @@
 """Mağaza için ham ekran görüntüleri.
 
 `integration_test/store_screenshots_test.dart`'ı iOS simülatöründe yerel
-Supabase'deki demo hesapla çalıştırır; test `SHOT:<ad>` bastıkça
+PocketBase'deki demo hesapla çalıştırır; test `SHOT:<ad>` bastıkça
 simülatörden durum çubuğu dahil görüntü alır.
 
-Önce: `supabase start`, yerelde `demo@tutunsoft.com` kullanıcısı (parola
---password). Betik her çekimde yerel demo işletmeyi `supabase/admin/
-demo_account.sql` ile yeniden kurar; Türkçe dışında `tool/store_demo/
-<dil>.sql` çevirisini uygular (yalnız yerel DB).
+Önce yerel sunucu açık olmalı (simülatörde 127.0.0.1 Mac'in kendisi):
 
-    python3 tool/store_screenshots.py --password 123456 --out /tmp/raw --lang tr
+    cd server && go run . serve --http 127.0.0.1:8090 --dir /tmp/pb-shots
+
+Betik her çekimde aynı klasörde `migrate up`, `seed demo-user` (parola
+stdin'den) ve `seed demo --force-reset` çalıştırır; demo hesabı ve işletmesi
+Türkçe asıldan yeniden kurulur. Türkçe dışında `tool/store_demo/<dil>.sql`
+çevirisi `sqlite3` ile `<pb-dir>/data.db`'ye uygulanır. Yalnız yerel sunucu;
+prod'daki inceleme hesabı Türkçe kalır.
+
+    python3 tool/store_screenshots.py --password 123456 --pb-dir /tmp/pb-shots --out /tmp/raw --lang tr
 """
 
 import argparse
@@ -20,11 +25,14 @@ import sys
 import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SERVER = os.path.join(ROOT, "server")
 
 DEVICE = "iPhone 15 Pro Max"
 BUNDLE = "com.tutunsoft.mobilarici.dev"
 # Görüntülenen arılık ve kovan: 1 numaralı kovan ve arılığı (dilden bağımsız).
 HIVE_NUMBER = "1"
+DEMO_EMAIL = "demo@tutunsoft.com"
+DEMO_ORG = "01900000-0000-7000-8000-00000000de00"
 
 
 def sh(*args, **kw):
@@ -39,44 +47,43 @@ def device_id(name):
     sys.exit(f"Simülatör yok: {name}")
 
 
-DOCKER_ENV = dict(os.environ, DOCKER_HOST=f"unix://{os.environ['HOME']}/.colima/default/docker.sock")
-DEMO_ORG = "01900000-0000-7000-8000-00000000de00"
+def arici(pb_dir, *args, stdin=None):
+    """Sunucu ikilisinin bir komutunu yerel veri klasöründe çalıştırır."""
+    subprocess.run(["go", "run", ".", *args, "--dir", pb_dir], cwd=SERVER,
+                   input=stdin, check=True, text=True, capture_output=True)
 
 
-def psql_file(path):
-    with open(path) as f:
-        subprocess.run(
-            ["docker", "exec", "-i", "supabase_db_mobil_arici", "psql", "-U", "postgres",
-             "-v", "ON_ERROR_STOP=1", "-q"],
-            stdin=f, check=True, env=DOCKER_ENV, capture_output=True)
-
-
-def reset_demo(lang):
+def reset_demo(pb_dir, password, lang):
     """Yerel demo işletmeyi Türkçe asıldan yeniden kurar, dil çevirisini uygular."""
-    sh("docker", "exec", "supabase_db_mobil_arici", "psql", "-U", "postgres", "-q", "-c",
-       f"delete from public.organizations where id = '{DEMO_ORG}'", env=DOCKER_ENV)
-    psql_file(os.path.join(ROOT, "supabase", "admin", "demo_account.sql"))
+    arici(pb_dir, "migrate", "up")
+    arici(pb_dir, "seed", "demo-user", "--email", DEMO_EMAIL, stdin=password + "\n")
+    arici(pb_dir, "seed", "demo", "--force-reset")
     if lang != "tr":
-        psql_file(os.path.join(ROOT, "tool", "store_demo", f"{lang}.sql"))
+        with open(os.path.join(ROOT, "tool", "store_demo", f"{lang}.sql")) as f:
+            subprocess.run(["sqlite3", "-bail", os.path.join(pb_dir, "data.db")],
+                           stdin=f, check=True, capture_output=True)
 
 
-def demo_ids():
+def demo_ids(pb_dir):
     sql = (
-        "select h.apiary_id, h.id from hives h "
-        f"where h.number = '{HIVE_NUMBER}' and h.deleted_at is null"
+        "select apiary_id, id from hives "
+        f"where org_id = '{DEMO_ORG}' and number = '{HIVE_NUMBER}' and deleted_at = ''"
     )
-    out = sh("docker", "exec", "supabase_db_mobil_arici", "psql", "-U", "postgres", "-At", "-c", sql, env=DOCKER_ENV)
+    out = sh("sqlite3", os.path.join(pb_dir, "data.db"), sql)
     apiary, hive = out.strip().split("|")
     return apiary, hive
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--password", required=True)
+    parser.add_argument("--password", required=True, help="demo hesabın parolası (en az 6 karakter)")
+    parser.add_argument("--pb-dir", required=True, help="yerel sunucunun --dir klasörü")
+    parser.add_argument("--pb-url", default="http://127.0.0.1:8090")
     parser.add_argument("--out", required=True)
     parser.add_argument("--lang", default="tr")
     args = parser.parse_args()
     os.makedirs(args.out, exist_ok=True)
+    pb_dir = os.path.abspath(args.pb_dir)
 
     if time.strftime("%H") == "00":
         # simctl status_bar 00:xx saatini kabul etmiyor.
@@ -94,12 +101,13 @@ def main():
        "--cellularMode", "active", "--cellularBars", "4",
        "--batteryState", "charged", "--batteryLevel", "100")
 
-    reset_demo(args.lang)
-    apiary, hive = demo_ids()
+    reset_demo(pb_dir, args.password, args.lang)
+    apiary, hive = demo_ids(pb_dir)
     cmd = [
         "flutter", "test", "integration_test/store_screenshots_test.dart",
         "-d", udid, "--flavor", "dev",
-        "--dart-define=DEMO_EMAIL=demo@tutunsoft.com",
+        f"--dart-define=PB_URL={args.pb_url}",
+        f"--dart-define=DEMO_EMAIL={DEMO_EMAIL}",
         f"--dart-define=DEMO_PASSWORD={args.password}",
         f"--dart-define=LANGUAGE={args.lang}",
         f"--dart-define=APIARY_ID={apiary}",

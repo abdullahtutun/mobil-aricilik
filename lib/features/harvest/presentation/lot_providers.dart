@@ -1,9 +1,11 @@
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/presentation/document_providers.dart';
 import 'package:mobil_arici/features/harvest/data/lot_repository.dart';
 import 'package:mobil_arici/features/harvest/domain/harvest.dart';
 import 'package:mobil_arici/features/harvest/domain/lot.dart';
+import 'package:mobil_arici/features/harvest/domain/lot_rules.dart';
 import 'package:mobil_arici/features/harvest/presentation/harvest_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -68,16 +70,11 @@ Future<List<VaultDocument>> analysisReports(Ref ref) async => [
     if (document.type == DocumentType.analysisReport) document,
 ];
 
-/// Lot sayfalarının kökü: `--dart-define=LOT_PAGE_BASE_URL=...`. Verilmezse
-/// null ve lot ekranındaki "Herkese açık sayfa" bölümü gizli: Supabase
-/// varsayılan `*.supabase.co` alanında HTML'i düz metin sunar, sayfa ancak
-/// özel alan adı ya da önüne konan bir proxy ile açılır. O hazır olunca bu
-/// değerle derlemek özelliği açar.
+/// Lot sayfalarının kökü ([resolveLotPageBaseUrl]): `<sunucu adresi>/l`,
+/// `--dart-define=LOT_PAGE_BASE_URL=...` ezer.
 @riverpod
-String? lotPageBaseUrl(Ref ref) =>
-    _lotPageBaseUrl.isEmpty ? null : _lotPageBaseUrl;
-
-const _lotPageBaseUrl = String.fromEnvironment('LOT_PAGE_BASE_URL');
+String lotPageBaseUrl(Ref ref) =>
+    resolveLotPageBaseUrl(pocketbaseUrl: ref.watch(pocketbaseUrlProvider));
 
 /// Lot yazmaları. Bildirimin Geri al'ı sayfa kapandıktan sonra da çalışsın
 /// diye sürekli yaşar.

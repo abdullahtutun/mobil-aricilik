@@ -19,10 +19,14 @@ enum TeamFailure {
   /// ekipten çıkarılamaz.
   memberLeaving,
 
+  /// Kısa sürede çok fazla kod denemesi (kullanıcı başına dakikada 10);
+  /// biraz beklenmeli.
+  tooManyAttempts,
+
   unknown,
 }
 
-/// Ekip servisinin attığı tek hata; Supabase hataları buna çevrilir.
+/// Ekip servisinin attığı tek hata; sunucu hataları buna çevrilir.
 class TeamServiceException implements Exception {
   const new(this.failure);
 

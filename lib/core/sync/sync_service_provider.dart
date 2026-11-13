@@ -1,6 +1,7 @@
 import 'package:mobil_arici/core/db/app_database_provider.dart';
-import 'package:mobil_arici/core/services/supabase_client_provider.dart';
+import 'package:mobil_arici/core/sync/backend_providers.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
+import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sync_service_provider.g.dart';
@@ -10,5 +11,7 @@ part 'sync_service_provider.g.dart';
 @Riverpod(keepAlive: true)
 SyncService syncService(Ref ref) => SyncService(
   ref.watch(appDatabaseProvider),
-  ref.watch(supabaseClientProvider),
+  ref.watch(syncTransportProvider),
+  // PocketBase token'ı kendiliğinden yenilenmez (K-6).
+  refreshSession: ref.watch(authServiceProvider).refreshSession,
 );

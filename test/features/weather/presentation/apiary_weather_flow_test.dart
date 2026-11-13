@@ -244,7 +244,9 @@ void main() {
       testBundle(
         generatedAt: fetched,
         forecasts: {
-          kizilcam.id: _forecast(fetched, [_ok, _ok, _ok]),
+          // Days start today: the screen hides past days, and between 00:00
+          // and 03:00 a forecast from `fetched` would start yesterday.
+          kizilcam.id: _forecast(now, [_ok, _ok, _ok]),
         },
       ),
     );

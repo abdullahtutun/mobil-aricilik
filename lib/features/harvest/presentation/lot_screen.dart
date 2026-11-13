@@ -138,13 +138,10 @@ class _Body extends ConsumerWidget {
             onPressed: () => context.go(AppRoutes.lotLabResult(lot.id)),
           ),
         ],
-        // Sayfa adresi yapılandırılmadıysa (özel alan adı yok) gizli.
-        if (ref.watch(lotPageBaseUrlProvider) case final baseUrl?) ...[
-          SizedBox(height: spacing.xl),
-          SectionLabel(l10n.lotPublicPage),
-          SizedBox(height: spacing.sm),
-          _Publication(lot, baseUrl: baseUrl),
-        ],
+        SizedBox(height: spacing.xl),
+        SectionLabel(l10n.lotPublicPage),
+        SizedBox(height: spacing.sm),
+        _Publication(lot, baseUrl: ref.watch(lotPageBaseUrlProvider)),
         SizedBox(height: spacing.xl),
         SectionLabel(l10n.lotHarvests),
         SizedBox(height: spacing.sm),

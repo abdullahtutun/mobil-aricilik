@@ -7882,4 +7882,8 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'यह व्यक्ति अपना खाता हटा रहा है; प्रतीक्षा अवधि में उनकी भूमिका नहीं बदल सकती और उन्हें हटाया नहीं जा सकता।';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'कोड की बहुत ज़्यादा कोशिशें। एक मिनट रुकें और फिर कोशिश करें।';
 }

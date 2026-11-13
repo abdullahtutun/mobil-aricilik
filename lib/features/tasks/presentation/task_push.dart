@@ -1,11 +1,17 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
+import 'package:mobil_arici/core/l10n/app_language.dart';
+import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/l10n/language_provider.dart';
+import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/services/push_service_provider.dart';
-import 'package:mobil_arici/core/services/supabase_client_provider.dart';
+import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/features/tasks/data/device_token_service.dart';
+import 'package:mobil_arici/features/tasks/data/pocketbase_device_token_service.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,12 +20,13 @@ part 'task_push.g.dart';
 /// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
 DeviceTokenService deviceTokenService(Ref ref) =>
-    SupabaseDeviceTokenService(ref.watch(supabaseClientProvider));
+    PocketBaseDeviceTokenService(ref.watch(pocketbaseClientProvider));
 
 /// Bu telefonun push token'ını sunucuya kaydeder: görev atanınca bildirim
 /// buraya gelir. Oturum açıkken ve "Görev bildirimleri" açıkken çalışır;
 /// bildirim izni telefonda bir kez sorulur. Token yenilenince yeniden
-/// kaydedilir. Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
+/// kaydedilir; arayüz dili değişince de (bildirim bu telefonun dilinde
+/// gider). Çevrimdışı ya da başarısız kayıt sessizce geçilir, sonraki
 /// açılışta yeniden denenir. `bootstrap` uygulama boyunca dinler.
 @Riverpod(keepAlive: true)
 class PushRegistration extends _$PushRegistration {
@@ -27,11 +34,21 @@ class PushRegistration extends _$PushRegistration {
   /// kayıt denemesi token'ı yeniden yazmasın.
   var _generation = 0;
 
+  /// Bu telefonun arayüz dili (`tr`, `en`, …).
+  var _locale = '';
+
   @override
   void build() {
     final generation = ++_generation;
     final userId = ref.watch(currentUserIdProvider);
     final enabled = ref.watch(pushEnabledProvider).value ?? false;
+    _locale =
+        (ref.watch(languageProvider).locale ??
+                resolveAppLocale(
+                  PlatformDispatcher.instance.locales,
+                  AppLocalizations.supportedLocales,
+                ))
+            .languageCode;
     if (userId == null || !enabled) return;
 
     final subscription = ref
@@ -61,7 +78,7 @@ class PushRegistration extends _$PushRegistration {
     try {
       await ref
           .read(deviceTokenServiceProvider)
-          .register(token: token, platform: platform);
+          .register(token: token, platform: platform, locale: _locale);
     } on DeviceTokenException {
       // Sonraki açılışta ya da token yenilenince yeniden denenir.
     }
@@ -100,19 +117,40 @@ class PushRegistration extends _$PushRegistration {
   }
 }
 
+/// Bildirime dokununca görev bu telefonda yoksa senkron en çok bu kadar
+/// beklenir; sonra ekran yine açılır.
+const pushTaskSyncWait = Duration(seconds: 15);
+
 /// Bildirime dokununca görevi açar: uygulama kapalıyken ya da arka
 /// plandayken. `bootstrap` uygulama boyunca dinler.
+///
+/// Bildirim senkrondan önce gelir: atanan görev bu telefona henüz inmemiş
+/// olabilir ve arka plandan dönüşte tur kendiliğinden başlamaz. Görev
+/// yerelde yoksa önce bir tur çalışır; yoksa form "görev bulunamadı" açılır
+/// ve görevi bir daha okumaz (P9.2, madde 5).
 @Riverpod(keepAlive: true)
 void pushTaskLinks(Ref ref) {
   final push = ref.read(pushServiceProvider);
-  void open(String taskId) =>
-      ref.read(routerProvider).go(AppRoutes.taskEdit(taskId));
+  Future<void> open(String taskId) async {
+    if (await ref.read(taskRepositoryProvider).findById(taskId) == null &&
+        ref.mounted) {
+      try {
+        await ref
+            .read(syncControllerProvider.notifier)
+            .sync()
+            .timeout(pushTaskSyncWait);
+      } on Object {
+        // Çevrimdışı ya da uzun süren tur: ekran yine açılır.
+      }
+    }
+    if (ref.mounted) ref.read(routerProvider).go(AppRoutes.taskEdit(taskId));
+  }
 
-  final subscription = push.taskOpens.listen(open);
+  final subscription = push.taskOpens.listen((id) => unawaited(open(id)));
   ref.onDispose(() => unawaited(subscription.cancel()));
   unawaited(
     push.launchTaskId().then((taskId) {
-      if (taskId != null && ref.mounted) open(taskId);
+      if (taskId != null && ref.mounted) unawaited(open(taskId));
     }),
   );
 }

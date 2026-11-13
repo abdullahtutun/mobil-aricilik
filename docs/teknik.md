@@ -2,11 +2,11 @@
 
 Oct 21, 2026 · @Abdullah Tutun
 
-Flutter istemci, Supabase backend ve cihazda tam çalışan yerel veritabanı üzerine kurulu offline-first bir mimari; arayüz eldivenle, güneş altında ve tek elle kullanım için tasarlanır.
+Flutter istemci, PocketBase backend ve cihazda tam çalışan yerel veritabanı üzerine kurulu offline-first bir mimari; arayüz eldivenle, güneş altında ve tek elle kullanım için tasarlanır.
 
 ## 1. Teknoloji yığını
 
-Temel karar: Uygulama her zaman **yerel SQLite veritabanından** okur ve yazar; Supabase "gerçeğin yedeği ve ekip paylaşımı" rolündedir. Arayüz hiçbir zaman doğrudan ağa bağlı değildir.
+Temel karar: Uygulama her zaman **yerel SQLite veritabanından** okur ve yazar; sunucu (PocketBase) "gerçeğin yedeği ve ekip paylaşımı" rolündedir. Arayüz hiçbir zaman doğrudan ağa bağlı değildir.
 
 | Katman | Seçim | Not |
 | --- | --- | --- |
@@ -15,8 +15,8 @@ Temel karar: Uygulama her zaman **yerel SQLite veritabanından** okur ve yazar; 
 | Navigasyon | go\_router | Derin bağlantı (QR okutunca kovan sayfası), sekmeli kabuk (StatefulShellRoute) |
 | Yerel veritabanı | SQLite — Drift (reaktif sorgular, migration) | Senkron motoru bizim: outbox + delta çekme (3. bölüm) |
 | Modeller | freezed + json\_serializable | Değişmez modeller, kopyalama, eşitlik |
-| Backend | Supabase: Postgres, Auth, Storage, Edge Functions, pg\_cron | RLS ile çok kiracılı (işletme bazında) veri izolasyonu |
-| Push bildirim | Firebase Cloud Messaging | Supabase push sağlamaz; tetikleme Edge Function'dan |
+| Backend | PocketBase v0.40.6, Go ile genişletilmiş kendi ikilimiz (`server/`): SQLite, auth, dosya koleksiyonları, özel route'lar, cron | Türkiye'deki VPS'te Coolify ile; işletme bazında veri izolasyonu Go yetki katmanında (`internal/authz`) |
+| Push bildirim | Firebase Cloud Messaging | Sunucudaki Go kodu FCM HTTP v1'e gönderir (görev ataması hook'u, destek dönemi cron'u) |
 | Yerel bildirim | flutter\_local\_notifications | Hatırlatıcılar internetsiz çalar |
 | Arka plan işleri | workmanager | Periyodik eşitleme, foto yükleme kuyruğu; ağ değişimi connectivity\_plus ile |
 | Harita | flutter\_map + OpenFreeMap vektör karoları | Ücretsiz, API anahtarı yok, ticari kullanım serbest; veri OpenStreetMap (atfı zorunlu). Offline için bölge paketi indirme |
@@ -26,15 +26,15 @@ Temel karar: Uygulama her zaman **yerel SQLite veritabanından** okur ve yazar; 
 | Yerelleştirme | flutter\_localizations + ARB (intl) | Türkçe ve İngilizce ilk sürümden; cihaz diline göre, ayarlardan değiştirilebilir |
 | Güvenli saklama | flutter\_secure\_storage | Oturum token'ları |
 | Hata izleme | sentry\_flutter | Saha hataları offline birikir, ağ gelince gönderilir |
-| Hava durumu | WeatherAPI.com (Edge Function üzerinden) | Sunucu tarafı önbellek, istemciye arılık bazında paket; ücretsiz plan ticari kullanıma açık, ayda 100 bin çağrı ve 3 günlük tahmin, 7 gün için Starter planı (13. bölüm kontrol listesi) |
+| Hava durumu | WeatherAPI.com (sunucu route'u `POST /api/app/weather` üzerinden) | Sunucu tarafı önbellek, istemciye arılık bazında paket; ücretsiz plan ticari kullanıma açık, ayda 100 bin çağrı ve 3 günlük tahmin, 7 gün için Starter planı (13. bölüm kontrol listesi) |
 
 Senkronizasyon hazır bir servis yerine kendi motorumuzla yapılır; ayrıntılar 3. bölümde.
 
 ## 2. Mimari
 
-&#91;embedded content: uygulama mimarisi · cihaz ve Supabase\]
+&#91;embedded content: uygulama mimarisi · cihaz ve sunucu\]
 
-Ekranlar ağı asla beklemez: Her okuma ve yazma telefondaki SQLite'a gider, senkron ve medya yüklemesi ağ geldiğinde arka planda gerçekleşir. Supabase'e doğrudan giden tek çağrılar giriş ve Edge Function'lardır; push bildirimleri (FCM) ve hava durumu servisi Edge Function'lar üzerinden bağlanır.
+Ekranlar ağı asla beklemez: Her okuma ve yazma telefondaki SQLite'a gider, senkron ve medya yüklemesi ağ geldiğinde arka planda gerçekleşir. Sunucuya doğrudan giden tek çağrılar giriş ve `/api/app/*` route'larıdır; push bildirimleri (FCM) ve hava durumu servisi sunucudaki Go kodu üzerinden bağlanır.
 
 ## 3. Offline-first veri katmanı ve kendi senkron motorumuz
 
@@ -48,7 +48,7 @@ Karar: Hazır bir sync servisi kullanılmaz; **Drift (SQLite) + outbox + delta �
 - **Durum kayıtları** (kovan, arılık, ana arı, görev): Son yazan kazanır, `updated_at` ile.
 - **Yumuşak silme:** `deleted_at` alanı; silme de bir güncellemedir ve diğer cihazlara ulaşır.
 - **Türetilmiş alanlar yerelde hesaplanır:** Güç puanı, bekleme süresi kilidi, kışlık stok tahmini sunucuya ihtiyaç duymaz.
-- **Kapsam:** Kullanıcı sadece üyesi olduğu işletmelerin verisini çeker (RLS zaten filtreler); fotoğraflar meta veri olarak iner, dosya istenince indirilir.
+- **Kapsam:** Kullanıcı sadece üyesi olduğu işletmelerin verisini çeker (sunucunun yetki katmanı zaten filtreler); fotoğraflar meta veri olarak iner, dosya istenince indirilir.
 
 **Yerel yardımcı tablolar**
 
@@ -58,17 +58,17 @@ Karar: Hazır bir sync servisi kullanılmaz; **Drift (SQLite) + outbox + delta �
 
 **Gönderme (push)**
 
-1. Sync servisi outbox'ı oluşturulma sırasıyla 100'lük paketler halinde `sync_push` RPC'sine (Postgres fonksiyonu, tek transaction) yollar.
+1. Sync servisi outbox'ı oluşturulma sırasıyla 100'lük paketler halinde `POST /api/sync/push`'a (sunucuda tek transaction) yollar. Sunucu satır başına `ok` ya da `rejected` + neden döner; bir satırın reddi paketi düşürmez.
 2. Sunucu her satırı idempotent upsert eder: Aynı paket tekrar gelirse zararsızdır. Durum tablolarında yalnızca gelen `updated_at` mevcut kayıttan yeniyse yazar.
-3. Başarılı paket outbox'tan silinir. Geçici hata → üstel bekleme ile yeniden deneme; kalıcı hata (RLS reddi, geçersiz veri) senkron ekranında kullanıcıya gösterilir, kuyruğun geri kalanını kilitlemez.
+3. Başarılı paket outbox'tan silinir. Geçici hata → üstel bekleme ile yeniden deneme; kalıcı hata (yetki reddi, geçersiz veri) senkron ekranında kullanıcıya gösterilir, kuyruğun geri kalanını kilitlemez.
 
 **Çekme (pull)**
 
-1. Postgres'te global bir sequence; her insert/update'te bir trigger satırın `server_seq` alanını günceller.
-2. İstemci `sync_pull(since_seq)` RPC'si ile imleçten büyük satırları tablo tablo, sayfalı çeker.
+1. Sunucuda tek satırlık bir sayaç; her insert/update'te kayıt hook'u satırın `server_seq` alanını aynı transaction içinde verir.
+2. İstemci `GET /api/sync/pull` (`since` imleci) ile imleçten büyük satırları tablo tablo, sayfalı çeker.
 3. Gelen satırlar Drift'e upsert edilir; outbox'ta bekleyen yerel değişikliği olan satır ezilmez (önce push, sonra pull).
 4. İmleç sadece sayfa yerel DB'ye başarıyla yazılınca ilerler; kesilen senkron kaldığı yerden devam eder.
-5. Eşzamanlı transaction'larda sıra atlamasını önlemek için çekme kısa bir geriye bakma payıyla yapılır; upsert idempotent olduğu için tekrar gelen satır zararsızdır.
+5. SQLite tek yazıcılı olduğu için numara sırası commit sırasıdır; geriye bakma payı gerekmez. Upsert idempotent olduğu için tekrar gelen satır yine zararsızdır.
 
 **Çakışma ve zaman**
 
@@ -85,21 +85,21 @@ Karar: Hazır bir sync servisi kullanılmaz; **Drift (SQLite) + outbox + delta �
 
 1. Foto/ses çekilir → sıkıştırılır (uzun kenar \~1600 px) → uygulama klasörüne kaydedilir.
 2. `media` tablosuna yerel yol + `upload_status = pending` satırı yazılır.
-3. workmanager, ağ (ayarlara göre sadece Wi‑Fi) gelince Supabase Storage'a yükler, satırı `uploaded` yapar.
+3. workmanager, ağ (ayarlara göre sadece Wi‑Fi) gelince sunucunun dosya koleksiyonuna (`media_files`) yükler, satırı `uploaded` yapar.
 4. Başarısız yükleme üstel bekleme ile yeniden denenir; kullanıcı ayarlardan bekleyenleri görür.
 
 **Senkron durumunun görünürlüğü:** Üst barda küçük bir bulut ikonu — eşitlendi / X kayıt bekliyor / hata. Arıcı "kaydettim mi?" diye hiç endişelenmemeli.
 
-## 4. Supabase backend
+## 4. Sunucu (PocketBase)
 
-Her veri bir **işletmeye (organization)** aittir; kullanıcı bir veya birden fazla işletmeye rol ile üyedir. Bu tek kural RLS'i, senkron kapsamını ve ekip kullanımını birlikte çözer.
+Her veri bir **işletmeye (organization)** aittir; kullanıcı bir veya birden fazla işletmeye rol ile üyedir. Bu tek kural yetkiyi, senkron kapsamını ve ekip kullanımını birlikte çözer.
 
 **Kimlik doğrulama**
 
-- Birincil: **E-posta + tek kullanımlık kod (OTP)** — Supabase Auth'un e-posta OTP akışı; kullanıcı e-postasına gelen 6 haneli kodu girer, şifre yok.
-- E-posta teslimi için Hostinger'daki kendi alan adımızın bir posta kutusu (ör. no-reply@alanadi) Supabase'e özel SMTP olarak bağlanır (smtp.hostinger.com); SPF, DKIM ve DMARC kayıtları tanımlanır. Hostinger günlük gönderim limitini posta kutusu başına ve plana göre uygular (hosting'e dahil e-postada düşük, Business planlarda 1.000–3.000/gün); kayıt sayısı arttıkça plan yükseltilir. Kod e-postası kullanıcının diline göre Türkçe veya İngilizce şablonla gider.
+- Birincil: **E-posta + tek kullanımlık kod (OTP)** — `POST /api/app/auth/otp` hesap yoksa açar ve kodu yollar, giriş PocketBase'in `auth-with-otp` ucuyla; kullanıcı e-postasına gelen 6 haneli kodu girer, şifre yok. Kod 600 sn geçerli, aynı adrese 60 sn'de bir gönderilir. Parola girişi yalnız mağaza incelemesi için demo hesaba açık.
+- E-posta teslimi için Hostinger'daki kendi alan adımızın bir posta kutusu (noreply@tutunsoft.com) sunucuya SMTP olarak bağlanır (smtp.hostinger.com; ayarlar Coolify ortam değişkenlerinden); SPF, DKIM ve DMARC kayıtları tanımlanır. Hostinger günlük gönderim limitini posta kutusu başına ve plana göre uygular (hosting'e dahil e-postada düşük, Business planlarda 1.000–3.000/gün); kayıt sayısı arttıkça plan yükseltilir. Kod e-postası kullanıcının diline (`users.locale`, 9 dil) göre gider.
 - İkincil: Google ve Apple ile giriş.
-- Oturum uzun ömürlü tutulur; offline iken süresi dolan token uygulamayı kilitlemez, ağ gelince sessizce yenilenir.
+- Oturum token'ı 90 gün geçerli; uygulama her açılışta ve senkron turunda yeniler (`authRefresh`). Offline iken süresi dolan token uygulamayı kilitlemez, ağ hatası oturumu kapatmaz; 90 günden uzun çevrimdışı kalan kullanıcı yeniden kodla girer.
 - Ekip daveti: E-posta adresine davet kodu.
 
 **Temel tablolar**
@@ -108,11 +108,11 @@ Her veri bir **işletmeye (organization)** aittir; kullanıcı bir veya birden f
 | --- | --- | --- |
 | organizations | İşletme, ülke kodu, bölge profili (TR / diğer), para birimi; yalnız TR'de: tescil no, AKS bilgileri | Durum |
 | memberships | user\_id, org\_id, role (owner / partner / worker / viewer) | Durum |
-| apiaries | Arılık, konum (PostGIS point), arazi sahibi, notlar | Durum |
+| apiaries | Arılık, konum (`latitude` + `longitude`), arazi sahibi, notlar | Durum |
 | hives | Numara, QR/NFC kodu, tip, durum, güncel arılık, güncel ana | Durum |
 | hive\_location\_history | Kovanın arılık geçmişi | Olay |
 | queens | Ana arı kartı, yıl, renk, ırk, kaynak, anne ana | Durum |
-| inspections | Muayene; standart alanlar + esnek `data jsonb` | Olay |
+| inspections | Muayene; standart alanlar + esnek `data` (json) | Olay |
 | treatments | İlaçlama: ürün, parti no, doz, başlangıç/bitiş, bekleme süresi | Olay |
 | mite\_counts | Varroa ölçümleri | Olay |
 | feedings | Besleme | Olay |
@@ -125,29 +125,33 @@ Her veri bir **işletmeye (organization)** aittir; kullanıcı bir veya birden f
 | media | Foto/ses meta verisi, storage yolu, bağlı kayıt | Olay |
 | ref\_\* | Referans veriler: ilaçlar, ırklar, flora takvimi, hastalıklar — ülke koduna (veya GLOBAL) göre etiketli, TR/EN adlarla (salt okunur) | Referans |
 
-Tüm senkronlanan tablolarda: `id uuid`, `org_id`, `created_at`, `updated_at`, `created_by`, `deleted_at`, `server_seq bigint` (senkron imleci). Senkron uçları Edge Function değil, Postgres RPC'leridir: `sync_push` ve `sync_pull` — RLS ile aynı kuralları kullanır.
+Her tablo bir PocketBase koleksiyonudur ve şema yalnız `server/migrations/` altındaki Go migration'larıyla değişir (panelden değişiklik yapılmaz); `server/schema/collections.json` dökümü testle güncel tutulur. Tüm senkronlanan koleksiyonlarda: `id` (istemcinin UUIDv7'si), `org_id`, `created_at`, `updated_at`, `created_by`, `deleted_at` (mikrosaniyeli UTC metin), `server_seq` (senkron imleci). Başka kayda bağ relation değil UUID metnidir; aynı işletme denetimi push'ta yapılır. Senkron uçları PocketBase'in kayıt API'si değil, özel route'lardır: `POST /api/sync/push` ve `GET /api/sync/pull`; senkron koleksiyonlarının API kuralları kapalıdır (yalnız sunucu kodu okur ve yazar).
 
-**Row Level Security**
+**Yetki**
 
-- Her tabloda RLS açık; politika tek bir yardımcı fonksiyon üzerinden: `is_member(org_id)` ve yazma için `has_role(org_id, ['owner','partner','worker'])`.
+- Tek bir Go katmanı (`server/internal/authz`): tablo başına `Policy`, `IsMember(org_id)` ve yazma için `HasRole(org_id, owner/partner/worker)`; push, pull ve `/api/app/*` route'ları aynı katmanı kullanır. Doğrudan erişilen birkaç koleksiyon (görüş, analitik, cihaz token'ı, silme talebi, dosyalar) PocketBase API kurallarıyla korunur; kuralı tanımsız koleksiyon testte reddedilir.
 - Finans tabloları sadece owner/partner'a açık; worker muayene ve görev girer, para görmez.
 - ref\_\* tabloları herkese salt okunur.
 
-**Storage**
+**Dosyalar**
 
-- `media` (private): `org_id/hive_id/uuid.jpg` yolu; erişim imzalı URL ile, policy yine üyeliğe bağlı.
-- `documents` (private): belge kasası.
-- `public-lots` (private): parti QR sayfasında gösterilmesine izin verilen analiz raporlarının kopyası. Dosyayı yalnız `lot-page` yayım durumunu denetleyerek sunar; yayımdan kalkan lotun raporu hemen erişilmez olur.
+Her dosya türü korumalı bir dosya koleksiyonudur; dosya kaydı satırdan bağımsız yüklenir, `path` alanı `org_id/…/uuid.jpg` yolunu taşır, okuma kısa ömürlü dosya token'ıyla ve üyeliğe bağlı.
 
-**Edge Functions**
+- `media_files`: foto ve ses. `document_files`: belge kasası. `receipt_files`: fişler (yalnız owner ve partner). `feedback_files`, `org_logo_files`.
+- `knowledge_packs`: bilgi bankası paketleri (`tool/publish_knowledge.dart` yayımlar).
+- `public_lot_files`: parti QR sayfasında gösterilmesine izin verilen analiz raporlarının kopyası. Dosyayı yalnız lot sayfası yayım durumunu denetleyerek sunar; yayımdan kalkan lotun raporu hemen erişilmez olur.
 
-- `weather-bundle`: Kullanıcının tüm arılıkları için WeatherAPI.com tahminini tek pakette döner, sunucuda önbellekler (çağrı sayısını düşük tutar). Anahtar `WEATHERAPI_KEY` secret'ında; uygulamada "Powered by WeatherAPI.com" atfı gösterilir.
-- `notify`: Ekip görev ataması, kritik uyarı push'ları (FCM).
-- `lot-page`: Parti QR'ı okutulduğunda herkese açık izlenebilirlik sayfası. Yazıldı ve deploy edildi, ama **şimdilik kullanıma kapalı**: Supabase varsayılan `*.supabase.co` alanında `text/html` yanıtını `text/plain`'e çeviriyor. Sayfa ancak özel alan adıyla (Supabase Custom Domain, ücretli) ya da önüne konan bir proxy ile (ör. ücretsiz Cloudflare Worker) HTML olarak açılır. Uygulamadaki "Herkese açık sayfa" bölümü `--dart-define=LOT_PAGE_BASE_URL=<sayfa kökü>` verilmeden derlenince gizli; alan adı hazır olunca bu değerle derlemek özelliği açar.
-- `reports`: Denetim/sezon PDF raporları (alternatif: PDF cihazda üretilir, offline çalışır — tercih edilen).
-- `invite`: Ekip davet kodu doğrulama.
+**Sunucu route'ları ve hook'lar** (Go, `server/internal/`)
 
-**Zamanlanmış işler (pg\_cron):** Belge süre dolumu, destek başvuru dönemi gibi sunucu tarafı hatırlatmalar; kişisel hatırlatıcılar ise cihazda planlanır.
+- `POST /api/app/weather`: Kullanıcının tüm arılıkları için WeatherAPI.com tahminini tek pakette döner, sunucuda 1 saat önbellekler (çağrı sayısını düşük tutar). Anahtar `WEATHERAPI_KEY` ortam değişkeninde; uygulamada "Powered by WeatherAPI.com" atfı gösterilir.
+- Push (FCM HTTP v1): görev ataması kayıt hook'undan (commit sonrası), destek dönemi hatırlatması cron'dan; cihaz token'ı `POST /api/app/device-token`.
+- `POST /api/app/organizations` (işletme kurma), `GET /api/app/organizations/mine`, `POST /api/app/team/{create,redeem,members,set_role,remove}` (ekip daveti).
+- `POST /api/app/account-deletion/{action}`: hesap silme kodu, talep, iptal, durum.
+- Görüş kaydı hook'u: görüşü SMTP ile e-postalar.
+- `GET /l/{id}` ve `GET /l/{id}/report`: Parti QR'ı okutulduğunda herkese açık izlenebilirlik sayfası (HTML, kendi alan adımızda). Sayfa kökü `<sunucu>/l`; `--dart-define=LOT_PAGE_BASE_URL` ezer. QR'lar `arici-api.tutunsoft.com/l/...` taşıdığı için bu alan adı kalıcı tutulur.
+- Denetim/sezon PDF raporları cihazda üretilir, offline çalışır.
+
+**Zamanlanmış işler (PocketBase cron, sunucu saati):** destek dönemi bildirimi her gün 06:00 (`0 6 * * *`), hesap silmenin kalıcı silme turu her saat :17, veritabanı yedeği her gece 03:00 (7 kopya). Kişisel hatırlatıcılar ise cihazda planlanır.
 
 ## 5. Flutter proje yapısı ve kod mimarisi
 
@@ -159,7 +163,7 @@ lib/
   app/
     app.dart              # MaterialApp.router, tema, l10n
     router.dart           # go_router, sekmeli kabuk, derin linkler
-    bootstrap.dart        # DB açma, Supabase init, sync başlatma
+    bootstrap.dart        # DB açma, PocketBase oturumu, sync başlatma
   core/
     db/                   # Drift şeması, migration'lar
     sync/                 # outbox, push/pull, imleç, medya kuyruğu
@@ -190,11 +194,11 @@ lib/
 
 **Kurallar**
 
-- Ekranlar sadece provider dinler; provider'lar repository çağırır; repository yalnızca yerel DB ile konuşur. **Supabase istemcisi UI'da hiç görünmez** (auth ve edge function çağrıları hariç).
+- Ekranlar sadece provider dinler; provider'lar repository çağırır; repository yalnızca yerel DB ile konuşur. **PocketBase istemcisi UI'da hiç görünmez** (auth ve `/api/app/*` çağrıları data katmanındaki servislerden yapılır).
 - Listeler DB'den `Stream` olarak gelir: Sync yeni veri indirdiğinde ekran kendiliğinden güncellenir.
 - İş kuralları (güç puanı, bekleme süresi, ana renk kodu, şurup hesabı) saf Dart fonksiyonları — birim testine en uygun yer.
 - Muayene formu şema-güdümlü: alanlar kod yerine bir yapılandırmadan üretilir; mevsim şablonları ve gelecekteki alanlar yeni sürüm gerektirmez.
-- Flavor'lar: `dev`, `staging`, `prod` — ayrı Supabase projeleri.
+- Flavor'lar: `dev` ve `prod` — ayrı PocketBase sunucuları (`arici-api-dev.tutunsoft.com`, `arici-api.tutunsoft.com`); `--dart-define=PB_URL` adresi ezer.
 - Kod üretimi: freezed, riverpod\_generator, json\_serializable, ARB → `build_runner`.
 
 ## 6. Saha teknolojileri
@@ -359,10 +363,10 @@ Alt navigasyonda 4 sekme + ortada büyük bir **Okut / Kaydet** butonu: Sahada e
 
 **Güvenlik ve KVKK**
 
-- RLS her tabloda zorunlu; RLS'siz tablo migration'ı CI'da reddedilir (otomatik kontrol).
-- `service_role` anahtarı sadece Edge Function'larda; istemcide yalnızca anon/public anahtar.
+- Her koleksiyonun yetkisi tanımlı: senkron koleksiyonlarında API kuralları kapalı ve erişim Go yetki katmanında; doğrudan erişilenlerde API kuralı. Kuralı tanımsız koleksiyon `go test`'te reddedilir.
+- Superuser yalnız sunucu konteynerinde CLI ile açılır, istemciye hiç verilmez; gizli anahtarlar (SMTP, WeatherAPI, FCM, `PB_ENCRYPTION_KEY`) yalnız Coolify ortam değişkenlerinde.
 - Kişisel veri: e-posta, arazi sahibi iletişimi, müşteri bilgileri — KVKK (TR) ve GDPR (AB kullanıcıları) aydınlatma metni, açık rıza ve hesap/veri silme akışı uygulama içinde.
-- Veri bölgesi: Supabase projesi Türkiye'ye en yakın bölgede (ör. Frankfurt); yurt dışı aktarımı için KVKK yükümlülükleri hukuk danışmanıyla netleştirilmeli.
+- Veri bölgesi: Sunucu, veritabanı ve dosyalar Türkiye'de (Hosting.com.tr VPS). Yurt dışına aktarılanlar gizlilik politikasında yazılı: e-posta (Hostinger), FCM, Sentry; KVKK yükümlülükleri hukuk danışmanıyla netleştirilmeli.
 - Yerel DB: Cihaz kaybolursa finans ve müşteri verisi için isteğe bağlı uygulama kilidi (PIN/biyometrik).
 
 **Test stratejisi**
@@ -370,8 +374,8 @@ Alt navigasyonda 4 sekme + ortada büyük bir **Okut / Kaydet** butonu: Sahada e
 - Birim test: İş kuralları (güç puanı, bekleme süresi, şurup, ana renk kodu, stok düşümü) — %90+ kapsama hedefi.
 - Repository testleri: Bellek içi SQLite ile.
 - Widget ve golden testler: Tasarım sistemi bileşenleri, 3 tema × 2 yazı boyutu.
-- Senkron testleri: "Offline 3 gün, iki cihaz aynı arılığa yazıyor" senaryoları; uçtan uca staging Supabase'e karşı.
-- RLS testleri: Supabase tarafında SQL testleri (ör. pgTAP) — "worker finansı göremez".
+- Senkron testleri: "Offline 3 gün, iki cihaz aynı arılığa yazıyor" senaryoları; uçtan uca yerel PocketBase'e (`integration_test/`) ve dev sunucusuna karşı.
+- Sunucu testleri: `cd server && go test ./...` — yetki senaryoları ("worker finansı göremez"), push/pull, şema dökümü.
 - Saha testi: Her sürümden önce gerçek arılıkta, eldivenle, uçak modunda bir tur. Düşük donanımlı bir Android cihaz test listesinde mutlaka olmalı.
 
 **İzleme**
@@ -382,7 +386,7 @@ Alt navigasyonda 4 sekme + ortada büyük bir **Okut / Kaydet** butonu: Sahada e
 **CI/CD**
 
 - GitHub Actions (veya Codemagic): lint (very\_good\_analysis), test, build.
-- Supabase migration'ları repoda (`supabase/migrations`), staging → prod sıralı dağıtım.
+- Sunucu: Go migration'ları repoda (`server/migrations`). Coolify bu repoyu izler (Dockerfile, Base Directory `/server`): dalı push etmek dev'i kendiliğinden deploy eder, prod yalnız panelden elle "Deploy" ile; migration'lar açılışta uygulanır, `server/ops/schema_check.sh` canlı şemayı dökümle karşılaştırır. İzleme `server/ops/monitoring.md`.
 - Dağıtım: Play Console iç test → açık test (beta) → aşamalı yayın; iOS için TestFlight.
 - Uygulama içi "zorunlu güncelleme" kontrolü: Senkron şeması değiştiğinde eski sürümlerin veri bozmaması için.
 
@@ -423,12 +427,12 @@ Kaba tahmin: 1–2 Flutter geliştirici ile **7 sprint (2'şer hafta) ≈ 14 haf
 
 | Sprint | Kapsam | Bittiğinde |
 | --- | --- | --- |
-| 0 | Proje iskeleti, flavor'lar, tasarım sistemi tokenları, Supabase şema v1 + RLS, e-posta kodu ile giriş (Hostinger SMTP), TR/EN dil ve bölge profili altyapısı | Giriş yapılıp boş "Bugün" ekranı görülür |
+| 0 | Proje iskeleti, flavor'lar, tasarım sistemi tokenları, sunucu şeması v1 + yetki, e-posta kodu ile giriş (Hostinger SMTP), TR/EN dil ve bölge profili altyapısı | Giriş yapılıp boş "Bugün" ekranı görülür |
 | 1 | Drift yerel DB, arılık ve kovan kayıtları, toplu kovan oluşturma, QR etiket üretme/okuma — tamamen offline | Arılık kurulur, kovan okutulur — uçak modunda |
-| 2 | Senkron motoru: outbox + `sync_push`, `sync_pull` + imleç, çakışma kuralları, senkron durum ikonu, otomatik senkron testleri | İki cihaz offline çalışıp veri kaybı olmadan eşitlenir |
+| 2 | Senkron motoru: outbox + push, pull + imleç, çakışma kuralları, senkron durum ikonu, otomatik senkron testleri | İki cihaz offline çalışıp veri kaybı olmadan eşitlenir |
 | 3 | Hızlı muayene, kovan kartı zaman tüneli, foto ve sesli not kuyruğu | 20 saniyelik muayene gerçek kovanda denenir |
 | 4 | Ana arı kartı, varroa ölçümü, ilaç kayıt defteri + bekleme süresi kilidi, besleme | Sağlık kayıtları eksiksiz |
-| 5 | Görevler ve bildirimler, Bugün paneli, hava durumu edge function, basit hasat | Uygulama "ne yapmalıyım"ı söyler |
+| 5 | Görevler ve bildirimler, Bugün paneli, hava durumu sunucu servisi, basit hasat | Uygulama "ne yapmalıyım"ı söyler |
 | 6 | Arılık turu modu, güneş/eldiven modu, PDF çıktıları, performans ve ekibin kendi saha testleri, uygulama içi "Görüş bildir" | Google Play açık test (beta) |
 
 **Başlamadan önce netleşmesi gerekenler**

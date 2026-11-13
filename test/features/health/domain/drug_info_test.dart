@@ -83,13 +83,8 @@ void main() {
       jsonDecode(File(DrugInfoRepository.assetPath).readAsStringSync())
           as List<Object?>,
     );
-    final migration =
-        [
-              '20261031200000_tr_ref_drugs.sql',
-              '20261101120000_tr_ref_drugs_amitraz.sql',
-            ]
-            .map((name) => File('supabase/migrations/$name').readAsStringSync())
-            .join();
+    final seed = File('server/migrations/1794300005_ref_drugs_seed.go')
+        .readAsStringSync();
     final detailed = [
       for (final info in infos.values)
         if (drugInfoHasDetails(info)) info,
@@ -141,11 +136,11 @@ void main() {
       expect(loaded, infos);
     });
 
-    test("her ürün TR referans ilacı olarak aynı adla migration'da", () {
+    test("her ürün TR referans ilacı olarak aynı adla sunucu seed'inde", () {
       for (final info in infos.values) {
         expect(
-          migration,
-          contains("('${info.refDrugId}', 'TR', '${info.name}'"),
+          seed,
+          contains('{"${info.refDrugId}", "TR", "${info.name}"'),
           reason: info.name,
         );
       }

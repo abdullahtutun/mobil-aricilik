@@ -40,7 +40,7 @@ app.*.symbols
 app.*.map.json
 
 # Supabase CLI
-supabase/.temp/
+archive/supabase/.temp/
 
 # Android Studio will place build artifacts here
 /android/app/debug

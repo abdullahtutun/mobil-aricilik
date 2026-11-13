@@ -26,6 +26,7 @@ String failureMessage(AppLocalizations l10n, TeamFailure failure) =>
       TeamFailure.forbidden => l10n.teamErrorForbidden,
       TeamFailure.ownerLocked => l10n.teamErrorOwnerLocked,
       TeamFailure.memberLeaving => l10n.teamErrorMemberLeaving,
+      TeamFailure.tooManyAttempts => l10n.teamErrorTooManyAttempts,
       TeamFailure.unknown => l10n.teamErrorUnknown,
     };
 

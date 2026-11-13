@@ -62,4 +62,4 @@ final class KnowledgeUpdateServiceProvider
 }
 
 String _$knowledgeUpdateServiceHash() =>
-    r'b93f5a161a90f9f4b134bb470281cc5c045c49a9';
+    r'dd3a9cac7b8e7798350310dacae25f6ce608039a';

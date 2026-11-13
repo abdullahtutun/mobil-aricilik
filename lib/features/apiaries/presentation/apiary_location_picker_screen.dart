@@ -43,6 +43,15 @@ class _ApiaryLocationPickerScreenState
   late LatLng _center = widget.initial ?? const LatLng(0, 0);
 
   @override
+  void initState() {
+    super.initState();
+    // Altlık uygulama boyunca tutulur; önceki açılışta yüklenemediyse
+    // hata da tutulur. Ekran her açılışta yeniden dener, internet arada
+    // gelmiş olabilir (Arılıklar'daki harita sekmesi gibi; P9.2 madde 2).
+    if (ref.read(basemapProvider).hasError) ref.invalidate(basemapProvider);
+  }
+
+  @override
   void dispose() {
     _mapController.dispose();
     _query.dispose();

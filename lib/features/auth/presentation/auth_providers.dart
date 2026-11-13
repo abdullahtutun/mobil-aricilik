@@ -1,5 +1,6 @@
-import 'package:mobil_arici/core/services/supabase_client_provider.dart';
+import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/features/auth/data/auth_service.dart';
+import 'package:mobil_arici/features/auth/data/pocketbase_auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,8 +8,10 @@ part 'auth_providers.g.dart';
 
 /// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
-AuthService authService(Ref ref) =>
-    SupabaseAuthService(ref.watch(supabaseClientProvider).auth);
+AuthService authService(Ref ref) => PocketBaseAuthService(
+  ref.watch(pocketbaseClientProvider),
+  ref.watch(pocketBaseSessionStorageProvider),
+);
 
 /// Oturumdaki kullanıcı; null ise giriş yapılmamış. Çevrimdışıyken süresi
 /// dolan token oturumu kapatmaz, yalnız sunucu refresh token'ı reddederse

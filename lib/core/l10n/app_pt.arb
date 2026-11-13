@@ -2067,5 +2067,6 @@
   "deletionPendingCancelled": "Exclusão cancelada. Que bom ter você de volta!",
   "deletionPendingCancelFailed": "Não foi possível cancelar a exclusão. Verifique sua conexão e tente de novo.",
   "teamMemberLeaving": "Excluindo a conta · {date}",
-  "teamErrorMemberLeaving": "Esta pessoa está excluindo a conta; durante o período de espera, o papel dela não pode ser mudado e ela não pode ser removida."
+  "teamErrorMemberLeaving": "Esta pessoa está excluindo a conta; durante o período de espera, o papel dela não pode ser mudado e ela não pode ser removida.",
+  "teamErrorTooManyAttempts": "Muitas tentativas de código. Espere um minuto e tente de novo."
 }

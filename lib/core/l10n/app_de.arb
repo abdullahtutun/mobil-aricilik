@@ -2067,5 +2067,6 @@
   "deletionPendingCancelled": "Löschung abgebrochen. Willkommen zurück!",
   "deletionPendingCancelFailed": "Die Löschung konnte nicht abgebrochen werden. Prüfe deine Verbindung und versuche es erneut.",
   "teamMemberLeaving": "Löscht sein Konto · {date}",
-  "teamErrorMemberLeaving": "Diese Person löscht gerade ihr Konto; während der Wartezeit kann ihre Rolle nicht geändert und sie nicht entfernt werden."
+  "teamErrorMemberLeaving": "Diese Person löscht gerade ihr Konto; während der Wartezeit kann ihre Rolle nicht geändert und sie nicht entfernt werden.",
+  "teamErrorTooManyAttempts": "Zu viele Codeversuche. Warte eine Minute und versuche es erneut."
 }

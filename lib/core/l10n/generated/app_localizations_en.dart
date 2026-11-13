@@ -7884,4 +7884,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'This person is deleting their account; during the waiting period their role can\'t be changed and they can\'t be removed.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'Too many code attempts. Wait a minute and try again.';
 }

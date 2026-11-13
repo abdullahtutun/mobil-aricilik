@@ -4,14 +4,14 @@ const int otpLength = 6;
 /// Mağaza incelemesi (App Store, Google Play) için demo hesap. Bu adrese
 /// kod e-postası gitmez; kod ekranında girilen sabit kod hesabın parolası
 /// olarak denenir. Kod uygulamada değil, yalnız sunucudaki parolada durur.
-/// Hesap ve örnek veri: `supabase/admin/demo_account.sql`.
+/// Hesap ve örnek veri sunucunun `seed demo` komutuyla kurulur.
 const String reviewDemoEmail = 'demo@tutunsoft.com';
 
 /// [email] (normalize edilmiş) mağaza incelemesinin demo hesabı mı.
 bool isReviewDemoEmail(String email) => email == reviewDemoEmail;
 
-/// Yeni kod istemeden önce beklenen süre. Supabase aynı adrese 60 saniyede
-/// bir e-posta gönderir (`auth.email.max_frequency`); erken istek reddedilir.
+/// Yeni kod istemeden önce beklenen süre. Sunucu aynı adrese 60 saniyede
+/// bir e-posta gönderir (`auth.ResendInterval`); erken istek reddedilir.
 const Duration resendCooldown = Duration(seconds: 60);
 
 final _emailPattern = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');

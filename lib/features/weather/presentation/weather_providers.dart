@@ -1,10 +1,11 @@
 import 'package:clock/clock.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
 import 'package:mobil_arici/core/db/local_settings_provider.dart';
-import 'package:mobil_arici/core/services/supabase_client_provider.dart';
+import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/apiaries/presentation/apiary_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/weather/data/pocketbase_weather_service.dart';
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 import 'package:mobil_arici/features/weather/data/weather_service.dart';
 import 'package:mobil_arici/features/weather/domain/weather_bundle.dart';
@@ -15,7 +16,7 @@ part 'weather_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 WeatherService weatherService(Ref ref) =>
-    SupabaseWeatherService(ref.watch(supabaseClientProvider));
+    PocketBaseWeatherService(ref.watch(pocketbaseClientProvider));
 
 @Riverpod(keepAlive: true)
 WeatherRepository weatherRepository(Ref ref) =>

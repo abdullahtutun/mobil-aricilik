@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobil_arici/app/app.dart';
+import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
@@ -38,21 +39,23 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
-/// Testlerde lot sayfası açık; derlemede `LOT_PAGE_BASE_URL` verilmezse
-/// bölüm gizli.
+/// Testlerde lot sayfasının kökü.
 const _lotPageBaseUrl = 'https://lot.example.com';
 
+/// [fixedPageBaseUrl] false ise lot sayfası kökü sabitlenmez, sunucunun
+/// adresinden çözülür.
 Future<ProviderContainer> _open(
   WidgetTester tester, {
   required AppDatabase db,
   required String location,
   FakePrintService? printer,
-  String? lotPageBaseUrl = _lotPageBaseUrl,
+  bool fixedPageBaseUrl = true,
 }) async {
   final container = ProviderContainer.test(
     overrides: [
       ...signedIn(db: db, printer: printer),
-      lotPageBaseUrlProvider.overrideWithValue(lotPageBaseUrl),
+      if (fixedPageBaseUrl)
+        lotPageBaseUrlProvider.overrideWithValue(_lotPageBaseUrl),
     ],
   );
   await tester.pumpWidget(
@@ -483,27 +486,29 @@ void main() {
     expect(toggle('Analysis report'), findsNothing);
   });
 
-  testWidgets('sayfa adresi yapılandırılmadıysa (derlemede '
-      'LOT_PAGE_BASE_URL yok) bölüm gizli', (tester) async {
+  testWidgets('sayfa adresi sunucudan gelir, bölüm görünür', (tester) async {
     await addMember(db, userId: testUser.id, role: MembershipRole.owner);
     final lot = await lots.createWithHarvest(await harvest());
     await lots.setPublication(lot.id, published: true);
-    await _open(
+    final container = await _open(
       tester,
       db: db,
       location: AppRoutes.lot(lot.id),
-      lotPageBaseUrl: null,
+      fixedPageBaseUrl: false,
     );
 
+    expect(
+      container.read(lotPageBaseUrlProvider),
+      '${container.read(pocketbaseUrlProvider)}/l',
+    );
+    await showToggle(tester, 'Publish');
+    expect(tester.widget<SwitchListTile>(toggle('Publish')).value, isTrue);
     await tester.scrollUntilVisible(
-      find.text('No sales recorded yet'),
+      _button('Print'),
       200,
       scrollable: _list(LotScreen),
     );
-    expect(find.text('PUBLIC PAGE'), findsNothing);
-    expect(find.text('Public page'), findsNothing);
-    expect(toggle('Publish'), findsNothing);
-    expect(_button('Print'), findsNothing);
+    expect(_button('Print'), findsOneWidget);
   });
 
   testWidgets('owner olmayan yayımı görür ama değiştiremez; etiketi basar', (

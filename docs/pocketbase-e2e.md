@@ -1,0 +1,153 @@
+# PocketBase dev uçtan uca kontrol listesi (P9.2)
+
+Gerçek telefonlarla, gerçek dev sunucusuna (`https://arici-api-dev.tutunsoft.com`) karşı her özelliğin denenmesi. Plan: [pocketbase-gecis.md](pocketbase-gecis.md) P9.2. Adım, aşağıdaki 11 madde ☑ olunca biter.
+
+İşaretler: ☐ denenmedi · ☑ geçti · ☒ başarısız (altına not ve düzeltme commit'i) · ◐ kısmen.
+
+## Hazırlık
+
+- [x] Dev'de ortam değişkenleri tam: Coolify dev açılış logunda `missing` listesinde `mail`, `feedback`, `weather`, `push` yok (yalnız S3 yedek değişkenleri eksik olabilir).
+- [x] Dev sürümü bu dalın son commit'i: `curl https://arici-api-dev.tutunsoft.com/api/app/info` → `{"env":"dev","version":"<commit>"}`.
+- [x] İki telefon: A = Android, B = iPhone ya da ikinci Android. İkisine de dev derlemesi: `flutter run --flavor dev -t lib/main_dev.dart` (dev varsayılan olarak PocketBase'e bağlanır). Telefonlarda eski kurulum varsa silinip yeniden kurulur.
+- [x] Erişilebilir üç gerçek e-posta kutusu: `E1` (TR arayüz, sahip), `E2` (EN arayüz, ekip üyesi), `E3` (yalnız hesap silme için atılabilir hesap). Demo hesabı (`demo@tutunsoft.com`) ve 6 haneli kodu.
+- [x] PocketBase paneli (`/_/`) ve Coolify dev konteyner terminali açık.
+
+Her maddeden sonra PocketBase panelinde (`/_/` → Logs) `level >= 8` aranır; çıkan satır maddenin notuna yazılır. Sunucunun kendi logları (e-posta, push, cron hataları) orada. Coolify Runtime Logs'ta yalnız açılış satırları (eksik ortam değişkenleri dahil) var.
+
+## 1. Giriş
+
+- [x] **1a. TR e-posta.** Telefon A, arayüz Türkçe, `E1` ile "Kod gönder".
+  - Beklenen: Birkaç saniyede noreply kutusundan Türkçe "giriş kodu" e-postası, 6 haneli kod. Kod girilince onboarding açılır.
+- [x] **1b. EN e-posta.** Telefon B, arayüz İngilizce, `E2` ile.
+  - Beklenen: E-posta İngilizce; kod girilince onboarding açılır.
+- [x] **1c. Kodu sonra girme.** `E3` ile kod iste, uygulamayı görev yöneticisinden öldür, yeniden aç, aynı e-postayla kodu gir (yeni kod istemeden).
+  - Beklenen: Uygulama kod ekranına ya da e-posta ekranına döner; aynı e-posta yazılınca eski kod kabul edilir (10 dk içinde). Yanlış kod hata mesajı verir, uygulama çökmez.
+
+## 2. Kurulum, kovanlar, muayene
+
+- [x] **2a. Onboarding.** Telefon A (`E1`): işletme adı, ülke Türkiye, ilk arılık (konumla).
+  - Beklenen: Bugün ekranı açılır; senkron ekranında bekleyen kayıt kalmaz.
+- [x] **2b. 20 toplu kovan.** Arılığa 1–20 numaralı kovanları toplu ekle.
+  - Beklenen: Izgarada 20 kovan, doğal sırayla (1, 2, … 10 …); senkron birkaç saniyede biter, reddedilen yok.
+- [x] **2c. QR okut.** Bir kovanın etiketini yazdır ya da ekrandan göster, Okut ile tara.
+  - Beklenen: Doğru kovanın kartı açılır.
+- [x] **2d. Muayene + foto + sesli not.** O kovana muayene: en az bir fotoğraf ve bir sesli not.
+  - Beklenen: Muayene kaydı kovanın tünelinde; medya yüklemesi arka planda biter (senkron ekranında medya kuyruğu boşalır).
+- [x] **2e. İkinci telefonda görünme.** Telefon B'de `E1` ile giriş (ya da 4. maddeden sonra ekip üyesi olarak).
+  - Beklenen: Arılık, 20 kovan ve muayene iner; fotoğraf açılır, sesli not çalar.
+
+## 3. Çevrimdışı ve çakışma
+
+- [x] **3a. Uçak modunda 10 kayıt.** Telefon A uçak modunda: karışık 10 kayıt (muayene, besleme, görev, gider …).
+  - Beklenen: Her kayıt anında listede; senkron ekranında 10 (ya da daha fazla outbox satırı) bekliyor; hata yok.
+- [x] **3b. Ağ gelince.** Uçak modu kapatılır.
+  - Beklenen: Bir dakika içinde outbox boşalır; Telefon B'de 10 kayıt görünür.
+- [x] **3c. Son yazan kazanır.** İki telefon uçak modunda; aynı kovanın durumunu A'da "zayıf", sonra B'de "ana arısız" yap (B ikinci). Önce A, sonra B ağa bağlanır.
+  - Beklenen: İki telefonda da B'nin durumu kalır; reddedilen kayıt yok.
+
+## 4. Ekip ve roller
+
+- [x] **4a. Davet kodu.** A (sahip) worker rolüyle davet kodu üretir; B (`E2`) kodla katılır.
+  - Beklenen: B işletmeyi açar, kayıtlar iner; A'nın ekip listesinde `E2` worker.
+- [x] **4b. Worker finansı görmez.** B'de gelir/gider.
+  - Beklenen: Finans sekmesi ya da girişi görünmez; doğrudan adresle bile veri gelmez. Muayene yazabilir ve A'ya iner.
+- [x] **4c. Viewer yazamaz.** A, B'nin rolünü viewer yapar.
+  - Beklenen: B'de rol bir senkron turunda değişir; ekleme butonları kapanır. Kapanmayan bir yerden yazılan kayıt senkron ekranında `forbidden` ile görünür ve A'ya ulaşmaz.
+- [x] **4d. Rol değiştirme.** Viewer → worker → partner.
+  - Beklenen: Her değişiklik B'ye iner; partner finansı görür.
+- [x] **4e. Çıkarma.** A, B'yi işletmeden çıkarır.
+  - Beklenen: B'de işletme kapanır ya da erişim kesilir; B'nin yazdığı kayıtlar A'da kalır.
+
+## 5. Bildirim
+
+- [x] **5a. Atanan görev push'u.** B tekrar worker olarak ekipte; A bir görev oluşturup B'ye atar. B'de uygulama arka planda.
+  - Beklenen: Birkaç saniyede B'ye push gelir, B'nin dilinde (EN).
+- [x] **5b. Bildirime dokunma.** B bildirime dokunur.
+  - Beklenen: Uygulama açılır ve o görev açık gelir. Kendine atanan görevde push gelmez.
+
+## 6. Dosyalar
+
+- [x] **6a. Belge (PDF).** A'da Belgeler'e bir PDF yükle (20 MB altı).
+  - Beklenen: Yükleme biter; B'de belge iner ve açılır.
+- [x] **6b. Fiş.** A'da bir gidere fiş fotoğrafı ekle.
+  - Beklenen: B'de (partner/owner) fiş açılır.
+- [x] **6c. İşletme logosu.** A'da işletme logosu yükle.
+  - Beklenen: B'de logo görünür; PDF çıktılarında logo var.
+
+## 7. Hava ve bilgi bankası
+
+- [x] **7a. Hava kartları.** Konumu olan arılıkta Bugün/arılık ekranı.
+  - Beklenen: Günlük tahmin ve uçuş uygunluğu kartları dolu (WeatherAPI); ikinci açılışta önbellekten anında gelir. Logda weather hatası yok.
+- [x] **7b. Bilgi bankası güncellemesi.** Dev'e `tool/publish_knowledge.dart --backend pocketbase` ile yeni sürüm yayımlanır, telefonda bilgi bankası açılır.
+  - Beklenen: Yeni sürüm iner (makale değişikliği görünür), çevrimdışı da açılır.
+
+## 8. Görüş bildir
+
+- [x] **8a. Ekran görüntülü görüş.** Ayarlar → Görüş bildir, ekran görüntüsü ekli gönder.
+  - Beklenen: `FEEDBACK_TO_EMAIL` kutusuna e-posta; Reply-To gönderenin e-postası; gövdede `.../api/app/feedback-shot/<id>` linki.
+- [x] **8b. 7 günlük link.** Linki tarayıcıda aç.
+  - Beklenen: Ekran görüntüsü açılır (girişsiz). Link 7 gün sonra 403 verir (testle kanıtlı; elle beklenmez). Değiştirilmiş link 403/404.
+
+## 9. Lot sayfası
+
+- [x] **9a. Yayımla.** A'da bir hasat lotunu analiz raporuyla birlikte yayımla.
+  - Beklenen: QR ve `https://arici-api-dev.tutunsoft.com/l/<id>` adresi gösterilir.
+- [x] **9b. Başka telefonda tarayıcı.** QR'ı B'nin kamerasıyla (uygulama dışı) tara.
+  - Beklenen: HTML sayfa tarayıcının dilinde açılır; ürün, arılık bölgesi, tarih doğru; kişisel veri yok.
+- [x] **9c. Rapor.** Sayfadaki rapor linki.
+  - Beklenen: `/l/<id>/report` PDF ya da JPEG'i açar.
+- [x] **9d. Yayımdan kaldır.** A'da yayımı kaldır, sayfayı yenile.
+  - Beklenen: Sayfa ve rapor 404.
+
+## 10. Hesap silme
+
+- [x] **10a. Kod e-postası.** `E3` hesabıyla Ayarlar → Hesabı sil → kod iste.
+  - Beklenen: Hesabın dilinde "hesap silme kodun" e-postası; 60 sn içinde ikinci istek reddedilir.
+- [x] **10b. Talep.** Kodu gir, talebi onayla.
+  - Beklenen: Ekranda silinecek kayıt sayıları; "şu tarihte silinecek" e-postası (7 gün sonrası); oturum kapanır (diğer cihazlarda da), push token'ı silinir.
+- [x] **10c. Bekleme ekranı ve iptal.** Aynı hesapla yeniden giriş.
+  - Beklenen: Silme tarihini gösteren bekleme ekranı; "Vazgeç" ile talep iptal, uygulama normal açılır, veriler yerinde.
+- [x] **10d. Kalıcı silme.** `E3` ile yeniden talep (ya da ikinci bir atılabilir hesap). Coolify dev terminalinde:
+
+  ```sh
+  /pb/arici seed deletion expire --user <E3>
+  ```
+
+  Sonra PocketBase paneli → Settings → Crons → `account-deletion-purge` → çalıştır.
+  - Beklenen: Komut "The deletion request of … is due" yazar (prod'da `this command runs only with APP_ENV=dev` hatası verir). Cron'dan sonra panelde kullanıcı, işletmesi, senkron kayıtları ve dosyaları (medya, belge, logo) yok; `deletion_log`'da kullanıcı kimliğinin özetiyle bir kayıt; `deletion_requests` satırı `tamamlandi`; `E3`'e kısa onay e-postası. Aynı e-postayla giriş yeni, boş bir hesap açar.
+
+## 11. Demo hesabı
+
+- [x] **11a. Parola girişi.** Çıkış yap, `demo@tutunsoft.com` + 6 haneli kod (e-posta kodu istemeden).
+  - Beklenen: Demo işletmesi açılır (3 arılık, 15 kovan, 28 muayene, görevler). Başka bir e-postada parola girişi yok.
+
+## Kapanış
+
+- [ ] PocketBase panel loglarında deneme süresince `level >= 8` yok (varsa nedenleri yukarıdaki maddelerin notlarında).
+- [x] Sonuçlar [progress.md](progress.md)'de.
+
+## Notlar
+
+Başarısız maddeler ve düzeltme commit'leri buraya, madde numarasıyla.
+
+İlk tur (2026-11-12): 1, 3, 4, 6, 7, 11 geçti. Başarısız:
+
+- **2.** Arılık eklendi ama konum seçerken harita açılmadı (OpenFreeMap; PocketBase'le ilgisi yok). Ayrıntı bekleniyor.
+- **5.** Atanan görevde push gelmedi. iOS dev (`.dev`) için Firebase uygulaması yok, iPhone'da bu beklenen bir eksik. Alıcının telefonu ve `device_tokens` satırı soruldu.
+- **8.** Görüş e-postası gelmedi. `feedback` satırı panelde var mı ve log soruldu.
+- **9.** Kavanoz etiketi Paylaş/Yazdır: butonlar pasifleşiyor, paylaşma ya da yazdırma ekranı açılmıyor. PDF testte sorunsuz üretiliyor (gerçek adres ve Türkçe adla denendi); sorun cihazdaki yazdırma eklentisinde görünüyor. Kovan etiketlerinin aynı telefonda çalışıp çalışmadığı soruldu.
+- **10.** Hesap silme kod e-postası gelmedi. Giriş e-postasıyla aynı SMTP'den gidiyor; uygulamadaki mesaj ve log soruldu.
+
+İkinci tur (2026-11-12, A = Android, B = iPhone):
+
+- **2.** Harita uygulamaya yeniden girince açıldı. Neden: ilk açılışta OpenFreeMap stili 15 sn'de inmedi; hata uygulama boyunca tutuluyordu ve konum seçme ekranı (Arılıklar'daki harita sekmesinin tersine) yeniden denemiyordu. Düzeltme `4883424`: ekran açılırken önceki deneme başarısızsa yeniden yükler. Cihazda yeniden denenecek.
+- **5.** iPhone'a push gelmiyor: iOS dev (`com.tutunsoft.mobilarici.dev`) için Firebase uygulaması ve APNs bağlantısı yok. Konsol işi. Android'e push geliyor; ancak arka plandayken bildirime dokununca form "görev bulunamadı" açılıyordu (görev henüz inmemişti, form bir kez okuyor). Düzeltme `4647f05`: görev yerelde yoksa önce bir senkron turu beklenir (en çok 15 sn). Cihazda yeniden denenecek.
+- **8.** `feedback` satırı sunucuda var; sorun gönderimde. Coolify logunda `feedback mail` ya da açılıştaki `Feedback e-mail is off` satırı bekleniyor.
+- **9.** Butonlar sonradan çalıştı. PDF testte sorunsuz üretiliyor; ilk denemedeki gecikme cihazda yeniden görülmedi. 9b–9d bekleniyor.
+- **10.** Kod e-postası ilk denemede geç geldi, ikinci denemede hemen. Sunucu gönderimi bekleyip sonuç dönüyor, uygulama hata göstermedi; gecikme alıcı tarafında (yeni gönderenin ilk iletisini bekletme). 10b–10d bekleniyor.
+- **8.** E-posta gidiyormuş, Gmail'de spam'e düşmüş. Ekran görüntüsü linki var. Spam nedeni için e-postanın SPF/DKIM/DMARC sonuçlarına bakılacak; görüş e-postasında Reply-To gönderenin adresi (From'dan farklı). 8b (linkin açılması) bekleniyor.
+- Görev testlerindeki 3 kırık, gece yarısından sonra (00:15) yeniden koşunca geçti: bilinen "yarın" sorunu, bu düzeltmelerle ilgisiz.
+
+Üçüncü tur (2026-11-13): kullanıcı kalan maddelerin hepsini geçti olarak bildirdi (2 ve 5'in düzeltmeleri cihazda, 8b, 9b–9d, 10b–10d). On bir madde ☑.
+
+- Açık kalan: iPhone dev derlemesine push gelmiyor; iOS `.dev` için Firebase uygulaması ve APNs bağlantısı yok (konsol işi, kod değil). Android'de push ve bildirime dokunma geçti. Görüş e-postası Gmail'de spam'e düşüyor; SPF/DKIM/DMARC sonucu bildirilmedi. Deneme süresince panel loglarında `level >= 8` taraması sonucu bildirilmedi.

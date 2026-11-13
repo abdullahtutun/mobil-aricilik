@@ -6,9 +6,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 const LotLabelData _label = (
-  url:
-      'https://jcddnelaboueazhordfz.supabase.co/functions/v1/lot-page/'
-      '0199a3b2-7c1e-7d40-8a5b-000000000001',
+  url: 'https://arici-api.tutunsoft.com/l/0199a3b2-7c1e-7d40-8a5b-000000000001',
   number: 'Lot 2026-07',
   honey: 'Çam balı',
 );

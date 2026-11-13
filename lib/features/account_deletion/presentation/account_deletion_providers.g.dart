@@ -59,7 +59,7 @@ final class AccountDeletionServiceProvider
 }
 
 String _$accountDeletionServiceHash() =>
-    r'f3fdad5815032df456366824e6f99aa8480bb230';
+    r'3650aabf265cb4e7f34a8e258aae551c8ef65a11';
 
 @ProviderFor(accountDeletionRepository)
 final accountDeletionRepositoryProvider = AccountDeletionRepositoryProvider._();

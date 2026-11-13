@@ -99,6 +99,12 @@ class FakeAuthService implements AuthService {
   @override
   Future<void> updateLocale(String locale) async => updatedLocales.add(locale);
 
+  /// [refreshSession] çağrı sayısı.
+  int refreshCount = 0;
+
+  @override
+  Future<void> refreshSession() async => refreshCount++;
+
   @override
   Future<void> signOut() async {
     signOutCount++;

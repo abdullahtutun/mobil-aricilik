@@ -8105,4 +8105,8 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'Этот человек удаляет свой аккаунт; в период ожидания его роль нельзя изменить, а самого его нельзя удалить из команды.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'Слишком много попыток ввода кода. Подождите минуту и попробуйте снова.';
 }

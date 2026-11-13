@@ -2112,5 +2112,6 @@
   "deletionPendingCancelled": "Silme iptal edildi. Tekrar hoş geldin!",
   "deletionPendingCancelFailed": "Silme iptal edilemedi. Bağlantını kontrol edip yeniden dene.",
   "teamMemberLeaving": "Hesabını siliyor · {date}",
-  "teamErrorMemberLeaving": "Bu kişi hesabını siliyor; bekleme süresinde rolü değiştirilemez ve ekipten çıkarılamaz."
+  "teamErrorMemberLeaving": "Bu kişi hesabını siliyor; bekleme süresinde rolü değiştirilemez ve ekipten çıkarılamaz.",
+  "teamErrorTooManyAttempts": "Çok fazla kod denendi. Bir dakika bekleyip yeniden dene."
 }

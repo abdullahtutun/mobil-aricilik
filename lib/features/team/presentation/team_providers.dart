@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ProviderListenableSelect;
 import 'package:mobil_arici/core/db/app_database_provider.dart';
-import 'package:mobil_arici/core/services/supabase_client_provider.dart';
+import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
 import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
@@ -9,6 +9,7 @@ import 'package:mobil_arici/features/organization/domain/role_permissions.dart'
     as permissions;
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/team/data/activity_repository.dart';
+import 'package:mobil_arici/features/team/data/pocketbase_team_service.dart';
 import 'package:mobil_arici/features/team/data/team_service.dart';
 import 'package:mobil_arici/features/team/domain/activity_rules.dart';
 import 'package:mobil_arici/features/team/domain/invite.dart';
@@ -20,7 +21,7 @@ part 'team_providers.g.dart';
 /// Testler sahtesiyle override eder.
 @Riverpod(keepAlive: true)
 TeamService teamService(Ref ref) =>
-    SupabaseTeamService(ref.watch(supabaseClientProvider));
+    PocketBaseTeamService(ref.watch(pocketbaseClientProvider));
 
 /// Oturumdaki kullanıcının işletmedeki rolü; üyeliği henüz yerel DB'ye
 /// inmediyse null.

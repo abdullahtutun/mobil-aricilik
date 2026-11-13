@@ -61,13 +61,42 @@ void main() {
   test('lot sayfası kök adres + lot kimliği; sondaki / tekrar etmez', () {
     const id = '0199a3b2-7c1e-7d40-8a5b-000000000001';
     expect(
-      lotPageUrl('https://x.supabase.co/functions/v1/lot-page', id),
-      'https://x.supabase.co/functions/v1/lot-page/$id',
+      lotPageUrl('https://arici-api.tutunsoft.com/l', id),
+      'https://arici-api.tutunsoft.com/l/$id',
     );
     expect(
       lotPageUrl('https://mobilaricilik.app/lot/', id),
       'https://mobilaricilik.app/lot/$id',
     );
+  });
+
+  group('resolveLotPageBaseUrl', () {
+    test('sunucunun /l yolu; sondaki / tekrar etmez', () {
+      expect(
+        resolveLotPageBaseUrl(
+          pocketbaseUrl: 'https://arici-api-dev.tutunsoft.com',
+        ),
+        'https://arici-api-dev.tutunsoft.com/l',
+      );
+      expect(
+        resolveLotPageBaseUrl(pocketbaseUrl: 'http://127.0.0.1:8090/'),
+        'http://127.0.0.1:8090/l',
+      );
+    });
+
+    test('LOT_PAGE_BASE_URL sunucunun adresini ezer', () {
+      expect(
+        resolveLotPageBaseUrl(
+          pocketbaseUrl: 'https://arici-api.tutunsoft.com',
+          define: ' https://lot.example.com ',
+        ),
+        'https://lot.example.com',
+      );
+    });
+
+    test('testler dart-define vermeden çalışır', () {
+      expect(lotPageBaseUrlDefine, isEmpty);
+    });
   });
 
   test('sıradaki numara yılın en büyüğünden bir fazla; lot yoksa 1', () {

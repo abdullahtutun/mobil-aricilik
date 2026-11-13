@@ -7942,4 +7942,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get teamErrorMemberLeaving =>
       'Diese Person löscht gerade ihr Konto; während der Wartezeit kann ihre Rolle nicht geändert und sie nicht entfernt werden.';
+
+  @override
+  String get teamErrorTooManyAttempts =>
+      'Zu viele Codeversuche. Warte eine Minute und versuche es erneut.';
 }

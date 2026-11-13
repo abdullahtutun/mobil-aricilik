@@ -1,0 +1,15 @@
+# Only Go sources, go.mod/go.sum and migrations go into the image build.
+pb_data/
+**/pb_data/
+*_test.go
+ops/
+README.md
+Dockerfile
+.dockerignore
+.env
+.env.*
+*.zip
+*.db
+*.db-shm
+*.db-wal
+.DS_Store

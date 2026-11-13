@@ -48,7 +48,7 @@ final class WeatherServiceProvider
   }
 }
 
-String _$weatherServiceHash() => r'91dc7c17f30c86acd0a19e4b372a19b6aa2ff50c';
+String _$weatherServiceHash() => r'2f6fabdf5f01bedc546958f6fa8e0b68c3d21fcf';
 
 @ProviderFor(weatherRepository)
 final weatherRepositoryProvider = WeatherRepositoryProvider._();

@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.13.0
@@ -68,13 +68,15 @@ dependencies:
   path: ^1.9.1
   path_provider: ^2.1.6
   pdf: ^3.13.1
+  # Tam sürüm: 0.26.0 süresi dolmuş token'ı istekten önce siliyor; K-6
+  # çevrimdışıyken oturumun kalmasını istiyor (docs/pocketbase-gecis.md P7.2).
+  pocketbase: 0.25.3
   printing: ^5.15.1
   record: ^7.1.2
   riverpod_annotation: ^4.0.7
   sentry_flutter: ^10.2.0
   share_plus: ^13.3.1
   sqlite3: ^3.7.1
-  supabase_flutter: ^2.18.3
   timezone: ^0.11.2
   url_launcher: ^6.3.3
   uuid: ^4.6.0

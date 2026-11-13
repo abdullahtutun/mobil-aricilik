@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_user.freezed.dart';
 
-/// Giriş yapmış kullanıcı. Supabase türleri data katmanında kalır.
+/// Giriş yapmış kullanıcı. SDK türleri data katmanında kalır.
 @freezed
 abstract class AppUser with _$AppUser {
   const factory({

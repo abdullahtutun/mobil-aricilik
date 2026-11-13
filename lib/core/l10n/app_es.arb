@@ -2067,5 +2067,6 @@
   "deletionPendingCancelled": "Eliminación cancelada. ¡Bienvenido de nuevo!",
   "deletionPendingCancelFailed": "No se pudo cancelar la eliminación. Revisa tu conexión y vuelve a intentarlo.",
   "teamMemberLeaving": "Eliminando su cuenta · {date}",
-  "teamErrorMemberLeaving": "Esta persona está eliminando su cuenta; durante el periodo de espera no se puede cambiar su rol ni quitarla."
+  "teamErrorMemberLeaving": "Esta persona está eliminando su cuenta; durante el periodo de espera no se puede cambiar su rol ni quitarla.",
+  "teamErrorTooManyAttempts": "Demasiados intentos con el código. Espera un minuto y vuelve a intentarlo."
 }

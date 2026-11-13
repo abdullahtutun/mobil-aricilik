@@ -50,12 +50,17 @@ class FakeDeviceTokenService implements DeviceTokenService {
   final registered = <String, String>{};
   final calls = <String>[];
 
+  /// Kayıtlarda gönderilen diller, sırayla.
+  final locales = <String?>[];
+
   @override
   Future<void> register({
     required String token,
     required String platform,
+    String? locale,
   }) async {
     calls.add('register:$token');
+    locales.add(locale);
     if (offline) throw const DeviceTokenException();
     registered[token] = platform;
   }
