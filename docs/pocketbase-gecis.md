@@ -55,7 +55,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P8.1 | Referans veri ve demo hesap tohumu (idempotent, dry-run) | P7.6 | ☑ |
 | P9.1 | İki cihaz ve çevrimdışı senkron testleri (yerel PocketBase) | P8.1 | ☑ |
 | P9.2 | Dev sunucusunda uçtan uca: roller, hesap silme, dosyalar, push, e-posta | P9.1 | ☑ |
-| P9.3 | Yük ve RAM kontrolü | P9.2 | ☐ |
+| P9.3 | Yük ve RAM kontrolü | P9.2 | ◐ |
 | P10.1 | Prod hazırlığı ve Supabase yazmalarının dondurulması | P9.3 | ☐ |
 | P10.2 | Geçiş: prod varsayılanı PocketBase, sürüm, izleme | P10.1 | ☐ |
 | P11.1 | Flutter'dan Supabase'in kaldırılması (gözlemden sonra) | P10.2 + 14 gün | ☐ |

@@ -24,6 +24,8 @@ ops/backup.md           # gece yedeği, Mac'e indirme, geri yükleme (P1.4)
 ops/pull_backup.sh      # en yeni yedeği Mac'e indirir
 ops/restore_check.sh    # bir yedeği yerelde açıp dener
 ops/schema_check.sh     # canlı şemanın özetini repodaki dökümle karşılaştırır
+internal/loadtest/      # P9.3 yük testi istemcisi + dev'e özel temizlik route'u
+cmd/loadtest/           # yük testi komutu (yalnız dev sunucusuna)
 ```
 
 ## Yerel çalıştırma
@@ -83,6 +85,23 @@ go test ./...
 ```
 
 Testler `tests.NewTestApp` ile boş geçici bir veri klasöründe uygulamayı açar ve `tests.ApiScenario` ile uçları dener.
+
+## Yük testi (P9.3)
+
+`cmd/loadtest` yalnız dev sunucusuna çalışır. Varsayılan senaryo şu: 50 sanal kullanıcı, her birinin kendi işletmesi ve 2000 kaydı var, aynı anda 10 kullanıcı çalışır. Kayıtlar 100'lük paketlerle push edilir. Her 5. paketten sonra 1 MiB'lık bir foto yüklenir. Sonunda 35 tablonun hepsi baştan, 500'lük sayfalarla çekilir. Superuser bilgisi kendi kabuğundan gelir (K-10):
+
+```sh
+export PB_SUPERUSER_EMAIL=… PB_SUPERUSER_PASSWORD=…
+cd server
+go run ./cmd/loadtest -url https://arici-api-dev.tutunsoft.com -json ../build/p93_report.json
+```
+
+- Araç önce prod adresini (`arici-api.tutunsoft.com`) reddeder. Sonra `/api/app/info` `env` alanı `dev` değilse durur. Ardından sunucuda temizlik route'u yoksa durur. Bu üç durumda hiçbir şey yazılmaz.
+- Hesaplar `loadtest-<run>-<n>@example.com` adıyla, superuser'la açılır. Giriş `impersonate` token'ıyla yapılır, sunucuya test arka kapısı açılmaz.
+- Bütün istekler tek IP'den gittiği için koşu boyunca hız sınırı kapatılır, sonunda yeniden açılır. Kapalı kalırsa sunucunun yeniden başlatılması da sınırı açar.
+- Koşu bitince ya da Ctrl-C ile kesilince araç kendi hesaplarını ve işletmelerini `POST /api/app/dev/loadtest/cleanup` ile kalıcı siler (dosyalar dahil). Bu route yalnız `APP_ENV=dev`'de vardır ve yalnız superuser'a açıktır. Temizlik yarıda kalırsa `-cleanup <run>` ile, bütün koşular için `-cleanup all` ile yeniden çalıştırılır.
+- Rapor şunları verir: süre, istek ve hata sayısı, hata oranı, 503 (SQLite meşgul) sayısı, reddedilen satırlar, işlem başına p50/p95/max. İşlemler: `create_org`, `push`, `pull_page`, `full_pull`, `upload`. Çıkış kodları: 0 temiz koşu, 1 koşuda ya da temizlikte hata, 2 başlayamadı.
+- Diğer ayarlar `-users`, `-records`, `-concurrency`, `-packet`, `-page`, `-file-every`, `-file-bytes` ve `-timeout` bayraklarıyla verilir. Koşarken VPS'te `docker stats` izlenir.
 
 ## Docker ile yerel deneme
 

@@ -19,6 +19,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/feedback"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/files"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/loadtest"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/lotpage"
 	appmail "github.com/abdullahtutun/mobil-aricilik/server/internal/mail"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/notify"
@@ -70,6 +71,8 @@ func Register(app core.App, cfg config.Config, version string) {
 	notify.Register(app, notify.Options{FCM: push})
 	feedback.Register(app, feedbackOptions(cfg))
 	lotpage.Register(app)
+	// P9.3: the load test's cleanup route, bound only on dev.
+	loadtest.Register(app, cfg.Env)
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
