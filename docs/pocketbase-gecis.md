@@ -1541,14 +1541,14 @@ Adım P11.3: Kod yazma. Kullanıcıya P11.3 "Sen yaparsın" maddelerini tek tek 
 
 Önce (P10.1):
 
-- [ ] P9.2 e2e listesi tamamen ☑, P9.3 sonuçları sınırların içinde.
-- [ ] Prod Coolify'da bütün ortam değişkenleri girili (adlar ortak bilgiler tablosundaki gibi), `PB_ENCRYPTION_KEY` prod'a özel.
+- [x] P9.2 e2e listesi tamamen ☑, P9.3 sonuçları sınırların içinde.
+- [x] Prod Coolify'da bütün ortam değişkenleri girili (adlar ortak bilgiler tablosundaki gibi), `PB_ENCRYPTION_KEY` prod'a özel.
 - [ ] Prod `/api/health` 200, sertifika geçerli, `schema_check.sh` eşit.
 - [ ] Prod superuser açık, parola yöneticisinde.
-- [ ] Prod'da `seed demo` ve `seed verify-ref` geçti.
+- [x] Prod'da `seed demo` ve `seed verify-ref` geçti.
 - [ ] Prod'un ilk yedeği alındı ve Mac'e indi; `restore_check.sh` başarılı.
 - [ ] Supabase'in son yedeği (P0.2 betiği) alındı.
-- [ ] Supabase `sync_push` donduruldu, 426 doğrulandı; Supabase verisi yerinde (sayım).
+- [x] Supabase `sync_push` donduruldu, 426 doğrulandı; Supabase verisi yerinde (sayım).
 
 Geçiş (P10.2):
 

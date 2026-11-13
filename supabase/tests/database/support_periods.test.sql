@@ -6,6 +6,20 @@
 -- şema sürümü 21'de yazılır; aks_update görevi yazılır.
 begin;
 create extension if not exists pgtap with schema extensions;
+
+-- sync_push P10.1'de dondu (20261118120000_freeze_sync_push). Bu dosya
+-- dondurmadan önceki davranışı denetler; sürüm listesi yalnız bu
+-- transaction'da geri gelir, sonda rollback ile yine boşalır.
+do $$
+begin
+  execute replace(
+    pg_get_functiondef('public.sync_push(jsonb, timestamptz, integer)'::regprocedure),
+    'array[]::integer[]',
+    'array[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]'
+  );
+end
+$$;
+
 select plan(18);
 
 -- 1111 A'nın owner'ı, 2222 A'da partner, 3333 A'da worker, 5555 A'da

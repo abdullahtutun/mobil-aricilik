@@ -298,11 +298,10 @@ void main() {
     });
   });
 
-  test('sync_push Drift şema sürümünü kabul eder', () {
-    // Sürüm sunucunun listesinde yoksa her gönderim PT426 alır ve güncel
-    // uygulama güncelleme ister.
-    final db = openTestDatabase();
-
-    expect(server.supportedVersions, contains(db.schemaVersion));
+  test('Supabase sync_push dondu: hiçbir sürüm kabul edilmez', () {
+    // P10.1 (K-11): yazmalar PocketBase'e gider; Supabase'in sync_push'u
+    // her sürüme PT426 döner. Drift sürümünün PocketBase listesinde olduğunu
+    // server/internal/sync/versions_test.go denetler.
+    expect(server.supportedVersions, isEmpty);
   });
 }
