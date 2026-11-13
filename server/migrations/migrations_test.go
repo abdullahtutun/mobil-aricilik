@@ -63,10 +63,15 @@ func isRequired(f core.Field) bool {
 }
 
 // describeIndexes returns "name|unique|columns|where" per index, sorted.
+// The `id COLLATE NOCASE` index every UUID collection gets (P9.3) is left
+// out; TestIDNocaseIndexOnEveryUUIDCollection checks it.
 func describeIndexes(c *core.Collection) []string {
 	var out []string
 	for _, raw := range c.Indexes {
 		idx := dbutils.ParseIndex(raw)
+		if idx.IndexName == IDNocaseIndexName(c.Name) {
+			continue
+		}
 		var cols []string
 		for _, col := range idx.Columns {
 			cols = append(cols, col.Name)

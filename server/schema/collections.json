@@ -119,6 +119,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_analytics_events_id_nocase` ON `analytics_events` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_analytics_events_name_occurred_at` ON `analytics_events` (`name`, `occurred_at`)"
     ]
   },
@@ -340,6 +341,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_apiaries_id_nocase` ON `apiaries` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_apiaries_org_id_server_seq` ON `apiaries` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_apiaries_server_seq` ON `apiaries` (`server_seq`)"
     ]
@@ -491,6 +493,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_customer_payments_id_nocase` ON `customer_payments` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_customer_payments_org_id_server_seq` ON `customer_payments` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_customer_payments_transaction_id` ON `customer_payments` (`transaction_id`)",
       "CREATE UNIQUE INDEX `idx_customer_payments_server_seq` ON `customer_payments` (`server_seq`)"
@@ -659,6 +662,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_customers_id_nocase` ON `customers` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_customers_org_id_server_seq` ON `customers` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_customers_server_seq` ON `customers` (`server_seq`)"
     ]
@@ -796,6 +800,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_deletion_codes_id_nocase` ON `deletion_codes` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_deletion_codes_user_id` ON `deletion_codes` (`user_id`)"
     ]
   },
@@ -903,6 +908,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_deletion_log_id_nocase` ON `deletion_log` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_deletion_log_request_id` ON `deletion_log` (`request_id`)"
     ]
   },
@@ -1134,6 +1140,7 @@
     "indexes": [
       "CREATE INDEX `idx_deletion_requests_due` ON `deletion_requests` (`scheduled_for`) WHERE `status` = 'bekliyor'",
       "CREATE INDEX `idx_deletion_requests_email_hash` ON `deletion_requests` (`email_hash`, `requested_at`)",
+      "CREATE INDEX `idx_deletion_requests_id_nocase` ON `deletion_requests` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_deletion_requests_user_id` ON `deletion_requests` (`user_id`, `requested_at`)",
       "CREATE UNIQUE INDEX `idx_deletion_requests_pending_user` ON `deletion_requests` (`user_id`) WHERE `status` = 'bekliyor' AND `user_id` != ''"
     ]
@@ -1247,6 +1254,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_device_tokens_id_nocase` ON `device_tokens` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_device_tokens_user_id` ON `device_tokens` (`user_id`)",
       "CREATE UNIQUE INDEX `idx_device_tokens_token` ON `device_tokens` (`token`)"
     ]
@@ -1330,6 +1338,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_document_files_id_nocase` ON `document_files` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_document_files_org_id` ON `document_files` (`org_id`)",
       "CREATE UNIQUE INDEX `idx_document_files_path` ON `document_files` (`path`)"
     ]
@@ -1556,6 +1565,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_documents_id_nocase` ON `documents` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_documents_org_id_server_seq` ON `documents` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_documents_server_seq` ON `documents` (`server_seq`)"
     ]
@@ -1742,6 +1752,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_drugs_id_nocase` ON `drugs` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_drugs_org_id_server_seq` ON `drugs` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_drugs_server_seq` ON `drugs` (`server_seq`)"
     ]
@@ -1882,6 +1893,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_feedback_created_by` ON `feedback` (`created_by`)",
+      "CREATE INDEX `idx_feedback_id_nocase` ON `feedback` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_feedback_org_id` ON `feedback` (`org_id`)"
     ]
   },
@@ -1963,6 +1975,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_feedback_files_id_nocase` ON `feedback_files` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_feedback_files_org_id` ON `feedback_files` (`org_id`)",
       "CREATE UNIQUE INDEX `idx_feedback_files_path` ON `feedback_files` (`path`)"
     ]
@@ -2161,6 +2174,7 @@
       "CREATE INDEX `idx_feedings_apiary_id` ON `feedings` (`apiary_id`)",
       "CREATE INDEX `idx_feedings_feeding_group_id` ON `feedings` (`feeding_group_id`)",
       "CREATE INDEX `idx_feedings_hive_id` ON `feedings` (`hive_id`)",
+      "CREATE INDEX `idx_feedings_id_nocase` ON `feedings` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_feedings_org_id_server_seq` ON `feedings` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_feedings_server_seq` ON `feedings` (`server_seq`)"
     ]
@@ -2329,6 +2343,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_harvest_hives_hive_id` ON `harvest_hives` (`hive_id`)",
+      "CREATE INDEX `idx_harvest_hives_id_nocase` ON `harvest_hives` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_harvest_hives_org_id_server_seq` ON `harvest_hives` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_harvest_hives_withdrawal_treatment_id` ON `harvest_hives` (`withdrawal_treatment_id`)",
       "CREATE UNIQUE INDEX `idx_harvest_hives_harvest_id_hive_id` ON `harvest_hives` (`harvest_id`, `hive_id`) WHERE `deleted_at` = ''",
@@ -2526,6 +2541,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_harvests_apiary_id` ON `harvests` (`apiary_id`)",
+      "CREATE INDEX `idx_harvests_id_nocase` ON `harvests` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_harvests_org_id_server_seq` ON `harvests` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_harvests_server_seq` ON `harvests` (`server_seq`)"
     ]
@@ -2681,6 +2697,7 @@
     "indexes": [
       "CREATE INDEX `idx_hive_location_history_apiary_id` ON `hive_location_history` (`apiary_id`)",
       "CREATE INDEX `idx_hive_location_history_hive_id` ON `hive_location_history` (`hive_id`)",
+      "CREATE INDEX `idx_hive_location_history_id_nocase` ON `hive_location_history` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_hive_location_history_org_id_server_seq` ON `hive_location_history` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_hive_location_history_server_seq` ON `hive_location_history` (`server_seq`)"
     ]
@@ -2890,6 +2907,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_hive_status_events_hive_id` ON `hive_status_events` (`hive_id`)",
+      "CREATE INDEX `idx_hive_status_events_id_nocase` ON `hive_status_events` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_hive_status_events_org_id_server_seq` ON `hive_status_events` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_hive_status_events_server_seq` ON `hive_status_events` (`server_seq`)"
     ]
@@ -3180,6 +3198,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_hives_apiary_id` ON `hives` (`apiary_id`)",
+      "CREATE INDEX `idx_hives_id_nocase` ON `hives` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_hives_org_id_server_seq` ON `hives` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_hives_queen_id` ON `hives` (`queen_id`)",
       "CREATE UNIQUE INDEX `idx_hives_org_id_tag_code` ON `hives` (`org_id`, `tag_code`) WHERE `tag_code` != '' AND `deleted_at` = ''",
@@ -3442,6 +3461,7 @@
     "indexes": [
       "CREATE INDEX `idx_inspections_apiary_id` ON `inspections` (`apiary_id`)",
       "CREATE INDEX `idx_inspections_hive_id` ON `inspections` (`hive_id`)",
+      "CREATE INDEX `idx_inspections_id_nocase` ON `inspections` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_inspections_org_id_server_seq` ON `inspections` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_inspections_server_seq` ON `inspections` (`server_seq`)"
     ]
@@ -3623,6 +3643,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_inventory_items_id_nocase` ON `inventory_items` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_inventory_items_org_id_server_seq` ON `inventory_items` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_inventory_items_server_seq` ON `inventory_items` (`server_seq`)"
     ]
@@ -3817,6 +3838,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_inventory_moves_id_nocase` ON `inventory_moves` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_inventory_moves_item_id` ON `inventory_moves` (`item_id`)",
       "CREATE INDEX `idx_inventory_moves_org_id_server_seq` ON `inventory_moves` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_inventory_moves_server_seq` ON `inventory_moves` (`server_seq`)"
@@ -3961,6 +3983,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_invites_created_by` ON `invites` (`created_by`)",
+      "CREATE INDEX `idx_invites_id_nocase` ON `invites` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_invites_org_id` ON `invites` (`org_id`)",
       "CREATE INDEX `idx_invites_used_by` ON `invites` (`used_by`)",
       "CREATE UNIQUE INDEX `idx_invites_code` ON `invites` (`code`)"
@@ -4021,6 +4044,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_knowledge_packs_id_nocase` ON `knowledge_packs` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_knowledge_packs_name` ON `knowledge_packs` (`name`)"
     ]
   },
@@ -4228,6 +4252,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_lab_results_document_id` ON `lab_results` (`document_id`)",
+      "CREATE INDEX `idx_lab_results_id_nocase` ON `lab_results` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_lab_results_lot_id` ON `lab_results` (`lot_id`)",
       "CREATE INDEX `idx_lab_results_org_id_server_seq` ON `lab_results` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_lab_results_server_seq` ON `lab_results` (`server_seq`)"
@@ -4368,6 +4393,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_lot_harvests_id_nocase` ON `lot_harvests` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_lot_harvests_lot_id` ON `lot_harvests` (`lot_id`)",
       "CREATE INDEX `idx_lot_harvests_org_id_server_seq` ON `lot_harvests` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_lot_harvests_harvest_id` ON `lot_harvests` (`harvest_id`) WHERE `deleted_at` = ''",
@@ -4521,6 +4547,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_lot_sales_id_nocase` ON `lot_sales` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_lot_sales_lot_id` ON `lot_sales` (`lot_id`)",
       "CREATE INDEX `idx_lot_sales_org_id_server_seq` ON `lot_sales` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_lot_sales_server_seq` ON `lot_sales` (`server_seq`)"
@@ -4728,6 +4755,7 @@
     "indexes": [
       "CREATE INDEX `idx_lot_treatments_harvest_id` ON `lot_treatments` (`harvest_id`)",
       "CREATE INDEX `idx_lot_treatments_hive_id` ON `lot_treatments` (`hive_id`)",
+      "CREATE INDEX `idx_lot_treatments_id_nocase` ON `lot_treatments` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_lot_treatments_lot_id` ON `lot_treatments` (`lot_id`)",
       "CREATE INDEX `idx_lot_treatments_org_id_server_seq` ON `lot_treatments` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_lot_treatments_treatment_id` ON `lot_treatments` (`treatment_id`)",
@@ -4965,6 +4993,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_lots_id_nocase` ON `lots` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_lots_org_id_server_seq` ON `lots` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_lots_server_seq` ON `lots` (`server_seq`)"
     ]
@@ -5151,6 +5180,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_mating_nucs_apiary_id` ON `mating_nucs` (`apiary_id`)",
+      "CREATE INDEX `idx_mating_nucs_id_nocase` ON `mating_nucs` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_mating_nucs_org_id_server_seq` ON `mating_nucs` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_mating_nucs_queen_id` ON `mating_nucs` (`queen_id`)",
       "CREATE INDEX `idx_mating_nucs_rearing_batch_id` ON `mating_nucs` (`rearing_batch_id`)",
@@ -5371,6 +5401,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_media_hive_id` ON `media` (`hive_id`)",
+      "CREATE INDEX `idx_media_id_nocase` ON `media` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_media_inspection_id` ON `media` (`inspection_id`)",
       "CREATE INDEX `idx_media_org_id_server_seq` ON `media` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_media_treatment_id` ON `media` (`treatment_id`)",
@@ -5458,6 +5489,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_media_files_id_nocase` ON `media_files` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_media_files_org_id` ON `media_files` (`org_id`)",
       "CREATE UNIQUE INDEX `idx_media_files_path` ON `media_files` (`path`)"
     ]
@@ -5613,6 +5645,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_memberships_id_nocase` ON `memberships` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_memberships_org_id_server_seq` ON `memberships` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_memberships_user_id` ON `memberships` (`user_id`)",
       "CREATE UNIQUE INDEX `idx_memberships_org_id_user_id` ON `memberships` (`org_id`, `user_id`) WHERE `deleted_at` = ''",
@@ -5848,6 +5881,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_migration_stops_apiary_id` ON `migration_stops` (`apiary_id`)",
+      "CREATE INDEX `idx_migration_stops_id_nocase` ON `migration_stops` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_migration_stops_migration_id` ON `migration_stops` (`migration_id`)",
       "CREATE INDEX `idx_migration_stops_org_id_server_seq` ON `migration_stops` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_migration_stops_server_seq` ON `migration_stops` (`server_seq`)"
@@ -5986,6 +6020,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_migrations_id_nocase` ON `migrations` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_migrations_org_id_server_seq` ON `migrations` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_migrations_server_seq` ON `migrations` (`server_seq`)"
     ]
@@ -6188,6 +6223,7 @@
     "indexes": [
       "CREATE INDEX `idx_mite_counts_apiary_id` ON `mite_counts` (`apiary_id`)",
       "CREATE INDEX `idx_mite_counts_hive_id` ON `mite_counts` (`hive_id`)",
+      "CREATE INDEX `idx_mite_counts_id_nocase` ON `mite_counts` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_mite_counts_org_id_server_seq` ON `mite_counts` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_mite_counts_server_seq` ON `mite_counts` (`server_seq`)"
     ]
@@ -6270,6 +6306,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_org_logo_files_id_nocase` ON `org_logo_files` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_org_logo_files_org_id` ON `org_logo_files` (`org_id`)",
       "CREATE UNIQUE INDEX `idx_org_logo_files_path` ON `org_logo_files` (`path`)"
     ]
@@ -6508,6 +6545,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_organizations_id_nocase` ON `organizations` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_organizations_server_seq` ON `organizations` (`server_seq`)"
     ]
   },
@@ -6590,6 +6628,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_public_lot_files_id_nocase` ON `public_lot_files` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_public_lot_files_org_id` ON `public_lot_files` (`org_id`)",
       "CREATE UNIQUE INDEX `idx_public_lot_files_path` ON `public_lot_files` (`path`)"
     ]
@@ -6763,6 +6802,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_queen_rearing_batches_id_nocase` ON `queen_rearing_batches` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_queen_rearing_batches_mother_queen_id` ON `queen_rearing_batches` (`mother_queen_id`)",
       "CREATE INDEX `idx_queen_rearing_batches_org_id_server_seq` ON `queen_rearing_batches` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_queen_rearing_batches_server_seq` ON `queen_rearing_batches` (`server_seq`)"
@@ -6982,6 +7022,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_queens_id_nocase` ON `queens` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_queens_mother_queen_id` ON `queens` (`mother_queen_id`)",
       "CREATE INDEX `idx_queens_org_id_server_seq` ON `queens` (`org_id`, `server_seq`)",
       "CREATE UNIQUE INDEX `idx_queens_server_seq` ON `queens` (`server_seq`)"
@@ -7065,6 +7106,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_receipt_files_id_nocase` ON `receipt_files` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_receipt_files_org_id` ON `receipt_files` (`org_id`)",
       "CREATE UNIQUE INDEX `idx_receipt_files_path` ON `receipt_files` (`path`)"
     ]
@@ -7265,6 +7307,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_ref_drugs_id_nocase` ON `ref_drugs` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_ref_drugs_server_seq` ON `ref_drugs` (`server_seq`)"
     ]
   },
@@ -7431,6 +7474,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_ref_support_periods_id_nocase` ON `ref_support_periods` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_ref_support_periods_server_seq` ON `ref_support_periods` (`server_seq`)"
     ]
   },
@@ -7487,6 +7531,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_support_period_notifications_id_nocase` ON `support_period_notifications` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_support_period_notifications_period_id` ON `support_period_notifications` (`period_id`)"
     ]
   },
@@ -7526,7 +7571,9 @@
         "type": "number"
       }
     ],
-    "indexes": []
+    "indexes": [
+      "CREATE INDEX `idx_sync_meta_id_nocase` ON `sync_meta` (`id` COLLATE NOCASE)"
+    ]
   },
   {
     "name": "tasks",
@@ -7802,6 +7849,7 @@
       "CREATE INDEX `idx_tasks_assigned_to` ON `tasks` (`assigned_to`)",
       "CREATE INDEX `idx_tasks_drug_id` ON `tasks` (`drug_id`)",
       "CREATE INDEX `idx_tasks_hive_id` ON `tasks` (`hive_id`)",
+      "CREATE INDEX `idx_tasks_id_nocase` ON `tasks` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_tasks_org_id_server_seq` ON `tasks` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_tasks_ref_drug_id` ON `tasks` (`ref_drug_id`)",
       "CREATE INDEX `idx_tasks_source_id` ON `tasks` (`source_id`)",
@@ -8095,6 +8143,7 @@
     "indexes": [
       "CREATE INDEX `idx_transactions_apiary_id` ON `transactions` (`apiary_id`)",
       "CREATE INDEX `idx_transactions_customer_id` ON `transactions` (`customer_id`)",
+      "CREATE INDEX `idx_transactions_id_nocase` ON `transactions` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_transactions_lot_id` ON `transactions` (`lot_id`)",
       "CREATE INDEX `idx_transactions_lot_sale_id` ON `transactions` (`lot_sale_id`)",
       "CREATE INDEX `idx_transactions_org_id_server_seq` ON `transactions` (`org_id`, `server_seq`)",
@@ -8280,6 +8329,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_transport_items_hive_id` ON `transport_items` (`hive_id`)",
+      "CREATE INDEX `idx_transport_items_id_nocase` ON `transport_items` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_transport_items_org_id_server_seq` ON `transport_items` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_transport_items_transport_id` ON `transport_items` (`transport_id`)",
       "CREATE UNIQUE INDEX `idx_transport_items_server_seq` ON `transport_items` (`server_seq`)"
@@ -8474,6 +8524,7 @@
     ],
     "indexes": [
       "CREATE INDEX `idx_transports_destination_apiary_id` ON `transports` (`destination_apiary_id`)",
+      "CREATE INDEX `idx_transports_id_nocase` ON `transports` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_transports_migration_stop_id` ON `transports` (`migration_stop_id`)",
       "CREATE INDEX `idx_transports_org_id_server_seq` ON `transports` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_transports_source_apiary_id` ON `transports` (`source_apiary_id`)",
@@ -8778,6 +8829,7 @@
       "CREATE INDEX `idx_treatments_application_id` ON `treatments` (`application_id`)",
       "CREATE INDEX `idx_treatments_drug_id` ON `treatments` (`drug_id`)",
       "CREATE INDEX `idx_treatments_hive_id` ON `treatments` (`hive_id`)",
+      "CREATE INDEX `idx_treatments_id_nocase` ON `treatments` (`id` COLLATE NOCASE)",
       "CREATE INDEX `idx_treatments_org_id_server_seq` ON `treatments` (`org_id`, `server_seq`)",
       "CREATE INDEX `idx_treatments_ref_drug_id` ON `treatments` (`ref_drug_id`)",
       "CREATE UNIQUE INDEX `idx_treatments_server_seq` ON `treatments` (`server_seq`)"
@@ -8897,6 +8949,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_users_id_nocase` ON `users` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_email__pb_users_auth_` ON `users` (`email`) WHERE `email` != ''",
       "CREATE UNIQUE INDEX `idx_tokenKey__pb_users_auth_` ON `users` (`tokenKey`)"
     ]
@@ -8964,6 +9017,7 @@
       }
     ],
     "indexes": [
+      "CREATE INDEX `idx_weather_cache_id_nocase` ON `weather_cache` (`id` COLLATE NOCASE)",
       "CREATE UNIQUE INDEX `idx_weather_cache_cell` ON `weather_cache` (`cell`)"
     ]
   }
