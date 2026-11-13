@@ -57,7 +57,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P9.2 | Dev sunucusunda uçtan uca: roller, hesap silme, dosyalar, push, e-posta | P9.1 | ☑ |
 | P9.3 | Yük ve RAM kontrolü | P9.2 | ☑ |
 | P10.1 | Prod hazırlığı ve Supabase yazmalarının dondurulması | P9.3 | ☑ |
-| P10.2 | Geçiş: prod varsayılanı PocketBase, sürüm, izleme | P10.1 | ◐ |
+| P10.2 | Geçiş: prod varsayılanı PocketBase, sürüm, izleme | P10.1 | ☑ |
 | P11.1 | Flutter'dan Supabase'in kaldırılması (gözlemden sonra) | P10.2 + 14 gün | ☐ |
 | P11.2 | Dokümanlar, CLAUDE.md, araçlar ve hafıza | P11.1 | ☐ |
 | P11.3 | Supabase projesinin duraklatılması | P11.2 | ☐ |
@@ -1554,9 +1554,9 @@ Geçiş (P10.2):
 
 - [x] Prod flavor varsayılanı PocketBase; build numarası artırıldı. (`Flavor.prod.defaultBackend = pocketbase`, `1.0.0+2`.)
 - [x] `flutter clean` + prod AAB ve iOS derlemesi. (2026-11-13: AAB 109,8 MB, yükleme anahtarıyla imzalı; IPA 36,5 MB. `SENTRY_DSN` olmadan; mağazaya yüklemeden önce DSN'le yeniden derlenir.)
-- [ ] Gerçek cihazda prod derlemesi: yeni e-postayla giriş, demo hesapla giriş, kayıt, ikinci cihazda görünme, foto yükleme, push. (Kullanıcı deneyecek.)
-- [ ] Lot sayfası prod adresinde HTML açılıyor. (Route prod'da HTML dönüyor: yayımlanmamış lot 404 `text/html`. Yayımlanmış lotla cihaz denemesinde ☑.)
-- [ ] Coolify bildirimleri ve dışarıdan uptime denetimi açık. (Adımlar `server/ops/monitoring.md` "Sen yaparsın". 2026-11-13: Coolify e-posta bildirimleri açık, test e-postası geldi; uptime bekliyor.)
+- [x] Gerçek cihazda prod derlemesi: yeni e-postayla giriş, demo hesapla giriş, kayıt, ikinci cihazda görünme, foto yükleme, push. (2026-11-13, kullanıcı: hepsi sorunsuz.)
+- [x] Lot sayfası prod adresinde HTML açılıyor. (Yayımlanmamış lot 404 `text/html`; yayımlanmış lot cihaz denemesinde açıldı.)
+- [x] Coolify bildirimleri ve dışarıdan uptime denetimi açık. (2026-11-13: Coolify e-posta bildirimleri açık, test e-postası geldi; UptimeRobot `/api/health` 5 dk.)
 - [x] Gözlem süresinin başlangıç tarihi progress'te (P11.1 bu tarihten 14 gün sonra). (Başlangıç 2026-11-13; P11.1 en erken 2026-11-27.)
 
 Geri dönüş tetikleyicileri (biri olursa P10.2 "Ters giderse" uygulanır): girişte e-posta gelmiyor ve 1 saatte çözülemiyor; senkronda veri kaybı ya da tekrarlayan 5xx; prod konteyneri bellek yüzünden yeniden başlıyor.
