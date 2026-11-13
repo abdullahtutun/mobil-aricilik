@@ -2,7 +2,7 @@
 
 Kasım 2026 · Abdullah Tutun
 
-> **Tamamlandı (2026-11-13).** Uygulama ve sunucu PocketBase'de; `pocketbase-gecis` dalı P11.2'de `main`'e birleştirildi, Supabase kodu `archive/supabase/`'te. Kalan tek adım P11.3 (Supabase projesinin duraklatılması; kullanıcı işi). Bu doküman bundan sonra karar kaydı olarak durur; yeni iş CLAUDE.md'deki kalıpla yapılır.
+> **Tamamlandı (2026-11-13).** Uygulama ve sunucu PocketBase'de; `pocketbase-gecis` dalı P11.2'de `main`'e birleştirildi, Supabase kodu `archive/supabase/`'te. P11.3'te Supabase projesi duraklatıldı (silinmedi), secret'ları silindi, eski FCM anahtarı iptal edildi. Bu doküman bundan sonra karar kaydı olarak durur; yeni iş CLAUDE.md'deki kalıpla yapılır.
 
 ## Özet
 
@@ -62,7 +62,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P10.2 | Geçiş: prod varsayılanı PocketBase, sürüm, izleme | P10.1 | ☑ |
 | P11.1 | Flutter'dan Supabase'in kaldırılması (gözlemden sonra) | P10.2 + 14 gün | ☑ (kullanıcı kararıyla gözlem beklenmeden, 2026-11-13) |
 | P11.2 | Dokümanlar, CLAUDE.md, araçlar ve hafıza | P11.1 | ☑ |
-| P11.3 | Supabase projesinin duraklatılması | P11.2 | ☐ |
+| P11.3 | Supabase projesinin duraklatılması | P11.2 | ☑ (son yedek alınmadı, P0.2 yeter; kullanıcı kararı, 2026-11-13) |
 
 ## Kararlar
 

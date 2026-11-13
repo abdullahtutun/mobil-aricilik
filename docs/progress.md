@@ -1227,6 +1227,15 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Testler: `go test ./...` temiz, `flutter analyze` temiz. `flutter test` 2586'dan 2583 geçti; kırılan 3 test `tasks_flow_test.dart`'ta ve saate bağlı: 23:00'ten sonra `defaultTaskDueAt` yarını öneriyor, testler gerçek saati (`DateTime.now`) kullanıyor. Koşu 23:22'de yapıldı; bu adımda Dart koduna dokunulmadı. "Bilinen sorunlar"a eklendi.
 - Hafıza (kullanıcı onayıyla): `apply-migrations-remote` yerine `deploy-server-changes` (push → dev otomatik, prod yalnız elle); `supabase-projects` ve `verify-supabase-project` arşiv notuna çevrildi. `pocketbase-gecis` kullanıcı onayıyla `main`'e `--no-ff` birleştirildi; Coolify'da iki kaynağın dalını `main` yapmak kullanıcıda.
 
+### 2026-11-13 — P11.3 Supabase projesinin duraklatılması
+
+- Kod yazılmadı. Son yedek alınmadı (kullanıcı kararı, P10.1'deki kararın devamı): uzun vadeli kopya 2026-11-09 tarihli P0.2 yedeği (`~/Yedekler/mobil-arici/supabase-2026-11-09`; `auth.users` 4, `organizations` 3, `hives` 47, `ref_drugs` 21, Storage 7 dosya). `sync_push` dondurmadan sonra veri değişmedi. Yedek tek yerde; "iki yer" şartı P0.2'de kullanıcı kararıyla düşmüştü.
+- Kullanıcı Supabase panelinde `jcddnelaboueazhordfz` projesini duraklattı; durum "Paused". Proje silinmedi; silmek ayrı bir kullanıcı kararı. Geri dönüş: panelden "Restore project" (süresi sınırlı).
+- Edge Function secret'ları kullanıcının isteğiyle Claude tarafından Supabase CLI'yle silindi (`supabase secrets unset --project-ref jcddnelaboueazhordfz`, proje ref'i `archive/supabase/.temp/project-ref`'ten doğrulandı): `WEATHERAPI_KEY`, `SMTP_USER`/`SMTP_PASS`, `ACCOUNT_MAIL_SMTP_USER`/`_PASS`, `FEEDBACK_SMTP_USER`/`_PASS`, `FEEDBACK_TO_EMAIL`, `FCM_SERVICE_ACCOUNT`, `NOTIFY_SECRET`, `FEEDBACK_MAIL_SECRET`, `ACCOUNT_DELETE_CRON_SECRET` (12). Kalanlar yalnız Supabase'in kendi `SUPABASE_*` secret'ları (7, silinemez). Değerler Coolify'da.
+- Kullanıcı eski FCM servis hesabı anahtarını iptal etti (R15 kapandı); prod push P5.6'daki yeni anahtarla çalışıyor (P10.2 cihaz denemesi).
+- Testler: `flutter analyze` temiz; `flutter test` 2586'dan 2583 geçti. Kırılan 3 test yine `tasks_flow_test.dart`'taki saate bağlı testler (koşu 23:39'da; "Bilinen sorunlar"da). Adım kod yazmadığı için düzeltilmedi.
+- P11.3 ☑; PocketBase geçişinin bütün adımları bitti.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
