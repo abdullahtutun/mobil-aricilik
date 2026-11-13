@@ -56,7 +56,7 @@ Durum: ☐ yapılmadı · ◐ sürüyor · ☑ bitti. Adım bitince Claude bu ta
 | P9.1 | İki cihaz ve çevrimdışı senkron testleri (yerel PocketBase) | P8.1 | ☑ |
 | P9.2 | Dev sunucusunda uçtan uca: roller, hesap silme, dosyalar, push, e-posta | P9.1 | ☑ |
 | P9.3 | Yük ve RAM kontrolü | P9.2 | ☑ |
-| P10.1 | Prod hazırlığı ve Supabase yazmalarının dondurulması | P9.3 | ☐ |
+| P10.1 | Prod hazırlığı ve Supabase yazmalarının dondurulması | P9.3 | ☑ |
 | P10.2 | Geçiş: prod varsayılanı PocketBase, sürüm, izleme | P10.1 | ☐ |
 | P11.1 | Flutter'dan Supabase'in kaldırılması (gözlemden sonra) | P10.2 + 14 gün | ☐ |
 | P11.2 | Dokümanlar, CLAUDE.md, araçlar ve hafıza | P11.1 | ☐ |
@@ -1543,11 +1543,11 @@ Adım P11.3: Kod yazma. Kullanıcıya P11.3 "Sen yaparsın" maddelerini tek tek 
 
 - [x] P9.2 e2e listesi tamamen ☑, P9.3 sonuçları sınırların içinde.
 - [x] Prod Coolify'da bütün ortam değişkenleri girili (adlar ortak bilgiler tablosundaki gibi), `PB_ENCRYPTION_KEY` prod'a özel.
-- [ ] Prod `/api/health` 200, sertifika geçerli, `schema_check.sh` eşit.
+- [x] Prod `/api/health` 200, sertifika geçerli, `schema_check.sh` eşit.
 - [ ] Prod superuser açık, parola yöneticisinde.
 - [x] Prod'da `seed demo` ve `seed verify-ref` geçti.
 - [ ] Prod'un ilk yedeği alındı ve Mac'e indi; `restore_check.sh` başarılı.
-- [ ] Supabase'in son yedeği (P0.2 betiği) alındı.
+- [ ] Supabase'in son yedeği (P0.2 betiği) alındı. (2026-11-13 kullanıcı kararı: alınmadı, gerek yok; Supabase verisi dondurmadan sonra değişmiyor.)
 - [x] Supabase `sync_push` donduruldu, 426 doğrulandı; Supabase verisi yerinde (sayım).
 
 Geçiş (P10.2):
