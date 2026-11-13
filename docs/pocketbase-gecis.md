@@ -1546,7 +1546,7 @@ Adım P11.3: Kod yazma. Kullanıcıya P11.3 "Sen yaparsın" maddelerini tek tek 
 - [x] Prod `/api/health` 200, sertifika geçerli, `schema_check.sh` eşit.
 - [ ] Prod superuser açık, parola yöneticisinde.
 - [x] Prod'da `seed demo` ve `seed verify-ref` geçti.
-- [ ] Prod'un ilk yedeği alındı ve Mac'e indi; `restore_check.sh` başarılı.
+- [x] Prod'un ilk yedeği alındı ve Mac'e indi; `restore_check.sh` başarılı.
 - [ ] Supabase'in son yedeği (P0.2 betiği) alındı. (2026-11-13 kullanıcı kararı: alınmadı, gerek yok; Supabase verisi dondurmadan sonra değişmiyor.)
 - [x] Supabase `sync_push` donduruldu, 426 doğrulandı; Supabase verisi yerinde (sayım).
 
