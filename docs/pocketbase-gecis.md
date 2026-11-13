@@ -1556,7 +1556,7 @@ Geçiş (P10.2):
 - [x] `flutter clean` + prod AAB ve iOS derlemesi. (2026-11-13: AAB 109,8 MB, yükleme anahtarıyla imzalı; IPA 36,5 MB. `SENTRY_DSN` olmadan; mağazaya yüklemeden önce DSN'le yeniden derlenir.)
 - [ ] Gerçek cihazda prod derlemesi: yeni e-postayla giriş, demo hesapla giriş, kayıt, ikinci cihazda görünme, foto yükleme, push. (Kullanıcı deneyecek.)
 - [ ] Lot sayfası prod adresinde HTML açılıyor. (Route prod'da HTML dönüyor: yayımlanmamış lot 404 `text/html`. Yayımlanmış lotla cihaz denemesinde ☑.)
-- [ ] Coolify bildirimleri ve dışarıdan uptime denetimi açık. (Adımlar `server/ops/monitoring.md` "Sen yaparsın".)
+- [ ] Coolify bildirimleri ve dışarıdan uptime denetimi açık. (Adımlar `server/ops/monitoring.md` "Sen yaparsın". 2026-11-13: Coolify e-posta bildirimleri açık, test e-postası geldi; uptime bekliyor.)
 - [x] Gözlem süresinin başlangıç tarihi progress'te (P11.1 bu tarihten 14 gün sonra). (Başlangıç 2026-11-13; P11.1 en erken 2026-11-27.)
 
 Geri dönüş tetikleyicileri (biri olursa P10.2 "Ters giderse" uygulanır): girişte e-posta gelmiyor ve 1 saatte çözülemiyor; senkronda veri kaybı ya da tekrarlayan 5xx; prod konteyneri bellek yüzünden yeniden başlıyor.
