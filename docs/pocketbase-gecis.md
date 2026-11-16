@@ -1537,7 +1537,7 @@ Adım P11.3: Kod yazma. Kullanıcıya P11.3 "Sen yaparsın" maddelerini tek tek 
 | R14 | Supabase duraklatılmış projeyi süresiz saklamıyor | Eski veriye erişim | P0.2 ve P11.3 yedekleri kalıcı kopya. |
 | R15 | FCM servis hesabı anahtarı daha önce sohbete yapıştırılmıştı | Kötüye kullanım | P5.6'da yeni anahtar, P11.3'te eskisinin iptali. |
 | R16 | Hesap silme kalıcıdır | Yanlış testte gerçek veri kaybı | Silme testleri yalnız dev'de ve test hesaplarıyla; `deletion expire` prod'da çalışmaz. |
-| R17 | KVKK: e-posta (Hostinger), FCM, Sentry yurt dışında | Aydınlatma metni eksik | P7.6'da gizlilik politikası güncellenir; Hostinger konumu kullanıcıya sorulur. |
+| R17 | KVKK: e-posta (Hostinger), FCM, Sentry yurt dışında | Aydınlatma metni eksik | P7.6'da gizlilik politikası güncellenir; Hostinger konumu kullanıcıya sorulur. 2026-11-16: Hostinger e-posta sunucusu Hollanda'da, politikaya yazıldı. Açık: yurt dışı aktarımın KVKK dayanağı (standart sözleşme + Kurum'a bildirim). |
 
 ## Geçiş günü kontrol listesi (P10)
 

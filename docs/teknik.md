@@ -366,7 +366,7 @@ Alt navigasyonda 4 sekme + ortada büyük bir **Okut / Kaydet** butonu: Sahada e
 - Her koleksiyonun yetkisi tanımlı: senkron koleksiyonlarında API kuralları kapalı ve erişim Go yetki katmanında; doğrudan erişilenlerde API kuralı. Kuralı tanımsız koleksiyon `go test`'te reddedilir.
 - Superuser yalnız sunucu konteynerinde CLI ile açılır, istemciye hiç verilmez; gizli anahtarlar (SMTP, WeatherAPI, FCM, `PB_ENCRYPTION_KEY`) yalnız Coolify ortam değişkenlerinde.
 - Kişisel veri: e-posta, arazi sahibi iletişimi, müşteri bilgileri — KVKK (TR) ve GDPR (AB kullanıcıları) aydınlatma metni, açık rıza ve hesap/veri silme akışı uygulama içinde.
-- Veri bölgesi: Sunucu, veritabanı ve dosyalar Türkiye'de (Hosting.com.tr VPS). Yurt dışına aktarılanlar gizlilik politikasında yazılı: e-posta (Hostinger), FCM, Sentry; KVKK yükümlülükleri hukuk danışmanıyla netleştirilmeli.
+- Veri bölgesi: Sunucu, veritabanı ve dosyalar Türkiye'de (Hosting.com.tr VPS). Yurt dışına aktarılanlar gizlilik politikasında yazılı: e-posta (Hostinger, sunucusu Hollanda'da), FCM, Sentry; KVKK yükümlülükleri hukuk danışmanıyla netleştirilmeli.
 - Yerel DB: Cihaz kaybolursa finans ve müşteri verisi için isteğe bağlı uygulama kilidi (PIN/biyometrik).
 
 **Test stratejisi**

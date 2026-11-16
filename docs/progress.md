@@ -1236,6 +1236,12 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Testler: `flutter analyze` temiz; `flutter test` 2586'dan 2583 geçti. Kırılan 3 test yine `tasks_flow_test.dart`'taki saate bağlı testler (koşu 23:39'da; "Bilinen sorunlar"da). Adım kod yazmadığı için düzeltilmedi.
 - P11.3 ☑; PocketBase geçişinin bütün adımları bitti.
 
+### 2026-11-16 — Gizlilik politikası: Hostinger'ın konumu
+
+- Kullanıcı bildirdi: Hostinger e-posta sunucusu Hollanda'da. `docs/legal/privacy-policy.html` (TR + EN) §5 ve §6'ya yazıldı; yürürlük 16 Kasım 2026, önceki sürüm 12 Kasım 2026. `teknik.md` veri bölgesi satırı ve R17 güncellendi.
+- **Sayfayı siteye kullanıcı yükleyecek.**
+- Açık (yayından önce, hukuk danışmanıyla): §6'nın son cümlesi aktarımların "standart sözleşme hükümleri" kapsamında yapıldığını söylüyor. KVKK m. 9'a göre bu, Kurul'un standart sözleşmesinin sağlayıcıyla imzalanmasını ve 5 iş günü içinde Kurum'a bildirilmesini gerektiriyor. Hostinger, FCM, Sentry ve WeatherAPI için bu yapılmadıysa cümle gerçeği yansıtmıyor.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
