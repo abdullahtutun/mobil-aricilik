@@ -1240,7 +1240,8 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 
 - Kullanıcı bildirdi: Hostinger e-posta sunucusu Hollanda'da. `docs/legal/privacy-policy.html` (TR + EN) §5 ve §6'ya yazıldı; yürürlük 16 Kasım 2026, önceki sürüm 12 Kasım 2026. `teknik.md` veri bölgesi satırı ve R17 güncellendi.
 - **Sayfayı siteye kullanıcı yükleyecek.**
-- Açık (yayından önce, hukuk danışmanıyla): §6'nın son cümlesi aktarımların "standart sözleşme hükümleri" kapsamında yapıldığını söylüyor. KVKK m. 9'a göre bu, Kurul'un standart sözleşmesinin sağlayıcıyla imzalanmasını ve 5 iş günü içinde Kurum'a bildirilmesini gerektiriyor. Hostinger, FCM, Sentry ve WeatherAPI için bu yapılmadıysa cümle gerçeği yansıtmıyor.
+- §6'nın son cümlesi aktarımların "standart sözleşme hükümleri" kapsamında yapıldığını söylüyordu; kullanıcı hiçbir sağlayıcıyla sözleşme imzalamadı. Cümle kaldırıldı, yerine olgu yazıldı: aktarım gerekli ve yukarıdaki verilerle sınırlı, sağlayıcılar kendi koşullarıyla işler, kayıt/dosya/işletme bilgisi gönderilmez. Herhangi bir hukuki dayanak iddiası yok.
+- Açık (yayından önce, hukuk danışmanıyla): yurt dışı aktarımın KVKK m. 9 dayanağı. Düzenli aktarım için pratik yol Kurul'un standart sözleşmesi (imza + 5 iş günü içinde Kurum'a bildirim) ya da e-postayı Türkiye'deki bir SMTP'ye almak.
 
 ## Sona bırakılanlar
 
