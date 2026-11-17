@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/sync/sync_alert_card.dart';
 import 'package:mobil_arici/app/sync/sync_overdue_card.dart';
 import 'package:mobil_arici/app/sync/sync_status_button.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
@@ -13,6 +14,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
@@ -25,8 +27,9 @@ import 'package:mobil_arici/features/weather/presentation/weather_providers.dart
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_strip.dart';
 
 /// Bugün paneli (teknik.md §9, docs/design "Bugün"): tarih ve selam, yanında
-/// senkron durumu; kayıtlar 3 günden uzun süredir gönderilemediyse uyarı
-/// kartı; arılık hava kartları; "Dikkat isteyenler" (anasız,
+/// senkron durumu; sunucunun reddettiği kayıt, kovan durumu çakışması ya da
+/// 3 günden uzun süredir gönderilemeyen kayıt varsa uyarı kartı (dokununca
+/// senkron ekranı); arılık hava kartları; "Dikkat isteyenler" (anasız,
 /// zayıf, oğul eğilimli, ilacı çıkarılacak; dokununca filtreli liste) ve
 /// bugünün görevleri arılığa göre. Kurulum bitmediyse adımları; hiç arılık
 /// yoksa yalnız "İlk arılığını ekle". Hepsi yerel DB'deki mevcut veriden
@@ -71,6 +74,8 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
     final completed = setup?.completed ?? const <SetupStep>{};
     final hasApiary = completed.contains(SetupStep.apiary);
     final pending = ref.watch(syncPendingCountProvider).value ?? 0;
+    final rejected = ref.watch(syncRejectedProvider).value?.length ?? 0;
+    final conflicts = ref.watch(hiveStatusConflictsProvider).length;
 
     final padded = EdgeInsets.symmetric(horizontal: spacing.lg);
     return Scaffold(
@@ -103,6 +108,30 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
               ],
             ),
           ),
+          if (rejected > 0) ...[
+            SizedBox(height: spacing.lg),
+            Padding(
+              padding: padded,
+              child: SyncAlertCard(
+                status: AppStatus.critical,
+                title: l10n.todaySyncRejectedTitle,
+                message: l10n.todaySyncRejectedMessage(rejected),
+                onTap: () => context.push(AppRoutes.sync),
+              ),
+            ),
+          ],
+          if (conflicts > 0) ...[
+            SizedBox(height: spacing.lg),
+            Padding(
+              padding: padded,
+              child: SyncAlertCard(
+                status: AppStatus.warning,
+                title: l10n.todayHiveConflictsTitle,
+                message: l10n.todayHiveConflictsMessage(conflicts),
+                onTap: () => context.push(AppRoutes.sync),
+              ),
+            ),
+          ],
           if (ref.watch(syncOverdueProvider) && pending > 0) ...[
             SizedBox(height: spacing.lg),
             Padding(

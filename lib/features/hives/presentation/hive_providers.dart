@@ -6,8 +6,10 @@ import 'package:mobil_arici/core/utils/natural_order.dart';
 import 'package:mobil_arici/features/health/presentation/treatment_providers.dart';
 import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
+import 'package:mobil_arici/features/hives/data/hive_status_event_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_conflict.dart';
 import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/domain/hive_timeline.dart';
 import 'package:mobil_arici/features/hives/domain/strength_rules.dart';
@@ -46,6 +48,34 @@ Stream<List<Hive>> organizationHives(Ref ref) {
   final orgId = ref.watch(currentOrgIdProvider);
   if (orgId == null) return Stream.value(const []);
   return ref.watch(hiveRepositoryProvider).watchAll(orgId).map(_sortedByNumber);
+}
+
+@Riverpod(keepAlive: true)
+HiveStatusEventRepository hiveStatusEventRepository(Ref ref) =>
+    HiveStatusEventRepository(ref.watch(appDatabaseProvider));
+
+/// İşletmedeki kovanların durum olayları; işletme yoksa boş.
+@riverpod
+Stream<List<HiveStatusEvent>> organizationStatusEvents(Ref ref) {
+  final orgId = ref.watch(currentOrgIdProvider);
+  if (orgId == null) return Stream.value(const []);
+  return ref.watch(hiveStatusEventRepositoryProvider).watchByOrg(orgId);
+}
+
+/// Çözülmeyi bekleyen kovan durumu çakışmaları ([findStatusConflicts]),
+/// kovanıyla; silinmiş kovanınki sayılmaz. Senkron diğer cihazın olayını
+/// indirince kendiliğinden belirir, biri çözünce kaybolur.
+@riverpod
+List<({Hive hive, HiveStatusConflict conflict})> hiveStatusConflicts(Ref ref) {
+  final events = ref.watch(organizationStatusEventsProvider).value;
+  final hives = ref.watch(organizationHivesProvider).value;
+  if (events == null || hives == null) return const [];
+  final byId = {for (final hive in hives) hive.id: hive};
+  return [
+    for (final conflict in findStatusConflicts(events))
+      if (byId[conflict.hiveId] case final hive?)
+        (hive: hive, conflict: conflict),
+  ];
 }
 
 List<Hive> _sortedByNumber(List<Hive> hives) =>
@@ -116,8 +146,8 @@ Future<List<HiveTimelineEvent>> hiveTimeline(Ref ref, String hiveId) async {
 
 enum HiveLayout { grid, list }
 
-/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Yalnız bellekte;
-/// uygulama yeniden açılınca ızgaraya döner.
+/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Bu telefonda
+/// kalıcı (`app/device_preferences.dart`).
 @Riverpod(keepAlive: true)
 class HiveLayoutPreference extends _$HiveLayoutPreference {
   @override
@@ -131,8 +161,8 @@ class HiveLayoutPreference extends _$HiveLayoutPreference {
 enum HiveSort { number, weakestFirst }
 
 /// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
-/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
-/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Bu
+/// telefonda kalıcı (`app/device_preferences.dart`).
 @Riverpod(keepAlive: true)
 class HiveSortPreference extends _$HiveSortPreference {
   @override
@@ -162,6 +192,16 @@ class HiveActions extends _$HiveActions {
   /// Durum değişikliğinin Geri al'ı; değişikliğin olayı da silinir.
   Future<void> undoStatus(String hiveId, {required HiveStatus previous}) =>
       _repository.undoStatus(hiveId, previous: previous);
+
+  /// Durum çakışmasında kullanıcının seçmediği olay silinir; kovan kalan
+  /// olayın durumuna geçer.
+  Future<void> resolveStatusConflict(
+    String hiveId, {
+    required String discardEventId,
+  }) => _repository.resolveStatusConflict(
+    hiveId,
+    discardEventId: discardEventId,
+  );
 
   /// Kovan zaten o arılıktaysa null.
   Future<HiveMove?> move(String hiveId, {required String apiaryId}) =>

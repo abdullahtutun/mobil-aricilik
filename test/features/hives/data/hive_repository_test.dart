@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
@@ -351,6 +352,70 @@ void main() {
         expect(events.single.deletedAt, isNotNull);
       },
     );
+
+    group('çakışma çözümü', () {
+      /// Bu telefon "söndü" yazdı; başka cihaz habersizce "satıldı" yazmış,
+      /// kovan son yazanın (satıldı) durumunda.
+      Future<(Hive, HiveStatusEvent mine, HiveStatusEvent other)>
+      seedConflict() async {
+        final hive = await createHive('101');
+        clock.advance(const Duration(minutes: 1));
+        await repository.setStatus(hive.id, HiveStatus.dead);
+        final mine = await db.select(db.hiveStatusEvents).getSingle();
+        final other = mine.copyWith(
+          id: 'other',
+          toStatus: HiveStatus.sold,
+          changedAt: mine.changedAt.add(const Duration(minutes: 1)),
+          serverSeq: 5,
+        );
+        await db.into(db.hiveStatusEvents).insert(other.toInsertable());
+        await (db.update(db.hives)..where((t) => t.id.equals(hive.id))).write(
+          const HivesCompanion(status: Value(HiveStatus.sold)),
+        );
+        await db.delete(db.outbox).go();
+        return (hive, mine, other);
+      }
+
+      test('tutulan olayın durumu kovana yazılır, öbür olay silinir; ikisi '
+          'outbox’a gider', () async {
+        final (hive, mine, other) = await seedConflict();
+
+        final resolved = await repository.resolveStatusConflict(
+          hive.id,
+          discardEventId: other.id,
+        );
+
+        expect(resolved.status, HiveStatus.dead);
+        final events = {
+          for (final event in await db.select(db.hiveStatusEvents).get())
+            event.id: event,
+        };
+        expect(events[other.id]!.deletedAt, isNotNull);
+        expect(events[mine.id]!.deletedAt, isNull);
+        expect(
+          (await readOutbox(db))
+              .map((entry) => (entry.recordTable, entry.operation)),
+          [
+            ('hive_status_events', OutboxOperation.delete),
+            ('hives', OutboxOperation.upsert),
+          ],
+        );
+      });
+
+      test('kovan zaten tutulan durumdaysa yalnız olay silinir', () async {
+        final (hive, mine, _) = await seedConflict();
+
+        final resolved = await repository.resolveStatusConflict(
+          hive.id,
+          discardEventId: mine.id,
+        );
+
+        expect(resolved.status, HiveStatus.sold);
+        expect((await readOutbox(db)).map((entry) => entry.recordTable), [
+          'hive_status_events',
+        ]);
+      });
+    });
 
     test('olay yazılamazsa kovanın durumu da değişmez', () async {
       final hive = await createHive('101');

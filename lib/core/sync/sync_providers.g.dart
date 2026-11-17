@@ -263,12 +263,12 @@ final class SyncOverdueProvider extends $FunctionalProvider<bool, bool, bool>
 
 String _$syncOverdueHash() => r'0053496e4c99370c0111a094c9f916364b34d7d7';
 
-/// Sunucunun reddettiği kayıtlar.
+/// Sunucunun reddettiği kayıtlar (kayıt başına bir tane).
 
 @ProviderFor(syncRejected)
 final syncRejectedProvider = SyncRejectedProvider._();
 
-/// Sunucunun reddettiği kayıtlar.
+/// Sunucunun reddettiği kayıtlar (kayıt başına bir tane).
 
 final class SyncRejectedProvider
     extends
@@ -280,7 +280,7 @@ final class SyncRejectedProvider
     with
         $FutureModifier<List<RejectedRecord>>,
         $StreamProvider<List<RejectedRecord>> {
-  /// Sunucunun reddettiği kayıtlar.
+  /// Sunucunun reddettiği kayıtlar (kayıt başına bir tane).
   SyncRejectedProvider._()
     : super(
         from: null,

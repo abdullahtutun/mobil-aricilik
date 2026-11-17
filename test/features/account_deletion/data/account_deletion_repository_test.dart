@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/features/account_deletion/data/account_deletion_repository.dart';
 import 'package:mobil_arici/features/account_deletion/data/device_data_wiper.dart';
@@ -179,6 +180,27 @@ void main() {
         throwsA(isA<FileSystemException>()),
       );
       expect(await db.select(db.apiaries).get(), isEmpty);
+      expect(secureCleared, 1);
+    });
+
+    test('çıkışta telefonun tercihleri kalır, gerisi silinir', () async {
+      final settings = LocalSettingsRepository(db);
+      await settings.writeValue(LocalSettingsRepository.languageKey, 'turkish');
+      await settings.setMediaWifiOnly(enabled: true);
+      await settings.setLastSyncedAt(DateTime.utc(2026, 11));
+      await settings.writeValue('weather_bundle', '{}');
+      await seedCountedRecords(db);
+
+      await wiper().wipe(
+        keepSettings: LocalSettingsRepository.devicePreferenceKeys,
+      );
+
+      expect(await settings.readAll(), {
+        LocalSettingsRepository.languageKey: 'turkish',
+        LocalSettingsRepository.mediaWifiOnlyKey: 'true',
+      });
+      expect(await db.select(db.apiaries).get(), isEmpty);
+      expect(await db.select(db.outbox).get(), isEmpty);
       expect(secureCleared, 1);
     });
 

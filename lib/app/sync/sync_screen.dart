@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobil_arici/app/sync/rejected_record_card.dart';
 import 'package:mobil_arici/app/sync/sync_messages.dart';
 import 'package:mobil_arici/app/sync/sync_overdue_card.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
@@ -12,11 +13,14 @@ import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/core/sync/sync_indicator.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
+import 'package:mobil_arici/features/hives/presentation/widgets/hive_status_conflict_card.dart';
 
 /// Senkron ayrıntısı (docs/design "Senkron durumu"): üstte durum kartı
 /// (ikon, durum, kaç gün önce ve ne zaman eşitlendiği, bekleyenler ya da
 /// turun sorunu); kayıtlar günlerdir gönderilemediyse uyarı; bekleyen
-/// kayıtlar türe göre; sunucunun reddettiği kayıtlar; en altta sabit
+/// kayıtlar türe göre; sunucunun reddettiği kayıtlar (yeniden dene, geri
+/// al); kovan durumu çakışmaları (hangi durum kalsın); en altta sabit
 /// "Şimdi eşitle".
 class SyncScreen extends ConsumerWidget {
   const new({super.key});
@@ -31,6 +35,7 @@ class SyncScreen extends ConsumerWidget {
 
     final pending = ref.watch(syncPendingCountProvider).value ?? 0;
     final rejected = ref.watch(syncRejectedProvider).value ?? const [];
+    final conflicts = ref.watch(hiveStatusConflictsProvider);
     final activity = ref.watch(syncControllerProvider);
     final lastResult = activity.lastResult;
     // Bu oturumdaki tur kalıcı kayıttan yenidir; arka plan turu yalnız
@@ -45,7 +50,7 @@ class SyncScreen extends ConsumerWidget {
         : syncProblemText(l10n, lastResult.status);
     final indicator = syncIndicatorOf(
       pending: pending,
-      rejected: rejected.length,
+      rejected: rejected.length + conflicts.length,
       lastStatus: lastResult?.status,
     );
     final status = syncIndicatorStatus(indicator);
@@ -157,45 +162,27 @@ class SyncScreen extends ConsumerWidget {
               Text(l10n.syncRejectedMessage, style: secondary),
               SizedBox(height: spacing.md),
               for (final record in rejected) ...[
-                MergeSemantics(
-                  child: AppCard(
-                    status: AppStatus.critical,
-                    child: Padding(
-                      padding: EdgeInsets.all(spacing.lg),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            AppStatus.critical.icon,
-                            size: context.sizes.icon,
-                            color: AppStatus.critical.colorIn(colors),
-                          ),
-                          SizedBox(width: spacing.md),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  syncTableLabel(l10n, record.table),
-                                  style: typography.label,
-                                ),
-                                Text(
-                                  l10n.syncRejectedSubtitle(
-                                    syncRejectionText(
-                                      l10n,
-                                      syncRejectionOf(record.error),
-                                    ),
-                                    format.dateTime(record.createdAt.toLocal()),
-                                  ),
-                                  style: typography.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                RejectedRecordCard(
+                  key: ValueKey((record.table, record.recordId)),
+                  record: record,
+                ),
+                SizedBox(height: spacing.sm),
+              ],
+            ],
+            if (conflicts.isNotEmpty) ...[
+              SizedBox(height: spacing.xl),
+              SectionLabel(
+                l10n.hiveConflictsTitle(conflicts.length),
+                status: AppStatus.warning,
+              ),
+              SizedBox(height: spacing.sm),
+              Text(l10n.hiveConflictsMessage, style: secondary),
+              SizedBox(height: spacing.md),
+              for (final (:hive, :conflict) in conflicts) ...[
+                HiveStatusConflictCard(
+                  key: ValueKey(conflict.second.id),
+                  hive: hive,
+                  conflict: conflict,
                 ),
                 SizedBox(height: spacing.sm),
               ],

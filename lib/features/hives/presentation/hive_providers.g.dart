@@ -232,6 +232,164 @@ final class OrganizationHivesProvider
 
 String _$organizationHivesHash() => r'66165a9e7ebc62f72f08c44cf062ff71ac080773';
 
+@ProviderFor(hiveStatusEventRepository)
+final hiveStatusEventRepositoryProvider = HiveStatusEventRepositoryProvider._();
+
+final class HiveStatusEventRepositoryProvider
+    extends
+        $FunctionalProvider<
+          HiveStatusEventRepository,
+          HiveStatusEventRepository,
+          HiveStatusEventRepository
+        >
+    with $Provider<HiveStatusEventRepository> {
+  HiveStatusEventRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hiveStatusEventRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveStatusEventRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<HiveStatusEventRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  HiveStatusEventRepository create(Ref ref) {
+    return hiveStatusEventRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(HiveStatusEventRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<HiveStatusEventRepository>(value),
+    );
+  }
+}
+
+String _$hiveStatusEventRepositoryHash() =>
+    r'01cfad76fb95fdbcc3f1ef91c3e71b6a79917512';
+
+/// İşletmedeki kovanların durum olayları; işletme yoksa boş.
+
+@ProviderFor(organizationStatusEvents)
+final organizationStatusEventsProvider = OrganizationStatusEventsProvider._();
+
+/// İşletmedeki kovanların durum olayları; işletme yoksa boş.
+
+final class OrganizationStatusEventsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<HiveStatusEvent>>,
+          List<HiveStatusEvent>,
+          Stream<List<HiveStatusEvent>>
+        >
+    with
+        $FutureModifier<List<HiveStatusEvent>>,
+        $StreamProvider<List<HiveStatusEvent>> {
+  /// İşletmedeki kovanların durum olayları; işletme yoksa boş.
+  OrganizationStatusEventsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'organizationStatusEventsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$organizationStatusEventsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<HiveStatusEvent>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<HiveStatusEvent>> create(Ref ref) {
+    return organizationStatusEvents(ref);
+  }
+}
+
+String _$organizationStatusEventsHash() =>
+    r'6153488006ab1346501839b404669b76a9b968fa';
+
+/// Çözülmeyi bekleyen kovan durumu çakışmaları ([findStatusConflicts]),
+/// kovanıyla; silinmiş kovanınki sayılmaz. Senkron diğer cihazın olayını
+/// indirince kendiliğinden belirir, biri çözünce kaybolur.
+
+@ProviderFor(hiveStatusConflicts)
+final hiveStatusConflictsProvider = HiveStatusConflictsProvider._();
+
+/// Çözülmeyi bekleyen kovan durumu çakışmaları ([findStatusConflicts]),
+/// kovanıyla; silinmiş kovanınki sayılmaz. Senkron diğer cihazın olayını
+/// indirince kendiliğinden belirir, biri çözünce kaybolur.
+
+final class HiveStatusConflictsProvider
+    extends
+        $FunctionalProvider<
+          List<({HiveStatusConflict conflict, Hive hive})>,
+          List<({HiveStatusConflict conflict, Hive hive})>,
+          List<({HiveStatusConflict conflict, Hive hive})>
+        >
+    with $Provider<List<({HiveStatusConflict conflict, Hive hive})>> {
+  /// Çözülmeyi bekleyen kovan durumu çakışmaları ([findStatusConflicts]),
+  /// kovanıyla; silinmiş kovanınki sayılmaz. Senkron diğer cihazın olayını
+  /// indirince kendiliğinden belirir, biri çözünce kaybolur.
+  HiveStatusConflictsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hiveStatusConflictsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hiveStatusConflictsHash();
+
+  @$internal
+  @override
+  $ProviderElement<List<({HiveStatusConflict conflict, Hive hive})>>
+  $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+
+  @override
+  List<({HiveStatusConflict conflict, Hive hive})> create(Ref ref) {
+    return hiveStatusConflicts(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(
+    List<({HiveStatusConflict conflict, Hive hive})> value,
+  ) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<List<({HiveStatusConflict conflict, Hive hive})>>(
+            value,
+          ),
+    );
+  }
+}
+
+String _$hiveStatusConflictsHash() =>
+    r'ecb38b6f02946f7a32bf1d7585a3249f912674ae';
+
 /// Kovan kartı; kovan yoksa ya da silindiyse null.
 
 @ProviderFor(hive)
@@ -746,18 +904,18 @@ final class HiveTimelineFamily extends $Family
   String toString() => r'hiveTimelineProvider';
 }
 
-/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Yalnız bellekte;
-/// uygulama yeniden açılınca ızgaraya döner.
+/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Bu telefonda
+/// kalıcı (`app/device_preferences.dart`).
 
 @ProviderFor(HiveLayoutPreference)
 final hiveLayoutPreferenceProvider = HiveLayoutPreferenceProvider._();
 
-/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Yalnız bellekte;
-/// uygulama yeniden açılınca ızgaraya döner.
+/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Bu telefonda
+/// kalıcı (`app/device_preferences.dart`).
 final class HiveLayoutPreferenceProvider
     extends $NotifierProvider<HiveLayoutPreference, HiveLayout> {
-  /// Arılık detayındaki kovan görünümü: ızgara ya da liste. Yalnız bellekte;
-  /// uygulama yeniden açılınca ızgaraya döner.
+  /// Arılık detayındaki kovan görünümü: ızgara ya da liste. Bu telefonda
+  /// kalıcı (`app/device_preferences.dart`).
   HiveLayoutPreferenceProvider._()
     : super(
         from: null,
@@ -788,8 +946,8 @@ final class HiveLayoutPreferenceProvider
 String _$hiveLayoutPreferenceHash() =>
     r'2b8a40d4c7efe1c1027cbd4ac8027eef4a8f84f9';
 
-/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Yalnız bellekte;
-/// uygulama yeniden açılınca ızgaraya döner.
+/// Arılık detayındaki kovan görünümü: ızgara ya da liste. Bu telefonda
+/// kalıcı (`app/device_preferences.dart`).
 
 abstract class _$HiveLayoutPreference extends $Notifier<HiveLayout> {
   HiveLayout build();
@@ -810,20 +968,20 @@ abstract class _$HiveLayoutPreference extends $Notifier<HiveLayout> {
 }
 
 /// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
-/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
-/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Bu
+/// telefonda kalıcı (`app/device_preferences.dart`).
 
 @ProviderFor(HiveSortPreference)
 final hiveSortPreferenceProvider = HiveSortPreferenceProvider._();
 
 /// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
-/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
-/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Bu
+/// telefonda kalıcı (`app/device_preferences.dart`).
 final class HiveSortPreferenceProvider
     extends $NotifierProvider<HiveSortPreference, HiveSort> {
   /// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
-  /// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
-  /// bellekte; uygulama yeniden açılınca numara sırasına döner.
+  /// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Bu
+  /// telefonda kalıcı (`app/device_preferences.dart`).
   HiveSortPreferenceProvider._()
     : super(
         from: null,
@@ -855,8 +1013,8 @@ String _$hiveSortPreferenceHash() =>
     r'a2a103646757eff74378a21b8eba99f38ded7cc7';
 
 /// Arılık detayındaki aktif kovanların sırası: numara ya da zayıflar önce
-/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Yalnız
-/// bellekte; uygulama yeniden açılınca numara sırasına döner.
+/// ([sortWeakestFirst]). Izgaraya ve listeye birlikte uygulanır. Bu
+/// telefonda kalıcı (`app/device_preferences.dart`).
 
 abstract class _$HiveSortPreference extends $Notifier<HiveSort> {
   HiveSort build();
@@ -917,7 +1075,7 @@ final class HiveActionsProvider extends $NotifierProvider<HiveActions, void> {
   }
 }
 
-String _$hiveActionsHash() => r'5b8cd86f305d3a1a36a854e0c95c7b9ed1fb14df';
+String _$hiveActionsHash() => r'583786105eb9496d91492bc422da31b4016896d0';
 
 /// Kovan kartındaki eylemler: durum değiştirme, taşıma ve taşımayı geri
 /// alma, karantina. Geri al snackbar'ı ekran kapandıktan sonra da çalışsın diye

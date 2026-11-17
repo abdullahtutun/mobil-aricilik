@@ -57,7 +57,23 @@ class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
       _watchSummaries(db.apiaries.id.equals(id))
           .map((summaries) => summaries.singleOrNull);
 
+  /// [watchSummaries]'in okuma anındaki hâli (hızlı kayıttaki arılık
+  /// seçimi gibi tek seferlik sorular için).
+  Future<List<ApiarySummary>> summaries(String orgId) async {
+    final (query, read) = _summariesQuery(db.apiaries.orgId.equals(orgId));
+    return [for (final row in await query.get()) read(row)];
+  }
+
   Stream<List<ApiarySummary>> _watchSummaries(Expression<bool> filter) {
+    final (query, read) = _summariesQuery(filter);
+    return query.watch().map((rows) => [for (final row in rows) read(row)]);
+  }
+
+  (
+    JoinedSelectStatement<HasResultSet, dynamic>,
+    ApiarySummary Function(TypedResult),
+  )
+  _summariesQuery(Expression<bool> filter) {
     final apiaries = db.apiaries;
     final hives = db.hives;
     final activeHiveCount = hives.id.count();
@@ -75,14 +91,12 @@ class ApiaryRepository extends BaseRepository<$ApiariesTable, Apiary> {
           ..where(apiaries.deletedAt.isNull() & filter)
           ..groupBy([apiaries.id])
           ..orderBy([OrderingTerm.asc(apiaries.name)]);
-    return query.watch().map(
-      (rows) => [
-        for (final row in rows)
-          ApiarySummary(
-            apiary: row.readTable(apiaries),
-            activeHiveCount: row.read(activeHiveCount) ?? 0,
-          ),
-      ],
+    return (
+      query,
+      (row) => ApiarySummary(
+        apiary: row.readTable(apiaries),
+        activeHiveCount: row.read(activeHiveCount) ?? 0,
+      ),
     );
   }
 

@@ -764,9 +764,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quickRecordExpense => 'Gasto';
 
   @override
-  String get quickRecordComingSoon => 'Este tipo de registro llegará pronto.';
-
-  @override
   String get signInSendCode => 'Enviar código';
 
   @override
@@ -860,7 +857,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'Para volver a entrar necesitarás un código nuevo enviado a tu correo, lo que requiere internet.';
+      'Se borran de este teléfono los registros de la explotación, las fotos y los mapas descargados; tus registros siguen en el servidor y vuelven cuando entres de nuevo. Para volver a entrar necesitarás un código nuevo enviado a tu correo, lo que requiere internet.';
 
   @override
   String get actionCancel => 'Cancelar';
@@ -7076,8 +7073,8 @@ class AppLocalizationsEs extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count registros aún no se han enviado al servidor y están solo en este teléfono. Si cierras sesión, no se enviarán. Conéctate a internet y sincroniza primero.',
-      one: '1 registro aún no se ha enviado al servidor y está solo en este teléfono. Si cierras sesión, no se enviará. Conéctate a internet y sincroniza primero.',
+          '$count registros aún no se han enviado al servidor. Si cierras sesión, se borrarán de este teléfono y se perderán. Conéctate a internet y sincroniza primero.',
+      one: '1 registro aún no se ha enviado al servidor. Si cierras sesión, se borrará de este teléfono y se perderá. Conéctate a internet y sincroniza primero.',
     );
     return '$_temp0';
   }
@@ -7941,4 +7938,127 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'Demasiados intentos con el código. Espera un minuto y vuelve a intentarlo.';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'Tu rol no puede cambiar este registro. Pide acceso al propietario o deshaz el cambio.';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'El mismo dato (p. ej., una etiqueta) ya lo usa otro registro. Corrige el registro y reinténtalo, o deshaz el cambio.';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'El registro al que pertenece (p. ej., un colmenar) no está en el servidor. Si ese registro ya se envió, reinténtalo; si se borró, deshaz el cambio.';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'Esta versión de la app no puede enviar este registro. Actualiza la app o deshaz el cambio.';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'Algún dato del registro no es válido. Corrige el registro y reinténtalo, o deshaz el cambio.';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'Reinténtalo; si sigue fallando, deshaz el cambio.';
+
+  @override
+  String get syncRejectedRetry => 'Reintentar';
+
+  @override
+  String get syncRejectedDiscard => 'Deshacer';
+
+  @override
+  String get syncRejectedDiscardTitle => '¿Deshacer el cambio?';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'Se borra el cambio de este teléfono y el registro vuelve a como está en el servidor. Si el registro nunca llegó al servidor, también se borra de este teléfono.';
+
+  @override
+  String get syncRejectedRetrying => 'Enviando de nuevo el registro.';
+
+  @override
+  String get syncRejectedDiscarded => 'Cambio deshecho.';
+
+  @override
+  String get todaySyncRejectedTitle =>
+      'Hay registros que no se pudieron enviar';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'El servidor no aceptó $count registros; solo están en este teléfono. Toca para ver qué hacer.',
+      one: 'El servidor no aceptó 1 registro; solo está en este teléfono. Toca para ver qué hacer.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'Conflictos de estado de colmenas ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'Dos personas cambiaron el estado de la misma colmena sin ver el cambio de la otra. Elige el correcto; el otro se borra y tu elección llega también al equipo.';
+
+  @override
+  String get hiveConflictQuestion =>
+      'El estado se registró de dos formas. ¿Cuál es el correcto?';
+
+  @override
+  String get hiveConflictByYou => 'Tú';
+
+  @override
+  String get hiveConflictByOther => 'Otro miembro';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'Colmena $number: ¿mantener «$status»?';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'El otro registro se borra y la colmena pasa a este estado. Tu elección llega a los teléfonos del equipo al sincronizar.';
+
+  @override
+  String get hiveConflictKeep => 'Mantener';
+
+  @override
+  String get todayHiveConflictsTitle => 'Conflicto de estado de colmena';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Dos personas registraron de forma distinta el estado de $count colmenas. Toca para elegir los correctos.',
+      one: 'Dos personas registraron de forma distinta el estado de 1 colmena. Toca para elegir el correcto.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'Primero añade un colmenar.';
 }

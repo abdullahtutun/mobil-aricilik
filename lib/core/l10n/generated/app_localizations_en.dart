@@ -758,9 +758,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quickRecordExpense => 'Expense';
 
   @override
-  String get quickRecordComingSoon => 'This record type is coming soon.';
-
-  @override
   String get signInSendCode => 'Send code';
 
   @override
@@ -854,7 +851,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'To sign back in you\'ll need a new code sent to your email, which needs internet.';
+      'This phone\'s business records, photos and downloaded maps are removed; your records stay on the server and come back when you sign in again. To sign back in you\'ll need a new code sent to your email, which needs internet.';
 
   @override
   String get actionCancel => 'Cancel';
@@ -7031,8 +7028,8 @@ class AppLocalizationsEn extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count records haven\'t been sent to the server yet and are only on this phone. If you sign out, they won\'t be sent. Connect to the internet and sync first.',
-      one: '1 record hasn\'t been sent to the server yet and is only on this phone. If you sign out, it won\'t be sent. Connect to the internet and sync first.',
+          '$count records haven\'t been sent to the server yet. If you sign out, they\'re deleted from this phone and lost. Connect to the internet and sync first.',
+      one: '1 record hasn\'t been sent to the server yet. If you sign out, it\'s deleted from this phone and lost. Connect to the internet and sync first.',
     );
     return '$_temp0';
   }
@@ -7888,4 +7885,126 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'Too many code attempts. Wait a minute and try again.';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'Your role can\'t change this record. Ask the owner for access, or undo the change.';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'The same value (e.g. a label) is used by another record. Fix the record and try again, or undo the change.';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'The record it belongs to (e.g. an apiary) isn\'t on the server. If that record has been sent since, try again; if it was deleted, undo the change.';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'This version of the app can\'t send this record. Update the app, or undo the change.';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'Something in the record isn\'t valid. Fix the record and try again, or undo the change.';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'Try again; if it keeps failing, undo the change.';
+
+  @override
+  String get syncRejectedRetry => 'Try again';
+
+  @override
+  String get syncRejectedDiscard => 'Undo change';
+
+  @override
+  String get syncRejectedDiscardTitle => 'Undo this change?';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'The change on this phone is deleted and the record goes back to how it is on the server. If the record never reached the server, it\'s removed from this phone too.';
+
+  @override
+  String get syncRejectedRetrying => 'Sending the record again.';
+
+  @override
+  String get syncRejectedDiscarded => 'Change undone.';
+
+  @override
+  String get todaySyncRejectedTitle => 'Some records couldn\'t be sent';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'The server didn\'t accept $count records; they\'re only on this phone. Tap to see what to do.',
+      one: 'The server didn\'t accept 1 record; it\'s only on this phone. Tap to see what to do.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'Hive status conflicts ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'Two people changed the same hive\'s status without seeing each other\'s change. Pick the right one; the other is deleted and your choice reaches the team too.';
+
+  @override
+  String get hiveConflictQuestion =>
+      'The status was recorded two ways. Which one is right?';
+
+  @override
+  String get hiveConflictByYou => 'You';
+
+  @override
+  String get hiveConflictByOther => 'Another member';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'Hive $number: keep “$status”?';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'The other record is deleted and the hive takes this status. Your choice reaches the team\'s phones through sync.';
+
+  @override
+  String get hiveConflictKeep => 'Keep this';
+
+  @override
+  String get todayHiveConflictsTitle => 'Hive status conflict';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count hives\' statuses were recorded differently by two people. Tap to pick the right ones.',
+      one: '1 hive\'s status was recorded differently by two people. Tap to pick the right one.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'Add an apiary first to record.';
 }

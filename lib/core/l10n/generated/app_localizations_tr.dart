@@ -744,9 +744,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quickRecordExpense => 'Gider';
 
   @override
-  String get quickRecordComingSoon => 'Bu kayıt türü yakında gelecek.';
-
-  @override
   String get signInSendCode => 'Kod gönder';
 
   @override
@@ -840,7 +837,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'Yeniden girmek için e-postana yeni bir kod gelmesi gerekir; bunun için internet lazım.';
+      'Bu telefondaki işletme kayıtları, fotoğraflar ve indirilen haritalar silinir; kayıtların sunucuda durur ve yeniden girince iner. Yeniden girmek için e-postana yeni bir kod gelmesi gerekir; bunun için internet lazım.';
 
   @override
   String get actionCancel => 'Vazgeç';
@@ -6839,7 +6836,7 @@ class AppLocalizationsTr extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count kayıt henüz sunucuya gönderilmedi ve yalnız bu telefonda. Çıkış yaparsan gönderilmezler. Önce internete bağlanıp eşitle.',
+          '$count kayıt henüz sunucuya gönderilmedi. Çıkış yaparsan bu telefondan silinir ve kaybolur. Önce internete bağlanıp eşitle.',
     );
     return '$_temp0';
   }
@@ -7645,4 +7642,124 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'Çok fazla kod denendi. Bir dakika bekleyip yeniden dene.';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'Rolün bu kaydı değiştirmeye yetmiyor. İşletme sahibinden yetki iste ya da değişikliği geri al.';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'Aynı bilgi (ör. etiket) başka bir kayıtta kullanılıyor. Kaydı düzeltip yeniden dene ya da değişikliği geri al.';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'Bağlı olduğu kayıt (ör. arılık) sunucuda yok. O kayıt sonradan gönderildiyse yeniden dene; silindiyse değişikliği geri al.';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'Uygulamanın bu sürümü bu kaydı gönderemiyor. Uygulamayı güncelle ya da değişikliği geri al.';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'Kayıttaki bir bilgi geçersiz. Kaydı düzeltip yeniden dene ya da değişikliği geri al.';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'Yeniden dene; sorun sürerse değişikliği geri al.';
+
+  @override
+  String get syncRejectedRetry => 'Yeniden dene';
+
+  @override
+  String get syncRejectedDiscard => 'Geri al';
+
+  @override
+  String get syncRejectedDiscardTitle => 'Değişiklik geri alınsın mı?';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'Bu telefondaki değişiklik silinir ve kayıt sunucudaki hâline döner. Kayıt sunucuya hiç ulaşmadıysa bu telefondan da silinir.';
+
+  @override
+  String get syncRejectedRetrying => 'Kayıt yeniden gönderiliyor.';
+
+  @override
+  String get syncRejectedDiscarded => 'Değişiklik geri alındı.';
+
+  @override
+  String get todaySyncRejectedTitle => 'Gönderilemeyen kayıt var';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Sunucu $count kaydı kabul etmedi; bunlar yalnız bu telefonda. Ne yapılacağını görmek için dokun.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'Kovan durumu çakışmaları ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'İki kişi aynı kovanın durumunu birbirinden habersiz değiştirdi. Doğru olanı seç; diğeri silinir ve seçimin ekibe de ulaşır.';
+
+  @override
+  String get hiveConflictQuestion =>
+      'Durum iki farklı şekilde kaydedildi. Hangisi doğru?';
+
+  @override
+  String get hiveConflictByYou => 'Sen';
+
+  @override
+  String get hiveConflictByOther => 'Başka bir üye';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'Kovan $number: «$status» kalsın mı?';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'Diğer kayıt silinir ve kovan bu duruma geçer. Seçimin senkronla ekibin telefonlarına da ulaşır.';
+
+  @override
+  String get hiveConflictKeep => 'Bunu tut';
+
+  @override
+  String get todayHiveConflictsTitle => 'Kovan durumu çakışması';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count kovanın durumu iki kişi tarafından farklı kaydedildi. Doğru olanı seçmek için dokun.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'Kayıt için önce bir arılık ekle.';
 }

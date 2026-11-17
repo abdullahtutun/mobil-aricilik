@@ -105,6 +105,132 @@ void main() {
     expect(rejected.first.createdAt, DateTime.utc(2026, 10, 23, 9));
   });
 
+  test('aynı kaydın reddedilen yazmaları tek kayıt: ilk yazmanın zamanı, '
+      'son reddin nedeni ve son yazmanın adı', () async {
+    final clock = TestClock(DateTime.utc(2026, 10, 23, 9));
+    final repo = ApiaryRepository(db, clock: clock.call);
+    final apiary = await repo.create(orgId: 'org-1', name: 'Yayla');
+    clock.advance(const Duration(hours: 1));
+    await repo.update(apiary.copyWith(name: 'Ova'));
+    await reject(1, 'invalid: bad');
+    await reject(2, 'conflict: duplicate');
+
+    final rejected = await repository.watchRejected().first;
+
+    expect(rejected, hasLength(1));
+    expect(rejected.single.recordId, apiary.id);
+    expect(rejected.single.createdAt, DateTime.utc(2026, 10, 23, 9));
+    expect(rejected.single.error, 'conflict: duplicate');
+    expect(rejected.single.label, 'Ova');
+  });
+
+  test('kaydı tanıtan ad payload’dan: ad, başlık, numara, kod', () {
+    expect(SyncRepository.recordLabelOf({'name': ' Yayla '}), 'Yayla');
+    expect(SyncRepository.recordLabelOf({'title': 'Şurup'}), 'Şurup');
+    expect(SyncRepository.recordLabelOf({'number': '12'}), '12');
+    expect(SyncRepository.recordLabelOf({'code': 'L-1'}), 'L-1');
+    expect(SyncRepository.recordLabelOf({'name': '', 'id': 'x'}), isNull);
+    expect(SyncRepository.recordLabelOf({'number': 12}), isNull);
+  });
+
+  test('yeniden dene yalnız o kaydın reddini kaldırır', () async {
+    final first = await apiaries.create(orgId: 'org-1', name: 'Yayla');
+    await apiaries.create(orgId: 'org-1', name: 'Ova');
+    await reject(1, 'forbidden: RLS');
+    await reject(2, 'forbidden: RLS');
+
+    await repository.retryRejected('apiaries', first.id);
+
+    final rejected = await repository.watchRejected().first;
+    expect(
+      rejected.map((record) => record.recordId),
+      isNot(contains(first.id)),
+    );
+    expect(rejected, hasLength(1));
+    expect(await repository.watchPendingCount().first, 1);
+  });
+
+  group('geri al', () {
+    test('sunucuya hiç ulaşmamış kayıt yerelden ve outbox’tan silinir; '
+        'başka kayıtlar kalır', () async {
+      final first = await apiaries.create(orgId: 'org-1', name: 'Yayla');
+      await apiaries.update(first.copyWith(name: 'Yeni'));
+      final second = await apiaries.create(orgId: 'org-1', name: 'Ova');
+      await reject(1, 'invalid: bad');
+
+      await repository.discardRejected('apiaries', first.id);
+
+      final rows = await db.select(db.apiaries).get();
+      expect(rows.map((row) => row.id), [second.id]);
+      final outbox = await db.select(db.outbox).get();
+      expect(outbox.map((entry) => entry.recordId), [second.id]);
+    });
+
+    test('sunucuda olan kayıt yerinde kalır; imleç kaydın gerisine çekilir, '
+        'sonraki çekme sunucudaki hâlini indirir', () async {
+      final apiary = await apiaries.create(orgId: 'org-1', name: 'Yayla');
+      await (db.update(db.apiaries)..where((t) => t.id.equals(apiary.id)))
+          .write(const ApiariesCompanion(serverSeq: Value(40)));
+      await db
+          .into(db.syncState)
+          .insert(
+            SyncStateCompanion.insert(
+              recordTable: 'apiaries',
+              lastPulledSeq: const Value(90),
+            ),
+          );
+      await reject(1, 'forbidden: RLS');
+
+      await repository.discardRejected('apiaries', apiary.id);
+
+      expect(await db.select(db.apiaries).get(), hasLength(1));
+      expect(await db.select(db.outbox).get(), isEmpty);
+      final cursor = await (db.select(
+        db.syncState,
+      )..where((t) => t.recordTable.equals('apiaries'))).getSingle();
+      expect(cursor.lastPulledSeq, 39);
+    });
+
+    test('imleç zaten kaydın gerisindeyse değişmez', () async {
+      final apiary = await apiaries.create(orgId: 'org-1', name: 'Yayla');
+      await (db.update(db.apiaries)..where((t) => t.id.equals(apiary.id)))
+          .write(const ApiariesCompanion(serverSeq: Value(40)));
+      await db
+          .into(db.syncState)
+          .insert(
+            SyncStateCompanion.insert(
+              recordTable: 'apiaries',
+              lastPulledSeq: const Value(20),
+            ),
+          );
+      await reject(1, 'forbidden: RLS');
+
+      await repository.discardRejected('apiaries', apiary.id);
+
+      final cursor = await db.select(db.syncState).getSingle();
+      expect(cursor.lastPulledSeq, 20);
+    });
+
+    test('tanınmayan tabloda yalnız outbox temizlenir', () async {
+      await db
+          .into(db.outbox)
+          .insert(
+            OutboxCompanion.insert(
+              recordTable: 'unknown_table',
+              recordId: 'x',
+              operation: OutboxOperation.upsert,
+              payload: const {'id': 'x'},
+              createdAt: DateTime.utc(2026),
+              lastError: const Value('unsupported: table'),
+            ),
+          );
+
+      await repository.discardRejected('unknown_table', 'x');
+
+      expect(await db.select(db.outbox).get(), isEmpty);
+    });
+  });
+
   test('ilk tam çekme işareti yazılınca bitti sayılır', () async {
     final done = <bool>[];
     final subscription = repository.watchFullPullDone().listen(done.add);

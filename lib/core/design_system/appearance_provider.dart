@@ -3,7 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'appearance_provider.g.dart';
 
-/// Görünüm seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında gelecek.
+/// Görünüm seçimi. Bellekte tutulur; açılışta yerel DB'den geri yüklenir ve
+/// her değişiklik oraya yazılır (`app/device_preferences.dart`).
 @Riverpod(keepAlive: true)
 class Appearance extends _$Appearance {
   @override

@@ -54,7 +54,7 @@ Karar: Hazır bir sync servisi kullanılmaz; **Drift (SQLite) + outbox + delta �
 
 - `outbox`: id, tablo adı, satır id, işlem (upsert/delete), payload (JSON), oluşturulma zamanı, deneme sayısı, son hata.
 - `sync_state`: tablo başına son çekilen imleç (`last_pulled_seq`).
-- `sync_conflicts`: kullanıcıya gösterilecek kritik çakışmalar.
+- Kritik çakışmalar ayrı tabloda tutulmaz: kovan durumu çakışması `hive_status_events` zincirinden bulunur (bkz. "Çakışma ve zaman").
 
 **Gönderme (push)**
 
@@ -72,7 +72,7 @@ Karar: Hazır bir sync servisi kullanılmaz; **Drift (SQLite) + outbox + delta �
 
 **Çakışma ve zaman**
 
-- Kovan sayısını etkileyen alanlarda (sönme, birleştirme, satış) çakışma sessizce çözülmez; `sync_conflicts`'e yazılır ve kullanıcıya sorulur.
+- Kovan sayısını etkileyen alanlarda (sönme, birleştirme, satış) çakışma sessizce çözülmez. Her durum değişikliği bir `hive_status_events` olayıdır; bir olayın `from_status`'ı öncekinin `to_status`'ına uymuyorsa iki cihaz birbirinden habersiz değiştirmiştir. Senkron ekranı ve Bugün bunu sorar; kullanıcının seçmediği olay silinir ve silme senkronla ekibe ulaşır.
 - Cihaz saati yanlış olabilir: Sunucu her push'ta istemci saatinin sapmasını kontrol eder, büyük sapmada uyarı döner.
 
 **Ne zaman çalışır**

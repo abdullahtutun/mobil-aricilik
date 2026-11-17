@@ -776,9 +776,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get quickRecordExpense => 'Расход';
 
   @override
-  String get quickRecordComingSoon => 'Этот тип записи скоро появится.';
-
-  @override
   String get signInSendCode => 'Отправить код';
 
   @override
@@ -872,7 +869,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'Чтобы войти снова, понадобится новый код на почту, а для этого нужен интернет.';
+      'Записи хозяйства, фото и скачанные карты будут удалены с этого телефона; ваши записи останутся на сервере и вернутся при следующем входе. Чтобы войти снова, понадобится новый код на почту, а для этого нужен интернет.';
 
   @override
   String get actionCancel => 'Отмена';
@@ -7217,13 +7214,13 @@ class AppLocalizationsRu extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count записи ещё не отправлены на сервер и есть только на этом телефоне. Если вы выйдете, они не отправятся. Сначала подключитесь к интернету и синхронизируйте.',
+          '$count записи ещё не отправлены на сервер. Если вы выйдете, они будут удалены с этого телефона и потеряны. Сначала подключитесь к интернету и синхронизируйте.',
       many:
-          '$count записей ещё не отправлены на сервер и есть только на этом телефоне. Если вы выйдете, они не отправятся. Сначала подключитесь к интернету и синхронизируйте.',
+          '$count записей ещё не отправлены на сервер. Если вы выйдете, они будут удалены с этого телефона и потеряны. Сначала подключитесь к интернету и синхронизируйте.',
       few:
-          '$count записи ещё не отправлены на сервер и есть только на этом телефоне. Если вы выйдете, они не отправятся. Сначала подключитесь к интернету и синхронизируйте.',
+          '$count записи ещё не отправлены на сервер. Если вы выйдете, они будут удалены с этого телефона и потеряны. Сначала подключитесь к интернету и синхронизируйте.',
       one:
-          '$count запись ещё не отправлена на сервер и есть только на этом телефоне. Если вы выйдете, она не отправится. Сначала подключитесь к интернету и синхронизируйте.',
+          '$count запись ещё не отправлена на сервер. Если вы выйдете, она будет удалена с этого телефона и потеряна. Сначала подключитесь к интернету и синхронизируйте.',
     );
     return '$_temp0';
   }
@@ -8109,4 +8106,136 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'Слишком много попыток ввода кода. Подождите минуту и попробуйте снова.';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'Ваша роль не позволяет изменить эту запись. Попросите доступ у владельца или отмените изменение.';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'То же значение (например, этикетка) уже есть у другой записи. Исправьте запись и повторите или отмените изменение.';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'Запись, к которой она относится (например, пасека), отсутствует на сервере. Если та запись уже отправлена, повторите; если удалена, отмените изменение.';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'Эта версия приложения не может отправить запись. Обновите приложение или отмените изменение.';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'В записи есть неверное значение. Исправьте запись и повторите или отмените изменение.';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'Повторите; если не получается, отмените изменение.';
+
+  @override
+  String get syncRejectedRetry => 'Повторить';
+
+  @override
+  String get syncRejectedDiscard => 'Отменить';
+
+  @override
+  String get syncRejectedDiscardTitle => 'Отменить изменение?';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'Изменение на этом телефоне будет удалено, и запись вернётся к версии с сервера. Если запись так и не дошла до сервера, она удалится и с этого телефона.';
+
+  @override
+  String get syncRejectedRetrying => 'Запись отправляется снова.';
+
+  @override
+  String get syncRejectedDiscarded => 'Изменение отменено.';
+
+  @override
+  String get todaySyncRejectedTitle => 'Есть неотправленные записи';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Сервер не принял $count записи; они есть только на этом телефоне. Нажмите, чтобы узнать, что делать.',
+      many:
+          'Сервер не принял $count записей; они есть только на этом телефоне. Нажмите, чтобы узнать, что делать.',
+      few:
+          'Сервер не принял $count записи; они есть только на этом телефоне. Нажмите, чтобы узнать, что делать.',
+      one:
+          'Сервер не принял $count запись; она есть только на этом телефоне. Нажмите, чтобы узнать, что делать.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'Конфликты статуса ульев ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'Два человека изменили статус одного улья, не видя изменений друг друга. Выберите верный; другой будет удалён, а ваш выбор получит и команда.';
+
+  @override
+  String get hiveConflictQuestion =>
+      'Статус записан двумя способами. Какой верный?';
+
+  @override
+  String get hiveConflictByYou => 'Вы';
+
+  @override
+  String get hiveConflictByOther => 'Другой участник';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'Улей $number: оставить «$status»?';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'Другая запись будет удалена, и улей получит этот статус. Ваш выбор дойдёт до телефонов команды при синхронизации.';
+
+  @override
+  String get hiveConflictKeep => 'Оставить';
+
+  @override
+  String get todayHiveConflictsTitle => 'Конфликт статуса улья';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Статус $count улья два человека записали по-разному. Нажмите, чтобы выбрать верные.',
+      many:
+          'Статус $count ульев два человека записали по-разному. Нажмите, чтобы выбрать верные.',
+      few:
+          'Статус $count ульев два человека записали по-разному. Нажмите, чтобы выбрать верные.',
+      one:
+          'Статус $count улья два человека записали по-разному. Нажмите, чтобы выбрать верный.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'Сначала добавьте пасеку.';
 }

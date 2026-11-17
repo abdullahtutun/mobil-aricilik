@@ -49,6 +49,14 @@ class _FakeSyncRepository implements SyncRepository {
 
   @override
   Stream<bool> watchFullPullDone() => throw UnimplementedError();
+
+  @override
+  Future<void> retryRejected(String table, String recordId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> discardRejected(String table, String recordId) =>
+      throw UnimplementedError();
 }
 
 void main() {

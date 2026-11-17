@@ -163,6 +163,50 @@ class LocalSettingsRepository {
   Future<void> setHiveOpeningMaxPrecipitation(double percent) =>
       writeValue(hiveOpeningPrecipitationKey, '$percent');
 
+  /// Arayüz tercihleri (`app/device_preferences.dart` yazar ve açılışta
+  /// geri yükler): dil, renk modu, eldiven modu, arılıktaki kovan görünümü
+  /// ve sırası. Değerler enum adları ya da `true`/`false`.
+  static const languageKey = 'pref_language';
+  static const colorModeKey = 'pref_color_mode';
+  static const gloveModeKey = 'pref_glove_mode';
+  static const hiveLayoutKey = 'pref_hive_layout';
+  static const hiveSortKey = 'pref_hive_sort';
+
+  /// Hesaba değil telefona ait ayarlar: çıkışta silinmez, sonraki
+  /// kullanıcı da aynı dil ve görünümle devam eder. Kayıtlardan türeyen ya
+  /// da işletmeyi ele veren değerler (son eşitleme, tur, hava paketi) burada
+  /// yok; onlar çıkışta silinir.
+  static const Set<String> devicePreferenceKeys = {
+    languageKey,
+    colorModeKey,
+    gloveModeKey,
+    hiveLayoutKey,
+    hiveSortKey,
+    mediaWifiOnlyKey,
+    mapWifiOnlyKey,
+    exactAlarmPromptedKey,
+    analyticsEnabledKey,
+    analyticsInstallIdKey,
+    pushEnabledKey,
+    pushPermissionAskedKey,
+    varroaPercentKey,
+    varroaPerDayKey,
+    hiveOpeningTemperatureKey,
+    hiveOpeningWindKey,
+    hiveOpeningPrecipitationKey,
+    syncBackendKey,
+  };
+
+  /// `sync_backend.dart`'ın sunucu kimliği; imleçler çıkışta silindiği için
+  /// kalması zararsız, silinirse açılışta yeniden yazılır.
+  static const syncBackendKey = 'sync_backend';
+
+  /// Bütün ayarlar (anahtar → değer); açılışta tercihler bundan okunur.
+  Future<Map<String, String>> readAll() async => {
+    for (final row in await db.select(db.localSettings).get())
+      row.key: row.value,
+  };
+
   /// [key]'in ham değeri; yoksa null. Tipli ayarlar ve başka özelliklerin
   /// yalnız bu telefonda tuttuğu kayıtlar (tur, hava paketi) bunun üstünde.
   Stream<String?> watchValue(String key) =>

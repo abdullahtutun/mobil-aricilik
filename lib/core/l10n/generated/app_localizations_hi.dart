@@ -757,9 +757,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get quickRecordExpense => 'ख़र्च';
 
   @override
-  String get quickRecordComingSoon => 'यह रिकॉर्ड प्रकार जल्द आ रहा है।';
-
-  @override
   String get signInSendCode => 'कोड भेजें';
 
   @override
@@ -853,7 +850,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'फिर से साइन इन करने के लिए आपके ईमेल पर नया कोड चाहिए होगा, जिसके लिए इंटरनेट ज़रूरी है।';
+      'इस फ़ोन से व्यवसाय के रिकॉर्ड, फ़ोटो और डाउनलोड किए गए नक्शे हटा दिए जाएँगे; आपके रिकॉर्ड सर्वर पर रहेंगे और दोबारा साइन इन करने पर वापस आ जाएँगे। फिर से साइन इन करने के लिए आपके ईमेल पर नया कोड चाहिए होगा, जिसके लिए इंटरनेट ज़रूरी है।';
 
   @override
   String get actionCancel => 'रद्द करें';
@@ -7032,8 +7029,8 @@ class AppLocalizationsHi extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count रिकॉर्ड अभी सर्वर पर नहीं भेजे गए और सिर्फ़ इस फ़ोन पर हैं। साइन आउट करने पर ये नहीं भेजे जाएँगे। पहले इंटरनेट से जुड़ें और सिंक करें।',
-      one: '1 रिकॉर्ड अभी सर्वर पर नहीं भेजा गया और सिर्फ़ इस फ़ोन पर है। साइन आउट करने पर यह नहीं भेजा जाएगा। पहले इंटरनेट से जुड़ें और सिंक करें।',
+          '$count रिकॉर्ड अभी सर्वर पर नहीं भेजे गए। साइन आउट करने पर ये इस फ़ोन से हट जाएँगे और खो जाएँगे। पहले इंटरनेट से जुड़ें और सिंक करें।',
+      one: '1 रिकॉर्ड अभी सर्वर पर नहीं भेजा गया। साइन आउट करने पर यह इस फ़ोन से हट जाएगा और खो जाएगा। पहले इंटरनेट से जुड़ें और सिंक करें।',
     );
     return '$_temp0';
   }
@@ -7886,4 +7883,126 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'कोड की बहुत ज़्यादा कोशिशें। एक मिनट रुकें और फिर कोशिश करें।';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'आपकी भूमिका इस रिकॉर्ड को नहीं बदल सकती। मालिक से अनुमति माँगें या बदलाव वापस लें।';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'वही मान (जैसे लेबल) किसी दूसरे रिकॉर्ड में इस्तेमाल हो रहा है। रिकॉर्ड ठीक करके फिर कोशिश करें या बदलाव वापस लें।';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'जिस रिकॉर्ड से यह जुड़ा है (जैसे फार्म) वह सर्वर पर नहीं है। अगर वह रिकॉर्ड बाद में भेजा गया है तो फिर कोशिश करें; अगर हटा दिया गया है तो बदलाव वापस लें।';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'ऐप का यह संस्करण यह रिकॉर्ड नहीं भेज सकता। ऐप अपडेट करें या बदलाव वापस लें।';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'रिकॉर्ड में कोई जानकारी अमान्य है। रिकॉर्ड ठीक करके फिर कोशिश करें या बदलाव वापस लें।';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'फिर कोशिश करें; अगर फिर भी न हो तो बदलाव वापस लें।';
+
+  @override
+  String get syncRejectedRetry => 'फिर कोशिश करें';
+
+  @override
+  String get syncRejectedDiscard => 'वापस लें';
+
+  @override
+  String get syncRejectedDiscardTitle => 'बदलाव वापस लें?';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'इस फ़ोन का बदलाव हट जाएगा और रिकॉर्ड सर्वर वाली स्थिति में लौट आएगा। अगर रिकॉर्ड कभी सर्वर तक नहीं पहुँचा, तो यह इस फ़ोन से भी हट जाएगा।';
+
+  @override
+  String get syncRejectedRetrying => 'रिकॉर्ड फिर से भेजा जा रहा है।';
+
+  @override
+  String get syncRejectedDiscarded => 'बदलाव वापस ले लिया गया।';
+
+  @override
+  String get todaySyncRejectedTitle => 'कुछ रिकॉर्ड भेजे नहीं जा सके';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'सर्वर ने $count रिकॉर्ड स्वीकार नहीं किए; ये सिर्फ़ इस फ़ोन पर हैं। क्या करना है, देखने के लिए टैप करें।',
+      one: 'सर्वर ने 1 रिकॉर्ड स्वीकार नहीं किया; यह सिर्फ़ इस फ़ोन पर है। क्या करना है, देखने के लिए टैप करें।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'छत्ते की स्थिति में टकराव ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'दो लोगों ने एक-दूसरे का बदलाव देखे बिना एक ही छत्ते की स्थिति बदली। सही वाला चुनें; दूसरा हट जाएगा और आपका चुनाव टीम तक भी पहुँचेगा।';
+
+  @override
+  String get hiveConflictQuestion =>
+      'स्थिति दो तरह से दर्ज हुई। कौन-सी सही है?';
+
+  @override
+  String get hiveConflictByYou => 'आप';
+
+  @override
+  String get hiveConflictByOther => 'कोई दूसरा सदस्य';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'छत्ता $number: “$status” रखें?';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'दूसरा रिकॉर्ड हट जाएगा और छत्ते की यही स्थिति हो जाएगी। सिंक से आपका चुनाव टीम के फ़ोन तक भी पहुँचेगा।';
+
+  @override
+  String get hiveConflictKeep => 'यही रखें';
+
+  @override
+  String get todayHiveConflictsTitle => 'छत्ते की स्थिति में टकराव';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count छत्तों की स्थिति दो लोगों ने अलग-अलग दर्ज की। सही वाली चुनने के लिए टैप करें।',
+      one: '1 छत्ते की स्थिति दो लोगों ने अलग-अलग दर्ज की। सही वाली चुनने के लिए टैप करें।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'रिकॉर्ड के लिए पहले एक फार्म जोड़ें।';
 }

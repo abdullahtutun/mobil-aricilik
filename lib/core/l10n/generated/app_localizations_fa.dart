@@ -756,9 +756,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get quickRecordExpense => 'هزینه';
 
   @override
-  String get quickRecordComingSoon => 'این نوع ثبت به‌زودی می‌آید.';
-
-  @override
   String get signInSendCode => 'ارسال کد';
 
   @override
@@ -852,7 +849,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'برای ورود دوباره به کد جدیدی که به ایمیلتان فرستاده می‌شود نیاز دارید و این به اینترنت نیاز دارد.';
+      'سوابق کسب‌وکار، عکس‌ها و نقشه‌های دانلودشده از این گوشی پاک می‌شوند؛ سوابق شما روی سرور می‌مانند و با ورود دوباره برمی‌گردند. برای ورود دوباره به کد جدیدی که به ایمیلتان فرستاده می‌شود نیاز دارید و این به اینترنت نیاز دارد.';
 
   @override
   String get actionCancel => 'لغو';
@@ -7019,8 +7016,8 @@ class AppLocalizationsFa extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count سابقه هنوز به سرور فرستاده نشده و فقط روی این گوشی هستند. اگر خارج شوید، فرستاده نمی‌شوند. ابتدا به اینترنت وصل شوید و همگام کنید.',
-      one: '1 سابقه هنوز به سرور فرستاده نشده و فقط روی این گوشی است. اگر خارج شوید، فرستاده نمی‌شود. ابتدا به اینترنت وصل شوید و همگام کنید.',
+          '$count سابقه هنوز به سرور فرستاده نشده‌اند. اگر خارج شوید، از این گوشی پاک می‌شوند و از دست می‌روند. ابتدا به اینترنت وصل شوید و همگام کنید.',
+      one: '1 سابقه هنوز به سرور فرستاده نشده است. اگر خارج شوید، از این گوشی پاک می‌شود و از دست می‌رود. ابتدا به اینترنت وصل شوید و همگام کنید.',
     );
     return '$_temp0';
   }
@@ -7869,4 +7866,125 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'تعداد تلاش‌ها برای کد بیش از حد است. یک دقیقه صبر کنید و دوباره تلاش کنید.';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'نقش شما اجازه تغییر این سابقه را نمی‌دهد. از مالک دسترسی بخواهید یا تغییر را برگردانید.';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'همین مقدار (مثلاً برچسب) در سابقه دیگری استفاده شده است. سابقه را اصلاح کنید و دوباره امتحان کنید یا تغییر را برگردانید.';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'سابقه‌ای که به آن وابسته است (مثلاً زنبورستان) روی سرور نیست. اگر آن سابقه بعداً فرستاده شده، دوباره امتحان کنید؛ اگر پاک شده، تغییر را برگردانید.';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'این نسخه از برنامه نمی‌تواند این سابقه را بفرستد. برنامه را به‌روز کنید یا تغییر را برگردانید.';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'یکی از اطلاعات سابقه نامعتبر است. سابقه را اصلاح کنید و دوباره امتحان کنید یا تغییر را برگردانید.';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'دوباره امتحان کنید؛ اگر باز نشد، تغییر را برگردانید.';
+
+  @override
+  String get syncRejectedRetry => 'تلاش دوباره';
+
+  @override
+  String get syncRejectedDiscard => 'برگرداندن';
+
+  @override
+  String get syncRejectedDiscardTitle => 'تغییر برگردانده شود؟';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'تغییر روی این گوشی پاک می‌شود و سابقه به حالت روی سرور برمی‌گردد. اگر سابقه هرگز به سرور نرسیده باشد، از این گوشی هم پاک می‌شود.';
+
+  @override
+  String get syncRejectedRetrying => 'سابقه دوباره فرستاده می‌شود.';
+
+  @override
+  String get syncRejectedDiscarded => 'تغییر برگردانده شد.';
+
+  @override
+  String get todaySyncRejectedTitle => 'سوابقی فرستاده نشد';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'سرور $count سابقه را نپذیرفت؛ فقط روی این گوشی هستند. برای دیدن کاری که باید بکنید ضربه بزنید.',
+      one: 'سرور 1 سابقه را نپذیرفت؛ فقط روی این گوشی است. برای دیدن کاری که باید بکنید ضربه بزنید.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'تداخل وضعیت کندوها ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'دو نفر بدون دیدن تغییر یکدیگر، وضعیت یک کندو را تغییر دادند. مورد درست را انتخاب کنید؛ دیگری پاک می‌شود و انتخاب شما به تیم هم می‌رسد.';
+
+  @override
+  String get hiveConflictQuestion => 'وضعیت به دو شکل ثبت شد. کدام درست است؟';
+
+  @override
+  String get hiveConflictByYou => 'شما';
+
+  @override
+  String get hiveConflictByOther => 'عضو دیگر';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'کندو $number: «$status» بماند؟';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'سابقه دیگر پاک می‌شود و کندو این وضعیت را می‌گیرد. انتخاب شما با همگام‌سازی به گوشی‌های تیم هم می‌رسد.';
+
+  @override
+  String get hiveConflictKeep => 'همین بماند';
+
+  @override
+  String get todayHiveConflictsTitle => 'تداخل وضعیت کندو';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'وضعیت $count کندو را دو نفر متفاوت ثبت کردند. برای انتخاب موارد درست ضربه بزنید.',
+      one: 'وضعیت 1 کندو را دو نفر متفاوت ثبت کردند. برای انتخاب مورد درست ضربه بزنید.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'ابتدا یک زنبورستان اضافه کنید.';
 }

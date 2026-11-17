@@ -765,9 +765,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get quickRecordExpense => 'Ausgabe';
 
   @override
-  String get quickRecordComingSoon => 'Diese Eintragsart kommt bald.';
-
-  @override
   String get signInSendCode => 'Code senden';
 
   @override
@@ -862,7 +859,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'Um dich wieder anzumelden, brauchst du einen neuen Code per E-Mail, und dafür Internet.';
+      'Die Betriebseinträge, Fotos und heruntergeladenen Karten auf diesem Telefon werden gelöscht; deine Einträge bleiben auf dem Server und kommen bei der nächsten Anmeldung zurück. Um dich wieder anzumelden, brauchst du einen neuen Code per E-Mail, und dafür Internet.';
 
   @override
   String get actionCancel => 'Abbrechen';
@@ -7081,8 +7078,8 @@ class AppLocalizationsDe extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count Einträge wurden noch nicht an den Server gesendet und sind nur auf diesem Telefon. Wenn du dich abmeldest, werden sie nicht gesendet. Verbinde dich zuerst mit dem Internet und synchronisiere.',
-      one: '1 Eintrag wurde noch nicht an den Server gesendet und ist nur auf diesem Telefon. Wenn du dich abmeldest, wird er nicht gesendet. Verbinde dich zuerst mit dem Internet und synchronisiere.',
+          '$count Einträge wurden noch nicht an den Server gesendet. Wenn du dich abmeldest, werden sie von diesem Telefon gelöscht und gehen verloren. Verbinde dich zuerst mit dem Internet und synchronisiere.',
+      one: '1 Eintrag wurde noch nicht an den Server gesendet. Wenn du dich abmeldest, wird er von diesem Telefon gelöscht und geht verloren. Verbinde dich zuerst mit dem Internet und synchronisiere.',
     );
     return '$_temp0';
   }
@@ -7946,4 +7943,126 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'Zu viele Codeversuche. Warte eine Minute und versuche es erneut.';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'Deine Rolle darf diesen Eintrag nicht ändern. Bitte den Inhaber um Zugriff oder mache die Änderung rückgängig.';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'Derselbe Wert (z. B. ein Etikett) gehört schon zu einem anderen Eintrag. Korrigiere den Eintrag und versuche es erneut oder mache die Änderung rückgängig.';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'Der Eintrag, zu dem er gehört (z. B. ein Bienenstand), ist nicht auf dem Server. Wurde er inzwischen gesendet, versuche es erneut; wurde er gelöscht, mache die Änderung rückgängig.';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'Diese App-Version kann den Eintrag nicht senden. Aktualisiere die App oder mache die Änderung rückgängig.';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'Ein Wert im Eintrag ist ungültig. Korrigiere den Eintrag und versuche es erneut oder mache die Änderung rückgängig.';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'Versuche es erneut; klappt es weiterhin nicht, mache die Änderung rückgängig.';
+
+  @override
+  String get syncRejectedRetry => 'Erneut versuchen';
+
+  @override
+  String get syncRejectedDiscard => 'Rückgängig';
+
+  @override
+  String get syncRejectedDiscardTitle => 'Änderung rückgängig machen?';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'Die Änderung auf diesem Telefon wird gelöscht und der Eintrag nimmt wieder den Stand vom Server an. Hat der Eintrag den Server nie erreicht, wird er auch von diesem Telefon gelöscht.';
+
+  @override
+  String get syncRejectedRetrying => 'Eintrag wird erneut gesendet.';
+
+  @override
+  String get syncRejectedDiscarded => 'Änderung rückgängig gemacht.';
+
+  @override
+  String get todaySyncRejectedTitle => 'Einträge konnten nicht gesendet werden';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Der Server hat $count Einträge nicht angenommen; sie sind nur auf diesem Telefon. Tippe, um zu sehen, was zu tun ist.',
+      one: 'Der Server hat 1 Eintrag nicht angenommen; er ist nur auf diesem Telefon. Tippe, um zu sehen, was zu tun ist.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'Konflikte beim Volksstatus ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'Zwei Personen haben den Status desselben Volks geändert, ohne die Änderung des anderen zu sehen. Wähle die richtige; die andere wird gelöscht und deine Wahl erreicht auch das Team.';
+
+  @override
+  String get hiveConflictQuestion =>
+      'Der Status wurde auf zwei Arten erfasst. Welcher stimmt?';
+
+  @override
+  String get hiveConflictByYou => 'Du';
+
+  @override
+  String get hiveConflictByOther => 'Ein anderes Mitglied';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'Volk $number: „$status“ behalten?';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'Der andere Eintrag wird gelöscht und das Volk erhält diesen Status. Deine Wahl erreicht per Synchronisierung auch die Telefone des Teams.';
+
+  @override
+  String get hiveConflictKeep => 'Behalten';
+
+  @override
+  String get todayHiveConflictsTitle => 'Konflikt beim Volksstatus';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Der Status von $count Völkern wurde von zwei Personen unterschiedlich erfasst. Tippe, um die richtigen zu wählen.',
+      one: 'Der Status von 1 Volk wurde von zwei Personen unterschiedlich erfasst. Tippe, um den richtigen zu wählen.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'Lege zuerst einen Bienenstand an.';
 }

@@ -764,9 +764,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get quickRecordExpense => 'Despesa';
 
   @override
-  String get quickRecordComingSoon => 'Este tipo de registro chega em breve.';
-
-  @override
   String get signInSendCode => 'Enviar código';
 
   @override
@@ -860,7 +857,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirmMessage =>
-      'Para entrar de novo, você vai precisar de um novo código enviado ao seu e-mail, o que exige internet.';
+      'Os registros da empresa, as fotos e os mapas baixados são apagados deste celular; seus registros continuam no servidor e voltam quando você entrar de novo. Para entrar de novo, você vai precisar de um novo código enviado ao seu e-mail, o que exige internet.';
 
   @override
   String get actionCancel => 'Cancelar';
@@ -7074,8 +7071,8 @@ class AppLocalizationsPt extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          '$count registros ainda não foram enviados ao servidor e estão só neste celular. Se você sair, eles não serão enviados. Conecte-se à internet e sincronize primeiro.',
-      one: '1 registro ainda não foi enviado ao servidor e está só neste celular. Se você sair, ele não será enviado. Conecte-se à internet e sincronize primeiro.',
+          '$count registros ainda não foram enviados ao servidor. Se você sair, eles serão apagados deste celular e perdidos. Conecte-se à internet e sincronize primeiro.',
+      one: '1 registro ainda não foi enviado ao servidor. Se você sair, ele será apagado deste celular e perdido. Conecte-se à internet e sincronize primeiro.',
     );
     return '$_temp0';
   }
@@ -7937,4 +7934,126 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get teamErrorTooManyAttempts =>
       'Muitas tentativas de código. Espere um minuto e tente de novo.';
+
+  @override
+  String syncRejectedRecordTitle(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String get syncRejectionHintForbidden =>
+      'Sua função não pode alterar este registro. Peça acesso ao proprietário ou desfaça a alteração.';
+
+  @override
+  String get syncRejectionHintConflict =>
+      'O mesmo dado (ex.: uma etiqueta) já é usado por outro registro. Corrija o registro e tente de novo, ou desfaça a alteração.';
+
+  @override
+  String get syncRejectionHintMissingReference =>
+      'O registro ao qual pertence (ex.: um apiário) não está no servidor. Se esse registro já foi enviado, tente de novo; se foi apagado, desfaça a alteração.';
+
+  @override
+  String get syncRejectionHintUnsupported =>
+      'Esta versão do app não consegue enviar este registro. Atualize o app ou desfaça a alteração.';
+
+  @override
+  String get syncRejectionHintInvalid =>
+      'Algum dado do registro é inválido. Corrija o registro e tente de novo, ou desfaça a alteração.';
+
+  @override
+  String get syncRejectionHintUnknown =>
+      'Tente de novo; se continuar falhando, desfaça a alteração.';
+
+  @override
+  String get syncRejectedRetry => 'Tentar de novo';
+
+  @override
+  String get syncRejectedDiscard => 'Desfazer';
+
+  @override
+  String get syncRejectedDiscardTitle => 'Desfazer a alteração?';
+
+  @override
+  String get syncRejectedDiscardMessage =>
+      'A alteração deste celular é apagada e o registro volta a ficar como está no servidor. Se o registro nunca chegou ao servidor, ele também é apagado deste celular.';
+
+  @override
+  String get syncRejectedRetrying => 'Enviando o registro de novo.';
+
+  @override
+  String get syncRejectedDiscarded => 'Alteração desfeita.';
+
+  @override
+  String get todaySyncRejectedTitle => 'Há registros que não foram enviados';
+
+  @override
+  String todaySyncRejectedMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'O servidor não aceitou $count registros; eles estão só neste celular. Toque para ver o que fazer.',
+      one: 'O servidor não aceitou 1 registro; ele está só neste celular. Toque para ver o que fazer.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hiveConflictsTitle(int count) {
+    return 'Conflitos de status de colmeias ($count)';
+  }
+
+  @override
+  String get hiveConflictsMessage =>
+      'Duas pessoas mudaram o status da mesma colmeia sem ver a mudança da outra. Escolha o certo; o outro é apagado e sua escolha chega também à equipe.';
+
+  @override
+  String get hiveConflictQuestion =>
+      'O status foi registrado de duas formas. Qual está certo?';
+
+  @override
+  String get hiveConflictByYou => 'Você';
+
+  @override
+  String get hiveConflictByOther => 'Outro membro';
+
+  @override
+  String hiveConflictOptionHint(String who, String date) {
+    return '$who · $date';
+  }
+
+  @override
+  String hiveConflictOptionHintReason(String who, String date, String reason) {
+    return '$who · $date · $reason';
+  }
+
+  @override
+  String hiveConflictKeepTitle(String number, String status) {
+    return 'Colmeia $number: manter “$status”?';
+  }
+
+  @override
+  String get hiveConflictKeepMessage =>
+      'O outro registro é apagado e a colmeia fica com este status. Sua escolha chega aos celulares da equipe pela sincronização.';
+
+  @override
+  String get hiveConflictKeep => 'Manter';
+
+  @override
+  String get todayHiveConflictsTitle => 'Conflito de status de colmeia';
+
+  @override
+  String todayHiveConflictsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Duas pessoas registraram de forma diferente o status de $count colmeias. Toque para escolher os certos.',
+      one: 'Duas pessoas registraram de forma diferente o status de 1 colmeia. Toque para escolher o certo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickRecordNoApiary => 'Primeiro adicione um apiário.';
 }

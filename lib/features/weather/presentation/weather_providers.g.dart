@@ -338,7 +338,7 @@ final class ApiaryWeatherProvider
   }
 }
 
-String _$apiaryWeatherHash() => r'442d9eaff26f04403bd96687284c9e579b785ae1';
+String _$apiaryWeatherHash() => r'a3c468a4b7f3aa4cf5f89449e0ca57b0055988e0';
 
 /// Arılık silinmişse ya da yoksa null.
 

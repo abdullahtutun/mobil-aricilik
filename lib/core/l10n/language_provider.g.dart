@@ -8,17 +8,17 @@ part of 'language_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Arayüz dili seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında
-/// gelecek.
+/// Arayüz dili seçimi. Bellekte tutulur; açılışta yerel DB'den geri
+/// yüklenir ve her değişiklik oraya yazılır (`app/device_preferences.dart`).
 
 @ProviderFor(Language)
 final languageProvider = LanguageProvider._();
 
-/// Arayüz dili seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında
-/// gelecek.
+/// Arayüz dili seçimi. Bellekte tutulur; açılışta yerel DB'den geri
+/// yüklenir ve her değişiklik oraya yazılır (`app/device_preferences.dart`).
 final class LanguageProvider extends $NotifierProvider<Language, AppLanguage> {
-  /// Arayüz dili seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında
-  /// gelecek.
+  /// Arayüz dili seçimi. Bellekte tutulur; açılışta yerel DB'den geri
+  /// yüklenir ve her değişiklik oraya yazılır (`app/device_preferences.dart`).
   LanguageProvider._()
     : super(
         from: null,
@@ -48,8 +48,8 @@ final class LanguageProvider extends $NotifierProvider<Language, AppLanguage> {
 
 String _$languageHash() => r'20143fdf342dcad93111ab3035cf71e8b89c4ee5';
 
-/// Arayüz dili seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında
-/// gelecek.
+/// Arayüz dili seçimi. Bellekte tutulur; açılışta yerel DB'den geri
+/// yüklenir ve her değişiklik oraya yazılır (`app/device_preferences.dart`).
 
 abstract class _$Language extends $Notifier<AppLanguage> {
   AppLanguage build();

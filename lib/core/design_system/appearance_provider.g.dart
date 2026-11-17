@@ -8,15 +8,18 @@ part of 'appearance_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Görünüm seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında gelecek.
+/// Görünüm seçimi. Bellekte tutulur; açılışta yerel DB'den geri yüklenir ve
+/// her değişiklik oraya yazılır (`app/device_preferences.dart`).
 
 @ProviderFor(Appearance)
 final appearanceProvider = AppearanceProvider._();
 
-/// Görünüm seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında gelecek.
+/// Görünüm seçimi. Bellekte tutulur; açılışta yerel DB'den geri yüklenir ve
+/// her değişiklik oraya yazılır (`app/device_preferences.dart`).
 final class AppearanceProvider
     extends $NotifierProvider<Appearance, AppearanceSettings> {
-  /// Görünüm seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında gelecek.
+  /// Görünüm seçimi. Bellekte tutulur; açılışta yerel DB'den geri yüklenir ve
+  /// her değişiklik oraya yazılır (`app/device_preferences.dart`).
   AppearanceProvider._()
     : super(
         from: null,
@@ -46,7 +49,8 @@ final class AppearanceProvider
 
 String _$appearanceHash() => r'c2f2471a5feb911376e9adf846f8a51cc5b5abea';
 
-/// Görünüm seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında gelecek.
+/// Görünüm seçimi. Bellekte tutulur; açılışta yerel DB'den geri yüklenir ve
+/// her değişiklik oraya yazılır (`app/device_preferences.dart`).
 
 abstract class _$Appearance extends $Notifier<AppearanceSettings> {
   AppearanceSettings build();

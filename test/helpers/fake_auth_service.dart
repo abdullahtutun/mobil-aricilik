@@ -112,6 +112,24 @@ class FakeAuthService implements AuthService {
   }
 }
 
+/// Çıkışın dokunduğu servisler sahte: push kaydı ve [db]'yi boşaltan cihaz
+/// temizliği (dosya klasörü yok). `signedIn` kullanmayan, çıkış butonu olan
+/// ekran testleri için.
+List<Override> signOutOverrides(AppDatabase db) => [
+  pushServiceProvider.overrideWithValue(FakePushService()),
+  deviceTokenServiceProvider.overrideWithValue(FakeDeviceTokenService()),
+  deviceDataWiperProvider.overrideWithValue(
+    DeviceDataWiper(
+      db: db,
+      fileStores: const [],
+      mapAreas: FakeOfflineMaps().store,
+      reminders: FakeReminderNotifications(),
+      clearSecureStorage: () async {},
+      temporaryDirectory: () async => null,
+    ),
+  ),
+];
+
 /// `App`'i giriş yapılmış ve işletmesi olan bir kullanıcıyla açar. Yerel
 /// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, paylaşma, adres
 /// açıcı, senkron, medya (foto, ses, Storage), belge dosyaları (PDF seçici,

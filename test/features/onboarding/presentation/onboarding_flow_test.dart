@@ -44,13 +44,15 @@ Future<ProviderContainer> _pumpApp(
   FakeLocationService? location,
   List<Override> overrides = const [],
 }) async {
+  final database = db ?? openTestDatabase();
   final container = ProviderContainer.test(
     overrides: [
       authServiceProvider.overrideWithValue(
         auth ?? FakeAuthService(user: testUser),
       ),
       ...organizationOverrides(service: service ?? FakeOrganizationService()),
-      appDatabaseProvider.overrideWithValue(db ?? openTestDatabase()),
+      appDatabaseProvider.overrideWithValue(database),
+      ...signOutOverrides(database),
       locationServiceProvider.overrideWithValue(
         location ?? FakeLocationService(),
       ),

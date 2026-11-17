@@ -21,8 +21,8 @@ class AppNavigationBar extends StatelessWidget {
   /// Ortadaki butona dokunulunca: okutma.
   final VoidCallback onScan;
 
-  /// Ortadaki buton basılı tutulunca: hızlı kayıt menüsü. Null ise (viewer
-  /// kayıt giremez) basılı tutmak bir şey yapmaz.
+  /// Ortadaki buton basılı tutulunca ya da yukarı kaydırılınca: hızlı kayıt
+  /// menüsü. Null ise (viewer kayıt giremez) bir şey yapmaz.
   final VoidCallback? onQuickRecord;
 
   @override
@@ -150,7 +150,8 @@ class _TabItem extends StatelessWidget {
   }
 }
 
-/// Dokun: okut. Basılı tut: hızlı kayıt. Zemin halkalı koyu bal daire,
+/// Dokun: okut. Basılı tut ya da yukarı kaydır: hızlı kayıt (eldivenle Okut
+/// ekranındaki butondan da açılır). Zemin halkalı koyu bal daire,
 /// içinde okutma çerçevesi; adı ekran okuyucuya gider. Tooltip yok; uzun
 /// basmayla çakışır.
 class _ScanButton extends StatelessWidget {
@@ -186,33 +187,43 @@ class _ScanButton extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               onLongPress: onLongPress,
-              child: SizedBox.square(
-                dimension: size,
-                // Köşeli çerçeve ve ortasında okuma çizgisi.
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Icon(
-                      Icons.crop_free_rounded,
-                      size: iconSize,
-                      color: colors.onPrimary,
-                      semanticLabel: l10n.scanTitle,
-                    ),
-                    IgnorePointer(
-                      child: SizedBox(
-                        width: iconSize / 2,
-                        height: context.strokes.focus,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: colors.onPrimary,
-                            borderRadius: BorderRadius.circular(
-                              context.radii.pill,
+              child: GestureDetector(
+                // Yukarı kaydırmak da hızlı kaydı açar (teknik.md §8).
+                onVerticalDragEnd: onLongPress == null
+                    ? null
+                    : (details) {
+                        if ((details.primaryVelocity ?? 0) < 0) {
+                          onLongPress!();
+                        }
+                      },
+                child: SizedBox.square(
+                  dimension: size,
+                  // Köşeli çerçeve ve ortasında okuma çizgisi.
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Icon(
+                        Icons.crop_free_rounded,
+                        size: iconSize,
+                        color: colors.onPrimary,
+                        semanticLabel: l10n.scanTitle,
+                      ),
+                      IgnorePointer(
+                        child: SizedBox(
+                          width: iconSize / 2,
+                          height: context.strokes.focus,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: colors.onPrimary,
+                              borderRadius: BorderRadius.circular(
+                                context.radii.pill,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

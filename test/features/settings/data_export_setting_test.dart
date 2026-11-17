@@ -169,9 +169,9 @@ void main() {
 
       expect(
         find.text(
-          "2 records haven't been sent to the server yet and are only on "
-          "this phone. If you sign out, they won't be sent. Connect to the "
-          'internet and sync first.',
+          "2 records haven't been sent to the server yet. If you sign out, "
+          "they're deleted from this phone and lost. Connect to the internet "
+          'and sync first.',
         ),
         findsOneWidget,
       );
@@ -207,8 +207,8 @@ void main() {
 
       expect(
         find.text(
-          '1 kayıt henüz sunucuya gönderilmedi ve yalnız bu telefonda. Çıkış '
-          'yaparsan gönderilmezler. Önce internete bağlanıp eşitle.',
+          '1 kayıt henüz sunucuya gönderilmedi. Çıkış yaparsan bu telefondan '
+          'silinir ve kaybolur. Önce internete bağlanıp eşitle.',
         ),
         findsOneWidget,
       );

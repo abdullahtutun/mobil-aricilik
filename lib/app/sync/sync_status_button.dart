@@ -8,6 +8,7 @@ import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/sync/sync_controller.dart';
 import 'package:mobil_arici/core/sync/sync_indicator.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
+import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 
 /// Bugün'ün başlığındaki senkron hapı (teknik.md §3): eşitlendi, X
 /// bekliyor ya da hata. Bulut ikonu, renk ve kelime birlikte; dokununca
@@ -21,7 +22,10 @@ class SyncStatusButton extends ConsumerWidget {
     final pending = ref.watch(syncPendingCountProvider).value ?? 0;
     final indicator = syncIndicatorOf(
       pending: pending,
-      rejected: ref.watch(syncRejectedProvider).value?.length ?? 0,
+      // Çakışma da kullanıcının bakması gereken bir sorun.
+      rejected:
+          (ref.watch(syncRejectedProvider).value?.length ?? 0) +
+          ref.watch(hiveStatusConflictsProvider).length,
       lastStatus: ref.watch(
         syncControllerProvider.select(
           (activity) => activity.lastResult?.status,

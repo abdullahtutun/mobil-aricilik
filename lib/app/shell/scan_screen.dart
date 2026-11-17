@@ -4,19 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
+import 'package:mobil_arici/app/shell/quick_record_flow.dart';
 import 'package:mobil_arici/app/shell/scan_controller.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
 import 'package:mobil_arici/core/services/code_scanner_provider.dart';
 import 'package:mobil_arici/core/utils/haptics.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/unknown_label_view.dart';
+import 'package:mobil_arici/features/team/presentation/team_providers.dart';
 
 /// Ortadaki Okut butonunun açtığı ekran: koyu zeminde kamera ve bal sarısı
 /// köşeli çerçeve. Kovan etiketi okutulunca
 /// titreşir, kovan kartı ve üstünde hızlı muayene açılır (aktif olmayan
 /// kovanda yalnız kart; geri tuşu arılığa döner). Tanınmayan
 /// kodda kamera kapanır, ekran nedenini söyler ve etiketi bir kovana
-/// atamayı sunar. NFC kendi adımında gelecek.
+/// atamayı sunar. Altta "Hızlı kayıt": okutmadan kayıt türü, arılık ve
+/// kovan seçilir; uzun basma gerekmediği için eldivenle de açılır. NFC
+/// kendi adımında gelecek.
 class ScanScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -73,6 +77,10 @@ class ScanScreen extends ConsumerWidget {
         ),
         body: _Viewfinder(
           camera: ref.watch(codeScannerProvider)(controller.handle),
+          // Viewer kayıt giremez; buton yok.
+          onQuickRecord: ref.watch(canWriteRecordsProvider)
+              ? () => unawaited(startQuickRecord(context, ref))
+              : null,
         ),
       ),
     };
@@ -82,9 +90,12 @@ class ScanScreen extends ConsumerWidget {
 /// Kamera, ortada bal sarısı köşelerle kodun getirileceği çerçeve; altında
 /// ne yapılacağı ve internet gerekmediği.
 class _Viewfinder extends StatelessWidget {
-  const new({required this.camera});
+  const new({required this.camera, required this.onQuickRecord});
 
   final Widget camera;
+
+  /// "Hızlı kayıt" butonu; null ise yok.
+  final VoidCallback? onQuickRecord;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +142,15 @@ class _Viewfinder extends StatelessWidget {
                       color: colors.honey,
                     ),
                   ),
+                  if (onQuickRecord case final onQuickRecord?) ...[
+                    SizedBox(height: spacing.xl),
+                    BigButton(
+                      variant: BigButtonVariant.secondary,
+                      icon: Icons.edit_note_rounded,
+                      label: l10n.quickRecordTitle,
+                      onPressed: onQuickRecord,
+                    ),
+                  ],
                 ],
               ),
             ),

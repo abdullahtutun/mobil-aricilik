@@ -18,6 +18,7 @@ import 'package:mobil_arici/core/services/url_launcher_service_provider.dart';
 import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/auth/presentation/sign_out_actions.dart';
 import 'package:mobil_arici/features/export/presentation/export_providers.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
@@ -34,9 +35,9 @@ import 'package:mobil_arici/features/weather/presentation/widgets/weather_labels
 /// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar, "kullanım
 /// verisi paylaş", offline haritalar, Excel'e dışa aktarma), varroa ve kovan
 /// açma eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
-/// dokununca sistem ayarı açılır) ve hesap (çıkış, Hesabımı sil). Görünüm
-/// ve dil şimdilik yalnızca bellekte; Wi‑Fi seçimi, analitik ve eşikler bu
-/// telefonun yerel DB'sinde. Ülke burada seçilmez, yalnız gösterilir.
+/// dokununca sistem ayarı açılır) ve hesap (çıkış, Hesabımı sil). Bütün
+/// seçimler bu telefonun yerel DB'sinde kalıcı ve çıkışta silinmez. Ülke
+/// burada seçilmez, yalnız gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -230,9 +231,9 @@ class SettingsScreen extends ConsumerWidget {
     if (chosen != null) ref.read(languageProvider.notifier).language = chosen;
   }
 
-  /// Onaylanırsa yerel oturum silinir; router giriş ekranına geçer.
-  /// Gönderilmeyi bekleyen kayıt varsa ([pending]) onay penceresi bunların
-  /// yalnız bu telefonda olduğunu söyler.
+  /// Onaylanırsa oturum kapanır, router giriş ekranına geçer ve hesabın bu
+  /// telefondaki verisi silinir. Gönderilmeyi bekleyen kayıt varsa
+  /// ([pending]) onay penceresi bunların kaybolacağını söyler.
   static Future<void> _confirmSignOut(
     BuildContext context,
     WidgetRef ref, {
@@ -250,11 +251,7 @@ class SettingsScreen extends ConsumerWidget {
           : l10n.settingsSignOut,
     );
     if (!confirmed) return;
-    // Oturum kapanınca sunucu çağrısı yetkisiz kalır; önce token silinir.
-    await ref
-        .read(pushRegistrationProvider.notifier)
-        .unregister(deleteDeviceToken: true);
-    await ref.read(currentUserProvider.notifier).signOut();
+    await ref.read(signOutActionsProvider).signOut();
   }
 
   /// Hesap silme internet ister; bağlantı yoksa akış açılmaz, nedeni tek

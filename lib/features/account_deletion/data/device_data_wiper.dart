@@ -5,7 +5,8 @@ import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/services/reminder_notifications.dart';
 import 'package:mobil_arici/features/offline_maps/data/map_area_store.dart';
 
-/// Hesap silme talebinden sonra bu telefonda hesaptan iz bırakmaz: yerel
+/// Hesap silme talebinden ve çıkıştan sonra bu telefonda hesaptan iz
+/// bırakmaz: yerel
 /// veritabanının her tablosu (kayıtlar, outbox'ta bekleyenler, imleçler,
 /// yerel ayarlar), foto, ses, belge, fiş ve logo dosyaları, indirilmiş
 /// harita paketleri, kurulu hatırlatma bildirimleri, geçici dosyalar
@@ -39,7 +40,10 @@ class DeviceDataWiper {
   /// İçi boşaltılacak geçici klasör; null ise atlanır.
   final Future<Directory?> Function() temporaryDirectory;
 
-  Future<void> wipe() async {
+  /// [keepSettings] verilirse `local_settings`'te bu anahtarlar kalır
+  /// (çıkışta telefonun dil, görünüm ve Wi‑Fi tercihleri); hesap silmede
+  /// boş, her şey gider.
+  Future<void> wipe({Set<String> keepSettings = const {}}) async {
     Object? firstError;
     StackTrace? firstStack;
     Future<void> step(Future<void> Function() action) async {
@@ -51,7 +55,7 @@ class DeviceDataWiper {
       }
     }
 
-    await step(_wipeDatabase);
+    await step(() => _wipeDatabase(keepSettings));
     for (final store in fileStores) {
       await step(store.clear);
     }
@@ -67,10 +71,16 @@ class DeviceDataWiper {
 
   /// Her tablo tek transaction'da boşaltılır; sonra VACUUM silinen
   /// satırların dosyada kalan sayfalarını da siler.
-  Future<void> _wipeDatabase() async {
+  Future<void> _wipeDatabase(Set<String> keepSettings) async {
     await db.transaction(() async {
       for (final table in db.allTables) {
-        await db.delete(table).go();
+        if (table == db.localSettings && keepSettings.isNotEmpty) {
+          await (db.delete(
+            db.localSettings,
+          )..where((t) => t.key.isNotIn(keepSettings))).go();
+        } else {
+          await db.delete(table).go();
+        }
       }
     });
     await db.customStatement('VACUUM');

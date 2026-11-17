@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/backend_setup.dart';
 import 'package:mobil_arici/app/background_sync.dart';
+import 'package:mobil_arici/app/device_preferences.dart';
 import 'package:mobil_arici/app/error_reporting.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/sync/sync_reminder.dart';
@@ -70,6 +71,10 @@ Future<void> bootstrap(Flavor flavor) async {
       container.read(appDatabaseProvider),
       syncBackendIdentity(flavor),
     );
+    // Dil, tema ve eldiven modu ilk karede doğru olsun; sonra her
+    // değişiklik yerel DB'ye yazılır.
+    await restoreDevicePreferences(container);
+    persistDevicePreferences(container);
     container
       // Senkron, medya, görüş ve kullanım olayı gönderimi; belge, fiş
       // ve işletme logosu dosyalarının yüklenip indirilmesi; bilgi

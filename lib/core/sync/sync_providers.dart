@@ -44,7 +44,7 @@ bool syncOverdue(Ref ref) => isSyncOverdue(
   now: clock.now(),
 );
 
-/// Sunucunun reddettiği kayıtlar.
+/// Sunucunun reddettiği kayıtlar (kayıt başına bir tane).
 @riverpod
 Stream<List<RejectedRecord>> syncRejected(Ref ref) =>
     ref.watch(syncRepositoryProvider).watchRejected();

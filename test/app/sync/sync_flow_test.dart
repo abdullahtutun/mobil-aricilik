@@ -9,6 +9,7 @@ import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/shell/app_navigation_bar.dart';
 import 'package:mobil_arici/app/sync/initial_sync_screen.dart';
+import 'package:mobil_arici/app/sync/rejected_record_card.dart';
 import 'package:mobil_arici/app/sync/sync_overdue_card.dart';
 import 'package:mobil_arici/app/sync/sync_screen.dart';
 import 'package:mobil_arici/app/sync/sync_status_button.dart';
@@ -18,9 +19,14 @@ import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/sync/sync_result.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
+import 'package:mobil_arici/features/hives/data/hive_repository.dart';
+import 'package:mobil_arici/features/hives/domain/hive.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
+import 'package:mobil_arici/features/hives/presentation/widgets/hive_status_conflict_card.dart';
 import 'package:mobil_arici/features/today/presentation/today_screen.dart';
 
 import '../../helpers/fake_auth_service.dart';
+import '../../helpers/fake_organization_service.dart';
 import '../../helpers/fake_sync_service.dart';
 import '../../helpers/test_database.dart';
 
@@ -131,7 +137,7 @@ void main() {
       await tap(tester, inAppBar('Error'));
 
       expect(find.text("COULDN'T BE SENT (1)"), findsOneWidget);
-      expect(find.text('Apiary'), findsOneWidget);
+      expect(find.text('Apiary · Yayla'), findsOneWidget);
       expect(
         find.textContaining(
           'Conflicts with another record (e.g. the same label) · ',
@@ -215,13 +221,238 @@ void main() {
       expect(find.text('1 kayıt gönderilmeyi bekliyor.'), findsOneWidget);
       expect(find.text('GÖNDERİLMEYİ BEKLEYEN · 1'), findsOneWidget);
       expect(find.text('GÖNDERİLEMEYEN KAYITLAR (1)'), findsOneWidget);
-      // Bekleyenlerde ve reddedilenlerde birer kez.
-      expect(find.text('Arılık'), findsNWidgets(2));
+      // Bekleyenlerde türü, reddedilende türü ve adı.
+      expect(find.text('Arılık'), findsOneWidget);
+      expect(find.text('Arılık · Yayla'), findsOneWidget);
+      expect(
+        find.text(
+          'Rolün bu kaydı değiştirmeye yetmiyor. İşletme sahibinden yetki '
+          'iste ya da değişikliği geri al.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('Yeniden dene'), findsOneWidget);
+      expect(find.text('Geri al'), findsOneWidget);
       expect(
         find.textContaining('Bu kaydı değiştirme yetkin yok · '),
         findsOneWidget,
       );
       expect(find.text('Şimdi eşitle'), findsOneWidget);
+    });
+  });
+
+  group('Gönderilemeyen kayıtlar', () {
+    testWidgets('Bugün uyarır; dokununca senkron ekranında nedenine göre ne '
+        'yapılacağı yazar', (tester) async {
+      await writeApiary(rejectedAs: 'missing_reference: apiary');
+      await open(tester);
+
+      expect(find.text("Some records couldn't be sent"), findsOneWidget);
+      expect(
+        find.text(
+          "The server didn't accept 1 record; it's only on this phone. Tap "
+          'to see what to do.',
+        ),
+        findsOneWidget,
+      );
+      await tap(tester, find.text("Some records couldn't be sent"));
+
+      expect(find.byType(SyncScreen), findsOneWidget);
+      expect(find.byType(RejectedRecordCard), findsOneWidget);
+      expect(
+        find.textContaining("The record it belongs to (e.g. an apiary) isn't"),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('aynı kaydın reddedilen yazmaları tek kart', (tester) async {
+      final apiary = await ApiaryRepository(db)
+          .create(orgId: 'org-1', name: 'Yayla');
+      await ApiaryRepository(db).update(apiary.copyWith(name: 'Ova'));
+      await db
+          .update(db.outbox)
+          .write(const OutboxCompanion(lastError: Value('invalid: bad')));
+      final container = await open(tester);
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+
+      expect(find.text("COULDN'T BE SENT (1)"), findsOneWidget);
+      // Ad son yazmadan.
+      expect(find.text('Apiary · Ova'), findsOneWidget);
+    });
+
+    testWidgets('Yeniden dene kaydı yeniden gönderilecek sıraya alır ve tur '
+        'başlatır', (tester) async {
+      await writeApiary(rejectedAs: 'forbidden: RLS');
+      final container = await open(tester);
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+
+      await tap(tester, find.widgetWithText(BigButton, 'Try again'));
+
+      expect(find.text('Sending the record again.'), findsOneWidget);
+      expect(find.byType(RejectedRecordCard), findsNothing);
+      expect(find.text('1 record is waiting to be sent.'), findsOneWidget);
+      final entries = await db.select(db.outbox).get();
+      expect(entries.single.lastError, isNull);
+      expect(sync.syncCount, 1);
+    });
+
+    testWidgets('Geri al onay ister; sunucuya hiç ulaşmamış kayıt bu '
+        'telefondan da silinir', (tester) async {
+      await writeApiary(rejectedAs: 'invalid: bad');
+      final container = await open(tester);
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+
+      await tap(tester, find.widgetWithText(BigButton, 'Undo change'));
+      expect(find.text('Undo this change?'), findsOneWidget);
+      await tap(tester, find.text('Cancel'));
+      expect(await db.select(db.apiaries).get(), hasLength(1));
+
+      await tap(tester, find.widgetWithText(BigButton, 'Undo change'));
+      await tap(
+        tester,
+        find.descendant(
+          of: find.byType(AlertDialog),
+          matching: find.text('Undo change'),
+        ),
+      );
+
+      expect(find.text('Change undone.'), findsOneWidget);
+      expect(find.byType(RejectedRecordCard), findsNothing);
+      expect(await db.select(db.outbox).get(), isEmpty);
+      expect(await db.select(db.apiaries).get(), isEmpty);
+      expect(sync.syncCount, 1);
+    });
+  });
+
+  group('Kovan durumu çakışması', () {
+    /// Aynı kovanı iki cihaz habersizce değiştirdi: bu telefon "söndü",
+    /// başka üye "satıldı" yazdı; kovan son yazanın (satıldı) durumunda.
+    Future<Hive> seedConflict() async {
+      final hives = HiveRepository(db);
+      final apiary = await ApiaryRepository(db)
+          .create(orgId: testOrganization.id, name: 'Yayla');
+      final hive = await hives.create(
+        orgId: testOrganization.id,
+        apiaryId: apiary.id,
+        number: '12',
+        type: HiveType.langstroth,
+      );
+      await hives.setStatus(
+        hive.id,
+        HiveStatus.dead,
+        lossReason: HiveLossReason.varroa,
+      );
+      final at = DateTime.now().toUtc();
+      await db
+          .into(db.hiveStatusEvents)
+          .insert(
+            HiveStatusEvent(
+              id: 'event-other',
+              orgId: testOrganization.id,
+              hiveId: hive.id,
+              apiaryId: apiary.id,
+              fromStatus: HiveStatus.active,
+              toStatus: HiveStatus.sold,
+              changedAt: at.add(const Duration(minutes: 1)),
+              createdAt: at,
+              updatedAt: at,
+              createdBy: 'other-user',
+              serverSeq: 7,
+            ).toInsertable(),
+          );
+      await (db.update(db.hives)..where((t) => t.id.equals(hive.id))).write(
+        const HivesCompanion(status: Value(HiveStatus.sold)),
+      );
+      await db.delete(db.outbox).go();
+      return hive;
+    }
+
+    testWidgets('Bugün uyarır; senkron ekranında iki kayıt, kimin ve ne '
+        'zaman yazdığıyla gösterilir; seçilen kalır, öbürü silinir', (
+      tester,
+    ) async {
+      final hive = await seedConflict();
+      await open(tester);
+
+      expect(inAppBar('Error'), findsOneWidget);
+      expect(find.text('Hive status conflict'), findsOneWidget);
+      await tap(tester, find.text('Hive status conflict'));
+
+      expect(find.text('HIVE STATUS CONFLICTS (1)'), findsOneWidget);
+      expect(find.byType(HiveStatusConflictCard), findsOneWidget);
+      expect(find.text('Hive 12'), findsOneWidget);
+      expect(find.textContaining('You · '), findsOneWidget);
+      expect(find.textContaining(' · Varroa'), findsOneWidget);
+      expect(find.textContaining('Another member · '), findsOneWidget);
+
+      await tap(tester, find.widgetWithText(OptionTile, 'Dead'));
+      expect(find.text('Hive 12: keep “Dead”?'), findsOneWidget);
+      await tap(tester, find.text('Keep this'));
+
+      expect(find.byType(HiveStatusConflictCard), findsNothing);
+      expect(find.text('Hive 12: Dead'), findsOneWidget);
+      final other = await (db.select(
+        db.hiveStatusEvents,
+      )..where((t) => t.id.equals('event-other'))).getSingle();
+      expect(other.deletedAt, isNotNull);
+      final updated = await (db.select(
+        db.hives,
+      )..where((t) => t.id.equals(hive.id))).getSingle();
+      expect(updated.status, HiveStatus.dead);
+      // Silme ve yeni durum senkronla ekibe gider.
+      final outbox = await db.select(db.outbox).get();
+      expect(
+        outbox.map((entry) => (entry.recordTable, entry.recordId)),
+        containsAll([
+          ('hive_status_events', 'event-other'),
+          ('hives', hive.id),
+        ]),
+      );
+    });
+
+    testWidgets('Türkçe metinler', (tester) async {
+      tester.platformDispatcher.localesTestValue = const [Locale('tr')];
+      addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+      await seedConflict();
+      final container = await open(tester);
+
+      expect(find.text('Kovan durumu çakışması'), findsOneWidget);
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+      expect(find.text('KOVAN DURUMU ÇAKIŞMALARI (1)'), findsOneWidget);
+      expect(
+        find.text('Durum iki farklı şekilde kaydedildi. Hangisi doğru?'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('Sen · '), findsOneWidget);
+      expect(find.textContaining('Başka bir üye · '), findsOneWidget);
+    });
+
+    testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {
+      tester.view
+        ..physicalSize = const Size(360, 640)
+        ..devicePixelRatio = 1;
+      tester.platformDispatcher
+        ..localesTestValue = const [Locale('tr')]
+        ..textScaleFactorTestValue = 1.5;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearAllTestValues);
+      await seedConflict();
+      await writeApiary(rejectedAs: 'conflict: duplicate');
+      final container = await open(tester);
+      container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
+      container.read(routerProvider).go(AppRoutes.sync);
+      await tester.pumpAndSettle();
+
+      await tester.scrollUntilVisible(
+        find.byType(HiveStatusConflictCard),
+        100,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(tester.takeException(), isNull);
     });
   });
 
@@ -447,8 +678,18 @@ void main() {
       container.read(routerProvider).go(AppRoutes.today);
       await tester.pumpAndSettle();
       expect(inAppBar('Error'), findsOneWidget);
-      expect(find.byType(SyncOverdueCard), findsOneWidget);
+      expect(find.text("Some records couldn't be sent"), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.byType(SyncOverdueCard),
+        100,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(tester.takeException(), isNull);
+      await tester.scrollUntilVisible(
+        inAppBar('Error'),
+        -100,
+        scrollable: find.byType(Scrollable).first,
+      );
 
       await tap(tester, inAppBar('Error'));
       expect(find.byType(SyncOverdueCard), findsOneWidget);

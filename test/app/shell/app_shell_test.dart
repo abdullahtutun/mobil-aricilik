@@ -226,7 +226,7 @@ void main() {
       }
     });
 
-    testWidgets('menüden seçince menü kapanır, yakında bildirimi çıkar', (
+    testWidgets('menüden seçince menü kapanır; arılık yoksa nedeni söylenir', (
       tester,
     ) async {
       final container = await _pumpApp(tester);
@@ -242,7 +242,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(QuickRecordSheet), findsNothing);
-      expect(find.text('This record type is coming soon.'), findsOneWidget);
+      expect(find.text('Add an apiary first to record.'), findsOneWidget);
       expect(find.byType(AttentionScreen), findsOneWidget);
     });
 

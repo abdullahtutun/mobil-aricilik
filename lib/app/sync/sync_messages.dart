@@ -48,6 +48,18 @@ String syncRejectionText(AppLocalizations l10n, SyncRejection rejection) =>
       SyncRejection.unknown => l10n.syncRejectionUnknown,
     };
 
+/// Reddin nedenine göre kullanıcının ne yapabileceği: yeniden dene ya da
+/// değişikliği geri al.
+String syncRejectionHint(AppLocalizations l10n, SyncRejection rejection) =>
+    switch (rejection) {
+      SyncRejection.forbidden => l10n.syncRejectionHintForbidden,
+      SyncRejection.conflict => l10n.syncRejectionHintConflict,
+      SyncRejection.missingReference => l10n.syncRejectionHintMissingReference,
+      SyncRejection.unsupported => l10n.syncRejectionHintUnsupported,
+      SyncRejection.invalid => l10n.syncRejectionHintInvalid,
+      SyncRejection.unknown => l10n.syncRejectionHintUnknown,
+    };
+
 /// Sunucu tablosunun kayıt türü olarak adı; tanınmayan tabloda adın
 /// kendisi (veri, metin değil).
 String syncTableLabel(AppLocalizations l10n, String table) => switch (table) {

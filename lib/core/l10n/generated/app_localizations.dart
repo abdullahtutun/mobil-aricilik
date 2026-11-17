@@ -1282,12 +1282,6 @@ abstract class AppLocalizations {
   /// **'Expense'**
   String get quickRecordExpense;
 
-  /// No description provided for @quickRecordComingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'This record type is coming soon.'**
-  String get quickRecordComingSoon;
-
   /// No description provided for @signInSendCode.
   ///
   /// In en, this message translates to:
@@ -1453,7 +1447,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsSignOutConfirmMessage.
   ///
   /// In en, this message translates to:
-  /// **'To sign back in you\'ll need a new code sent to your email, which needs internet.'**
+  /// **'This phone\'s business records, photos and downloaded maps are removed; your records stay on the server and come back when you sign in again. To sign back in you\'ll need a new code sent to your email, which needs internet.'**
   String get settingsSignOutConfirmMessage;
 
   /// No description provided for @actionCancel.
@@ -11192,7 +11186,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsSignOutPendingMessage.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 record hasn\'t been sent to the server yet and is only on this phone. If you sign out, it won\'t be sent. Connect to the internet and sync first.} other{{count} records haven\'t been sent to the server yet and are only on this phone. If you sign out, they won\'t be sent. Connect to the internet and sync first.}}'**
+  /// **'{count, plural, =1{1 record hasn\'t been sent to the server yet. If you sign out, it\'s deleted from this phone and lost. Connect to the internet and sync first.} other{{count} records haven\'t been sent to the server yet. If you sign out, they\'re deleted from this phone and lost. Connect to the internet and sync first.}}'**
   String settingsSignOutPendingMessage(int count);
 
   /// No description provided for @settingsSignOutAnyway.
@@ -12538,6 +12532,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Too many code attempts. Wait a minute and try again.'**
   String get teamErrorTooManyAttempts;
+
+  /// Rejected record card title: record type and its name or number.
+  ///
+  /// In en, this message translates to:
+  /// **'{type} · {name}'**
+  String syncRejectedRecordTitle(String type, String name);
+
+  /// No description provided for @syncRejectionHintForbidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role can\'t change this record. Ask the owner for access, or undo the change.'**
+  String get syncRejectionHintForbidden;
+
+  /// No description provided for @syncRejectionHintConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'The same value (e.g. a label) is used by another record. Fix the record and try again, or undo the change.'**
+  String get syncRejectionHintConflict;
+
+  /// No description provided for @syncRejectionHintMissingReference.
+  ///
+  /// In en, this message translates to:
+  /// **'The record it belongs to (e.g. an apiary) isn\'t on the server. If that record has been sent since, try again; if it was deleted, undo the change.'**
+  String get syncRejectionHintMissingReference;
+
+  /// No description provided for @syncRejectionHintUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This version of the app can\'t send this record. Update the app, or undo the change.'**
+  String get syncRejectionHintUnsupported;
+
+  /// No description provided for @syncRejectionHintInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Something in the record isn\'t valid. Fix the record and try again, or undo the change.'**
+  String get syncRejectionHintInvalid;
+
+  /// No description provided for @syncRejectionHintUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again; if it keeps failing, undo the change.'**
+  String get syncRejectionHintUnknown;
+
+  /// No description provided for @syncRejectedRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get syncRejectedRetry;
+
+  /// No description provided for @syncRejectedDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo change'**
+  String get syncRejectedDiscard;
+
+  /// No description provided for @syncRejectedDiscardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo this change?'**
+  String get syncRejectedDiscardTitle;
+
+  /// No description provided for @syncRejectedDiscardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The change on this phone is deleted and the record goes back to how it is on the server. If the record never reached the server, it\'s removed from this phone too.'**
+  String get syncRejectedDiscardMessage;
+
+  /// No description provided for @syncRejectedRetrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending the record again.'**
+  String get syncRejectedRetrying;
+
+  /// No description provided for @syncRejectedDiscarded.
+  ///
+  /// In en, this message translates to:
+  /// **'Change undone.'**
+  String get syncRejectedDiscarded;
+
+  /// No description provided for @todaySyncRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Some records couldn\'t be sent'**
+  String get todaySyncRejectedTitle;
+
+  /// No description provided for @todaySyncRejectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{The server didn\'t accept 1 record; it\'s only on this phone. Tap to see what to do.} other{The server didn\'t accept {count} records; they\'re only on this phone. Tap to see what to do.}}'**
+  String todaySyncRejectedMessage(int count);
+
+  /// No description provided for @hiveConflictsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive status conflicts ({count})'**
+  String hiveConflictsTitle(int count);
+
+  /// No description provided for @hiveConflictsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Two people changed the same hive\'s status without seeing each other\'s change. Pick the right one; the other is deleted and your choice reaches the team too.'**
+  String get hiveConflictsMessage;
+
+  /// No description provided for @hiveConflictQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'The status was recorded two ways. Which one is right?'**
+  String get hiveConflictQuestion;
+
+  /// No description provided for @hiveConflictByYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get hiveConflictByYou;
+
+  /// No description provided for @hiveConflictByOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Another member'**
+  String get hiveConflictByOther;
+
+  /// Who recorded the status and when.
+  ///
+  /// In en, this message translates to:
+  /// **'{who} · {date}'**
+  String hiveConflictOptionHint(String who, String date);
+
+  /// Who recorded the loss, when, and the loss reason.
+  ///
+  /// In en, this message translates to:
+  /// **'{who} · {date} · {reason}'**
+  String hiveConflictOptionHintReason(String who, String date, String reason);
+
+  /// No description provided for @hiveConflictKeepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive {number}: keep “{status}”?'**
+  String hiveConflictKeepTitle(String number, String status);
+
+  /// No description provided for @hiveConflictKeepMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The other record is deleted and the hive takes this status. Your choice reaches the team\'s phones through sync.'**
+  String get hiveConflictKeepMessage;
+
+  /// No description provided for @hiveConflictKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this'**
+  String get hiveConflictKeep;
+
+  /// No description provided for @todayHiveConflictsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hive status conflict'**
+  String get todayHiveConflictsTitle;
+
+  /// No description provided for @todayHiveConflictsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hive\'s status was recorded differently by two people. Tap to pick the right one.} other{{count} hives\' statuses were recorded differently by two people. Tap to pick the right ones.}}'**
+  String todayHiveConflictsMessage(int count);
+
+  /// No description provided for @quickRecordNoApiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an apiary first to record.'**
+  String get quickRecordNoApiary;
 }
 
 class _AppLocalizationsDelegate

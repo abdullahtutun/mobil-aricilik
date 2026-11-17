@@ -6,6 +6,7 @@ import 'package:mobil_arici/features/hives/data/hive_location_repository.dart';
 import 'package:mobil_arici/features/hives/data/hive_status_event_repository.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_location_entry.dart';
+import 'package:mobil_arici/features/hives/domain/hive_status_conflict.dart';
 import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/tasks/data/task_repository.dart';
 
@@ -185,6 +186,26 @@ class HiveRepository extends BaseRepository<$HivesTable, Hive> {
         if (_changesAks(hive, restored)) await _remindAks(hive.orgId);
         return restored;
       });
+
+  /// Durum çakışmasını ([findStatusConflicts]) çözer: [discardEventId]
+  /// olayı silinir ve kovan, kalan olayların sonuncusunun vardığı duruma
+  /// geçer (genelde kullanıcının tuttuğu olayın durumu). Silme ve yeni
+  /// durum senkronla diğer cihazlara ulaşır; çakışma her yerde kapanır.
+  /// Hepsi tek transaction'da. Kovan yoksa ya da silinmişse [StateError].
+  Future<Hive> resolveStatusConflict(
+    String hiveId, {
+    required String discardEventId,
+  }) => db.transaction(() async {
+    final hive = await requireById(hiveId);
+    await _statusEvents.delete(discardEventId);
+    final remaining = await _statusEvents.findByHive(hiveId)
+      ..sort(compareStatusEvents);
+    final status = remaining.lastOrNull?.toStatus ?? hive.status;
+    if (status == hive.status) return hive;
+    final updated = await updateRecord(hive.copyWith(status: status));
+    if (_changesAks(hive, updated)) await _remindAks(hive.orgId);
+    return updated;
+  });
 
   /// Kovanı [disease] şüphesiyle karantinaya alır; zaten karantinadaysa
   /// hastalık değişir, başlangıç zamanı kalır. Kovanın aktifliği

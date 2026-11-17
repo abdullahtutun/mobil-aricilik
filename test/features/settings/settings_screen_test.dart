@@ -5,20 +5,33 @@ import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/app/shell/more_screen.dart';
+import 'package:mobil_arici/core/db/app_database.dart';
+import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
+import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_in_email_screen.dart';
 import 'package:mobil_arici/features/settings/presentation/settings_screen.dart';
 
+import '../../helpers/fake_account_deletion_service.dart';
 import '../../helpers/fake_auth_service.dart';
 import '../../helpers/fake_url_launcher.dart';
+import '../../helpers/test_database.dart';
 
 Future<ProviderContainer> _pumpSettings(
   WidgetTester tester, {
   FakeAuthService? auth,
+  AppDatabase? db,
+  FakeSecureStorageWipe? secureStorageWipe,
 }) async {
-  final container = ProviderContainer.test(overrides: signedIn(auth: auth));
+  final container = ProviderContainer.test(
+    overrides: signedIn(
+      auth: auth,
+      db: db,
+      secureStorageWipe: secureStorageWipe,
+    ),
+  );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const App()),
   );
@@ -208,6 +221,54 @@ void main() {
       expect(auth.signOutCount, 1);
       expect(find.byType(SignInEmailScreen), findsOneWidget);
       expect(find.byType(SettingsScreen), findsNothing);
+    });
+
+    testWidgets('çıkışta hesabın bu telefondaki verisi silinir; telefonun '
+        'tercihleri kalır', (tester) async {
+      final db = openTestDatabase();
+      final secure = FakeSecureStorageWipe();
+      await ApiaryRepository(db).create(orgId: 'org-1', name: 'Yayla');
+      final settings = LocalSettingsRepository(db);
+      await settings.setLastSyncedAt(DateTime.utc(2026, 11));
+      await settings.setMediaWifiOnly(enabled: true);
+      final container = await _pumpSettings(
+        tester,
+        db: db,
+        secureStorageWipe: secure,
+      );
+      container.read(appearanceProvider.notifier).setGloveMode(enabled: true);
+      await tester.pumpAndSettle();
+      await scrollToAccount(tester);
+
+      await _tapInSettings(tester, 'Sign out');
+      // Bekleyen kayıt var: kaybolacağı söylenir.
+      expect(
+        find.text(
+          "1 record hasn't been sent to the server yet. If you sign out, "
+          "it's deleted from this phone and lost. Connect to the internet "
+          'and sync first.',
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('Sign out anyway'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SignInEmailScreen), findsOneWidget);
+      expect(await db.select(db.apiaries).get(), isEmpty);
+      expect(await db.select(db.outbox).get(), isEmpty);
+      final kept = await settings.readAll();
+      expect(
+        kept,
+        containsPair(LocalSettingsRepository.mediaWifiOnlyKey, 'true'),
+      );
+      expect(
+        kept.keys,
+        everyElement(isIn(LocalSettingsRepository.devicePreferenceKeys)),
+      );
+      expect(kept, isNot(contains(LocalSettingsRepository.lastSyncedAtKey)));
+      expect(secure.calls, 1);
+      // Bellekteki tercih de sürer.
+      expect(container.read(appearanceProvider).gloveMode, isTrue);
     });
 
     testWidgets('vazgeçilirse oturum açık kalır', (tester) async {

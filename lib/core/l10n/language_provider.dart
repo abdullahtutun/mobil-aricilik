@@ -3,8 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'language_provider.g.dart';
 
-/// Arayüz dili seçimi. Şimdilik bellekte; kalıcı kayıt ayarlar adımında
-/// gelecek.
+/// Arayüz dili seçimi. Bellekte tutulur; açılışta yerel DB'den geri
+/// yüklenir ve her değişiklik oraya yazılır (`app/device_preferences.dart`).
 @Riverpod(keepAlive: true)
 class Language extends _$Language {
   @override

@@ -3,7 +3,7 @@ import 'package:mobil_arici/core/db/local_settings_repository.dart';
 
 /// `local_settings`'te bu telefonun son senkronlandığı sunucu:
 /// `<backend>|<adres>` (ör. `pocketbase|https://arici-api-dev.tutunsoft.com`).
-const syncBackendKey = 'sync_backend';
+const String syncBackendKey = LocalSettingsRepository.syncBackendKey;
 
 /// Senkronun sunucusu [identity] değilse (adres değişti, ör. dev ↔ prod, ya
 /// da değer hiç yazılmamış) imleçleri sıfırlar ve [identity]'yi yazar;
