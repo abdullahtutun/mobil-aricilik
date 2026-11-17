@@ -14,6 +14,7 @@ import 'package:mobil_arici/features/apiaries/presentation/apiary_form_screen.da
 import 'package:mobil_arici/features/weather/data/weather_repository.dart';
 import 'package:mobil_arici/features/weather/domain/weather_icons.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/apiary_no_weather_card.dart';
+import 'package:mobil_arici/features/weather/presentation/widgets/apiary_weather_card.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_attribution.dart';
 import 'package:mobil_arici/features/weather/presentation/widgets/weather_glyph.dart';
 
@@ -103,6 +104,34 @@ void main() {
     expect(find.textContaining('itibarıyla'), findsNothing);
     // Paket telefonda saklandı.
     expect(await WeatherRepository(db).readBundle(), weather.bundle);
+  });
+
+  testWidgets('tek arılıkta kart ortalı; rüzgarın yanında nem ve yağış '
+      'yazar', (tester) async {
+    await ApiaryRepository(db).delete(yayla.id);
+    await ApiaryRepository(db).delete(ova.id);
+    final now = DateTime.now();
+    final weather = FakeWeatherService(
+      bundle: testBundle(
+        generatedAt: now,
+        forecasts: {
+          kizilcam.id: testForecast(at: now, precipitationProbability: 10),
+        },
+      ),
+    );
+    await _open(tester, db: db, weather: weather);
+
+    Finder rich(String text) => find.text(text, findRichText: true);
+    expect(rich('Rüzgar 8 km/s'), findsOneWidget);
+    expect(rich('Nem %48'), findsOneWidget);
+    expect(rich('Yağış %10'), findsOneWidget);
+    expect(find.text('Güneşli'), findsOneWidget);
+    final card = tester.getRect(find.byType(ApiaryWeatherCard));
+    final temperature = tester.getRect(find.text('22°'));
+    final name = tester.getRect(find.text('Kızılçam'));
+    // İçerik sola yaslı değil, kartın ortasında.
+    expect((name.center.dx - card.center.dx).abs(), lessThan(1));
+    expect(temperature.left - card.left, greaterThan(card.width / 4));
   });
 
   testWidgets('çevrimdışıyken saklanan paket zamanıyla ve atıfla gösterilir', (

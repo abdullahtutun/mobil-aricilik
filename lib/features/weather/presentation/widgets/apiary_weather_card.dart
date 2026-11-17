@@ -13,10 +13,15 @@ import 'package:mobil_arici/features/weather/presentation/widgets/weather_labels
 /// Bir arılığın şu anki saati: ad, hava ikonu, sıcaklık ve rüzgar
 /// (kullanıcının biriminde) ve kovan açma rozeti. Dokununca arılığın hava
 /// ekranı açılır. Ekran okuyucu kartı tek öğe olarak okur.
+///
+/// [expanded] (şeritte tek arılık, kart ekranın enini kaplar): içerik
+/// ortalanır; durum adı ile rüzgarın yanında nem ve yağış olasılığı da
+/// yazar, kart boş görünmez.
 class ApiaryWeatherCard extends ConsumerWidget {
-  const new({required this.weather, super.key});
+  const new({required this.weather, this.expanded = false, super.key});
 
   final ApiaryWeather weather;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,12 +34,46 @@ class ApiaryWeatherCard extends ConsumerWidget {
     final spacing = context.spacing;
     final typography = context.typography;
     final colors = context.colors;
-    final (:apiary, :hour, :opening, :thresholds) = weather;
+    final (:apiary, :hour, :humidity, :opening, :thresholds) = weather;
     final icon = weatherIconFor(
       hour.conditionCode,
       windKmh: hour.windKmh,
       windLimitKmh: thresholds.maxWindKmh,
     );
+    final secondary = typography.bodySmall.copyWith(
+      color: colors.textSecondary,
+    );
+
+    // "Rüzgar 8 km/s": ad soluk, değer kalın.
+    Widget measure(String label, String value) => Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: '$label '),
+          TextSpan(
+            text: value,
+            style: TextStyle(
+              color: colors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+      style: secondary,
+    );
+
+    final measures = expanded
+        ? [
+            if (hour.windKmh case final kmh?)
+              measure(l10n.weatherWindLabel, units.speed(kmh)),
+            if (humidity case final value?)
+              measure(l10n.weatherHumidityLabel, units.percent(value)),
+            if (hour.precipitationProbability case final value?)
+              measure(l10n.weatherPrecipitationLabel, units.percent(value)),
+          ]
+        : [
+            if (hour.windKmh case final kmh?)
+              Text(l10n.weatherWind(units.speed(kmh)), style: secondary),
+          ];
 
     return MergeSemantics(
       child: AppCard(
@@ -44,11 +83,18 @@ class ApiaryWeatherCard extends ConsumerWidget {
           child: Padding(
             padding: EdgeInsets.all(spacing.lg),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: expanded
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start,
               children: [
-                Text(apiary.name, style: typography.subtitle),
+                Text(
+                  apiary.name,
+                  style: typography.subtitle,
+                  textAlign: expanded ? TextAlign.center : TextAlign.start,
+                ),
                 SizedBox(height: spacing.sm),
                 Row(
+                  mainAxisSize: expanded ? MainAxisSize.min : MainAxisSize.max,
                   children: [
                     weatherGlyph(context, l10n, icon, size: context.sizes.icon),
                     SizedBox(width: spacing.sm),
@@ -61,13 +107,21 @@ class ApiaryWeatherCard extends ConsumerWidget {
                       ),
                   ],
                 ),
-                if (hour.windKmh case final kmh?) ...[
-                  SizedBox(height: spacing.sm),
+                if (expanded && hour.conditionCode != null)
                   Text(
-                    l10n.weatherWind(units.speed(kmh)),
-                    style: typography.bodySmall.copyWith(
-                      color: colors.textSecondary,
-                    ),
+                    weatherConditionLabel(l10n, hour.conditionCode),
+                    style: secondary,
+                    textAlign: TextAlign.center,
+                  ),
+                if (measures.isNotEmpty) ...[
+                  SizedBox(height: spacing.sm),
+                  Wrap(
+                    alignment: expanded
+                        ? WrapAlignment.center
+                        : WrapAlignment.start,
+                    spacing: spacing.lg,
+                    runSpacing: spacing.xs,
+                    children: measures,
                   ),
                 ],
                 if (opening != null) ...[

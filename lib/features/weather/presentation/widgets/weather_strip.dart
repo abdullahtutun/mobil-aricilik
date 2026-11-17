@@ -23,7 +23,11 @@ class WeatherStrip extends ConsumerWidget {
     final weather = ref.watch(apiaryWeatherProvider).value ?? const [];
     final without = ref.watch(apiariesWithoutWeatherProvider).value ?? const [];
     final cards = [
-      for (final item in weather) ApiaryWeatherCard(weather: item),
+      for (final item in weather)
+        ApiaryWeatherCard(
+          weather: item,
+          expanded: weather.length + without.length == 1,
+        ),
       for (final apiary in without) ApiaryNoWeatherCard(apiary: apiary),
     ];
     if (cards.isEmpty) return const SizedBox.shrink();

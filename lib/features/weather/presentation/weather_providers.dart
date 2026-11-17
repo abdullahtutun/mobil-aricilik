@@ -58,10 +58,12 @@ Future<List<Apiary>> apiariesWithoutWeather(Ref ref) async {
 }
 
 /// Bir arılığın şu anki saatinin havası. `opening` sıcaklık ya da rüzgar
-/// eksikse null; `thresholds` simgenin rüzgar sınırı için.
+/// eksikse null; `thresholds` simgenin rüzgar sınırı için. `humidity`
+/// sağlayıcının son ölçümünden (saatlik tahminde nem yok).
 typedef ApiaryWeather = ({
   Apiary apiary,
   HourlyWeather hour,
+  double? humidity,
   HiveOpening? opening,
   HiveOpeningThresholds thresholds,
 });
@@ -83,6 +85,7 @@ Future<List<ApiaryWeather>> apiaryWeather(Ref ref) async {
           (
             apiary: summary.apiary,
             hour: hour,
+            humidity: forecast.current.humidity,
             opening: hourOpening(hour, thresholds),
             thresholds: thresholds,
           ),

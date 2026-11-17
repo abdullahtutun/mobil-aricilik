@@ -1243,6 +1243,11 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - §6'nın son cümlesi aktarımların "standart sözleşme hükümleri" kapsamında yapıldığını söylüyordu; kullanıcı hiçbir sağlayıcıyla sözleşme imzalamadı. Cümle kaldırıldı, yerine olgu yazıldı: aktarım gerekli ve yukarıdaki verilerle sınırlı, sağlayıcılar kendi koşullarıyla işler, kayıt/dosya/işletme bilgisi gönderilmez. Herhangi bir hukuki dayanak iddiası yok.
 - Açık (yayından önce, hukuk danışmanıyla): yurt dışı aktarımın KVKK m. 9 dayanağı. Düzenli aktarım için pratik yol Kurul'un standart sözleşmesi (imza + 5 iş günü içinde Kurum'a bildirim) ya da e-postayı Türkiye'deki bir SMTP'ye almak.
 
+### 2026-11-17 — Bugün: tek arılığın hava kartı
+
+- Şeritte tek arılık varken kart ekranın enini kaplıyor ama içerik sola yaslı kalıyordu. `ApiaryWeatherCard(expanded:)` artık içeriği ortalıyor ve boşluğu doldurmak için durum adını (Güneşli…) ve rüzgarın yanında nem ile yağış olasılığını yazıyor ("Rüzgar 8 km/s · Nem %48 · Yağış %10", sığmazsa `Wrap` alt satıra kırar). Birden çok arılıkta kart eskisi gibi.
+- `ApiaryWeather` kaydına `humidity` eklendi (saatlik tahminde nem yok; sağlayıcının son ölçümünden, hava ekranındaki gibi). Akış testi: `today_weather_flow_test.dart` "tek arılıkta kart ortalı…".
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.
