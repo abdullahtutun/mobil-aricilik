@@ -6,9 +6,9 @@ import 'package:mobil_arici/core/utils/date_only.dart';
 part 'document.freezed.dart';
 part 'document.g.dart';
 
-/// Belge türü (`public.document_type`). TR profilinde hazır türler
-/// ([trDocumentTypes]) seçilir; diğer bölgelerde kullanıcı kendi türünü
-/// yazar ([custom]). Hazır türün adı ekranda kullanıcının dilinde üretilir.
+/// Belge türü (`documents.type`). Formda bölgenin hazır türleri
+/// ([presetDocumentTypes]) ve kullanıcının kendi yazdığı tür ([custom])
+/// seçilir. Hazır türün adı ekranda kullanıcının dilinde üretilir.
 @JsonEnum(valueField: 'value')
 enum DocumentType implements ServerEnum {
   healthReport('health_report'),
@@ -22,7 +22,10 @@ enum DocumentType implements ServerEnum {
   /// Bal analiz raporu.
   analysisReport('analysis_report'),
 
-  /// Kullanıcı tanımlı; adı `custom_type`'ta.
+  /// Sigorta poliçesi.
+  insurance('insurance'),
+
+  /// Kullanıcı tanımlı; adı `custom_type_name`'de.
   custom('custom');
 
   new(this.value);
@@ -31,14 +34,20 @@ enum DocumentType implements ServerEnum {
   final String value;
 }
 
-/// TR profilinde seçilebilen hazır türler, formdaki sırasıyla.
-const List<DocumentType> trDocumentTypes = [
+/// Formda seçilebilen hazır türler, formdaki sırasıyla. Her bölgede ortak
+/// türler gelir; nakil evrakı ve gezginci arıcı belgesi Türkiye mevzuatına
+/// özgü olduğundan yalnız `trMigrationDocs` açıkken (`RegionFeatures`).
+/// [DocumentType.custom] listede yok, form onu "Diğer" olarak ayrıca sunar.
+List<DocumentType> presetDocumentTypes({required bool trMigrationDocs}) => [
   DocumentType.healthReport,
-  DocumentType.transportPermit,
-  DocumentType.migratoryCertificate,
+  if (trMigrationDocs) ...[
+    DocumentType.transportPermit,
+    DocumentType.migratoryCertificate,
+  ],
   DocumentType.businessRegistration,
   DocumentType.landPermit,
   DocumentType.analysisReport,
+  DocumentType.insurance,
 ];
 
 /// Belge dosyasının türü (`public.document_file_kind`).

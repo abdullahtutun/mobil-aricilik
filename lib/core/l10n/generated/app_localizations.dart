@@ -6431,17 +6431,11 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{1 document} other{{count} documents}} · {missing, plural, one{1 file} other{{missing} files}} not on this phone yet'**
   String documentsSummaryMissing(int count, int missing);
 
-  /// Note under the vault list in the Türkiye profile.
+  /// Note under the vault list: how to add a document type that is not in the list.
   ///
   /// In en, this message translates to:
-  /// **'Document types depend on the country. Outside Türkiye you create your own document types.'**
-  String get documentsRegionNoteTr;
-
-  /// Note under the vault list outside Türkiye.
-  ///
-  /// In en, this message translates to:
-  /// **'You define the document types; the types you enter are suggested next time.'**
-  String get documentsRegionNoteOther;
+  /// **'For a document not in the list, choose Other and type its kind; the kinds you enter are suggested next time.'**
+  String get documentsTypesNote;
 
   /// Button that opens the full-screen road check mode.
   ///
@@ -6479,7 +6473,7 @@ abstract class AppLocalizations {
   /// **'PDF'**
   String get documentFileKindPdf;
 
-  /// Document type (Türkiye).
+  /// Document type (every region).
   ///
   /// In en, this message translates to:
   /// **'Health report'**
@@ -6497,23 +6491,35 @@ abstract class AppLocalizations {
   /// **'Migratory beekeeper certificate'**
   String get documentTypeMigratoryCertificate;
 
-  /// Document type (Türkiye).
+  /// Document type (every region).
   ///
   /// In en, this message translates to:
   /// **'Business registration certificate'**
   String get documentTypeBusinessRegistration;
 
-  /// Document type (Türkiye).
+  /// Document type (every region).
   ///
   /// In en, this message translates to:
   /// **'Land permit'**
   String get documentTypeLandPermit;
 
-  /// Document type (Türkiye).
+  /// Document type (every region).
   ///
   /// In en, this message translates to:
   /// **'Analysis report'**
   String get documentTypeAnalysisReport;
+
+  /// Document type (every region).
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance policy'**
+  String get documentTypeInsurance;
+
+  /// Last document type chip; opens a field to type an own type.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get documentTypeOther;
 
   /// Badge: the document has no expiry date.
   ///
@@ -6569,10 +6575,16 @@ abstract class AppLocalizations {
   /// **'Document type'**
   String get documentFormType;
 
+  /// Label of the field for an own document type, shown after Other is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Type name'**
+  String get documentFormCustomType;
+
   /// Hint for a user-defined document type.
   ///
   /// In en, this message translates to:
-  /// **'e.g. Insurance policy'**
+  /// **'e.g. Organic certificate'**
   String get documentFormCustomTypeHint;
 
   /// Form field label.

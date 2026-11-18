@@ -4131,12 +4131,8 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get documentsRegionNoteTr =>
-      'दस्तावेज़ के प्रकार देश पर निर्भर हैं। तुर्किये के बाहर आप अपने दस्तावेज़ प्रकार बनाते हैं।';
-
-  @override
-  String get documentsRegionNoteOther =>
-      'दस्तावेज़ के प्रकार आप तय करते हैं; आपके डाले प्रकार अगली बार सुझाए जाते हैं।';
+  String get documentsTypesNote =>
+      'जो दस्तावेज़ सूची में नहीं है, उसके लिए अन्य चुनें और उसका प्रकार लिखें; आपके डाले प्रकार अगली बार सुझाए जाते हैं।';
 
   @override
   String get documentsRoadCheck => 'सड़क जाँच · दस्तावेज़ दिखाएँ';
@@ -4175,6 +4171,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get documentTypeAnalysisReport => 'जाँच रिपोर्ट';
+
+  @override
+  String get documentTypeInsurance => 'बीमा पॉलिसी';
+
+  @override
+  String get documentTypeOther => 'अन्य';
 
   @override
   String get documentExpiryNone => 'कोई समाप्ति नहीं';
@@ -4222,7 +4224,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get documentFormType => 'दस्तावेज़ का प्रकार';
 
   @override
-  String get documentFormCustomTypeHint => 'जैसे बीमा पॉलिसी';
+  String get documentFormCustomType => 'प्रकार का नाम';
+
+  @override
+  String get documentFormCustomTypeHint => 'जैसे जैविक प्रमाणपत्र';
 
   @override
   String get documentFormName => 'नाम';

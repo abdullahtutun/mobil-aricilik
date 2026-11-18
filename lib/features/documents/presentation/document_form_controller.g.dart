@@ -64,7 +64,7 @@ final class DocumentFormControllerProvider
 }
 
 String _$documentFormControllerHash() =>
-    r'4966062f800ed3701bec25dc08b3d999efff6749';
+    r'3be3988b41188f2688c47ba49df0107e14214acb';
 
 /// Belge ekleme ([documentId] null) ve düzenleme formu. Ekran açık kaldığı
 /// sürece yaşar. Düzenlenecek belge yoksa ya da silinmişse durum null.

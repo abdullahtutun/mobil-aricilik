@@ -4153,12 +4153,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get documentsRegionNoteTr =>
-      'Los tipos de documento dependen del país. Fuera de Turquía creas tus propios tipos de documento.';
-
-  @override
-  String get documentsRegionNoteOther =>
-      'Tú defines los tipos de documento; los que introduzcas se sugerirán la próxima vez.';
+  String get documentsTypesNote =>
+      'Para un documento que no está en la lista, elige Otro y escribe su tipo; los tipos que introduzcas se sugerirán la próxima vez.';
 
   @override
   String get documentsRoadCheck => 'Control en carretera · mostrar documentos';
@@ -4197,6 +4193,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get documentTypeAnalysisReport => 'Informe de análisis';
+
+  @override
+  String get documentTypeInsurance => 'Póliza de seguro';
+
+  @override
+  String get documentTypeOther => 'Otro';
 
   @override
   String get documentExpiryNone => 'Sin caducidad';
@@ -4244,7 +4246,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get documentFormType => 'Tipo de documento';
 
   @override
-  String get documentFormCustomTypeHint => 'p. ej. Póliza de seguro';
+  String get documentFormCustomType => 'Nombre del tipo';
+
+  @override
+  String get documentFormCustomTypeHint => 'p. ej. Certificado ecológico';
 
   @override
   String get documentFormName => 'Nombre';

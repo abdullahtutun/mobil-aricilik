@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
+import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/camera_service.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
@@ -19,8 +20,8 @@ import 'package:mobil_arici/features/tasks/presentation/widgets/reminder_access_
 /// sonra.
 const _maxExpiryYears = 30;
 
-/// Belge ekleme ([documentId] null) ve düzenleme: tür (TR profilinde hazır
-/// liste, diğer bölgelerde kullanıcının yazdığı tür ve önceki türler), ad,
+/// Belge ekleme ([documentId] null) ve düzenleme: tür (bölgenin hazır
+/// türleri ya da "Diğer" ile kullanıcının yazdığı tür ve önceki türler), ad,
 /// açıklama, geçerlilik tarihi (ya da süresiz) ve dosya (fotoğraf çek,
 /// galeriden, PDF seç); düzenlemede Belgeyi sil. Kaydedince geçerlilik
 /// tarihi varsa hatırlatma izinleri istenir.
@@ -160,36 +161,52 @@ class _DocumentFormFieldsState extends ConsumerState<_DocumentFormFields> {
     final inputStyle = context.typography.subtitle.copyWith(
       fontWeight: context.typography.body.fontWeight,
     );
+    final regionPresets = presetDocumentTypes(
+      trMigrationDocs: ref.watch(regionConfigProvider).features.trMigrationDocs,
+    );
+    // Bölge değiştiyse düzenlenen belgenin türü listede olmayabilir; yine
+    // seçili görünsün.
+    final presets = [
+      ...regionPresets,
+      if (form.type case final type?
+          when type != DocumentType.custom && !regionPresets.contains(type))
+        type,
+    ];
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (form.type == DocumentType.custom)
-          _customTypeField(l10n, inputStyle)
-        else
-          LabeledField(
-            label: l10n.documentFormType,
-            child: ChoiceChipGroup<DocumentType>(
-              options: [
-                for (final type in trDocumentTypes)
-                  ChoiceChipOption(
-                    value: type,
-                    label: presetDocumentTypeLabel(l10n, type),
-                  ),
-              ],
-              selected: {?form.type},
-              onChanged: (selected) {
-                // Seçili türe yeniden dokunmak seçimi kaldırmaz.
-                if (selected.firstOrNull case final type?) {
-                  _controller.setType(
-                    type,
-                    label: presetDocumentTypeLabel(l10n, type),
-                  );
-                }
-              },
-            ),
+        LabeledField(
+          label: l10n.documentFormType,
+          child: ChoiceChipGroup<DocumentType>(
+            options: [
+              for (final type in presets)
+                ChoiceChipOption(
+                  value: type,
+                  label: presetDocumentTypeLabel(l10n, type),
+                ),
+              ChoiceChipOption(
+                value: DocumentType.custom,
+                label: l10n.documentTypeOther,
+              ),
+            ],
+            selected: {?form.type},
+            onChanged: (selected) {
+              // Seçili türe yeniden dokunmak seçimi kaldırmaz.
+              if (selected.firstOrNull case final type?) {
+                _controller.setType(
+                  type,
+                  label: presetDocumentTypeLabel(l10n, type),
+                );
+              }
+            },
           ),
+        ),
+        if (form.type == DocumentType.custom) ...[
+          SizedBox(height: spacing.lg),
+          _customTypeField(l10n, inputStyle),
+        ],
         SizedBox(height: spacing.xl),
         LabeledField(
           label: l10n.documentFormName,
@@ -313,7 +330,7 @@ class _DocumentFormFieldsState extends ConsumerState<_DocumentFormFields> {
     final suggestions =
         ref.watch(customDocumentTypeNamesProvider).value ?? const <String>[];
     return LabeledField(
-      label: l10n.documentFormType,
+      label: l10n.documentFormCustomType,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: spacing.md,

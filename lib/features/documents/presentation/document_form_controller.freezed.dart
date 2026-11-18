@@ -15,8 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DocumentFormState {
 
-/// Seçilen tür; TR profilinde seçilene kadar boş, diğer bölgelerde
-/// hep [DocumentType.custom].
+/// Seçilen tür; seçilene kadar boş. "Diğer" seçilince
+/// [DocumentType.custom] ve adı [customTypeName].
  DocumentType? get type; String get customTypeName; String get name;/// Ad elle yazıldı ya da belge düzenleniyor; tür seçilince ad artık
 /// türden doldurulmaz.
  bool get nameEdited; String get description;/// Son geçerlilik günü (yerel); boşsa süresiz.
@@ -231,8 +231,8 @@ class _DocumentFormState implements DocumentFormState {
   const _DocumentFormState({this.type, this.customTypeName = '', this.name = '', this.nameEdited = false, this.description = '', this.expiresOn, this.newFile, this.savedFileKind, this.savedByteSize, this.saving = false});
   
 
-/// Seçilen tür; TR profilinde seçilene kadar boş, diğer bölgelerde
-/// hep [DocumentType.custom].
+/// Seçilen tür; seçilene kadar boş. "Diğer" seçilince
+/// [DocumentType.custom] ve adı [customTypeName].
 @override final  DocumentType? type;
 @override@JsonKey() final  String customTypeName;
 @override@JsonKey() final  String name;

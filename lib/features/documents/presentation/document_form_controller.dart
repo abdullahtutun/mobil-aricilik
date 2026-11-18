@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/core/services/document_services_provider.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/utils/date_only.dart';
@@ -19,8 +18,8 @@ part 'document_form_controller.g.dart';
 @freezed
 abstract class DocumentFormState with _$DocumentFormState {
   const factory({
-    /// Seçilen tür; TR profilinde seçilene kadar boş, diğer bölgelerde
-    /// hep [DocumentType.custom].
+    /// Seçilen tür; seçilene kadar boş. "Diğer" seçilince
+    /// [DocumentType.custom] ve adı [customTypeName].
     DocumentType? type,
     @Default('') String customTypeName,
     @Default('') String name,
@@ -93,20 +92,24 @@ class DocumentFormController extends _$DocumentFormController {
         unawaited(files.delete(fileName));
       }
     });
-    if (documentId == null) {
-      final presets = ref.read(regionConfigProvider).features.trMigrationDocs;
-      return DocumentFormState(type: presets ? null : DocumentType.custom);
-    }
+    if (documentId == null) return const DocumentFormState();
     final document = await ref
         .read(documentRepositoryProvider)
         .findById(documentId);
     return document == null ? null : DocumentFormState.fromDocument(document);
   }
 
-  /// Türü seçer; ad elle yazılmadıysa türün adı [label] ad olur.
+  /// Türü seçer; ad elle yazılmadıysa türün adı [label] ad olur. "Diğer"de
+  /// ([DocumentType.custom]) ad, yazılmış tür adından gelir.
   void setType(DocumentType type, {required String label}) => _update(
-    (form) =>
-        form.copyWith(type: type, name: form.nameEdited ? form.name : label),
+    (form) => form.copyWith(
+      type: type,
+      name: form.nameEdited
+          ? form.name
+          : type == DocumentType.custom
+          ? form.customTypeName.trim()
+          : label,
+    ),
   );
 
   /// Kullanıcı tanımlı türün adı; ad elle yazılmadıysa ad da o olur.

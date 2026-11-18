@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
-import 'package:mobil_arici/core/region/region_provider.dart';
 import 'package:mobil_arici/features/documents/domain/document.dart';
 import 'package:mobil_arici/features/documents/domain/document_rules.dart';
 import 'package:mobil_arici/features/documents/presentation/document_providers.dart';
@@ -63,7 +62,6 @@ class _DocumentList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final spacing = context.spacing;
-    final presets = ref.watch(regionConfigProvider).features.trMigrationDocs;
     final local = ref.watch(documentLocalFilesProvider).value;
     final missing = local == null
         ? 0
@@ -98,9 +96,7 @@ class _DocumentList extends ConsumerWidget {
           ],
           SizedBox(height: spacing.sm),
           Text(
-            presets
-                ? l10n.documentsRegionNoteTr
-                : l10n.documentsRegionNoteOther,
+            l10n.documentsTypesNote,
             style: context.typography.bodySmall.copyWith(
               color: context.colors.textSecondary,
             ),

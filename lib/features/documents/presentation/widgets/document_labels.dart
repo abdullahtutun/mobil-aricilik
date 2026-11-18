@@ -23,6 +23,7 @@ String presetDocumentTypeLabel(
   DocumentType.businessRegistration => l10n.documentTypeBusinessRegistration,
   DocumentType.landPermit => l10n.documentTypeLandPermit,
   DocumentType.analysisReport => l10n.documentTypeAnalysisReport,
+  DocumentType.insurance => l10n.documentTypeInsurance,
   DocumentType.custom => '',
 };
 

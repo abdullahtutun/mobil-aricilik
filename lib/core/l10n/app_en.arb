@@ -3242,13 +3242,9 @@
       }
     }
   },
-  "documentsRegionNoteTr": "Document types depend on the country. Outside Türkiye you create your own document types.",
-  "@documentsRegionNoteTr": {
-    "description": "Note under the vault list in the Türkiye profile."
-  },
-  "documentsRegionNoteOther": "You define the document types; the types you enter are suggested next time.",
-  "@documentsRegionNoteOther": {
-    "description": "Note under the vault list outside Türkiye."
+  "documentsTypesNote": "For a document not in the list, choose Other and type its kind; the kinds you enter are suggested next time.",
+  "@documentsTypesNote": {
+    "description": "Note under the vault list: how to add a document type that is not in the list."
   },
   "documentsRoadCheck": "Road check · show documents",
   "@documentsRoadCheck": {
@@ -3276,7 +3272,7 @@
   },
   "documentTypeHealthReport": "Health report",
   "@documentTypeHealthReport": {
-    "description": "Document type (Türkiye)."
+    "description": "Document type (every region)."
   },
   "documentTypeTransportPermit": "Transport permit",
   "@documentTypeTransportPermit": {
@@ -3288,15 +3284,23 @@
   },
   "documentTypeBusinessRegistration": "Business registration certificate",
   "@documentTypeBusinessRegistration": {
-    "description": "Document type (Türkiye)."
+    "description": "Document type (every region)."
   },
   "documentTypeLandPermit": "Land permit",
   "@documentTypeLandPermit": {
-    "description": "Document type (Türkiye)."
+    "description": "Document type (every region)."
   },
   "documentTypeAnalysisReport": "Analysis report",
   "@documentTypeAnalysisReport": {
-    "description": "Document type (Türkiye)."
+    "description": "Document type (every region)."
+  },
+  "documentTypeInsurance": "Insurance policy",
+  "@documentTypeInsurance": {
+    "description": "Document type (every region)."
+  },
+  "documentTypeOther": "Other",
+  "@documentTypeOther": {
+    "description": "Last document type chip; opens a field to type an own type."
   },
   "documentExpiryNone": "No expiry",
   "@documentExpiryNone": {
@@ -3352,7 +3356,11 @@
   "@documentFormType": {
     "description": "Form field label."
   },
-  "documentFormCustomTypeHint": "e.g. Insurance policy",
+  "documentFormCustomType": "Type name",
+  "@documentFormCustomType": {
+    "description": "Label of the field for an own document type, shown after Other is chosen."
+  },
+  "documentFormCustomTypeHint": "e.g. Organic certificate",
   "@documentFormCustomTypeHint": {
     "description": "Hint for a user-defined document type."
   },

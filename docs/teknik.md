@@ -411,7 +411,7 @@ Mobil Arıcı tüm dünyada kullanılacak; Türkiye'ye özel her şey bir **böl
 | AKS, işletme tescil no, birlik üyeliği | Görünür | Gizli; yerine serbest "kayıt numarası" alanı |
 | Arılı kovan desteği ve destek hatırlatıcıları | Görünür | Gizli |
 | Mevzuat kütüphanesi | TR mevzuat özetleri | Gizli |
-| Gezginci belgeleri | TR belge türleri (nakil evrakı, sağlık raporu vb.) | Genel belge kasası, kullanıcı tanımlı türler |
+| Gezginci belgeleri | Ortak hazır türler + nakil evrakı, gezginci arıcı belgesi; "Diğer" ile kendi tür | Ortak hazır türler (sağlık raporu, tescil, arazi izni, analiz, sigorta); "Diğer" ile kendi tür |
 | İhbarı mecburi hastalık iletişimi | İl/ilçe tarım müdürlüğü rehberi | Kullanıcının girdiği yerel otorite + genel uyarı |
 | İlaç listesi | TR'de ruhsatlı ürünler | Etken madde bazlı genel liste, kullanıcı ekleyebilir |
 | Flora takvimi | TR bölgeleri hazır gelir | Boş başlar; kullanıcı kendi takvimini oluşturur |

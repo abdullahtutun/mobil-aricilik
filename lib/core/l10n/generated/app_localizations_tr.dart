@@ -3983,12 +3983,8 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get documentsRegionNoteTr =>
-      'Belge türleri ülkeye göre gelir. Türkiye dışında kendi belge türlerini oluşturursun.';
-
-  @override
-  String get documentsRegionNoteOther =>
-      'Belge türlerini sen belirlersin; yazdığın türler sonraki belgelerde önerilir.';
+  String get documentsTypesNote =>
+      'Listede olmayan belge için Diğer\'i seçip türünü yaz; yazdığın türler sonraki belgelerde önerilir.';
 
   @override
   String get documentsRoadCheck => 'Yol kontrolü · belgeleri göster';
@@ -4028,6 +4024,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get documentTypeAnalysisReport => 'Analiz raporu';
 
   @override
+  String get documentTypeInsurance => 'Sigorta poliçesi';
+
+  @override
+  String get documentTypeOther => 'Diğer';
+
+  @override
   String get documentExpiryNone => 'Süresiz';
 
   @override
@@ -4061,7 +4063,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get documentFormType => 'Belge türü';
 
   @override
-  String get documentFormCustomTypeHint => 'Örn. Sigorta poliçesi';
+  String get documentFormCustomType => 'Türün adı';
+
+  @override
+  String get documentFormCustomTypeHint => 'Örn. Organik sertifika';
 
   @override
   String get documentFormName => 'Ad';

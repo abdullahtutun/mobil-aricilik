@@ -151,9 +151,13 @@ void main() {
     reminders.permitted = false;
     await open(tester, location: AppRoutes.documentNew);
 
-    // Hazır türler var, serbest tür alanı yok.
+    // TR'ye özgü ve ortak hazır türler ile Diğer var; serbest tür alanı
+    // Diğer seçilene kadar yok.
     expect(find.text('Migratory beekeeper certificate'), findsOneWidget);
-    expect(find.text('e.g. Insurance policy'), findsNothing);
+    expect(find.text('Transport permit'), findsOneWidget);
+    expect(find.text('Insurance policy'), findsOneWidget);
+    expect(find.text('Other'), findsOneWidget);
+    expect(_field('Type name'), findsNothing);
     expect(tester.widget<BigButton>(_button('Save')).onPressed, isNull);
 
     await _tap(tester, find.text('Health report'));
@@ -189,46 +193,139 @@ void main() {
     expect(find.text('1 document · all open offline'), findsOneWidget);
   });
 
-  testWidgets('diğer bölgede tür yazılır; önceki türler önerilir; not '
-      'bölgeye göre', (tester) async {
+  testWidgets('diğer bölgede ortak hazır türler gelir, TR türleri gelmez; '
+      'Diğer ile tür yazılır ve önceki türler önerilir', (tester) async {
     await seed(
-      'Hive insurance',
+      'Organic 2025',
       type: DocumentType.custom,
-      customTypeName: 'Insurance',
+      customTypeName: 'Organic certificate',
     );
     await open(tester, region: resolveRegionConfig('DE'));
 
     expect(
       find.text(
-        'You define the document types; the types you enter are suggested '
-        'next time.',
+        'For a document not in the list, choose Other and type its kind; '
+        'the kinds you enter are suggested next time.',
       ),
       findsOneWidget,
     );
     // Açıklamasız belgede alt satır türün adı.
-    expect(find.text('Insurance'), findsOneWidget);
-    expect(find.text('Hive insurance'), findsOneWidget);
+    expect(find.text('Organic certificate'), findsOneWidget);
+    expect(find.text('Organic 2025'), findsOneWidget);
 
     await _tap(tester, find.byTooltip('Add document'));
-    expect(find.text('Health report'), findsNothing);
-    await _tap(tester, find.text('Insurance'));
+    for (final common in [
+      'Health report',
+      'Business registration certificate',
+      'Land permit',
+      'Analysis report',
+      'Insurance policy',
+    ]) {
+      expect(find.text(common), findsOneWidget, reason: common);
+    }
+    expect(find.text('Migratory beekeeper certificate'), findsNothing);
+    expect(find.text('Transport permit'), findsNothing);
+    expect(_field('Type name'), findsNothing);
+
+    await _tap(tester, find.text('Other'));
+    expect(_field('Type name'), findsOneWidget);
+    expect(find.text('e.g. Organic certificate'), findsOneWidget);
+    await _tap(tester, find.text('Organic certificate'));
     expect(
       tester.widget<TextField>(_field('Name')).controller!.text,
-      'Insurance',
+      'Organic certificate',
     );
-    await tester.enterText(_field('Name'), 'Truck insurance');
+    await tester.enterText(_field('Name'), 'Organic 2026');
     await _tap(tester, _button('From gallery'));
     await _tap(tester, _button('Save'));
 
-    final added = (await saved()).firstWhere(
-      (d) => d.name == 'Truck insurance',
-    );
+    final added = (await saved()).firstWhere((d) => d.name == 'Organic 2026');
     expect(added.type, DocumentType.custom);
-    expect(added.customTypeName, 'Insurance');
+    expect(added.customTypeName, 'Organic certificate');
     expect(added.expiresOn, isNull);
     // Süresiz belge izin istemez.
     expect(reminders.permissionRequests, 0);
     expect(find.text('No expiry'), findsNWidgets(2));
+  });
+
+  testWidgets('diğer bölgede hazır tür seçilir: sigorta poliçesi', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      location: AppRoutes.documentNew,
+      region: resolveRegionConfig('DE'),
+    );
+
+    await _tap(tester, find.text('Insurance policy'));
+    expect(
+      tester.widget<TextField>(_field('Name')).controller!.text,
+      'Insurance policy',
+    );
+    await _tap(tester, _button('Take photo'));
+    await _tap(tester, _button('Save'));
+
+    final added = (await saved()).single;
+    expect(added.type, DocumentType.insurance);
+    expect(added.customTypeName, isNull);
+    expect(find.text('Insurance policy'), findsOneWidget);
+  });
+
+  testWidgets('TR profilinde Diğer ile kendi türü yazılır; hazır türe '
+      'dönülünce kendi tür kaydedilmez', (tester) async {
+    await open(tester, location: AppRoutes.documentNew);
+
+    await _tap(tester, find.text('Other'));
+    await tester.enterText(_field('Type name'), 'Kooperatif üyelik belgesi');
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<TextField>(_field('Name')).controller!.text,
+      'Kooperatif üyelik belgesi',
+    );
+    await _tap(tester, _button('Take photo'));
+    await _tap(tester, _button('Save'));
+
+    final custom = (await saved()).single;
+    expect(custom.type, DocumentType.custom);
+    expect(custom.customTypeName, 'Kooperatif üyelik belgesi');
+
+    // Düzenlemede Diğer seçili gelir; hazır türe geçilince tür adı düşer.
+    await _tap(tester, find.text('Kooperatif üyelik belgesi'));
+    await _tap(tester, find.text('Edit'));
+    expect(_field('Type name'), findsOneWidget);
+    await _tap(tester, find.text('Land permit'));
+    expect(_field('Type name'), findsNothing);
+    await _tap(tester, _button('Save'));
+
+    final updated = (await saved()).single;
+    expect(updated.type, DocumentType.landPermit);
+    expect(updated.customTypeName, isNull);
+    // Ad elle yazılmış sayılır (düzenleme), türle değişmez.
+    expect(updated.name, 'Kooperatif üyelik belgesi');
+  });
+
+  testWidgets('bölge değiştiyse TR türündeki belge düzenlenirken türü '
+      'seçili görünür', (tester) async {
+    final document = await seed(
+      'Gezginci arıcı belgesi',
+      type: DocumentType.migratoryCertificate,
+    );
+    await open(
+      tester,
+      location: AppRoutes.documentEdit(document.id),
+      region: resolveRegionConfig('DE'),
+    );
+
+    expect(find.text('Migratory beekeeper certificate'), findsOneWidget);
+    expect(
+      tester
+          .widget<ChoiceChipGroup<DocumentType>>(
+            find.byType(ChoiceChipGroup<DocumentType>),
+          )
+          .selected,
+      {DocumentType.migratoryCertificate},
+    );
+    expect(find.text('Transport permit'), findsNothing);
   });
 
   testWidgets('PDF seçilir ve sayfaları internetsiz açılır; 20 MB üstü '
@@ -445,8 +542,8 @@ void main() {
     expect(find.text('5 gün'), findsOneWidget);
     expect(
       find.text(
-        'Belge türleri ülkeye göre gelir. Türkiye dışında kendi belge '
-        'türlerini oluşturursun.',
+        "Listede olmayan belge için Diğer'i seçip türünü yaz; yazdığın "
+        'türler sonraki belgelerde önerilir.',
       ),
       findsOneWidget,
     );
@@ -454,6 +551,10 @@ void main() {
 
     await _tap(tester, find.byTooltip('Belge ekle'));
     expect(find.text('Gezginci arıcı belgesi'), findsOneWidget);
+    expect(find.text('Sigorta poliçesi'), findsOneWidget);
+    await _tap(tester, find.text('Diğer'));
+    expect(_field('Türün adı'), findsOneWidget);
+    expect(find.text('Örn. Organik sertifika'), findsOneWidget);
     expect(_button('PDF seç'), findsOneWidget);
   });
 

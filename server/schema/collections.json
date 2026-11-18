@@ -1396,6 +1396,7 @@
           "business_registration",
           "land_permit",
           "analysis_report",
+          "insurance",
           "custom"
         ]
       },

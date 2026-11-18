@@ -4123,12 +4123,8 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get documentsRegionNoteTr =>
-      'نوع مدارک به کشور بستگی دارد. بیرون از ترکیه نوع مدارک را خودتان می‌سازید.';
-
-  @override
-  String get documentsRegionNoteOther =>
-      'نوع مدارک را شما تعیین می‌کنید؛ نوع‌هایی که وارد می‌کنید دفعه بعد پیشنهاد می‌شوند.';
+  String get documentsTypesNote =>
+      'اگر مدرک در فهرست نیست، «سایر» را انتخاب کنید و نوع آن را بنویسید؛ نوع‌هایی که وارد می‌کنید دفعه بعد پیشنهاد می‌شوند.';
 
   @override
   String get documentsRoadCheck => 'بازرسی جاده · نمایش مدارک';
@@ -4166,6 +4162,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get documentTypeAnalysisReport => 'گزارش آزمایش';
+
+  @override
+  String get documentTypeInsurance => 'بیمه‌نامه';
+
+  @override
+  String get documentTypeOther => 'سایر';
 
   @override
   String get documentExpiryNone => 'بدون انقضا';
@@ -4211,7 +4213,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get documentFormType => 'نوع مدرک';
 
   @override
-  String get documentFormCustomTypeHint => 'مثلاً بیمه‌نامه';
+  String get documentFormCustomType => 'نام نوع';
+
+  @override
+  String get documentFormCustomTypeHint => 'مثلاً گواهی ارگانیک';
 
   @override
   String get documentFormName => 'نام';

@@ -16,8 +16,8 @@ Uygulamanın amacı: arıcının defterini, hafızasını ve resmi evrak yükün
 
 Mobil Arıcı dünyanın her yerinde kullanılabilir. Arayüz Türkçe ve İngilizce gelir; dil ile ülke birbirinden bağımsız seçilir. İşletme kurulurken seçilen ülke **bölge profilini** belirler.
 
-- **TR profili:** AKS ve işletme tescil bilgileri, arılı kovan desteği hatırlatıcıları, mevzuat kütüphanesi, TR ilaç listesi, il/ilçe tarım müdürlüğü rehberi, Türkiye flora takvimi ve gezginci belge türleri açık.
-- **Diğer ülkeler:** Bu modüller gizli ve pasif. Yerlerine genel karşılıklar gelir: serbest kayıt numarası, kullanıcı tanımlı belge türleri, kullanıcının girdiği yerel otorite iletişimi, etken madde bazlı ilaç listesi, kullanıcının oluşturduğu flora takvimi.
+- **TR profili:** AKS ve işletme tescil bilgileri, arılı kovan desteği hatırlatıcıları, mevzuat kütüphanesi, TR ilaç listesi, il/ilçe tarım müdürlüğü rehberi, Türkiye flora takvimi ve gezginci belge türleri (nakil evrakı, gezginci arıcı belgesi) açık.
+- **Diğer ülkeler:** Bu modüller gizli ve pasif. Yerlerine genel karşılıklar gelir: serbest kayıt numarası, ortak hazır belge türleri ve kullanıcı tanımlı türler, kullanıcının girdiği yerel otorite iletişimi, etken madde bazlı ilaç listesi, kullanıcının oluşturduğu flora takvimi.
 - Mevsim takvimi ve görev şablonları arılığın bulunduğu yarımküreye göre ayarlanır; birimler (kg/lb, °C/°F) ve para birimi ülkeye göre gelir.
 - Ülke değişirse gizlenen veriler silinmez, yeniden görünür.
 
@@ -121,7 +121,7 @@ Türkiye'de profesyonel arıcının büyük kısmı gezginci; göç planı ve ev
 - **Göç planı:** Yıllık rota (ör. Muğla/Akdeniz kışlak → narenciye → iç Anadolu yayla → Karadeniz kestane → Muğla çam) ve her durak için planlanan tarih, kovan sayısı.
 - **Taşıma kaydı:** Hangi kovanlar hangi araçla, hangi tarihte, nereden nereye götürüldü; taşıma kaybı.
 - **Yükleme listesi:** Taşımadan önce kontrol listesi (girişler kapandı mı, havalandırma, kayış, su) ve kovan sayımı — "yüklenen 120, indirilen 120".
-- **Evrak çantası:** Belge türleri bölgeye göre gelir (TR: işletme tescil belgesi, gezginci arıcı belgesi/nakil evrakı, sağlık raporu, konaklama yeri izni; diğer ülkeler: kullanıcı tanımlı). Belgelerin fotoğrafları offline erişilebilir; yol kontrolünde açıp gösterilir. Süre dolumu yaklaşınca uyarır.
+- **Evrak çantası:** Her bölgede ortak hazır türler (sağlık raporu, işletme tescil belgesi, arazi izni, analiz raporu, sigorta poliçesi) ve "Diğer" ile kullanıcı tanımlı tür; TR'de ayrıca nakil evrakı ve gezginci arıcı belgesi. Belgelerin fotoğrafları offline erişilebilir; yol kontrolünde açıp gösterilir. Süre dolumu yaklaşınca uyarır.
 - **Konaklama noktası arşivi:** Geçmiş yıllarda konaklanan noktalar, verim geçmişi, arazi sahibi iletişimi, "bu noktada su yok" gibi notlar.
 - **Mesafe kontrolü:** Haritada diğer kayıtlı arılıklara (kendi ekibinin) uzaklık; ilgili mevzuattaki mesafe kuralları için bilgi notu.
 - **İleri faz:** İsteğe bağlı, anonim "bu bölgede kaç arıcı var / nektar akımı başladı mı" topluluk bilgisi.

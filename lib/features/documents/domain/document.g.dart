@@ -58,6 +58,7 @@ const _$DocumentTypeEnumMap = {
   DocumentType.businessRegistration: 'business_registration',
   DocumentType.landPermit: 'land_permit',
   DocumentType.analysisReport: 'analysis_report',
+  DocumentType.insurance: 'insurance',
   DocumentType.custom: 'custom',
 };
 

@@ -222,7 +222,10 @@ func TestTaskHarvestDocumentSelectValues(t *testing.T) {
 		"documents": {
 			"type": {
 				"health_report", "transport_permit", "migratory_certificate",
-				"business_registration", "land_permit", "analysis_report", "custom",
+				"business_registration", "land_permit", "analysis_report",
+				// 1794300017_document_type_insurance.
+				"insurance",
+				"custom",
 			},
 			"file_kind": {"photo", "pdf"},
 		},

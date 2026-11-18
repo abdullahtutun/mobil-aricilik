@@ -4261,12 +4261,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get documentsRegionNoteTr =>
-      'Виды документов зависят от страны. Вне Турции вы создаёте свои виды документов.';
-
-  @override
-  String get documentsRegionNoteOther =>
-      'Виды документов задаёте вы; введённые виды будут предлагаться в следующий раз.';
+  String get documentsTypesNote =>
+      'Если документа нет в списке, выберите «Другое» и введите его вид; введённые виды будут предлагаться в следующий раз.';
 
   @override
   String get documentsRoadCheck => 'Проверка на дороге · показать документы';
@@ -4306,6 +4302,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get documentTypeAnalysisReport => 'Протокол анализа';
+
+  @override
+  String get documentTypeInsurance => 'Страховой полис';
+
+  @override
+  String get documentTypeOther => 'Другое';
 
   @override
   String get documentExpiryNone => 'Бессрочный';
@@ -4357,7 +4359,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get documentFormType => 'Вид документа';
 
   @override
-  String get documentFormCustomTypeHint => 'например, Страховой полис';
+  String get documentFormCustomType => 'Название вида';
+
+  @override
+  String get documentFormCustomTypeHint => 'например, Органический сертификат';
 
   @override
   String get documentFormName => 'Название';

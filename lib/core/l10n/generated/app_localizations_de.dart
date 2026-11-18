@@ -4159,12 +4159,8 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get documentsRegionNoteTr =>
-      'Die Dokumentarten hängen vom Land ab. Außerhalb der Türkei legst du deine eigenen Dokumentarten an.';
-
-  @override
-  String get documentsRegionNoteOther =>
-      'Du legst die Dokumentarten fest; eingegebene Arten werden beim nächsten Mal vorgeschlagen.';
+  String get documentsTypesNote =>
+      'Für ein Dokument, das nicht in der Liste steht, wähle Andere und gib die Art ein; eingegebene Arten werden beim nächsten Mal vorgeschlagen.';
 
   @override
   String get documentsRoadCheck => 'Verkehrskontrolle · Dokumente zeigen';
@@ -4203,6 +4199,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get documentTypeAnalysisReport => 'Analysebericht';
+
+  @override
+  String get documentTypeInsurance => 'Versicherungspolice';
+
+  @override
+  String get documentTypeOther => 'Andere';
 
   @override
   String get documentExpiryNone => 'Ohne Ablauf';
@@ -4250,7 +4252,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get documentFormType => 'Dokumentart';
 
   @override
-  String get documentFormCustomTypeHint => 'z. B. Versicherungspolice';
+  String get documentFormCustomType => 'Name der Dokumentart';
+
+  @override
+  String get documentFormCustomTypeHint => 'z. B. Bio-Zertifikat';
 
   @override
   String get documentFormName => 'Name';

@@ -4257,12 +4257,8 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get documentsRegionNoteTr =>
-      'Види документів залежать від країни. Поза Туреччиною ви створюєте власні види документів.';
-
-  @override
-  String get documentsRegionNoteOther =>
-      'Види документів задаєте ви; введені види пропонуватимуться наступного разу.';
+  String get documentsTypesNote =>
+      'Якщо документа немає в списку, виберіть «Інше» і введіть його вид; введені види пропонуватимуться наступного разу.';
 
   @override
   String get documentsRoadCheck => 'Перевірка на дорозі · показати документи';
@@ -4301,6 +4297,12 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get documentTypeAnalysisReport => 'Протокол аналізу';
+
+  @override
+  String get documentTypeInsurance => 'Страховий поліс';
+
+  @override
+  String get documentTypeOther => 'Інше';
 
   @override
   String get documentExpiryNone => 'Безстроковий';
@@ -4352,7 +4354,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get documentFormType => 'Вид документа';
 
   @override
-  String get documentFormCustomTypeHint => 'наприклад, Страховий поліс';
+  String get documentFormCustomType => 'Назва виду';
+
+  @override
+  String get documentFormCustomTypeHint => 'наприклад, Органічний сертифікат';
 
   @override
   String get documentFormName => 'Назва';
