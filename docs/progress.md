@@ -1265,6 +1265,12 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Kasa notu iki bölgede tek: `documentsTypesNote` ("Listede olmayan belge için Diğer'i seç…"); `documentsRegionNoteTr`/`Other` kaldırıldı. Yeni anahtarlar `documentTypeInsurance`, `documentTypeOther`, `documentFormCustomType`; ipucu "Örn. Organik sertifika" (9 dil, makine çevirisi).
 - Testler: `documents_flow_test` (TR'de Diğer ile kendi tür ve hazır türe dönüş, DE'de ortak türler ve sigorta, bölge değişince TR türü seçili, Türkçe metinler), `document_type_insurance_test.go`.
 
+### 2026-11-18 — Destekler şimdilik gizli
+
+- Kullanıcı kararı: destekler modülü sonra düşünülecek. `resolveRegionConfig` TR profilinde `RegionFeatures.subsidies` artık kapalı (varsayılan false); bayrağa bağlı her yer kendiliğinden kapandı: Daha fazla'daki "Destekler" karosu, `/more/subsidies` ve `/more/subsidies/aks-count` rotaları (Daha fazla'ya yönlenir, derin link de açmaz) ve onboarding bölge özetindeki "arılı kovan desteği hatırlatıcıları" maddesi.
+- Kod, ARB anahtarları, `ref_support_periods` senkronu ve `organizations.tr_aks_hive_count` duruyor; yeniden açmak için TR profiline `subsidies: true` eklemek yeter. "AKS'de güncellemeyi unutma" görevi `RegionFeatures.aks`'a bağlı, açık kalıyor. Sunucudaki destek dönemi bildirim cron'u değişmedi; dönem verisi boş olduğu için bildirim gitmiyor, dönem eklenecekse önce bu karar gözden geçirilmeli.
+- Testler: `region_config_test` TR beklentisi; `subsidies_flow_test` ekran testleri bayrağı açık bir TR profiliyle çalışıyor, TR'de karonun ve rotanın kapalı olduğu iki test eklendi.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

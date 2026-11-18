@@ -137,7 +137,10 @@ RegionConfig resolveRegionConfig(String countryCode, {double? latitude}) {
     features: switch (profile) {
       RegionProfile.tr => const RegionFeatures(
         aks: true,
-        subsidies: true,
+        // Destekler (subsidies) şimdilik gizli (2026-11-18): Daha fazla'daki
+        // karo, /more/subsidies rotası ve onboarding özeti bu bayrağa
+        // bağlı. Yeniden açmak için `subsidies: true` eklemek yeter; kod
+        // ve veri duruyor.
         regulations: true,
         trDrugList: true,
         trFlora: true,

@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/region/region_config.dart';
 import 'package:mobil_arici/core/utils/units.dart';
 
-const _allFeatures = RegionFeatures(
+/// TR profili: destekler şimdilik kapalı.
+const _trFeatures = RegionFeatures(
   aks: true,
-  subsidies: true,
   regulations: true,
   trDrugList: true,
   trFlora: true,
@@ -120,13 +120,14 @@ void main() {
 
   group('resolveRegionConfig', () {
     group('TR profili', () {
-      test('TR modülleri açık, TRY, metrik, Kuzey', () {
+      test('TR modülleri açık (destekler şimdilik kapalı), TRY, metrik, '
+          'Kuzey', () {
         expect(
           resolveRegionConfig('TR'),
           const RegionConfig(
             countryCode: 'TR',
             profile: RegionProfile.tr,
-            features: _allFeatures,
+            features: _trFeatures,
             currencyCode: 'TRY',
             defaultUnits: DefaultUnits(),
             hemisphere: Hemisphere.northern,

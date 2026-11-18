@@ -19,7 +19,8 @@ import 'package:mobil_arici/features/team/presentation/team_rules.dart';
 /// modül karoları. Arılık: yaşlı analar, gezginci (yalnız gezginci
 /// işletmede), ana yetiştirme, hasat ve lotlar; işletme: ekip, raporlar,
 /// sezon raporu, belge kasası, malzeme ve stok, finans (yalnız owner ve
-/// partner), destekler (yalnız TR profilinde); yardım: bilgi bankası,
+/// partner), destekler (`RegionFeatures.subsidies`; şimdilik her bölgede
+/// kapalı); yardım: bilgi bankası,
 /// görüş bildir, ayarlar, senkron. Diğer modüller geldikçe kendi
 /// bölümlerine eklenir.
 class MoreScreen extends ConsumerWidget {

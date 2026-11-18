@@ -29,6 +29,12 @@ import '../../../helpers/test_database.dart';
 
 final String _orgId = testOrganization.id;
 
+/// TR profilinde destekler şimdilik kapalı; ekran testleri bayrağı açar.
+final RegionConfig _trWithSubsidies = () {
+  final tr = resolveRegionConfig('TR');
+  return tr.copyWith(features: tr.features.copyWith(subsidies: true));
+}();
+
 Future<ProviderContainer> _open(
   WidgetTester tester, {
   required AppDatabase db,
@@ -39,7 +45,7 @@ Future<ProviderContainer> _open(
   final container = ProviderContainer.test(
     overrides: [
       ...signedIn(db: db, urlLauncher: urlLauncher),
-      if (region != null) regionConfigProvider.overrideWithValue(region),
+      regionConfigProvider.overrideWithValue(region ?? _trWithSubsidies),
     ],
   );
   await tester.pumpWidget(
@@ -278,6 +284,42 @@ void main() {
     expect(
       find.text('Only the owner can enter the declared count.'),
       findsOneWidget,
+    );
+  });
+
+  testWidgets("TR profilinde şimdilik Daha fazla'da Destekler yok", (
+    tester,
+  ) async {
+    await _open(
+      tester,
+      db: db,
+      location: AppRoutes.more,
+      region: resolveRegionConfig('TR'),
+    );
+
+    expect(find.text('Finance'), findsOneWidget);
+    expect(find.text('Subsidies'), findsNothing);
+  });
+
+  testWidgets("TR profilinde şimdilik destekler rotası Daha fazla'ya düşer", (
+    tester,
+  ) async {
+    final container = await _open(
+      tester,
+      db: db,
+      location: AppRoutes.subsidies,
+      region: resolveRegionConfig('TR'),
+    );
+
+    expect(find.byType(SubsidiesScreen), findsNothing);
+    expect(
+      container
+          .read(routerProvider)
+          .routerDelegate
+          .currentConfiguration
+          .uri
+          .path,
+      AppRoutes.more,
     );
   });
 
