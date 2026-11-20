@@ -1271,6 +1271,12 @@ Kullanıcı kararı: Farsçada takvim Miladi. Uygulama kararı (önerildi): Fars
 - Kod, ARB anahtarları, `ref_support_periods` senkronu ve `organizations.tr_aks_hive_count` duruyor; yeniden açmak için TR profiline `subsidies: true` eklemek yeter. "AKS'de güncellemeyi unutma" görevi `RegionFeatures.aks`'a bağlı, açık kalıyor. Sunucudaki destek dönemi bildirim cron'u değişmedi; dönem verisi boş olduğu için bildirim gitmiyor, dönem eklenecekse önce bu karar gözden geçirilmeli.
 - Testler: `region_config_test` TR beklentisi; `subsidies_flow_test` ekran testleri bayrağı açık bir TR profiliyle çalışıyor, TR'de karonun ve rotanın kapalı olduğu iki test eklendi.
 
+### 2026-11-20 — Mağaza derlemeleri 1.0.0 (3) ve App Store ekran görüntüleri
+
+- Sürüm `1.0.0+3`. Prod IPA (`build/ios/ipa/mobil_arici.ipa`, 36,1 MB) ve AAB (`app-prod-release.aab`, 108,4 MB, yükleme anahtarıyla imzalı) **Sentry'siz** derlendi (kullanıcı kararı). AAB'nin ~170 MB'ı (sıkıştırmasız) hata ayıklama sembolleri ve `proguard.map`; cihaza tek ABI iner (~45–50 MB kurulu).
+- App Store Connect yüklemesi: `xcodebuild -exportArchive` (destination upload) Xcode hesabının keychain'deki Xcode-Token'ı okunamadığı için düşüyor (hesap eski e-postayla kayıtlı görünüyor). Yerine takım API anahtarı kullanılıyor: `~/.appstoreconnect/private_keys/AuthKey_H5CUF4K83M.p8`, komut `xcrun altool --upload-app --type ios -f build/ios/ipa/mobil_arici.ipa --apiKey H5CUF4K83M --apiIssuer <Issuer ID>`. İlk deneme "Cannot determine the Apple ID from Bundle ID" aldı: App Store Connect'te uygulama kaydı yoktu. "Mobil Arıcı" adı başkasında; mağaza adı "Mobil Arıcı: Arıcılık Defteri". Kullanıcı kaydı yeniden açıyor (primary language English (U.S.)); **yükleme henüz yapılmadı**.
+- `tool/store_frames.py --target appstore`: aynı tasarım 1206x2622 (App Store 6,3"), ölçüler 1080 genişliğe göre oranlı, öne çıkan görsel yok; Play çıktısı değişmedi. Ham görüntüler 9 dilde `store_screenshots.py` ile yeniden çekildi (iPhone 15 Pro Max, 1290x2796; ham görüntüler repoda yok). Çıktı `docs/store/appstore/<dil>/` (9 dil × 8 görsel). Play görselleri eski çekimden (8 Kasım); App Store'dakiler 20 Kasım verisiyle, içerik aynı ekranlar. Pillow sistemde yok, geçici venv + `DYLD_LIBRARY_PATH=/opt/homebrew/lib` (libraqm) ile çalıştı. TR çekiminde test sonda bir kez "Some tests failed" dedi, görüntüler tamamdı; diğer 8 dil geçti.
+
 ## Sona bırakılanlar
 
 Kullanıcıyla kararlaştırıldı: bu işler en sona bırakıldı.

@@ -3,10 +3,12 @@
 
 - 1080x1920 (9:16) telefon ekran görüntüleri: başlık + telefon çerçevesi
 - 1024x500 öne çıkan görsel (feature graphic)
+- `--target appstore`: aynı tasarım 1206x2622 (App Store 6,3"), öne çıkan görsel yok
 
 Ham görüntüler `tool/store_screenshots.py` ile alınır. Pillow gerekir.
 
     python3 tool/store_frames.py --raw /tmp/raw --lang tr --out docs/store/play/tr
+    python3 tool/store_frames.py --raw /tmp/raw --lang tr --out docs/store/appstore/tr --target appstore
 
 Farsça ve Hintçe harf birleştirme ister: Pillow libraqm ile çalışmalı
 (`brew install libraqm`, sonra `DYLD_LIBRARY_PATH=/opt/homebrew/lib`).
@@ -33,6 +35,9 @@ BROWN = (35, 26, 21)
 BROWN_TEXT = (74, 48, 10)
 CREAM = (255, 246, 228)
 BEZEL = (28, 22, 18)
+
+# Ekran görüntüsü tuvali. App Store 6,3" (iPhone 16/17 Pro) 1206x2622 kabul eder.
+TARGETS = {"play": (1080, 1920), "appstore": (1206, 2622)}
 
 # Sıra mağazadaki sıradır; ilk üçü en çok görülenler.
 CAPTIONS = {
@@ -299,28 +304,35 @@ def with_shadow(img, blur=28, offset=(0, 18), alpha=90):
     return out, pad
 
 
-def screenshot_frame(shot, title, subtitle):
-    W, H = 1080, 1920
+def screenshot_frame(shot, title, subtitle, size=(1080, 1920)):
+    W, H = size
+    # Ölçüler 1080 genişliğe göre; başka hedefte aynı oranla büyür.
+    s = W / 1080
+
+    def px(v):
+        return round(v * s)
+
     canvas = Image.new("RGBA", (W, H), HONEY + (255,))
-    canvas.alpha_composite(honeycomb((W, H), HONEY_DARK + (255,), 120, 6, (-40, 980)))
+    canvas.alpha_composite(honeycomb((W, H), HONEY_DARK + (255,), px(120), px(6),
+                                     (px(-40), H - px(940))))
     draw = ImageDraw.Draw(canvas)
 
-    title_font, sub_font = font("Bold", 74), font("Medium", 40)
-    y = 96
-    for line in wrap(draw, title, title_font, W - 140):
+    title_font, sub_font = font("Bold", px(74)), font("Medium", px(40))
+    y = px(96)
+    for line in wrap(draw, title, title_font, W - px(140)):
         draw.text((W / 2, y), line, font=title_font, fill=BROWN, anchor="ma")
-        y += 88
-    y += 18
-    for line in wrap(draw, subtitle, sub_font, W - 160):
+        y += px(88)
+    y += px(18)
+    for line in wrap(draw, subtitle, sub_font, W - px(160)):
         draw.text((W / 2, y), line, font=sub_font, fill=BROWN_TEXT, anchor="ma")
-        y += 54
+        y += px(54)
 
-    top = max(y + 46, 430)
+    top = max(y + px(46), px(430))
     body = phone(shot, 10_000)  # oranı bulmak için
-    height = H - top - 40
+    height = H - top - px(40)
     width = round(height * body.width / body.height)
     body = phone(shot, width)
-    framed, pad = with_shadow(body)
+    framed, pad = with_shadow(body, blur=px(28), offset=(0, px(18)))
     canvas.alpha_composite(framed, ((W - body.width) // 2 - pad, top - pad))
     return canvas.convert("RGB")
 
@@ -368,6 +380,7 @@ def main():
     parser.add_argument("--raw", required=True)
     parser.add_argument("--lang", default="tr")
     parser.add_argument("--out", required=True)
+    parser.add_argument("--target", choices=sorted(TARGETS), default="play")
     args = parser.parse_args()
     os.makedirs(args.out, exist_ok=True)
     global LANG
@@ -375,13 +388,16 @@ def main():
     if LANG in FAMILY and not features.check("raqm"):
         sys.exit("Bu dil için Pillow libraqm ile çalışmalı (docstring'e bak).")
 
+    size = TARGETS[args.target]
     captions = CAPTIONS[args.lang]
     for index, (shot_name, (title, subtitle)) in enumerate(captions.items(), 1):
         shot = Image.open(os.path.join(args.raw, f"{shot_name}.png"))
         path = os.path.join(args.out, f"{index:02d}_{shot_name}.png")
-        screenshot_frame(shot, title, subtitle).save(path, optimize=True)
+        screenshot_frame(shot, title, subtitle, size).save(path, optimize=True)
         print(path)
 
+    if args.target != "play":
+        return  # Öne çıkan görsel yalnız Play'de var.
     shots = [Image.open(os.path.join(args.raw, f"{n}.png")) for n in ("today", "apiary")]
     path = os.path.join(args.out, "feature_graphic.png")
     feature_graphic(shots, *FEATURE[args.lang]).save(path, optimize=True)
