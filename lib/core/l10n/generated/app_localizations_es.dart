@@ -4149,7 +4149,7 @@ class AppLocalizationsEs extends AppLocalizations {
       other: '$missing archivos',
       one: '1 archivo',
     );
-    return '$_temp0 · $_temp1 aún no está en este teléfono';
+    return '$_temp0 · $_temp1 en otro teléfono';
   }
 
   @override
@@ -4349,7 +4349,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get documentFileMissing =>
-      'El archivo aún no está en este teléfono. Se descarga cuando tengas conexión.';
+      'El archivo de este documento está en otro teléfono. Los archivos de documentos no se suben al servidor; ábrelo en el teléfono que añadió el documento.';
 
   @override
   String get documentPdfFailed => 'No se pudo abrir el PDF.';
@@ -7114,6 +7114,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exportNo => 'No';
+
+  @override
+  String get documentsLocalNote =>
+      'Los archivos de documentos se guardan solo en este teléfono y no se suben al servidor. Antes de cambiar de teléfono, haz una copia con «Exportar archivos de documentos» en Ajustes.';
+
+  @override
+  String get documentFormLocalHint =>
+      'El archivo se guarda solo en este teléfono.';
+
+  @override
+  String get settingsExportDocuments => 'Exportar archivos de documentos';
+
+  @override
+  String get settingsExportDocumentsValue => 'ZIP';
+
+  @override
+  String get settingsExportDocumentsHint =>
+      'Las fotos y PDF del archivo de documentos en un solo ZIP; haz una copia antes de cambiar de teléfono.';
+
+  @override
+  String get exportDocumentsNone =>
+      'No hay archivos de documentos en este teléfono.';
+
+  @override
+  String exportDocumentsFileName(String date) {
+    return 'Mobil Arıcı documentos $date';
+  }
+
+  @override
+  String get exportDocumentsIndexFile => 'Lista de documentos';
+
+  @override
+  String get exportColFile => 'Archivo';
+
+  @override
+  String get exportColExpires => 'Válido hasta';
 
   @override
   String get exportSheetApiaries => 'Colmenares';

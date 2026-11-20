@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:http/http.dart' as http;
 import 'package:pocketbase/pocketbase.dart';
 
 /// PocketBase'deki uygulama route'larının (`/api/app/...`) hata yanıtı:
@@ -23,7 +24,8 @@ class PocketBaseApiException implements Exception {
   String toString() => 'PocketBaseApiException($status, $code)';
 }
 
-/// Uygulama route'larına oturumun token'ıyla JSON isteği atar; SDK'nın
+/// Uygulama route'larına oturumun token'ıyla JSON isteği (ya da [files]
+/// verilirse multipart istek) atar; SDK'nın
 /// hatasını [PocketBaseApiException]'a çevirir.
 ///
 /// Token elle gönderilir: SDK süresi dolmuş token'ı hiç göndermez, oysa
@@ -35,6 +37,7 @@ Future<Object?> sendPocketBaseAppRequest(
   String path, {
   String method = 'POST',
   Map<String, Object?> body = const {},
+  List<http.MultipartFile> files = const [],
   Duration timeout = pocketBaseAppRequestTimeout,
 }) async {
   final token = client.authStore.token;
@@ -44,6 +47,7 @@ Future<Object?> sendPocketBaseAppRequest(
           path,
           method: method,
           body: body,
+          files: files,
           headers: {if (token.isNotEmpty) 'Authorization': token},
         )
         .timeout(timeout);

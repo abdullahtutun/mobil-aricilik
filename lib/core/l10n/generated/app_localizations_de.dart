@@ -4155,7 +4155,7 @@ class AppLocalizationsDe extends AppLocalizations {
       other: '$missing Dateien',
       one: '1 Datei',
     );
-    return '$_temp0 · $_temp1 noch nicht auf diesem Telefon';
+    return '$_temp0 · $_temp1 auf einem anderen Telefon';
   }
 
   @override
@@ -4355,7 +4355,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get documentFileMissing =>
-      'Die Datei ist noch nicht auf diesem Telefon. Sie wird geladen, sobald du online bist.';
+      'Die Datei dieses Dokuments ist auf einem anderen Telefon. Dokumentdateien werden nicht auf den Server geladen; öffne sie auf dem Telefon, das das Dokument hinzugefügt hat.';
 
   @override
   String get documentPdfFailed => 'Das PDF konnte nicht geöffnet werden.';
@@ -7119,6 +7119,42 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get exportNo => 'Nein';
+
+  @override
+  String get documentsLocalNote =>
+      'Dokumentdateien bleiben nur auf diesem Telefon und werden nicht auf den Server geladen. Sichere sie vor einem Telefonwechsel in den Einstellungen mit „Dokumentdateien exportieren“.';
+
+  @override
+  String get documentFormLocalHint =>
+      'Die Datei bleibt nur auf diesem Telefon.';
+
+  @override
+  String get settingsExportDocuments => 'Dokumentdateien exportieren';
+
+  @override
+  String get settingsExportDocumentsValue => 'ZIP';
+
+  @override
+  String get settingsExportDocumentsHint =>
+      'Die Fotos und PDFs aus der Dokumentenmappe in einer ZIP-Datei; sichere sie vor einem Telefonwechsel.';
+
+  @override
+  String get exportDocumentsNone =>
+      'Auf diesem Telefon sind keine Dokumentdateien.';
+
+  @override
+  String exportDocumentsFileName(String date) {
+    return 'Mobil Arıcı Dokumente $date';
+  }
+
+  @override
+  String get exportDocumentsIndexFile => 'Dokumentliste';
+
+  @override
+  String get exportColFile => 'Datei';
+
+  @override
+  String get exportColExpires => 'Gültig bis';
 
   @override
   String get exportSheetApiaries => 'Bienenstände';

@@ -6,18 +6,22 @@
 //     (Accept-Language, English otherwise), light and dark. 404 with an
 //     HTML page when the lot is not published, deleted or does not exist.
 //   - GET /l/{id}/report: the latest analysis report (PDF or JPEG). 404
-//     when the report field is not chosen.
+//     when the report field is not chosen or the report is not uploaded.
+//   - GET and POST /api/app/lots/{id}/report (upload.go): the app asks
+//     which report the page wants and uploads it.
 //
 // HEAD is answered like GET (net/http's mux routes HEAD to GET and drops
 // the body). Both answers may be cached for 60 s, so unpublishing shows
 // within a minute.
 //
-// The report is copied on its first request from document_files to
-// public_lot_files as `<lot_id>/<document_id>.pdf|jpg` and served from
-// there. Every request reads the publication again: when the lot leaves
-// publication or its report field is turned off, the copies are deleted by
-// the next request and never served again. public_lot_files has no API
-// rules; only this package reads and writes it.
+// Document files stay on the phone (2026-11-20): the phone that holds the
+// report's file uploads it to public_lot_files as
+// `<lot_id>/<copy id>.pdf|jpg` (copyOf), and the page serves it from there. The
+// link shows only once the file is there. Every request reads the
+// publication again: when the lot leaves publication or its report field is
+// turned off, the copies are deleted by the next request and never served
+// again. public_lot_files has no API rules; only this package reads and
+// writes it.
 //
 // The routes live outside /api/ and /_/ (PocketBase's API and dashboard);
 // TestRoutesDoNotShadowPocketBase checks that both still answer.
@@ -33,6 +37,7 @@ import (
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/auth"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/pattern"
+	"github.com/google/uuid"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
 )
@@ -41,19 +46,19 @@ const (
 	// RoutePrefix is the page's path without the lot id.
 	RoutePrefix = "/l/"
 
-	copies  = "public_lot_files"
-	sources = "document_files"
+	copies = "public_lot_files"
 
 	cacheControl = "public, max-age=60"
 	// Nothing outside the page loads: inline CSS, data: images only.
 	pageCSP = "default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'"
 )
 
-// Register binds the two routes.
+// Register binds the page routes and the app's report route (upload.go).
 func Register(app core.App) {
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		se.Router.GET(RoutePrefix+"{id}", func(e *core.RequestEvent) error { return handle(e, false) })
 		se.Router.GET(RoutePrefix+"{id}/report", func(e *core.RequestEvent) error { return handle(e, true) })
+		registerUpload(se)
 		return se.Next()
 	})
 }
@@ -80,8 +85,26 @@ func handle(e *core.RequestEvent, wantsReport bool) error {
 			return writeHTML(e, http.StatusNotFound, RenderNotFound(lang))
 		}
 	}
+	var stored *core.Record
+	if page.Report != nil {
+		path := copyOf(lotID, page.Report).Path
+		if stored, err = findCopy(e.App, path); err != nil {
+			return e.InternalServerError("", err)
+		}
+		if err := removeCopies(e.App, lotID, path); err != nil {
+			e.App.Logger().Error("lot page: removing old report copies failed", "lot_id", lotID, "error", err)
+		}
+	}
 	if wantsReport {
-		return serveReport(e, lotID, page, lang)
+		if stored == nil {
+			// Not uploaded (yet) by the phone that holds the file.
+			return writeHTML(e, http.StatusNotFound, RenderNotFound(lang))
+		}
+		return serveReport(e, lotID, page.Report, stored)
+	}
+	if stored == nil {
+		// No link to a report that is not there.
+		page.Report = nil
 	}
 	return writeHTML(e, http.StatusOK, RenderPage(page, lang, RoutePrefix+lotID+"/report"))
 }
@@ -104,25 +127,24 @@ func writeHTML(e *core.RequestEvent, status int, body []byte) error {
 	return err
 }
 
-// copyPath is the report copy's public_lot_files path.
-func copyPath(lotID string, r *Report) (path, contentType string) {
-	if r.FileKind == "pdf" {
-		return lotID + "/" + r.DocumentID + ".pdf", "application/pdf"
-	}
-	return lotID + "/" + r.DocumentID + ".jpg", "image/jpeg"
+// reportCopy is where a lot's report lives in public_lot_files.
+type reportCopy struct {
+	// ID is a name-based UUID of the lot and the document, the last part
+	// of Path (internal/files): one copy per lot, so a document reported
+	// for two lots has two copies.
+	ID, Path, ContentType string
 }
 
-func serveReport(e *core.RequestEvent, lotID string, page *Page, lang string) error {
-	r := page.Report
-	path, contentType := copyPath(lotID, r)
-	record, err := reportCopy(e.App, lotID, page.orgID, r, path)
-	if err != nil {
-		return e.InternalServerError("", err)
+func copyOf(lotID string, r *Report) reportCopy {
+	id := uuid.NewSHA1(uuid.MustParse(lotID), []byte(r.DocumentID)).String()
+	if r.FileKind == "pdf" {
+		return reportCopy{id, lotID + "/" + id + ".pdf", "application/pdf"}
 	}
-	if record == nil {
-		// The document has no uploaded file (yet).
-		return writeHTML(e, http.StatusNotFound, RenderNotFound(lang))
-	}
+	return reportCopy{id, lotID + "/" + id + ".jpg", "image/jpeg"}
+}
+
+func serveReport(e *core.RequestEvent, lotID string, r *Report, record *core.Record) error {
+	c := copyOf(lotID, r)
 
 	fsys, err := e.App.NewFilesystem()
 	if err != nil {
@@ -136,8 +158,8 @@ func serveReport(e *core.RequestEvent, lotID string, page *Page, lang string) er
 	defer reader.Close()
 
 	h := e.Response.Header()
-	h.Set("Content-Type", contentType)
-	h.Set("Content-Disposition", `inline; filename="`+r.DocumentID+path[strings.LastIndexByte(path, '.'):]+`"`)
+	h.Set("Content-Type", c.ContentType)
+	h.Set("Content-Disposition", `inline; filename="`+r.DocumentID+c.Path[strings.LastIndexByte(c.Path, '.'):]+`"`)
 	h.Set("Cache-Control", cacheControl)
 	h.Set("X-Content-Type-Options", "nosniff")
 	h.Set("Referrer-Policy", "no-referrer")
@@ -145,72 +167,6 @@ func serveReport(e *core.RequestEvent, lotID string, page *Page, lang string) er
 	// ranges); no Last-Modified, the copy's time says nothing.
 	http.ServeContent(e.Response, e.Request, "", time.Time{}, reader)
 	return nil
-}
-
-// reportCopy returns the report's public_lot_files record, copying it from
-// document_files first when there is none. nil when the source file is
-// missing.
-func reportCopy(app core.App, lotID, orgID string, r *Report, path string) (*core.Record, error) {
-	if rec, err := findCopy(app, path); rec != nil || err != nil {
-		return rec, err
-	}
-
-	source, err := app.FindFirstRecordByData(sources, "path", r.StoragePath)
-	if errors.Is(err, sql.ErrNoRows) {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-	name := source.GetString("file")
-	if name == "" || source.GetString("org_id") != orgID {
-		return nil, nil
-	}
-
-	coll, err := app.FindCachedCollectionByNameOrId(copies)
-	if err != nil {
-		return nil, err
-	}
-	fsys, err := app.NewFilesystem()
-	if err != nil {
-		return nil, err
-	}
-	defer fsys.Close()
-	// Streamed from the source on save, never held in memory whole.
-	file, err := fsys.GetReuploadableFile(source.BaseFilesPath()+"/"+name, false)
-	if err != nil {
-		return nil, err
-	}
-
-	// The copy's id is the document's id (K-13: the path's last UUID). A
-	// document reported for two lots has one copy at a time: the other
-	// lot's copy is moved here, and back on that lot's next request.
-	if other, err := app.FindRecordById(copies, r.DocumentID); err == nil {
-		if err := app.Delete(other); err != nil {
-			return nil, err
-		}
-	} else if !errors.Is(err, sql.ErrNoRows) {
-		return nil, err
-	}
-
-	rec := core.NewRecord(coll)
-	rec.Id = r.DocumentID
-	rec.Set("org_id", orgID)
-	rec.Set("path", path)
-	rec.Set("file", file)
-	if err := app.Save(rec); err != nil {
-		// A request alongside may have made the same copy.
-		if again, findErr := findCopy(app, path); again != nil {
-			return again, nil
-		} else if findErr != nil {
-			return nil, findErr
-		}
-		return nil, err
-	}
-	if err := removeCopies(app, lotID, path); err != nil {
-		app.Logger().Error("lot page: removing old report copies failed", "lot_id", lotID, "error", err)
-	}
-	return rec, nil
 }
 
 func findCopy(app core.App, path string) (*core.Record, error) {

@@ -123,3 +123,77 @@ abstract class _$DataExport extends $Notifier<bool> {
     return element.handleCreate(ref, build);
   }
 }
+
+/// "Belge dosyalarını dışa aktar": belge kasasının bu telefondaki
+/// dosyalarını tek ZIP'e yazar ([encodeDocumentArchive]) ve paylaşma
+/// sayfasıyla çıkarır. Belge dosyaları sunucuya yüklenmediği için telefon
+/// değişirken yedek budur. İnternet gerekmez. Durum hazırlanıyor mu;
+/// sürerken yeni istek yok sayılır.
+
+@ProviderFor(DocumentExport)
+final documentExportProvider = DocumentExportProvider._();
+
+/// "Belge dosyalarını dışa aktar": belge kasasının bu telefondaki
+/// dosyalarını tek ZIP'e yazar ([encodeDocumentArchive]) ve paylaşma
+/// sayfasıyla çıkarır. Belge dosyaları sunucuya yüklenmediği için telefon
+/// değişirken yedek budur. İnternet gerekmez. Durum hazırlanıyor mu;
+/// sürerken yeni istek yok sayılır.
+final class DocumentExportProvider
+    extends $NotifierProvider<DocumentExport, bool> {
+  /// "Belge dosyalarını dışa aktar": belge kasasının bu telefondaki
+  /// dosyalarını tek ZIP'e yazar ([encodeDocumentArchive]) ve paylaşma
+  /// sayfasıyla çıkarır. Belge dosyaları sunucuya yüklenmediği için telefon
+  /// değişirken yedek budur. İnternet gerekmez. Durum hazırlanıyor mu;
+  /// sürerken yeni istek yok sayılır.
+  DocumentExportProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'documentExportProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$documentExportHash();
+
+  @$internal
+  @override
+  DocumentExport create() => DocumentExport();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$documentExportHash() => r'64fd861b976a0a7269642341f0bd9f0ff648c0ef';
+
+/// "Belge dosyalarını dışa aktar": belge kasasının bu telefondaki
+/// dosyalarını tek ZIP'e yazar ([encodeDocumentArchive]) ve paylaşma
+/// sayfasıyla çıkarır. Belge dosyaları sunucuya yüklenmediği için telefon
+/// değişirken yedek budur. İnternet gerekmez. Durum hazırlanıyor mu;
+/// sürerken yeni istek yok sayılır.
+
+abstract class _$DocumentExport extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}

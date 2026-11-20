@@ -1,7 +1,10 @@
 package lotpage_test
 
 import (
+	"bytes"
+	"encoding/json"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -15,7 +18,6 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tests"
-	"github.com/pocketbase/pocketbase/tools/filesystem"
 	"github.com/pocketbase/pocketbase/ui"
 )
 
@@ -25,6 +27,10 @@ import (
 // and ab02 not, an older analysis with a PDF report and a newer one without.
 const (
 	owner   = "11111111-1111-1111-1111-111111111111"
+	viewer  = "44444444-4444-4444-4444-444444444444"
+	worker  = "33333333-3333-3333-3333-333333333333"
+	// outsider is a member of organization B only.
+	outsider = "55555555-5555-5555-5555-555555555555"
 	orgA    = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
 	orgB    = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
 	apiary  = "a1000000-0000-0000-0000-000000000001"
@@ -63,11 +69,17 @@ func newFixture(t *testing.T) *fixture {
 	bootstrap.Register(app, config.Config{Env: config.EnvDev}, "test")
 	f := &fixture{t: t, app: app}
 
-	u := core.NewRecord(f.collection("users"))
-	u.Id = owner
-	u.SetEmail(ownerEmail)
-	u.SetPassword("1234567890")
-	f.save(u)
+	for _, id := range []string{owner, viewer, worker, outsider} {
+		u := core.NewRecord(f.collection("users"))
+		u.Id = id
+		if id == owner {
+			u.SetEmail(ownerEmail)
+		} else {
+			u.SetEmail(id[:4] + "@test.local")
+		}
+		u.SetPassword("1234567890")
+		f.save(u)
+	}
 
 	f.insert("organizations", orgA, map[string]any{
 		"name": "Yılmaz Arıcılık", "country_code": "TR", "currency": "TRY",
@@ -77,6 +89,13 @@ func newFixture(t *testing.T) *fixture {
 	f.insert("organizations", orgB, map[string]any{
 		"name": "Başka", "country_code": "TR", "currency": "TRY", "operation_type": "migratory",
 	})
+	for i, m := range []struct{ user, org, role string }{
+		{owner, orgA, "owner"}, {viewer, orgA, "viewer"}, {worker, orgA, "worker"}, {outsider, orgB, "owner"},
+	} {
+		f.insert("memberships", "ee000000-0000-0000-0000-00000000000"+string(rune('1'+i)), map[string]any{
+			"org_id": m.org, "user_id": m.user, "role": m.role,
+		})
+	}
 	f.insert("apiaries", apiary, map[string]any{
 		"org_id": orgA, "name": apiaryName, "latitude": 37.1, "longitude": 28.4,
 	})
@@ -130,7 +149,10 @@ func newFixture(t *testing.T) *fixture {
 		"org_id": orgA, "lot_id": lot, "tested_on": "2026-10-20", "hmf": 12.5, "diastase": 14,
 		"moisture": 17.2, "residue": "none",
 	})
-	f.upload(docFile, docPath, pdfBytes)
+	// The phone that holds the report's file uploads it.
+	if r := f.uploadReport(owner, lot, doc, pdfBytes, "report.pdf"); r.status != 200 {
+		t.Fatalf("report upload: status %d %s", r.status, r.body)
+	}
 	return f
 }
 
@@ -174,19 +196,58 @@ func (f *fixture) update(collection, id string, fields map[string]any) {
 	f.save(r)
 }
 
-// upload stores a document file as the app's upload would.
-func (f *fixture) upload(id, path string, content []byte) {
+// uploadReport posts a report file as the app does.
+func (f *fixture) uploadReport(user, lotID, documentID string, content []byte, name string) response {
 	f.t.Helper()
-	file, err := filesystem.NewFileFromBytes(content, id+".pdf")
+	var body bytes.Buffer
+	w := multipart.NewWriter(&body)
+	if err := w.WriteField("document_id", documentID); err != nil {
+		f.t.Fatal(err)
+	}
+	part, err := w.CreateFormFile("file", name)
 	if err != nil {
 		f.t.Fatal(err)
 	}
-	r := core.NewRecord(f.collection("document_files"))
-	r.Id = id
-	r.Set("org_id", orgA)
-	r.Set("path", path)
-	r.Set("file", file)
-	f.save(r)
+	if _, err := part.Write(content); err != nil {
+		f.t.Fatal(err)
+	}
+	if err := w.Close(); err != nil {
+		f.t.Fatal(err)
+	}
+	h := f.authHeader(user)
+	h.Set("Content-Type", w.FormDataContentType())
+	return f.send(http.MethodPost, lotpage.ReportRoutePrefix+lotID+"/report", h, &body)
+}
+
+// reportStatus asks the app's report route which report the page wants.
+func (f *fixture) reportStatus(user, lotID string) (int, lotpage.ReportStatus) {
+	f.t.Helper()
+	r := f.send(http.MethodGet, lotpage.ReportRoutePrefix+lotID+"/report", f.authHeader(user), nil)
+	var st lotpage.ReportStatus
+	if r.status == 200 {
+		if err := json.Unmarshal([]byte(r.body), &st); err != nil {
+			f.t.Fatalf("status body %s: %v", r.body, err)
+		}
+	}
+	return r.status, st
+}
+
+func (f *fixture) authHeader(user string) http.Header {
+	f.t.Helper()
+	h := http.Header{}
+	if user == "" {
+		return h
+	}
+	u, err := f.app.FindRecordById("users", user)
+	if err != nil {
+		f.t.Fatal(err)
+	}
+	token, err := u.NewAuthToken()
+	if err != nil {
+		f.t.Fatal(err)
+	}
+	h.Set("Authorization", token)
+	return h
 }
 
 func (f *fixture) load(id string) *lotpage.Page {
@@ -218,6 +279,15 @@ type response struct {
 // hooks (ours among them). Unlike tests.ApiScenario it accepts any status.
 func (f *fixture) request(method, url, acceptLanguage string) response {
 	f.t.Helper()
+	h := http.Header{}
+	if acceptLanguage != "" {
+		h.Set("Accept-Language", acceptLanguage)
+	}
+	return f.send(method, url, h, nil)
+}
+
+func (f *fixture) send(method, url string, header http.Header, body io.Reader) response {
+	f.t.Helper()
 	router, err := apis.NewRouter(f.app)
 	if err != nil {
 		f.t.Fatal(err)
@@ -232,9 +302,9 @@ func (f *fixture) request(method, url, acceptLanguage string) response {
 			return err
 		}
 		rec := httptest.NewRecorder()
-		req := httptest.NewRequest(method, url, nil)
-		if acceptLanguage != "" {
-			req.Header.Set("Accept-Language", acceptLanguage)
+		req := httptest.NewRequest(method, url, body)
+		for k, v := range header {
+			req.Header[k] = v
 		}
 		mux.ServeHTTP(rec, req)
 		res := rec.Result()
@@ -512,16 +582,13 @@ func TestUpperCaseID(t *testing.T) {
 // Report
 // ---------------------------------------------------------------------------
 
-func TestReportCopyAndRevocation(t *testing.T) {
+func TestReportServedAndRevoked(t *testing.T) {
 	f := newFixture(t)
 	report := "/l/" + lot + "/report"
 
-	if n := len(f.copies()); n != 0 {
-		t.Fatalf("copies before the first request: %d", n)
-	}
 	r := f.request(http.MethodGet, report, "")
 	if r.status != 200 || r.body != string(pdfBytes) {
-		t.Fatalf("first request: status %d body %q", r.status, r.body)
+		t.Fatalf("uploaded report: status %d body %q", r.status, r.body)
 	}
 	if got := r.header.Get("Content-Type"); got != "application/pdf" {
 		t.Errorf("Content-Type = %q", got)
@@ -531,26 +598,11 @@ func TestReportCopyAndRevocation(t *testing.T) {
 	}
 	cs := f.copies()
 	if len(cs) != 1 {
-		t.Fatalf("copies after the first request: %d", len(cs))
+		t.Fatalf("copies: %d", len(cs))
 	}
 	c := cs[0]
-	if c.Id != doc || c.GetString("path") != lot+"/"+doc+".pdf" || c.GetString("org_id") != orgA {
+	if !strings.HasPrefix(c.GetString("path"), lot+"/"+c.Id+".pdf") || c.GetString("org_id") != orgA || c.Id == doc {
 		t.Errorf("copy: id %s path %s org %s", c.Id, c.GetString("path"), c.GetString("org_id"))
-	}
-
-	// Served from the copy: the source may go, the copy stays.
-	src, err := f.app.FindRecordById("document_files", docFile)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := f.app.Delete(src); err != nil {
-		t.Fatal(err)
-	}
-	if r := f.request(http.MethodGet, report, ""); r.status != 200 || r.body != string(pdfBytes) {
-		t.Errorf("from the copy: status %d", r.status)
-	}
-	if n := len(f.copies()); n != 1 {
-		t.Errorf("copies after the second request: %d", n)
 	}
 
 	// The owner turns the report off: the next request deletes the copy.
@@ -585,9 +637,24 @@ func TestReportRevokedWhenUnpublished(t *testing.T) {
 	if r := f.request(http.MethodGet, report, ""); r.status != 404 || r.body == string(pdfBytes) {
 		t.Errorf("unpublished report: status %d", r.status)
 	}
+	if r := f.uploadReport(owner, lot, doc, pdfBytes, "report.pdf"); r.status != 409 || !strings.Contains(r.body, lotpage.CodeNotCurrent) {
+		t.Errorf("upload to an unpublished lot: status %d %s", r.status, r.body)
+	}
 
-	// Published again: copied again from the source.
+	// Published again: no link until the phone uploads the file again.
 	f.update("lots", lot, map[string]any{"published": true})
+	if r := f.request(http.MethodGet, "/l/"+lot, ""); r.status != 200 || strings.Contains(r.body, "/report") {
+		t.Errorf("republished, not uploaded: status %d, link shown %v", r.status, strings.Contains(r.body, "/report"))
+	}
+	if r := f.request(http.MethodGet, report, ""); r.status != 404 {
+		t.Errorf("republished, not uploaded: report status %d", r.status)
+	}
+	if _, st := f.reportStatus(worker, lot); st.DocumentID == nil || *st.DocumentID != doc || st.Uploaded {
+		t.Errorf("status: %+v", st)
+	}
+	if r := f.uploadReport(worker, lot, doc, pdfBytes, "report.pdf"); r.status != 200 {
+		t.Fatalf("worker uploads: status %d %s", r.status, r.body)
+	}
 	if r := f.request(http.MethodGet, report, ""); r.status != 200 || r.body != string(pdfBytes) {
 		t.Errorf("republished report: status %d", r.status)
 	}
@@ -601,11 +668,11 @@ func TestReportRevokedWhenUnpublished(t *testing.T) {
 	}
 }
 
-// A newer analysis with another report replaces the old copy.
+// A newer analysis with another report replaces the old copy once its file
+// is uploaded; until then the page has no report link.
 func TestReportReplaced(t *testing.T) {
 	f := newFixture(t)
 	report := "/l/" + lot + "/report"
-	f.request(http.MethodGet, report, "")
 
 	const doc2, file2 = "a8000000-0000-0000-0000-000000000002", "f0000000-0000-0000-0000-000000000002"
 	path2 := orgA + "/" + doc2 + "/" + file2 + ".pdf"
@@ -614,35 +681,106 @@ func TestReportReplaced(t *testing.T) {
 		"org_id": orgA, "type": "analysis_report", "name": "Yeni rapor", "file_kind": "pdf",
 		"storage_path": path2, "byte_size": len(newer),
 	})
-	f.upload(file2, path2, newer)
 	f.insert("lab_results", "af000000-0000-0000-0000-000000000003", map[string]any{
 		"org_id": orgA, "lot_id": lot, "tested_on": "2026-11-01", "document_id": doc2,
 	})
 
+	if r := f.request(http.MethodGet, report, ""); r.status != 404 {
+		t.Errorf("newer report not uploaded: status %d", r.status)
+	}
+	if n := len(f.copies()); n != 0 {
+		t.Errorf("old copy kept: %d", n)
+	}
+	if r := f.uploadReport(owner, lot, doc, pdfBytes, "report.pdf"); r.status != 409 {
+		t.Errorf("old report uploaded: status %d", r.status)
+	}
+	if r := f.uploadReport(owner, lot, doc2, newer, "report.pdf"); r.status != 200 {
+		t.Fatalf("newer upload: status %d %s", r.status, r.body)
+	}
 	if r := f.request(http.MethodGet, report, ""); r.status != 200 || r.body != string(newer) {
 		t.Errorf("newer report: status %d body %q", r.status, r.body)
 	}
-	cs := f.copies()
-	if len(cs) != 1 || cs[0].Id != doc2 {
-		t.Errorf("copies: %d", len(cs))
+	if n := len(f.copies()); n != 1 {
+		t.Errorf("copies: %d", n)
 	}
 }
 
-// A report whose file was never uploaded is 404, and nothing is copied.
-func TestReportWithoutUpload(t *testing.T) {
+// The same document as the report of two lots: each lot has its copy.
+func TestReportOfTwoLots(t *testing.T) {
 	f := newFixture(t)
-	src, err := f.app.FindRecordById("document_files", docFile)
-	if err != nil {
-		t.Fatal(err)
+	f.update("lots", hidden, map[string]any{"published": true})
+	f.insert("lab_results", "af000000-0000-0000-0000-000000000004", map[string]any{
+		"org_id": orgA, "lot_id": hidden, "tested_on": "2026-10-01", "document_id": doc,
+	})
+	if r := f.uploadReport(owner, hidden, doc, pdfBytes, "report.pdf"); r.status != 200 {
+		t.Fatalf("second lot: status %d %s", r.status, r.body)
 	}
-	if err := f.app.Delete(src); err != nil {
-		t.Fatal(err)
+	for _, id := range []string{lot, hidden} {
+		if r := f.request(http.MethodGet, "/l/"+id+"/report", ""); r.status != 200 {
+			t.Errorf("%s: status %d", id, r.status)
+		}
+		if _, st := f.reportStatus(owner, id); !st.Uploaded {
+			t.Errorf("%s: status %+v", id, st)
+		}
 	}
-	if r := f.request(http.MethodGet, "/l/"+lot+"/report", "tr"); r.status != 404 {
-		t.Errorf("status %d", r.status)
+	if n := len(f.copies()); n != 2 {
+		t.Errorf("copies: %d", n)
+	}
+}
+
+func TestReportRoute(t *testing.T) {
+	f := newFixture(t)
+	status := lotpage.ReportRoutePrefix + lot + "/report"
+
+	if code, st := f.reportStatus(viewer, lot); code != 200 || st.DocumentID == nil || *st.DocumentID != doc || !st.Uploaded {
+		t.Errorf("viewer reads the status: %d %+v", code, st)
+	}
+	if code, st := f.reportStatus(owner, hidden); code != 200 || st.DocumentID != nil || st.Uploaded {
+		t.Errorf("unpublished lot: %d %+v", code, st)
+	}
+	for _, c := range []struct {
+		name, user, lot string
+		want            int
+	}{
+		{"outsider reads", outsider, lot, 404},
+		{"missing lot", owner, missing, 404},
+		{"not a uuid", owner, "x", 404},
+	} {
+		if code, _ := f.reportStatus(c.user, c.lot); code != c.want {
+			t.Errorf("%s: status %d", c.name, code)
+		}
+	}
+	if r := f.send(http.MethodGet, status, nil, nil); r.status != 401 {
+		t.Errorf("no session: status %d", r.status)
+	}
+
+	if r := f.uploadReport(viewer, lot, doc, pdfBytes, "report.pdf"); r.status != 403 {
+		t.Errorf("viewer uploads: status %d", r.status)
+	}
+	if r := f.uploadReport(outsider, lot, doc, pdfBytes, "report.pdf"); r.status != 404 {
+		t.Errorf("outsider uploads: status %d", r.status)
+	}
+	if r := f.uploadReport(owner, lot, "not-a-uuid", pdfBytes, "report.pdf"); r.status != 400 {
+		t.Errorf("bad document id: status %d", r.status)
+	}
+	// Already there: answered without storing again.
+	before := f.copies()[0].GetString("file")
+	if r := f.uploadReport(worker, lot, doc, []byte("%PDF-1.4\n% other\n%%EOF\n"), "report.pdf"); r.status != 200 || !strings.Contains(r.body, `"uploaded":true`) {
+		t.Errorf("second upload: status %d %s", r.status, r.body)
+	}
+	if cs := f.copies(); len(cs) != 1 || cs[0].GetString("file") != before {
+		t.Errorf("second upload stored again")
+	}
+
+	// The field's limits: a file that is neither PDF nor JPEG.
+	f.update("lots", lot, map[string]any{"public_report": false})
+	f.request(http.MethodGet, "/l/"+lot, "")
+	f.update("lots", lot, map[string]any{"public_report": true})
+	if r := f.uploadReport(owner, lot, doc, []byte("plain text"), "report.pdf"); r.status != 400 {
+		t.Errorf("text file: status %d", r.status)
 	}
 	if n := len(f.copies()); n != 0 {
-		t.Errorf("copies: %d", n)
+		t.Errorf("refused file stored: %d", n)
 	}
 }
 
@@ -650,7 +788,6 @@ func TestReportWithoutUpload(t *testing.T) {
 // package reads it.
 func TestCopiesAreNotPublic(t *testing.T) {
 	f := newFixture(t)
-	f.request(http.MethodGet, "/l/"+lot+"/report", "")
 	c := f.collection("public_lot_files")
 	if c.ListRule != nil || c.ViewRule != nil || c.CreateRule != nil || c.UpdateRule != nil || c.DeleteRule != nil {
 		t.Error("public_lot_files has an API rule")

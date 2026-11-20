@@ -3228,9 +3228,9 @@
       }
     }
   },
-  "documentsSummaryMissing": "{count, plural, one{1 document} other{{count} documents}} · {missing, plural, one{1 file} other{{missing} files}} not on this phone yet",
+  "documentsSummaryMissing": "{count, plural, one{1 document} other{{count} documents}} · {missing, plural, one{1 file} other{{missing} files}} on another phone",
   "@documentsSummaryMissing": {
-    "description": "Vault header when some files are not downloaded yet.",
+    "description": "Vault header when some files are on another phone (document files are not uploaded).",
     "placeholders": {
       "count": {
         "type": "int",
@@ -3488,9 +3488,9 @@
   "@documentEdit": {
     "description": "Edit action on the document screen."
   },
-  "documentFileMissing": "The file isn't on this phone yet. It downloads when you're online.",
+  "documentFileMissing": "This document's file is on another phone. Document files aren't uploaded to the server; open it on the phone that added it.",
   "@documentFileMissing": {
-    "description": "Shown instead of the file when it hasn't been downloaded."
+    "description": "Shown instead of the file when it is on another phone (document files stay on the phone that added them)."
   },
   "documentPdfFailed": "Couldn't open the PDF.",
   "@documentPdfFailed": {
@@ -7272,6 +7272,24 @@
   },
   "exportYes": "Yes",
   "exportNo": "No",
+  "documentsLocalNote": "Document files are kept only on this phone and aren't uploaded to the server. Before you change phones, back them up with \"Export document files\" in Settings.",
+  "documentFormLocalHint": "The file is kept only on this phone.",
+  "settingsExportDocuments": "Export document files",
+  "settingsExportDocumentsValue": "ZIP",
+  "settingsExportDocumentsHint": "The photos and PDFs in the document vault in one ZIP file; back them up before you change phones.",
+  "exportDocumentsNone": "There are no document files on this phone.",
+  "exportDocumentsFileName": "Mobil Arıcı documents {date}",
+  "@exportDocumentsFileName": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "2026-11-20"
+      }
+    }
+  },
+  "exportDocumentsIndexFile": "Document list",
+  "exportColFile": "File",
+  "exportColExpires": "Valid until",
   "exportSheetApiaries": "Apiaries",
   "exportSheetHives": "Hives",
   "exportSheetQueens": "Queens",

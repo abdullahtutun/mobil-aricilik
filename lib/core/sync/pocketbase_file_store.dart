@@ -22,10 +22,11 @@ class PocketBaseFileStore implements FileStore {
   final DateTime Function() _clock;
 
   /// Bucket → dosya koleksiyonu (`server/internal/files.Specs`). Lot
-  /// sayfasının `public-lots`'u uygulamadan kullanılmaz.
+  /// sayfasının `public-lots`'u uygulamadan kullanılmaz (rapor
+  /// `LotReportService` ile gider); belge dosyaları telefonda kalır,
+  /// `document_files` kapalıdır.
   static const collections = {
     'media': 'media_files',
-    'documents': 'document_files',
     'receipts': 'receipt_files',
     'feedback': 'feedback_files',
     'org-logos': 'org_logo_files',

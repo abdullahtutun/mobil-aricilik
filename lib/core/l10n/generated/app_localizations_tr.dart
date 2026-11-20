@@ -3979,7 +3979,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String documentsSummaryMissing(int count, int missing) {
-    return '$count belge · $missing dosya henüz bu telefonda değil';
+    return '$count belge · $missing dosya başka telefonda';
   }
 
   @override
@@ -4164,7 +4164,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get documentFileMissing =>
-      'Dosya bu telefonda henüz yok. İnternet gelince indirilir.';
+      'Bu belgenin dosyası başka bir telefonda. Belge dosyaları sunucuya yüklenmez; belgeyi ekleyen telefonda açabilirsin.';
 
   @override
   String get documentPdfFailed => 'PDF açılamadı.';
@@ -6875,6 +6875,40 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get exportNo => 'Hayır';
+
+  @override
+  String get documentsLocalNote =>
+      'Belge dosyaları yalnız bu telefonda saklanır, sunucuya yüklenmez. Telefonu değiştirmeden önce Ayarlar\'dan \"Belge dosyalarını dışa aktar\" ile yedeğini al.';
+
+  @override
+  String get documentFormLocalHint => 'Dosya yalnız bu telefonda saklanır.';
+
+  @override
+  String get settingsExportDocuments => 'Belge dosyalarını dışa aktar';
+
+  @override
+  String get settingsExportDocumentsValue => 'ZIP';
+
+  @override
+  String get settingsExportDocumentsHint =>
+      'Belge kasasındaki fotoğraf ve PDF\'ler tek ZIP dosyasında; telefonu değiştirmeden önce yedeğini al.';
+
+  @override
+  String get exportDocumentsNone => 'Bu telefonda belge dosyası yok.';
+
+  @override
+  String exportDocumentsFileName(String date) {
+    return 'Mobil Arıcı belgeler $date';
+  }
+
+  @override
+  String get exportDocumentsIndexFile => 'Belge listesi';
+
+  @override
+  String get exportColFile => 'Dosya';
+
+  @override
+  String get exportColExpires => 'Geçerlilik';
 
   @override
   String get exportSheetApiaries => 'Arılıklar';

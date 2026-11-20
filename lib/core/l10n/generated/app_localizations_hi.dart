@@ -4127,7 +4127,7 @@ class AppLocalizationsHi extends AppLocalizations {
       other: '$missing फ़ाइलें',
       one: '1 फ़ाइल',
     );
-    return '$_temp0 · $_temp1 अभी इस फ़ोन पर नहीं';
+    return '$_temp0 · $_temp1 दूसरे फ़ोन पर';
   }
 
   @override
@@ -4324,7 +4324,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get documentFileMissing =>
-      'फ़ाइल अभी इस फ़ोन पर नहीं है। ऑनलाइन होने पर डाउनलोड होगी।';
+      'इस दस्तावेज़ की फ़ाइल दूसरे फ़ोन पर है। दस्तावेज़ फ़ाइलें सर्वर पर अपलोड नहीं होतीं; इसे उसी फ़ोन पर खोलें जिससे दस्तावेज़ जोड़ा गया था।';
 
   @override
   String get documentPdfFailed => 'PDF नहीं खुल सका।';
@@ -7069,6 +7069,40 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get exportNo => 'नहीं';
+
+  @override
+  String get documentsLocalNote =>
+      'दस्तावेज़ फ़ाइलें सिर्फ़ इसी फ़ोन पर रहती हैं, सर्वर पर अपलोड नहीं होतीं। फ़ोन बदलने से पहले सेटिंग्स में \"दस्तावेज़ फ़ाइलें निर्यात करें\" से बैकअप लें।';
+
+  @override
+  String get documentFormLocalHint => 'फ़ाइल सिर्फ़ इसी फ़ोन पर रहती है।';
+
+  @override
+  String get settingsExportDocuments => 'दस्तावेज़ फ़ाइलें निर्यात करें';
+
+  @override
+  String get settingsExportDocumentsValue => 'ZIP';
+
+  @override
+  String get settingsExportDocumentsHint =>
+      'दस्तावेज़ तिजोरी की फ़ोटो और PDF एक ZIP फ़ाइल में; फ़ोन बदलने से पहले बैकअप लें।';
+
+  @override
+  String get exportDocumentsNone => 'इस फ़ोन पर कोई दस्तावेज़ फ़ाइल नहीं है।';
+
+  @override
+  String exportDocumentsFileName(String date) {
+    return 'Mobil Arıcı दस्तावेज़ $date';
+  }
+
+  @override
+  String get exportDocumentsIndexFile => 'दस्तावेज़ सूची';
+
+  @override
+  String get exportColFile => 'फ़ाइल';
+
+  @override
+  String get exportColExpires => 'वैध तक';
 
   @override
   String get exportSheetApiaries => 'फार्म';

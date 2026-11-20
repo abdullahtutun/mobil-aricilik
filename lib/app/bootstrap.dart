@@ -12,9 +12,9 @@ import 'package:mobil_arici/app/error_reporting.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/sync/sync_reminder.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
-import 'package:mobil_arici/core/sync/document_file_triggers.dart';
 import 'package:mobil_arici/core/sync/knowledge_update_triggers.dart';
 import 'package:mobil_arici/core/sync/logo_file_triggers.dart';
+import 'package:mobil_arici/core/sync/lot_report_triggers.dart';
 import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/receipt_file_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_backend.dart';
@@ -76,8 +76,9 @@ Future<void> bootstrap(Flavor flavor) async {
     await restoreDevicePreferences(container);
     persistDevicePreferences(container);
     container
-      // Senkron, medya, görüş ve kullanım olayı gönderimi; belge, fiş
-      // ve işletme logosu dosyalarının yüklenip indirilmesi; bilgi
+      // Senkron, medya, görüş ve kullanım olayı gönderimi; fiş ve
+      // işletme logosu dosyalarının yüklenip indirilmesi; yayımdaki lot
+      // raporlarının yüklenmesi; bilgi
       // bankası güncellemesi; görev, belge ve gönderilemeyen kayıt
       // hatırlatmalarının eşitlemesi; push token kaydı ve bildirimden
       // görev açma; arayüz dilinin hesaba yazılması uygulama açık
@@ -85,9 +86,9 @@ Future<void> bootstrap(Flavor flavor) async {
       ..listen(syncTriggersProvider, (_, _) {})
       ..listen(mediaUploadTriggersProvider, (_, _) {})
       ..listen(telemetryUploadTriggersProvider, (_, _) {})
-      ..listen(documentFileTriggersProvider, (_, _) {})
       ..listen(receiptFileTriggersProvider, (_, _) {})
       ..listen(logoFileTriggersProvider, (_, _) {})
+      ..listen(lotReportTriggersProvider, (_, _) {})
       ..listen(knowledgeUpdateTriggersProvider, (_, _) {})
       ..listen(taskRemindersProvider, (_, _) {})
       ..listen(documentRemindersProvider, (_, _) {})

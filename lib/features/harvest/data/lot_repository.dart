@@ -120,6 +120,15 @@ class LotRepository extends BaseRepository<$LotsTable, Lot> {
     ],
   );
 
+  /// İşletmenin yayımda olan ve analiz raporunu gösteren lotları; bir kez
+  /// okunur (`LotReportService`).
+  Future<List<Lot>> listPublishedWithReport(String orgId) => selectWhere(
+    (t) =>
+        t.orgId.equals(orgId) &
+        t.published.equals(true) &
+        t.publicReport.equals(true),
+  ).get();
+
   /// Hasadın lotu; lotta değilse null.
   Future<Lot?> findByHarvest(String harvestId) async {
     final link = await harvests.findByHarvest(harvestId);

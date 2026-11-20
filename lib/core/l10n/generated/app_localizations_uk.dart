@@ -4250,10 +4250,10 @@ class AppLocalizationsUk extends AppLocalizations {
       locale: localeName,
       other: '$missing файлу',
       many: '$missing файлів',
-      few: '$missing файлів',
-      one: '$missing файлу',
+      few: '$missing файли',
+      one: '$missing файл',
     );
-    return '$_temp0 · $_temp1 ще немає на цьому телефоні';
+    return '$_temp0 · $_temp1 на іншому телефоні';
   }
 
   @override
@@ -4456,7 +4456,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get documentFileMissing =>
-      'Файлу поки немає на цьому телефоні. Він завантажиться, коли з\'явиться інтернет.';
+      'Файл цього документа на іншому телефоні. Файли документів не завантажуються на сервер; відкрийте його на телефоні, з якого додали документ.';
 
   @override
   String get documentPdfFailed => 'Не вдалося відкрити PDF.';
@@ -7259,6 +7259,42 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get exportNo => 'Ні';
+
+  @override
+  String get documentsLocalNote =>
+      'Файли документів зберігаються лише на цьому телефоні й не завантажуються на сервер. Перед зміною телефона збережіть їх через «Експорт файлів документів» у налаштуваннях.';
+
+  @override
+  String get documentFormLocalHint =>
+      'Файл зберігається лише на цьому телефоні.';
+
+  @override
+  String get settingsExportDocuments => 'Експорт файлів документів';
+
+  @override
+  String get settingsExportDocumentsValue => 'ZIP';
+
+  @override
+  String get settingsExportDocumentsHint =>
+      'Фото й PDF з теки документів в одному ZIP-файлі; збережіть їх перед зміною телефона.';
+
+  @override
+  String get exportDocumentsNone =>
+      'На цьому телефоні немає файлів документів.';
+
+  @override
+  String exportDocumentsFileName(String date) {
+    return 'Mobil Arıcı документи $date';
+  }
+
+  @override
+  String get exportDocumentsIndexFile => 'Список документів';
+
+  @override
+  String get exportColFile => 'Файл';
+
+  @override
+  String get exportColExpires => 'Дійсний до';
 
   @override
   String get exportSheetApiaries => 'Пасіки';

@@ -317,6 +317,12 @@ class _DocumentFormFieldsState extends ConsumerState<_DocumentFormFields> {
                   ),
                 ],
               ),
+              Text(
+                l10n.documentFormLocalHint,
+                style: context.typography.bodySmall.copyWith(
+                  color: context.colors.textSecondary,
+                ),
+              ),
             ],
           ),
         ),

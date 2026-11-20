@@ -406,23 +406,18 @@ func TestProtectedDownload(t *testing.T) {
 	tokenScenario.Test(t)
 }
 
+// Document files stay on the phone (1794300018_local_document_files.go):
+// no one uploads or reads through the API.
 func TestDocumentFiles(t *testing.T) {
 	f := newFixture(t)
 	const c = "document_files"
-	ids := make([]string, 6)
-	for i := range ids {
-		ids[i] = f.newID()
-	}
+	stored := f.stored(t, c, orgA, p3(orgA, f.newID(), "pdf"), pdfBytes)
+	id1, id2 := f.newID(), f.newID()
 	for _, s := range []tests.ApiScenario{
-		f.create(t, worker, upload{collection: c, id: ids[0], org: orgA, path: p3(orgA, ids[0], "pdf"), content: pdfBytes}, tests.ApiScenario{Name: "worker uploads a PDF", ExpectedStatus: 200}),
-		f.create(t, worker, upload{collection: c, id: ids[1], org: orgA, path: p3(orgA, ids[1], "jpg"), content: jpegBytes}, tests.ApiScenario{Name: "worker uploads a photo", ExpectedStatus: 200}),
-		f.create(t, viewer, upload{collection: c, id: ids[2], org: orgA, path: p3(orgA, ids[2], "pdf"), content: pdfBytes}, tests.ApiScenario{Name: "viewer does not upload", ExpectedStatus: 400, ExpectedContent: []string{ruleRefused}}),
-		f.create(t, worker, upload{collection: c, id: ids[3], org: orgA, path: p3(orgA, ids[3], "m4a"), content: m4aIOS}, tests.ApiScenario{Name: "no audio", ExpectedStatus: 400, ExpectedContent: []string{codeOf("path", files.CodePathInvalid)}}),
-		f.create(t, worker, upload{collection: c, id: ids[3], org: orgA, path: p3(orgA, ids[3], "pdf"), content: m4aIOS}, tests.ApiScenario{Name: "audio named .pdf", ExpectedStatus: 400, ExpectedContent: []string{codeOf("file", "validation_invalid_mime_type")}}),
-		f.create(t, worker, upload{collection: c, id: ids[4], org: orgA, path: p3(orgA, ids[4], "pdf"), content: padded(pdfBytes, 20*files.MiB)}, tests.ApiScenario{Name: "exactly 20 MiB", ExpectedStatus: 200}),
-		f.create(t, worker, upload{collection: c, id: ids[5], org: orgA, path: p3(orgA, ids[5], "pdf"), content: padded(pdfBytes, 20*files.MiB+1)}, tests.ApiScenario{Name: "over 20 MiB", ExpectedStatus: 400, ExpectedContent: []string{codeOf("file", "validation_file_size_limit")}}),
-		f.get(t, viewer, "/api/collections/"+c+"/records/"+ids[0], tests.ApiScenario{Name: "viewer reads", ExpectedStatus: 200}),
-		f.get(t, memberE, "/api/collections/"+c+"/records/"+ids[0], tests.ApiScenario{Name: "outsider does not read", ExpectedStatus: 404}),
+		f.create(t, worker, upload{collection: c, id: id1, org: orgA, path: p3(orgA, id1, "pdf"), content: pdfBytes}, tests.ApiScenario{Name: "worker does not upload", ExpectedStatus: 403}),
+		f.create(t, owner, upload{collection: c, id: id2, org: orgA, path: p3(orgA, id2, "jpg"), content: jpegBytes}, tests.ApiScenario{Name: "owner does not upload", ExpectedStatus: 403}),
+		f.get(t, owner, "/api/collections/"+c+"/records/"+stored.Id, tests.ApiScenario{Name: "owner does not read", ExpectedStatus: 403}),
+		f.get(t, viewer, "/api/collections/"+c+"/records", tests.ApiScenario{Name: "viewer does not list", ExpectedStatus: 403}),
 	} {
 		s.Test(t)
 	}

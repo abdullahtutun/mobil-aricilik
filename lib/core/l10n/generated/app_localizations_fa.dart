@@ -4119,7 +4119,7 @@ class AppLocalizationsFa extends AppLocalizations {
       locale: localeName,
       other: '$missing فایل',
     );
-    return '$_temp0 · $_temp1 هنوز روی این گوشی نیست';
+    return '$_temp0 · $_temp1 روی گوشی دیگری است';
   }
 
   @override
@@ -4314,7 +4314,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get documentFileMissing =>
-      'فایل هنوز روی این گوشی نیست. وقتی آنلاین شوید دریافت می‌شود.';
+      'فایل این مدرک روی گوشی دیگری است. فایل‌های مدارک روی سرور بارگذاری نمی‌شوند؛ آن را روی گوشی‌ای که مدرک را اضافه کرده باز کنید.';
 
   @override
   String get documentPdfFailed => 'باز کردن PDF ممکن نشد.';
@@ -7056,6 +7056,40 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get exportNo => 'خیر';
+
+  @override
+  String get documentsLocalNote =>
+      'فایل‌های مدارک فقط روی این گوشی نگه داشته می‌شوند و روی سرور بارگذاری نمی‌شوند. پیش از تعویض گوشی، با «خروجی فایل‌های مدارک» در تنظیمات از آن‌ها نسخهٔ پشتیبان بگیرید.';
+
+  @override
+  String get documentFormLocalHint => 'فایل فقط روی این گوشی نگه داشته می‌شود.';
+
+  @override
+  String get settingsExportDocuments => 'خروجی فایل‌های مدارک';
+
+  @override
+  String get settingsExportDocumentsValue => 'ZIP';
+
+  @override
+  String get settingsExportDocumentsHint =>
+      'عکس‌ها و PDFهای بایگانی مدارک در یک فایل ZIP؛ پیش از تعویض گوشی نسخهٔ پشتیبان بگیرید.';
+
+  @override
+  String get exportDocumentsNone => 'روی این گوشی فایل مدرکی نیست.';
+
+  @override
+  String exportDocumentsFileName(String date) {
+    return 'Mobil Arıcı مدارک $date';
+  }
+
+  @override
+  String get exportDocumentsIndexFile => 'فهرست مدارک';
+
+  @override
+  String get exportColFile => 'فایل';
+
+  @override
+  String get exportColExpires => 'اعتبار تا';
 
   @override
   String get exportSheetApiaries => 'زنبورستان‌ها';

@@ -18,6 +18,7 @@ import 'package:mobil_arici/features/account_deletion/presentation/account_delet
 import 'package:mobil_arici/features/account_deletion/presentation/deletion_code_controller.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/widgets/code_entry_form.dart';
+import 'package:mobil_arici/features/export/presentation/document_export_row.dart';
 import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
 import 'package:mobil_arici/features/organization/presentation/business_profile_providers.dart';
@@ -383,6 +384,8 @@ class _BackupStepState extends ConsumerState<_BackupStep> {
                     : l10n.deletionBackupJsonValue,
                 onTap: _exporting ? null : () => unawaited(_exportJson()),
               ),
+              // Belge dosyaları sunucuda değil; JSON'da yalnız kayıtları var.
+              const DocumentExportRow(),
               ListRow(
                 title: l10n.deletionBackupReports,
                 subtitle: l10n.deletionBackupReportsHint,

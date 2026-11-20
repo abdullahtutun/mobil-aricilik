@@ -95,6 +95,11 @@ class _DocumentList extends ConsumerWidget {
             SizedBox(height: spacing.md),
           ],
           SizedBox(height: spacing.sm),
+          NoteCard(
+            icon: Icons.phone_android_rounded,
+            message: l10n.documentsLocalNote,
+          ),
+          SizedBox(height: spacing.lg),
           Text(
             l10n.documentsTypesNote,
             style: context.typography.bodySmall.copyWith(

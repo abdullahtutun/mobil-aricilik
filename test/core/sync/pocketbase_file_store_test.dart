@@ -62,7 +62,6 @@ void main() {
     test('bucket’lar dosya koleksiyonlarına gider (K-13)', () async {
       const paths = {
         'media': ('media_files', '$_org/$_hive/$_media.m4a'),
-        'documents': ('document_files', '$_org/$_hive/$_media.pdf'),
         'receipts': ('receipt_files', '$_org/$_hive/$_media.jpg'),
         'feedback': ('feedback_files', '$_org/$_media.jpg'),
         'org-logos': ('org_logo_files', '$_org/$_media.jpg'),

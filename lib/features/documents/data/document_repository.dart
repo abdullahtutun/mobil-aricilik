@@ -8,10 +8,11 @@ import 'package:mobil_arici/features/documents/domain/document_rules.dart';
 
 /// Belge kasası; durum kaydı, son yazan kazanır.
 ///
-/// Bu telefonda seçilen dosya, belgeyle aynı transaction'da yükleme
-/// kuyruğuna (`document_uploads`, `pending`) yazılır; dosyayı arka planda
-/// `DocumentSyncService` yükler. Dosyalara dokunmaz: dosya adları belge
-/// klasöründeki adlardır ([documentFileName]).
+/// Belge satırı senkronlanır, dosyası yalnız bu telefonda kalır
+/// (2026-11-20): sunucuya yüklenmez, başka telefona inmez. Yayımdaki lotun
+/// analiz raporu tek istisnadır ve `LotReportService` ile lot sayfasına
+/// gider. Dosyalara dokunmaz: dosya adları belge klasöründeki adlardır
+/// ([documentFileName]).
 class DocumentRepository
     extends BaseRepository<$DocumentsTable, VaultDocument> {
   new(super.db, {super.clock});
@@ -31,9 +32,8 @@ class DocumentRepository
   Future<List<VaultDocument>> listByOrg(String orgId) =>
       selectWhere((t) => t.orgId.equals(orgId)).get();
 
-  /// Belgeyi [file] ile yazar ve dosyayı yükleme kuyruğuna ekler; ikisi
-  /// tek transaction'da. Alanlar geçersizse ([checkDocument]) [ArgumentError]
-  /// atar ve bir şey yazmaz.
+  /// Belgeyi [file] ile yazar. Alanlar geçersizse ([checkDocument])
+  /// [ArgumentError] atar ve bir şey yazmaz.
   Future<VaultDocument> create({
     required String orgId,
     required DocumentType type,
@@ -42,10 +42,10 @@ class DocumentRepository
     String? customTypeName,
     String? description,
     DateTime? expiresOn,
-  }) => db.transaction(() async {
+  }) async {
     final at = now();
     final id = generateId();
-    final document = await insertRecord(
+    return await insertRecord(
       checkDocument(
         VaultDocument(
           id: id,
@@ -68,13 +68,10 @@ class DocumentRepository
         ),
       ),
     );
-    await _enqueueUpload(document);
-    return document;
-  });
+  }
 
-  /// Belgenin alanlarını yazar. [file] verilirse belgenin dosyası o olur:
-  /// yeni yol yükleme kuyruğuna girer, eski dosya henüz yüklenmediyse
-  /// kuyruktan çıkar. Hepsi tek transaction'da. Belge yoksa ya da
+  /// Belgenin alanlarını yazar. [file] verilirse belgenin dosyası o olur.
+  /// Belge yoksa ya da
   /// silinmişse [StateError], alanlar geçersizse [ArgumentError] atar.
   Future<VaultDocument> update(
     VaultDocument document, {
@@ -97,61 +94,11 @@ class DocumentRepository
             ),
             byteSize: file.byteSize,
           );
-    final updated = await updateRecord(checkDocument(next));
-    if (updated.storagePath != previous.storagePath) {
-      await _dropPendingUpload(
-        (t) => t.storagePath.equals(previous.storagePath),
-      );
-      await _enqueueUpload(updated);
-    }
-    return updated;
+    return await updateRecord(checkDocument(next));
   });
 
-  /// Belgeyi siler ve dosyası henüz yüklenmediyse kuyruktan çıkarır; ikisi
-  /// tek transaction'da. Yüklenmiş dosya Storage'da kalır.
-  Future<void> remove(String id) => db.transaction(() async {
-    await delete(id);
-    await _dropPendingUpload((t) => t.documentId.equals(id));
-  });
-
-  Future<void> _enqueueUpload(VaultDocument document) => db
-      .into(db.documentUploads)
-      .insert(
-        DocumentUploadsCompanion.insert(
-          storagePath: document.storagePath,
-          documentId: document.id,
-          orgId: document.orgId,
-          uploadStatus: MediaUploadStatus.pending,
-          createdAt: now(),
-        ),
-      );
-
-  Future<void> _dropPendingUpload(
-    Expression<bool> Function($DocumentUploadsTable t) filter,
-  ) =>
-      (db.delete(db.documentUploads)..where(
-            (t) =>
-                filter(t) &
-                t.uploadStatus.equalsValue(MediaUploadStatus.uploaded).not(),
-          ))
-          .go();
-
-  /// Yüklenmeyi bekleyen dosya sayısı (kalıcı hata alanlar dahil değil).
-  Stream<int> watchPendingUploadCount() => _pendingCount().watchSingle();
-
-  Future<int> pendingUploadCount() => _pendingCount().getSingle();
-
-  Selectable<int> _pendingCount() {
-    final count = db.documentUploads.storagePath.count();
-    return (db.selectOnly(db.documentUploads)
-          ..addColumns([count])
-          ..where(
-            db.documentUploads.uploadStatus.equalsValue(
-              MediaUploadStatus.pending,
-            ),
-          ))
-        .map((row) => row.read(count)!);
-  }
+  /// Belgeyi yumuşak siler.
+  Future<void> remove(String id) => delete(id);
 }
 
 /// Belgeyi yazılacak hâline getirir: ad, tür adı ve açıklamanın baştaki ve

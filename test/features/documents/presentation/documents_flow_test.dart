@@ -183,7 +183,6 @@ void main() {
     expect(document.expiresOn, isNotNull);
     expect(document.fileKind, DocumentFileKind.photo);
     expect(documents.fileNames, [documentFileName(document.storagePath)]);
-    expect(await repository.pendingUploadCount(), 1);
     expect(reminders.permissionRequests, 1);
 
     // Kasaya döner.
@@ -380,7 +379,8 @@ void main() {
   });
 
   testWidgets('kasa: süresi önce dolan önce, rozet renk + kelimeyle; '
-      'indirilmemiş dosya sayılır', (tester) async {
+      'başka telefondaki dosya sayılır, dosyaların telefonda kaldığı '
+      'yazar', (tester) async {
     // Bütün kartlar bir ekrana sığsın.
     tester.view
       ..physicalSize = const Size(800, 2400)
@@ -422,8 +422,9 @@ void main() {
     );
     expect(urgentCard.status, AppStatus.critical);
     expect(urgentCard.filled, isFalse);
+    expect(find.text('5 documents · 1 file on another phone'), findsOneWidget);
     expect(
-      find.text('5 documents · 1 file not on this phone yet'),
+      find.textContaining('Document files are kept only on this phone'),
       findsOneWidget,
     );
     expect(
@@ -433,11 +434,12 @@ void main() {
       AppStatus.critical,
     );
 
-    // Dosyası henüz inmeyen belge nedenini söyler.
+    // Dosyası başka telefonda olan belge nedenini söyler.
     await _tap(tester, find.text('Sağlık raporu'));
     expect(
       find.text(
-        "The file isn't on this phone yet. It downloads when you're online.",
+        "This document's file is on another phone. Document files aren't "
+        'uploaded to the server; open it on the phone that added it.',
       ),
       findsOneWidget,
     );
@@ -547,9 +549,18 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(
+      find.text(
+        'Belge dosyaları yalnız bu telefonda saklanır, sunucuya yüklenmez. '
+        "Telefonu değiştirmeden önce Ayarlar'dan \"Belge dosyalarını dışa "
+        'aktar" ile yedeğini al.',
+      ),
+      findsOneWidget,
+    );
     expect(_button('Yol kontrolü · belgeleri göster'), findsOneWidget);
 
     await _tap(tester, find.byTooltip('Belge ekle'));
+    expect(find.text('Dosya yalnız bu telefonda saklanır.'), findsOneWidget);
     expect(find.text('Gezginci arıcı belgesi'), findsOneWidget);
     expect(find.text('Sigorta poliçesi'), findsOneWidget);
     await _tap(tester, find.text('Diğer'));

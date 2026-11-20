@@ -48,8 +48,8 @@ type Lab struct {
 	Residue string
 }
 
-// Report is the analysis report's document. StoragePath is its
-// document_files path, the source of the copy; it is never shown.
+// Report is the analysis report's document. StoragePath is the path the
+// document's row carries; it is never shown.
 type Report struct {
 	DocumentID  string `db:"document_id"`
 	FileKind    string `db:"file_kind"`

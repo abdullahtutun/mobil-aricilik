@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/features/documents/data/document_repository.dart';
@@ -49,7 +48,7 @@ void main() {
     "BEGIN SELECT RAISE(ABORT, 'outbox kapalı'); END",
   );
 
-  test('belgeyi ve yükleme kuyruğunu yazar; outbox payload’u sunucunun '
+  test('belgeyi yazar, dosya kuyruğa girmez; outbox payload’u sunucunun '
       'kolonlarıyla, alanlar kırpılır, gün saatsiz', () async {
     final document = await create(
       name: '  Sağlık raporu 2026 ',
@@ -76,11 +75,8 @@ void main() {
       'created_by': null,
       'deleted_at': null,
     });
-    final upload = (await uploads()).single;
-    expect(upload.storagePath, document.storagePath);
-    expect(upload.documentId, document.id);
-    expect(upload.uploadStatus, MediaUploadStatus.pending);
-    expect(await repository.pendingUploadCount(), 1);
+    // Dosya telefonda kalır (2026-11-20).
+    expect(await uploads(), isEmpty);
   });
 
   test('kullanıcı tanımlı tür adıyla yazılır; boş açıklama null', () async {
@@ -116,40 +112,34 @@ void main() {
     expect(await readOutbox(db), isEmpty);
   });
 
-  test('outbox yazılamazsa belge de kuyruk da yazılmaz', () async {
+  test('outbox yazılamazsa belge de yazılmaz', () async {
     await breakOutbox();
     await expectLater(create(), throwsA(anything));
     expect(await db.select(db.documents).get(), isEmpty);
-    expect(await uploads(), isEmpty);
   });
 
   group('güncelleme', () {
-    test(
-      'alanları yazar, dosya aynı kalır; kuyruğa yeni satır girmez',
-      () async {
-        final document = await create();
-        clock.advance(const Duration(hours: 1));
+    test('alanları yazar, dosya aynı kalır', () async {
+      final document = await create();
+      clock.advance(const Duration(hours: 1));
 
-        final updated = await repository.update(
-          document.copyWith(
-            name: 'Sağlık raporu (yeni)',
-            expiresOn: DateTime(2027, 5),
-            // Formdan gelmeyen dosya alanları yok sayılır.
-            storagePath: 'başka/yol.pdf',
-          ),
-        );
+      final updated = await repository.update(
+        document.copyWith(
+          name: 'Sağlık raporu (yeni)',
+          expiresOn: DateTime(2027, 5),
+          // Formdan gelmeyen dosya alanları yok sayılır.
+          storagePath: 'başka/yol.pdf',
+        ),
+      );
 
-        expect(updated.name, 'Sağlık raporu (yeni)');
-        expect(updated.expiresOn, DateTime(2027, 5));
-        expect(updated.storagePath, document.storagePath);
-        expect(updated.updatedAt, DateTime.utc(2026, 10, 22, 10));
-        expect(await uploads(), hasLength(1));
-        expect((await readOutbox(db)).last.payload['expires_on'], '2027-05-01');
-      },
-    );
+      expect(updated.name, 'Sağlık raporu (yeni)');
+      expect(updated.expiresOn, DateTime(2027, 5));
+      expect(updated.storagePath, document.storagePath);
+      expect(updated.updatedAt, DateTime.utc(2026, 10, 22, 10));
+      expect((await readOutbox(db)).last.payload['expires_on'], '2027-05-01');
+    });
 
-    test('yeni dosya yeni yola gider; yüklenmemiş eski dosya kuyruktan '
-        'çıkar', () async {
+    test('yeni dosya yeni yola gider; kuyruğa girmez', () async {
       final document = await create();
 
       final updated = await repository.update(document, file: photo);
@@ -157,26 +147,7 @@ void main() {
       expect(updated.fileKind, DocumentFileKind.photo);
       expect(updated.storagePath, 'org-1/${document.id}/file-2.jpg');
       expect(updated.byteSize, 1024);
-      expect(
-        [for (final u in await uploads()) u.storagePath],
-        [updated.storagePath],
-      );
-    });
-
-    test('yüklenmiş eski dosya kuyrukta kalır', () async {
-      final document = await create();
-      await db
-          .update(db.documentUploads)
-          .write(
-            const DocumentUploadsCompanion(
-              uploadStatus: Value(MediaUploadStatus.uploaded),
-            ),
-          );
-
-      await repository.update(document, file: photo);
-
-      expect(await uploads(), hasLength(2));
-      expect(await repository.pendingUploadCount(), 1);
+      expect(await uploads(), isEmpty);
     });
 
     test('silinmiş belge güncellenmez', () async {
@@ -186,7 +157,7 @@ void main() {
     });
   });
 
-  test('yumuşak siler ve yüklenmemiş dosyayı kuyruktan çıkarır', () async {
+  test('yumuşak siler', () async {
     final document = await create();
 
     await repository.remove(document.id);
@@ -197,7 +168,6 @@ void main() {
     )..where((t) => t.id.equals(document.id))).getSingle();
     expect(row.deletedAt, isNotNull);
     expect((await readOutbox(db)).last.operation, OutboxOperation.delete);
-    expect(await uploads(), isEmpty);
   });
 
   test('işletmenin belgeleri kasa sırasıyla akar; silinen ve başka '

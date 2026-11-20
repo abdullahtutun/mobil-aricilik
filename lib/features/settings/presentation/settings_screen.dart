@@ -19,6 +19,7 @@ import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
 import 'package:mobil_arici/features/auth/presentation/sign_out_actions.dart';
+import 'package:mobil_arici/features/export/presentation/document_export_row.dart';
 import 'package:mobil_arici/features/export/presentation/export_providers.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
@@ -133,6 +134,7 @@ class SettingsScreen extends ConsumerWidget {
               _PushTile(),
               _AnalyticsTile(),
               _ExportRow(),
+              DocumentExportRow(),
               _PrivacyPolicyRow(),
             ],
           ),

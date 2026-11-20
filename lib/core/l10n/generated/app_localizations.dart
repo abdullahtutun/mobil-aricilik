@@ -6425,10 +6425,10 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{1 document} other{{count} documents}} · all open offline'**
   String documentsSummaryOffline(int count);
 
-  /// Vault header when some files are not downloaded yet.
+  /// Vault header when some files are on another phone (document files are not uploaded).
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{1 document} other{{count} documents}} · {missing, plural, one{1 file} other{{missing} files}} not on this phone yet'**
+  /// **'{count, plural, one{1 document} other{{count} documents}} · {missing, plural, one{1 file} other{{missing} files}} on another phone'**
   String documentsSummaryMissing(int count, int missing);
 
   /// Note under the vault list: how to add a document type that is not in the list.
@@ -6755,10 +6755,10 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get documentEdit;
 
-  /// Shown instead of the file when it hasn't been downloaded.
+  /// Shown instead of the file when it is on another phone (document files stay on the phone that added them).
   ///
   /// In en, this message translates to:
-  /// **'The file isn\'t on this phone yet. It downloads when you\'re online.'**
+  /// **'This document\'s file is on another phone. Document files aren\'t uploaded to the server; open it on the phone that added it.'**
   String get documentFileMissing;
 
   /// PDF rendering failed.
@@ -11254,6 +11254,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No'**
   String get exportNo;
+
+  /// No description provided for @documentsLocalNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Document files are kept only on this phone and aren\'t uploaded to the server. Before you change phones, back them up with \"Export document files\" in Settings.'**
+  String get documentsLocalNote;
+
+  /// No description provided for @documentFormLocalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is kept only on this phone.'**
+  String get documentFormLocalHint;
+
+  /// No description provided for @settingsExportDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Export document files'**
+  String get settingsExportDocuments;
+
+  /// No description provided for @settingsExportDocumentsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'ZIP'**
+  String get settingsExportDocumentsValue;
+
+  /// No description provided for @settingsExportDocumentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The photos and PDFs in the document vault in one ZIP file; back them up before you change phones.'**
+  String get settingsExportDocumentsHint;
+
+  /// No description provided for @exportDocumentsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no document files on this phone.'**
+  String get exportDocumentsNone;
+
+  /// No description provided for @exportDocumentsFileName.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobil Arıcı documents {date}'**
+  String exportDocumentsFileName(String date);
+
+  /// No description provided for @exportDocumentsIndexFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Document list'**
+  String get exportDocumentsIndexFile;
+
+  /// No description provided for @exportColFile.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get exportColFile;
+
+  /// No description provided for @exportColExpires.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until'**
+  String get exportColExpires;
 
   /// No description provided for @exportSheetApiaries.
   ///

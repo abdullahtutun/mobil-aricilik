@@ -23,9 +23,9 @@ class Documents extends Table with SyncColumns, OrgColumns {
   IntColumn get byteSize => integer()();
 }
 
-/// Bu telefonda seçilen belge dosyalarının yükleme kuyruğu; yalnız bu
-/// telefonda, sunucuda aynası yok. Belgeyle aynı transaction'da `pending`
-/// olarak yazılır; dosya değişince yeni yol yeni satır olur.
+/// Belge dosyalarının eski yükleme kuyruğu; yalnız bu telefonda, sunucuda
+/// aynası yok. 2026-11-20'den beri kullanılmıyor (belge dosyaları telefonda
+/// kalır); tablo bir sonraki şema sürümünde kaldırılabilir.
 @DataClassName('DocumentUpload')
 class DocumentUploads extends Table {
   /// Belgenin `storage_path`'i; dosyanın yerel adı bunun son parçası.

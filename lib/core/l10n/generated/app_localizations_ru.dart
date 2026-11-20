@@ -4254,10 +4254,10 @@ class AppLocalizationsRu extends AppLocalizations {
       locale: localeName,
       other: '$missing файла',
       many: '$missing файлов',
-      few: '$missing файлов',
-      one: '$missing файла',
+      few: '$missing файла',
+      one: '$missing файл',
     );
-    return '$_temp0 · $_temp1 ещё нет на этом телефоне';
+    return '$_temp0 · $_temp1 на другом телефоне';
   }
 
   @override
@@ -4461,7 +4461,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get documentFileMissing =>
-      'Файла пока нет на этом телефоне. Он загрузится, когда появится интернет.';
+      'Файл этого документа на другом телефоне. Файлы документов не загружаются на сервер; откройте его на телефоне, с которого добавили документ.';
 
   @override
   String get documentPdfFailed => 'Не удалось открыть PDF.';
@@ -7259,6 +7259,40 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get exportNo => 'Нет';
+
+  @override
+  String get documentsLocalNote =>
+      'Файлы документов хранятся только на этом телефоне и не загружаются на сервер. Перед сменой телефона сохраните их через «Экспорт файлов документов» в настройках.';
+
+  @override
+  String get documentFormLocalHint => 'Файл хранится только на этом телефоне.';
+
+  @override
+  String get settingsExportDocuments => 'Экспорт файлов документов';
+
+  @override
+  String get settingsExportDocumentsValue => 'ZIP';
+
+  @override
+  String get settingsExportDocumentsHint =>
+      'Фото и PDF из папки документов в одном ZIP-файле; сохраните их перед сменой телефона.';
+
+  @override
+  String get exportDocumentsNone => 'На этом телефоне нет файлов документов.';
+
+  @override
+  String exportDocumentsFileName(String date) {
+    return 'Mobil Arıcı документы $date';
+  }
+
+  @override
+  String get exportDocumentsIndexFile => 'Список документов';
+
+  @override
+  String get exportColFile => 'Файл';
+
+  @override
+  String get exportColExpires => 'Действует до';
 
   @override
   String get exportSheetApiaries => 'Пасеки';

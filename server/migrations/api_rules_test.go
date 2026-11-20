@@ -23,13 +23,11 @@ var expectedOpenRules = map[string]string{
 	"device_tokens.list":      `@request.auth.id != "" && user_id = @request.auth.id`,
 	"device_tokens.view":      `@request.auth.id != "" && user_id = @request.auth.id`,
 
-	// P6.1 (1794300012_file_collections.go). public_lot_files: all nil.
+	// P6.1 (1794300012_file_collections.go). public_lot_files: all nil;
+	// document_files: all nil since 1794300018_local_document_files.go.
 	"media_files.list":      fileMember,
 	"media_files.view":      fileMember,
 	"media_files.create":    fileWriters,
-	"document_files.list":   fileMember,
-	"document_files.view":   fileMember,
-	"document_files.create": fileWriters,
 	"receipt_files.list":    fileManagers,
 	"receipt_files.view":    fileManagers,
 	"receipt_files.create":  fileManagers,
