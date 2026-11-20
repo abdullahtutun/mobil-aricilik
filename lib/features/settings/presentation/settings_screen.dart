@@ -23,7 +23,6 @@ import 'package:mobil_arici/features/export/presentation/document_export_row.dar
 import 'package:mobil_arici/features/export/presentation/export_providers.dart';
 import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
-import 'package:mobil_arici/features/media/presentation/media_providers.dart';
 import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_providers.dart';
 import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
@@ -129,7 +128,6 @@ class SettingsScreen extends ConsumerWidget {
           labelGap,
           const ListGroup(
             children: [
-              _MediaWifiOnlyTile(),
               _OfflineMapsRow(),
               _PushTile(),
               _AnalyticsTile(),
@@ -285,36 +283,6 @@ class SettingsScreen extends ConsumerWidget {
       AppColorMode.dark => l10n.settingsColorModeDark,
       AppColorMode.sun => l10n.settingsColorModeSun,
     };
-  }
-}
-
-/// "Fotoğrafları sadece Wi‑Fi'da yükle"; altında yüklenmeyi bekleyen dosya
-/// sayısı ya da açıklama.
-class _MediaWifiOnlyTile extends ConsumerWidget {
-  const new();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final wifiOnly = ref.watch(mediaWifiOnlyProvider).value ?? false;
-    final pending = ref.watch(pendingMediaUploadsProvider).value ?? 0;
-
-    return SwitchListTile(
-      value: wifiOnly,
-      onChanged: (enabled) => ref
-          .read(localSettingsRepositoryProvider)
-          .setMediaWifiOnly(enabled: enabled),
-      contentPadding: EdgeInsets.symmetric(horizontal: context.spacing.lg),
-      title: Text(l10n.settingsMediaWifiOnly, style: context.typography.body),
-      subtitle: Text(
-        pending > 0
-            ? l10n.settingsPendingUploads(pending)
-            : l10n.settingsMediaWifiOnlyHint,
-        style: context.typography.bodySmall.copyWith(
-          color: context.colors.textSecondary,
-        ),
-      ),
-    );
   }
 }
 

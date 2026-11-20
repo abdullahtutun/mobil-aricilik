@@ -187,24 +187,16 @@ void main() {
     expect(await db.select(db.receiptUploads).get(), isEmpty);
   });
 
-  test('fiş kaydın klasörüne yazılır ve yükleme kuyruğuna girer; silinince '
-      'yüklenmemiş fiş kuyruktan çıkar', () async {
+  test('fişin yolu hareketine yazılır; fiş telefonda kalır, yükleme '
+      'kuyruğuna girmez', () async {
     final saved = await expense(receipt: (fileId: 'file-1', byteSize: 2048));
 
     expect(saved.receiptPath, 'org-1/${saved.id}/file-1.jpg');
-    final upload = await db.select(db.receiptUploads).getSingle();
-    expect(upload.storagePath, saved.receiptPath);
-    expect(upload.transactionId, saved.id);
-    expect(upload.uploadStatus, MediaUploadStatus.pending);
-    expect(await transactions.watchPendingReceiptCount().first, 1);
-    expect((await transactions.listWithReceipts('org-1')).map((t) => t.id), [
-      saved.id,
-    ]);
-
-    await transactions.remove(saved.id);
-
+    expect(
+      (await readOutbox(db)).last.payload['receipt_path'],
+      saved.receiptPath,
+    );
     expect(await db.select(db.receiptUploads).get(), isEmpty);
-    expect(await transactions.listWithReceipts('org-1'), isEmpty);
   });
 
   test('satırlar yeni önce; bağlı lot, satış kilogramı, arılık ve taşıma '

@@ -6,18 +6,18 @@ import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import '../../helpers/test_database.dart';
 
 void main() {
-  test('sadece Wi‑Fi varsayılan kapalı; yazılan değer kalır ve akar, '
-      'outbox’a gitmez', () async {
+  test('harita için sadece Wi‑Fi varsayılan açık; yazılan değer kalır ve '
+      'akar, outbox’a gitmez', () async {
     final db = openTestDatabase();
     final settings = LocalSettingsRepository(db);
-    expect(await settings.mediaWifiOnly(), isFalse);
+    expect(await settings.mapWifiOnly(), isTrue);
 
-    final values = settings.watchMediaWifiOnly();
-    await settings.setMediaWifiOnly(enabled: true);
-    expect(await settings.mediaWifiOnly(), isTrue);
-    expect(await values.first, isTrue);
-    await settings.setMediaWifiOnly(enabled: false);
+    final values = settings.watchMapWifiOnly();
+    await settings.setMapWifiOnly(enabled: false);
+    expect(await settings.mapWifiOnly(), isFalse);
     expect(await values.first, isFalse);
+    await settings.setMapWifiOnly(enabled: true);
+    expect(await values.first, isTrue);
     expect(await readOutbox(db), isEmpty);
   });
 

@@ -15,10 +15,10 @@ typedef FileUploadChange = ({
   Value<String?> lastError,
 });
 
-/// Storage yolu ve yerel adı aynı olan dosyaları (belge, fiş, logo) bir
-/// bucket'a [FileStore] üzerinden yükler ve indirir. Kuyruk tablosunu ve
-/// indirilecek yolları çağıran verir (`DocumentSyncService`,
-/// `ReceiptSyncService`, `LogoSyncService`); tur kuralları burada.
+/// Storage yolu ve yerel adı aynı olan dosyaları bir bucket'a [FileStore]
+/// üzerinden yükler ve indirir. Kuyruk tablosunu ve indirilecek yolları
+/// çağıran verir (bugün yalnız `LogoSyncService`; belge, fiş ve medya
+/// dosyaları 2026-11-20'den beri telefonda kalır); tur kuralları burada.
 ///
 /// Aynı anda tek yükleme ve tek indirme turu çalışır; tur sürerken gelen
 /// çağrı süren turun sonucunu bekler.

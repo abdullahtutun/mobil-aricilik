@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/generated/app_localizations.dart';
-import 'package:mobil_arici/core/sync/media_sync_service.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/media/domain/media_rules.dart';
 import 'package:mobil_arici/features/media/presentation/media_controllers.dart';
@@ -38,8 +37,8 @@ class MediaStrip extends StatelessWidget {
 }
 
 /// Fotoğrafın kare küçük resmi; dokununca tam ekran açılır. Fotoğraf başka
-/// telefonda çekildiyse ve henüz inmediyse indirme ikonu görünür, dokununca
-/// iner.
+/// telefonda çekildiyse telefon ikonu görünür, dokununca nedeni söylenir
+/// (dosyalar sunucuya yüklenmez).
 class MediaThumbnail extends ConsumerWidget {
   const new(this.media, {super.key});
 
@@ -54,7 +53,7 @@ class MediaThumbnail extends ConsumerWidget {
       context.touchTargets.fieldLarge,
     );
     final radius = BorderRadius.circular(context.radii.button);
-    final file = ref.watch(mediaFileControllerProvider(media));
+    final file = ref.watch(mediaFileProvider(media));
 
     final (Widget child, String label, VoidCallback? onTap) = switch (file) {
       AsyncData(value: final file?) => (
@@ -66,24 +65,16 @@ class MediaThumbnail extends ConsumerWidget {
         l10n.mediaOpenPhoto,
         () => unawaited(context.push(AppRoutes.mediaPhoto(media.id))),
       ),
-      AsyncLoading() => (
-        Center(
-          child: SizedBox.square(
-            dimension: context.sizes.icon,
-            child: const CircularProgressIndicator(),
-          ),
-        ),
-        l10n.mediaDownloadPhoto,
-        null,
-      ),
+      // Yerel dosya; hemen gelir.
+      AsyncLoading() => (const SizedBox.shrink(), l10n.mediaOpenPhoto, null),
       _ => (
         Icon(
-          Icons.cloud_download_outlined,
+          Icons.phone_android_outlined,
           size: context.sizes.icon,
           color: colors.textSecondary,
         ),
-        l10n.mediaDownloadPhoto,
-        () => unawaited(downloadMedia(context, ref, media)),
+        l10n.mediaPhotoElsewhere,
+        () => showMessageSnackBar(context, l10n.mediaElsewhere),
       ),
     };
 
@@ -117,7 +108,7 @@ class MediaThumbnail extends ConsumerWidget {
 }
 
 /// Sesli notu çalar ya da durdurur ("Dinle · 0:12" / "Durdur"). Not bu
-/// telefonda yoksa önce iner.
+/// telefonda yoksa (başka telefonda kaydedildi) nedeni söylenir.
 class VoiceNoteButton extends ConsumerWidget {
   const new(this.media, {super.key});
 
@@ -127,7 +118,7 @@ class VoiceNoteButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final playing = ref.watch(voicePlaybackProvider) == media.id;
-    final file = ref.watch(mediaFileControllerProvider(media));
+    final file = ref.watch(mediaFileProvider(media));
     final duration = formatVoiceDuration(
       Duration(milliseconds: media.durationMs ?? 0),
     );
@@ -153,35 +144,16 @@ class VoiceNoteButton extends ConsumerWidget {
       await playback.stop();
       return;
     }
-    final provider = mediaFileControllerProvider(media);
-    var file = await ref.read(provider.future);
+    final file = await ref.read(mediaFileProvider(media).future);
     if (file == null) {
-      if (!context.mounted || !await downloadMedia(context, ref, media)) {
-        return;
+      if (context.mounted) {
+        showMessageSnackBar(
+          context,
+          AppLocalizations.of(context).mediaElsewhere,
+        );
       }
-      file = ref.read(provider).value;
+      return;
     }
-    if (file != null) await playback.play(media, file);
+    await playback.play(media, file);
   }
-}
-
-/// [media]'yı indirir; olmazsa nedenini bildirimle söyler. İndiyse true.
-Future<bool> downloadMedia(
-  BuildContext context,
-  WidgetRef ref,
-  MediaItem media,
-) async {
-  final l10n = AppLocalizations.of(context);
-  final failure = await ref
-      .read(mediaFileControllerProvider(media).notifier)
-      .download();
-  if (failure == null) return true;
-  if (context.mounted) {
-    showMessageSnackBar(context, switch (failure) {
-      MediaDownloadFailure.notUploaded => l10n.mediaNotUploaded,
-      MediaDownloadFailure.offline => l10n.mediaDownloadOffline,
-      MediaDownloadFailure.failed => l10n.mediaDownloadFailed,
-    });
-  }
-  return false;
 }

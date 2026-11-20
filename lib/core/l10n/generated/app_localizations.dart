@@ -2932,11 +2932,17 @@ abstract class AppLocalizations {
   /// **'Open photo'**
   String get mediaOpenPhoto;
 
-  /// No description provided for @mediaDownloadPhoto.
+  /// No description provided for @mediaPhotoElsewhere.
   ///
   /// In en, this message translates to:
-  /// **'Photo not on this phone. Tap to download.'**
-  String get mediaDownloadPhoto;
+  /// **'Photo is on another phone'**
+  String get mediaPhotoElsewhere;
+
+  /// No description provided for @mediaElsewhere.
+  ///
+  /// In en, this message translates to:
+  /// **'This was recorded on another phone. Photos and voice notes aren\'t uploaded to the server; they open on the phone that recorded them.'**
+  String get mediaElsewhere;
 
   /// No description provided for @mediaPlay.
   ///
@@ -2950,24 +2956,6 @@ abstract class AppLocalizations {
   /// **'Stop'**
   String get mediaStopPlaying;
 
-  /// No description provided for @mediaNotUploaded.
-  ///
-  /// In en, this message translates to:
-  /// **'Not uploaded yet. It arrives when the phone that took it is online.'**
-  String get mediaNotUploaded;
-
-  /// No description provided for @mediaDownloadOffline.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t download. Check your internet connection.'**
-  String get mediaDownloadOffline;
-
-  /// No description provided for @mediaDownloadFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t download.'**
-  String get mediaDownloadFailed;
-
   /// No description provided for @mediaNotFound.
   ///
   /// In en, this message translates to:
@@ -2979,24 +2967,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Data'**
   String get settingsData;
-
-  /// No description provided for @settingsMediaWifiOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload photos on Wi‑Fi only'**
-  String get settingsMediaWifiOnly;
-
-  /// No description provided for @settingsMediaWifiOnlyHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Photos and voice notes won\'t use mobile data.'**
-  String get settingsMediaWifiOnlyHint;
-
-  /// No description provided for @settingsPendingUploads.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 file waiting to upload} other{{count} files waiting to upload}}'**
-  String settingsPendingUploads(int count);
 
   /// On the hive card's queen strip when the hive has no queen record.
   ///
@@ -9221,6 +9191,12 @@ abstract class AppLocalizations {
   /// **'receipt attached'**
   String get financeReceiptAttached;
 
+  /// No description provided for @financeReceiptElsewhere.
+  ///
+  /// In en, this message translates to:
+  /// **'The receipt is on another phone; receipt photos aren\'t uploaded to the server.'**
+  String get financeReceiptElsewhere;
+
   /// Transport source and destination apiaries.
   ///
   /// In en, this message translates to:
@@ -9418,12 +9394,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entry not found'**
   String get financeNotFound;
-
-  /// Receipt file not downloaded yet.
-  ///
-  /// In en, this message translates to:
-  /// **'The receipt hasn\'t reached this phone yet'**
-  String get financeReceiptPending;
 
   /// Delete button.
   ///

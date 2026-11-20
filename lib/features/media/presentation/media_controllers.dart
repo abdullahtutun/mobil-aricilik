@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:clock/clock.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
-import 'package:mobil_arici/core/sync/media_sync_service.dart';
-import 'package:mobil_arici/core/sync/media_sync_service_provider.dart';
 import 'package:mobil_arici/core/utils/uuid.dart';
 import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
@@ -115,33 +113,13 @@ class VoiceRecordingController extends _$VoiceRecordingController {
   }
 }
 
-/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse ve henüz
-/// indirilmediyse null. [download] istenince indirir.
+/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse null.
+/// Fotoğraf ve sesli notlar sunucuya yüklenmez (2026-11-20), başka
+/// telefona inmez.
 @riverpod
-class MediaFileController extends _$MediaFileController {
-  @override
-  Future<File?> build(MediaItem media) async {
-    final fileName = await ref
-        .read(mediaRepositoryProvider)
-        .localFileName(media);
-    return await ref.read(mediaFileStoreProvider).find(fileName);
-  }
-
-  /// Dosyayı indirir; başarılıysa null, değilse nedeni. İndirme sürerken
-  /// durum yükleniyor.
-  Future<MediaDownloadFailure?> download() async {
-    if (state.isLoading) return null;
-    final previous = state.value;
-    state = const AsyncLoading();
-    try {
-      final file = await ref.read(mediaSyncServiceProvider).download(media);
-      if (ref.mounted) state = AsyncData(file);
-      return null;
-    } on MediaDownloadException catch (error) {
-      if (ref.mounted) state = AsyncData(previous);
-      return error.failure;
-    }
-  }
+Future<File?> mediaFile(Ref ref, MediaItem media) async {
+  final fileName = await ref.read(mediaRepositoryProvider).localFileName(media);
+  return await ref.read(mediaFileStoreProvider).find(fileName);
 }
 
 /// Çalan sesli notun kimliği; çalan yoksa null. Aynı anda tek not çalar.

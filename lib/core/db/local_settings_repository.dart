@@ -12,18 +12,6 @@ class LocalSettingsRepository {
 
   final AppDatabase db;
 
-  /// Medya yalnız Wi‑Fi'da (kotasız ağda) yüklensin; varsayılan kapalı.
-  static const mediaWifiOnlyKey = 'media_wifi_only';
-
-  Stream<bool> watchMediaWifiOnly() =>
-      watchValue(mediaWifiOnlyKey).map((value) => value == 'true');
-
-  Future<bool> mediaWifiOnly() async =>
-      await readValue(mediaWifiOnlyKey) == 'true';
-
-  Future<void> setMediaWifiOnly({required bool enabled}) =>
-      writeValue(mediaWifiOnlyKey, '$enabled');
-
   /// Offline harita paketleri yalnız Wi‑Fi'da (kotasız ağda) insin;
   /// varsayılan açık (paketler onlarca MB).
   static const mapWifiOnlyKey = 'map_wifi_only';
@@ -182,7 +170,6 @@ class LocalSettingsRepository {
     gloveModeKey,
     hiveLayoutKey,
     hiveSortKey,
-    mediaWifiOnlyKey,
     mapWifiOnlyKey,
     exactAlarmPromptedKey,
     analyticsEnabledKey,

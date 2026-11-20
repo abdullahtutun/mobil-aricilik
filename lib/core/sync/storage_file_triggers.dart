@@ -10,7 +10,7 @@ import 'package:mobil_arici/features/organization/presentation/organization_prov
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 /// Uygulama açıkken [StorageFileSync] dosyalarını yükler ve eksikleri
-/// indirir (belge, fiş):
+/// indirir (işletme logosu; lot raporu da aynı anları kullanır):
 ///
 /// - açılış: oturum ve işletme hazır olunca,
 /// - [pendingCount] artınca [debounce] sonra (yalnız yükleme),

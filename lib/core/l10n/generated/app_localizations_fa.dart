@@ -1724,8 +1724,11 @@ class AppLocalizationsFa extends AppLocalizations {
   String get mediaOpenPhoto => 'باز کردن عکس';
 
   @override
-  String get mediaDownloadPhoto =>
-      'عکس روی این گوشی نیست. برای دریافت لمس کنید.';
+  String get mediaPhotoElsewhere => 'عکس روی گوشی دیگری است';
+
+  @override
+  String get mediaElsewhere =>
+      'این روی گوشی دیگری ضبط شده است. عکس‌ها و یادداشت‌های صوتی روی سرور بارگذاری نمی‌شوند؛ روی گوشی‌ای که آن‌ها را گرفته باز می‌شوند.';
 
   @override
   String mediaPlay(String duration) {
@@ -1736,39 +1739,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get mediaStopPlaying => 'توقف';
 
   @override
-  String get mediaNotUploaded =>
-      'هنوز بارگذاری نشده. وقتی گوشی‌ای که آن را گرفته آنلاین شود، می‌رسد.';
-
-  @override
-  String get mediaDownloadOffline =>
-      'دریافت ممکن نشد. اتصال اینترنت را بررسی کنید.';
-
-  @override
-  String get mediaDownloadFailed => 'دریافت ممکن نشد.';
-
-  @override
   String get mediaNotFound => 'عکس پیدا نشد';
 
   @override
   String get settingsData => 'داده‌ها';
-
-  @override
-  String get settingsMediaWifiOnly => 'بارگذاری عکس فقط با Wi‑Fi';
-
-  @override
-  String get settingsMediaWifiOnlyHint =>
-      'عکس‌ها و یادداشت‌های صوتی از داده همراه استفاده نمی‌کنند.';
-
-  @override
-  String settingsPendingUploads(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count فایل در انتظار بارگذاری',
-      one: '1 فایل در انتظار بارگذاری',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get hiveQueenNone => 'ثبت نشده';
@@ -5825,6 +5799,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get financeReceiptAttached => 'رسید پیوست شد';
 
   @override
+  String get financeReceiptElsewhere =>
+      'رسید روی گوشی دیگری است؛ عکس رسیدها روی سرور بارگذاری نمی‌شوند.';
+
+  @override
   String financeTransportRoute(String from, String to) {
     return '$from ← $to';
   }
@@ -5931,9 +5909,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get financeNotFound => 'ثبت پیدا نشد';
-
-  @override
-  String get financeReceiptPending => 'رسید هنوز به این گوشی نرسیده';
 
   @override
   String get financeDelete => 'حذف ثبت';

@@ -255,6 +255,31 @@ func (f *fixture) stored(t *testing.T, collection, org, path string, content []b
 	return r
 }
 
+// Rules of 1794300012_file_collections.go: media_files had them until
+// 1794300019 (media stays on the phone). The shared machinery (path, id
+// and org checks, "already uploaded", protected files) is still used by
+// org_logo_files and feedback_files; it is tested on media_files with these
+// rules put back, because media_files has the three-part path and both
+// photo and audio types.
+const (
+	ruleMember = `@request.auth.id != "" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= ""`
+	ruleWriter = ruleMember + ` && (@collection.memberships:m.role ?= "owner" || @collection.memberships:m.role ?= "partner" || @collection.memberships:m.role ?= "worker")`
+)
+
+// reopenMedia puts media_files' former rules back on the fixture's app.
+func (f *fixture) reopenMedia(t *testing.T) {
+	t.Helper()
+	c, err := f.app.FindCollectionByNameOrId("media_files")
+	if err != nil {
+		t.Fatal(err)
+	}
+	member, writer := ruleMember, ruleWriter
+	c.ListRule, c.ViewRule, c.CreateRule = &member, &member, &writer
+	if err := f.app.Save(c); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func p3(org, id, ext string) string { return org + "/" + parent + "/" + id + "." + ext }
 func p2(org, id, ext string) string { return org + "/" + id + "." + ext }
 
@@ -262,8 +287,10 @@ func codeOf(field, code string) string {
 	return fmt.Sprintf(`"%s":{"code":"%s"`, field, code)
 }
 
-func TestMediaFiles(t *testing.T) {
+// The shared file rules, on media_files with its former rules (reopenMedia).
+func TestFileRules(t *testing.T) {
 	f := newFixture(t)
+	f.reopenMedia(t)
 	const c = "media_files"
 	dup := f.newID()
 	ok := func(name string) tests.ApiScenario {
@@ -344,6 +371,7 @@ func TestMediaFiles(t *testing.T) {
 
 func TestProtectedDownload(t *testing.T) {
 	f := newFixture(t)
+	f.reopenMedia(t)
 	id := f.newID()
 	r := f.stored(t, "media_files", orgA, p3(orgA, id, "jpg"), jpegBytes)
 	url := "/api/files/media_files/" + id + "/" + r.GetString("file")
@@ -406,44 +434,30 @@ func TestProtectedDownload(t *testing.T) {
 	tokenScenario.Test(t)
 }
 
-// Document files stay on the phone (1794300018_local_document_files.go):
-// no one uploads or reads through the API.
-func TestDocumentFiles(t *testing.T) {
+// Document, media and receipt files stay on the phone
+// (1794300018_local_document_files.go, 1794300019): no one uploads or reads
+// them through the API.
+func TestLocalFileCollections(t *testing.T) {
 	f := newFixture(t)
-	const c = "document_files"
-	stored := f.stored(t, c, orgA, p3(orgA, f.newID(), "pdf"), pdfBytes)
-	id1, id2 := f.newID(), f.newID()
-	for _, s := range []tests.ApiScenario{
-		f.create(t, worker, upload{collection: c, id: id1, org: orgA, path: p3(orgA, id1, "pdf"), content: pdfBytes}, tests.ApiScenario{Name: "worker does not upload", ExpectedStatus: 403}),
-		f.create(t, owner, upload{collection: c, id: id2, org: orgA, path: p3(orgA, id2, "jpg"), content: jpegBytes}, tests.ApiScenario{Name: "owner does not upload", ExpectedStatus: 403}),
-		f.get(t, owner, "/api/collections/"+c+"/records/"+stored.Id, tests.ApiScenario{Name: "owner does not read", ExpectedStatus: 403}),
-		f.get(t, viewer, "/api/collections/"+c+"/records", tests.ApiScenario{Name: "viewer does not list", ExpectedStatus: 403}),
+	for _, c := range []struct{ name, ext string }{
+		{"document_files", "pdf"}, {"media_files", "jpg"}, {"receipt_files", "jpg"},
 	} {
-		s.Test(t)
-	}
-}
-
-func TestReceiptFiles(t *testing.T) {
-	f := newFixture(t)
-	const c = "receipt_files"
-	stored := f.stored(t, c, orgA, p3(orgA, f.newID(), "jpg"), jpegBytes)
-	url := "/api/files/" + c + "/" + stored.Id + "/" + stored.GetString("file")
-	id1, id2, id3 := f.newID(), f.newID(), f.newID()
-	list := "/api/collections/" + c + "/records"
-
-	for _, s := range []tests.ApiScenario{
-		f.create(t, partner, upload{collection: c, id: id1, org: orgA, path: p3(orgA, id1, "jpg"), content: jpegBytes}, tests.ApiScenario{Name: "partner uploads", ExpectedStatus: 200}),
-		f.create(t, owner, upload{collection: c, id: id2, org: orgA, path: p3(orgA, id2, "jpg"), content: jpegBytes}, tests.ApiScenario{Name: "owner uploads", ExpectedStatus: 200}),
-		f.create(t, worker, upload{collection: c, id: id3, org: orgA, path: p3(orgA, id3, "jpg"), content: jpegBytes}, tests.ApiScenario{Name: "worker does not upload", ExpectedStatus: 400, ExpectedContent: []string{ruleRefused}}),
-		f.create(t, owner, upload{collection: c, id: id3, org: orgA, path: p3(orgA, id3, "pdf"), content: pdfBytes}, tests.ApiScenario{Name: "no PDF receipts", ExpectedStatus: 400, ExpectedContent: []string{codeOf("path", files.CodePathInvalid)}}),
-		f.get(t, worker, list, tests.ApiScenario{Name: "worker lists no receipts", ExpectedStatus: 200, ExpectedContent: []string{none}}),
-		f.get(t, viewer, list, tests.ApiScenario{Name: "viewer lists no receipts", ExpectedStatus: 200, ExpectedContent: []string{none}}),
-		f.get(t, worker, list+"/"+stored.Id, tests.ApiScenario{Name: "worker does not view a receipt", ExpectedStatus: 404}),
-		f.get(t, partner, list, tests.ApiScenario{Name: "partner lists receipts", ExpectedStatus: 200, ExpectedContent: []string{`"totalItems":3`}}),
-		f.scenario(tests.ApiScenario{Name: "worker's file token", Method: http.MethodGet, URL: url + "?token=" + f.fileToken(t, worker), ExpectedStatus: 404}),
-		f.scenario(tests.ApiScenario{Name: "owner's file token", Method: http.MethodGet, URL: url + "?token=" + f.fileToken(t, owner), ExpectedStatus: 200}),
-	} {
-		s.Test(t)
+		content := jpegBytes
+		if c.ext == "pdf" {
+			content = pdfBytes
+		}
+		stored := f.stored(t, c.name, orgA, p3(orgA, f.newID(), c.ext), content)
+		id1 := f.newID()
+		url := "/api/files/" + c.name + "/" + stored.Id + "/" + stored.GetString("file")
+		for _, s := range []tests.ApiScenario{
+			f.create(t, owner, upload{collection: c.name, id: id1, org: orgA, path: p3(orgA, id1, c.ext), content: content}, tests.ApiScenario{Name: c.name + ": owner does not upload", ExpectedStatus: 403}),
+			f.create(t, worker, upload{collection: c.name, id: id1, org: orgA, path: p3(orgA, id1, c.ext), content: content}, tests.ApiScenario{Name: c.name + ": worker does not upload", ExpectedStatus: 403}),
+			f.get(t, owner, "/api/collections/"+c.name+"/records/"+stored.Id, tests.ApiScenario{Name: c.name + ": owner does not read", ExpectedStatus: 403}),
+			f.get(t, viewer, "/api/collections/"+c.name+"/records", tests.ApiScenario{Name: c.name + ": viewer does not list", ExpectedStatus: 403}),
+			f.scenario(tests.ApiScenario{Name: c.name + ": owner's file token does not download", Method: http.MethodGet, URL: url + "?token=" + f.fileToken(t, owner), ExpectedStatus: 404}),
+		} {
+			s.Test(t)
+		}
 	}
 }
 

@@ -1,14 +1,12 @@
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/app/pocketbase_setup.dart';
-import 'package:mobil_arici/core/sync/file_store.dart';
 import 'package:mobil_arici/core/sync/sync_transport.dart';
 
 /// Arka plan görevinin sunucuya gittiği arayüzler. `refreshSession`
 /// senkron turunun başında token'ı yeniler (K-6).
 typedef BackgroundConnection = ({
   SyncTransport sync,
-  FileStore files,
   Future<void> Function() refreshSession,
 });
 

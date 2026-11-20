@@ -44,8 +44,6 @@ func run() int {
 	flag.IntVar(&cfg.Concurrency, "concurrency", 10, "users at a time")
 	flag.IntVar(&cfg.PacketSize, "packet", 100, "changes per push (1..100)")
 	flag.IntVar(&cfg.PageSize, "page", 500, "rows per pull page (1..1000)")
-	flag.IntVar(&cfg.FileEvery, "file-every", 5, "upload a file after every n-th packet")
-	flag.IntVar(&cfg.FileBytes, "file-bytes", 1<<20, "size of each uploaded file")
 	timeout := flag.Duration("timeout", 60*time.Second, "timeout of each request")
 	jsonOut := flag.String("json", "", "also write the report as JSON to this file")
 	cleanup := flag.String("cleanup", "", "only remove the accounts of this run id (or \"all\") and exit")

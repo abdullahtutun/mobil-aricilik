@@ -39,9 +39,8 @@ typedef TransportChoice = ({
 ///
 /// Lottan satış gelirinde kilogram aynı transaction'da `lot_sales`'e
 /// yazılır; hareket silinince satış da silinir ve lotun stoğu geri gelir.
-/// Bu telefonda çekilen fiş fotoğrafı hareketle aynı transaction'da
-/// yükleme kuyruğuna (`receipt_uploads`, `pending`) yazılır; dosyayı arka
-/// planda `ReceiptSyncService` yükler.
+/// Fiş fotoğrafı yalnız çekildiği telefonda kalır (2026-11-20): sunucuya
+/// yüklenmez, başka telefona inmez; hareketin `receipt_path`'i senkronlanır.
 class TransactionRepository
     extends BaseRepository<$TransactionsTable, FinanceTransaction> {
   new(super.db, {super.clock});
@@ -178,7 +177,7 @@ class TransactionRepository
         ],
       );
 
-  /// Hareketi yazar; [receipt] verilirse fişi yükleme kuyruğuna ekler.
+  /// Hareketi yazar; [receipt] verilirse fişin yolunu hareketine yazar.
   /// [saleKg] verilirse [lotId] lotundan o kadar satış düşer ve hareket
   /// satışa bağlanır. [customerId] gelirin müşterisi; [paidNow] satışta
   /// alınan ödeme, tahsilat olarak yazılır (kalanı alacak). Hepsi tek
@@ -245,25 +244,11 @@ class TransactionRepository
       if (customerId == null) throw ArgumentError.value(paidNow, 'paidNow');
       await _payments.add(transaction, paidNow, paidOn: occurredOn);
     }
-    if (transaction.receiptPath case final path?) {
-      await db
-          .into(db.receiptUploads)
-          .insert(
-            ReceiptUploadsCompanion.insert(
-              storagePath: path,
-              transactionId: id,
-              orgId: orgId,
-              uploadStatus: MediaUploadStatus.pending,
-              createdAt: at,
-            ),
-          );
-    }
     return transaction;
   });
 
-  /// Hareketi, bağlı lot satışını ve tahsilatlarını siler, fişi henüz
-  /// yüklenmediyse kuyruktan çıkarır; hepsi tek transaction'da. Yüklenmiş
-  /// fiş Storage'da kalır. Hareket yoksa ya da zaten silinmişse bir şey yazmaz.
+  /// Hareketi, bağlı lot satışını ve tahsilatlarını siler; hepsi tek
+  /// transaction'da. Hareket yoksa ya da zaten silinmişse bir şey yazmaz.
   Future<void> remove(String id) => db.transaction(() async {
     final transaction = await findById(id);
     if (transaction == null) return;
@@ -274,31 +259,5 @@ class TransactionRepository
     for (final payment in await _payments.findBySale(id)) {
       await _payments.delete(payment.id);
     }
-    await (db.delete(db.receiptUploads)..where(
-          (t) =>
-              t.transactionId.equals(id) &
-              t.uploadStatus.equalsValue(MediaUploadStatus.uploaded).not(),
-        ))
-        .go();
   });
-
-  /// Yüklenmeyi bekleyen fiş sayısı (kalıcı hata alanlar dahil değil).
-  Stream<int> watchPendingReceiptCount() {
-    final count = db.receiptUploads.storagePath.count();
-    return (db.selectOnly(db.receiptUploads)
-          ..addColumns([count])
-          ..where(
-            db.receiptUploads.uploadStatus.equalsValue(
-              MediaUploadStatus.pending,
-            ),
-          ))
-        .map((row) => row.read(count)!)
-        .watchSingle();
-  }
-
-  /// İşletmenin silinmemiş fişli hareketleri; bir kez okunur (fiş
-  /// indirme).
-  Future<List<FinanceTransaction>> listWithReceipts(String orgId) =>
-      selectWhere((t) => t.orgId.equals(orgId) & t.receiptPath.isNotNull())
-          .get();
 }

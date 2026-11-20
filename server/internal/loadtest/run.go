@@ -32,8 +32,6 @@ type Config struct {
 	Concurrency int // 10 accounts at a time
 	PacketSize  int // 100, the app's batchSize
 	PageSize    int // 500, the app's pullPageSize
-	FileEvery   int // a file after every 5th packet
-	FileBytes   int // 1 MiB
 
 	// RequestTimeout bounds each request (60 s).
 	RequestTimeout time.Duration
@@ -54,8 +52,6 @@ func (c *Config) defaults() {
 	set(&c.Concurrency, 10)
 	set(&c.PacketSize, appsync.MaxPushChanges)
 	set(&c.PageSize, 500)
-	set(&c.FileEvery, 5)
-	set(&c.FileBytes, 1<<20)
 	if c.RequestTimeout <= 0 {
 		c.RequestTimeout = 60 * time.Second
 	}
@@ -167,10 +163,10 @@ func NewRunID(now time.Time) string {
 
 // Run is the load test: it checks the server, opens cfg.Accounts accounts,
 // lets cfg.Concurrency of them at a time found an organization, push
-// cfg.Records rows in packets (a file after every cfg.FileEvery-th
-// packet) and pull every table from the start, and then removes the
-// accounts and their organizations whatever happened. The rate limiter is
-// off during the run (every account comes from one IP) and back on after.
+// cfg.Records rows in packets and pull every table from the start, and
+// then removes the accounts and their organizations whatever happened. The
+// rate limiter is off during the run (every account comes from one IP) and
+// back on after.
 // An error means the run could not start or was cut short; the report then
 // holds what was measured.
 func Run(ctx context.Context, cfg Config) (*Report, error) {
@@ -186,7 +182,7 @@ func Run(ctx context.Context, cfg Config) (*Report, error) {
 	rep := &Report{
 		Run: run, Server: s.anon.base, Version: s.version,
 		Accounts: cfg.Accounts, Records: cfg.Records, Concurrency: cfg.Concurrency,
-		PacketSize: cfg.PacketSize, FileBytes: cfg.FileBytes, Started: time.Now().UTC(),
+		PacketSize: cfg.PacketSize, Started: time.Now().UTC(),
 	}
 	// The route answers before anything is written: an empty cleanup of a
 	// new run proves it is there and the superuser may call it.
@@ -229,10 +225,6 @@ func Run(ctx context.Context, cfg Config) (*Report, error) {
 	if err != nil {
 		return rep, err
 	}
-	file, err := fakeJPEG(cfg.FileBytes)
-	if err != nil {
-		return rep, err
-	}
 
 	fmt.Fprintf(cfg.Log, "%d accounts ready; load starts\n", len(accounts))
 	rec := newRecorder()
@@ -244,7 +236,7 @@ func Run(ctx context.Context, cfg Config) (*Report, error) {
 	for range cfg.Concurrency {
 		wg.Go(func() {
 			for a := range jobs {
-				s.simulate(ctx, a, rec, file)
+				s.simulate(ctx, a, rec)
 				doneMu.Lock()
 				done++
 				fmt.Fprintf(cfg.Log, "account %d/%d done\n", done, len(accounts))
@@ -300,8 +292,9 @@ func (s *session) openAccounts(ctx context.Context, run string) ([]*account, err
 }
 
 // simulate is one account's session: found the organization, push every
-// packet in order with a file now and then, then pull every table.
-func (s *session) simulate(ctx context.Context, a *account, rec *recorder, file []byte) {
+// packet in order, then pull every table. No files: the app keeps photos,
+// voice notes, receipts and documents on the phone (1794300018/19).
+func (s *session) simulate(ctx context.Context, a *account, rec *recorder) {
 	cfg := s.cfg
 	timed := func(op string, f func(ctx context.Context) error) error {
 		rctx, cancel := context.WithTimeout(ctx, cfg.RequestTimeout)
@@ -321,7 +314,7 @@ func (s *session) simulate(ctx context.Context, a *account, rec *recorder, file 
 		return // nothing else can succeed without the organization
 	}
 
-	for i, packet := range packets(workload(a.org, a.id, cfg.Records, time.Now()), cfg.PacketSize) {
+	for _, packet := range packets(workload(a.org, a.id, cfg.Records, time.Now()), cfg.PacketSize) {
 		if ctx.Err() != nil {
 			return
 		}
@@ -338,7 +331,7 @@ func (s *session) simulate(ctx context.Context, a *account, rec *recorder, file 
 					rejected++
 				}
 			}
-			rec.count(len(results)-rejected, rejected, 0, 0)
+			rec.count(len(results)-rejected, rejected, 0)
 			if rejected > 0 {
 				first := results[0]
 				for _, r := range results {
@@ -350,18 +343,7 @@ func (s *session) simulate(ctx context.Context, a *account, rec *recorder, file 
 				rec.note(fmt.Sprintf("push: rows rejected: %s %s", first.Reason, first.Message))
 			}
 		}
-		if (i+1)%cfg.FileEvery == 0 {
-			// media path: <org>/<hive>/<media id>.jpg; the server checks
-			// only the shape, org and id.
-			id := ids.New()
-			path := a.org + "/" + packet[0].ID + "/" + id + ".jpg"
-			err := timed(OpUpload, func(ctx context.Context) error {
-				return a.api.upload(ctx, id, a.org, path, file)
-			})
-			if err == nil {
-				rec.count(0, 0, 0, 1)
-			}
-		}
+
 	}
 
 	full := time.Now()
@@ -383,7 +365,7 @@ func (s *session) simulate(ctx context.Context, a *account, rec *recorder, file 
 				fullErr = err
 				break
 			}
-			rec.count(0, 0, n, 0)
+			rec.count(0, 0, n)
 			if !more {
 				break
 			}

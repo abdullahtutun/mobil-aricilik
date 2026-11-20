@@ -230,7 +230,7 @@ void main() {
       await ApiaryRepository(db).create(orgId: 'org-1', name: 'Yayla');
       final settings = LocalSettingsRepository(db);
       await settings.setLastSyncedAt(DateTime.utc(2026, 11));
-      await settings.setMediaWifiOnly(enabled: true);
+      await settings.setMapWifiOnly(enabled: false);
       final container = await _pumpSettings(
         tester,
         db: db,
@@ -259,7 +259,7 @@ void main() {
       final kept = await settings.readAll();
       expect(
         kept,
-        containsPair(LocalSettingsRepository.mediaWifiOnlyKey, 'true'),
+        containsPair(LocalSettingsRepository.mapWifiOnlyKey, 'false'),
       );
       expect(
         kept.keys,

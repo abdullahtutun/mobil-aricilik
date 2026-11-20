@@ -5412,9 +5412,9 @@
   {
     "name": "media_files",
     "type": "base",
-    "listRule": "@request.auth.id != \"\" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= \"\"",
-    "viewRule": "@request.auth.id != \"\" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= \"\"",
-    "createRule": "@request.auth.id != \"\" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= \"\" && (@collection.memberships:m.role ?= \"owner\" || @collection.memberships:m.role ?= \"partner\" || @collection.memberships:m.role ?= \"worker\")",
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
     "updateRule": null,
     "deleteRule": null,
     "fields": [
@@ -7032,9 +7032,9 @@
   {
     "name": "receipt_files",
     "type": "base",
-    "listRule": "@request.auth.id != \"\" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= \"\" && (@collection.memberships:m.role ?= \"owner\" || @collection.memberships:m.role ?= \"partner\")",
-    "viewRule": "@request.auth.id != \"\" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= \"\" && (@collection.memberships:m.role ?= \"owner\" || @collection.memberships:m.role ?= \"partner\")",
-    "createRule": "@request.auth.id != \"\" && @collection.memberships:m.user_id ?= @request.auth.id && @collection.memberships:m.org_id ?= org_id && @collection.memberships:m.deleted_at ?= \"\" && (@collection.memberships:m.role ?= \"owner\" || @collection.memberships:m.role ?= \"partner\")",
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
     "updateRule": null,
     "deleteRule": null,
     "fields": [

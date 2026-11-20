@@ -8,10 +8,6 @@ import 'package:mobil_arici/core/services/media_file_store.dart';
 import 'package:mobil_arici/core/services/media_services_provider.dart';
 import 'package:mobil_arici/core/services/voice_player.dart';
 import 'package:mobil_arici/core/services/voice_recorder.dart';
-import 'package:mobil_arici/core/sync/media_sync_service.dart';
-import 'package:mobil_arici/core/sync/media_sync_service_provider.dart';
-import 'package:mobil_arici/features/media/domain/media_item.dart';
-import 'package:mobil_arici/features/media/domain/media_rules.dart';
 
 /// 1x1 PNG; Flutter'ın çözücüsü uzantıya bakmaz.
 const tinyImage = [
@@ -23,9 +19,9 @@ const tinyImage = [
   0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82,
 ];
 
-/// Cihazsız medya: geçici klasörde dosya deposu, sahte kamera, kayıtçı,
-/// çalar ve Storage. Dosyalar eşzamanlı yazılır; widget testlerinin sahte
-/// zamanında asenkron dosya işlemi bitmez.
+/// Cihazsız medya: geçici klasörde dosya deposu, sahte kamera, kayıtçı ve
+/// çalar; dosyalar sunucuya gitmez. Dosyalar eşzamanlı yazılır; widget
+/// testlerinin sahte zamanında asenkron dosya işlemi bitmez.
 class FakeMedia {
   new() : directory = Directory.systemTemp.createTempSync('fake_media') {
     addTearDown(() => directory.deleteSync(recursive: true));
@@ -36,7 +32,6 @@ class FakeMedia {
   final camera = FakeCameraService();
   final recorder = FakeVoiceRecorder();
   final player = FakeVoicePlayer();
-  late final sync = FakeMediaSyncService(directory);
 
   /// Medya klasöründeki dosya adları.
   List<String> get fileNames =>
@@ -48,7 +43,6 @@ class FakeMedia {
     cameraServiceProvider.overrideWithValue(camera),
     voiceRecorderProvider.overrideWithValue(recorder),
     voicePlayerProvider.overrideWithValue(player),
-    mediaSyncServiceProvider.overrideWithValue(sync),
   ];
 }
 
@@ -122,42 +116,5 @@ class FakeVoicePlayer implements VoicePlayer {
   Future<void> stop() async {
     _playing?.complete();
     _playing = null;
-  }
-}
-
-/// Storage: [remote]'taki yollar indirilebilir; yükleme sayılır.
-class FakeMediaSyncService implements MediaSyncService {
-  new(this._directory);
-
-  final Directory _directory;
-
-  /// `storage_path` → dosya.
-  final remote = <String, List<int>>{};
-
-  /// Doluysa indirme bu nedenle başarısız olur.
-  MediaDownloadFailure? downloadFailure;
-
-  int uploadCount = 0;
-
-  @override
-  DateTime Function() get clock => DateTime.now;
-
-  @override
-  Future<MediaUploadResult> uploadPending() async {
-    uploadCount++;
-    return const MediaUploadResult(MediaUploadOutcome.done);
-  }
-
-  @override
-  Future<File> download(MediaItem media) async {
-    if (downloadFailure case final failure?) {
-      throw MediaDownloadException(failure);
-    }
-    final bytes = remote[media.storagePath];
-    if (bytes == null) {
-      throw const MediaDownloadException(MediaDownloadFailure.notUploaded);
-    }
-    return File('${_directory.path}/${downloadFileName(media)}')
-      ..writeAsBytesSync(bytes);
   }
 }

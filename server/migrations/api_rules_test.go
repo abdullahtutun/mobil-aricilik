@@ -24,13 +24,8 @@ var expectedOpenRules = map[string]string{
 	"device_tokens.view":      `@request.auth.id != "" && user_id = @request.auth.id`,
 
 	// P6.1 (1794300012_file_collections.go). public_lot_files: all nil;
-	// document_files: all nil since 1794300018_local_document_files.go.
-	"media_files.list":      fileMember,
-	"media_files.view":      fileMember,
-	"media_files.create":    fileWriters,
-	"receipt_files.list":    fileManagers,
-	"receipt_files.view":    fileManagers,
-	"receipt_files.create":  fileManagers,
+	// document_files: all nil since 1794300018_local_document_files.go,
+	// media_files and receipt_files since 1794300019.
 	"feedback_files.create": fileMember,
 	"org_logo_files.list":   fileMember,
 	"org_logo_files.view":   fileMember,

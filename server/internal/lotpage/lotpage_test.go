@@ -26,20 +26,20 @@ import (
 // active, one dead and one deleted hive, two harvests, lot ab01 published
 // and ab02 not, an older analysis with a PDF report and a newer one without.
 const (
-	owner   = "11111111-1111-1111-1111-111111111111"
-	viewer  = "44444444-4444-4444-4444-444444444444"
-	worker  = "33333333-3333-3333-3333-333333333333"
+	owner  = "11111111-1111-1111-1111-111111111111"
+	viewer = "44444444-4444-4444-4444-444444444444"
+	worker = "33333333-3333-3333-3333-333333333333"
 	// outsider is a member of organization B only.
 	outsider = "55555555-5555-5555-5555-555555555555"
-	orgA    = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-	orgB    = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
-	apiary  = "a1000000-0000-0000-0000-000000000001"
-	lot     = "ab000000-0000-0000-0000-000000000001"
-	hidden  = "ab000000-0000-0000-0000-000000000002"
-	missing = "ab000000-0000-0000-0000-0000000000ff"
-	doc     = "a8000000-0000-0000-0000-000000000001"
-	docFile = "f0000000-0000-0000-0000-000000000001"
-	docPath = orgA + "/" + doc + "/" + docFile + ".pdf"
+	orgA     = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+	orgB     = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+	apiary   = "a1000000-0000-0000-0000-000000000001"
+	lot      = "ab000000-0000-0000-0000-000000000001"
+	hidden   = "ab000000-0000-0000-0000-000000000002"
+	missing  = "ab000000-0000-0000-0000-0000000000ff"
+	doc      = "a8000000-0000-0000-0000-000000000001"
+	docFile  = "f0000000-0000-0000-0000-000000000001"
+	docPath  = orgA + "/" + doc + "/" + docFile + ".pdf"
 
 	testTime = "2026-10-01T00:00:00.000000Z"
 

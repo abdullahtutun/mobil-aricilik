@@ -1705,8 +1705,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mediaOpenPhoto => 'Fotoğrafı aç';
 
   @override
-  String get mediaDownloadPhoto =>
-      'Fotoğraf bu telefonda yok. İndirmek için dokun.';
+  String get mediaPhotoElsewhere => 'Fotoğraf başka telefonda';
+
+  @override
+  String get mediaElsewhere =>
+      'Bu kayıt başka bir telefonda çekildi. Fotoğraf ve sesli notlar sunucuya yüklenmez; çeken telefonda açılır.';
 
   @override
   String mediaPlay(String duration) {
@@ -1717,38 +1720,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mediaStopPlaying => 'Durdur';
 
   @override
-  String get mediaNotUploaded =>
-      'Henüz yüklenmedi. Çeken telefon internete bağlanınca gelir.';
-
-  @override
-  String get mediaDownloadOffline =>
-      'İndirilemedi. İnternet bağlantını kontrol et.';
-
-  @override
-  String get mediaDownloadFailed => 'İndirilemedi.';
-
-  @override
   String get mediaNotFound => 'Fotoğraf bulunamadı';
 
   @override
   String get settingsData => 'Veri';
-
-  @override
-  String get settingsMediaWifiOnly => 'Fotoğrafları sadece Wi‑Fi\'da yükle';
-
-  @override
-  String get settingsMediaWifiOnlyHint =>
-      'Foto ve sesli notlar mobil veri harcamaz.';
-
-  @override
-  String settingsPendingUploads(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count dosya yüklenmeyi bekliyor',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get hiveQueenNone => 'Kayıt yok';
@@ -5659,6 +5634,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get financeReceiptAttached => 'fiş eklendi';
 
   @override
+  String get financeReceiptElsewhere =>
+      'Fiş başka telefonda; fiş fotoğrafları sunucuya yüklenmez.';
+
+  @override
   String financeTransportRoute(String from, String to) {
     return '$from → $to';
   }
@@ -5765,9 +5744,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get financeNotFound => 'Hareket bulunamadı';
-
-  @override
-  String get financeReceiptPending => 'Fiş bu telefona henüz inmedi';
 
   @override
   String get financeDelete => 'Hareketi sil';

@@ -18,10 +18,9 @@ const (
 	OpPush      = "push"      // one packet
 	OpPullPage  = "pull_page" // one page of one table
 	OpFullPull  = "full_pull" // every table from 0, one account
-	OpUpload    = "upload"    // one file
 )
 
-var opOrder = []string{OpCreateOrg, OpPush, OpPullPage, OpFullPull, OpUpload}
+var opOrder = []string{OpCreateOrg, OpPush, OpPullPage, OpFullPull}
 
 // Stat is one operation's numbers.
 type Stat struct {
@@ -41,7 +40,6 @@ type Report struct {
 	Records       int             `json:"records_per_account"`
 	Concurrency   int             `json:"concurrency"`
 	PacketSize    int             `json:"packet_size"`
-	FileBytes     int             `json:"file_bytes"`
 	Started       time.Time       `json:"started"`
 	Duration      time.Duration   `json:"-"`
 	DurationSec   float64         `json:"duration_s"`
@@ -51,7 +49,6 @@ type Report struct {
 	RowsPushed    int             `json:"rows_pushed"`
 	RowsRejected  int             `json:"rows_rejected"`
 	RowsPulled    int             `json:"rows_pulled"`
-	Files         int             `json:"files_uploaded"`
 	Busy          int             `json:"busy_503"`
 	Ops           map[string]Stat `json:"operations"`
 	ErrorSamples  []string        `json:"error_samples"`
@@ -73,7 +70,6 @@ type recorder struct {
 	pushed    int
 	rejected  int
 	pulled    int
-	files     int
 }
 
 func newRecorder() *recorder {
@@ -113,13 +109,12 @@ func (r *recorder) sampleLocked(msg string) {
 	}
 }
 
-func (r *recorder) count(pushed, rejected, pulled, files int) {
+func (r *recorder) count(pushed, rejected, pulled int) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.pushed += pushed
 	r.rejected += rejected
 	r.pulled += pulled
-	r.files += files
 }
 
 // fill writes the numbers into rep. full_pull is not a request of its own:
@@ -138,7 +133,7 @@ func (r *recorder) fill(rep *Report) {
 	if rep.Requests > 0 {
 		rep.ErrorRate = float64(rep.Failed) / float64(rep.Requests)
 	}
-	rep.RowsPushed, rep.RowsRejected, rep.RowsPulled, rep.Files, rep.Busy = r.pushed, r.rejected, r.pulled, r.files, r.busy
+	rep.RowsPushed, rep.RowsRejected, rep.RowsPulled, rep.Busy = r.pushed, r.rejected, r.pulled, r.busy
 	for msg, n := range r.samples {
 		rep.ErrorSamples = append(rep.ErrorSamples, fmt.Sprintf("%dx %s", n, msg))
 	}
@@ -173,12 +168,12 @@ func ms(d time.Duration) float64 {
 // Write prints the report for a terminal.
 func (rep *Report) Write(w io.Writer) {
 	fmt.Fprintf(w, "\nLoad test %s against %s (version %s)\n", rep.Run, rep.Server, rep.Version)
-	fmt.Fprintf(w, "Scenario: %d accounts x %d records, %d at a time, packets of %d, files of %d bytes\n",
-		rep.Accounts, rep.Records, rep.Concurrency, rep.PacketSize, rep.FileBytes)
+	fmt.Fprintf(w, "Scenario: %d accounts x %d records, %d at a time, packets of %d\n",
+		rep.Accounts, rep.Records, rep.Concurrency, rep.PacketSize)
 	fmt.Fprintf(w, "Duration: %.1f s  Requests: %d  Failed: %d  Error rate: %.2f%%  503 busy: %d\n",
 		rep.DurationSec, rep.Requests, rep.Failed, rep.ErrorRate*100, rep.Busy)
-	fmt.Fprintf(w, "Rows pushed: %d  rejected: %d  pulled: %d  Files: %d\n",
-		rep.RowsPushed, rep.RowsRejected, rep.RowsPulled, rep.Files)
+	fmt.Fprintf(w, "Rows pushed: %d  rejected: %d  pulled: %d\n",
+		rep.RowsPushed, rep.RowsRejected, rep.RowsPulled)
 	if rep.RateLimitsOff {
 		fmt.Fprintln(w, "Rate limiter: off during the run, turned back on")
 	}

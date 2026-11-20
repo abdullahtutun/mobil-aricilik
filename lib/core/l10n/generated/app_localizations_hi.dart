@@ -1730,8 +1730,11 @@ class AppLocalizationsHi extends AppLocalizations {
   String get mediaOpenPhoto => 'फ़ोटो खोलें';
 
   @override
-  String get mediaDownloadPhoto =>
-      'फ़ोटो इस फ़ोन पर नहीं है। डाउनलोड करने के लिए टैप करें।';
+  String get mediaPhotoElsewhere => 'फ़ोटो दूसरे फ़ोन पर है';
+
+  @override
+  String get mediaElsewhere =>
+      'यह दूसरे फ़ोन पर रिकॉर्ड हुआ था। फ़ोटो और वॉइस नोट सर्वर पर अपलोड नहीं होते; वे उसी फ़ोन पर खुलते हैं जिस पर रिकॉर्ड हुए।';
 
   @override
   String mediaPlay(String duration) {
@@ -1742,39 +1745,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get mediaStopPlaying => 'रोकें';
 
   @override
-  String get mediaNotUploaded =>
-      'अभी अपलोड नहीं हुआ। जिस फ़ोन से लिया गया वह ऑनलाइन होने पर पहुँचेगा।';
-
-  @override
-  String get mediaDownloadOffline =>
-      'डाउनलोड नहीं हो सका। इंटरनेट कनेक्शन जाँचें।';
-
-  @override
-  String get mediaDownloadFailed => 'डाउनलोड नहीं हो सका।';
-
-  @override
   String get mediaNotFound => 'फ़ोटो नहीं मिली';
 
   @override
   String get settingsData => 'डेटा';
-
-  @override
-  String get settingsMediaWifiOnly => 'फ़ोटो सिर्फ़ Wi‑Fi पर अपलोड करें';
-
-  @override
-  String get settingsMediaWifiOnlyHint =>
-      'फ़ोटो और वॉइस नोट मोबाइल डेटा इस्तेमाल नहीं करेंगे।';
-
-  @override
-  String settingsPendingUploads(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count फ़ाइलें अपलोड की प्रतीक्षा में',
-      one: '1 फ़ाइल अपलोड की प्रतीक्षा में',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get hiveQueenNone => 'दर्ज नहीं';
@@ -5837,6 +5811,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get financeReceiptAttached => 'रसीद जुड़ी';
 
   @override
+  String get financeReceiptElsewhere =>
+      'रसीद दूसरे फ़ोन पर है; रसीद की फ़ोटो सर्वर पर अपलोड नहीं होतीं।';
+
+  @override
   String financeTransportRoute(String from, String to) {
     return '$from → $to';
   }
@@ -5943,9 +5921,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get financeNotFound => 'प्रविष्टि नहीं मिली';
-
-  @override
-  String get financeReceiptPending => 'रसीद अभी इस फ़ोन तक नहीं पहुँची';
 
   @override
   String get financeDelete => 'प्रविष्टि हटाएँ';

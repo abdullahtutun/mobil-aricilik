@@ -186,7 +186,7 @@ void main() {
     test('çıkışta telefonun tercihleri kalır, gerisi silinir', () async {
       final settings = LocalSettingsRepository(db);
       await settings.writeValue(LocalSettingsRepository.languageKey, 'turkish');
-      await settings.setMediaWifiOnly(enabled: true);
+      await settings.setMapWifiOnly(enabled: false);
       await settings.setLastSyncedAt(DateTime.utc(2026, 11));
       await settings.writeValue('weather_bundle', '{}');
       await seedCountedRecords(db);
@@ -197,7 +197,7 @@ void main() {
 
       expect(await settings.readAll(), {
         LocalSettingsRepository.languageKey: 'turkish',
-        LocalSettingsRepository.mediaWifiOnlyKey: 'true',
+        LocalSettingsRepository.mapWifiOnlyKey: 'false',
       });
       expect(await db.select(db.apiaries).get(), isEmpty);
       expect(await db.select(db.outbox).get(), isEmpty);

@@ -23,11 +23,10 @@ class PocketBaseFileStore implements FileStore {
 
   /// Bucket → dosya koleksiyonu (`server/internal/files.Specs`). Lot
   /// sayfasının `public-lots`'u uygulamadan kullanılmaz (rapor
-  /// `LotReportService` ile gider); belge dosyaları telefonda kalır,
-  /// `document_files` kapalıdır.
+  /// `LotReportService` ile gider). Foto, ses, fiş ve belge dosyaları
+  /// telefonda kalır; `media_files`, `receipt_files` ve `document_files`
+  /// kapalıdır (2026-11-20).
   static const collections = {
-    'media': 'media_files',
-    'receipts': 'receipt_files',
     'feedback': 'feedback_files',
     'org-logos': 'org_logo_files',
   };

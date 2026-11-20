@@ -1743,8 +1743,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get mediaOpenPhoto => 'Foto öffnen';
 
   @override
-  String get mediaDownloadPhoto =>
-      'Foto nicht auf diesem Telefon. Zum Herunterladen tippen.';
+  String get mediaPhotoElsewhere => 'Foto ist auf einem anderen Telefon';
+
+  @override
+  String get mediaElsewhere =>
+      'Das wurde auf einem anderen Telefon aufgenommen. Fotos und Sprachnotizen werden nicht auf den Server geladen; sie öffnen sich auf dem Telefon, das sie aufgenommen hat.';
 
   @override
   String mediaPlay(String duration) {
@@ -1755,39 +1758,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get mediaStopPlaying => 'Stopp';
 
   @override
-  String get mediaNotUploaded =>
-      'Noch nicht hochgeladen. Es kommt an, sobald das aufnehmende Telefon online ist.';
-
-  @override
-  String get mediaDownloadOffline =>
-      'Herunterladen nicht möglich. Prüfe deine Internetverbindung.';
-
-  @override
-  String get mediaDownloadFailed => 'Herunterladen nicht möglich.';
-
-  @override
   String get mediaNotFound => 'Foto nicht gefunden';
 
   @override
   String get settingsData => 'Daten';
-
-  @override
-  String get settingsMediaWifiOnly => 'Fotos nur über WLAN hochladen';
-
-  @override
-  String get settingsMediaWifiOnlyHint =>
-      'Fotos und Sprachnotizen verbrauchen keine mobilen Daten.';
-
-  @override
-  String settingsPendingUploads(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count Dateien warten auf das Hochladen',
-      one: '1 Datei wartet auf das Hochladen',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get hiveQueenNone => 'Nicht erfasst';
@@ -5876,6 +5850,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get financeReceiptAttached => 'Beleg angehängt';
 
   @override
+  String get financeReceiptElsewhere =>
+      'Der Beleg ist auf einem anderen Telefon; Belegfotos werden nicht auf den Server geladen.';
+
+  @override
   String financeTransportRoute(String from, String to) {
     return '$from → $to';
   }
@@ -5983,10 +5961,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get financeNotFound => 'Buchung nicht gefunden';
-
-  @override
-  String get financeReceiptPending =>
-      'Der Beleg ist noch nicht auf diesem Telefon';
 
   @override
   String get financeDelete => 'Buchung löschen';

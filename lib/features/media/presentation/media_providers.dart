@@ -14,11 +14,6 @@ MediaRepository mediaRepository(Ref ref) =>
 Stream<List<MediaItem>> hiveMedia(Ref ref, String hiveId) =>
     ref.watch(mediaRepositoryProvider).watchByHive(hiveId);
 
-/// Yüklenmeyi bekleyen dosya sayısı (Ayarlar).
-@riverpod
-Stream<int> pendingMediaUploads(Ref ref) =>
-    ref.watch(mediaRepositoryProvider).watchPendingUploadCount();
-
 /// Medya kaydı; yoksa ya da silindiyse null.
 @riverpod
 Stream<MediaItem?> mediaItem(Ref ref, String mediaId) =>

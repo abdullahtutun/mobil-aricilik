@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:mobil_arici/app/backend_setup.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/services/pocketbase_client_provider.dart';
-import 'package:mobil_arici/core/sync/pocketbase_file_store.dart';
 import 'package:mobil_arici/core/sync/pocketbase_sync_transport.dart';
 import 'package:mobil_arici/features/auth/data/pocketbase_auth_service.dart';
 import 'package:mobil_arici/features/auth/data/pocketbase_session_storage.dart';
@@ -36,7 +35,6 @@ Future<BackgroundConnection?> openPocketBaseBackgroundConnection(
   final client = PocketBase(url, authStore: storage.authStore(initial: data));
   return (
     sync: PocketBaseSyncTransport(client),
-    files: PocketBaseFileStore(client),
     refreshSession: PocketBaseAuthService(client, storage).refreshSession,
   );
 }

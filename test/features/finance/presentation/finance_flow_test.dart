@@ -215,7 +215,8 @@ void main() {
     expect(saved.amount, 17500);
     expect(saved.currency, 'TRY');
     expect(saved.receiptPath, endsWith(receipts.fileNames.single));
-    expect(await db.select(db.receiptUploads).get(), hasLength(1));
+    // Fiş telefonda kalır; yükleme kuyruğu yok.
+    expect(await db.select(db.receiptUploads).get(), isEmpty);
 
     await tester.tap(find.text('Undo'));
     await tester.pumpAndSettle();
@@ -293,7 +294,10 @@ void main() {
     expect(find.widgetWithText(ListRow, '$lotNumber · 160 kg'), findsOneWidget);
     // Fiş bu telefonda yok (başka telefonda çekilmiş gibi).
     await tester.scrollUntilVisible(
-      find.text("The receipt hasn't reached this phone yet"),
+      find.text(
+        "The receipt is on another phone; receipt photos aren't uploaded to "
+        'the server.',
+      ),
       200,
       scrollable: _list(TransactionScreen),
     );

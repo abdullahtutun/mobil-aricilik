@@ -1763,8 +1763,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mediaOpenPhoto => 'Открыть фото';
 
   @override
-  String get mediaDownloadPhoto =>
-      'Фото нет на этом телефоне. Нажмите, чтобы скачать.';
+  String get mediaPhotoElsewhere => 'Фото на другом телефоне';
+
+  @override
+  String get mediaElsewhere =>
+      'Это записано на другом телефоне. Фото и голосовые заметки не загружаются на сервер; они открываются на телефоне, где их сделали.';
 
   @override
   String mediaPlay(String duration) {
@@ -1775,41 +1778,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mediaStopPlaying => 'Стоп';
 
   @override
-  String get mediaNotUploaded =>
-      'Ещё не загружено. Появится, когда телефон, на который сняли, выйдет в сеть.';
-
-  @override
-  String get mediaDownloadOffline =>
-      'Не удалось скачать. Проверьте подключение к интернету.';
-
-  @override
-  String get mediaDownloadFailed => 'Не удалось скачать.';
-
-  @override
   String get mediaNotFound => 'Фото не найдено';
 
   @override
   String get settingsData => 'Данные';
-
-  @override
-  String get settingsMediaWifiOnly => 'Загружать фото только по Wi‑Fi';
-
-  @override
-  String get settingsMediaWifiOnlyHint =>
-      'Фото и голосовые заметки не будут тратить мобильный трафик.';
-
-  @override
-  String settingsPendingUploads(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count файла ждут загрузки',
-      many: '$count файлов ждут загрузки',
-      few: '$count файла ждут загрузки',
-      one: '$count файл ждёт загрузки',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get hiveQueenNone => 'Не записана';
@@ -5997,6 +5969,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get financeReceiptAttached => 'чек приложен';
 
   @override
+  String get financeReceiptElsewhere =>
+      'Чек на другом телефоне; фото чеков не загружаются на сервер.';
+
+  @override
   String financeTransportRoute(String from, String to) {
     return '$from → $to';
   }
@@ -6104,9 +6080,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get financeNotFound => 'Запись не найдена';
-
-  @override
-  String get financeReceiptPending => 'Чек ещё не пришёл на этот телефон';
 
   @override
   String get financeDelete => 'Удалить запись';

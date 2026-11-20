@@ -7,10 +7,11 @@ import 'package:mobil_arici/features/media/domain/media_rules.dart';
 
 /// Foto ve sesli notlar; olay kaydı: yalnız eklenir, yanlış kayıt silinir.
 ///
-/// Bu telefonda çekilen medya, kaydıyla aynı transaction'da yükleme
-/// kuyruğuna (`media_uploads`, `pending`) yazılır; dosyayı arka planda
-/// `MediaSyncService` yükler. Dosyalara dokunmaz: dosya adları
-/// `MediaFileStore`'daki adlardır.
+/// Kayıt senkronlanır, dosyası yalnız çekildiği telefonda kalır
+/// (2026-11-20): sunucuya yüklenmez, başka telefona inmez. Bu telefonda
+/// çekilen medyanın dosya adı kaydıyla aynı transaction'da `media_uploads`'a
+/// yazılır; tablo artık yalnız bu eşlemeyi tutar, yükleyen yok. Dosyalara
+/// dokunmaz: dosya adları `MediaFileStore`'daki adlardır.
 class MediaRepository extends BaseRepository<$MediaTable, MediaItem> {
   new(super.db, {super.clock});
 
@@ -30,8 +31,8 @@ class MediaRepository extends BaseRepository<$MediaTable, MediaItem> {
   );
 
   /// Bu telefonda çekilen [capture]'ı kovanın (ve verilirse muayenenin ya
-  /// da ilaç uygulamasının) medyası olarak yazar ve yükleme kuyruğuna
-  /// ekler; ikisi tek transaction'da.
+  /// da ilaç uygulamasının) medyası olarak yazar ve dosya adını
+  /// `media_uploads`'a ekler; ikisi tek transaction'da.
   Future<MediaItem> add({
     required String orgId,
     required String hiveId,
@@ -76,11 +77,10 @@ class MediaRepository extends BaseRepository<$MediaTable, MediaItem> {
     return media;
   });
 
-  /// Medyayı siler ve henüz yüklenmediyse kuyruktan çıkarır; ikisi tek
-  /// transaction'da. Yüklenmiş dosya Storage'da kalır.
+  /// Medyayı ve dosya adı eşlemesini siler; ikisi tek transaction'da.
   Future<void> remove(String id) => db.transaction(() async {
     await delete(id);
-    await _dropPendingUpload((t) => t.mediaId.equals(id));
+    await _dropFileName((t) => t.mediaId.equals(id));
   });
 
   /// Muayenenin medyasını siler (muayene geri alınınca); [remove] gibi.
@@ -100,40 +100,20 @@ class MediaRepository extends BaseRepository<$MediaTable, MediaItem> {
         for (final id in ids) {
           await delete(id);
         }
-        await _dropPendingUpload((t) => t.mediaId.isIn(ids));
+        await _dropFileName((t) => t.mediaId.isIn(ids));
       });
 
-  Future<void> _dropPendingUpload(
+  Future<void> _dropFileName(
     Expression<bool> Function($MediaUploadsTable t) filter,
-  ) =>
-      (db.delete(db.mediaUploads)..where(
-            (t) =>
-                filter(t) &
-                t.uploadStatus.equalsValue(MediaUploadStatus.uploaded).not(),
-          ))
-          .go();
+  ) => (db.delete(db.mediaUploads)..where(filter)).go();
 
   /// Medyanın bu telefondaki dosya adı: burada çekildiyse çekilirkenki ad,
-  /// değilse indirilince alacağı ad ([downloadFileName]).
+  /// değilse yol adı ([downloadFileName]; eski sürümde başka telefondan
+  /// inmiş dosya bu addadır).
   Future<String> localFileName(MediaItem media) async {
     final upload = await (db.select(
       db.mediaUploads,
     )..where((t) => t.mediaId.equals(media.id))).getSingleOrNull();
     return upload?.fileName ?? downloadFileName(media);
-  }
-
-  /// Yüklenmeyi bekleyen dosya sayısı (kalıcı hata alanlar dahil değil).
-  Stream<int> watchPendingUploadCount() => _pendingCount().watchSingle();
-
-  Future<int> pendingUploadCount() => _pendingCount().getSingle();
-
-  Selectable<int> _pendingCount() {
-    final count = db.mediaUploads.mediaId.count();
-    return (db.selectOnly(db.mediaUploads)
-          ..addColumns([count])
-          ..where(
-            db.mediaUploads.uploadStatus.equalsValue(MediaUploadStatus.pending),
-          ))
-        .map((row) => row.read(count)!);
   }
 }

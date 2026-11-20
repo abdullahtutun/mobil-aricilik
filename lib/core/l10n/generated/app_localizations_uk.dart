@@ -1761,8 +1761,11 @@ class AppLocalizationsUk extends AppLocalizations {
   String get mediaOpenPhoto => 'Відкрити фото';
 
   @override
-  String get mediaDownloadPhoto =>
-      'Фото немає на цьому телефоні. Торкніться, щоб завантажити.';
+  String get mediaPhotoElsewhere => 'Фото на іншому телефоні';
+
+  @override
+  String get mediaElsewhere =>
+      'Це записано на іншому телефоні. Фото й голосові нотатки не завантажуються на сервер; вони відкриваються на телефоні, де їх зробили.';
 
   @override
   String mediaPlay(String duration) {
@@ -1773,41 +1776,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get mediaStopPlaying => 'Стоп';
 
   @override
-  String get mediaNotUploaded =>
-      'Ще не вивантажено. З\'явиться, коли телефон, яким знімали, вийде в мережу.';
-
-  @override
-  String get mediaDownloadOffline =>
-      'Не вдалося завантажити. Перевірте підключення до інтернету.';
-
-  @override
-  String get mediaDownloadFailed => 'Не вдалося завантажити.';
-
-  @override
   String get mediaNotFound => 'Фото не знайдено';
 
   @override
   String get settingsData => 'Дані';
-
-  @override
-  String get settingsMediaWifiOnly => 'Вивантажувати фото лише через Wi‑Fi';
-
-  @override
-  String get settingsMediaWifiOnlyHint =>
-      'Фото й голосові нотатки не витрачатимуть мобільний трафік.';
-
-  @override
-  String settingsPendingUploads(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count файлу чекають на вивантаження',
-      many: '$count файлів чекають на вивантаження',
-      few: '$count файли чекають на вивантаження',
-      one: '$count файл чекає на вивантаження',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get hiveQueenNone => 'Не записано';
@@ -5995,6 +5967,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get financeReceiptAttached => 'чек додано';
 
   @override
+  String get financeReceiptElsewhere =>
+      'Чек на іншому телефоні; фото чеків не завантажуються на сервер.';
+
+  @override
   String financeTransportRoute(String from, String to) {
     return '$from → $to';
   }
@@ -6102,9 +6078,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get financeNotFound => 'Запис не знайдено';
-
-  @override
-  String get financeReceiptPending => 'Чек ще не надійшов на цей телефон';
 
   @override
   String get financeDelete => 'Видалити запис';

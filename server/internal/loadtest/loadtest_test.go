@@ -134,7 +134,7 @@ func TestRunEndToEnd(t *testing.T) {
 
 	cfg := s.config()
 	cfg.Accounts, cfg.Records, cfg.Concurrency = 3, 250, 2
-	cfg.PageSize, cfg.FileEvery, cfg.FileBytes = 100, 1, 4096
+	cfg.PageSize = 100
 	var log strings.Builder
 	cfg.Log = &log
 
@@ -148,10 +148,7 @@ func TestRunEndToEnd(t *testing.T) {
 	if rep.RowsPushed != 3*250 {
 		t.Errorf("rows pushed = %d, want 750", rep.RowsPushed)
 	}
-	// 250 rows: 3 packets of 100, 100, 50; a file after each.
-	if rep.Files != 9 || rep.Ops[loadtest.OpUpload].Count != 9 {
-		t.Errorf("files = %d (ops %d), want 9", rep.Files, rep.Ops[loadtest.OpUpload].Count)
-	}
+	// 250 rows: 3 packets of 100, 100, 50.
 	if got := rep.Ops[loadtest.OpPush].Count; got != 9 {
 		t.Errorf("push requests = %d, want 9", got)
 	}
@@ -211,7 +208,7 @@ func TestRunLeavesTheLimiterOffWhenItWasOff(t *testing.T) {
 	s := newServer(t, config.EnvDev)
 	s.rateLimits(t, false)
 	cfg := s.config()
-	cfg.Accounts, cfg.Records, cfg.FileEvery = 1, 10, 100
+	cfg.Accounts, cfg.Records = 1, 10
 	rep, err := loadtest.Run(context.Background(), cfg)
 	if err != nil || rep.Failed != 0 {
 		t.Fatalf("Run: %v %+v", err, rep)

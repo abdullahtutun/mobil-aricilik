@@ -1,8 +1,6 @@
 package loadtest
 
 import (
-	"crypto/rand"
-	"errors"
 	"fmt"
 	"time"
 
@@ -98,21 +96,4 @@ func packets(changes []change, size int) [][]change {
 		changes = changes[n:]
 	}
 	return out
-}
-
-// fakeJPEG is size bytes that PocketBase detects as image/jpeg: the JPEG
-// start of image and a JFIF header, then random bytes (incompressible, like
-// a photo). The server never decodes it: thumbnails are off.
-func fakeJPEG(size int) ([]byte, error) {
-	header := []byte{0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 'J', 'F', 'I', 'F', 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00}
-	if size < len(header)+2 {
-		return nil, errors.New("file size too small for a JPEG header")
-	}
-	b := make([]byte, size)
-	copy(b, header)
-	if _, err := rand.Read(b[len(header) : size-2]); err != nil {
-		return nil, err
-	}
-	b[size-2], b[size-1] = 0xFF, 0xD9 // end of image
-	return b, nil
 }

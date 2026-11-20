@@ -10,11 +10,6 @@ part 'local_settings_provider.g.dart';
 LocalSettingsRepository localSettingsRepository(Ref ref) =>
     LocalSettingsRepository(ref.watch(appDatabaseProvider));
 
-/// "Fotoğrafları sadece Wi‑Fi'da yükle".
-@Riverpod(keepAlive: true)
-Stream<bool> mediaWifiOnly(Ref ref) =>
-    ref.watch(localSettingsRepositoryProvider).watchMediaWifiOnly();
-
 /// "Sadece Wi‑Fi'da indir" (offline harita paketleri).
 @Riverpod(keepAlive: true)
 Stream<bool> mapWifiOnly(Ref ref) =>

@@ -6,12 +6,10 @@ import 'package:mobil_arici/app/app.dart';
 import 'package:mobil_arici/app/router.dart';
 import 'package:mobil_arici/app/routes.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
-import 'package:mobil_arici/core/db/local_settings_repository.dart';
 import 'package:mobil_arici/core/design_system/design_system.dart';
 import 'package:mobil_arici/core/l10n/app_language.dart';
 import 'package:mobil_arici/core/l10n/language_provider.dart';
 import 'package:mobil_arici/core/services/camera_service.dart';
-import 'package:mobil_arici/core/sync/media_sync_service.dart';
 import 'package:mobil_arici/features/apiaries/data/apiary_repository.dart';
 import 'package:mobil_arici/features/apiaries/domain/apiary.dart';
 import 'package:mobil_arici/features/hives/data/hive_repository.dart';
@@ -19,7 +17,6 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_card_screen.dart';
 import 'package:mobil_arici/features/inspections/data/inspection_repository.dart';
 import 'package:mobil_arici/features/inspections/presentation/inspection_sheet.dart';
-import 'package:mobil_arici/features/media/data/media_repository.dart';
 import 'package:mobil_arici/features/media/domain/media_item.dart';
 import 'package:mobil_arici/features/media/presentation/media_viewer_screen.dart';
 import 'package:mobil_arici/features/media/presentation/widgets/media_strip.dart';
@@ -94,14 +91,12 @@ Finder _stopButton() => find.widgetWithIcon(BigIconButton, Icons.stop_rounded);
 void main() {
   late AppDatabase db;
   late FakeMedia media;
-  late MediaRepository repository;
   late Apiary yayla;
   late Hive hive;
 
   setUp(() async {
     db = openTestDatabase();
     media = FakeMedia();
-    repository = MediaRepository(db);
     yayla = await ApiaryRepository(db).create(orgId: _orgId, name: 'Yayla');
     hive = await HiveRepository(db).create(
       orgId: _orgId,
@@ -384,82 +379,27 @@ void main() {
       return item;
     }
 
-    testWidgets('foto meta veri olarak iner; dokununca dosya indirilir', (
-      tester,
-    ) async {
-      final item = await remotePhoto();
-      media.sync.remote[item.storagePath] = tinyImage;
+    testWidgets('foto meta veri olarak iner; dosya başka telefonda kalır, '
+        'dokununca nedeni söylenir', (tester) async {
+      await remotePhoto();
       await openCard(tester);
       await _reveal(tester, find.byType(MediaThumbnail));
 
       expect(
-        find.bySemanticsLabel('Photo not on this phone. Tap to download.'),
+        find.bySemanticsLabel('Photo is on another phone'),
+        findsOneWidget,
+      );
+
+      await _tap(tester, find.byType(MediaThumbnail));
+
+      expect(
+        find.text(
+          "This was recorded on another phone. Photos and voice notes aren't "
+          'uploaded to the server; they open on the phone that recorded them.',
+        ),
         findsOneWidget,
       );
       expect(media.fileNames, isEmpty);
-
-      await _tap(tester, find.byType(MediaThumbnail));
-
-      expect(media.fileNames, ['remote-1.jpg']);
-      expect(find.bySemanticsLabel('Open photo'), findsOneWidget);
-    });
-
-    testWidgets('henüz yüklenmediyse ya da ağ yoksa nedeni söylenir', (
-      tester,
-    ) async {
-      await remotePhoto();
-      await openCard(tester);
-
-      await _tap(tester, find.byType(MediaThumbnail));
-      expect(
-        find.text(
-          'Not uploaded yet. It arrives when the phone that took it is '
-          'online.',
-        ),
-        findsOneWidget,
-      );
-
-      media.sync.downloadFailure = MediaDownloadFailure.offline;
-      await _tap(tester, find.byType(MediaThumbnail));
-      expect(
-        find.text("Couldn't download. Check your internet connection."),
-        findsOneWidget,
-      );
-      expect(
-        find.bySemanticsLabel('Photo not on this phone. Tap to download.'),
-        findsOneWidget,
-      );
-    });
-  });
-
-  group('Ayarlar', () {
-    testWidgets('"sadece Wi‑Fi" yerel DB’ye yazılır; bekleyen dosya sayısı '
-        'görünür', (tester) async {
-      await repository.add(
-        orgId: _orgId,
-        hiveId: hive.id,
-        capture: MediaCapture(
-          fileName: 'p.jpg',
-          kind: MediaKind.photo,
-          capturedAt: DateTime.utc(2026, 10, 22),
-          byteSize: 1,
-        ),
-      );
-      await _open(tester, db: db, media: media, location: AppRoutes.settings);
-
-      // Bölüm adı satırın üstünde; _reveal yalnız aşağı kaydırır.
-      await _reveal(tester, find.text('DATA'));
-      await _reveal(tester, find.text('1 file waiting to upload'));
-      final toggle = find.widgetWithText(
-        SwitchListTile,
-        'Upload photos on Wi‑Fi only',
-      );
-      expect(tester.widget<SwitchListTile>(toggle).value, isFalse);
-
-      await _tap(tester, toggle);
-
-      expect(tester.widget<SwitchListTile>(toggle).value, isTrue);
-      expect(await LocalSettingsRepository(db).mediaWifiOnly(), isTrue);
     });
   });
 
@@ -488,13 +428,40 @@ void main() {
     await _tap(tester, find.widgetWithText(BigButton, 'Muayene başlat'));
     await _tap(tester, _photoButton().last);
     expect(find.text('Muayeneyle kaydedilecek: 1 fotoğraf'), findsOneWidget);
+  });
 
-    container.read(routerProvider).go(AppRoutes.settings);
+  testWidgets('başka telefondaki fotoğraf: Türkçe metinler', (tester) async {
+    final at = DateTime.utc(2026, 10, 22, 9);
+    await db
+        .into(db.media)
+        .insert(
+          MediaItem(
+            id: 'remote-1',
+            orgId: _orgId,
+            hiveId: hive.id,
+            kind: MediaKind.photo,
+            storagePath: '$_orgId/${hive.id}/remote-1.jpg',
+            capturedAt: at,
+            byteSize: 1,
+            createdAt: at,
+            updatedAt: at,
+            serverSeq: 9,
+          ).toInsertable(),
+        );
+    final container = await openCard(tester);
+    container.read(languageProvider.notifier).language = AppLanguage.turkish;
     await tester.pumpAndSettle();
-    await _reveal(tester, find.text('VERİ'));
-    await _reveal(tester, find.text('2 dosya yüklenmeyi bekliyor'));
-    expect(find.text("Fotoğrafları sadece Wi‑Fi'da yükle"), findsOneWidget);
-    expect(find.text('2 dosya yüklenmeyi bekliyor'), findsOneWidget);
+    await _reveal(tester, find.byType(MediaThumbnail));
+
+    expect(find.bySemanticsLabel('Fotoğraf başka telefonda'), findsOneWidget);
+    await _tap(tester, find.byType(MediaThumbnail));
+    expect(
+      find.text(
+        'Bu kayıt başka bir telefonda çekildi. Fotoğraf ve sesli notlar '
+        'sunucuya yüklenmez; çeken telefonda açılır.',
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('360dp ekranda 1.5x yazı ve eldivenle taşmaz', (tester) async {

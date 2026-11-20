@@ -102,7 +102,7 @@ go run ./cmd/loadtest -url https://arici-api-dev.tutunsoft.com -json ../build/p9
 - Bütün istekler tek IP'den gittiği için koşu boyunca hız sınırı kapatılır, sonunda yeniden açılır. Kapalı kalırsa sunucunun yeniden başlatılması da sınırı açar.
 - Koşu bitince ya da Ctrl-C ile kesilince araç kendi hesaplarını ve işletmelerini `POST /api/app/dev/loadtest/cleanup` ile kalıcı siler (dosyalar dahil). Bu route yalnız `APP_ENV=dev`'de vardır ve yalnız superuser'a açıktır. Temizlik yarıda kalırsa `-cleanup <run>` ile, bütün koşular için `-cleanup all` ile yeniden çalıştırılır.
 - Rapor şunları verir: süre, istek ve hata sayısı, hata oranı, 503 (SQLite meşgul) sayısı, reddedilen satırlar, işlem başına p50/p95/max. İşlemler: `create_org`, `push`, `pull_page`, `full_pull`, `upload`. Çıkış kodları: 0 temiz koşu, 1 koşuda ya da temizlikte hata, 2 başlayamadı.
-- Diğer ayarlar `-users`, `-records`, `-concurrency`, `-packet`, `-page`, `-file-every`, `-file-bytes` ve `-timeout` bayraklarıyla verilir. Koşarken VPS'te `docker stats` izlenir.
+- Diğer ayarlar `-users`, `-records`, `-concurrency`, `-packet`, `-page` ve `-timeout` bayraklarıyla verilir. Koşarken VPS'te `docker stats` izlenir.
 
 ## Docker ile yerel deneme
 

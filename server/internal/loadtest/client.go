@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"mime/multipart"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -223,27 +222,4 @@ func (c *client) pullPage(ctx context.Context, table string, since int64, size i
 	}
 	err = c.do(ctx, http.MethodGet, "/api/sync/pull?"+q.Encode(), "", nil, &out)
 	return len(out.Rows), out.NextSeq, out.HasMore, err
-}
-
-// upload stores a photo in media_files, as the app's media queue does
-// (account).
-func (c *client) upload(ctx context.Context, id, orgID, path string, content []byte) error {
-	var buf bytes.Buffer
-	w := multipart.NewWriter(&buf)
-	for k, v := range map[string]string{"id": id, "org_id": orgID, "path": path} {
-		if err := w.WriteField(k, v); err != nil {
-			return err
-		}
-	}
-	part, err := w.CreateFormFile("file", id+".jpg")
-	if err != nil {
-		return err
-	}
-	if _, err := part.Write(content); err != nil {
-		return err
-	}
-	if err := w.Close(); err != nil {
-		return err
-	}
-	return c.do(ctx, http.MethodPost, "/api/collections/media_files/records", w.FormDataContentType(), &buf, nil)
 }

@@ -3,11 +3,6 @@ import 'dart:ui' show IsolateNameServer;
 import 'package:mobil_arici/app/backend_setup.dart';
 import 'package:mobil_arici/app/flavor.dart';
 import 'package:mobil_arici/core/db/app_database_provider.dart';
-import 'package:mobil_arici/core/services/connectivity_service.dart';
-import 'package:mobil_arici/core/services/media_file_store.dart';
-import 'package:mobil_arici/core/sync/media_sync_service.dart';
-import 'package:mobil_arici/core/sync/media_upload_scheduler.dart';
-import 'package:mobil_arici/core/sync/media_upload_triggers.dart';
 import 'package:mobil_arici/core/sync/sync_backend.dart';
 import 'package:mobil_arici/core/sync/sync_service.dart';
 import 'package:mobil_arici/core/sync/sync_triggers.dart';
@@ -18,13 +13,20 @@ import 'package:workmanager/workmanager.dart';
 /// olmalı.
 const backgroundSyncTask = 'com.tutunsoft.mobilarici.sync';
 
+/// Eski medya yükleme görevinin kimliği. Fotoğraf ve sesli notlar artık
+/// sunucuya gitmiyor (2026-11-20); güncellenen telefonda planlı kalan görev
+/// iptal edilir, yine de çalışırsa bir şey yapmaz.
+const legacyMediaUploadTask = 'com.tutunsoft.mobilarici.media';
+
+/// Arka plan görevlerinin `inputData`'sında çalışan flavor'ın adı.
+const backgroundFlavorKey = 'flavor';
+
 /// Periyodik arka plan senkronunu kaydeder: Android en sık 15 dakikada
 /// bir ve yalnız ağ varken çalıştırır; iOS zamanı kullanıma göre kendisi
 /// seçer. Kayıt zaten varsa ayarları güncellenir, sayaç sıfırlanmaz.
-/// Medya yükleme görevi ([backgroundMediaUploadTask]) aynı giriş noktasını
-/// kullanır; `MediaUploadScheduler` planlar.
 Future<void> registerBackgroundSync(Flavor flavor) async {
   await Workmanager().initialize(backgroundSyncDispatcher);
+  await Workmanager().cancelByUniqueName(legacyMediaUploadTask);
   await Workmanager().registerPeriodicTask(
     backgroundSyncTask,
     backgroundSyncTask,
@@ -44,15 +46,13 @@ Future<void> registerBackgroundSync(Flavor flavor) async {
 /// açar. Oturum yoksa bir şey yapmaz. Sunucu son turdakinden
 /// farklıysa önce imleçleri sıfırlar (`resetCursorsIfBackendChanged`).
 ///
-/// Periyodik görev senkron turundan sonra bekleyen medyayı da yükler.
-/// Medya görevi yalnız yükler; geçici hatada false döner ve Android
-/// görevi üstel bekleyerek yeniden dener.
+/// Eski medya görevi ([legacyMediaUploadTask]) bir şey yapmadan biter.
 @pragma('vm:entry-point')
 void backgroundSyncDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    final media = task == backgroundMediaUploadTask;
-    final portName = media ? foregroundMediaPortName : foregroundSyncPortName;
-    if (IsolateNameServer.lookupPortByName(portName) case final port?) {
+    if (task == legacyMediaUploadTask) return true;
+    if (IsolateNameServer.lookupPortByName(foregroundSyncPortName)
+        case final port?) {
       port.send(null);
       return true;
     }
@@ -64,23 +64,15 @@ void backgroundSyncDispatcher() {
 
     final db = openAppDatabase();
     try {
-      if (!media) {
-        // Güncellenen uygulama yeni sunucuyla ilk kez arka planda açılırsa
-        // eski sunucunun imleçleriyle çekmesin.
-        await resetCursorsIfBackendChanged(db, syncBackendIdentity(flavor));
-        await SyncService(
-          db,
-          connection.sync,
-          refreshSession: connection.refreshSession,
-        ).sync();
-      }
-      final uploaded = await MediaSyncService(
+      // Güncellenen uygulama yeni sunucuyla ilk kez arka planda açılırsa
+      // eski sunucunun imleçleriyle çekmesin.
+      await resetCursorsIfBackendChanged(db, syncBackendIdentity(flavor));
+      await SyncService(
         db,
-        connection.files,
-        MediaFileStore.app(),
-        PlusConnectivityService(),
-      ).uploadPending();
-      return !media || uploaded.outcome != MediaUploadOutcome.retryLater;
+        connection.sync,
+        refreshSession: connection.refreshSession,
+      ).sync();
+      return true;
     } finally {
       await db.close();
     }

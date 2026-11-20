@@ -194,46 +194,58 @@ abstract class _$VoiceRecordingController extends $Notifier<VoiceRecording?> {
   }
 }
 
-/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse ve henüz
-/// indirilmediyse null. [download] istenince indirir.
+/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse null.
+/// Fotoğraf ve sesli notlar sunucuya yüklenmez (2026-11-20), başka
+/// telefona inmez.
 
-@ProviderFor(MediaFileController)
-final mediaFileControllerProvider = MediaFileControllerFamily._();
+@ProviderFor(mediaFile)
+final mediaFileProvider = MediaFileFamily._();
 
-/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse ve henüz
-/// indirilmediyse null. [download] istenince indirir.
-final class MediaFileControllerProvider
-    extends $AsyncNotifierProvider<MediaFileController, File?> {
-  /// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse ve henüz
-  /// indirilmediyse null. [download] istenince indirir.
-  MediaFileControllerProvider._({
-    required MediaFileControllerFamily super.from,
+/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse null.
+/// Fotoğraf ve sesli notlar sunucuya yüklenmez (2026-11-20), başka
+/// telefona inmez.
+
+final class MediaFileProvider
+    extends $FunctionalProvider<AsyncValue<File?>, File?, FutureOr<File?>>
+    with $FutureModifier<File?>, $FutureProvider<File?> {
+  /// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse null.
+  /// Fotoğraf ve sesli notlar sunucuya yüklenmez (2026-11-20), başka
+  /// telefona inmez.
+  MediaFileProvider._({
+    required MediaFileFamily super.from,
     required MediaItem super.argument,
   }) : super(
          retry: null,
-         name: r'mediaFileControllerProvider',
+         name: r'mediaFileProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$mediaFileControllerHash();
+  String debugGetCreateSourceHash() => _$mediaFileHash();
 
   @override
   String toString() {
-    return r'mediaFileControllerProvider'
+    return r'mediaFileProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  MediaFileController create() => MediaFileController();
+  $FutureProviderElement<File?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<File?> create(Ref ref) {
+    final argument = this.argument as MediaItem;
+    return mediaFile(ref, argument);
+  }
 
   @override
   bool operator ==(Object other) {
-    return other is MediaFileControllerProvider && other.argument == argument;
+    return other is MediaFileProvider && other.argument == argument;
   }
 
   @override
@@ -242,62 +254,32 @@ final class MediaFileControllerProvider
   }
 }
 
-String _$mediaFileControllerHash() =>
-    r'836d3ce7611ea85fb0e8a45e19dda84bab1a6ecd';
+String _$mediaFileHash() => r'65fd2b4432cad8958a7117ff19ab32f6b329e54d';
 
-/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse ve henüz
-/// indirilmediyse null. [download] istenince indirir.
+/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse null.
+/// Fotoğraf ve sesli notlar sunucuya yüklenmez (2026-11-20), başka
+/// telefona inmez.
 
-final class MediaFileControllerFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          MediaFileController,
-          AsyncValue<File?>,
-          File?,
-          FutureOr<File?>,
-          MediaItem
-        > {
-  MediaFileControllerFamily._()
+final class MediaFileFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<File?>, MediaItem> {
+  MediaFileFamily._()
     : super(
         retry: null,
-        name: r'mediaFileControllerProvider',
+        name: r'mediaFileProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  /// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse ve henüz
-  /// indirilmediyse null. [download] istenince indirir.
+  /// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse null.
+  /// Fotoğraf ve sesli notlar sunucuya yüklenmez (2026-11-20), başka
+  /// telefona inmez.
 
-  MediaFileControllerProvider call(MediaItem media) =>
-      MediaFileControllerProvider._(argument: media, from: this);
+  MediaFileProvider call(MediaItem media) =>
+      MediaFileProvider._(argument: media, from: this);
 
   @override
-  String toString() => r'mediaFileControllerProvider';
-}
-
-/// Medyanın bu telefondaki dosyası; başka telefonda çekildiyse ve henüz
-/// indirilmediyse null. [download] istenince indirir.
-
-abstract class _$MediaFileController extends $AsyncNotifier<File?> {
-  late final _$args = ref.$arg as MediaItem;
-  MediaItem get media => _$args;
-
-  FutureOr<File?> build(MediaItem media);
-  @$mustCallSuper
-  @override
-  WhenComplete runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<File?>, File?>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<File?>, File?>,
-              AsyncValue<File?>,
-              Object?,
-              Object?
-            >;
-    return element.handleCreate(ref, () => build(_$args));
-  }
+  String toString() => r'mediaFileProvider';
 }
 
 /// Çalan sesli notun kimliği; çalan yoksa null. Aynı anda tek not çalar.

@@ -135,7 +135,8 @@ class _TransactionDetail extends ConsumerWidget {
   }
 }
 
-/// Fiş fotoğrafı; bu telefona henüz inmediyse nedeni.
+/// Fiş fotoğrafı; başka telefonda çekildiyse nedeni (fişler sunucuya
+/// yüklenmez).
 class _Receipt extends ConsumerWidget {
   const new(this.storagePath);
 
@@ -146,7 +147,7 @@ class _Receipt extends ConsumerWidget {
     final file = ref.watch(receiptFileProvider(storagePath)).value;
     if (file == null) {
       return Text(
-        AppLocalizations.of(context).financeReceiptPending,
+        AppLocalizations.of(context).financeReceiptElsewhere,
         style: context.typography.body.copyWith(
           color: context.colors.textSecondary,
         ),

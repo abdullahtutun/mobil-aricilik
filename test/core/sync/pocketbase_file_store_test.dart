@@ -11,9 +11,8 @@ import 'package:pocketbase/pocketbase.dart';
 import '../../helpers/fake_pocketbase_files.dart';
 
 const _org = '0190a0b0-0000-7000-8000-000000000001';
-const _hive = '0190a0b0-0000-7000-8000-000000000002';
 const _media = '0190a0b0-0000-7000-8000-000000000003';
-const _path = '$_org/$_hive/$_media.jpg';
+const _path = '$_org/$_media.jpg';
 
 Matcher _fails(FileStoreFailure failure, [Object? message]) => throwsA(
   isA<FileStoreException>()
@@ -35,7 +34,7 @@ void main() {
   });
 
   Future<FileUploadResult> upload([
-    String bucket = 'media',
+    String bucket = 'org-logos',
     String path = _path,
   ]) => store.upload(
     bucket,
@@ -51,7 +50,7 @@ void main() {
 
       final request = server.requests.single;
       expect(request.method, 'POST');
-      expect(request.url.path, '/api/collections/media_files/records');
+      expect(request.url.path, '/api/collections/org_logo_files/records');
       final sent = server.uploads.single;
       expect(sent.body, {'id': _media, 'org_id': _org, 'path': _path});
       expect(sent.fileName, '$_media.jpg');
@@ -61,8 +60,6 @@ void main() {
 
     test('bucket’lar dosya koleksiyonlarına gider (K-13)', () async {
       const paths = {
-        'media': ('media_files', '$_org/$_hive/$_media.m4a'),
-        'receipts': ('receipt_files', '$_org/$_hive/$_media.jpg'),
         'feedback': ('feedback_files', '$_org/$_media.jpg'),
         'org-logos': ('org_logo_files', '$_org/$_media.jpg'),
       };
@@ -161,7 +158,14 @@ void main() {
       expect(await upload(), FileUploadResult.uploaded);
     });
 
-    test('bilinmeyen bucket kalıcı', () async {
+    test('bilinmeyen ve kapalı bucket kalıcı', () async {
+      for (final bucket in ['media', 'receipts', 'documents']) {
+        await expectLater(
+          upload(bucket, '$_org/$_media/$_media.jpg'),
+          _fails(FileStoreFailure.permanent),
+          reason: bucket,
+        );
+      }
       await expectLater(
         upload('public-lots', '$_org/$_media.pdf'),
         _fails(FileStoreFailure.permanent),
@@ -171,27 +175,27 @@ void main() {
   });
 
   group('indirme', () {
-    setUp(() => server.put('media_files', _path, [1, 2, 3]));
+    setUp(() => server.put('org_logo_files', _path, [1, 2, 3]));
 
     test('kaydı parametreli path filtresiyle bulur, dosya token’ı alır ve '
         'dosyayı token’la indirir', () async {
-      expect(await store.download('media', _path), [1, 2, 3]);
+      expect(await store.download('org-logos', _path), [1, 2, 3]);
 
       final [list, token, file] = server.requests;
-      expect(list.url.path, '/api/collections/media_files/records');
+      expect(list.url.path, '/api/collections/org_logo_files/records');
       expect(list.url.queryParameters['filter'], 'path = "$_path"');
       expect(list.url.queryParameters['perPage'], '1');
       expect(list.headers['Authorization'], client.authStore.token);
       expect(token.method, 'POST');
       expect(token.url.path, '/api/files/token');
-      expect(file.url.path, startsWith('/api/files/c_media_files/$_media/'));
+      expect(file.url.path, startsWith('/api/files/c_org_logo_files/$_media/'));
       expect(file.url.queryParameters['token'], 'file-token-1');
       expect(file.url.queryParameters.containsKey('thumb'), isFalse);
     });
 
     test('yoldaki tırnak filtreyi bozmaz', () async {
       await expectLater(
-        store.download('media', 'a" || path != "'),
+        store.download('org-logos', 'a" || path != "'),
         _fails(FileStoreFailure.notFound),
       );
       expect(
@@ -202,13 +206,13 @@ void main() {
 
     test('dosya token’ı bir dakika yeniden kullanılır; oturum değişince ya '
         'da süre dolunca yenisi alınır', () async {
-      await store.download('media', _path);
+      await store.download('org-logos', _path);
       now = now.add(const Duration(seconds: 59));
-      await store.download('media', _path);
+      await store.download('org-logos', _path);
       expect(server.fileTokens, ['file-token-1']);
 
       now = now.add(const Duration(seconds: 1));
-      await store.download('media', _path);
+      await store.download('org-logos', _path);
       expect(server.fileTokens, hasLength(2));
 
       client.authStore.save(
@@ -218,7 +222,7 @@ void main() {
         ),
         null,
       );
-      await store.download('media', _path);
+      await store.download('org-logos', _path);
       expect(server.fileTokens, hasLength(3));
       expect(server.fileGets.map((r) => r.url.queryParameters['token']), [
         'file-token-1',
@@ -231,10 +235,10 @@ void main() {
     test(
       'önbellekteki token geçersizse yenisiyle bir kez daha denenir',
       () async {
-        await store.download('media', _path);
+        await store.download('org-logos', _path);
         server.fileTokens.add('rotated');
 
-        expect(await store.download('media', _path), [1, 2, 3]);
+        expect(await store.download('org-logos', _path), [1, 2, 3]);
         expect(server.fileGets.map((r) => r.url.queryParameters['token']), [
           'file-token-1',
           'file-token-1',
@@ -245,7 +249,7 @@ void main() {
 
     test('kaydı olmayan ya da okunamayan dosya 404: token istenmez', () async {
       await expectLater(
-        store.download('media', '$_org/$_hive/other.jpg'),
+        store.download('org-logos', '$_org/other.jpg'),
         _fails(FileStoreFailure.notFound, startsWith('404')),
       );
       expect(server.requests, hasLength(1));
@@ -257,7 +261,7 @@ void main() {
           : null;
 
       await expectLater(
-        store.download('media', _path),
+        store.download('org-logos', _path),
         _fails(FileStoreFailure.notFound, startsWith('404')),
       );
       expect(server.fileGets, hasLength(1));
@@ -266,7 +270,7 @@ void main() {
     test('ağ hatası ve sunucu hatası geçici, yetki kalıcı', () async {
       server.handler = (_) => throw const SocketException('ağ yok');
       await expectLater(
-        store.download('media', _path),
+        store.download('org-logos', _path),
         _fails(FileStoreFailure.transient),
       );
 
@@ -274,7 +278,7 @@ void main() {
           ? throw const SocketException('ağ yok')
           : null;
       await expectLater(
-        store.download('media', _path),
+        store.download('org-logos', _path),
         _fails(FileStoreFailure.transient),
       );
 
@@ -282,13 +286,13 @@ void main() {
           ? fakePocketBaseError(503, message: 'hata')
           : null;
       await expectLater(
-        PocketBaseFileStore(client).download('media', _path),
+        PocketBaseFileStore(client).download('org-logos', _path),
         _fails(FileStoreFailure.transient),
       );
 
       server.handler = (_) => fakePocketBaseError(403, message: 'Forbidden.');
       await expectLater(
-        PocketBaseFileStore(client).download('media', _path),
+        PocketBaseFileStore(client).download('org-logos', _path),
         _fails(FileStoreFailure.permanent, startsWith('403')),
       );
     });
@@ -296,7 +300,7 @@ void main() {
     test('süresi dolmuş oturumda istek atılmaz, geçici', () async {
       client.authStore.clear();
       await expectLater(
-        store.download('media', _path),
+        store.download('org-logos', _path),
         _fails(FileStoreFailure.transient),
       );
       expect(server.requests, isEmpty);

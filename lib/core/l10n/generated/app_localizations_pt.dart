@@ -1738,8 +1738,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mediaOpenPhoto => 'Abrir foto';
 
   @override
-  String get mediaDownloadPhoto =>
-      'A foto não está neste celular. Toque para baixar.';
+  String get mediaPhotoElsewhere => 'A foto está em outro celular';
+
+  @override
+  String get mediaElsewhere =>
+      'Isto foi gravado em outro celular. Fotos e notas de voz não são enviadas ao servidor; abrem no celular que as gravou.';
 
   @override
   String mediaPlay(String duration) {
@@ -1750,39 +1753,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mediaStopPlaying => 'Parar';
 
   @override
-  String get mediaNotUploaded =>
-      'Ainda não enviada. Chega quando o celular que a tirou estiver on-line.';
-
-  @override
-  String get mediaDownloadOffline =>
-      'Não foi possível baixar. Verifique sua conexão com a internet.';
-
-  @override
-  String get mediaDownloadFailed => 'Não foi possível baixar.';
-
-  @override
   String get mediaNotFound => 'Foto não encontrada';
 
   @override
   String get settingsData => 'Dados';
-
-  @override
-  String get settingsMediaWifiOnly => 'Enviar fotos só pelo Wi‑Fi';
-
-  @override
-  String get settingsMediaWifiOnlyHint =>
-      'Fotos e notas de voz não vão usar dados móveis.';
-
-  @override
-  String settingsPendingUploads(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count arquivos esperando envio',
-      one: '1 arquivo esperando envio',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get hiveQueenNone => 'Não registrada';
@@ -5867,6 +5841,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get financeReceiptAttached => 'comprovante anexado';
 
   @override
+  String get financeReceiptElsewhere =>
+      'O recibo está em outro celular; fotos de recibos não são enviadas ao servidor.';
+
+  @override
   String financeTransportRoute(String from, String to) {
     return '$from → $to';
   }
@@ -5974,10 +5952,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get financeNotFound => 'Lançamento não encontrado';
-
-  @override
-  String get financeReceiptPending =>
-      'O comprovante ainda não chegou a este celular';
 
   @override
   String get financeDelete => 'Excluir lançamento';

@@ -135,45 +135,6 @@ final class HiveMediaFamily extends $Family
   String toString() => r'hiveMediaProvider';
 }
 
-/// Yüklenmeyi bekleyen dosya sayısı (Ayarlar).
-
-@ProviderFor(pendingMediaUploads)
-final pendingMediaUploadsProvider = PendingMediaUploadsProvider._();
-
-/// Yüklenmeyi bekleyen dosya sayısı (Ayarlar).
-
-final class PendingMediaUploadsProvider
-    extends $FunctionalProvider<AsyncValue<int>, int, Stream<int>>
-    with $FutureModifier<int>, $StreamProvider<int> {
-  /// Yüklenmeyi bekleyen dosya sayısı (Ayarlar).
-  PendingMediaUploadsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'pendingMediaUploadsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$pendingMediaUploadsHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<int> $createElement($ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
-
-  @override
-  Stream<int> create(Ref ref) {
-    return pendingMediaUploads(ref);
-  }
-}
-
-String _$pendingMediaUploadsHash() =>
-    r'57c262e8e188f6a2d782e32960c5eec67c9edf41';
-
 /// Medya kaydı; yoksa ya da silindiyse null.
 
 @ProviderFor(mediaItem)

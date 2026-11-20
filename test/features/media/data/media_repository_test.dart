@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobil_arici/core/db/app_database.dart';
 import 'package:mobil_arici/features/media/data/media_repository.dart';
@@ -40,7 +39,7 @@ void main() {
 
   Future<List<MediaUpload>> uploads() => db.select(db.mediaUploads).get();
 
-  test('medyayı, outbox kaydını ve bekleyen yüklemeyi birlikte yazar; '
+  test('medyayı, outbox kaydını ve dosya adı eşlemesini birlikte yazar; '
       'payload sunucunun kolonlarıyla', () async {
     final media = await add('a.m4a', kind: MediaKind.audio);
 
@@ -71,7 +70,7 @@ void main() {
     expect(await repository.localFileName(media), 'a.m4a');
   });
 
-  test('outbox yazılamazsa medya da yükleme de yazılmaz', () async {
+  test('outbox yazılamazsa medya da dosya adı da yazılmaz', () async {
     await db.customStatement(
       'CREATE TRIGGER outbox_fails BEFORE INSERT ON outbox '
       "BEGIN SELECT RAISE(ABORT, 'outbox kapalı'); END",
@@ -93,23 +92,13 @@ void main() {
     expect((await readOutbox(db)).last.operation, OutboxOperation.delete);
   });
 
-  test('silme bekleyen yüklemeyi kaldırır, yüklenmişi bırakır', () async {
-    final pending = await add('1.jpg');
-    final uploaded = await add('2.jpg');
-    await (db.update(
-      db.mediaUploads,
-    )..where((t) => t.mediaId.equals(uploaded.id))).write(
-      const MediaUploadsCompanion(
-        uploadStatus: Value(MediaUploadStatus.uploaded),
-      ),
-    );
-    expect(await repository.watchPendingUploadCount().first, 1);
+  test('silme dosya adı eşlemesini de kaldırır', () async {
+    final removed = await add('1.jpg');
+    final kept = await add('2.jpg');
 
-    await repository.remove(pending.id);
-    await repository.remove(uploaded.id);
+    await repository.remove(removed.id);
 
-    expect((await uploads()).map((u) => u.mediaId), [uploaded.id]);
-    expect(await repository.watchPendingUploadCount().first, 0);
+    expect((await uploads()).map((u) => u.mediaId), [kept.id]);
   });
 
   test('muayenenin medyası birlikte silinir; diğerleri kalır', () async {

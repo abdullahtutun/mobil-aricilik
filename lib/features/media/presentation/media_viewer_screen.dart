@@ -25,7 +25,7 @@ class MediaViewerScreen extends ConsumerWidget {
             AppFormat.of(context).dateTime(media.capturedAt.toLocal()),
           ),
         ),
-        body: switch (ref.watch(mediaFileControllerProvider(media))) {
+        body: switch (ref.watch(mediaFileProvider(media))) {
           AsyncData(value: final file?) => InteractiveViewer(
             maxScale: 5,
             child: Center(
