@@ -256,4 +256,6 @@ Kural: "İnternet yok" diye hiçbir kayıt ertelenmez, hiçbir ekran boş açıl
 | 3 | Finans ve müşteri defteri, parti/lot ve izlenebilirlik QR'ı, raporlar, destek ve AKS hatırlatıcıları (TR), bilgi bankasının genişletilmesi | Kayıt biriktiğinde anlam kazanır |
 | 4 – İleri | Topluluk akım bildirimleri, akıllı kantar/sensör entegrasyonu, fotoğraftan hastalık tanıma, arıcılar arası pazar yeri (ana arı, oğulcuk, ekipman) | Kullanıcı tabanı ve veri oluştuktan sonra |
 
-Açık sorular: Hedef kitle önce profesyonel gezginci mi, hobi/yarı profesyonel mi? Ücretsiz/ücretli özellik ayrımı nasıl olacak? Birlikler veya il müdürlükleriyle iş birliği hedefleniyor mu?
+Açık sorular: Hedef kitle önce profesyonel gezginci mi, hobi/yarı profesyonel mi? Birlikler veya il müdürlükleriyle iş birliği hedefleniyor mu?
+
+Ücretsiz/ücretli ayrımı (karar 2026-11-21): yalnız sınırsız kovan (ücretsizde 30 aktif kovan), ekip kullanımı (ücretsizde yalnız sahip) ve 7 günlük hava (ücretsizde 3 gün) işletme başına yıllık Pro aboneliğine geçer; geri kalan her şey ücretsiz. Beta sürecinde planlar kapalı, herkes her şeyi kullanıyor; beta kullanıcılarına Pro'da indirim sözü verildi. Altyapı ve açma adımları: docs/progress.md, 2026-11-21.

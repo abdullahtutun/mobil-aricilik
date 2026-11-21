@@ -4,6 +4,8 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/plans/domain/plan_rules.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'bulk_hive_form_controller.freezed.dart';
@@ -64,12 +66,19 @@ class BulkHiveFormController extends _$BulkHiveFormController {
       _update((form) => form.copyWith(source: source));
 
   /// Kovanları yazar ve kaç tane oluştuğunu döner. Kaydedilemiyorsa
-  /// ([BulkHiveFormProgress.canSave]) null döner.
+  /// ([BulkHiveFormProgress.canSave]) ya da planın kovan sınırını aşıyorsa
+  /// ([readRemainingHives]) null döner; hiçbiri yazılmaz.
   Future<int?> save() async {
     final form = state.value;
     final numbers = form?.numbers;
     final orgId = ref.read(currentOrgIdProvider);
     if (form == null || numbers == null || form.saving || orgId == null) {
+      return null;
+    }
+    if (!canAddHives(
+      remaining: await readRemainingHives(ref, orgId),
+      adding: numbers.length,
+    )) {
       return null;
     }
     _update((form) => form.copyWith(saving: true));

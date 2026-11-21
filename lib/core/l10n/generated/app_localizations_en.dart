@@ -8022,4 +8022,118 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quickRecordNoApiary => 'Add an apiary first to record.';
+
+  @override
+  String get planBetaTitle => 'Mobil Arıcı is in beta';
+
+  @override
+  String get planBetaBody =>
+      'Right now every feature is free for everyone. Later, only unlimited hives, team use and the 7-day forecast will move to a Pro plan with a very small yearly fee; the free version keeps almost every feature of the app. Our promise: your records are never deleted or locked, you can always export your data for free, and people who actively use the app during the beta get a discount on Pro.';
+
+  @override
+  String get planBetaDismiss => 'Got it';
+
+  @override
+  String get planLimitHivesTitle => 'Free plan hive limit reached';
+
+  @override
+  String planLimitHivesMessage(int limit) {
+    return 'Active hive limit on the free plan: $limit. Your hives stay as they are; to add new ones, you can switch to Pro.';
+  }
+
+  @override
+  String planLimitHivesBulk(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You can add $count more hives on the free plan.',
+      one: 'You can add 1 more hive on the free plan.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planLimitTeamTitle => 'Team use is part of Pro';
+
+  @override
+  String get planLimitTeamMessage =>
+      'On the free plan only the owner uses the operation. Current members stay on the team; to invite new ones, you can switch to Pro.';
+
+  @override
+  String get planSeePro => 'See Pro';
+
+  @override
+  String get teamErrorPlanRequired =>
+      'This operation\'s plan has no team use. You can join once the owner switches to Pro.';
+
+  @override
+  String get planTitle => 'Plan';
+
+  @override
+  String get planCurrentFree => 'Free plan';
+
+  @override
+  String get planCurrentPro => 'Pro';
+
+  @override
+  String planProUntil(String date) {
+    return 'Until $date';
+  }
+
+  @override
+  String get planProFeaturesTitle => 'What Pro adds';
+
+  @override
+  String get planFeatureHives => 'Unlimited hives';
+
+  @override
+  String get planFeatureTeam => 'Team use: partners, workers and viewers';
+
+  @override
+  String get planFeatureWeather => '7-day weather forecast';
+
+  @override
+  String get planFreeIncludes =>
+      'Every other feature of the app is on the free plan too.';
+
+  @override
+  String planBuyYearly(String price) {
+    return 'Yearly $price';
+  }
+
+  @override
+  String planBuyOther(String price) {
+    return 'Buy · $price';
+  }
+
+  @override
+  String get planRestore => 'Restore my purchases';
+
+  @override
+  String get planOwnerOnly =>
+      'The owner starts the subscription; everyone on the team uses Pro.';
+
+  @override
+  String get planPurchaseThanks =>
+      'Thank you! Pro turns on within a few minutes.';
+
+  @override
+  String get planRestoreDone => 'Your purchases were checked.';
+
+  @override
+  String get planErrorOffline =>
+      'Could not reach the store. Check your internet connection.';
+
+  @override
+  String get planErrorNotAllowed => 'Purchases are turned off on this device.';
+
+  @override
+  String get planErrorUnavailable => 'Purchases are not available right now.';
+
+  @override
+  String get planErrorUnknown =>
+      'The purchase did not go through. Try again in a moment.';
+
+  @override
+  String get planNoOffers => 'Nothing is on sale right now.';
 }

@@ -182,6 +182,9 @@ abstract final class AppRoutes {
   /// Ekip: üyeler ve davet; Daha fazla'dan açılır.
   static const team = '/more/team';
 
+  /// Plan ve Pro satın alma; Ayarlar'dan ve plan sınırı kartlarından.
+  static const plan = '/more/plan';
+
   /// İşletme profili ve düzenlemesi; Daha fazla'daki işletme kartından.
   static const business = '/more/business';
   static const businessEdit = '/more/business/edit';

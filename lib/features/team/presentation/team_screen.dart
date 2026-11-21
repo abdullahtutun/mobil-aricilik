@@ -12,6 +12,8 @@ import 'package:mobil_arici/features/organization/domain/business_profile.dart';
 import 'package:mobil_arici/features/organization/domain/membership_role.dart';
 import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
 import 'package:mobil_arici/features/organization/presentation/business_profile_providers.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_providers.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_widgets.dart';
 import 'package:mobil_arici/features/team/domain/activity_rules.dart';
 import 'package:mobil_arici/features/team/domain/invite.dart';
 import 'package:mobil_arici/features/team/domain/team_failure.dart';
@@ -25,7 +27,9 @@ import 'package:mobil_arici/features/team/presentation/team_rules.dart';
 /// çevrimdışıyken ne yapılacağı yazılır. Son işlemler yerel DB'den gelir.
 /// Tasarımdaki son görülme yok: karşılığı olan veri henüz yok. Hesabını
 /// silmeyi onaylamış üye "Hesabını siliyor · tarih" diye görünür; bekleme
-/// süresinde rolü değiştirilmez, ekipten çıkarılamaz.
+/// süresinde rolü değiştirilmez, ekipten çıkarılamaz. Planı ekibe açık
+/// olmayan işletmede (ücretsiz plan) davet kartının yerine sınır kartı
+/// çıkar; mevcut üyeler kalır.
 class TeamScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -91,7 +95,13 @@ class TeamScreen extends ConsumerWidget {
               ),
             if (canInvite(role)) ...[
               SizedBox(height: spacing.xl),
-              const _InviteCard(),
+              if (ref.watch(currentPlanProvider.select((plan) => plan.team)))
+                const _InviteCard()
+              else
+                PlanLimitCard(
+                  title: l10n.planLimitTeamTitle,
+                  message: l10n.planLimitTeamMessage,
+                ),
             ],
             SizedBox(height: spacing.xl),
             BigButton(

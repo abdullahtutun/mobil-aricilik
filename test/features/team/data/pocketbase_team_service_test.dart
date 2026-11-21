@@ -115,6 +115,7 @@ void main() {
       (409, 'owner_locked', TeamFailure.ownerLocked),
       (409, 'member_leaving', TeamFailure.memberLeaving),
       (429, 'too_many_requests', TeamFailure.tooManyAttempts),
+      (403, 'plan_required', TeamFailure.planRequired),
       (403, 'forbidden', TeamFailure.forbidden),
       (401, 'unauthorized', TeamFailure.forbidden),
       (500, 'server', TeamFailure.network),

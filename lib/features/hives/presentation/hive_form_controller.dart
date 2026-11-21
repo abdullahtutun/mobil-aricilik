@@ -5,6 +5,8 @@ import 'package:mobil_arici/features/hives/domain/hive_rules.dart';
 import 'package:mobil_arici/features/hives/domain/hive_status_event.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/plans/domain/plan_rules.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'hive_form_controller.freezed.dart';
@@ -85,7 +87,8 @@ class HiveFormController extends _$HiveFormController {
       _update((form) => form.copyWith(source: source));
 
   /// Kovanı yerel DB'ye yazar ve kimliğini döner. Kaydedilemiyorsa
-  /// ([HiveFormProgress.canSave]) null döner. Düzenlenen kovan bu arada
+  /// ([HiveFormProgress.canSave]) ya da yeni kovan planın kovan sınırını
+  /// aşıyorsa ([readRemainingHives]) null döner. Düzenlenen kovan bu arada
   /// silindiyse durum null olur. Onay gerekiyorsa
   /// ([HiveFormProgress.needsConfirmation]) çağırmadan önce ekran sorar.
   Future<String?> save() async {
@@ -95,6 +98,13 @@ class HiveFormController extends _$HiveFormController {
     final id = hiveId;
     final orgId = ref.read(currentOrgIdProvider);
     if (id == null && orgId == null) return null;
+    if (id == null &&
+        !canAddHives(
+          remaining: await readRemainingHives(ref, orgId!),
+          adding: 1,
+        )) {
+      return null;
+    }
     _update((form) => form.copyWith(saving: true));
 
     // Yazma hata atsa da Kaydet yeniden açılsın.

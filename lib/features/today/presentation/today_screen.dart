@@ -16,6 +16,8 @@ import 'package:mobil_arici/core/sync/sync_providers.dart';
 import 'package:mobil_arici/core/utils/app_format.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_providers.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_providers.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_widgets.dart';
 import 'package:mobil_arici/features/tasks/domain/task.dart';
 import 'package:mobil_arici/features/tasks/domain/task_rules.dart';
 import 'package:mobil_arici/features/tasks/presentation/widgets/task_list.dart';
@@ -50,6 +52,7 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
     ref.listenManual(currentOrgIdProvider, (_, orgId) {
       if (orgId != null) {
         unawaited(ref.read(weatherRefresherProvider).refreshIfStale());
+        unawaited(ref.read(planRefresherProvider).refreshIfStale());
       }
     }, fireImmediately: true);
     // Arılık konumu yeni eklendiyse sunucu onu senkron gönderilince bilir;
@@ -167,6 +170,14 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
             SizedBox(height: spacing.xl),
             Padding(padding: padded, child: const _TodayTasks()),
           ],
+          // En altta: saha işinin önüne geçmesin; "Anladım" deyince kalkar.
+          TodayBetaNotice(
+            padding: EdgeInsetsDirectional.only(
+              start: spacing.lg,
+              end: spacing.lg,
+              top: spacing.xl,
+            ),
+          ),
         ],
       ),
     );

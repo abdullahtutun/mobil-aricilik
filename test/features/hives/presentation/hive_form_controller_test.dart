@@ -7,9 +7,12 @@ import 'package:mobil_arici/features/hives/domain/hive.dart';
 import 'package:mobil_arici/features/hives/presentation/bulk_hive_form_controller.dart';
 import 'package:mobil_arici/features/hives/presentation/hive_form_controller.dart';
 import 'package:mobil_arici/features/organization/presentation/organization_providers.dart';
+import 'package:mobil_arici/features/plans/data/plan_repository.dart';
+import 'package:mobil_arici/features/plans/domain/plan_status.dart';
 
 import '../../../helpers/fake_auth_service.dart';
 import '../../../helpers/fake_organization_service.dart';
+import '../../../helpers/fake_plans.dart';
 import '../../../helpers/test_database.dart';
 
 void main() {
@@ -227,6 +230,96 @@ void main() {
         container.read(bulkHiveFormControllerProvider('yok')).value,
         isNull,
       );
+    });
+  });
+
+  group('ücretsiz planın kovan sınırı', () {
+    /// Ücretsiz plan saklı ve işletmede [active] aktif kovan var.
+    Future<void> freePlanWith(int active) async {
+      await PlanRepository(db).saveStatus(
+        testOrganization.id,
+        StoredPlanStatus(status: freePlanStatus, fetchedAt: DateTime.now()),
+      );
+      if (active > 0) {
+        await hives.createMany(
+          orgId: testOrganization.id,
+          apiaryId: apiaryId,
+          numbers: [for (var n = 1; n <= active; n++) '$n'],
+          type: HiveType.langstroth,
+        );
+      }
+    }
+
+    Future<int> activeCount() =>
+        hives.watchActiveCount(testOrganization.id).first;
+
+    test('sınır doluysa yeni kovan yazılmaz; düzenleme serbest', () async {
+      await freePlanWith(30);
+      final provider = hiveFormControllerProvider(apiaryId: apiaryId);
+      container.listen(provider, (_, _) {});
+      await container.read(provider.future);
+      final controller = container.read(provider.notifier)..updateNumber('999');
+      expect(await controller.save(), isNull);
+      expect(await activeCount(), 30);
+
+      final existing = (await hives.watchByApiary(apiaryId).first).first;
+      final edit = hiveFormControllerProvider(
+        apiaryId: apiaryId,
+        hiveId: existing.id,
+      );
+      container.listen(edit, (_, _) {});
+      await container.read(edit.future);
+      final editor = container.read(edit.notifier)..updateNumber('A1');
+      expect(await editor.save(), existing.id);
+    });
+
+    test('sınırın altında yeni kovan yazılır', () async {
+      await freePlanWith(29);
+      final provider = hiveFormControllerProvider(apiaryId: apiaryId);
+      container.listen(provider, (_, _) {});
+      await container.read(provider.future);
+      final controller = container.read(provider.notifier)..updateNumber('999');
+      expect(await controller.save(), isNotNull);
+      expect(await activeCount(), 30);
+    });
+
+    test('toplu: kalan haktan fazlası hiç yazılmaz, kadarı yazılır', () async {
+      await freePlanWith(25);
+      final provider = bulkHiveFormControllerProvider(apiaryId);
+      container.listen(provider, (_, _) {});
+      await container.read(provider.future);
+      final controller = container.read(provider.notifier)
+        ..updateCount('6')
+        ..updateStartNumber('101');
+      expect(await controller.save(), isNull);
+      expect(await activeCount(), 25);
+
+      controller.updateCount('5');
+      expect(await controller.save(), 5);
+      expect(await activeCount(), 30);
+    });
+
+    test('planlar kapalıyken sınır yok', () async {
+      await PlanRepository(db).saveStatus(
+        testOrganization.id,
+        StoredPlanStatus(
+          status: PlanStatus.unlimited,
+          fetchedAt: DateTime.now(),
+        ),
+      );
+      await hives.createMany(
+        orgId: testOrganization.id,
+        apiaryId: apiaryId,
+        numbers: [for (var n = 1; n <= 40; n++) '$n'],
+        type: HiveType.langstroth,
+      );
+      final provider = bulkHiveFormControllerProvider(apiaryId);
+      container.listen(provider, (_, _) {});
+      await container.read(provider.future);
+      final controller = container.read(provider.notifier)
+        ..updateCount('10')
+        ..updateStartNumber('101');
+      expect(await controller.save(), 10);
     });
   });
 }

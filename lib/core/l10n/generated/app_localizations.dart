@@ -12742,6 +12742,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add an apiary first to record.'**
   String get quickRecordNoApiary;
+
+  /// Title of the beta notice on Today and in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobil Arıcı is in beta'**
+  String get planBetaTitle;
+
+  /// Beta notice: everything free now; later only unlimited hives, team use and the 7-day forecast become Pro with a very small yearly fee; promises (no deletion or lock, free export, beta users get a discount).
+  ///
+  /// In en, this message translates to:
+  /// **'Right now every feature is free for everyone. Later, only unlimited hives, team use and the 7-day forecast will move to a Pro plan with a very small yearly fee; the free version keeps almost every feature of the app. Our promise: your records are never deleted or locked, you can always export your data for free, and people who actively use the app during the beta get a discount on Pro.'**
+  String get planBetaBody;
+
+  /// Button that hides the beta notice on Today.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get planBetaDismiss;
+
+  /// Hive form when the free plan's active hive limit is reached.
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan hive limit reached'**
+  String get planLimitHivesTitle;
+
+  /// Hive limit card body.
+  ///
+  /// In en, this message translates to:
+  /// **'Active hive limit on the free plan: {limit}. Your hives stay as they are; to add new ones, you can switch to Pro.'**
+  String planLimitHivesMessage(int limit);
+
+  /// Bulk hive form: how many hives the free plan still allows.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You can add 1 more hive on the free plan.} other{You can add {count} more hives on the free plan.}}'**
+  String planLimitHivesBulk(int count);
+
+  /// Team screen, instead of the invite card, on the free plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Team use is part of Pro'**
+  String get planLimitTeamTitle;
+
+  /// Team limit card body.
+  ///
+  /// In en, this message translates to:
+  /// **'On the free plan only the owner uses the operation. Current members stay on the team; to invite new ones, you can switch to Pro.'**
+  String get planLimitTeamMessage;
+
+  /// Button on a plan limit card that opens the Plan screen.
+  ///
+  /// In en, this message translates to:
+  /// **'See Pro'**
+  String get planSeePro;
+
+  /// Joining with a code failed: the operation is on the free plan.
+  ///
+  /// In en, this message translates to:
+  /// **'This operation\'s plan has no team use. You can join once the owner switches to Pro.'**
+  String get teamErrorPlanRequired;
+
+  /// Plan screen title and the Settings row.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get planTitle;
+
+  /// Current plan: free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan'**
+  String get planCurrentFree;
+
+  /// Current plan: Pro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro'**
+  String get planCurrentPro;
+
+  /// When the Pro period ends.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {date}'**
+  String planProUntil(String date);
+
+  /// Plan screen: heading of the Pro feature list.
+  ///
+  /// In en, this message translates to:
+  /// **'What Pro adds'**
+  String get planProFeaturesTitle;
+
+  /// Pro feature.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited hives'**
+  String get planFeatureHives;
+
+  /// Pro feature.
+  ///
+  /// In en, this message translates to:
+  /// **'Team use: partners, workers and viewers'**
+  String get planFeatureTeam;
+
+  /// Pro feature.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day weather forecast'**
+  String get planFeatureWeather;
+
+  /// Plan screen: everything else is free.
+  ///
+  /// In en, this message translates to:
+  /// **'Every other feature of the app is on the free plan too.'**
+  String get planFreeIncludes;
+
+  /// Buy button of the yearly package.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly {price}'**
+  String planBuyYearly(String price);
+
+  /// Buy button of another package.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy · {price}'**
+  String planBuyOther(String price);
+
+  /// Button that restores earlier store purchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore my purchases'**
+  String get planRestore;
+
+  /// Plan screen for members who are not the owner.
+  ///
+  /// In en, this message translates to:
+  /// **'The owner starts the subscription; everyone on the team uses Pro.'**
+  String get planOwnerOnly;
+
+  /// After a purchase; the server may take a moment.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! Pro turns on within a few minutes.'**
+  String get planPurchaseThanks;
+
+  /// After restoring purchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Your purchases were checked.'**
+  String get planRestoreDone;
+
+  /// Purchase error: no connection to the store.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the store. Check your internet connection.'**
+  String get planErrorOffline;
+
+  /// Purchase error: purchases disabled on the device.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases are turned off on this device.'**
+  String get planErrorNotAllowed;
+
+  /// Purchase error: not set up or not available.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases are not available right now.'**
+  String get planErrorUnavailable;
+
+  /// Purchase error: anything else.
+  ///
+  /// In en, this message translates to:
+  /// **'The purchase did not go through. Try again in a moment.'**
+  String get planErrorUnknown;
+
+  /// Plan screen: the store has no packages.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is on sale right now.'**
+  String get planNoOffers;
 }
 
 class _AppLocalizationsDelegate

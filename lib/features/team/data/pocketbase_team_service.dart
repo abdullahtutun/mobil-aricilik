@@ -110,6 +110,7 @@ class PocketBaseTeamService implements TeamService {
         (409, 'owner_locked') => TeamFailure.ownerLocked,
         (409, 'member_leaving') => TeamFailure.memberLeaving,
         (429, _) => TeamFailure.tooManyAttempts,
+        (403, 'plan_required') => TeamFailure.planRequired,
         (401 || 403, _) => TeamFailure.forbidden,
         // Yanıt yok (bağlantı hatası, zaman aşımı): durum 0.
         (0 || >= 500, _) => TeamFailure.network,

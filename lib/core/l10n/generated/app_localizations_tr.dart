@@ -7777,4 +7777,117 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get quickRecordNoApiary => 'Kayıt için önce bir arılık ekle.';
+
+  @override
+  String get planBetaTitle => 'Mobil Arıcı beta sürecinde';
+
+  @override
+  String get planBetaBody =>
+      'Şu an bütün özellikler herkese ücretsiz. İleride yalnız sınırsız kovan, ekip kullanımı ve 7 günlük hava tahmini, yıllık ücreti çok cüzi olacak Pro planına geçecek; ücretsiz sürümde uygulamanın neredeyse bütün özellikleri açık kalacak. Sözümüz: Girdiğin kayıtlar hiçbir zaman silinmez ya da kilitlenmez, verini her zaman ücretsiz dışa aktarabilirsin ve beta döneminde uygulamayı aktif kullananlar Pro\'ya geçişte indirimden yararlanır.';
+
+  @override
+  String get planBetaDismiss => 'Anladım';
+
+  @override
+  String get planLimitHivesTitle => 'Ücretsiz planın kovan sınırı doldu';
+
+  @override
+  String planLimitHivesMessage(int limit) {
+    return 'Ücretsiz planda aktif kovan sınırı: $limit. Kayıtlı kovanların olduğu gibi kalır; yeni kovan eklemek için Pro\'ya geçebilirsin.';
+  }
+
+  @override
+  String planLimitHivesBulk(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ücretsiz planda $count kovan daha ekleyebilirsin.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planLimitTeamTitle => 'Ekip kullanımı Pro\'da';
+
+  @override
+  String get planLimitTeamMessage =>
+      'Ücretsiz planda işletmeyi yalnız sahibi kullanır. Mevcut üyeler ekipte kalır; yeni üye davet etmek için Pro\'ya geçebilirsin.';
+
+  @override
+  String get planSeePro => 'Pro\'yu incele';
+
+  @override
+  String get teamErrorPlanRequired =>
+      'Bu işletmenin planında ekip kullanımı yok. İşletme sahibi Pro\'ya geçince katılabilirsin.';
+
+  @override
+  String get planTitle => 'Plan';
+
+  @override
+  String get planCurrentFree => 'Ücretsiz plan';
+
+  @override
+  String get planCurrentPro => 'Pro';
+
+  @override
+  String planProUntil(String date) {
+    return '$date tarihine kadar';
+  }
+
+  @override
+  String get planProFeaturesTitle => 'Pro ile gelenler';
+
+  @override
+  String get planFeatureHives => 'Sınırsız kovan';
+
+  @override
+  String get planFeatureTeam => 'Ekip kullanımı: ortak, işçi ve izleyici';
+
+  @override
+  String get planFeatureWeather => '7 günlük hava tahmini';
+
+  @override
+  String get planFreeIncludes =>
+      'Uygulamanın diğer bütün özellikleri ücretsiz planda da açık.';
+
+  @override
+  String planBuyYearly(String price) {
+    return 'Yıllık $price';
+  }
+
+  @override
+  String planBuyOther(String price) {
+    return 'Satın al · $price';
+  }
+
+  @override
+  String get planRestore => 'Satın alımlarımı geri yükle';
+
+  @override
+  String get planOwnerOnly =>
+      'Aboneliği işletme sahibi başlatır; ekipteki herkes Pro\'yu kullanır.';
+
+  @override
+  String get planPurchaseThanks =>
+      'Teşekkürler! Pro birkaç dakika içinde açılır.';
+
+  @override
+  String get planRestoreDone => 'Satın alımların kontrol edildi.';
+
+  @override
+  String get planErrorOffline =>
+      'Mağazaya ulaşılamadı. İnternet bağlantını kontrol et.';
+
+  @override
+  String get planErrorNotAllowed => 'Bu cihazda satın alma kapalı.';
+
+  @override
+  String get planErrorUnavailable => 'Şu an satın alma yapılamıyor.';
+
+  @override
+  String get planErrorUnknown =>
+      'Satın alma tamamlanamadı. Biraz sonra yeniden dene.';
+
+  @override
+  String get planNoOffers => 'Şu an satışta paket yok.';
 }

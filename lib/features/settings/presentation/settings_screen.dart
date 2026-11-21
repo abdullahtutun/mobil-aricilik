@@ -25,6 +25,9 @@ import 'package:mobil_arici/features/health/domain/varroa_rules.dart';
 import 'package:mobil_arici/features/health/presentation/widgets/varroa_labels.dart';
 import 'package:mobil_arici/features/offline_maps/presentation/offline_maps_providers.dart';
 import 'package:mobil_arici/features/organization/domain/role_permissions.dart';
+import 'package:mobil_arici/features/plans/domain/plan_status.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_providers.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_widgets.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_reminders.dart';
 import 'package:mobil_arici/features/team/presentation/team_providers.dart';
@@ -35,9 +38,10 @@ import 'package:mobil_arici/features/weather/presentation/widgets/weather_labels
 /// ülke), veri ("sadece Wi‑Fi'da yükle", bekleyen dosyalar, "kullanım
 /// verisi paylaş", offline haritalar, Excel'e dışa aktarma), varroa ve kovan
 /// açma eşikleri, Android'de hatırlatıcıların tam saatinde çalması (kapalıysa
-/// dokununca sistem ayarı açılır) ve hesap (çıkış, Hesabımı sil). Bütün
-/// seçimler bu telefonun yerel DB'sinde kalıcı ve çıkışta silinmez. Ülke
-/// burada seçilmez, yalnız gösterilir.
+/// dokununca sistem ayarı açılır), hesap (planlar açıksa plan satırı, çıkış,
+/// Hesabımı sil) ve en altta beta notu. Bütün seçimler bu telefonun yerel
+/// DB'sinde kalıcı ve çıkışta silinmez. Ülke burada seçilmez, yalnız
+/// gösterilir.
 class SettingsScreen extends ConsumerWidget {
   const new({super.key});
 
@@ -176,6 +180,21 @@ class SettingsScreen extends ConsumerWidget {
             ),
             SizedBox(height: spacing.md),
           ],
+          if (ref.watch(currentPlanProvider) case final plan
+              when plan.plansEnabled) ...[
+            ListGroup(
+              children: [
+                ListRow(
+                  title: l10n.planTitle,
+                  value: plan.plan == PlanTier.pro
+                      ? l10n.planCurrentPro
+                      : l10n.planCurrentFree,
+                  onTap: () => unawaited(context.push(AppRoutes.plan)),
+                ),
+              ],
+            ),
+            SizedBox(height: spacing.md),
+          ],
           BigButton(
             variant: BigButtonVariant.secondary,
             label: l10n.settingsSignOut,
@@ -188,6 +207,8 @@ class SettingsScreen extends ConsumerWidget {
             label: l10n.settingsDeleteAccount,
             onPressed: () => unawaited(_openAccountDeletion(context, ref)),
           ),
+          sectionGap,
+          const BetaNoticeCard(),
           if (ref.watch(appVersionProvider).value case final version?) ...[
             sectionGap,
             Text(

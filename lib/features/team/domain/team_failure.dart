@@ -23,6 +23,9 @@ enum TeamFailure {
   /// biraz beklenmeli.
   tooManyAttempts,
 
+  /// İşletme ücretsiz planda; ekibe yeni üye alınamaz (planlar açıkken).
+  planRequired,
+
   unknown,
 }
 

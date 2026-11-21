@@ -8019,4 +8019,118 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get quickRecordNoApiary => 'रिकॉर्ड के लिए पहले एक फार्म जोड़ें।';
+
+  @override
+  String get planBetaTitle => 'Mobil Arıcı बीटा में है';
+
+  @override
+  String get planBetaBody =>
+      'अभी सभी सुविधाएँ सबके लिए मुफ़्त हैं। आगे चलकर केवल असीमित छत्ते, टीम में उपयोग और 7 दिन का मौसम पूर्वानुमान बहुत कम सालाना शुल्क वाले Pro प्लान में जाएँगे; मुफ़्त संस्करण में ऐप की लगभग सभी सुविधाएँ बनी रहती हैं। हमारा वादा: आपके रिकॉर्ड कभी हटाए या लॉक नहीं किए जाते, आप अपना डेटा हमेशा मुफ़्त में निर्यात कर सकते हैं, और बीटा के दौरान ऐप का सक्रिय उपयोग करने वालों को Pro पर छूट मिलेगी।';
+
+  @override
+  String get planBetaDismiss => 'समझ गया';
+
+  @override
+  String get planLimitHivesTitle => 'मुफ़्त प्लान की छत्तों की सीमा पूरी हुई';
+
+  @override
+  String planLimitHivesMessage(int limit) {
+    return 'मुफ़्त प्लान में सक्रिय छत्तों की सीमा: $limit। आपके छत्ते जैसे हैं वैसे ही रहेंगे; नए छत्ते जोड़ने के लिए आप Pro पर जा सकते हैं।';
+  }
+
+  @override
+  String planLimitHivesBulk(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'मुफ़्त प्लान में आप $count और छत्ते जोड़ सकते हैं।',
+      one: 'मुफ़्त प्लान में आप 1 और छत्ता जोड़ सकते हैं।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planLimitTeamTitle => 'टीम में उपयोग Pro का हिस्सा है';
+
+  @override
+  String get planLimitTeamMessage =>
+      'मुफ़्त प्लान में केवल मालिक ही व्यवसाय का उपयोग करता है। मौजूदा सदस्य टीम में रहेंगे; नए सदस्य बुलाने के लिए आप Pro पर जा सकते हैं।';
+
+  @override
+  String get planSeePro => 'Pro देखें';
+
+  @override
+  String get teamErrorPlanRequired =>
+      'इस व्यवसाय के प्लान में टीम उपयोग नहीं है। मालिक के Pro पर जाने के बाद आप जुड़ सकते हैं।';
+
+  @override
+  String get planTitle => 'प्लान';
+
+  @override
+  String get planCurrentFree => 'मुफ़्त प्लान';
+
+  @override
+  String get planCurrentPro => 'Pro';
+
+  @override
+  String planProUntil(String date) {
+    return '$date तक';
+  }
+
+  @override
+  String get planProFeaturesTitle => 'Pro में क्या मिलता है';
+
+  @override
+  String get planFeatureHives => 'असीमित छत्ते';
+
+  @override
+  String get planFeatureTeam => 'टीम में उपयोग: साझेदार, कर्मचारी और दर्शक';
+
+  @override
+  String get planFeatureWeather => '7 दिन का मौसम पूर्वानुमान';
+
+  @override
+  String get planFreeIncludes =>
+      'ऐप की बाकी सभी सुविधाएँ मुफ़्त प्लान में भी हैं।';
+
+  @override
+  String planBuyYearly(String price) {
+    return 'सालाना $price';
+  }
+
+  @override
+  String planBuyOther(String price) {
+    return 'खरीदें · $price';
+  }
+
+  @override
+  String get planRestore => 'मेरी खरीदारी बहाल करें';
+
+  @override
+  String get planOwnerOnly =>
+      'सदस्यता मालिक शुरू करता है; टीम के सभी लोग Pro का उपयोग करते हैं।';
+
+  @override
+  String get planPurchaseThanks =>
+      'धन्यवाद! Pro कुछ ही मिनटों में चालू हो जाएगा।';
+
+  @override
+  String get planRestoreDone => 'आपकी खरीदारी जाँच ली गई।';
+
+  @override
+  String get planErrorOffline =>
+      'स्टोर तक नहीं पहुँच सके। अपना इंटरनेट कनेक्शन जाँचें।';
+
+  @override
+  String get planErrorNotAllowed => 'इस डिवाइस पर खरीदारी बंद है।';
+
+  @override
+  String get planErrorUnavailable => 'अभी खरीदारी नहीं हो सकती।';
+
+  @override
+  String get planErrorUnknown =>
+      'खरीदारी पूरी नहीं हुई। थोड़ी देर में फिर कोशिश करें।';
+
+  @override
+  String get planNoOffers => 'अभी कुछ भी बिक्री पर नहीं है।';
 }

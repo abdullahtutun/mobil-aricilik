@@ -21,6 +21,7 @@ import 'package:mobil_arici/features/auth/data/auth_service.dart';
 import 'package:mobil_arici/features/auth/domain/app_user.dart';
 import 'package:mobil_arici/features/auth/domain/auth_failure.dart';
 import 'package:mobil_arici/features/auth/presentation/auth_providers.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_providers.dart';
 import 'package:mobil_arici/features/tasks/presentation/task_push.dart';
 import 'package:mobil_arici/features/weather/presentation/weather_providers.dart';
 
@@ -36,6 +37,7 @@ import 'fake_media.dart';
 import 'fake_offline_maps.dart';
 import 'fake_organization_service.dart';
 import 'fake_place_search_service.dart';
+import 'fake_plans.dart';
 import 'fake_print_service.dart';
 import 'fake_push_service.dart';
 import 'fake_receipts.dart';
@@ -134,9 +136,10 @@ List<Override> signOutOverrides(AppDatabase db) => [
 /// DB bellek içi; verilmezse boş açılır. Kamera, yazıcı, paylaşma, adres
 /// açıcı, senkron, medya (foto, ses, Storage), belge dosyaları (PDF seçici,
 /// çizici, Storage), fiş klasörü, hava servisi, ekranı açık tutma, ağ
-/// bağlantısı ve hesap silme servisi sahte; hava servisi verilmezse
-/// çevrimdışı gibi hata atar. Hesap silmedeki cihaz temizliği gerçek: DB'yi
-/// ve sahte medya, belge, fiş ve harita klasörlerini boşaltır; güvenli depo
+/// bağlantısı, plan, mağaza ve hesap silme servisi sahte; hava ve plan
+/// servisi verilmezse çevrimdışı gibi hata atar. Hesap silmedeki cihaz
+/// temizliği gerçek: DB'yi ve sahte medya, belge, fiş ve harita
+/// klasörlerini boşaltır; güvenli depo
 /// yerine [secureStorageWipe] sayılır. İlk tam çekme bitmiş sayılır
 /// ([fullPullDone] yanlışsa DB'den okunur).
 List<Override> signedIn({
@@ -152,6 +155,8 @@ List<Override> signedIn({
   FakeReceipts? receipts,
   FakeReminderNotifications? reminders,
   FakeWeatherService? weather,
+  FakePlanService? plans,
+  FakePurchaseService? purchases,
   FakeScreenAwake? screenAwake,
   FakeBasemapService? basemap,
   FakePlaceSearchService? placeSearch,
@@ -193,6 +198,10 @@ List<Override> signedIn({
     ...fakeReceipts.overrides,
     reminderNotificationsProvider.overrideWithValue(fakeReminders),
     weatherServiceProvider.overrideWithValue(weather ?? FakeWeatherService()),
+    planServiceProvider.overrideWithValue(plans ?? FakePlanService()),
+    purchaseServiceProvider.overrideWithValue(
+      purchases ?? FakePurchaseService(),
+    ),
     screenAwakeProvider.overrideWithValue(screenAwake ?? FakeScreenAwake()),
     basemapServiceProvider.overrideWithValue(basemap ?? FakeBasemapService()),
     placeSearchServiceProvider.overrideWithValue(

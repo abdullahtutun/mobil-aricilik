@@ -8076,4 +8076,120 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quickRecordNoApiary => 'Primero añade un colmenar.';
+
+  @override
+  String get planBetaTitle => 'Mobil Arıcı está en beta';
+
+  @override
+  String get planBetaBody =>
+      'Ahora mismo todas las funciones son gratis para todos. Más adelante, solo las colmenas ilimitadas, el uso en equipo y el pronóstico de 7 días pasarán a un plan Pro con una cuota anual muy pequeña; la versión gratuita mantiene casi todas las funciones de la app. Nuestra promesa: tus registros nunca se borran ni se bloquean, siempre puedes exportar tus datos gratis y quienes usen la app activamente durante la beta tendrán un descuento en Pro.';
+
+  @override
+  String get planBetaDismiss => 'Entendido';
+
+  @override
+  String get planLimitHivesTitle =>
+      'Llegaste al límite de colmenas del plan gratuito';
+
+  @override
+  String planLimitHivesMessage(int limit) {
+    return 'Límite de colmenas activas en el plan gratuito: $limit. Tus colmenas se quedan como están; para añadir nuevas, puedes pasarte a Pro.';
+  }
+
+  @override
+  String planLimitHivesBulk(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'En el plan gratuito puedes añadir $count colmenas más.',
+      one: 'En el plan gratuito puedes añadir 1 colmena más.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planLimitTeamTitle => 'El uso en equipo es parte de Pro';
+
+  @override
+  String get planLimitTeamMessage =>
+      'En el plan gratuito solo el propietario usa la explotación. Los miembros actuales siguen en el equipo; para invitar a nuevos, puedes pasarte a Pro.';
+
+  @override
+  String get planSeePro => 'Ver Pro';
+
+  @override
+  String get teamErrorPlanRequired =>
+      'El plan de esta explotación no incluye uso en equipo. Podrás unirte cuando el propietario se pase a Pro.';
+
+  @override
+  String get planTitle => 'Plan';
+
+  @override
+  String get planCurrentFree => 'Plan gratuito';
+
+  @override
+  String get planCurrentPro => 'Pro';
+
+  @override
+  String planProUntil(String date) {
+    return 'Hasta el $date';
+  }
+
+  @override
+  String get planProFeaturesTitle => 'Lo que añade Pro';
+
+  @override
+  String get planFeatureHives => 'Colmenas ilimitadas';
+
+  @override
+  String get planFeatureTeam =>
+      'Uso en equipo: socios, trabajadores y observadores';
+
+  @override
+  String get planFeatureWeather => 'Pronóstico del tiempo de 7 días';
+
+  @override
+  String get planFreeIncludes =>
+      'Todas las demás funciones de la app también están en el plan gratuito.';
+
+  @override
+  String planBuyYearly(String price) {
+    return 'Anual $price';
+  }
+
+  @override
+  String planBuyOther(String price) {
+    return 'Comprar · $price';
+  }
+
+  @override
+  String get planRestore => 'Restaurar mis compras';
+
+  @override
+  String get planOwnerOnly =>
+      'El propietario inicia la suscripción; todo el equipo usa Pro.';
+
+  @override
+  String get planPurchaseThanks => '¡Gracias! Pro se activa en unos minutos.';
+
+  @override
+  String get planRestoreDone => 'Se revisaron tus compras.';
+
+  @override
+  String get planErrorOffline =>
+      'No se pudo conectar con la tienda. Revisa tu conexión a internet.';
+
+  @override
+  String get planErrorNotAllowed =>
+      'Las compras están desactivadas en este dispositivo.';
+
+  @override
+  String get planErrorUnavailable => 'Ahora mismo no se pueden hacer compras.';
+
+  @override
+  String get planErrorUnknown =>
+      'La compra no se completó. Vuelve a intentarlo en un momento.';
+
+  @override
+  String get planNoOffers => 'Ahora mismo no hay nada a la venta.';
 }

@@ -99,6 +99,7 @@ void main() {
           AppRoutes.season,
           AppRoutes.oldQueens,
           AppRoutes.team,
+          AppRoutes.plan,
           AppRoutes.business,
           AppRoutes.businessEdit,
           AppRoutes.feedback,

@@ -72,6 +72,7 @@ dependencies:
   # çevrimdışıyken oturumun kalmasını istiyor (docs/pocketbase-gecis.md P7.2).
   pocketbase: 0.25.3
   printing: ^5.15.1
+  purchases_flutter: ^11.0.1
   record: ^7.1.2
   riverpod_annotation: ^4.0.7
   sentry_flutter: ^10.2.0

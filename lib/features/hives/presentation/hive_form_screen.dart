@@ -12,11 +12,14 @@ import 'package:mobil_arici/features/hives/presentation/widgets/hive_choice_fiel
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_labels.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_not_found.dart';
 import 'package:mobil_arici/features/hives/presentation/widgets/hive_sheets.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_providers.dart';
+import 'package:mobil_arici/features/plans/presentation/plan_widgets.dart';
 
 /// Kovan ekleme ([hiveId] null) ve düzenleme: numara, tip, durum, kaynak.
 /// Kaydedince yeni kovanın kartı açılır; düzenlemede karta dönülür. Aktif
 /// kovanı söndü, birleşti, satıldı ya da kayboldu yapan kayıt önce onay
-/// ister.
+/// ister. Ücretsiz planın kovan sınırı doluysa yeni kovan formunun üstünde
+/// sınır kartı çıkar ve Kaydet kapanır.
 class HiveFormScreen extends ConsumerWidget {
   const new({required this.apiaryId, super.key, this.hiveId});
 
@@ -33,6 +36,9 @@ class HiveFormScreen extends ConsumerWidget {
       hiveId == null ? l10n.hiveFormNewTitle : l10n.hiveFormEditTitle,
     );
 
+    final limitReached =
+        hiveId == null && ref.watch(remainingHivesProvider).value == 0;
+
     return switch (ref.watch(_provider)) {
       AsyncData(value: final form?) => Scaffold(
         appBar: AppBar(leading: const CloseButton(), title: title),
@@ -40,11 +46,24 @@ class HiveFormScreen extends ConsumerWidget {
           separated: true,
           body: ListView(
             padding: EdgeInsets.all(context.spacing.lg),
-            children: [_HiveFormFields(_provider, isNew: hiveId == null)],
+            children: [
+              if (limitReached) ...[
+                PlanLimitCard(
+                  title: l10n.planLimitHivesTitle,
+                  message: l10n.planLimitHivesMessage(
+                    ref.watch(currentPlanProvider).hiveLimit ?? 0,
+                  ),
+                ),
+                SizedBox(height: context.spacing.xl),
+              ],
+              _HiveFormFields(_provider, isNew: hiveId == null),
+            ],
           ),
           action: BigButton(
             label: l10n.hiveFormSave,
-            onPressed: form.canSave ? () => _save(context, ref, form) : null,
+            onPressed: form.canSave && !limitReached
+                ? () => _save(context, ref, form)
+                : null,
           ),
         ),
       ),

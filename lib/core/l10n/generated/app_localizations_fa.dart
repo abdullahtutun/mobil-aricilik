@@ -8001,4 +8001,116 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get quickRecordNoApiary => 'ابتدا یک زنبورستان اضافه کنید.';
+
+  @override
+  String get planBetaTitle => 'Mobil Arıcı در مرحله بتا است';
+
+  @override
+  String get planBetaBody =>
+      'در حال حاضر همه امکانات برای همه رایگان است. بعدها فقط کندوی نامحدود، کار تیمی و پیش‌بینی 7 روزه به طرح Pro با هزینه سالانه بسیار ناچیز منتقل می‌شود؛ نسخه رایگان تقریباً همه امکانات برنامه را حفظ می‌کند. قول ما: سوابق شما هرگز حذف یا قفل نمی‌شود، همیشه می‌توانید داده‌هایتان را رایگان خروجی بگیرید و کسانی که در دوره بتا فعالانه از برنامه استفاده می‌کنند، برای Pro تخفیف می‌گیرند.';
+
+  @override
+  String get planBetaDismiss => 'متوجه شدم';
+
+  @override
+  String get planLimitHivesTitle => 'سقف کندوی طرح رایگان پر شد';
+
+  @override
+  String planLimitHivesMessage(int limit) {
+    return 'سقف کندوی فعال در طرح رایگان: $limit. کندوهای شما همان‌طور می‌مانند؛ برای افزودن کندوی جدید می‌توانید به Pro بروید.';
+  }
+
+  @override
+  String planLimitHivesBulk(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'در طرح رایگان می‌توانید $count کندوی دیگر اضافه کنید.',
+      one: 'در طرح رایگان می‌توانید 1 کندوی دیگر اضافه کنید.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planLimitTeamTitle => 'کار تیمی بخشی از Pro است';
+
+  @override
+  String get planLimitTeamMessage =>
+      'در طرح رایگان فقط مالک از زنبورستان استفاده می‌کند. اعضای فعلی در تیم می‌مانند؛ برای دعوت از عضو جدید می‌توانید به Pro بروید.';
+
+  @override
+  String get planSeePro => 'دیدن Pro';
+
+  @override
+  String get teamErrorPlanRequired =>
+      'طرح این زنبورستان کار تیمی ندارد. وقتی مالک به Pro برود می‌توانید عضو شوید.';
+
+  @override
+  String get planTitle => 'طرح';
+
+  @override
+  String get planCurrentFree => 'طرح رایگان';
+
+  @override
+  String get planCurrentPro => 'Pro';
+
+  @override
+  String planProUntil(String date) {
+    return 'تا $date';
+  }
+
+  @override
+  String get planProFeaturesTitle => 'آنچه Pro اضافه می‌کند';
+
+  @override
+  String get planFeatureHives => 'کندوی نامحدود';
+
+  @override
+  String get planFeatureTeam => 'کار تیمی: شریک، کارگر و بیننده';
+
+  @override
+  String get planFeatureWeather => 'پیش‌بینی هوای 7 روزه';
+
+  @override
+  String get planFreeIncludes =>
+      'همه امکانات دیگر برنامه در طرح رایگان هم هست.';
+
+  @override
+  String planBuyYearly(String price) {
+    return 'سالانه $price';
+  }
+
+  @override
+  String planBuyOther(String price) {
+    return 'خرید · $price';
+  }
+
+  @override
+  String get planRestore => 'بازیابی خریدهایم';
+
+  @override
+  String get planOwnerOnly =>
+      'اشتراک را مالک شروع می‌کند؛ همه اعضای تیم از Pro استفاده می‌کنند.';
+
+  @override
+  String get planPurchaseThanks => 'سپاس! Pro تا چند دقیقه دیگر فعال می‌شود.';
+
+  @override
+  String get planRestoreDone => 'خریدهای شما بررسی شد.';
+
+  @override
+  String get planErrorOffline =>
+      'به فروشگاه دسترسی نشد. اتصال اینترنت را بررسی کنید.';
+
+  @override
+  String get planErrorNotAllowed => 'خرید در این دستگاه خاموش است.';
+
+  @override
+  String get planErrorUnavailable => 'الان امکان خرید نیست.';
+
+  @override
+  String get planErrorUnknown => 'خرید انجام نشد. کمی بعد دوباره تلاش کنید.';
+
+  @override
+  String get planNoOffers => 'الان چیزی برای فروش نیست.';
 }

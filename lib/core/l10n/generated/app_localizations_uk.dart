@@ -8257,4 +8257,120 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get quickRecordNoApiary => 'Спочатку додайте пасіку.';
+
+  @override
+  String get planBetaTitle => 'Mobil Arıcı у бета-версії';
+
+  @override
+  String get planBetaBody =>
+      'Зараз усі функції безкоштовні для всіх. Згодом лише необмежена кількість вуликів, робота в команді та прогноз на 7 днів перейдуть до тарифу Pro з дуже невеликою річною платою; у безкоштовній версії залишаються майже всі функції застосунку. Наша обіцянка: ваші записи ніколи не видаляються й не блокуються, ви завжди можете безкоштовно експортувати свої дані, а ті, хто активно користується застосунком під час бети, отримають знижку на Pro.';
+
+  @override
+  String get planBetaDismiss => 'Зрозуміло';
+
+  @override
+  String get planLimitHivesTitle =>
+      'Досягнуто ліміту вуликів безкоштовного тарифу';
+
+  @override
+  String planLimitHivesMessage(int limit) {
+    return 'Ліміт активних вуликів у безкоштовному тарифі: $limit. Ваші вулики залишаються як є; щоб додати нові, можна перейти на Pro.';
+  }
+
+  @override
+  String planLimitHivesBulk(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'У безкоштовному тарифі можна додати ще $count вулика.',
+      many: 'У безкоштовному тарифі можна додати ще $count вуликів.',
+      few: 'У безкоштовному тарифі можна додати ще $count вулики.',
+      one: 'У безкоштовному тарифі можна додати ще $count вулик.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planLimitTeamTitle => 'Робота в команді входить до Pro';
+
+  @override
+  String get planLimitTeamMessage =>
+      'У безкоштовному тарифі господарством користується лише власник. Нинішні учасники залишаються в команді; щоб запросити нових, можна перейти на Pro.';
+
+  @override
+  String get planSeePro => 'Переглянути Pro';
+
+  @override
+  String get teamErrorPlanRequired =>
+      'Тариф цього господарства не має роботи в команді. Ви зможете приєднатися, коли власник перейде на Pro.';
+
+  @override
+  String get planTitle => 'Тариф';
+
+  @override
+  String get planCurrentFree => 'Безкоштовний тариф';
+
+  @override
+  String get planCurrentPro => 'Pro';
+
+  @override
+  String planProUntil(String date) {
+    return 'До $date';
+  }
+
+  @override
+  String get planProFeaturesTitle => 'Що дає Pro';
+
+  @override
+  String get planFeatureHives => 'Необмежена кількість вуликів';
+
+  @override
+  String get planFeatureTeam =>
+      'Робота в команді: партнери, працівники та спостерігачі';
+
+  @override
+  String get planFeatureWeather => 'Прогноз погоди на 7 днів';
+
+  @override
+  String get planFreeIncludes =>
+      'Усі інші функції застосунку є й у безкоштовному тарифі.';
+
+  @override
+  String planBuyYearly(String price) {
+    return 'На рік $price';
+  }
+
+  @override
+  String planBuyOther(String price) {
+    return 'Купити · $price';
+  }
+
+  @override
+  String get planRestore => 'Відновити покупки';
+
+  @override
+  String get planOwnerOnly =>
+      'Підписку оформлює власник; Pro користується вся команда.';
+
+  @override
+  String get planPurchaseThanks => 'Дякуємо! Pro увімкнеться за кілька хвилин.';
+
+  @override
+  String get planRestoreDone => 'Покупки перевірено.';
+
+  @override
+  String get planErrorOffline =>
+      'Не вдалося зв\'язатися з магазином. Перевірте підключення до інтернету.';
+
+  @override
+  String get planErrorNotAllowed => 'Покупки на цьому пристрої вимкнено.';
+
+  @override
+  String get planErrorUnavailable => 'Зараз покупки недоступні.';
+
+  @override
+  String get planErrorUnknown => 'Покупка не вдалася. Спробуйте трохи згодом.';
+
+  @override
+  String get planNoOffers => 'Зараз нічого не продається.';
 }
