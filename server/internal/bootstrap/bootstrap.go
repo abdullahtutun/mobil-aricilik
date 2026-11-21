@@ -24,6 +24,7 @@ import (
 	appmail "github.com/abdullahtutun/mobil-aricilik/server/internal/mail"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/notify"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/orgs"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/plans"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/recordapi"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/schemadump"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
@@ -61,6 +62,10 @@ func Register(app core.App, cfg config.Config, version string) {
 	appsync.RegisterPull(app)
 	appsync.RegisterPush(app)
 	orgs.Register(app)
+	plans.Register(app, plans.Options{
+		Enabled:     cfg.Plans.Enabled,
+		WebhookAuth: cfg.Plans.WebhookAuth,
+	})
 	team.Register(app)
 	deletion.Register(app, mail.On)
 	weather.Register(app, weather.Options{
@@ -80,6 +85,7 @@ func Register(app core.App, cfg config.Config, version string) {
 		}
 		log := startupLogger(e.App)
 		logStartup(log, cfg, version)
+		log.Info("Plans", "enabled", cfg.Plans.Enabled)
 		applyBackups(e.App, cfg.Backups, log)
 		if !applyMail(e.App, cfg.Mail, log) {
 			mail.on.Store(false)

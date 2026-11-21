@@ -15,6 +15,10 @@
 //
 // Body: { generated_at, forecasts: [{ apiary_id, cell, fetched_at,
 // forecast }] }. The app shows the "Powered by WeatherAPI.com" credit.
+//
+// When the plans are on (internal/plans), an apiary of a free organization
+// gets only the first [plans.FreeForecastDays] days ([TrimForecast]); the
+// cache keeps the whole forecast.
 package weather
 
 import (
@@ -35,6 +39,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/auth"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/authz"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/pattern"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/plans"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -126,6 +131,7 @@ type ApiaryForecast struct {
 // Location is a row of weather_locations().
 type Location struct {
 	ApiaryID  string
+	OrgID     string
 	Latitude  float64
 	Longitude float64
 }
@@ -154,11 +160,11 @@ func (o Options) handle(e *core.RequestEvent) error {
 	if err != nil {
 		return e.InternalServerError("", err)
 	}
-	type apiaryCell struct{ apiaryID, cell string }
+	type apiaryCell struct{ apiaryID, orgID, cell string }
 	apiaries := make([]apiaryCell, len(locations))
 	var cells []string
 	for i, l := range locations {
-		apiaries[i] = apiaryCell{l.ApiaryID, CellOf(l.Latitude, l.Longitude)}
+		apiaries[i] = apiaryCell{l.ApiaryID, l.OrgID, CellOf(l.Latitude, l.Longitude)}
 		if !slices.Contains(cells, apiaries[i].cell) {
 			cells = append(cells, apiaries[i].cell)
 		}
@@ -200,13 +206,29 @@ func (o Options) handle(e *core.RequestEvent) error {
 		GeneratedAt: pattern.FormatTimestamp(now),
 		Forecasts:   make([]ApiaryForecast, len(apiaries)),
 	}
+	days := map[string]*int{}
 	for i, a := range apiaries {
 		row := byCell[a.cell]
+		limit, ok := days[a.orgID]
+		if !ok {
+			st, err := plans.Lookup(e.App, a.orgID)
+			if err != nil {
+				return e.InternalServerError("", err)
+			}
+			limit = st.ForecastDays
+			days[a.orgID] = limit
+		}
+		forecast := row.forecast
+		if limit != nil {
+			if forecast, err = TrimForecast(forecast, *limit); err != nil {
+				return e.InternalServerError("", err)
+			}
+		}
 		bundle.Forecasts[i] = ApiaryForecast{
 			ApiaryID:  a.apiaryID,
 			Cell:      a.cell,
 			FetchedAt: row.fetchedAt,
-			Forecast:  row.forecast,
+			Forecast:  forecast,
 		}
 	}
 	return e.JSON(http.StatusOK, bundle)
@@ -237,11 +259,12 @@ func Locations(app core.App, userID string) ([]Location, error) {
 	}
 	rows := []struct {
 		ID        string `db:"id"`
+		OrgID     string `db:"org_id"`
 		Latitude  sql.NullString `db:"latitude"`
 		Longitude sql.NullString `db:"longitude"`
 	}{}
 	err = app.DB().
-		Select("id", "latitude", "longitude").
+		Select("id", "org_id", "latitude", "longitude").
 		From("apiaries").
 		Where(dbx.HashExp{"org_id": in, "deleted_at": ""}).
 		OrderBy("id").
@@ -254,7 +277,7 @@ func Locations(app core.App, userID string) ([]Location, error) {
 		lat, latOK := number(r.Latitude.String)
 		lon, lonOK := number(r.Longitude.String)
 		if latOK && lonOK {
-			out = append(out, Location{ApiaryID: r.ID, Latitude: lat, Longitude: lon})
+			out = append(out, Location{ApiaryID: r.ID, OrgID: r.OrgID, Latitude: lat, Longitude: lon})
 		}
 	}
 	return out, nil

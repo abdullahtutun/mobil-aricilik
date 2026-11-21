@@ -65,3 +65,18 @@ func TestLoad_weather(t *testing.T) {
 		t.Errorf("Weather without env = %+v", cfg.Weather)
 	}
 }
+
+func TestLoad_plans(t *testing.T) {
+	for value, want := range map[string]bool{
+		"": false, "false": false, "0": false, "on": false, "treu": false,
+		"true": true, " TRUE ": true, "1": true, "yes": true,
+	} {
+		if got := Load(env(map[string]string{"PLANS_ENABLED": value})).Plans.Enabled; got != want {
+			t.Errorf("PLANS_ENABLED=%q: Enabled = %v, want %v", value, got, want)
+		}
+	}
+	cfg := Load(env(map[string]string{"REVENUECAT_WEBHOOK_AUTH": " Bearer s3cret "}))
+	if cfg.Plans.WebhookAuth != "Bearer s3cret" {
+		t.Errorf("WebhookAuth = %q", cfg.Plans.WebhookAuth)
+	}
+}

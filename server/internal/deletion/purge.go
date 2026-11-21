@@ -264,11 +264,12 @@ func runStep(app core.App, requestID string, step int, inTx func(txApp core.App)
 // orgRowCollections are the collections outside sync that hang on an
 // organization (Supabase: org_id … references organizations on delete
 // cascade). deletion_requests.org_id has no such reference and stays.
-var orgRowCollections = []string{"invites", "feedback"}
+var orgRowCollections = []string{"invites", "feedback", "org_subscriptions"}
 
 // deleteOrganizationRows is the cascade of `delete from organizations`
 // (account_deletion_purge_records): every synced row of the organizations,
-// the organizations themselves and their invites and feedback, for good.
+// the organizations themselves and their invites, feedback and
+// subscription rows, for good.
 // No server_seq: the rows are gone, as in Supabase. Plain SQL, no record
 // hooks: none of these collections has a delete hook or a file field.
 func deleteOrganizationRows(txApp core.App, orgIDs []string) error {

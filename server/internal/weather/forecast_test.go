@@ -161,3 +161,62 @@ func TestParseForecast_rejectsBodyWithoutLocation(t *testing.T) {
 		}
 	}
 }
+
+func TestTrimForecast(t *testing.T) {
+	f, err := weather.ParseForecast([]byte(providerBody("37.11,28.39", 14.2)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := json.Marshal(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// As many days as there are, or more: unchanged.
+	for _, days := range []int{2, 3, 7} {
+		got, err := weather.TrimForecast(raw, days)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if string(got) != string(raw) {
+			t.Errorf("TrimForecast(%d) changed the forecast", days)
+		}
+	}
+
+	// One day: the second day and its hour go, the rest stays.
+	got, err := weather.TrimForecast(raw, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var trimmed weather.Forecast
+	if err := json.Unmarshal(got, &trimmed); err != nil {
+		t.Fatal(err)
+	}
+	d, h := trimmed.Daily, trimmed.Hourly
+	for name, n := range map[string]int{
+		"daily.time": len(d.Time), "daily.condition_code": len(d.ConditionCode),
+		"daily.temperature_max_c": len(d.TemperatureMaxC), "daily.temperature_min_c": len(d.TemperatureMinC),
+		"daily.precipitation_mm": len(d.PrecipitationMm), "daily.precipitation_probability_max": len(d.PrecipitationProbabilityMax),
+		"daily.wind_max_kmh": len(d.WindMaxKmh),
+	} {
+		if n != 1 {
+			t.Errorf("%s has %d values, want 1", name, n)
+		}
+	}
+	for name, n := range map[string]int{
+		"hourly.time": len(h.Time), "hourly.temperature_c": len(h.TemperatureC),
+		"hourly.wind_kmh": len(h.WindKmh), "hourly.precipitation_mm": len(h.PrecipitationMm),
+		"hourly.precipitation_probability": len(h.PrecipitationProbability), "hourly.condition_code": len(h.ConditionCode),
+	} {
+		if n != 2 {
+			t.Errorf("%s has %d values, want 2", name, n)
+		}
+	}
+	if *d.TemperatureMaxC[0] != *f.Daily.TemperatureMaxC[0] || trimmed.Current.TemperatureC == nil || trimmed.Timezone != f.Timezone {
+		t.Errorf("trimmed forecast lost data: %s", got)
+	}
+
+	if _, err := weather.TrimForecast(json.RawMessage(`{`), 1); err == nil {
+		t.Error("TrimForecast of bad JSON did not fail")
+	}
+}

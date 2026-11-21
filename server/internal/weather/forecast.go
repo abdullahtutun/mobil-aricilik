@@ -311,3 +311,49 @@ func ParseForecast(body []byte) (Forecast, error) {
 	}
 	return f, nil
 }
+
+// TrimForecast keeps the first days days of a cached forecast: the daily
+// columns and the hours before the first dropped day. A forecast with no
+// more days than that comes back unchanged.
+func TrimForecast(raw json.RawMessage, days int) (json.RawMessage, error) {
+	var f Forecast
+	if err := json.Unmarshal(raw, &f); err != nil {
+		return nil, err
+	}
+	if days < 0 || len(f.Daily.Time) <= days {
+		return raw, nil
+	}
+	cutoff := f.Daily.Time[days]
+	d := &f.Daily
+	d.Time = d.Time[:days]
+	d.ConditionCode = head(d.ConditionCode, days)
+	d.TemperatureMaxC = head(d.TemperatureMaxC, days)
+	d.TemperatureMinC = head(d.TemperatureMinC, days)
+	d.PrecipitationMm = head(d.PrecipitationMm, days)
+	d.PrecipitationProbabilityMax = head(d.PrecipitationProbabilityMax, days)
+	d.WindMaxKmh = head(d.WindMaxKmh, days)
+
+	if cutoff != nil {
+		h := &f.Hourly
+		keep := len(h.Time)
+		for i, t := range h.Time {
+			var sec float64
+			if json.Unmarshal(t, &sec) == nil && sec >= *cutoff {
+				keep = i
+				break
+			}
+		}
+		h.Time = h.Time[:keep]
+		h.TemperatureC = head(h.TemperatureC, keep)
+		h.WindKmh = head(h.WindKmh, keep)
+		h.PrecipitationMm = head(h.PrecipitationMm, keep)
+		h.PrecipitationProbability = head(h.PrecipitationProbability, keep)
+		h.ConditionCode = head(h.ConditionCode, keep)
+	}
+	return json.Marshal(f)
+}
+
+// head is the first n elements of s, or all of it when shorter.
+func head[T any](s []T, n int) []T {
+	return s[:min(n, len(s))]
+}

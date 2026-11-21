@@ -41,6 +41,8 @@ var Known = []Var{
 	{"WEATHERAPI_KEY", "weather"},
 	{"WEATHERAPI_DAYS", "weather"},
 	{"FCM_SERVICE_ACCOUNT_B64", "push"},
+	{"PLANS_ENABLED", "plans"},
+	{"REVENUECAT_WEBHOOK_AUTH", "billing"},
 	{"BACKUPS_CRON", "backups"},
 	{"BACKUPS_MAX_KEEP", "backups"},
 	{"BACKUPS_S3_ENDPOINT", "backups_s3"},
@@ -78,6 +80,9 @@ type Config struct {
 	// service account JSON, base64. Secret; never log it. Empty turns push
 	// sending off.
 	FCMServiceAccountB64 string
+	// Plans is the plan switch and the RevenueCat webhook secret
+	// (2026-11-21).
+	Plans Plans
 }
 
 // Load reads the environment through getenv (os.Getenv when nil).
@@ -111,6 +116,10 @@ func Load(getenv func(string) string) Config {
 		Days: strings.TrimSpace(getenv("WEATHERAPI_DAYS")),
 	}
 	cfg.FCMServiceAccountB64 = strings.TrimSpace(getenv("FCM_SERVICE_ACCOUNT_B64"))
+	cfg.Plans = Plans{
+		Enabled:     parseBool(getenv("PLANS_ENABLED")),
+		WebhookAuth: strings.TrimSpace(getenv("REVENUECAT_WEBHOOK_AUTH")),
+	}
 
 	return cfg
 }
@@ -130,4 +139,20 @@ func (c Config) MissingNames() []string {
 type Weather struct {
 	Key  string
 	Days string
+}
+
+// Plans is PLANS_ENABLED and REVENUECAT_WEBHOOK_AUTH. Enabled is off unless
+// the value is true, 1 or yes (any case): an unset or misspelled switch
+// never starts charging. WebhookAuth is a secret; never log it.
+type Plans struct {
+	Enabled     bool
+	WebhookAuth string
+}
+
+func parseBool(value string) bool {
+	switch strings.ToLower(strings.TrimSpace(value)) {
+	case "true", "1", "yes":
+		return true
+	}
+	return false
 }

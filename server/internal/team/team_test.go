@@ -49,12 +49,17 @@ type fixture struct {
 
 func newFixture(t *testing.T) *fixture {
 	t.Helper()
+	return newFixtureConfig(t, config.Config{Env: config.EnvDev})
+}
+
+func newFixtureConfig(t *testing.T, cfg config.Config) *fixture {
+	t.Helper()
 	app, err := tests.NewTestApp(t.TempDir())
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(app.Cleanup)
-	bootstrap.Register(app, config.Config{Env: config.EnvDev}, "test")
+	bootstrap.Register(app, cfg, "test")
 
 	f := &fixture{app: app, tokens: map[string]string{}}
 	for _, id := range []string{owner, partner, worker, newcomer, viewer, outsider} {
@@ -837,4 +842,39 @@ func jsonType(v any) string {
 		return "object"
 	}
 	return "null"
+}
+
+// TestTeamNeedsPro: with the plans on, a free organization neither makes nor
+// redeems codes; its existing members stay. Pro, and the plans off, allow
+// both.
+func TestTeamNeedsPro(t *testing.T) {
+	f := newFixtureConfig(t, config.Config{Env: config.EnvDev, Plans: config.Plans{Enabled: true}})
+	future := k5(time.Now().Add(time.Hour))
+	f.invite(t, "AR7K2Q", "worker", future)
+
+	f.post(t, owner, "create", map[string]any{"org_id": orgA, "role": "worker"}, http.StatusForbidden, team.CodePlanRequired)
+	f.post(t, newcomer, "redeem", map[string]any{"code": "AR7K2Q"}, http.StatusForbidden, team.CodePlanRequired)
+	if inv := f.inviteByCode(t, "AR7K2Q"); inv.GetString("used_at") != "" {
+		t.Fatal("plan_required claimed the code")
+	}
+	if f.liveMembership(t, orgA, newcomer) != nil {
+		t.Fatal("plan_required added a membership")
+	}
+	if f.liveMembership(t, orgA, worker) == nil {
+		t.Fatal("the free plan removed a member")
+	}
+	// Members are still listed and managed.
+	f.post(t, owner, "members", map[string]any{"org_id": orgA}, http.StatusOK, "")
+
+	// An expired Pro is free.
+	sub := f.insert(t, "org_subscriptions", "c1000000-0000-0000-0000-000000000001", map[string]any{
+		"org_id": orgA, "plan": "pro", "expires_at": k5(time.Now().Add(-time.Minute)),
+	})
+	f.post(t, owner, "create", map[string]any{"org_id": orgA, "role": "worker"}, http.StatusForbidden, team.CodePlanRequired)
+
+	// An active Pro has a team.
+	sub.Set("expires_at", k5(time.Now().Add(24*time.Hour)))
+	f.save(t, sub)
+	f.post(t, owner, "create", map[string]any{"org_id": orgA, "role": "worker"}, http.StatusOK, "")
+	f.post(t, newcomer, "redeem", map[string]any{"code": "AR7K2Q"}, http.StatusOK, "")
 }

@@ -52,6 +52,8 @@ P1.3'te girilenler (her ortamda ayrı değer):
 | `MAIL_FEEDBACK_USER`, `MAIL_FEEDBACK_PASS`, `FEEDBACK_TO_EMAIL` | P5.7 |
 | `WEATHERAPI_KEY`, `WEATHERAPI_DAYS` | P5.5 |
 | `FCM_SERVICE_ACCOUNT_B64` | P5.6 |
+| `PLANS_ENABLED` | Planlar (2026-11-21). Boş ya da `true`/`1`/`yes` dışı her değer kapalı: herkes her şeyi kullanır. `true` olunca ücretsiz plan sınırları (30 kovan, yalnız sahip, 3 günlük hava) devreye girer. Yeni sürüm gerekmez; istemci planı `/api/app/plan`'dan okur |
+| `REVENUECAT_WEBHOOK_AUTH` | RevenueCat webhook'unun `Authorization` başlığı (ör. `Bearer <uzun rastgele değer>`), RevenueCat panelindeki değerle birebir. Boşsa webhook 503 |
 
 ## İlk deploy'dan sonra
 

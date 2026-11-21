@@ -16,6 +16,7 @@ import (
 
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/pattern"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/plans"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/weather"
 	_ "github.com/abdullahtutun/mobil-aricilik/server/migrations"
@@ -604,14 +605,36 @@ func TestLocations(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := []weather.Location{
-		{ApiaryID: apiaryNear1, Latitude: 37.111, Longitude: 28.394},
-		{ApiaryID: apiaryNear2, Latitude: 37.1149, Longitude: 28.3851},
-		{ApiaryID: apiaryFar, Latitude: 40, Longitude: 30},
+		{ApiaryID: apiaryNear1, OrgID: orgA, Latitude: 37.111, Longitude: 28.394},
+		{ApiaryID: apiaryNear2, OrgID: orgA, Latitude: 37.1149, Longitude: 28.3851},
+		{ApiaryID: apiaryFar, OrgID: orgA, Latitude: 40, Longitude: 30},
 	}
 	if !slices.Equal(got, want) {
 		t.Errorf("Locations = %v, want %v", got, want)
 	}
 	if got, _ := weather.Locations(f.app, ""); len(got) != 0 {
 		t.Errorf("Locations(anon) = %v", got)
+	}
+}
+
+// TestWeather_plans: with the plans on, a free organization's apiaries get
+// at most plans.FreeForecastDays days; Pro gets all. The fake provider gives
+// two days, so the free bundle is unchanged here; TestTrimForecast covers the
+// cut itself.
+func TestWeather_plans(t *testing.T) {
+	f := newFixture(t, testKey, nil)
+	plans.Register(f.app, plans.Options{Enabled: true, Now: func() time.Time { return f.now }})
+	f.save(t, plans.Collection, map[string]any{"org_id": orgE, "plan": "pro", "updated_at": testTime})
+	for _, user := range []string{owner, outsider} {
+		b := f.call(t, user, http.StatusOK).bundle(t)
+		if len(b.Forecasts) == 0 {
+			t.Fatalf("%s: no forecasts", user)
+		}
+		for _, fc := range b.Forecasts {
+			daily, _ := fc.Forecast["daily"].(map[string]any)
+			if days, _ := daily["time"].([]any); len(days) != 2 {
+				t.Errorf("%s %s: %d days, want 2", user, fc.ApiaryID, len(days))
+			}
+		}
 	}
 }

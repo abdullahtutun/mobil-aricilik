@@ -50,6 +50,8 @@ Uçlar:
 - `GET /api/app/schema-hash`: yalnız superuser; `{"sha256": "…"}`, canlı şema dökümünün özeti.
 - `POST /api/app/auth/otp` `{email, locale}`: hesap yoksa açar, kodu e-postayla yollar, `{otpId}` döner; aynı e-postaya 60 sn'de bir (429 `too_many_requests`). Giriş PocketBase'in `POST /api/collections/users/auth-with-otp` `{otpId, password: <kod>}` ucuyla. PocketBase'in kendi `request-otp`'si kapalı (404).
 - `POST /api/app/auth/locale` `{locale}`: oturumlu kullanıcının dili (e-postalar bu dilde).
+- `POST /api/app/plan` `{org_id}`: işletmenin planı (üye). `{plans_enabled, plan, expires_at, hive_limit, team, forecast_days}`; `null` sınır yok demek. `PLANS_ENABLED` kapalıyken herkese sınırsız döner. Ücretsiz planda kovan sınırını yalnız uygulama uygular; sunucu gönderilen kovanı hiçbir zaman reddetmez. Takım davet kodu üretme ve kullanma 403 `plan_required`, hava `forecast_days` gün (`internal/plans`, `org_subscriptions`).
+- `POST /api/app/billing/revenuecat`: RevenueCat webhook'u; `Authorization` başlığı `REVENUECAT_WEBHOOK_AUTH` ile aynı olmalı. `app_user_id` işletme id'sidir. Satın alma, yenileme, iptal (dönem sonuna kadar Pro), süre bitimi ve devir `org_subscriptions`'a yazılır; eski tarihli olay yeniyi ezmez.
 - `GET|POST /api/app/lots/{id}/report`: yayımdaki lotun lot sayfasında görünecek analiz raporu. GET `{document_id, uploaded}` (üye); POST multipart `document_id` + `file` (owner/partner/worker), 409 `not_current` sayfanın istediği rapor değilse. Belge dosyaları telefonda kalır (`document_files` kapalı, 1794300018); sunucuya giden tek belge dosyası budur.
 - Parola girişi (`auth-with-password`) yalnız `demo@tutunsoft.com` için.
 

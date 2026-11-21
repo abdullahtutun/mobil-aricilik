@@ -11,6 +11,10 @@
 //   - redeem   {code}: joins the code's organization with the code's role.
 //     → {org_id, role}. 404 invalid_code (unknown, expired or used: no
 //     difference), 409 already_member, 429 too_many_requests.
+//
+// When the plans are on (internal/plans), an organization on the free plan
+// has no team: create and redeem answer 403 plan_required, and a code it
+// made earlier stays unused. Existing members are kept.
 //   - members  {org_id}: the organization's live members with their e-mail,
 //     for members. → {members: [{user_id, email}]}
 //   - set_role {org_id, user_id, role} and remove {org_id, user_id}: owner
@@ -33,6 +37,7 @@ import (
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/authz"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/ids"
 	"github.com/abdullahtutun/mobil-aricilik/server/internal/pattern"
+	"github.com/abdullahtutun/mobil-aricilik/server/internal/plans"
 	appsync "github.com/abdullahtutun/mobil-aricilik/server/internal/sync"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
@@ -61,6 +66,7 @@ const (
 	CodeMemberLeaving   = "member_leaving"
 	CodeServer          = "server"
 	CodeTooManyRequests = "too_many_requests"
+	CodePlanRequired    = plans.CodePlanRequired
 )
 
 // Clock and code source; tests replace them.
@@ -92,7 +98,21 @@ var (
 	errOwnerLocked   = fail(http.StatusConflict, CodeOwnerLocked, "The owner's membership cannot be changed.")
 	errMemberLeaving = fail(http.StatusConflict, CodeMemberLeaving, "This member is deleting their account.")
 	errTooMany       = fail(http.StatusTooManyRequests, CodeTooManyRequests, "Too many attempts; please wait a minute.")
+	errPlanRequired  = fail(http.StatusForbidden, CodePlanRequired, "Team use needs the Pro plan.")
 )
+
+// checkTeamPlan refuses team changes in an organization whose plan has no
+// team.
+func checkTeamPlan(app core.App, orgID string) error {
+	st, err := plans.Lookup(app, orgID)
+	if err != nil {
+		return err
+	}
+	if !st.Team {
+		return errPlanRequired
+	}
+	return nil
+}
 
 type action func(app core.App, userID string, body map[string]json.RawMessage) (any, error)
 
@@ -184,6 +204,9 @@ func createInvite(app core.App, userID string, body map[string]json.RawMessage) 
 	if !allowed {
 		return nil, errForbidden
 	}
+	if err := checkTeamPlan(app, orgID); err != nil {
+		return nil, err
+	}
 
 	invites, err := app.FindCachedCollectionByNameOrId("invites")
 	if err != nil {
@@ -252,6 +275,9 @@ func redeem(app core.App, userID string, body map[string]json.RawMessage) (any, 
 		}
 		if member {
 			return errAlreadyMember
+		}
+		if err := checkTeamPlan(txApp, orgID); err != nil {
+			return err
 		}
 
 		invite.Set("used_at", stamp)
